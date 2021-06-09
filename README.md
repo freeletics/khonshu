@@ -7,6 +7,21 @@ as well as some of our own utilties.
 
 **This repository is a work in progress. More will be added over time.**
 
+## TextResource
+
+`TextResource` is a domain specific model to represent text. Abstracts text
+whether it a localized `String` sent by the backend, a simple Android `string`
+resource (with or without formatting args) or an Android `plurals` reosurce.
+This way business logic with text can be easily tested without requiring
+`Context` and running on a device.
+
+For more information about the motivation for this abstraction check out this
+[blog post][1].
+
+```groovy
+implementation 'com.freeletics.mad:text-resource:0.1.0'
+```
+
 # License
 
 ```
@@ -24,3 +39,5 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+  [1]: https://freeletics.engineering/2021/01/22/abstraction-text-resource.html

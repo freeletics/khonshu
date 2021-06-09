@@ -36,6 +36,8 @@ jobs:
       - name: Copy docs
         run: |
           cp README.md docs/index.md
+          mkdir -p docs/Javadoc/text-resource
+          cp -R text-resource/build/dokka/gfm/. docs/Javadoc/text-resource/
 
       - name: Deploy MkDocs
         run: mkdocs gh-deploy --force
