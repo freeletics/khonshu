@@ -40,6 +40,8 @@ jobs:
           cp -R text-resource/build/dokka/gfm/. docs/Javadoc/text-resource/
 
       - name: Deploy MkDocs
-        run: mkdocs gh-deploy --force
+        run: |
+          git fetch origin gh-pages:gh-pages
+          mkdocs gh-deploy --force
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
