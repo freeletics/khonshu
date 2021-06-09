@@ -1,0 +1,23 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.2.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.4.32"
+        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.15.1'
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        google()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
