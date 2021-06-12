@@ -67,11 +67,10 @@ sealed class TextResource : Parcelable {
          * Create a `TextResource` for the given Android plurals resource id and the given
          * [quantity]. The [args] will be when formatting the string to replace any placeholders.
          */
-        @JvmName("fromPluralResource")
-        operator fun invoke(
+        fun createWithQuantity(
             @PluralsRes id: Int,
             quantity: Int,
-            vararg args: Array<Any>
+            vararg args: Any
         ): TextResource {
             return PluralTextResource(id, quantity, args)
         }
