@@ -34,3 +34,5 @@ operator fun TextResource.plus(other: String): TextResource {
 fun TextView.setText(textResource: TextResource?) {
     text = textResource?.format(context)
 }
+
+fun String.toTextResource(): TextResource = TextResource(this)
