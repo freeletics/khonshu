@@ -31,6 +31,6 @@ operator fun TextResource.plus(other: String): TextResource {
 /**
  * Set the [textResource] as the [TextView]'s text.
  */
-fun TextView.setText(textResource: TextResource) {
-    text = textResource.format(context)
+fun TextView.setText(textResource: TextResource?) {
+    text = textResource?.format(context)
 }
