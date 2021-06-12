@@ -2,10 +2,12 @@ package com.freeletics.mad.text
 
 import android.content.Context
 import android.os.Parcelable
-import android.widget.TextView
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
-import java.util.Arrays
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import java.util.IllegalFormatException
 import kotlinx.parcelize.RawValue
 import kotlinx.parcelize.Parcelize
@@ -23,6 +25,10 @@ sealed class TextResource : Parcelable {
      * Returns the formatted [String] represented by this `TextResource`.
      */
     abstract fun format(context: Context): String
+
+    @Composable
+    @ReadOnlyComposable
+    abstract fun format(): String
 
     companion object {
         /**
@@ -91,11 +97,23 @@ object LoadingTextResource : TextResource() {
     override fun format(context: Context): String {
         throw UnsupportedOperationException("LoadingTextResource can not be formatted.")
     }
+
+    @Composable
+    @ReadOnlyComposable
+    override fun format(): String {
+        throw UnsupportedOperationException("LoadingTextResource can not be formatted.")
+    }
 }
 
 @Parcelize
 internal data class SimpleTextResource(val text: String) : TextResource() {
     override fun format(context: Context): String {
+        return text
+    }
+
+    @Composable
+    @ReadOnlyComposable
+    override fun format(): String {
         return text
     }
 }
@@ -108,6 +126,12 @@ internal data class StringTextResource(
 
     override fun format(context: Context): String = tryFormat(context) {
         return context.resources.getString(id, *args.formatRecursively(context))
+    }
+
+    @Composable
+    @ReadOnlyComposable
+    override fun format(): String {
+        return stringResource(id, *args.formatRecursively())
     }
 
     override fun equals(other: Any?): Boolean {
@@ -140,6 +164,12 @@ internal data class PluralTextResource(
         return context.resources.getQuantityString(id, quantity, *args.formatRecursively(context))
     }
 
+    @Composable
+    @ReadOnlyComposable
+    override fun format(): String {
+        return LocalContext.current.resources.getQuantityString(id, quantity, *args.formatRecursively())
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -170,11 +200,30 @@ internal data class CompositeTextResource(
     override fun format(context: Context): String {
         return elements.joinToString(separator = separator) { it.format(context) }
     }
+
+    @Composable
+    @ReadOnlyComposable
+    override fun format(): String {
+        val builder = StringBuilder()
+        for ((count, element) in elements.withIndex()) {
+            if (count + 1 > 1) builder.append(separator)
+            builder.append(element.format())
+        }
+        return builder.toString()
+    }
 }
 
 private fun Array<out Any>.formatRecursively(context: Context): Array<out Any> {
     return map {
         if (it is TextResource) it.format(context) else it
+    }.toTypedArray()
+}
+
+@Composable
+@ReadOnlyComposable
+private fun Array<out Any>.formatRecursively(): Array<out Any> {
+    return map {
+        if (it is TextResource) it.format() else it
     }.toTypedArray()
 }
 
