@@ -7,6 +7,18 @@ as well as some of our own utilties.
 
 **This repository is a work in progress. More will be added over time.**
 
+## StateMachine
+
+`StateMachine` is a very simple interface to implement a StateMachine with the concept of emitting
+state through a `Flow` and receiving input actions to mutate that state.
+
+For an example on how to build such a state machine check out [FlowRedux][2]. To connect a
+`StateMachine` to a user interface you can look at [Renderer][3].
+
+```groovy
+implementation 'com.freeletics.mad:state-machine:0.1.0'
+```
+
 ## TextResource
 
 `TextResource` is a domain specific model to represent text. Abstracts text
@@ -41,3 +53,5 @@ limitations under the License.
 ```
 
   [1]: https://freeletics.engineering/2021/01/22/abstraction-text-resource.html
+  [2]: https://freeletics.github.io/FlowRedux/dsl/
+  [3]: https://github.com/gabrielittner/renderer
