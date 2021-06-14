@@ -1,1 +1,2 @@
+include ':state-machine'
 include ':text-resource'

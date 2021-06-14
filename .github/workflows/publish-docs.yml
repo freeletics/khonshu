@@ -38,6 +38,8 @@ jobs:
           cp README.md docs/index.md
           mkdir -p docs/Javadoc/text-resource
           cp -R text-resource/build/dokka/gfm/. docs/Javadoc/text-resource/
+          mkdir -p docs/Javadoc/state-machine
+          cp -R state-machine/build/dokka/gfm/. docs/Javadoc/state-machine/
 
       - name: Deploy MkDocs
         run: |
