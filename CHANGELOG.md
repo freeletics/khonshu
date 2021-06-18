@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.2.0 *(2021-06-18)*
+----------------------------
+
+- update `StateMachine.state` to return `StateFlow<State>` instead of `Flow<State>`
+
+
 Version 0.1.1 *(2021-06-16)*
 ----------------------------
 

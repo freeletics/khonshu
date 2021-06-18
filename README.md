@@ -16,7 +16,7 @@ For an example on how to build such a state machine check out [FlowRedux][2]. To
 `StateMachine` to a user interface you can look at [Renderer][3].
 
 ```groovy
-implementation 'com.freeletics.mad:state-machine:0.1.1'
+implementation 'com.freeletics.mad:state-machine:0.2.0'
 ```
 
 ## TextResource
@@ -31,7 +31,7 @@ For more information about the motivation for this abstraction check out this
 [blog post][1].
 
 ```groovy
-implementation 'com.freeletics.mad:text-resource:0.1.1'
+implementation 'com.freeletics.mad:text-resource:0.2.0'
 ```
 
 # License
