@@ -1,6 +1,6 @@
-apply plugin: 'org.jetbrains.kotlin.multiplatform'
-apply plugin: 'org.jetbrains.dokka'
-apply plugin: 'com.vanniktech.maven.publish'
+apply plugin: "org.jetbrains.kotlin.multiplatform"
+apply plugin: "org.jetbrains.dokka"
+apply plugin: "com.vanniktech.maven.publish"
 
 kotlin {
     jvm()
@@ -19,7 +19,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+                api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
             }
         }
     }
