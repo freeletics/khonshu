@@ -93,13 +93,13 @@ sealed class TextResource : Parcelable {
  */
 @Parcelize
 object LoadingTextResource : TextResource() {
-    override fun format(context: Context): String {
+    override fun format(context: Context): Nothing {
         throw UnsupportedOperationException("LoadingTextResource can not be formatted.")
     }
 
     @Composable
     @ReadOnlyComposable
-    override fun format(): String {
+    override fun format(): Nothing {
         throw UnsupportedOperationException("LoadingTextResource can not be formatted.")
     }
 }
