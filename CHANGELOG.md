@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha01 *(2021-06-18)*
+----------------------------
+
+- initial experimental release of the `whetstone-runtime` and `whetstone-compiler` artifacts
+- initial experimental release of the `navigator` artifact 
+
 Version 0.2.0 *(2021-06-18)*
 ----------------------------
 
