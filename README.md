@@ -10,10 +10,12 @@ as well as some of our own utilties.
 ## StateMachine
 
 `StateMachine` is a very simple interface to implement a StateMachine with the concept of emitting
-state through a `Flow` and receiving input actions to mutate that state.
+state through a `StateFlow` and receiving input actions to mutate that state.
 
 For an example on how to build such a state machine check out [FlowRedux][2]. To connect a
-`StateMachine` to a user interface you can look at [Renderer][3].
+`StateMachine` to a user interface you can look at [Renderer][3] for the Android View world.
+In compose the `StateMachine` can be observed using `collectAsState()` and actions can be dispatched
+to it by simply launching them from a `CoroutineScope` created with `rememberCoroutineScope()`.
 
 ```groovy
 implementation 'com.freeletics.mad:state-machine:0.2.0'
