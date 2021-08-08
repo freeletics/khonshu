@@ -11,7 +11,7 @@ import kotlin.annotation.AnnotationTarget.FUNCTION
 import kotlin.reflect.KClass
 
 /**
- * Annotate a `@Compososable` function or `Renderer` class that represents a screen to enable
+ * Annotate a `@Composable` function or `Renderer` class that represents a screen to enable
  * generating a Dagger component that survives configuration changes.
  *
  * The generated component uses [ScopeTo] as it's scope where the [ScopeTo.marker]

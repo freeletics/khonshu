@@ -5,6 +5,9 @@ import com.freeletics.mad.whetstone.codegen.composeFqName
 import com.freeletics.mad.whetstone.codegen.composeFragmentFqName
 import com.freeletics.mad.whetstone.codegen.emptyNavigationHandler
 import com.freeletics.mad.whetstone.codegen.emptyNavigator
+import com.freeletics.mad.whetstone.codegen.moduleFqName
+import com.freeletics.mad.whetstone.codegen.navEntryComponentFqName
+import com.freeletics.mad.whetstone.codegen.naventry.NavEntryFileGenerator
 import com.freeletics.mad.whetstone.codegen.rendererFragmentFqName
 import com.freeletics.mad.whetstone.codegen.retainedComponentFqName
 import com.google.auto.service.AutoService
@@ -48,7 +51,17 @@ class WhetstoneCodeGenerator : CodeGenerator {
             .flatMap { it.declarations.filterIsInstance<KtNamedFunction>() }
             .mapNotNull { function -> generateCode(codeGenDir, module, function) }
 
-        return classes.toList() + functions
+        val navEntryClasses = projectFiles
+            .classesAndInnerClass(module)
+            .mapNotNull { clazz -> generateNavEntryCode(codeGenDir, module, clazz) }
+
+        val navEntryFunctions = projectFiles
+            .classesAndInnerClass(module)
+            .filter { it.findAnnotation(moduleFqName, module) != null}
+            .flatMap { it.declarations }
+            .mapNotNull { clazz -> generateNavEntryCode(codeGenDir, module, clazz) }
+
+        return classes.toList() + functions + navEntryClasses + navEntryFunctions
     }
 
     private fun generateCode(
@@ -121,6 +134,37 @@ class WhetstoneCodeGenerator : CodeGenerator {
         }
 
         throw IllegalStateException("navigator and navigationHandler need to be set together")
+    }
+
+    private fun generateNavEntryCode(
+        codeGenDir: File,
+        module: ModuleDescriptor,
+        declaration: KtDeclaration
+    ): GeneratedFile? {
+        val component = declaration.findAnnotation(navEntryComponentFqName, module) ?: return null
+        val data = component.toNavEntryData(declaration, module)
+        val file = NavEntryFileGenerator(data).generate()
+        return createGeneratedFile(
+            codeGenDir = codeGenDir,
+            packageName = file.packageName,
+            fileName = file.name,
+            content = file.toString()
+        )
+    }
+
+    private fun KtAnnotationEntry.toNavEntryData(
+        declaration: KtDeclaration,
+        module: ModuleDescriptor
+    ): NavEntryData {
+        val scope = requireClassArgument("scope", 0, module)
+        return NavEntryData(
+            baseName = scope.simpleName,
+            packageName = declaration.containingKtFile.packageFqName.pathSegments().joinToString(separator = "."),
+            scope = scope,
+            parentScope = requireClassArgument("parentScope", 1, module),
+            coroutinesEnabled = optionalBooleanArgument("coroutinesEnabled", 2) ?: false,
+            rxJavaEnabled = optionalBooleanArgument("rxJavaEnabled", 3) ?: false,
+        )
     }
 
     private fun KtAnnotationEntry.requireClassArgument(

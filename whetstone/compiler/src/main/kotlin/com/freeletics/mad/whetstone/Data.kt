@@ -30,3 +30,16 @@ sealed class Extra {
     data class Compose(val withFragment: Boolean) : Extra()
     data class Renderer(val factory: ClassName) : Extra()
 }
+
+
+data class NavEntryData(
+    val baseName: String, //TODO this is scope.simpleName
+    val packageName: String,
+
+    val scope: ClassName,
+
+    val parentScope: ClassName,
+
+    val coroutinesEnabled: Boolean,
+    val rxJavaEnabled: Boolean,
+)

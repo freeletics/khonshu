@@ -2,8 +2,6 @@ package com.freeletics.mad.whetstone.codegen
 
 import com.freeletics.mad.whetstone.Extra
 import com.freeletics.mad.whetstone.Data
-import com.squareup.anvil.annotations.MergeComponent
-import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
@@ -22,23 +20,10 @@ internal class RetainedComponentGenerator(
         return TypeSpec.interfaceBuilder(retainedComponentClassName)
             .addModifiers(KModifier.INTERNAL)
             .addAnnotation(internalApiAnnotation())
-            .addAnnotation(retainedScopeAnnotation())
-            .addAnnotation(componentAnnotation())
+            .addAnnotation(scopeToAnnotation(data.scope))
+            .addAnnotation(componentAnnotation(data.scope, data.dependencies))
             .addProperties(componentProperties())
             .addType(retainedComponentFactory())
-            .build()
-    }
-
-    private fun retainedScopeAnnotation(): AnnotationSpec {
-        return AnnotationSpec.builder(scopeTo)
-            .addMember("%T::class", data.scope)
-            .build()
-    }
-
-    private fun componentAnnotation(): AnnotationSpec {
-        return AnnotationSpec.builder(MergeComponent::class)
-            .addMember("scope = %T::class", data.scope)
-            .addMember("dependencies = [%T::class]", data.dependencies)
             .build()
     }
 

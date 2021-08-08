@@ -11,11 +11,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.navigation.NavBackStackEntry
 import androidx.savedstate.SavedStateRegistryOwner
+import dagger.MapKey
+import javax.inject.Qualifier
 import kotlin.reflect.KClass
 
 /**
- * Creates a [ViewModelProvider] for the gived [fragment] that uses a custom
+ * Creates a [ViewModelProvider] for the given [fragment] that uses a custom
  * [AbstractSavedStateViewModelFactory]. That factory will use [scope] to lookup the required
  * dependencies interface [D] implementation from either the `Activity` or the `Application`
  * `Context`. The [D] instance will then, together with the [SavedStateHandle] be passed to
@@ -34,6 +37,15 @@ fun <D> viewModelProvider(
     return ViewModelProvider(fragment, viewModelFactory)
 }
 
+/**
+ * Creates a [ViewModelProvider] for the given [fragment] that uses a custom
+ * [AbstractSavedStateViewModelFactory]. That factory will use [scope] to lookup the required
+ * dependencies interface [D] implementation from either the `Activity` or the `Application`
+ * `Context`. The [D] instance will then, together with the [SavedStateHandle] be passed to
+ * [factory] to instantiate the [ViewModel].
+ *
+ * To be used in generated code.
+ */
 @InternalWhetstoneApi
 @Composable
 fun <D> rememberViewModelProvider(
@@ -47,6 +59,26 @@ fun <D> rememberViewModelProvider(
         val viewModelFactory = SimpleSavedStateViewModelFactory(savedStateRegistryOwner, context, scope, factory)
         ViewModelProvider(viewModelStoreOwner, viewModelFactory)
     }
+}
+
+/**
+ * Creates a [ViewModelProvider] for the given [entry] that uses a custom
+ * [AbstractSavedStateViewModelFactory]. That factory will use [scope] to lookup a parent
+ * component [C] instance from either the `Activity` or the `Application`
+ * `Context`. The [C] instance will then, together with the [SavedStateHandle] be passed to
+ * [factory] to instantiate the [ViewModel].
+ *
+ * To be used in generated code.
+ */
+@InternalWhetstoneApi
+fun <C> viewModelProvider(
+    entry: NavBackStackEntry,
+    context: Context,
+    scope: KClass<*>,
+    factory: (C, SavedStateHandle) -> ViewModel
+): ViewModelProvider {
+    val viewModelFactory = SimpleSavedStateViewModelFactory(entry, context, scope, factory)
+    return ViewModelProvider(entry, viewModelFactory)
 }
 
 private class SimpleSavedStateViewModelFactory<D>(
