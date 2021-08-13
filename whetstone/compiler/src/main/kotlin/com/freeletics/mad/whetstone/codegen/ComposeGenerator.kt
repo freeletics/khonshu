@@ -18,12 +18,8 @@ internal class ComposeGenerator(
             .addAnnotation(optInAnnotation())
             .addParameter("navController", navController)
             .apply {
-                if (data.navigation != null) {
-                    if (withFragment) {
-                        addParameter("fragment", fragment)
-                    } else {
-                        addParameter("onBackPressedDispatcher", onBackPressedDispatcher)
-                    }
+                if (data.navigation != null && withFragment) {
+                    addParameter("fragment", fragment)
                 }
             }
             .beginControlFlow("val viewModelProvider = %M<%T>(%T::class) { dependencies, handle -> ", rememberViewModelProvider, data.dependencies, data.parentScope)
@@ -51,13 +47,19 @@ internal class ComposeGenerator(
             return CodeBlock.of("")
         }
 
+        val builder = CodeBlock.builder()
+
+        if (!withFragment) {
+            builder.addStatement("val onBackPressedDispatcher = %T.current!!.onBackPressedDispatcher", locaOnBackPressedDispatcherOwner)
+        }
+
         val parameters = if (withFragment) {
             "fragment"
         } else {
             "navController, onBackPressedDispatcher"
         }
 
-        return CodeBlock.builder()
+        return builder
             .beginControlFlow("%M($parameters, component) {", launchedEffect)
             .addStatement("val handler = component.%L", data.navigation.navigationHandler.propertyName)
             .addStatement("val navigator = component.%L", data.navigation.navigator.propertyName)

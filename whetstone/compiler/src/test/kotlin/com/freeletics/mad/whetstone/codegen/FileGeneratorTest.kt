@@ -301,7 +301,7 @@ class FileGeneratorTest {
             package com.test
 
             import android.os.Bundle
-            import androidx.activity.OnBackPressedDispatcher
+            import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.LaunchedEffect
             import androidx.compose.runtime.collectAsState
@@ -372,8 +372,7 @@ class FileGeneratorTest {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(navController: NavController,
-                onBackPressedDispatcher: OnBackPressedDispatcher): Unit {
+            public fun TestScreen(navController: NavController): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
                 val arguments = navController.currentBackStackEntry!!.arguments ?: Bundle.EMPTY
@@ -382,6 +381,7 @@ class FileGeneratorTest {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
+              val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
               LaunchedEffect(navController, onBackPressedDispatcher, component) {
                 val handler = component.testNavigationHandler
                 val navigator = component.testNavigator
