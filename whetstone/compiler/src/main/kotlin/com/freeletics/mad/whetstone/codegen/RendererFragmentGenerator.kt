@@ -39,6 +39,7 @@ internal class RendererFragmentGenerator(
             .beginControlFlow("if (!::%L.isInitialized)", data.stateMachine.propertyName)
             .addStatement("%L()", rendererFragmentInjectName)
             .endControlFlow()
+            .addCode("\n")
             // inflate: external method
             .addStatement("val renderer = %L.inflate(inflater, container)", data.extra.factory.propertyName)
             // connect: external method
@@ -78,8 +79,7 @@ internal class RendererFragmentGenerator(
             .addStatement("val handler = component.%L", data.navigation.navigationHandler.propertyName)
             .addStatement("val navigator = component.%L", data.navigation.navigator.propertyName)
             // lifecycle: external method
-            .addStatement("val scope = lifecycle.%M", lifecycleCoroutineScope)
-            .addStatement("handler.%N(scope, this, navigator)", navigationHandlerHandle)
+            .addStatement("handler.%N(this, navigator)", navigationHandlerHandle)
             .build()
     }
 }

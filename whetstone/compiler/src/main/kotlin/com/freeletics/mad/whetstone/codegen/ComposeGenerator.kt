@@ -17,11 +17,6 @@ internal class ComposeGenerator(
             .addAnnotation(composable)
             .addAnnotation(optInAnnotation())
             .addParameter("navController", navController)
-            .apply {
-                if (data.navigation != null && withFragment) {
-                    addParameter("fragment", fragment)
-                }
-            }
             .beginControlFlow("val viewModelProvider = %M<%T>(%T::class) { dependencies, handle -> ", rememberViewModelProvider, data.dependencies, data.parentScope)
             // currentBackStackEntry: external method
             // arguments: external method
@@ -43,27 +38,16 @@ internal class ComposeGenerator(
     }
 
     private fun composableNavigationSetup(withFragment: Boolean): CodeBlock {
-        if (data.navigation == null) {
+        if (data.navigation == null || withFragment) {
             return CodeBlock.of("")
         }
 
-        val builder = CodeBlock.builder()
-
-        if (!withFragment) {
-            builder.addStatement("val onBackPressedDispatcher = %T.current!!.onBackPressedDispatcher", locaOnBackPressedDispatcherOwner)
-        }
-
-        val parameters = if (withFragment) {
-            "fragment"
-        } else {
-            "navController, onBackPressedDispatcher"
-        }
-
-        return builder
-            .beginControlFlow("%M($parameters, component) {", launchedEffect)
+        return CodeBlock.builder()
+            .addStatement("val onBackPressedDispatcher = %T.current!!.onBackPressedDispatcher", locaOnBackPressedDispatcherOwner)
+            .beginControlFlow("%M(navController, onBackPressedDispatcher, component) {", launchedEffect)
             .addStatement("val handler = component.%L", data.navigation.navigationHandler.propertyName)
             .addStatement("val navigator = component.%L", data.navigation.navigator.propertyName)
-            .addStatement("handler.%N(this, $parameters, navigator)", navigationHandlerHandle)
+            .addStatement("handler.%N(this, navController, onBackPressedDispatcher, navigator)", navigationHandlerHandle)
             .endControlFlow()
             .add("\n")
             .build()

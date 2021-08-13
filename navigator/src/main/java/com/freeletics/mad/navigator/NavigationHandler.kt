@@ -26,12 +26,11 @@ sealed interface NavigationHandler<N : Navigator>
 
 interface FragmentNavigationHandler<N : Navigator> : NavigationHandler<N> {
     /**
-     * Called once for the given [scope] and [fragment] to set up navigation with the
+     * Called once for the given [fragment] to set up navigation with the
      * [navigator]. Any ongoing operation in implementations of this method should be cancelled
-     * when the `scope` is cancelled.
+     * when the `fragment` is destroyed.
      */
     fun handle(
-        scope: CoroutineScope,
         fragment: Fragment,
         navigator: N
     )
