@@ -54,6 +54,7 @@ data class ComposeFragmentData(
     override val dependencies: ClassName,
 
     override val stateMachine: ClassName,
+    val enableInsetHandling: Boolean,
 
     override val navigation: Navigation?,
 

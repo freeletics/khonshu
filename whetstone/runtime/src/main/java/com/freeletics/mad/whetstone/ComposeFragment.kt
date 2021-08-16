@@ -66,6 +66,7 @@ annotation class ComposeFragment(
     val dependencies: KClass<*>,
 
     val stateMachine: KClass<out StateMachine<*, *>>,
+    val enableInsetHandling: Boolean = false,
 
     val navigator: KClass<out Navigator> = EmptyNavigator::class,
     val navigationHandler: KClass<out NavigationHandler<*>> = EmptyNavigationHandler::class,

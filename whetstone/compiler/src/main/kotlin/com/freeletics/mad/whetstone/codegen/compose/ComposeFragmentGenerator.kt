@@ -6,15 +6,19 @@ import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.util.Generator
 import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.composeView
+import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.findNavController
 import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
+import com.freeletics.mad.whetstone.codegen.util.layoutParams
+import com.freeletics.mad.whetstone.codegen.util.localWindowInsets
 import com.freeletics.mad.whetstone.codegen.util.navigationHandlerHandle
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.view
 import com.freeletics.mad.whetstone.codegen.util.viewGroup
 import com.freeletics.mad.whetstone.codegen.util.viewModelProvider
+import com.freeletics.mad.whetstone.codegen.util.viewWindowInsetsObserver
 import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
@@ -61,12 +65,30 @@ internal class ComposeFragmentGenerator(
             }
             .addStatement("val navController = %M()", findNavController)
             // requireContext: external method
-            .addStatement("val composeView = %T(requireContext())", composeView)
+            .beginControlFlow("return %T(requireContext()).apply {", composeView)
+            .apply {
+                if (data.enableInsetHandling) {
+                    addStatement("layoutParams = %1T(%1T.MATCH_PARENT, %1T.MATCH_PARENT)", layoutParams)
+                    addStatement("val observer = %T(this)", viewWindowInsetsObserver)
+                    // start: external method
+                    addStatement("val windowInsets = observer.start()")
+                }
+            }
             // setContent: external method
-            .beginControlFlow("composeView.setContent {")
+            .beginControlFlow("setContent {")
+            .apply {
+                if (data.enableInsetHandling) {
+                    beginControlFlow("%T(%T provides windowInsets) {", compositionLocalProvider, localWindowInsets)
+                }
+            }
             .addStatement("%L(navController)", composableName)
+            .apply {
+                if (data.enableInsetHandling) {
+                    endControlFlow()
+                }
+            }
             .endControlFlow()
-            .addStatement("return composeView")
+            .endControlFlow()
             .build()
     }
 

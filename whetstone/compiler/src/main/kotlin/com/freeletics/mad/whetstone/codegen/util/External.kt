@@ -77,6 +77,11 @@ internal val collectAsState = MemberName("androidx.compose.runtime", "collectAsS
 internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 internal val composeView = ClassName("androidx.compose.ui.platform", "ComposeView")
+internal val compositionLocalProvider = ClassName("androidx.compose.runtime", "CompositionLocalProvider")
+
+// Accompanist
+internal val localWindowInsets = ClassName("com.google.accompanist.insets", "LocalWindowInsets")
+internal val viewWindowInsetsObserver = ClassName("com.google.accompanist.insets", "ViewWindowInsetObserver")
 
 // Android
 internal val layoutInflater = ClassName("android.view", "LayoutInflater")
@@ -84,3 +89,4 @@ internal val viewGroup = ClassName("android.view", "ViewGroup")
 internal val view = ClassName("android.view", "View")
 internal val bundle = ClassName("android.os", "Bundle")
 internal val context = ClassName("android.content", "Context")
+internal val layoutParams = viewGroup.nestedClass("LayoutParams")

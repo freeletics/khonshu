@@ -76,7 +76,7 @@ class WhetstoneCodeGenerator : CodeGenerator {
             dependencies = renderer.requireClassArgument("dependencies", 2, module),
             factory = renderer.requireClassArgument("rendererFactory", 3, module),
             stateMachine = renderer.requireClassArgument("stateMachine", 4, module),
-            navigation = renderer.toNavigation(module),
+            navigation = renderer.toNavigation(5, 6, module),
             coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 7) ?: false,
             rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 8) ?: false,
         )
@@ -104,8 +104,9 @@ class WhetstoneCodeGenerator : CodeGenerator {
             parentScope = composeFragment.requireClassArgument("parentScope", 1, module),
             dependencies = composeFragment.requireClassArgument("dependencies", 2, module),
             stateMachine = composeFragment.requireClassArgument("stateMachine", 3, module),
-            navigation = composeFragment.toNavigation(module),
-            coroutinesEnabled = composeFragment.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
+            enableInsetHandling = composeFragment.optionalBooleanArgument("enableInsetHandling", 4) ?: false,
+            navigation = composeFragment.toNavigation(5, 6, module),
+            coroutinesEnabled = composeFragment.optionalBooleanArgument("coroutinesEnabled", 7) ?: false,
             rxJavaEnabled = composeFragment.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
         )
         //TODO check that navigationHandler type fits to fragment
@@ -132,7 +133,7 @@ class WhetstoneCodeGenerator : CodeGenerator {
             parentScope = compose.requireClassArgument("parentScope", 1, module),
             dependencies = compose.requireClassArgument("dependencies", 2, module),
             stateMachine = compose.requireClassArgument("stateMachine", 3, module),
-            navigation = compose.toNavigation(module),
+            navigation = compose.toNavigation(4, 5, module),
             coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
             rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
         )
@@ -148,10 +149,12 @@ class WhetstoneCodeGenerator : CodeGenerator {
     }
 
     private fun KtAnnotationEntry.toNavigation(
+        navigatorIndex: Int,
+        navigationHandlerIndex: Int,
         module: ModuleDescriptor
     ): CommonData.Navigation? {
-        val navigator = optionalClassArgument("navigator", 4, module)
-        val navigationHandler = optionalClassArgument("navigationHandler", 5, module)
+        val navigator = optionalClassArgument("navigator", navigatorIndex, module)
+        val navigationHandler = optionalClassArgument("navigationHandler", navigationHandlerIndex, module)
 
         if (navigator != null && navigationHandler != null &&
             navigator != emptyNavigator && navigationHandler != emptyNavigationHandler
