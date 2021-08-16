@@ -42,7 +42,7 @@ import kotlin.reflect.KClass
  * [com.squareup.anvil.annotations.MergeComponent.scope], so it can be used to contribute modules
  * and bindings to the generated component.
  *
- * E.g. for `@RetainedComponent(scope = CoachScreen::class, ...)` the scope of the generated
+ * E.g. for `@ComposeScreen(scope = CoachScreen::class, ...)` the scope of the generated
  * component will be `@ScopeTo(CoachScreen::class)`, modules can be contributed with
  * `@ContributesTo(CoachScreen::class)` and bindings with
  * `@ContributesBinding(CoachScreen::class, ...)`.

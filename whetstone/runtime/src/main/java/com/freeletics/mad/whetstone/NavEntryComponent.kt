@@ -18,7 +18,7 @@ import kotlin.reflect.KClass
  * [com.squareup.anvil.annotations.MergeComponent.scope], so it can be used to contribute modules
  * and bindings to the generated component.
  *
- * E.g. for `@RetainedComponent(scope = CoachFlow::class, ...)` the scope of the generated
+ * E.g. for `@NavEntryComponent(scope = CoachFlow::class, ...)` the scope of the generated
  * component will be `ScopeTo(CoachFlow::class)`, modules can be contributed with
  * `@ContributesTo(CoachFlow::class)` and bindings with
  * `@ContributesBinding(CoachFlow::class, ...)`.
