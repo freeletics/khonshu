@@ -34,6 +34,7 @@ dependencies {
     api "com.squareup.anvil:annotations:2.3.3"
 
     // dependencies to be added by consumers depending on what they use
+    compileOnly "androidx.compose.runtime:runtime:1.0.1"
     compileOnly "androidx.compose.ui:ui:1.0.1"
     compileOnly "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
     compileOnly "androidx.fragment:fragment:1.3.6"

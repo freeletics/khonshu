@@ -1,16 +1,31 @@
 package com.freeletics.mad.whetstone.codegen
 
+import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeScreenData
+import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 
 class FileGeneratorTestCompose {
 
+    private val full = ComposeScreenData(
+        baseName = "Test",
+        packageName = "com.test",
+        scope = ClassName("com.test", "TestScreen"),
+        parentScope = ClassName("com.test.parent", "TestParentScope"),
+        dependencies = ClassName("com.test", "TestDependencies"),
+        stateMachine = ClassName("com.test", "TestStateMachine"),
+        navigation = CommonData.Navigation(
+            navigator = ClassName("com.test", "TestNavigator"),
+            navigationHandler = ClassName("com.test.navigation", "TestNavigationHandler"),
+        ),
+        coroutinesEnabled = true,
+        rxJavaEnabled = true,
+    )
+
     @Test
     fun `generates code for ComposeScreenData no fragment`() {
-        val without = ComposeScreenData(full)
-
-        FileGenerator().generate(without).toString() shouldBe """
+        FileGenerator().generate(full).toString() shouldBe """
             package com.test
 
             import android.os.Bundle
@@ -114,9 +129,9 @@ class FileGeneratorTestCompose {
 
     @Test
     fun `generates code for ComposeScreenData no fragment compose, no navigation`() {
-        val composeNoNavigation = ComposeScreenData(full.copy(navigation = null))
+        val noNavigation = full.copy(navigation = null)
 
-        FileGenerator().generate(composeNoNavigation).toString() shouldBe """
+        FileGenerator().generate(noNavigation).toString() shouldBe """
             package com.test
 
             import android.os.Bundle
@@ -206,7 +221,7 @@ class FileGeneratorTestCompose {
 
     @Test
     fun `generates code for ComposeScreenData without coroutines`() {
-        val withoutCoroutines = ComposeScreenData(full.copy(coroutinesEnabled = false))
+        val withoutCoroutines = full.copy(coroutinesEnabled = false)
 
         FileGenerator().generate(withoutCoroutines).toString() shouldBe """
             package com.test
@@ -305,7 +320,7 @@ class FileGeneratorTestCompose {
 
     @Test
     fun `generates code for ComposeScreenData without rxjava`() {
-        val withoutRxJava = ComposeScreenData(full.copy(rxJavaEnabled = false))
+        val withoutRxJava = full.copy(rxJavaEnabled = false)
 
         FileGenerator().generate(withoutRxJava).toString() shouldBe """
             package com.test

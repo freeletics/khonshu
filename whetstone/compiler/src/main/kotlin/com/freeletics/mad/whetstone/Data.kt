@@ -27,7 +27,7 @@ sealed interface CommonData : BaseData {
     )
 }
 
-data class SimpleData(
+data class ComposeScreenData(
     override val baseName: String,
     override val packageName: String,
 
@@ -42,20 +42,42 @@ data class SimpleData(
 
     override val coroutinesEnabled: Boolean,
     override val rxJavaEnabled: Boolean,
-) : CommonData
-
-data class ComposeScreenData(
-    private val common: SimpleData,
-) :  CommonData by common
+) :  CommonData
 
 data class ComposeFragmentData(
-    private val common: SimpleData,
-) :  CommonData by common
+    override val baseName: String,
+    override val packageName: String,
+
+    override val scope: ClassName,
+
+    override val parentScope: ClassName,
+    override val dependencies: ClassName,
+
+    override val stateMachine: ClassName,
+
+    override val navigation: Navigation?,
+
+    override val coroutinesEnabled: Boolean,
+    override val rxJavaEnabled: Boolean,
+) :  CommonData
 
 data class RendererFragmentData(
-    private val common: SimpleData,
+    override val baseName: String,
+    override val packageName: String,
+
+    override val scope: ClassName,
+
+    override val parentScope: ClassName,
+    override val dependencies: ClassName,
+
     val factory: ClassName,
-) : CommonData by common
+    override val stateMachine: ClassName,
+
+    override val navigation: Navigation?,
+
+    override val coroutinesEnabled: Boolean,
+    override val rxJavaEnabled: Boolean,
+) : CommonData
 
 data class NavEntryData(
     override val baseName: String,

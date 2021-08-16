@@ -6,8 +6,6 @@ import com.squareup.kotlinpoet.MemberName.Companion.member
 import org.jetbrains.kotlin.name.FqName
 
 // Whetstone Public API
-internal val retainedComponent = ClassName("com.freeletics.mad.whetstone", "RetainedComponent")
-internal val retainedComponentFqName = FqName(retainedComponent.canonicalName)
 internal val rendererFragment = ClassName("com.freeletics.mad.whetstone", "RendererFragment")
 internal val rendererFragmentFqName = FqName(rendererFragment.canonicalName)
 internal val composeFragment = ClassName("com.freeletics.mad.whetstone", "ComposeFragment")

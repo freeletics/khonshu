@@ -1,16 +1,31 @@
 package com.freeletics.mad.whetstone.codegen
 
+import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeFragmentData
+import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 
 class FileGeneratorTestComposeFragment {
 
+    private val full = ComposeFragmentData(
+        baseName = "Test",
+        packageName = "com.test",
+        scope = ClassName("com.test", "TestScreen"),
+        parentScope = ClassName("com.test.parent", "TestParentScope"),
+        dependencies = ClassName("com.test", "TestDependencies"),
+        stateMachine = ClassName("com.test", "TestStateMachine"),
+        navigation = CommonData.Navigation(
+            navigator = ClassName("com.test", "TestNavigator"),
+            navigationHandler = ClassName("com.test.navigation", "TestNavigationHandler"),
+        ),
+        coroutinesEnabled = true,
+        rxJavaEnabled = true,
+    )
+
     @Test
     fun `generates code for ComposeFragmentData with fragment`() {
-        val withComposeFragment = ComposeFragmentData(full)
-
-        FileGenerator().generate(withComposeFragment).toString() shouldBe """
+        FileGenerator().generate(full).toString() shouldBe """
             package com.test
 
             import android.os.Bundle
@@ -150,9 +165,9 @@ class FileGeneratorTestComposeFragment {
 
     @Test
     fun `generates code for ComposeFragmentData with fragment, no navigation`() {
-        val withComposeFragmentNoFragment = ComposeFragmentData(full.copy(navigation = null))
+        val noNavigation = full.copy(navigation = null)
 
-        FileGenerator().generate(withComposeFragmentNoFragment).toString() shouldBe """
+        FileGenerator().generate(noNavigation).toString() shouldBe """
             package com.test
 
             import android.os.Bundle

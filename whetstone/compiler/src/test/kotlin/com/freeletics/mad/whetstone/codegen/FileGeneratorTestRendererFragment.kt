@@ -1,5 +1,6 @@
 package com.freeletics.mad.whetstone.codegen
 
+import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.RendererFragmentData
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
@@ -7,14 +8,25 @@ import org.junit.Test
 
 class FileGeneratorTestRendererFragment {
 
-    @Test
-    fun `generates code for RendererData`() {
-        val withRenderer = RendererFragmentData(
-            common = full,
-            factory = ClassName("com.test", "RendererFactory")
-        )
+    private val full = RendererFragmentData(
+        baseName = "Test",
+        packageName = "com.test",
+        scope = ClassName("com.test", "TestScreen"),
+        parentScope = ClassName("com.test.parent", "TestParentScope"),
+        dependencies = ClassName("com.test", "TestDependencies"),
+        factory = ClassName("com.test", "RendererFactory"),
+        stateMachine = ClassName("com.test", "TestStateMachine"),
+        navigation = CommonData.Navigation(
+            navigator = ClassName("com.test", "TestNavigator"),
+            navigationHandler = ClassName("com.test.navigation", "TestNavigationHandler"),
+        ),
+        coroutinesEnabled = true,
+        rxJavaEnabled = true,
+    )
 
-        FileGenerator().generate(withRenderer).toString() shouldBe """
+    @Test
+    fun `generates code for RendererFragmentData`() {
+        FileGenerator().generate(full).toString() shouldBe """
             package com.test
 
             import android.os.Bundle
@@ -129,13 +141,10 @@ class FileGeneratorTestRendererFragment {
     }
 
     @Test
-    fun `generates code for RendererData, no navigation`() {
-        val withRendererNoNavigation = RendererFragmentData(
-            common = full.copy(navigation = null),
-            factory = ClassName("com.test", "RendererFactory")
-        )
+    fun `generates code for RendererFragmentData, no navigation`() {
+        val noNavigation = full.copy(navigation = null)
 
-        FileGenerator().generate(withRendererNoNavigation).toString() shouldBe """
+        FileGenerator().generate(noNavigation).toString() shouldBe """
             package com.test
 
             import android.os.Bundle
