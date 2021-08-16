@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha03 *(2021-08-16)*
+----------------------------
+
+- Whetstone: merge `RetainedComponent annotation into the others
+- Whetstone: support inset handling in generated `@ComposeFragment` classes
+- Whetstone: generatec composables don't need `OnBackPressedDispatcher` in their ctor anymore
+- Navigator: remove `CoroutineScope` parameter from `FragmentNavigationHandler`
+
 Version 0.3.0-alpha02 *(2021-08-08)*
 ----------------------------
 
