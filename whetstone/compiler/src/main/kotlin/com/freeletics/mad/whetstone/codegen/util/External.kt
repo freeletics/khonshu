@@ -1,4 +1,4 @@
-package com.freeletics.mad.whetstone.codegen
+package com.freeletics.mad.whetstone.codegen.util
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.MemberName

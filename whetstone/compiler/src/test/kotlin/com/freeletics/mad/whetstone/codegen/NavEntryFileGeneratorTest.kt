@@ -1,7 +1,6 @@
 package com.freeletics.mad.whetstone.codegen
 
 import com.freeletics.mad.whetstone.NavEntryData
-import com.freeletics.mad.whetstone.codegen.naventry.NavEntryFileGenerator
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
@@ -19,9 +18,7 @@ class NavEntryFileGeneratorTest {
 
     @Test
     fun `generates code for full NavEntryData`() {
-        val generator = NavEntryFileGenerator(full)
-
-        generator.generate().toString() shouldBe """
+        FileGenerator().generate(full).toString() shouldBe """
             package com.test
             
             import android.content.Context
@@ -124,9 +121,8 @@ class NavEntryFileGeneratorTest {
     @Test
     fun `generates code for NavEntryData without coroutines`() {
         val withoutCoroutines = full.copy(coroutinesEnabled = false)
-        val generator = NavEntryFileGenerator(withoutCoroutines)
 
-        generator.generate().toString() shouldBe """
+        FileGenerator().generate(withoutCoroutines).toString() shouldBe """
             package com.test
             
             import android.content.Context
@@ -222,9 +218,8 @@ class NavEntryFileGeneratorTest {
     @Test
     fun `generates code for NavEntryData without rxjava`() {
         val withoutRxJava = full.copy(rxJavaEnabled = false)
-        val generator = NavEntryFileGenerator(withoutRxJava)
 
-        generator.generate().toString() shouldBe """
+        FileGenerator().generate(withoutRxJava).toString() shouldBe """
             package com.test
             
             import android.content.Context

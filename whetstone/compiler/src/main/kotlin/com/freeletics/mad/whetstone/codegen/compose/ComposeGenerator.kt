@@ -1,18 +1,31 @@
-package com.freeletics.mad.whetstone.codegen
+package com.freeletics.mad.whetstone.codegen.compose
 
-import com.freeletics.mad.whetstone.Data
-import com.freeletics.mad.whetstone.Extra
+import com.freeletics.mad.whetstone.CommonData
+import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
+import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
+import com.freeletics.mad.whetstone.codegen.util.Generator
+import com.freeletics.mad.whetstone.codegen.util.propertyName
+import com.freeletics.mad.whetstone.codegen.util.bundle
+import com.freeletics.mad.whetstone.codegen.util.collectAsState
+import com.freeletics.mad.whetstone.codegen.util.composable
+import com.freeletics.mad.whetstone.codegen.util.launch
+import com.freeletics.mad.whetstone.codegen.util.launchedEffect
+import com.freeletics.mad.whetstone.codegen.util.locaOnBackPressedDispatcherOwner
+import com.freeletics.mad.whetstone.codegen.util.navController
+import com.freeletics.mad.whetstone.codegen.util.navigationHandlerHandle
+import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
+import com.freeletics.mad.whetstone.codegen.util.rememberCoroutineScope
+import com.freeletics.mad.whetstone.codegen.util.rememberViewModelProvider
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 
-internal val Generator.composableName get() = "${data.baseName}Screen"
+internal val Generator<out CommonData>.composableName get() = "${data.baseName}Screen"
 
 internal class ComposeGenerator(
-    override val data: Data,
-) : Generator() {
+    override val data: CommonData,
+) : Generator<CommonData>() {
 
-    internal fun generate(): FunSpec {
-        val withFragment = (data.extra as Extra.Compose).withFragment
+    internal fun generate(disableNavigation: Boolean): FunSpec {
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
             .addAnnotation(optInAnnotation())
@@ -26,7 +39,7 @@ internal class ComposeGenerator(
             .addStatement("val viewModel = viewModelProvider[%T::class.java]", viewModelClassName)
             .addStatement("val component = viewModel.%L", viewModelComponentName)
             .addCode("\n")
-            .addCode(composableNavigationSetup(withFragment))
+            .addCode(composableNavigationSetup(disableNavigation))
             .addStatement("val stateMachine = component.%L", data.stateMachine.propertyName)
             .addStatement("val state = stateMachine.state.%M()", collectAsState)
             .addStatement("val scope = %M()", rememberCoroutineScope)
@@ -37,16 +50,16 @@ internal class ComposeGenerator(
             .build()
     }
 
-    private fun composableNavigationSetup(withFragment: Boolean): CodeBlock {
-        if (data.navigation == null || withFragment) {
+    private fun composableNavigationSetup(disableNavigation: Boolean): CodeBlock {
+        if (data.navigation == null || disableNavigation) {
             return CodeBlock.of("")
         }
 
         return CodeBlock.builder()
             .addStatement("val onBackPressedDispatcher = %T.current!!.onBackPressedDispatcher", locaOnBackPressedDispatcherOwner)
             .beginControlFlow("%M(navController, onBackPressedDispatcher, component) {", launchedEffect)
-            .addStatement("val handler = component.%L", data.navigation.navigationHandler.propertyName)
-            .addStatement("val navigator = component.%L", data.navigation.navigator.propertyName)
+            .addStatement("val handler = component.%L", data.navigation!!.navigationHandler.propertyName)
+            .addStatement("val navigator = component.%L", data.navigation!!.navigator.propertyName)
             .addStatement("handler.%N(this, navController, onBackPressedDispatcher, navigator)", navigationHandlerHandle)
             .endControlFlow()
             .add("\n")

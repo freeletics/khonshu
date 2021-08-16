@@ -1,6 +1,20 @@
-package com.freeletics.mad.whetstone.codegen
+package com.freeletics.mad.whetstone.codegen.compose
 
-import com.freeletics.mad.whetstone.Data
+import com.freeletics.mad.whetstone.ComposeFragmentData
+import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
+import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
+import com.freeletics.mad.whetstone.codegen.util.Generator
+import com.freeletics.mad.whetstone.codegen.util.bundle
+import com.freeletics.mad.whetstone.codegen.util.composeView
+import com.freeletics.mad.whetstone.codegen.util.findNavController
+import com.freeletics.mad.whetstone.codegen.util.fragment
+import com.freeletics.mad.whetstone.codegen.util.layoutInflater
+import com.freeletics.mad.whetstone.codegen.util.navigationHandlerHandle
+import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
+import com.freeletics.mad.whetstone.codegen.util.propertyName
+import com.freeletics.mad.whetstone.codegen.util.view
+import com.freeletics.mad.whetstone.codegen.util.viewGroup
+import com.freeletics.mad.whetstone.codegen.util.viewModelProvider
 import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
@@ -9,8 +23,8 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
 internal class ComposeFragmentGenerator(
-    override val data: Data,
-) : Generator() {
+    override val data: ComposeFragmentData,
+) : Generator<ComposeFragmentData>() {
 
     private val composeFragmentClassName = ClassName("${data.baseName}Fragment")
 

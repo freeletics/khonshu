@@ -1,8 +1,6 @@
 package com.freeletics.mad.whetstone.codegen
 
-import com.freeletics.mad.whetstone.Extra
-import com.freeletics.mad.whetstone.Navigation
-import com.freeletics.mad.whetstone.Data
+import com.freeletics.mad.whetstone.RendererFragmentData
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
@@ -10,13 +8,13 @@ import org.junit.Test
 class FileGeneratorTestRendererFragment {
 
     @Test
-    fun `generates code for ScreenData with renderer`() {
-        val withRenderer = full.copy(
-            extra = Extra.Renderer(factory = ClassName("com.test", "RendererFactory"))
+    fun `generates code for RendererData`() {
+        val withRenderer = RendererFragmentData(
+            common = full,
+            factory = ClassName("com.test", "RendererFactory")
         )
-        val generator = FileGenerator(withRenderer)
 
-        generator.generate().toString() shouldBe """
+        FileGenerator().generate(withRenderer).toString() shouldBe """
             package com.test
 
             import android.os.Bundle
@@ -131,14 +129,13 @@ class FileGeneratorTestRendererFragment {
     }
 
     @Test
-    fun `generates code for ScreenData with renderer, no navigation`() {
-        val withRendererNoNavigation = full.copy(
-            navigation = null,
-            extra = Extra.Renderer(factory = ClassName("com.test", "RendererFactory"))
+    fun `generates code for RendererData, no navigation`() {
+        val withRendererNoNavigation = RendererFragmentData(
+            common = full.copy(navigation = null),
+            factory = ClassName("com.test", "RendererFactory")
         )
-        val generator = FileGenerator(withRendererNoNavigation)
 
-        generator.generate().toString() shouldBe """
+        FileGenerator().generate(withRendererNoNavigation).toString() shouldBe """
             package com.test
 
             import android.os.Bundle

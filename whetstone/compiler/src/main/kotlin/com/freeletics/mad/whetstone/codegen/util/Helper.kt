@@ -1,4 +1,4 @@
-package com.freeletics.mad.whetstone.codegen
+package com.freeletics.mad.whetstone.codegen.util
 
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent

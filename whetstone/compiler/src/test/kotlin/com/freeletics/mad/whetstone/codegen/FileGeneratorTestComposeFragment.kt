@@ -1,20 +1,16 @@
 package com.freeletics.mad.whetstone.codegen
 
-import com.freeletics.mad.whetstone.Extra
+import com.freeletics.mad.whetstone.ComposeFragmentData
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 
 class FileGeneratorTestComposeFragment {
 
-
     @Test
-    fun `generates code for ScreenData with compose fragment`() {
-        val withComposeFragment = full.copy(
-            extra = Extra.Compose(withFragment = true)
-        )
-        val generator = FileGenerator(withComposeFragment)
+    fun `generates code for ComposeFragmentData with fragment`() {
+        val withComposeFragment = ComposeFragmentData(full)
 
-        generator.generate().toString() shouldBe """
+        FileGenerator().generate(withComposeFragment).toString() shouldBe """
             package com.test
 
             import android.os.Bundle
@@ -153,14 +149,10 @@ class FileGeneratorTestComposeFragment {
     }
 
     @Test
-    fun `generates code for ScreenData with compose fragment, no navigation`() {
-        val withComposeFragmentNoNavigation = full.copy(
-            navigation = null,
-            extra = Extra.Compose(withFragment = true)
-        )
-        val generator = FileGenerator(withComposeFragmentNoNavigation)
+    fun `generates code for ComposeFragmentData with fragment, no navigation`() {
+        val withComposeFragmentNoFragment = ComposeFragmentData(full.copy(navigation = null))
 
-        generator.generate().toString() shouldBe """
+        FileGenerator().generate(withComposeFragmentNoFragment).toString() shouldBe """
             package com.test
 
             import android.os.Bundle

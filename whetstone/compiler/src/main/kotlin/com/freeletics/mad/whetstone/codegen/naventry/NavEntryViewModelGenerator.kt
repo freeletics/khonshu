@@ -1,14 +1,15 @@
 package com.freeletics.mad.whetstone.codegen.naventry
 
 import com.freeletics.mad.whetstone.NavEntryData
-import com.freeletics.mad.whetstone.codegen.bundle
-import com.freeletics.mad.whetstone.codegen.compositeDisposable
-import com.freeletics.mad.whetstone.codegen.coroutineScope
-import com.freeletics.mad.whetstone.codegen.coroutineScopeCancel
-import com.freeletics.mad.whetstone.codegen.internalApiAnnotation
-import com.freeletics.mad.whetstone.codegen.mainScope
-import com.freeletics.mad.whetstone.codegen.savedStateHandle
-import com.freeletics.mad.whetstone.codegen.viewModel
+import com.freeletics.mad.whetstone.codegen.util.Generator
+import com.freeletics.mad.whetstone.codegen.util.bundle
+import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
+import com.freeletics.mad.whetstone.codegen.util.coroutineScope
+import com.freeletics.mad.whetstone.codegen.util.coroutineScopeCancel
+import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
+import com.freeletics.mad.whetstone.codegen.util.mainScope
+import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
+import com.freeletics.mad.whetstone.codegen.util.viewModel
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
@@ -18,13 +19,13 @@ import com.squareup.kotlinpoet.KModifier.PUBLIC
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
-internal val NavEntryGenerator.viewModelClassName get() = ClassName("${data.baseName}ViewModel")
+internal val Generator<NavEntryData>.viewModelClassName get() = ClassName("${data.baseName}ViewModel")
 
 internal const val viewModelComponentName = "component"
 
 internal class NavEntryViewModelGenerator(
     override val data: NavEntryData,
-) : NavEntryGenerator() {
+) : Generator<NavEntryData>() {
 
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(viewModelClassName)

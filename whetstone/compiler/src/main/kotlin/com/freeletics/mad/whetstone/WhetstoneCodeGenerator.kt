@@ -1,15 +1,14 @@
 package com.freeletics.mad.whetstone
 
 import com.freeletics.mad.whetstone.codegen.FileGenerator
-import com.freeletics.mad.whetstone.codegen.composeFqName
-import com.freeletics.mad.whetstone.codegen.composeFragmentFqName
-import com.freeletics.mad.whetstone.codegen.emptyNavigationHandler
-import com.freeletics.mad.whetstone.codegen.emptyNavigator
-import com.freeletics.mad.whetstone.codegen.moduleFqName
-import com.freeletics.mad.whetstone.codegen.navEntryComponentFqName
-import com.freeletics.mad.whetstone.codegen.naventry.NavEntryFileGenerator
-import com.freeletics.mad.whetstone.codegen.rendererFragmentFqName
-import com.freeletics.mad.whetstone.codegen.retainedComponentFqName
+import com.freeletics.mad.whetstone.codegen.util.composeFqName
+import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
+import com.freeletics.mad.whetstone.codegen.util.emptyNavigationHandler
+import com.freeletics.mad.whetstone.codegen.util.emptyNavigator
+import com.freeletics.mad.whetstone.codegen.util.moduleFqName
+import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
+import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
+import com.freeletics.mad.whetstone.codegen.util.retainedComponentFqName
 import com.google.auto.service.AutoService
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.api.AnvilCompilationException
@@ -43,53 +42,79 @@ class WhetstoneCodeGenerator : CodeGenerator {
         module: ModuleDescriptor,
         projectFiles: Collection<KtFile>
     ): Collection<GeneratedFile> {
-        val classes = projectFiles
+        val rendererFragment = projectFiles
             .classesAndInnerClass(module)
-            .mapNotNull { clazz -> generateCode(codeGenDir, module, clazz) }
+            .mapNotNull { clazz -> generateRendererCode(codeGenDir, module, clazz) }
 
-        val functions = projectFiles
+        val composeFragment = projectFiles
             .flatMap { it.declarations.filterIsInstance<KtNamedFunction>() }
-            .mapNotNull { function -> generateCode(codeGenDir, module, function) }
+            .mapNotNull { function -> generateComposeScreenCode(codeGenDir, module, function) }
 
-        val navEntryClasses = projectFiles
-            .classesAndInnerClass(module)
-            .mapNotNull { clazz -> generateNavEntryCode(codeGenDir, module, clazz) }
+        val composeScreen = projectFiles
+            .flatMap { it.declarations.filterIsInstance<KtNamedFunction>() }
+            .mapNotNull { function -> generateComposeFragmentCode(codeGenDir, module, function) }
 
-        val navEntryFunctions = projectFiles
+        val navEntry = projectFiles
             .classesAndInnerClass(module)
             .filter { it.findAnnotation(moduleFqName, module) != null}
             .flatMap { it.declarations }
             .mapNotNull { clazz -> generateNavEntryCode(codeGenDir, module, clazz) }
 
-        return classes.toList() + functions + navEntryClasses + navEntryFunctions
+        return rendererFragment.toList() + composeFragment + composeScreen + navEntry
     }
 
-    private fun generateCode(
+    private fun generateRendererCode(
         codeGenDir: File,
         module: ModuleDescriptor,
         declaration: KtDeclaration
     ): GeneratedFile? {
+        val renderer = declaration.findAnnotation(rendererFragmentFqName, module) ?: return null
+        val factory = renderer.requireClassArgument("rendererFactory", 0, module)
+
         val component = declaration.findAnnotation(retainedComponentFqName, module) ?: return null
-        var whetstone = component.toScreenData(declaration, module)
-        //TODO check that navigationHandler type fits to extra (fragment vs no fragment)
+        val data = component.toScreenData(declaration, module)
+        //TODO check that navigationHandler type fits to fragment
 
-        val compose = declaration.findAnnotation(composeFqName, module)
-        if (compose != null) {
-            whetstone = whetstone.copy(extra = Extra.Compose(withFragment = false))
-        }
+        val file = FileGenerator().generate(RendererFragmentData(data, factory))
+        return createGeneratedFile(
+            codeGenDir = codeGenDir,
+            packageName = file.packageName,
+            fileName = file.name,
+            content = file.toString()
+        )
+    }
 
-        val composeFragment = declaration.findAnnotation(composeFragmentFqName, module)
-        if (composeFragment != null) {
-            whetstone = whetstone.copy(extra = Extra.Compose(withFragment = true))
-        }
+    private fun generateComposeFragmentCode(
+        codeGenDir: File,
+        module: ModuleDescriptor,
+        declaration: KtDeclaration
+    ): GeneratedFile? {
+        val composeFragment = declaration.findAnnotation(composeFragmentFqName, module) ?: return null
 
-        val renderer = declaration.findAnnotation(rendererFragmentFqName, module)
-        if (renderer != null) {
-            val factory = renderer.requireClassArgument("rendererFactory", 0, module)
-            whetstone = whetstone.copy(extra = Extra.Renderer(factory))
-        }
+        val component = declaration.findAnnotation(retainedComponentFqName, module) ?: return null
+        val data = component.toScreenData(declaration, module)
+        //TODO check that navigationHandler type fits to fragment
 
-        val file = FileGenerator(whetstone).generate()
+        val file = FileGenerator().generate(ComposeFragmentData(data))
+        return createGeneratedFile(
+            codeGenDir = codeGenDir,
+            packageName = file.packageName,
+            fileName = file.name,
+            content = file.toString()
+        )
+    }
+
+    private fun generateComposeScreenCode(
+        codeGenDir: File,
+        module: ModuleDescriptor,
+        declaration: KtDeclaration
+    ): GeneratedFile? {
+        declaration.findAnnotation(composeFqName, module) ?: return null
+        val component = declaration.findAnnotation(retainedComponentFqName, module) ?: return null
+        val data = component.toScreenData(declaration, module)
+        //TODO check that navigationHandler type fits to compose
+
+        val file = FileGenerator().generate(ComposeScreenData(data))
         return createGeneratedFile(
             codeGenDir = codeGenDir,
             packageName = file.packageName,
@@ -101,8 +126,8 @@ class WhetstoneCodeGenerator : CodeGenerator {
     private fun KtAnnotationEntry.toScreenData(
         declaration: KtDeclaration,
         module: ModuleDescriptor
-    ): Data {
-        return Data(
+    ): SimpleData {
+        return SimpleData(
             baseName = declaration.name!!,
             packageName = declaration.containingKtFile.packageFqName.pathSegments().joinToString(separator = "."),
             scope = requireClassArgument("scope", 0, module),
@@ -112,19 +137,19 @@ class WhetstoneCodeGenerator : CodeGenerator {
             navigation = toNavigation(module),
             coroutinesEnabled = optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
             rxJavaEnabled = optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
-            extra = null
         )
     }
 
     private fun KtAnnotationEntry.toNavigation(
         module: ModuleDescriptor
-    ): Navigation? {
+    ): CommonData.Navigation? {
         val navigator = optionalClassArgument("navigator", 4, module)
         val navigationHandler = optionalClassArgument("navigationHandler", 5, module)
 
         if (navigator != null && navigationHandler != null &&
-            navigator != emptyNavigator && navigationHandler != emptyNavigationHandler) {
-            return Navigation(navigator, navigationHandler)
+            navigator != emptyNavigator && navigationHandler != emptyNavigationHandler
+        ) {
+            return CommonData.Navigation(navigator, navigationHandler)
         }
         if (navigator == null && navigationHandler == null) {
             return null
@@ -143,7 +168,7 @@ class WhetstoneCodeGenerator : CodeGenerator {
     ): GeneratedFile? {
         val component = declaration.findAnnotation(navEntryComponentFqName, module) ?: return null
         val data = component.toNavEntryData(declaration, module)
-        val file = NavEntryFileGenerator(data).generate()
+        val file = FileGenerator().generate(data)
         return createGeneratedFile(
             codeGenDir = codeGenDir,
             packageName = file.packageName,

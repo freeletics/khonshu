@@ -1,14 +1,15 @@
 package com.freeletics.mad.whetstone.codegen.naventry
 
 import com.freeletics.mad.whetstone.NavEntryData
-import com.freeletics.mad.whetstone.codegen.bundle
-import com.freeletics.mad.whetstone.codegen.context
-import com.freeletics.mad.whetstone.codegen.inject
-import com.freeletics.mad.whetstone.codegen.internalApiAnnotation
-import com.freeletics.mad.whetstone.codegen.navBackStackEntry
-import com.freeletics.mad.whetstone.codegen.navEntryComponentGetter
-import com.freeletics.mad.whetstone.codegen.navEntryIdScope
-import com.freeletics.mad.whetstone.codegen.viewModelProvider
+import com.freeletics.mad.whetstone.codegen.util.Generator
+import com.freeletics.mad.whetstone.codegen.util.bundle
+import com.freeletics.mad.whetstone.codegen.util.context
+import com.freeletics.mad.whetstone.codegen.util.inject
+import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
+import com.freeletics.mad.whetstone.codegen.util.navBackStackEntry
+import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
+import com.freeletics.mad.whetstone.codegen.util.navEntryIdScope
+import com.freeletics.mad.whetstone.codegen.util.viewModelProvider
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -20,11 +21,11 @@ import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
-internal val NavEntryGenerator.componentGetterClassName get() = ClassName("${data.baseName}ComponentGetter")
+internal val Generator<NavEntryData>.componentGetterClassName get() = ClassName("${data.baseName}ComponentGetter")
 
 internal class NavEntryComponentGetterGenerator(
     override val data: NavEntryData,
-) : NavEntryGenerator() {
+) : Generator<NavEntryData>() {
 
 
     internal fun generate(): TypeSpec {

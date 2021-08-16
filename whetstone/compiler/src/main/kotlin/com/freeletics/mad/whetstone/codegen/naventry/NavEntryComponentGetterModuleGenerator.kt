@@ -1,38 +1,22 @@
 package com.freeletics.mad.whetstone.codegen.naventry
 
 import com.freeletics.mad.whetstone.NavEntryData
-import com.freeletics.mad.whetstone.codegen.binds
-import com.freeletics.mad.whetstone.codegen.bindsInstance
-import com.freeletics.mad.whetstone.codegen.bundle
-import com.freeletics.mad.whetstone.codegen.context
-import com.freeletics.mad.whetstone.codegen.contributesToAnnotation
-import com.freeletics.mad.whetstone.codegen.inject
-import com.freeletics.mad.whetstone.codegen.internalApiAnnotation
-import com.freeletics.mad.whetstone.codegen.intoMap
-import com.freeletics.mad.whetstone.codegen.module
-import com.freeletics.mad.whetstone.codegen.navBackStackEntry
-import com.freeletics.mad.whetstone.codegen.navEntryComponentGetter
-import com.freeletics.mad.whetstone.codegen.navEntryComponentGetterKey
-import com.freeletics.mad.whetstone.codegen.navEntryIdScope
-import com.freeletics.mad.whetstone.codegen.optInAnnotation
-import com.freeletics.mad.whetstone.codegen.viewModelProvider
-import com.squareup.anvil.annotations.ContributesMultibinding
-import com.squareup.kotlinpoet.ANY
+import com.freeletics.mad.whetstone.codegen.util.Generator
+import com.freeletics.mad.whetstone.codegen.util.binds
+import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
+import com.freeletics.mad.whetstone.codegen.util.intoMap
+import com.freeletics.mad.whetstone.codegen.util.module
+import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
+import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
 import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
-import com.squareup.kotlinpoet.KModifier.FINAL
-import com.squareup.kotlinpoet.KModifier.OVERRIDE
-import com.squareup.kotlinpoet.KModifier.PRIVATE
-import com.squareup.kotlinpoet.LambdaTypeName
-import com.squareup.kotlinpoet.ParameterSpec
-import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
 internal class NavEntryComponentGetterModuleGenerator(
     override val data: NavEntryData,
-) : NavEntryGenerator() {
+) : Generator<NavEntryData>() {
 
     private val moduleClassName = ClassName("Whetstone${data.baseName}Module")
 

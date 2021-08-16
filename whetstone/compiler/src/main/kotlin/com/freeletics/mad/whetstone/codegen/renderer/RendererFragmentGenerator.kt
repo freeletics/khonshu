@@ -1,7 +1,20 @@
-package com.freeletics.mad.whetstone.codegen
+package com.freeletics.mad.whetstone.codegen.renderer
 
-import com.freeletics.mad.whetstone.Extra
-import com.freeletics.mad.whetstone.Data
+import com.freeletics.mad.whetstone.RendererFragmentData
+import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
+import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
+import com.freeletics.mad.whetstone.codegen.util.Generator
+import com.freeletics.mad.whetstone.codegen.util.propertyName
+import com.freeletics.mad.whetstone.codegen.util.bundle
+import com.freeletics.mad.whetstone.codegen.util.fragment
+import com.freeletics.mad.whetstone.codegen.util.lateinitPropertySpec
+import com.freeletics.mad.whetstone.codegen.util.layoutInflater
+import com.freeletics.mad.whetstone.codegen.util.navigationHandlerHandle
+import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
+import com.freeletics.mad.whetstone.codegen.util.rendererConnect
+import com.freeletics.mad.whetstone.codegen.util.view
+import com.freeletics.mad.whetstone.codegen.util.viewGroup
+import com.freeletics.mad.whetstone.codegen.util.viewModelProvider
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
@@ -9,18 +22,16 @@ import com.squareup.kotlinpoet.KModifier.PRIVATE
 import com.squareup.kotlinpoet.TypeSpec
 
 internal class RendererFragmentGenerator(
-    override val data: Data,
-) : Generator() {
+    override val data: RendererFragmentData,
+) : Generator<RendererFragmentData>() {
 
     private val rendererFragmentClassName = ClassName("${data.baseName}Fragment")
 
     internal fun generate(): TypeSpec {
-        check(data.extra is Extra.Renderer)
-
         return TypeSpec.classBuilder(rendererFragmentClassName)
             .addAnnotation(optInAnnotation())
             .superclass(fragment)
-            .addProperty(lateinitPropertySpec(data.extra.factory))
+            .addProperty(lateinitPropertySpec(data.factory))
             .addProperty(lateinitPropertySpec(data.stateMachine))
             .addFunction(rendererOnCreateViewFun())
             .addFunction(rendererInjectFun())
@@ -28,8 +39,6 @@ internal class RendererFragmentGenerator(
     }
 
     private fun rendererOnCreateViewFun(): FunSpec {
-        check(data.extra is Extra.Renderer)
-
         return FunSpec.builder("onCreateView")
             .addModifiers(OVERRIDE)
             .addParameter("inflater", layoutInflater)
@@ -41,7 +50,7 @@ internal class RendererFragmentGenerator(
             .endControlFlow()
             .addCode("\n")
             // inflate: external method
-            .addStatement("val renderer = %L.inflate(inflater, container)", data.extra.factory.propertyName)
+            .addStatement("val renderer = %L.inflate(inflater, container)", data.factory.propertyName)
             // connect: external method
             .addStatement("%M(renderer, %L)", rendererConnect, data.stateMachine.propertyName)
             .addStatement("return renderer.rootView")
@@ -51,8 +60,6 @@ internal class RendererFragmentGenerator(
     private val rendererFragmentInjectName = "inject"
 
     private fun rendererInjectFun(): FunSpec {
-        check(data.extra is Extra.Renderer)
-
         return FunSpec.builder(rendererFragmentInjectName)
             .addModifiers(PRIVATE)
             .beginControlFlow("val viewModelProvider = %M<%T>(this, %T::class) { dependencies, handle -> ", viewModelProvider, data.dependencies, data.parentScope)
@@ -63,7 +70,7 @@ internal class RendererFragmentGenerator(
             .addStatement("val viewModel = viewModelProvider[%T::class.java]", viewModelClassName)
             .addStatement("val component = viewModel.%L", viewModelComponentName)
             .addCode("\n")
-            .addStatement("%1L = component.%1L", data.extra.factory.propertyName)
+            .addStatement("%1L = component.%1L", data.factory.propertyName)
             .addStatement("%1L = component.%1L", data.stateMachine.propertyName)
             .addCode(rendererNavigationCode())
             .build()
