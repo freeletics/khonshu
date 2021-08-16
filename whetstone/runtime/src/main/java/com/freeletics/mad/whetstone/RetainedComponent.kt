@@ -121,7 +121,7 @@ annotation class RetainedComponent(
  * }
  * ```
  */
-@Target(CLASS, FUNCTION)
+@Target(FUNCTION)
 @Retention(RUNTIME)
 annotation class ComposeScreen
 
@@ -137,7 +137,7 @@ annotation class ComposeScreen
  * [androidx.compose.ui.platform.ComposeView] as it's view and will call the generated composable
  * from it's `setContent` method.
  */
-@Target(CLASS, FUNCTION)
+@Target(FUNCTION)
 @Retention(RUNTIME)
 annotation class ComposeFragment
 
@@ -156,7 +156,7 @@ annotation class ComposeFragment
  * If the 2 optional `navigator` and `navigationHandler` were set on [RetainedComponent] the
  * generated `Fragment` will use these to set up navigation after the injection.
  */
-@Target(CLASS, FUNCTION)
+@Target(CLASS)
 @Retention(RUNTIME)
 annotation class RendererFragment(
     val rendererFactory: KClass<out ViewRenderer.Factory<*, *>>,
