@@ -112,6 +112,7 @@ class FileGeneratorTestComposeFragment {
               }
             }
             
+            @OptIn(InternalWhetstoneApi::class)
             public class TestFragment : Fragment() {
               private var navigationSetup: Boolean = false
             
@@ -250,6 +251,7 @@ class FileGeneratorTestComposeFragment {
               }
             }
             
+            @OptIn(InternalWhetstoneApi::class)
             public class TestFragment : Fragment() {
               public override fun onCreateView(
                 inflater: LayoutInflater,
