@@ -9,12 +9,14 @@ import com.freeletics.mad.whetstone.internal.EmptyNavigator
 import kotlin.reflect.KClass
 
 /**
- * By adding this annotation to a [androidx.compose.runtime.Composable] function, a Fragment is
- * generated that will have the same name with `Fragment` as suffix. The Fragment will create a
- * `ComposeView` that will call the annotated composable. It is required that the annotated function
- * has `State` as first parameter and `(Action) -> Unit` as second parameter, where `State` and
- * `Action` match the given `StateMachine`. Fragment with extend [dialogFragmentBaseClass]
- * with [DialogFragment] class used as default.
+ * By adding this annotation to a [androidx.compose.runtime.Composable] function, a
+ * DialogFragment is generated that will have the same name with `Fragment` as suffix. The
+ * DialogFragment will use the given [dialogFragmentBaseClass] as it's super class with
+ * [DialogFragment] class used as default.
+ *
+ * The DialogFragment will create a `ComposeView` that will call the annotated composable.
+ * It is required that the annotated function has `State` as first parameter and `(Action) -> Unit`
+ * as second parameter, where `State` and `Action` match the given `StateMachine`.
  *
  * **StateMachine**
  *
