@@ -25,7 +25,7 @@ implementation 'com.freeletics.mad:state-machine:0.2.0'
 
 `TextResource` is a domain specific model to represent text. Abstracts text
 whether it a localized `String` sent by the backend, a simple Android `string`
-resource (with or without formatting args) or an Android `plurals` reosurce.
+resource (with or without formatting args) or an Android `plurals` resource.
 This way business logic with text can be easily tested without requiring
 `Context` and running on a device.
 

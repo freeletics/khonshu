@@ -51,8 +51,8 @@ import kotlin.reflect.KClass
  * - everything accessible through the provided [dependencies] interface
  * - a [androidx.lifecycle.SavedStateHandle]
  * - a [android.os.Bundle] obtained from [androidx.navigation.NavController.currentBackStackEntry]
- * - if [coroutinesEnabled] is `true`, a [io.reactivex.disposables.CompositeDisposable] that will be cleared automatically
- * - if [rxJavaEnabled] is `true`, a [kotlinx.coroutines.CoroutineScope] that will be cancelled automatically
+ * - if [coroutinesEnabled] is `true`, a [kotlinx.coroutines.CoroutineScope] that will be cancelled automatically
+ * - if [rxJavaEnabled] is `true`, a [io.reactivex.disposables.CompositeDisposable] that will be cleared automatically
  *
  * The mentioned [dependencies] interface will be looked up by calling
  * [android.content.Context.getSystemService] on either the [android.app.Activity] context or the
