@@ -14,12 +14,14 @@ import com.freeletics.mad.whetstone.codegen.naventry.NavEntryFactoryProviderGene
 import com.freeletics.mad.whetstone.codegen.naventry.NavEntrySubcomponentGenerator
 import com.freeletics.mad.whetstone.codegen.naventry.NavEntryViewModelGenerator
 import com.freeletics.mad.whetstone.codegen.renderer.RendererFragmentGenerator
+import com.freeletics.mad.whetstone.codegen.util.simplePropertySpec
 import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.PropertySpec
 
 internal class FileGenerator{
 
     fun generate(data: ComposeScreenData): FileSpec {
-        val retainedComponentGenerator = RetainedComponentGenerator(data, null)
+        val retainedComponentGenerator = RetainedComponentGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
         val composeGenerator = ComposeGenerator(data)
 
@@ -31,7 +33,7 @@ internal class FileGenerator{
     }
 
     fun generate(data: ComposeFragmentData): FileSpec {
-        val retainedComponentGenerator = RetainedComponentGenerator(data, null)
+        val retainedComponentGenerator = RetainedComponentGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
         val composeFragmentGenerator = ComposeFragmentGenerator(data)
         val composeGenerator = ComposeGenerator(data)
@@ -45,7 +47,7 @@ internal class FileGenerator{
     }
 
     fun generate(data: RendererFragmentData): FileSpec {
-        val retainedComponentGenerator = RetainedComponentGenerator(data, data.factory)
+        val retainedComponentGenerator = RetainedComponentGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
         val rendererFragmentGenerator = RendererFragmentGenerator(data)
 

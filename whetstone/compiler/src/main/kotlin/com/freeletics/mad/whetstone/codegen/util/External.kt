@@ -25,6 +25,7 @@ internal val internalWhetstoneApi = ClassName("com.freeletics.mad.whetstone.inte
 internal val viewModelProvider = MemberName("com.freeletics.mad.whetstone.internal", "viewModelProvider")
 internal val rememberViewModelProvider = MemberName("com.freeletics.mad.whetstone.internal", "rememberViewModelProvider")
 internal val navEntryComponentGetterKey = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetterKey")
+internal val composeProviderValueModule = ClassName("com.freeletics.mad.whetstone.internal", "ComposeProviderValueModule")
 
 // Navigator
 internal val navigationHandler = ClassName("com.freeletics.mad.navigator", "NavigationHandler")
@@ -60,24 +61,24 @@ internal val moduleFqName = FqName(module.canonicalName)
 // AndroidX
 internal val fragment = ClassName("androidx.fragment.app", "Fragment")
 
-internal val onBackPressedDispatcher = ClassName("androidx.activity", "OnBackPressedDispatcher")
-internal val locaOnBackPressedDispatcherOwner = ClassName("androidx.activity.compose", "LocalOnBackPressedDispatcherOwner")
+internal val localOnBackPressedDispatcherOwner = ClassName("androidx.activity.compose", "LocalOnBackPressedDispatcherOwner")
 
 internal val viewModel = ClassName("androidx.lifecycle", "ViewModel")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
-internal val lifecycleCoroutineScope = MemberName("androidx.lifecycle", "coroutineScope")
 
 internal val navController = ClassName("androidx.navigation", "NavController")
 internal val navBackStackEntry = ClassName("androidx.navigation", "NavBackStackEntry")
 internal val findNavController = MemberName("androidx.navigation.fragment", "findNavController")
 
+// Compose
 internal val composable = ClassName("androidx.compose.runtime", "Composable")
 internal val launchedEffect = MemberName("androidx.compose.runtime", "LaunchedEffect")
 internal val collectAsState = MemberName("androidx.compose.runtime", "collectAsState")
 internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
-internal val composeView = ClassName("androidx.compose.ui.platform", "ComposeView")
 internal val compositionLocalProvider = ClassName("androidx.compose.runtime", "CompositionLocalProvider")
+internal val providedValue = ClassName("androidx.compose.runtime", "ProvidedValue")
+internal val composeView = ClassName("androidx.compose.ui.platform", "ComposeView")
 
 // Accompanist
 internal val localWindowInsets = ClassName("com.google.accompanist.insets", "LocalWindowInsets")
