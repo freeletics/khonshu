@@ -30,7 +30,7 @@ internal class RendererFragmentGenerator(
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(rendererFragmentClassName)
             .addAnnotation(optInAnnotation())
-            .superclass(fragment)
+            .superclass(data.fragmentBaseClass)
             .addProperty(lateinitPropertySpec(data.factory))
             .addProperty(lateinitPropertySpec(data.stateMachine))
             .addFunction(rendererOnCreateViewFun())
