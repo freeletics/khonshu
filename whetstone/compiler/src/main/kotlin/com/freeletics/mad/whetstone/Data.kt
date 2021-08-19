@@ -73,6 +73,7 @@ data class RendererFragmentData(
 
     val factory: ClassName,
     override val stateMachine: ClassName,
+    val fragmentBaseClass: ClassName,
 
     override val navigation: Navigation?,
 

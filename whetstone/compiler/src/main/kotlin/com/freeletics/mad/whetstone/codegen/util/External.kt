@@ -8,6 +8,8 @@ import org.jetbrains.kotlin.name.FqName
 // Whetstone Public API
 internal val rendererFragment = ClassName("com.freeletics.mad.whetstone", "RendererFragment")
 internal val rendererFragmentFqName = FqName(rendererFragment.canonicalName)
+internal val rendererDialogFragment = ClassName("com.freeletics.mad.whetstone", "RendererDialogFragment")
+internal val rendererDialogFragmentFqName = FqName(rendererDialogFragment.canonicalName)
 internal val composeFragment = ClassName("com.freeletics.mad.whetstone", "ComposeFragment")
 internal val composeFragmentFqName = FqName(composeFragment.canonicalName)
 internal val compose = ClassName("com.freeletics.mad.whetstone", "ComposeScreen")
@@ -60,6 +62,7 @@ internal val moduleFqName = FqName(module.canonicalName)
 
 // AndroidX
 internal val fragment = ClassName("androidx.fragment.app", "Fragment")
+internal val dialogFragment = ClassName("androidx.fragment.app", "DialogFragment")
 
 internal val localOnBackPressedDispatcherOwner = ClassName("androidx.activity.compose", "LocalOnBackPressedDispatcherOwner")
 

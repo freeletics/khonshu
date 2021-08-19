@@ -3,10 +3,13 @@ package com.freeletics.mad.whetstone
 import com.freeletics.mad.whetstone.codegen.FileGenerator
 import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
+import com.freeletics.mad.whetstone.codegen.util.dialogFragment
 import com.freeletics.mad.whetstone.codegen.util.emptyNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.emptyNavigator
+import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.moduleFqName
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
+import com.freeletics.mad.whetstone.codegen.util.rendererDialogFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
 import com.google.auto.service.AutoService
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
@@ -44,6 +47,9 @@ class WhetstoneCodeGenerator : CodeGenerator {
         val rendererFragment = projectFiles
             .classesAndInnerClass(module)
             .mapNotNull { clazz -> generateRendererCode(codeGenDir, module, clazz) }
+        val rendererDialogFragment = projectFiles
+            .classesAndInnerClass(module)
+            .mapNotNull { clazz -> generateRendererDialogCode(codeGenDir, module, clazz) }
 
         val composeFragment = projectFiles
             .flatMap { it.declarations.filterIsInstance<KtNamedFunction>() }
@@ -59,7 +65,8 @@ class WhetstoneCodeGenerator : CodeGenerator {
             .flatMap { it.declarations }
             .mapNotNull { clazz -> generateNavEntryCode(codeGenDir, module, clazz) }
 
-        return rendererFragment.toList() + composeFragment + composeScreen + navEntry
+        return rendererFragment.toList() + rendererDialogFragment +
+                composeFragment + composeScreen + navEntry
     }
 
     private fun generateRendererCode(
@@ -76,9 +83,40 @@ class WhetstoneCodeGenerator : CodeGenerator {
             dependencies = renderer.requireClassArgument("dependencies", 2, module),
             factory = renderer.requireClassArgument("rendererFactory", 3, module),
             stateMachine = renderer.requireClassArgument("stateMachine", 4, module),
+            fragmentBaseClass = fragment,
             navigation = renderer.toNavigation(5, 6, module),
             coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 7) ?: false,
             rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 8) ?: false,
+        )
+        //TODO check that navigationHandler type fits to fragment
+
+        val file = FileGenerator().generate(data)
+        return createGeneratedFile(
+            codeGenDir = codeGenDir,
+            packageName = file.packageName,
+            fileName = file.name,
+            content = file.toString()
+        )
+    }
+
+    private fun generateRendererDialogCode(
+        codeGenDir: File,
+        module: ModuleDescriptor,
+        declaration: KtDeclaration
+    ): GeneratedFile? {
+        val renderer = declaration.findAnnotation(rendererDialogFragmentFqName, module) ?: return null
+        val data = RendererFragmentData(
+            baseName = declaration.name!!,
+            packageName = declaration.containingKtFile.packageFqName.pathSegments().joinToString(separator = "."),
+            scope = renderer.requireClassArgument("scope", 0, module),
+            parentScope = renderer.requireClassArgument("parentScope", 1, module),
+            dependencies = renderer.requireClassArgument("dependencies", 2, module),
+            factory = renderer.requireClassArgument("rendererFactory", 3, module),
+            stateMachine = renderer.requireClassArgument("stateMachine", 4, module),
+            fragmentBaseClass = renderer.optionalClassArgument("dialogFragmentBaseClass", 5, module) ?: dialogFragment,
+            navigation = renderer.toNavigation(6, 7, module),
+            coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 8) ?: false,
+            rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 9) ?: false,
         )
         //TODO check that navigationHandler type fits to fragment
 

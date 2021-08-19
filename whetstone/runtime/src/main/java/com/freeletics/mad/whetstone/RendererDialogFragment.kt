@@ -1,5 +1,6 @@
 package com.freeletics.mad.whetstone
 
+import androidx.fragment.app.DialogFragment
 import com.freeletics.mad.whetstone.internal.EmptyNavigationHandler
 import com.freeletics.mad.whetstone.internal.EmptyNavigator
 import com.freeletics.mad.navigator.NavigationHandler
@@ -10,9 +11,10 @@ import kotlin.annotation.AnnotationTarget.CLASS
 import kotlin.reflect.KClass
 
 /**
- * By adding this annotation to a [com.gabrielittner.renderer.ViewRenderer] class, a Fragment is
- * generated that will have the same name with `Fragment` as suffix. The Fragment will use the
- * given [rendererFactory] as it's view.
+ * By adding this annotation to a [com.gabrielittner.renderer.ViewRenderer] class, a
+ * DialogFragment is generated that will have the same name with `Fragment` as suffix. The
+ * DialogFragment will use the given [dialogFragmentBaseClass] as it's super class and
+ * the [rendererFactory] as it's view.
  *
  * **StateMachine**
  *
@@ -58,7 +60,7 @@ import kotlin.reflect.KClass
  */
 @Target(CLASS)
 @Retention(RUNTIME)
-annotation class RendererFragment(
+annotation class RendererDialogFragment(
     val scope: KClass<*>,
     val parentScope: KClass<*>,
     val dependencies: KClass<*>,
@@ -69,6 +71,7 @@ annotation class RendererFragment(
     //TODO should be KClass<out StateMachine<*, *>>
     // leaving out the constraint for now to be compatible with Renderer's LiveDataStateMachine
     val stateMachine: KClass<*>,
+    val dialogFragmentBaseClass: KClass<out DialogFragment> = DialogFragment::class,
 
     val navigator: KClass<out Navigator> = EmptyNavigator::class,
     val navigationHandler: KClass<out NavigationHandler<*>> = EmptyNavigationHandler::class,
