@@ -1,6 +1,7 @@
 package com.freeletics.mad.whetstone.codegen.compose
 
 import com.freeletics.mad.whetstone.CommonData
+import com.freeletics.mad.whetstone.codegen.common.providedValueSetPropertyName
 import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
 import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.util.Generator
@@ -8,9 +9,10 @@ import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.collectAsState
 import com.freeletics.mad.whetstone.codegen.util.composable
+import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.launch
 import com.freeletics.mad.whetstone.codegen.util.launchedEffect
-import com.freeletics.mad.whetstone.codegen.util.locaOnBackPressedDispatcherOwner
+import com.freeletics.mad.whetstone.codegen.util.localOnBackPressedDispatcherOwner
 import com.freeletics.mad.whetstone.codegen.util.navController
 import com.freeletics.mad.whetstone.codegen.util.navigationHandlerHandle
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
@@ -40,12 +42,15 @@ internal class ComposeGenerator(
             .addStatement("val component = viewModel.%L", viewModelComponentName)
             .addCode("\n")
             .addCode(composableNavigationSetup(disableNavigation))
+            .addStatement("val providedValues = component.%L", providedValueSetPropertyName)
+            .beginControlFlow("%T(*providedValues.toTypedArray()) {", compositionLocalProvider)
             .addStatement("val stateMachine = component.%L", data.stateMachine.propertyName)
             .addStatement("val state = stateMachine.state.%M()", collectAsState)
             .addStatement("val scope = %M()", rememberCoroutineScope)
             .beginControlFlow("%L(state.value) { action ->", data.baseName)
             // dispatch: external method
             .addStatement("scope.%M { stateMachine.dispatch(action) }", launch)
+            .endControlFlow()
             .endControlFlow()
             .build()
     }
@@ -56,7 +61,7 @@ internal class ComposeGenerator(
         }
 
         return CodeBlock.builder()
-            .addStatement("val onBackPressedDispatcher = %T.current!!.onBackPressedDispatcher", locaOnBackPressedDispatcherOwner)
+            .addStatement("val onBackPressedDispatcher = %T.current!!.onBackPressedDispatcher", localOnBackPressedDispatcherOwner)
             .beginControlFlow("%M(navController, onBackPressedDispatcher, component) {", launchedEffect)
             .addStatement("val handler = component.%L", data.navigation!!.navigationHandler.propertyName)
             .addStatement("val navigator = component.%L", data.navigation!!.navigator.propertyName)

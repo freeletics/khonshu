@@ -19,7 +19,7 @@ import com.squareup.kotlinpoet.FileSpec
 internal class FileGenerator{
 
     fun generate(data: ComposeScreenData): FileSpec {
-        val retainedComponentGenerator = RetainedComponentGenerator(data, null)
+        val retainedComponentGenerator = RetainedComponentGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
         val composeGenerator = ComposeGenerator(data)
 
@@ -31,7 +31,7 @@ internal class FileGenerator{
     }
 
     fun generate(data: ComposeFragmentData): FileSpec {
-        val retainedComponentGenerator = RetainedComponentGenerator(data, null)
+        val retainedComponentGenerator = RetainedComponentGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
         val composeFragmentGenerator = ComposeFragmentGenerator(data)
         val composeGenerator = ComposeGenerator(data)
@@ -45,7 +45,7 @@ internal class FileGenerator{
     }
 
     fun generate(data: RendererFragmentData): FileSpec {
-        val retainedComponentGenerator = RetainedComponentGenerator(data, data.factory)
+        val retainedComponentGenerator = RetainedComponentGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
         val rendererFragmentGenerator = RendererFragmentGenerator(data)
 

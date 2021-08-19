@@ -24,20 +24,23 @@ class FileGeneratorTestCompose {
     )
 
     @Test
-    fun `generates code for ComposeScreenData no fragment`() {
+    fun `generates code for ComposeScreenData`() {
         FileGenerator().generate(full).toString() shouldBe """
             package com.test
 
             import android.os.Bundle
             import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.LaunchedEffect
+            import androidx.compose.runtime.ProvidedValue
             import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import androidx.navigation.NavController
             import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
@@ -48,6 +51,7 @@ class FileGeneratorTestCompose {
             import io.reactivex.disposables.CompositeDisposable
             import kotlin.OptIn
             import kotlin.Unit
+            import kotlin.collections.Set
             import kotlinx.coroutines.CoroutineScope
             import kotlinx.coroutines.MainScope
             import kotlinx.coroutines.cancel
@@ -57,7 +61,8 @@ class FileGeneratorTestCompose {
             @ScopeTo(TestScreen::class)
             @MergeComponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class]
+              dependencies = [TestDependencies::class],
+              modules = [ComposeProviderValueModule::class]
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -65,6 +70,8 @@ class FileGeneratorTestCompose {
               public val testNavigator: TestNavigator
 
               public val testNavigationHandler: TestNavigationHandler
+
+              public val providedValues: Set<ProvidedValue<*>>
 
               @Component.Factory
               public interface Factory {
@@ -116,11 +123,14 @@ class FileGeneratorTestCompose {
                 handler.handle(this, navController, onBackPressedDispatcher, navigator)
               }
 
-              val stateMachine = component.testStateMachine
-              val state = stateMachine.state.collectAsState()
-              val scope = rememberCoroutineScope()
-              Test(state.value) { action ->
-                scope.launch { stateMachine.dispatch(action) }
+              val providedValues = component.providedValues
+              CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val stateMachine = component.testStateMachine
+                val state = stateMachine.state.collectAsState()
+                val scope = rememberCoroutineScope()
+                Test(state.value) { action ->
+                  scope.launch { stateMachine.dispatch(action) }
+                }
               }
             }
             
@@ -128,7 +138,7 @@ class FileGeneratorTestCompose {
     }
 
     @Test
-    fun `generates code for ComposeScreenData no fragment compose, no navigation`() {
+    fun `generates code for ComposeScreenData, no navigation`() {
         val noNavigation = full.copy(navigation = null)
 
         FileGenerator().generate(noNavigation).toString() shouldBe """
@@ -136,12 +146,15 @@ class FileGeneratorTestCompose {
 
             import android.os.Bundle
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
+            import androidx.compose.runtime.ProvidedValue
             import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import androidx.navigation.NavController
             import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
@@ -151,6 +164,7 @@ class FileGeneratorTestCompose {
             import io.reactivex.disposables.CompositeDisposable
             import kotlin.OptIn
             import kotlin.Unit
+            import kotlin.collections.Set
             import kotlinx.coroutines.CoroutineScope
             import kotlinx.coroutines.MainScope
             import kotlinx.coroutines.cancel
@@ -160,10 +174,13 @@ class FileGeneratorTestCompose {
             @ScopeTo(TestScreen::class)
             @MergeComponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class]
+              dependencies = [TestDependencies::class],
+              modules = [ComposeProviderValueModule::class]
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
+
+              public val providedValues: Set<ProvidedValue<*>>
 
               @Component.Factory
               public interface Factory {
@@ -208,11 +225,14 @@ class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
-              val stateMachine = component.testStateMachine
-              val state = stateMachine.state.collectAsState()
-              val scope = rememberCoroutineScope()
-              Test(state.value) { action ->
-                scope.launch { stateMachine.dispatch(action) }
+              val providedValues = component.providedValues
+              CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val stateMachine = component.testStateMachine
+                val state = stateMachine.state.collectAsState()
+                val scope = rememberCoroutineScope()
+                Test(state.value) { action ->
+                  scope.launch { stateMachine.dispatch(action) }
+                }
               }
             }
             
@@ -220,7 +240,7 @@ class FileGeneratorTestCompose {
     }
 
     @Test
-    fun `generates code for ComposeScreenData without coroutines`() {
+    fun `generates code for ComposeScreenData, without coroutines`() {
         val withoutCoroutines = full.copy(coroutinesEnabled = false)
 
         FileGenerator().generate(withoutCoroutines).toString() shouldBe """
@@ -229,13 +249,16 @@ class FileGeneratorTestCompose {
             import android.os.Bundle
             import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.LaunchedEffect
+            import androidx.compose.runtime.ProvidedValue
             import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import androidx.navigation.NavController
             import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
@@ -246,13 +269,15 @@ class FileGeneratorTestCompose {
             import io.reactivex.disposables.CompositeDisposable
             import kotlin.OptIn
             import kotlin.Unit
+            import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
             @InternalWhetstoneApi
             @ScopeTo(TestScreen::class)
             @MergeComponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class]
+              dependencies = [TestDependencies::class],
+              modules = [ComposeProviderValueModule::class]
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -260,6 +285,8 @@ class FileGeneratorTestCompose {
               public val testNavigator: TestNavigator
 
               public val testNavigationHandler: TestNavigationHandler
+
+              public val providedValues: Set<ProvidedValue<*>>
 
               @Component.Factory
               public interface Factory {
@@ -307,11 +334,14 @@ class FileGeneratorTestCompose {
                 handler.handle(this, navController, onBackPressedDispatcher, navigator)
               }
 
-              val stateMachine = component.testStateMachine
-              val state = stateMachine.state.collectAsState()
-              val scope = rememberCoroutineScope()
-              Test(state.value) { action ->
-                scope.launch { stateMachine.dispatch(action) }
+              val providedValues = component.providedValues
+              CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val stateMachine = component.testStateMachine
+                val state = stateMachine.state.collectAsState()
+                val scope = rememberCoroutineScope()
+                Test(state.value) { action ->
+                  scope.launch { stateMachine.dispatch(action) }
+                }
               }
             }
             
@@ -319,7 +349,7 @@ class FileGeneratorTestCompose {
     }
 
     @Test
-    fun `generates code for ComposeScreenData without rxjava`() {
+    fun `generates code for ComposeScreenData, without rxjava`() {
         val withoutRxJava = full.copy(rxJavaEnabled = false)
 
         FileGenerator().generate(withoutRxJava).toString() shouldBe """
@@ -328,13 +358,16 @@ class FileGeneratorTestCompose {
             import android.os.Bundle
             import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.LaunchedEffect
+            import androidx.compose.runtime.ProvidedValue
             import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import androidx.navigation.NavController
             import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
@@ -344,6 +377,7 @@ class FileGeneratorTestCompose {
             import dagger.Component
             import kotlin.OptIn
             import kotlin.Unit
+            import kotlin.collections.Set
             import kotlinx.coroutines.CoroutineScope
             import kotlinx.coroutines.MainScope
             import kotlinx.coroutines.cancel
@@ -353,7 +387,8 @@ class FileGeneratorTestCompose {
             @ScopeTo(TestScreen::class)
             @MergeComponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class]
+              dependencies = [TestDependencies::class],
+              modules = [ComposeProviderValueModule::class]
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -361,6 +396,8 @@ class FileGeneratorTestCompose {
               public val testNavigator: TestNavigator
 
               public val testNavigationHandler: TestNavigationHandler
+
+              public val providedValues: Set<ProvidedValue<*>>
 
               @Component.Factory
               public interface Factory {
@@ -407,11 +444,14 @@ class FileGeneratorTestCompose {
                 handler.handle(this, navController, onBackPressedDispatcher, navigator)
               }
 
-              val stateMachine = component.testStateMachine
-              val state = stateMachine.state.collectAsState()
-              val scope = rememberCoroutineScope()
-              Test(state.value) { action ->
-                scope.launch { stateMachine.dispatch(action) }
+              val providedValues = component.providedValues
+              CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val stateMachine = component.testStateMachine
+                val state = stateMachine.state.collectAsState()
+                val scope = rememberCoroutineScope()
+                Test(state.value) { action ->
+                  scope.launch { stateMachine.dispatch(action) }
+                }
               }
             }
             

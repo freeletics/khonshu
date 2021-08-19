@@ -32,10 +32,19 @@ internal fun lateinitPropertySpec(className: ClassName): PropertySpec {
         .build()
 }
 
-internal fun componentAnnotation(scope: ClassName, dependencies: ClassName): AnnotationSpec {
+internal fun componentAnnotation(
+    scope: ClassName,
+    dependencies: ClassName,
+    module: ClassName? = null
+): AnnotationSpec {
     return AnnotationSpec.builder(MergeComponent::class)
         .addMember("scope = %T::class", scope)
         .addMember("dependencies = [%T::class]", dependencies)
+        .apply {
+            if (module != null) {
+                addMember("modules = [%T::class]", module)
+            }
+        }
         .build()
 }
 
