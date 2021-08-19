@@ -3,6 +3,7 @@ package com.freeletics.mad.whetstone
 import com.freeletics.mad.whetstone.codegen.FileGenerator
 import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
+import com.freeletics.mad.whetstone.codegen.util.dialogFragment
 import com.freeletics.mad.whetstone.codegen.util.emptyNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.emptyNavigator
 import com.freeletics.mad.whetstone.codegen.util.fragment
@@ -80,9 +81,9 @@ class WhetstoneCodeGenerator : CodeGenerator {
             scope = renderer.requireClassArgument("scope", 0, module),
             parentScope = renderer.requireClassArgument("parentScope", 1, module),
             dependencies = renderer.requireClassArgument("dependencies", 2, module),
-            fragmentBaseClass = fragment,
             factory = renderer.requireClassArgument("rendererFactory", 3, module),
             stateMachine = renderer.requireClassArgument("stateMachine", 4, module),
+            fragmentBaseClass = fragment,
             navigation = renderer.toNavigation(5, 6, module),
             coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 7) ?: false,
             rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 8) ?: false,
@@ -110,9 +111,9 @@ class WhetstoneCodeGenerator : CodeGenerator {
             scope = renderer.requireClassArgument("scope", 0, module),
             parentScope = renderer.requireClassArgument("parentScope", 1, module),
             dependencies = renderer.requireClassArgument("dependencies", 2, module),
-            fragmentBaseClass = renderer.requireClassArgument("dialogFragmentBaseClass", 3, module),
-            factory = renderer.requireClassArgument("rendererFactory", 4, module),
-            stateMachine = renderer.requireClassArgument("stateMachine", 5, module),
+            factory = renderer.requireClassArgument("rendererFactory", 3, module),
+            stateMachine = renderer.requireClassArgument("stateMachine", 4, module),
+            fragmentBaseClass = renderer.optionalClassArgument("dialogFragmentBaseClass", 5, module) ?: dialogFragment,
             navigation = renderer.toNavigation(6, 7, module),
             coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 8) ?: false,
             rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 9) ?: false,

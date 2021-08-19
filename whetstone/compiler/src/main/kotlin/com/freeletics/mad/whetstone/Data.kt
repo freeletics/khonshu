@@ -71,9 +71,9 @@ data class RendererFragmentData(
     override val parentScope: ClassName,
     override val dependencies: ClassName,
 
-    val fragmentBaseClass: ClassName,
     val factory: ClassName,
     override val stateMachine: ClassName,
+    val fragmentBaseClass: ClassName,
 
     override val navigation: Navigation?,
 

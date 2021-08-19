@@ -65,13 +65,13 @@ annotation class RendererDialogFragment(
     val parentScope: KClass<*>,
     val dependencies: KClass<*>,
 
-    val dialogFragmentBaseClass: KClass<out DialogFragment>,
     //TODO should be KClass<out ViewRenderer.Factory<*, *>>
     // leaving out the constraint for now to be compatible with some custom factories using the same signature
     val rendererFactory: KClass<*>,
     //TODO should be KClass<out StateMachine<*, *>>
     // leaving out the constraint for now to be compatible with Renderer's LiveDataStateMachine
     val stateMachine: KClass<*>,
+    val dialogFragmentBaseClass: KClass<out DialogFragment> = DialogFragment::class,
 
     val navigator: KClass<out Navigator> = EmptyNavigator::class,
     val navigationHandler: KClass<out NavigationHandler<*>> = EmptyNavigationHandler::class,

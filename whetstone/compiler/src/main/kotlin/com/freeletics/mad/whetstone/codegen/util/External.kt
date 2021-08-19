@@ -61,6 +61,7 @@ internal val moduleFqName = FqName(module.canonicalName)
 
 // AndroidX
 internal val fragment = ClassName("androidx.fragment.app", "Fragment")
+internal val dialogFragment = ClassName("androidx.fragment.app", "DialogFragment")
 
 internal val onBackPressedDispatcher = ClassName("androidx.activity", "OnBackPressedDispatcher")
 internal val locaOnBackPressedDispatcherOwner = ClassName("androidx.activity.compose", "LocalOnBackPressedDispatcherOwner")
