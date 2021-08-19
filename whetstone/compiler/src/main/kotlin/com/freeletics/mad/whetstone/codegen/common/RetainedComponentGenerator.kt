@@ -13,7 +13,6 @@ import com.freeletics.mad.whetstone.codegen.util.composeProviderValueModule
 import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
 import com.freeletics.mad.whetstone.codegen.util.coroutineScope
 import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
-import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.providedValue
 import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
 import com.freeletics.mad.whetstone.codegen.util.scopeToAnnotation
@@ -27,7 +26,6 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.WildcardTypeName
 
 internal val Generator<out CommonData>.retainedComponentClassName get() = ClassName("Retained${data.baseName}Component")
 

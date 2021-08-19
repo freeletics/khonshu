@@ -14,9 +14,7 @@ import com.freeletics.mad.whetstone.codegen.naventry.NavEntryFactoryProviderGene
 import com.freeletics.mad.whetstone.codegen.naventry.NavEntrySubcomponentGenerator
 import com.freeletics.mad.whetstone.codegen.naventry.NavEntryViewModelGenerator
 import com.freeletics.mad.whetstone.codegen.renderer.RendererFragmentGenerator
-import com.freeletics.mad.whetstone.codegen.util.simplePropertySpec
 import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.PropertySpec
 
 internal class FileGenerator{
 
