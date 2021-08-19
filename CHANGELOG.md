@@ -1,10 +1,16 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha04 *(2021-08-19)*
+----------------------------
+
+- Whetstone: add `RendererDialogFragment` annotation
+- Whetstone: support providing compose `ProvidedValue` into a set and automatically adding those to a `CompositionLocalProvider`
+
 Version 0.3.0-alpha03 *(2021-08-16)*
 ----------------------------
 
-- Whetstone: merge `RetainedComponent annotation into the others
+- Whetstone: merge `RetainedComponent` annotation into the others
 - Whetstone: support inset handling in generated `@ComposeFragment` classes
 - Whetstone: generatec composables don't need `OnBackPressedDispatcher` in their ctor anymore
 - Navigator: remove `CoroutineScope` parameter from `FragmentNavigationHandler`
