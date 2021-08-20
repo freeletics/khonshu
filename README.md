@@ -3,7 +3,7 @@
 At Freeletics use many of the Jetpack/AndroidX libraries but we don't
 always use them in the way they are advertised in Google's tutorials.
 This project show cases our own flavored version of Modern Android Development
-as well as some of our own utilties.
+as well as some of our own utilities.
 
 **This repository is a work in progress. More will be added over time.**
 
@@ -25,7 +25,7 @@ implementation 'com.freeletics.mad:state-machine:0.2.0'
 
 `TextResource` is a domain specific model to represent text. Abstracts text
 whether it a localized `String` sent by the backend, a simple Android `string`
-resource (with or without formatting args) or an Android `plurals` reosurce.
+resource (with or without formatting args) or an Android `plurals` resource.
 This way business logic with text can be easily tested without requiring
 `Context` and running on a device.
 
