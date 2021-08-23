@@ -176,7 +176,7 @@ class WhetstoneCodeGenerator : CodeGenerator {
             scope = composeFragment.requireClassArgument("scope", 0, module),
             parentScope = composeFragment.requireClassArgument("parentScope", 1, module),
             dependencies = composeFragment.requireClassArgument("dependencies", 2, module),
-            fragmentBaseClass = composeFragment.requireClassArgument("dialogFragmentBaseClass", 3, module),
+            fragmentBaseClass = composeFragment.optionalClassArgument("dialogFragmentBaseClass", 3, module) ?:  dialogFragment,
             stateMachine = composeFragment.requireClassArgument("stateMachine", 4, module),
             enableInsetHandling = composeFragment.optionalBooleanArgument("enableInsetHandling", 5) ?: false,
             navigation = composeFragment.toNavigation(6, 7, module),
