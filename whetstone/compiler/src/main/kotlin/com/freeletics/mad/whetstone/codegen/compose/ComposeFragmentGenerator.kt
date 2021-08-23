@@ -35,7 +35,7 @@ internal class ComposeFragmentGenerator(
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(composeFragmentClassName)
             .addAnnotation(optInAnnotation())
-            .superclass(fragment)
+            .superclass(data.fragmentBaseClass)
             .addFunction(composeOnCreateViewFun())
             .apply {
                 if (data.navigation != null) {

@@ -53,6 +53,8 @@ data class ComposeFragmentData(
     override val parentScope: ClassName,
     override val dependencies: ClassName,
 
+    val fragmentBaseClass: ClassName,
+
     override val stateMachine: ClassName,
     val enableInsetHandling: Boolean,
 
