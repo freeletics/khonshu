@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
 /**
  * By adding this annotation to a [androidx.compose.runtime.Composable] function, a
  * DialogFragment is generated that will have the same name with `Fragment` as suffix. The
- * DialogFragment will use the given [dialogFragmentBaseClass] as it's super class with
+ * DialogFragment will use the given [dialogFragmentBaseClass] as its super class with
  * [DialogFragment] class used as default.
  *
  * The DialogFragment will create a `ComposeView` that will call the annotated composable.
