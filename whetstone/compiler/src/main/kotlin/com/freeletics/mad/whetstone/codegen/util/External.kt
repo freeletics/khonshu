@@ -84,6 +84,8 @@ internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "re
 internal val compositionLocalProvider = ClassName("androidx.compose.runtime", "CompositionLocalProvider")
 internal val providedValue = ClassName("androidx.compose.runtime", "ProvidedValue")
 internal val composeView = ClassName("androidx.compose.ui.platform", "ComposeView")
+internal val viewCompositionStrategy = ClassName("androidx.compose.ui.platform", "ViewCompositionStrategy")
+internal val disposeOnLifecycleDestroyed = viewCompositionStrategy.nestedClass("DisposeOnLifecycleDestroyed")
 
 // Accompanist
 internal val localWindowInsets = ClassName("com.google.accompanist.insets", "LocalWindowInsets")
