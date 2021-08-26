@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha05 *(2021-08-26)*
+----------------------------
+
+- Whetstone: add `ComposeDialogFragment` annotation
+- Whetstone: call `setViewCompositionStrategy` from generated compose fragments
+
 Version 0.3.0-alpha04 *(2021-08-19)*
 ----------------------------
 
