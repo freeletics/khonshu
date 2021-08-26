@@ -42,6 +42,7 @@ class FileGeneratorTestComposeFragment {
             import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.ui.platform.ComposeView
+            import androidx.compose.ui.platform.ViewCompositionStrategy
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -155,10 +156,13 @@ class FileGeneratorTestComposeFragment {
             
                 val navController = findNavController()
                 return ComposeView(requireContext()).apply {
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+
                   layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                       ViewGroup.LayoutParams.MATCH_PARENT)
                   val observer = ViewWindowInsetObserver(this)
                   val windowInsets = observer.start()
+
                   setContent {
                     CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
                       TestScreen(navController)
@@ -204,6 +208,7 @@ class FileGeneratorTestComposeFragment {
             import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.ui.platform.ComposeView
+            import androidx.compose.ui.platform.ViewCompositionStrategy
             import androidx.fragment.app.DialogFragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -317,10 +322,13 @@ class FileGeneratorTestComposeFragment {
             
                 val navController = findNavController()
                 return ComposeView(requireContext()).apply {
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+
                   layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                       ViewGroup.LayoutParams.MATCH_PARENT)
                   val observer = ViewWindowInsetObserver(this)
                   val windowInsets = observer.start()
+
                   setContent {
                     CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
                       TestScreen(navController)
@@ -364,6 +372,7 @@ class FileGeneratorTestComposeFragment {
             import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.ui.platform.ComposeView
+            import androidx.compose.ui.platform.ViewCompositionStrategy
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -475,6 +484,8 @@ class FileGeneratorTestComposeFragment {
             
                 val navController = findNavController()
                 return ComposeView(requireContext()).apply {
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+
                   setContent {
                     TestScreen(navController)
                   }
@@ -516,6 +527,7 @@ class FileGeneratorTestComposeFragment {
             import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.ui.platform.ComposeView
+            import androidx.compose.ui.platform.ViewCompositionStrategy
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -615,10 +627,13 @@ class FileGeneratorTestComposeFragment {
               ): View {
                 val navController = findNavController()
                 return ComposeView(requireContext()).apply {
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+
                   layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                       ViewGroup.LayoutParams.MATCH_PARENT)
                   val observer = ViewWindowInsetObserver(this)
                   val windowInsets = observer.start()
+
                   setContent {
                     CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
                       TestScreen(navController)

@@ -7,6 +7,7 @@ import com.freeletics.mad.whetstone.codegen.util.Generator
 import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.composeView
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
+import com.freeletics.mad.whetstone.codegen.util.disposeOnLifecycleDestroyed
 import com.freeletics.mad.whetstone.codegen.util.findNavController
 import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
@@ -66,12 +67,17 @@ internal class ComposeFragmentGenerator(
             .addStatement("val navController = %M()", findNavController)
             // requireContext: external method
             .beginControlFlow("return %T(requireContext()).apply {", composeView)
+            // setViewCompositionStrategy: external method
+            // viewLifecycleOwner: external method
+            .addStatement("setViewCompositionStrategy(%T(viewLifecycleOwner))", disposeOnLifecycleDestroyed)
+            .addCode("\n")
             .apply {
                 if (data.enableInsetHandling) {
                     addStatement("layoutParams = %1T(%1T.MATCH_PARENT, %1T.MATCH_PARENT)", layoutParams)
                     addStatement("val observer = %T(this)", viewWindowInsetsObserver)
                     // start: external method
                     addStatement("val windowInsets = observer.start()")
+                    addCode("\n")
                 }
             }
             // setContent: external method
