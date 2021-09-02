@@ -16,11 +16,11 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.1"
+        kotlinCompilerExtensionVersion = "1.1.0-alpha03"
     }
 }
 
 dependencies {
     implementation "androidx.annotation:annotation:1.2.0"
-    api "androidx.compose.ui:ui:1.0.1"
+    api "androidx.compose.ui:ui:1.1.0-alpha03"
 }
