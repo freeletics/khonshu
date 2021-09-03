@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.2.1 *(2021-09-03)*
+----------------------------
+
+- update `state-machine` to Kotlin 1.5.30 and add Apple Silicon targets
+
+
 Version 0.2.0 *(2021-06-18)*
 ----------------------------
 
