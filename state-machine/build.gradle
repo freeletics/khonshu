@@ -1,25 +1,42 @@
-apply plugin: 'org.jetbrains.kotlin.multiplatform'
-apply plugin: 'org.jetbrains.dokka'
-apply plugin: 'com.vanniktech.maven.publish'
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.2.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.4.32"
+        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.15.1'
+    }
+}
+
+apply plugin: "org.jetbrains.kotlin.multiplatform"
+apply plugin: "org.jetbrains.dokka"
+apply plugin: "com.vanniktech.maven.publish"
 
 kotlin {
     jvm()
     iosArm32()
     iosArm64()
     iosX64()
+    iosSimulatorArm64()
     linuxX64()
     macosX64()
+    macosArm64()
     mingwX64()
     tvosArm64()
     tvosX64()
+    tvosSimulatorArm64()
     watchosArm32()
     watchosArm64()
     watchosX86()
+    watchosSimulatorArm64()
 
     sourceSets {
         commonMain {
             dependencies {
-                api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+                api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
             }
         }
     }
