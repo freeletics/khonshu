@@ -96,7 +96,7 @@ class NavEntryFileGeneratorTest {
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,
-                    context, TestParentScope::class) { component, handle ->
+                    context, TestParentScope::class) { component, handle -> 
                   val arguments = entry.arguments ?: Bundle.EMPTY
                   TestFlowViewModel(component, handle, arguments)
                 }
@@ -192,7 +192,7 @@ class NavEntryFileGeneratorTest {
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,
-                    context, TestParentScope::class) { component, handle ->
+                    context, TestParentScope::class) { component, handle -> 
                   val arguments = entry.arguments ?: Bundle.EMPTY
                   TestFlowViewModel(component, handle, arguments)
                 }
@@ -290,7 +290,7 @@ class NavEntryFileGeneratorTest {
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,
-                    context, TestParentScope::class) { component, handle ->
+                    context, TestParentScope::class) { component, handle -> 
                   val arguments = entry.arguments ?: Bundle.EMPTY
                   TestFlowViewModel(component, handle, arguments)
                 }
