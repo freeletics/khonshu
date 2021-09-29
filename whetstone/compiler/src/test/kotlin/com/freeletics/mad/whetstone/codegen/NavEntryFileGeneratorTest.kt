@@ -20,7 +20,7 @@ class NavEntryFileGeneratorTest {
     fun `generates code for full NavEntryData`() {
         FileGenerator().generate(full).toString() shouldBe """
             package com.test
-            
+
             import android.content.Context
             import android.os.Bundle
             import androidx.lifecycle.SavedStateHandle
@@ -93,11 +93,10 @@ class NavEntryFileGeneratorTest {
               @NavEntryId(TestFlowScope::class)
               private val id: Int
             ) : NavEntryComponentGetter {
-              @InternalWhetstoneApi
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,
-                    context, TestParentScope::class) { component, handle -> 
+                    context, TestParentScope::class) { component, handle ->
                   val arguments = entry.arguments ?: Bundle.EMPTY
                   TestFlowViewModel(component, handle, arguments)
                 }
@@ -105,7 +104,7 @@ class NavEntryFileGeneratorTest {
                 return viewModel.component
               }
             }
-            
+
             @Module
             @ContributesTo(TestParentScope::class)
             public interface WhetstoneTestFlowModule {
@@ -114,7 +113,7 @@ class NavEntryFileGeneratorTest {
               @NavEntryComponentGetterKey("com.test.TestFlowScope")
               public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }
-            
+
         """.trimIndent()
     }
 
@@ -124,7 +123,7 @@ class NavEntryFileGeneratorTest {
 
         FileGenerator().generate(withoutCoroutines).toString() shouldBe """
             package com.test
-            
+
             import android.content.Context
             import android.os.Bundle
             import androidx.lifecycle.SavedStateHandle
@@ -163,7 +162,7 @@ class NavEntryFileGeneratorTest {
                 ): NavEntryTestFlowComponent
               }
             }
-            
+
             @ContributesTo(TestParentScope::class)
             public interface NavEntryTestFlowComponentFactoryProvider {
               @InternalWhetstoneApi
@@ -190,11 +189,10 @@ class NavEntryFileGeneratorTest {
               @NavEntryId(TestFlowScope::class)
               private val id: Int
             ) : NavEntryComponentGetter {
-              @InternalWhetstoneApi
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,
-                    context, TestParentScope::class) { component, handle -> 
+                    context, TestParentScope::class) { component, handle ->
                   val arguments = entry.arguments ?: Bundle.EMPTY
                   TestFlowViewModel(component, handle, arguments)
                 }
@@ -202,7 +200,7 @@ class NavEntryFileGeneratorTest {
                 return viewModel.component
               }
             }
-            
+
             @Module
             @ContributesTo(TestParentScope::class)
             public interface WhetstoneTestFlowModule {
@@ -211,7 +209,7 @@ class NavEntryFileGeneratorTest {
               @NavEntryComponentGetterKey("com.test.TestFlowScope")
               public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }
-            
+
         """.trimIndent()
     }
 
@@ -221,7 +219,7 @@ class NavEntryFileGeneratorTest {
 
         FileGenerator().generate(withoutRxJava).toString() shouldBe """
             package com.test
-            
+
             import android.content.Context
             import android.os.Bundle
             import androidx.lifecycle.SavedStateHandle
@@ -262,7 +260,7 @@ class NavEntryFileGeneratorTest {
                 ): NavEntryTestFlowComponent
               }
             }
-            
+
             @ContributesTo(TestParentScope::class)
             public interface NavEntryTestFlowComponentFactoryProvider {
               @InternalWhetstoneApi
@@ -289,11 +287,10 @@ class NavEntryFileGeneratorTest {
               @NavEntryId(TestFlowScope::class)
               private val id: Int
             ) : NavEntryComponentGetter {
-              @InternalWhetstoneApi
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,
-                    context, TestParentScope::class) { component, handle -> 
+                    context, TestParentScope::class) { component, handle ->
                   val arguments = entry.arguments ?: Bundle.EMPTY
                   TestFlowViewModel(component, handle, arguments)
                 }
@@ -301,7 +298,7 @@ class NavEntryFileGeneratorTest {
                 return viewModel.component
               }
             }
-            
+
             @Module
             @ContributesTo(TestParentScope::class)
             public interface WhetstoneTestFlowModule {
@@ -310,7 +307,7 @@ class NavEntryFileGeneratorTest {
               @NavEntryComponentGetterKey("com.test.TestFlowScope")
               public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }
-            
+
         """.trimIndent()
     }
 }

@@ -65,7 +65,7 @@ annotation class NavEntryId(val value: KClass<*>)
 /**
  * A generated implementation of this can be used to retrieve a generated [NavEntryComponent].
  *
- * The implementation will be bound into a `Map<String, NavEntryComponentGetter` were the key
+ * The implementation will be bound into a `Map<String, NavEntryComponentGetter>` were the key
  * is the same scope that is used in [NavEntryId] and [NavEntryComponent].
  */
 interface NavEntryComponentGetter {

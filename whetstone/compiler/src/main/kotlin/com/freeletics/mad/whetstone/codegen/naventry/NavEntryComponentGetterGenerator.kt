@@ -76,7 +76,6 @@ internal class NavEntryComponentGetterGenerator(
     private fun retrieveFunction(): FunSpec {
         return FunSpec.builder("retrieve")
             .addModifiers(OVERRIDE)
-            .addAnnotation(internalApiAnnotation())
             .addParameter("findEntry", LambdaTypeName.get(parameters = arrayOf(INT), returnType = navBackStackEntry))
             .addParameter("context", context)
             .returns(ANY)
