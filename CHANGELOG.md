@@ -1,12 +1,19 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha07 *(2021-09-29)*
+----------------------------
+
+- Whetstone: add missing `@OptIn` in generated code
+
+
 Version 0.3.0-alpha06 *(2021-09-29)*
 ----------------------------
 
 - Kotlin 1.5.30 and Compose 1.0.3
 - add Apple Silicon targets to `state-machine`
 - change generated Whetstone code to be compatible with Kotlin 1.5.30
+
 
 Version 0.2.1 *(2021-09-03)*
 ----------------------------
@@ -20,11 +27,13 @@ Version 0.3.0-alpha05 *(2021-08-26)*
 - Whetstone: add `ComposeDialogFragment` annotation
 - Whetstone: call `setViewCompositionStrategy` from generated compose fragments
 
+
 Version 0.3.0-alpha04 *(2021-08-19)*
 ----------------------------
 
 - Whetstone: add `RendererDialogFragment` annotation
 - Whetstone: support providing compose `ProvidedValue` into a set and automatically adding those to a `CompositionLocalProvider`
+
 
 Version 0.3.0-alpha03 *(2021-08-16)*
 ----------------------------
@@ -34,17 +43,20 @@ Version 0.3.0-alpha03 *(2021-08-16)*
 - Whetstone: generatec composables don't need `OnBackPressedDispatcher` in their ctor anymore
 - Navigator: remove `CoroutineScope` parameter from `FragmentNavigationHandler`
 
+
 Version 0.3.0-alpha02 *(2021-08-08)*
 ----------------------------
 
 - Whetstone: added support to generate components tied to a `NavBackStackEntry` through `@NavEntryComponent`
 - `LoadingTextResource.format` now returns `Nothing`
 
+
 Version 0.3.0-alpha01 *(2021-08-05)*
 ----------------------------
 
 - initial experimental release of the `whetstone-runtime` and `whetstone-compiler` artifacts
 - initial experimental release of the `navigator` artifact
+
 
 Version 0.2.0 *(2021-06-18)*
 ----------------------------
