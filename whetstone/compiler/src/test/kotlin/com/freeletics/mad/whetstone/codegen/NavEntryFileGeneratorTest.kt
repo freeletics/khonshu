@@ -44,6 +44,7 @@ class NavEntryFileGeneratorTest {
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.Int
+            import kotlin.OptIn
             import kotlin.Unit
             import kotlinx.coroutines.CoroutineScope
             import kotlinx.coroutines.MainScope
@@ -93,6 +94,7 @@ class NavEntryFileGeneratorTest {
               @NavEntryId(TestFlowScope::class)
               private val id: Int
             ) : NavEntryComponentGetter {
+              @OptIn(InternalWhetstoneApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,
@@ -147,6 +149,7 @@ class NavEntryFileGeneratorTest {
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.Int
+            import kotlin.OptIn
             import kotlin.Unit
 
             @InternalWhetstoneApi
@@ -189,6 +192,7 @@ class NavEntryFileGeneratorTest {
               @NavEntryId(TestFlowScope::class)
               private val id: Int
             ) : NavEntryComponentGetter {
+              @OptIn(InternalWhetstoneApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,
@@ -242,6 +246,7 @@ class NavEntryFileGeneratorTest {
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.Int
+            import kotlin.OptIn
             import kotlin.Unit
             import kotlinx.coroutines.CoroutineScope
             import kotlinx.coroutines.MainScope
@@ -287,6 +292,7 @@ class NavEntryFileGeneratorTest {
               @NavEntryId(TestFlowScope::class)
               private val id: Int
             ) : NavEntryComponentGetter {
+              @OptIn(InternalWhetstoneApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,

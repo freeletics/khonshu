@@ -5,10 +5,10 @@ import com.freeletics.mad.whetstone.codegen.util.Generator
 import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.context
 import com.freeletics.mad.whetstone.codegen.util.inject
-import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
 import com.freeletics.mad.whetstone.codegen.util.navBackStackEntry
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
 import com.freeletics.mad.whetstone.codegen.util.navEntryIdScope
+import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.viewModelProvider
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.AnnotationSpec
@@ -76,6 +76,7 @@ internal class NavEntryComponentGetterGenerator(
     private fun retrieveFunction(): FunSpec {
         return FunSpec.builder("retrieve")
             .addModifiers(OVERRIDE)
+            .addAnnotation(optInAnnotation())
             .addParameter("findEntry", LambdaTypeName.get(parameters = arrayOf(INT), returnType = navBackStackEntry))
             .addParameter("context", context)
             .returns(ANY)
