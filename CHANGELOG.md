@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha06 *(2021-09-29)*
+----------------------------
+
+- Kotlin 1.5.30 and Compose 1.0.3
+- add Apple Silicon targets to `state-machine`
+- change generated Whetstone code to be compatible with Kotlin 1.5.30
+
+Version 0.2.1 *(2021-09-03)*
+----------------------------
+
+- update `state-machine` to Kotlin 1.5.30 and add Apple Silicon targets
+
+
 Version 0.3.0-alpha05 *(2021-08-26)*
 ----------------------------
 

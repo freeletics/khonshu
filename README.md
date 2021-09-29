@@ -18,7 +18,7 @@ In compose the `StateMachine` can be observed using `collectAsState()` and actio
 to it by simply launching them from a `CoroutineScope` created with `rememberCoroutineScope()`.
 
 ```groovy
-implementation 'com.freeletics.mad:state-machine:0.2.0'
+implementation 'com.freeletics.mad:state-machine:0.2.1'
 ```
 
 ## TextResource
@@ -33,7 +33,7 @@ For more information about the motivation for this abstraction check out this
 [blog post][1].
 
 ```groovy
-implementation 'com.freeletics.mad:text-resource:0.2.0'
+implementation 'com.freeletics.mad:text-resource:0.2.1'
 ```
 
 # License
