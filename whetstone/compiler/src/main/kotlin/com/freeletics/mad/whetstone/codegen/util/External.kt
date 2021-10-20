@@ -23,6 +23,7 @@ internal val navEntryComponentGetter = ClassName("com.freeletics.mad.whetstone",
 internal val navEntryIdScope = ClassName("com.freeletics.mad.whetstone", "NavEntryId")
 
 // Whetstone Internal API
+internal val asState = MemberName("com.freeletics.mad.whetstone.internal", "asState")
 internal val emptyNavigationHandler = ClassName("com.freeletics.mad.whetstone.internal", "EmptyNavigationHandler")
 internal val emptyNavigator = ClassName("com.freeletics.mad.whetstone.internal", "EmptyNavigator")
 internal val internalWhetstoneApi = ClassName("com.freeletics.mad.whetstone.internal", "InternalWhetstoneApi")
@@ -78,7 +79,6 @@ internal val findNavController = MemberName("androidx.navigation.fragment", "fin
 // Compose
 internal val composable = ClassName("androidx.compose.runtime", "Composable")
 internal val launchedEffect = MemberName("androidx.compose.runtime", "LaunchedEffect")
-internal val collectAsState = MemberName("androidx.compose.runtime", "collectAsState")
 internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 internal val compositionLocalProvider = ClassName("androidx.compose.runtime", "CompositionLocalProvider")

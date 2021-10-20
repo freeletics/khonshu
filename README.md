@@ -14,7 +14,7 @@ state through a `StateFlow` and receiving input actions to mutate that state.
 
 For an example on how to build such a state machine check out [FlowRedux][2]. To connect a
 `StateMachine` to a user interface you can look at [Renderer][3] for the Android View world.
-In compose the `StateMachine` can be observed using `collectAsState()` and actions can be dispatched
+In compose the `StateMachine` can be observed using `produceState()` and actions can be dispatched
 to it by simply launching them from a `CoroutineScope` created with `rememberCoroutineScope()`.
 
 ```groovy

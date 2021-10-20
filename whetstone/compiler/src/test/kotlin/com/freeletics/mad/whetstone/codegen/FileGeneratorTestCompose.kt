@@ -34,7 +34,6 @@ class FileGeneratorTestCompose {
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.LaunchedEffect
             import androidx.compose.runtime.ProvidedValue
-            import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -42,6 +41,7 @@ class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.navigation.TestNavigationHandler
@@ -126,10 +126,12 @@ class FileGeneratorTestCompose {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.state.collectAsState()
-                val scope = rememberCoroutineScope()
-                Test(state.value) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
+                val state = stateMachine.asState()
+                if (state.value != null) {
+                  val scope = rememberCoroutineScope()
+                  Test(state.value) { action ->
+                    scope.launch { stateMachine.dispatch(action) }
+                  }
                 }
               }
             }
@@ -148,7 +150,6 @@ class FileGeneratorTestCompose {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.ProvidedValue
-            import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -156,6 +157,7 @@ class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
@@ -228,10 +230,12 @@ class FileGeneratorTestCompose {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.state.collectAsState()
-                val scope = rememberCoroutineScope()
-                Test(state.value) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
+                val state = stateMachine.asState()
+                if (state.value != null) {
+                  val scope = rememberCoroutineScope()
+                  Test(state.value) { action ->
+                    scope.launch { stateMachine.dispatch(action) }
+                  }
                 }
               }
             }
@@ -252,7 +256,6 @@ class FileGeneratorTestCompose {
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.LaunchedEffect
             import androidx.compose.runtime.ProvidedValue
-            import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -260,6 +263,7 @@ class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.navigation.TestNavigationHandler
@@ -337,10 +341,12 @@ class FileGeneratorTestCompose {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.state.collectAsState()
-                val scope = rememberCoroutineScope()
-                Test(state.value) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
+                val state = stateMachine.asState()
+                if (state.value != null) {
+                  val scope = rememberCoroutineScope()
+                  Test(state.value) { action ->
+                    scope.launch { stateMachine.dispatch(action) }
+                  }
                 }
               }
             }
@@ -361,7 +367,6 @@ class FileGeneratorTestCompose {
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.LaunchedEffect
             import androidx.compose.runtime.ProvidedValue
-            import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -369,6 +374,7 @@ class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.navigation.TestNavigationHandler
@@ -447,10 +453,12 @@ class FileGeneratorTestCompose {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.state.collectAsState()
-                val scope = rememberCoroutineScope()
-                Test(state.value) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
+                val state = stateMachine.asState()
+                if (state.value != null) {
+                  val scope = rememberCoroutineScope()
+                  Test(state.value) { action ->
+                    scope.launch { stateMachine.dispatch(action) }
+                  }
                 }
               }
             }
