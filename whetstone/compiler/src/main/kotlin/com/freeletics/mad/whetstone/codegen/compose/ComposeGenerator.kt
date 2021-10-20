@@ -46,9 +46,10 @@ internal class ComposeGenerator(
             .beginControlFlow("%T(*providedValues.toTypedArray()) {", compositionLocalProvider)
             .addStatement("val stateMachine = component.%L", data.stateMachine.propertyName)
             .addStatement("val state = stateMachine.%M()", asState)
-            .beginControlFlow("if (state.value != null)")
+            .addStatement("val currentState = state.value")
+            .beginControlFlow("if (currentState.value != null)")
             .addStatement("val scope = %M()", rememberCoroutineScope)
-            .beginControlFlow("%L(state.value) { action ->", data.baseName)
+            .beginControlFlow("%L(currentState.value) { action ->", data.baseName)
             // dispatch: external method
             .addStatement("scope.%M { stateMachine.dispatch(action) }", launch)
             .endControlFlow()

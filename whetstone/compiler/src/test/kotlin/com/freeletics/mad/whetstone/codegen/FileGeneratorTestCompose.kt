@@ -231,9 +231,10 @@ class FileGeneratorTestCompose {
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asState()
-                if (state.value != null) {
+                val currentState = state.value
+                if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(state.value) { action ->
+                  Test(currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -342,9 +343,10 @@ class FileGeneratorTestCompose {
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asState()
-                if (state.value != null) {
+                val currentState = state.value
+                if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(state.value) { action ->
+                  Test(currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -454,9 +456,10 @@ class FileGeneratorTestCompose {
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asState()
-                if (state.value != null) {
+                val currentState = state.value
+                if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(state.value) { action ->
+                  Test(currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
