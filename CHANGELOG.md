@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha09 *(2021-10-20)*
+----------------------------
+
+- Whetstone: fix compilation issue in generated compose code
+
+
 Version 0.3.0-alpha08 *(2021-10-20)*
 ----------------------------
 
