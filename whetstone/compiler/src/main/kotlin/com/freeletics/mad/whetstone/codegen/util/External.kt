@@ -23,7 +23,7 @@ internal val navEntryComponentGetter = ClassName("com.freeletics.mad.whetstone",
 internal val navEntryIdScope = ClassName("com.freeletics.mad.whetstone", "NavEntryId")
 
 // Whetstone Internal API
-internal val asState = MemberName("com.freeletics.mad.whetstone.internal", "asState")
+internal val asComposeState = MemberName("com.freeletics.mad.whetstone.internal", "asComposeState")
 internal val emptyNavigationHandler = ClassName("com.freeletics.mad.whetstone.internal", "EmptyNavigationHandler")
 internal val emptyNavigator = ClassName("com.freeletics.mad.whetstone.internal", "EmptyNavigator")
 internal val internalWhetstoneApi = ClassName("com.freeletics.mad.whetstone.internal", "InternalWhetstoneApi")

@@ -73,7 +73,7 @@ import kotlin.reflect.KClass
  * @Composable
  * fun CoachScreen(navController: NavController) {
  *   // setup code omitted
- *   val state by stateMachine.asState()
+ *   val state by stateMachine.asComposeState()
  *   Coach(state.value) { action ->
  *     scope.launch { stateMachine.dispatch(action) }
  *   }

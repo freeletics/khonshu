@@ -41,7 +41,7 @@ class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.asState
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.navigation.TestNavigationHandler
@@ -126,7 +126,7 @@ class FileGeneratorTestCompose {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.asState()
+                val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
@@ -158,7 +158,7 @@ class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.asState
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
@@ -231,7 +231,7 @@ class FileGeneratorTestCompose {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.asState()
+                val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
@@ -265,7 +265,7 @@ class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.asState
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.navigation.TestNavigationHandler
@@ -343,7 +343,7 @@ class FileGeneratorTestCompose {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.asState()
+                val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
@@ -377,7 +377,7 @@ class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.asState
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.navigation.TestNavigationHandler
@@ -456,7 +456,7 @@ class FileGeneratorTestCompose {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.asState()
+                val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()

@@ -50,7 +50,7 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.asState
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.google.accompanist.insets.LocalWindowInsets
@@ -132,7 +132,7 @@ class FileGeneratorTestComposeFragment {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.asState()
+                val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
@@ -219,7 +219,7 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.asState
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.google.accompanist.insets.LocalWindowInsets
@@ -301,7 +301,7 @@ class FileGeneratorTestComposeFragment {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.asState()
+                val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
@@ -386,7 +386,7 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.asState
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
@@ -466,7 +466,7 @@ class FileGeneratorTestComposeFragment {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.asState()
+                val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
@@ -544,7 +544,7 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.asState
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.google.accompanist.insets.LocalWindowInsets
             import com.google.accompanist.insets.ViewWindowInsetObserver
@@ -619,7 +619,7 @@ class FileGeneratorTestComposeFragment {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.asState()
+                val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
