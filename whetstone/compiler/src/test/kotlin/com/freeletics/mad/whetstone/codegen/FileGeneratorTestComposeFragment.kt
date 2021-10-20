@@ -39,7 +39,6 @@ class FileGeneratorTestComposeFragment {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.ProvidedValue
-            import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.ui.platform.ComposeView
             import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -51,6 +50,7 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.google.accompanist.insets.LocalWindowInsets
@@ -132,10 +132,12 @@ class FileGeneratorTestComposeFragment {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.state.collectAsState()
-                val scope = rememberCoroutineScope()
-                Test(state.value) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
+                val state = stateMachine.asState()
+                if (state.value != null) {
+                  val scope = rememberCoroutineScope()
+                  Test(state.value) { action ->
+                    scope.launch { stateMachine.dispatch(action) }
+                  }
                 }
               }
             }
@@ -205,7 +207,6 @@ class FileGeneratorTestComposeFragment {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.ProvidedValue
-            import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.ui.platform.ComposeView
             import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -217,6 +218,7 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.google.accompanist.insets.LocalWindowInsets
@@ -298,10 +300,12 @@ class FileGeneratorTestComposeFragment {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.state.collectAsState()
-                val scope = rememberCoroutineScope()
-                Test(state.value) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
+                val state = stateMachine.asState()
+                if (state.value != null) {
+                  val scope = rememberCoroutineScope()
+                  Test(state.value) { action ->
+                    scope.launch { stateMachine.dispatch(action) }
+                  }
                 }
               }
             }
@@ -369,7 +373,6 @@ class FileGeneratorTestComposeFragment {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.ProvidedValue
-            import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.ui.platform.ComposeView
             import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -381,6 +384,7 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
@@ -460,10 +464,12 @@ class FileGeneratorTestComposeFragment {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.state.collectAsState()
-                val scope = rememberCoroutineScope()
-                Test(state.value) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
+                val state = stateMachine.asState()
+                if (state.value != null) {
+                  val scope = rememberCoroutineScope()
+                  Test(state.value) { action ->
+                    scope.launch { stateMachine.dispatch(action) }
+                  }
                 }
               }
             }
@@ -524,7 +530,6 @@ class FileGeneratorTestComposeFragment {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.ProvidedValue
-            import androidx.compose.runtime.collectAsState
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.ui.platform.ComposeView
             import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -536,6 +541,7 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.google.accompanist.insets.LocalWindowInsets
             import com.google.accompanist.insets.ViewWindowInsetObserver
@@ -610,10 +616,12 @@ class FileGeneratorTestComposeFragment {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
-                val state = stateMachine.state.collectAsState()
-                val scope = rememberCoroutineScope()
-                Test(state.value) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
+                val state = stateMachine.asState()
+                if (state.value != null) {
+                  val scope = rememberCoroutineScope()
+                  Test(state.value) { action ->
+                    scope.launch { stateMachine.dispatch(action) }
+                  }
                 }
               }
             }
