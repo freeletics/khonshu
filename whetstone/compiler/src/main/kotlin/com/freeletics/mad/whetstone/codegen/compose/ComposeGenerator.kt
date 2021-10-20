@@ -47,9 +47,9 @@ internal class ComposeGenerator(
             .addStatement("val stateMachine = component.%L", data.stateMachine.propertyName)
             .addStatement("val state = stateMachine.%M()", asState)
             .addStatement("val currentState = state.value")
-            .beginControlFlow("if (currentState.value != null)")
+            .beginControlFlow("if (currentState != null)")
             .addStatement("val scope = %M()", rememberCoroutineScope)
-            .beginControlFlow("%L(currentState.value) { action ->", data.baseName)
+            .beginControlFlow("%L(currentState) { action ->", data.baseName)
             // dispatch: external method
             .addStatement("scope.%M { stateMachine.dispatch(action) }", launch)
             .endControlFlow()
