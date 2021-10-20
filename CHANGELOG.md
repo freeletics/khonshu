@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha08 *(2021-10-20)*
+----------------------------
+
+- StateMachine: `state` is now a `Flow` instead of `StateFlow`
+- Whetstone: adapt generated code for state machine change
+
+
 Version 0.3.0-alpha07 *(2021-09-29)*
 ----------------------------
 
