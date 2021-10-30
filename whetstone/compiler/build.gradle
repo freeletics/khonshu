@@ -3,13 +3,13 @@ apply plugin: 'org.jetbrains.kotlin.kapt'
 apply plugin: 'com.vanniktech.maven.publish'
 
 dependencies {
-    api "com.squareup.anvil:compiler-api:2.3.3"
-    implementation "com.squareup.anvil:compiler-utils:2.3.3"
-    implementation "com.squareup:kotlinpoet:1.9.0"
+    api "com.squareup.anvil:compiler-api:2.3.7"
+    implementation "com.squareup.anvil:compiler-utils:2.3.7"
+    implementation "com.squareup:kotlinpoet:1.10.2"
 
     compileOnly "com.google.auto.service:auto-service-annotations:1.0"
     kapt "com.google.auto.service:auto-service:1.0"
 
     testImplementation "junit:junit:4.13.2"
-    testImplementation "io.kotest:kotest-assertions-core:4.6.1"
+    testImplementation "io.kotest:kotest-assertions-core:4.6.3"
 }
