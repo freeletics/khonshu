@@ -29,10 +29,8 @@ class FileGeneratorTestCompose {
             package com.test
 
             import android.os.Bundle
-            import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
-            import androidx.compose.runtime.LaunchedEffect
             import androidx.compose.runtime.ProvidedValue
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
@@ -116,12 +114,9 @@ class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
-              val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
-              LaunchedEffect(navController, onBackPressedDispatcher, component) {
-                val handler = component.testNavigationHandler
-                val navigator = component.testNavigator
-                handler.handle(this, navController, onBackPressedDispatcher, navigator)
-              }
+              val handler = component.testNavigationHandler
+              val navigator = component.testNavigator
+              handler.Navigation(navController, navigator)
 
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
@@ -253,10 +248,8 @@ class FileGeneratorTestCompose {
             package com.test
 
             import android.os.Bundle
-            import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
-            import androidx.compose.runtime.LaunchedEffect
             import androidx.compose.runtime.ProvidedValue
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
@@ -333,12 +326,9 @@ class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
-              val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
-              LaunchedEffect(navController, onBackPressedDispatcher, component) {
-                val handler = component.testNavigationHandler
-                val navigator = component.testNavigator
-                handler.handle(this, navController, onBackPressedDispatcher, navigator)
-              }
+              val handler = component.testNavigationHandler
+              val navigator = component.testNavigator
+              handler.Navigation(navController, navigator)
 
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
@@ -365,10 +355,8 @@ class FileGeneratorTestCompose {
             package com.test
 
             import android.os.Bundle
-            import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
-            import androidx.compose.runtime.LaunchedEffect
             import androidx.compose.runtime.ProvidedValue
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
@@ -446,12 +434,9 @@ class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
-              val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
-              LaunchedEffect(navController, onBackPressedDispatcher, component) {
-                val handler = component.testNavigationHandler
-                val navigator = component.testNavigator
-                handler.handle(this, navController, onBackPressedDispatcher, navigator)
-              }
+              val handler = component.testNavigationHandler
+              val navigator = component.testNavigator
+              handler.Navigation(navController, navigator)
 
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {

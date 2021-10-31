@@ -1,4 +1,5 @@
-include ":navigator"
+include ":navigator:common", ":navigator:common-compose", ":navigator:common-fragment"
 include ":state-machine"
 include ":text-resource"
-include ":whetstone:compiler", ":whetstone:runtime"
+include ":whetstone:compiler"
+include ":whetstone:runtime", ":whetstone:runtime-compose", ":whetstone:runtime-fragment"
