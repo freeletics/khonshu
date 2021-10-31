@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'com.vanniktech.maven.publish'
+
+android {
+    compileSdkVersion 31
+
+    defaultConfig {
+        minSdkVersion 21
+    }
+
+    buildFeatures {
+        compose = true
+    }
+
+    // still needed for Android projects despite toolchain
+    compileOptions {
+        sourceCompatibility(JavaVersion.VERSION_11)
+        targetCompatibility(JavaVersion.VERSION_11)
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.0.4"
+    }
+}
+
+// workaround for https://youtrack.jetbrains.com/issue/KT-37652
+android.kotlinOptions.freeCompilerArgs += "-Xexplicit-api=strict"
+
+kotlin {
+    explicitApi()
+
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+
+    sourceSets.all {
+        languageSettings {
+            optIn("kotlin.RequiresOptIn")
+        }
+    }
+}
+
+// workaround for https://issuetracker.google.com/issues/194113162
+tasks.withType(JavaCompile).configureEach {
+    javaCompiler = javaToolchains.compilerFor {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+dependencies {
+    api project(":navigator:common-compose")
+    api project(":navigator:runtime")
+    api "androidx.activity:activity-compose:1.4.0"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
+    api "androidx.compose.runtime:runtime:1.0.4"
+}
