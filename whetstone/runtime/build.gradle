@@ -26,12 +26,14 @@ dependencies {
     api "javax.inject:javax.inject:1"
     api "androidx.lifecycle:lifecycle-viewmodel:2.4.0"
     api "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.0"
+    api "androidx.navigation:navigation-runtime:2.3.5"
+    api "com.google.dagger:dagger:2.40"
     api project(":state-machine")
     api project(":navigator")
 
-    // for generated code
-    api "com.google.dagger:dagger:2.40"
-    api "com.squareup.anvil:annotations:2.3.7"
+    implementation "androidx.savedstate:savedstate:1.1.0"
+    implementation "androidx.activity:activity:1.4.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2"
 
     // dependencies to be added by consumers depending on what they use
     compileOnly "androidx.compose.runtime:runtime:1.0.4"

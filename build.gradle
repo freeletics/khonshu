@@ -9,10 +9,12 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.5.31"
         classpath "com.vanniktech:gradle-maven-publish-plugin:0.18.0"
+        classpath "com.autonomousapps.dependency-analysis:com.autonomousapps.dependency-analysis.gradle.plugin:0.78.0"
         classpath "com.github.ben-manes:gradle-versions-plugin:0.39.0"
     }
 }
 
+apply plugin: "com.autonomousapps.dependency-analysis"
 apply plugin: "com.github.ben-manes.versions"
 
 
@@ -25,6 +27,16 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+dependencyAnalysis {
+    issues {
+        all {
+            onAny {
+                severity('fail')
+            }
+        }
+    }
 }
 
 def isNonStable = { String version ->
