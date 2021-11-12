@@ -14,4 +14,5 @@ import kotlin.reflect.KClass
  * To be used in generated code.
  */
 @MapKey
-annotation class NavEntryComponentGetterKey(val value: String)
+@InternalWhetstoneApi
+public annotation class NavEntryComponentGetterKey(val value: String)

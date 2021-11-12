@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.collect
 
 @Composable
 @InternalWhetstoneApi
-fun <S : Any> StateMachine<S, *>.asComposeState(): State<S?> {
+public fun <S : Any> StateMachine<S, *>.asComposeState(): State<S?> {
     return produceState<S?>(initialValue = null) {
         state.collect { value = it }
     }

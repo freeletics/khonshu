@@ -60,7 +60,7 @@ import kotlin.reflect.KClass
  */
 @Target(CLASS)
 @Retention(RUNTIME)
-annotation class RendererDialogFragment(
+public annotation class RendererDialogFragment(
     val scope: KClass<*>,
     val parentScope: KClass<*>,
     val dependencies: KClass<*>,

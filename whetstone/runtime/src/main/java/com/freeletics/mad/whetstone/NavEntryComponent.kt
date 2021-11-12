@@ -43,7 +43,7 @@ import kotlin.reflect.KClass
  */
 @Target(FUNCTION)
 @Retention(RUNTIME)
-annotation class NavEntryComponent(
+public annotation class NavEntryComponent(
     val scope: KClass<*>,
     val parentScope: KClass<*>,
 
@@ -60,7 +60,7 @@ annotation class NavEntryComponent(
  * annotation.
  */
 @Qualifier
-annotation class NavEntryId(val value: KClass<*>)
+public annotation class NavEntryId(val value: KClass<*>)
 
 /**
  * A generated implementation of this can be used to retrieve a generated [NavEntryComponent].
@@ -68,11 +68,11 @@ annotation class NavEntryId(val value: KClass<*>)
  * The implementation will be bound into a `Map<String, NavEntryComponentGetter>` were the key
  * is the same scope that is used in [NavEntryId] and [NavEntryComponent].
  */
-interface NavEntryComponentGetter {
+public interface NavEntryComponentGetter {
     /**
      * The id that is passed as parameter to [findEntry] is the id that was provided with
      * [NavEntryId]. The given [findEntry] should look up a back strack entry for that id
      * in the current `NavController`.
      */
-    fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any
+    public fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any
 }

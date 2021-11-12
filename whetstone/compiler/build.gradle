@@ -2,6 +2,22 @@ apply plugin: 'org.jetbrains.kotlin.jvm'
 apply plugin: 'org.jetbrains.kotlin.kapt'
 apply plugin: 'com.vanniktech.maven.publish'
 
+kotlin {
+    explicitApi()
+
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+
+    sourceSets {
+        main {
+            languageSettings {
+                optIn("kotlin.RequiresOptIn")
+            }
+        }
+    }
+}
+
 dependencies {
     api "org.jetbrains.kotlin:kotlin-compiler-embeddable:1.5.31"
     api "com.squareup.anvil:compiler-api:2.3.7"

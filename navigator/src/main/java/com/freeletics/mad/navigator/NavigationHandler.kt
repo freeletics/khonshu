@@ -22,27 +22,27 @@ import kotlinx.coroutines.CoroutineScope
  * to Android framework components. That avoids the risk of leaking an `Activity` or `Fragment` and
  * makes the navigation related logic easily testable on the JVM.
  */
-sealed interface NavigationHandler<N : Navigator>
+public sealed interface NavigationHandler<N : Navigator>
 
-interface FragmentNavigationHandler<N : Navigator> : NavigationHandler<N> {
+public interface FragmentNavigationHandler<N : Navigator> : NavigationHandler<N> {
     /**
      * Called once for the given [fragment] to set up navigation with the
      * [navigator]. Any ongoing operation in implementations of this method should be cancelled
      * when the `fragment` is destroyed.
      */
-    fun handle(
+    public fun handle(
         fragment: Fragment,
         navigator: N
     )
 }
 
-interface ComposeNavigationHandler<N : Navigator> : NavigationHandler<N> {
+public interface ComposeNavigationHandler<N : Navigator> : NavigationHandler<N> {
     /**
      * Called once for the given [scope] and [navController] to set up navigation with the
      * [navigator]. Any ongoing operation in implementations of this method should be cancelled
      * when the `scope` is cancelled.
      */
-    fun handle(
+    public fun handle(
         scope: CoroutineScope,
         navController: NavController,
         onBackPressedDispatcher: OnBackPressedDispatcher,

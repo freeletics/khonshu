@@ -20,6 +20,23 @@ android {
     }
 }
 
+// workaround for https://youtrack.jetbrains.com/issue/KT-37652
+android.kotlinOptions.freeCompilerArgs += "-Xexplicit-api=strict"
+
+kotlin {
+    explicitApi()
+
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+
+    sourceSets.all {
+        languageSettings {
+            optIn("kotlin.RequiresOptIn")
+        }
+    }
+}
+
 dependencies {
     api "androidx.compose.runtime:runtime:1.0.4"
 

@@ -6,7 +6,7 @@ import dagger.multibindings.Multibinds
 
 @Module
 @InternalWhetstoneApi
-interface ComposeProviderValueModule {
+public interface ComposeProviderValueModule {
     @Multibinds
-    fun bindProvidedValues(): Set<ProvidedValue<*>>
+    public fun bindProvidedValues(): Set<ProvidedValue<*>>
 }

@@ -26,7 +26,7 @@ import kotlin.reflect.KClass
  * To be used in generated code.
  */
 @InternalWhetstoneApi
-fun <D> viewModelProvider(
+public fun <D> viewModelProvider(
     fragment: Fragment,
     scope: KClass<*>,
     factory: (D, SavedStateHandle) -> ViewModel
@@ -47,7 +47,7 @@ fun <D> viewModelProvider(
  */
 @InternalWhetstoneApi
 @Composable
-fun <D> rememberViewModelProvider(
+public fun <D> rememberViewModelProvider(
     scope: KClass<*>,
     factory: (D, SavedStateHandle) -> ViewModel
 ): ViewModelProvider {
@@ -70,7 +70,7 @@ fun <D> rememberViewModelProvider(
  * To be used in generated code.
  */
 @InternalWhetstoneApi
-fun <C> viewModelProvider(
+public fun <C> viewModelProvider(
     entry: NavBackStackEntry,
     context: Context,
     scope: KClass<*>,

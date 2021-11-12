@@ -8,6 +8,7 @@ import com.freeletics.mad.whetstone.codegen.util.intoMap
 import com.freeletics.mad.whetstone.codegen.util.module
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
+import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
@@ -40,6 +41,7 @@ internal class NavEntryComponentGetterModuleGenerator(
             .addAnnotation(binds)
             .addAnnotation(intoMap)
             .addAnnotation(mapKeyAnnotation())
+            .addAnnotation(optInAnnotation())
             .addParameter("getter", componentGetterClassName)
             .returns(navEntryComponentGetter)
             .build()

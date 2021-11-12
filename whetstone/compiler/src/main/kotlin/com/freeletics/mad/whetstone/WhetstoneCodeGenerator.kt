@@ -36,7 +36,7 @@ import org.jetbrains.kotlin.psi.KtNamedFunction
 
 @OptIn(ExperimentalAnvilApi::class)
 @AutoService(CodeGenerator::class)
-class WhetstoneCodeGenerator : CodeGenerator {
+public class WhetstoneCodeGenerator : CodeGenerator {
 
     override fun isApplicable(context: AnvilContext): Boolean = !context.disableComponentMerging
 
