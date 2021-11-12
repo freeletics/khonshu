@@ -13,6 +13,12 @@ android {
         compose = true
     }
 
+    // still needed for Android projects despite toolchain
+    compileOptions {
+        sourceCompatibility(JavaVersion.VERSION_11)
+        targetCompatibility(JavaVersion.VERSION_11)
+    }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.0.4"
     }
@@ -35,6 +41,7 @@ kotlin {
     }
 }
 
+// workaround for https://issuetracker.google.com/issues/194113162
 tasks.withType(JavaCompile).configureEach {
     javaCompiler = javaToolchains.compilerFor {
         languageVersion = JavaLanguageVersion.of(11)

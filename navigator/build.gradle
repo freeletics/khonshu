@@ -8,6 +8,12 @@ android {
     defaultConfig {
         minSdkVersion 21
     }
+
+    // still needed for Android projects despite toolchain
+    compileOptions {
+        sourceCompatibility(JavaVersion.VERSION_11)
+        targetCompatibility(JavaVersion.VERSION_11)
+    }
 }
 
 // workaround for https://youtrack.jetbrains.com/issue/KT-37652
@@ -24,6 +30,13 @@ kotlin {
         languageSettings {
             optIn("kotlin.RequiresOptIn")
         }
+    }
+}
+
+// workaround for https://issuetracker.google.com/issues/194113162
+tasks.withType(JavaCompile).configureEach {
+    javaCompiler = javaToolchains.compilerFor {
+        languageVersion = JavaLanguageVersion.of(11)
     }
 }
 
