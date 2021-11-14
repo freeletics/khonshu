@@ -16,4 +16,4 @@ import kotlin.reflect.KClass
 @Scope
 @Retention(RUNTIME)
 @MustBeDocumented
-annotation class ScopeTo(val marker: KClass<*>)
+public annotation class ScopeTo(val marker: KClass<*>)

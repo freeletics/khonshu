@@ -16,5 +16,5 @@ import androidx.navigation.NavController
  * to Android framework components. That avoids the risk of leaking an `Activity` or `Fragment` and
  * makes the navigation related logic easily testable on the JVM.
  */
-interface Navigator
+public interface Navigator
 

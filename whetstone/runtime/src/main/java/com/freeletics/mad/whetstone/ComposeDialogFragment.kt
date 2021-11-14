@@ -64,7 +64,7 @@ import kotlin.reflect.KClass
  */
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ComposeDialogFragment(
+public annotation class ComposeDialogFragment(
     val scope: KClass<*>,
     val parentScope: KClass<*>,
     val dependencies: KClass<*>,

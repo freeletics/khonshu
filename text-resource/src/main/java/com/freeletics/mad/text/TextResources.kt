@@ -6,7 +6,7 @@ import android.widget.TextView
  * An extension method to join TextResources mimicking the behavior of [joinToString] from
  * the Kotlin Standard Library.
  */
-fun <T> Iterable<T>.joinToTextResource(
+public fun <T> Iterable<T>.joinToTextResource(
     separator: String = ", ",
     transform: ((T) -> TextResource)
 ): TextResource {
@@ -17,22 +17,22 @@ fun <T> Iterable<T>.joinToTextResource(
 /**
  * Join this `TextResource` with the other one into a combined `TextResource.
  */
-operator fun TextResource.plus(other: TextResource): TextResource {
+public operator fun TextResource.plus(other: TextResource): TextResource {
     return CompositeTextResource(listOf(this, other), separator = "")
 }
 
 /**
  * Join this `TextResource` with a `String`  into a combined `TextResource.
  */
-operator fun TextResource.plus(other: String): TextResource {
+public operator fun TextResource.plus(other: String): TextResource {
     return CompositeTextResource(listOf(this, TextResource(other)), separator = "")
 }
 
 /**
  * Set the [textResource] as the [TextView]'s text.
  */
-fun TextView.setText(textResource: TextResource?) {
+public fun TextView.setText(textResource: TextResource?) {
     text = textResource?.format(context)
 }
 
-fun String.toTextResource(): TextResource = TextResource(this)
+public fun String.toTextResource(): TextResource = TextResource(this)

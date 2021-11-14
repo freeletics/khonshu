@@ -113,6 +113,7 @@ class NavEntryFileGeneratorTest {
               @Binds
               @IntoMap
               @NavEntryComponentGetterKey("com.test.TestFlowScope")
+              @OptIn(InternalWhetstoneApi::class)
               public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }
 
@@ -211,6 +212,7 @@ class NavEntryFileGeneratorTest {
               @Binds
               @IntoMap
               @NavEntryComponentGetterKey("com.test.TestFlowScope")
+              @OptIn(InternalWhetstoneApi::class)
               public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }
 
@@ -311,6 +313,7 @@ class NavEntryFileGeneratorTest {
               @Binds
               @IntoMap
               @NavEntryComponentGetterKey("com.test.TestFlowScope")
+              @OptIn(InternalWhetstoneApi::class)
               public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }
 

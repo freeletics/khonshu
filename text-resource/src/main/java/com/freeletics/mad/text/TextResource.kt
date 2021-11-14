@@ -19,24 +19,24 @@ import kotlinx.parcelize.Parcelize
  * Use the various factory methods to create a new instance.
  * Use [format] with an Android context to get the proper formatted text.
  */
-sealed class TextResource : Parcelable {
+public sealed class TextResource : Parcelable {
 
     /**
      * Returns the formatted [String] represented by this `TextResource`.
      */
-    abstract fun format(context: Context): String
+    public abstract fun format(context: Context): String
 
     @Composable
     @ReadOnlyComposable
-    abstract fun format(): String
+    public abstract fun format(): String
 
-    companion object {
+    public companion object {
         /**
          * Create a `TextResource` for the given [String]. A common use case for this is
          * a string sent by the backend that is already localized and formatted.
          */
         @JvmName("fromString")
-        operator fun invoke(text: String): TextResource {
+        public operator fun invoke(text: String): TextResource {
             return SimpleTextResource(text)
         }
 
@@ -44,7 +44,7 @@ sealed class TextResource : Parcelable {
          * Returns a `TextResource` for the given [String] or `null` if [text] was `null`.
          */
         @JvmName("fromNullableString")
-        operator fun invoke(text: String?): TextResource? {
+        public operator fun invoke(text: String?): TextResource? {
             if (text == null) {
                 return null
             }
@@ -56,7 +56,7 @@ sealed class TextResource : Parcelable {
          * when formatting the string to replace any placeholders.
          */
         @JvmName("fromStringResource")
-        operator fun invoke(
+        public operator fun invoke(
             @StringRes id: Int,
             vararg args: Any
         ): TextResource {
@@ -67,7 +67,7 @@ sealed class TextResource : Parcelable {
          * Create a `TextResource` for the given Android plurals resource id and the given
          * [quantity]. The [args] will be when formatting the string to replace any placeholders.
          */
-        fun createWithQuantity(
+        public fun createWithQuantity(
             @PluralsRes id: Int,
             quantity: Int,
             vararg args: Any
@@ -80,7 +80,7 @@ sealed class TextResource : Parcelable {
          */
         @JvmStatic
         @JvmOverloads
-        fun join(
+        public fun join(
             resources: List<TextResource>,
             separator: String = ", ",
         ): TextResource = CompositeTextResource(resources, separator)
@@ -92,7 +92,7 @@ sealed class TextResource : Parcelable {
  * and is meant as a marker to for example show a placeholder graphic.
  */
 @Parcelize
-object LoadingTextResource : TextResource() {
+public object LoadingTextResource : TextResource() {
     override fun format(context: Context): Nothing {
         throw UnsupportedOperationException("LoadingTextResource can not be formatted.")
     }

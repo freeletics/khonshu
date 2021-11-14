@@ -60,7 +60,7 @@ import kotlin.reflect.KClass
  */
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ComposeFragment(
+public annotation class ComposeFragment(
     val scope: KClass<*>,
     val parentScope: KClass<*>,
     val dependencies: KClass<*>,

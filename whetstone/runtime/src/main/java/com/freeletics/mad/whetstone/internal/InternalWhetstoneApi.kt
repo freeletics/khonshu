@@ -6,4 +6,4 @@ package com.freeletics.mad.whetstone.internal
  * at any time.
  */
 @RequiresOptIn
-annotation class InternalWhetstoneApi
+public annotation class InternalWhetstoneApi

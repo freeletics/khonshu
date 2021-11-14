@@ -15,8 +15,38 @@ android {
         compose = true
     }
 
+    // still needed for Android projects despite toolchain
+    compileOptions {
+        sourceCompatibility(JavaVersion.VERSION_11)
+        targetCompatibility(JavaVersion.VERSION_11)
+    }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.0.4"
+    }
+}
+
+// workaround for https://youtrack.jetbrains.com/issue/KT-37652
+android.kotlinOptions.freeCompilerArgs += "-Xexplicit-api=strict"
+
+kotlin {
+    explicitApi()
+
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+
+    sourceSets.all {
+        languageSettings {
+            optIn("kotlin.RequiresOptIn")
+        }
+    }
+}
+
+// workaround for https://issuetracker.google.com/issues/194113162
+tasks.withType(JavaCompile).configureEach {
+    javaCompiler = javaToolchains.compilerFor {
+        languageVersion = JavaLanguageVersion.of(11)
     }
 }
 

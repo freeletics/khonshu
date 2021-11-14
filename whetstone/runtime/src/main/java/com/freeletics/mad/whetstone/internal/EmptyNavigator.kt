@@ -5,6 +5,7 @@ import com.freeletics.mad.whetstone.ComposeScreen
 import com.freeletics.mad.whetstone.RendererFragment
 import com.freeletics.mad.navigator.Navigator
 import com.freeletics.mad.navigator.NavigationHandler
+import com.freeletics.mad.whetstone.NavEntryComponent
 
 /**
  * Default value for the `navigator` parameter of [ComposeScreen], [ComposeFragment] and
