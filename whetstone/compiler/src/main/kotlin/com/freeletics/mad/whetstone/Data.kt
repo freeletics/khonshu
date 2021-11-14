@@ -3,12 +3,12 @@ package com.freeletics.mad.whetstone
 import com.freeletics.mad.whetstone.CommonData.Navigation
 import com.squareup.kotlinpoet.ClassName
 
-sealed interface BaseData {
+internal sealed interface BaseData {
     val baseName: String
     val packageName: String
 }
 
-sealed interface CommonData : BaseData {
+internal sealed interface CommonData : BaseData {
     val scope: ClassName
 
     val parentScope: ClassName
@@ -27,7 +27,7 @@ sealed interface CommonData : BaseData {
     )
 }
 
-data class ComposeScreenData(
+internal data class ComposeScreenData(
     override val baseName: String,
     override val packageName: String,
 
@@ -44,7 +44,7 @@ data class ComposeScreenData(
     override val rxJavaEnabled: Boolean,
 ) :  CommonData
 
-data class ComposeFragmentData(
+internal data class ComposeFragmentData(
     override val baseName: String,
     override val packageName: String,
 
@@ -64,7 +64,7 @@ data class ComposeFragmentData(
     override val rxJavaEnabled: Boolean,
 ) :  CommonData
 
-data class RendererFragmentData(
+internal data class RendererFragmentData(
     override val baseName: String,
     override val packageName: String,
 
@@ -83,7 +83,7 @@ data class RendererFragmentData(
     override val rxJavaEnabled: Boolean,
 ) : CommonData
 
-data class NavEntryData(
+internal data class NavEntryData(
     override val baseName: String,
     override val packageName: String,
 

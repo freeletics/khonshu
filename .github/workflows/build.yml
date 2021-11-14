@@ -27,4 +27,4 @@ jobs:
         run: ./.github/android-sdk.sh
 
       - name: Build with Gradle
-        run: ./gradlew build --stacktrace
+        run: ./gradlew build buildHealth --stacktrace

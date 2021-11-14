@@ -21,6 +21,9 @@ android {
 }
 
 dependencies {
-    implementation "androidx.annotation:annotation:1.2.0"
-    api "androidx.compose.ui:ui:1.0.4"
+    api "androidx.compose.runtime:runtime:1.0.4"
+
+    implementation "androidx.compose.ui:ui:1.0.4"
+
+    compileOnly "androidx.annotation:annotation:1.2.0"
 }
