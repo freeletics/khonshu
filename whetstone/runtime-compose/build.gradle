@@ -49,16 +49,10 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
-    api "javax.inject:javax.inject:1"
-    api "com.google.dagger:dagger:2.40"
+    api project(":navigator:common")
     api "androidx.compose.runtime:runtime:1.0.4"
-    api "androidx.savedstate:savedstate:1.1.0"
-    api "androidx.lifecycle:lifecycle-viewmodel:2.4.0"
-    api "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.0"
-    api "androidx.navigation:navigation-runtime:2.3.5"
-    api project(":state-machine")
 
-    implementation "androidx.compose.ui:ui:1.0.4"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2"
+    implementation project(":navigator:common-compose")
+    implementation project(":state-machine")
+    implementation "androidx.navigation:navigation-runtime:2.3.5"
 }

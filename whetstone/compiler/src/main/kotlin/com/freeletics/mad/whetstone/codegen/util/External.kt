@@ -35,6 +35,7 @@ internal val composeProviderValueModule = ClassName("com.freeletics.mad.whetston
 // Navigator
 internal val navigationHandler = ClassName("com.freeletics.mad.navigator", "NavigationHandler")
 internal val navigationHandlerHandle = navigationHandler.member("handle")
+internal val navigationHandlerNavigation = navigationHandler.member("Navigation")
 
 // Renderer
 internal val rendererConnect = MemberName("com.gabrielittner.renderer.connect", "connect")
@@ -67,8 +68,6 @@ internal val moduleFqName = FqName(module.canonicalName)
 internal val fragment = ClassName("androidx.fragment.app", "Fragment")
 internal val dialogFragment = ClassName("androidx.fragment.app", "DialogFragment")
 
-internal val localOnBackPressedDispatcherOwner = ClassName("androidx.activity.compose", "LocalOnBackPressedDispatcherOwner")
-
 internal val viewModel = ClassName("androidx.lifecycle", "ViewModel")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
 
@@ -78,7 +77,6 @@ internal val findNavController = MemberName("androidx.navigation.fragment", "fin
 
 // Compose
 internal val composable = ClassName("androidx.compose.runtime", "Composable")
-internal val launchedEffect = MemberName("androidx.compose.runtime", "LaunchedEffect")
 internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 internal val compositionLocalProvider = ClassName("androidx.compose.runtime", "CompositionLocalProvider")

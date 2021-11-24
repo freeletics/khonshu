@@ -11,10 +11,8 @@ import com.freeletics.mad.whetstone.codegen.util.asComposeState
 import com.freeletics.mad.whetstone.codegen.util.composable
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.launch
-import com.freeletics.mad.whetstone.codegen.util.launchedEffect
-import com.freeletics.mad.whetstone.codegen.util.localOnBackPressedDispatcherOwner
 import com.freeletics.mad.whetstone.codegen.util.navController
-import com.freeletics.mad.whetstone.codegen.util.navigationHandlerHandle
+import com.freeletics.mad.whetstone.codegen.util.navigationHandlerNavigation
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.rememberCoroutineScope
 import com.freeletics.mad.whetstone.codegen.util.rememberViewModelProvider
@@ -64,12 +62,9 @@ internal class ComposeGenerator(
         }
 
         return CodeBlock.builder()
-            .addStatement("val onBackPressedDispatcher = %T.current!!.onBackPressedDispatcher", localOnBackPressedDispatcherOwner)
-            .beginControlFlow("%M(navController, onBackPressedDispatcher, component) {", launchedEffect)
             .addStatement("val handler = component.%L", data.navigation!!.navigationHandler.propertyName)
             .addStatement("val navigator = component.%L", data.navigation!!.navigator.propertyName)
-            .addStatement("handler.%N(this, navController, onBackPressedDispatcher, navigator)", navigationHandlerHandle)
-            .endControlFlow()
+            .addStatement("handler.%N(navController, navigator)", navigationHandlerNavigation)
             .add("\n")
             .build()
     }
