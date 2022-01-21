@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha10 *(2022-01-21)*
+----------------------------
+
+- Whetstone: split `runtime` into `runtime`, `runtime-compose` and `runtime-fragment`
+- Navigator: split existing module into `common`, `common-compose` and `common-fragment`
+- Navigator: new  `runtime` into `runtime`, `runtime-compose` and `runtime-fragment` modules which provide `Navigator` and `NavEventNavigationHandler` implementations
+
+
 Version 0.3.0-alpha10 *(2021-10-20)*
 ----------------------------
 
