@@ -1,7 +1,13 @@
 Change Log
 ==========
 
-Version 0.3.0-alpha10 *(2022-01-21)*
+Version 0.3.0-alpha12 *(2022-01-24)*
+----------------------------
+
+- fix `navigator-common-compose` and `navigator-common-fragment` artifact ids
+
+
+Version 0.3.0-alpha11 *(2022-01-21)*
 ----------------------------
 
 - Whetstone: split `runtime` into `runtime`, `runtime-compose` and `runtime-fragment`
