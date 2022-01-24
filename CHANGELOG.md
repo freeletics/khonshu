@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha13 *(2022-01-24)*
+----------------------------
+
+- Navigator: add `handleNavEvent(NavEvent)` methods to NavEventNavigationHandler to allow easy extension
+- fix duplicate manifest package names
+
+
 Version 0.3.0-alpha12 *(2022-01-24)*
 ----------------------------
 
