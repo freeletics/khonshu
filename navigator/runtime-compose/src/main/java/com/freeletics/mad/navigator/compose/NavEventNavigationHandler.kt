@@ -113,6 +113,10 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
         resultLaunchers: Map<ResultLauncher<*>, ActivityResultLauncher<*>>,
         navEvent: NavEvent
     ) {
+        if (handleNavEvent(navEvent)) {
+            return
+        }
+
         when (navEvent) {
             is NavigateToEvent -> {
                 controller.navigate(
@@ -141,5 +145,15 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
             }
             else -> throw IllegalArgumentException("Unknown NavEvent $navEvent")
         }
+    }
+
+    /**
+     * This method can be overridden to handle custom [NavEvent] implementations or handle
+     * the standard events in a different way.
+     *
+     * @return `true` if event was handled, `false` otherwise
+     */
+    protected open fun handleNavEvent(event: NavEvent): Boolean {
+        return false
     }
 }
