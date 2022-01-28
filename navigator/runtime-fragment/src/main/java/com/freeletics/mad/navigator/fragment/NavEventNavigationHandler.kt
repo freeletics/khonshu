@@ -129,8 +129,8 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
                     .setLaunchSingleTop(true)
                     .build()
                 controller.navigate(
-                    event.route.destinationId,
-                    event.route.getArguments(),
+                    event.root.destinationId,
+                    event.root.getArguments(),
                     options
                 )
             }

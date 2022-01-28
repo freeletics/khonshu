@@ -14,7 +14,7 @@ public class NavEventNavigatorTest {
 
     private class TestNavigator : NavEventNavigator()
     private data class SimpleRoute(override val destinationId: Int) : NavRoute
-    private data class SimpleTabRoute(override val destinationId: Int) : TabRoute
+    private data class SimpleNavRoot(override val destinationId: Int) : NavRoot
 
     @Test
     public fun `navigateTo event is received`(): Unit = runBlocking {
@@ -51,9 +51,9 @@ public class NavEventNavigatorTest {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
-            navigator.navigateToTab(SimpleTabRoute(1), true)
+            navigator.navigateToRoot(SimpleNavRoot(1), true)
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.NavigateToTabEvent(SimpleTabRoute(1), true))
+            assertThat(awaitItem()).isEqualTo(NavEvent.NavigateToTabEvent(SimpleNavRoot(1), true))
 
             cancel()
         }

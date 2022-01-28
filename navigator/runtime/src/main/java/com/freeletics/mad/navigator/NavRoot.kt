@@ -4,12 +4,12 @@ import android.os.Bundle
 
 /**
  * This is similar to a [NavRoute] but represents the route to the start destination used in
- * a backstack. When you navigate to a [TabRoute] the current backstack is saved and removed
- * so that the [TabRoute] is right on top of the start destination.
+ * a backstack. When you navigate to a [NavRoot] the current backstack is saved and removed
+ * so that the [NavRoot] is right on top of the start destination.
  *
  * [getArguments] can optionally be overridden to provide extra information to the destination.
  */
-public interface TabRoute {
+public interface NavRoot {
     /**
      * The destination this route leads to.
      */

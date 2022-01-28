@@ -119,15 +119,15 @@ public abstract class NavEventNavigator : Navigator {
     }
 
     /**
-     * Triggers a new [NavEvent] to navigate to the given [route]. The current back stack will
-     * be popped and saved. Whether the backstack of the given route is restored depends
+     * Triggers a new [NavEvent] to navigate to the given [root]. The current back stack will
+     * be popped and saved. Whether the backstack of the given root is restored depends
      * on [restoreTabState].
      */
-    public fun navigateToTab(
-        route: TabRoute,
+    public fun navigateToRoot(
+        root: NavRoot,
         restoreTabState: Boolean = false,
     ) {
-        val event = NavEvent.NavigateToTabEvent(route, restoreTabState)
+        val event = NavEvent.NavigateToTabEvent(root, restoreTabState)
         sendNavEvent(event)
     }
 
