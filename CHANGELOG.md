@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha14 *(2022-01-28)*
+----------------------------
+
+- AndroidX Navigation 2.4.0 and Fragment 1.4.1
+- Navigator: add multi back stack support through `NavRoot`, `navigateToRoot` and `NavigateToRootEvent`
+
+
 Version 0.3.0-alpha13 *(2022-01-24)*
 ----------------------------
 
