@@ -121,7 +121,7 @@ public abstract class NavEventNavigator : Navigator {
     /**
      * Triggers a new [NavEvent] to navigate to the given [root]. The current back stack will
      * be popped and saved. Whether the backstack of the given root is restored depends
-     * on [restoreTabState].
+     * on [restoreRootState].
      */
     public fun navigateToRoot(
         root: NavRoot,
