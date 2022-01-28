@@ -47,7 +47,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `navigateToTab event is received`(): Unit = runBlocking {
+    public fun `navigateToRoot event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
