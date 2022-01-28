@@ -42,5 +42,5 @@ tasks.withType(JavaCompile).configureEach {
 
 dependencies {
     api project(":navigator:common")
-    api "androidx.fragment:fragment:1.3.6"
+    api "androidx.fragment:fragment:1.4.1"
 }
