@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
@@ -101,19 +102,36 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
     private fun navigate(
         fragment: Fragment,
         resultLaunchers: Map<ResultLauncher<*>, ActivityResultLauncher<*>>,
-        navEvent: NavEvent
+        event: NavEvent
     ) {
-        if (handleNavEvent(navEvent)) {
+        if (handleNavEvent(event)) {
             return
         }
 
-        when (navEvent) {
+        when (event) {
             is NavigateToEvent -> {
                 val controller = fragment.findNavController()
                 controller.navigate(
-                    navEvent.navRoute.destinationId,
-                    navEvent.navRoute.getArguments(),
-                    navEvent.navOptions,
+                    event.route.destinationId,
+                    event.route.getArguments(),
+                    event.options,
+                )
+            }
+            is NavEvent.NavigateToTabEvent -> {
+                val controller = fragment.findNavController()
+                val options = NavOptions.Builder()
+                    // save the state of the current tab before leaving it
+                    .setPopUpTo(controller.graph.startDestinationId, inclusive = false, saveState = true)
+                    // restoring the state of the target tab
+                    .setRestoreState(event.restoreTabState)
+                    // makes sure that if the destination is already on the backstack, it and
+                    // everything above it gets removed
+                    .setLaunchSingleTop(true)
+                    .build()
+                controller.navigate(
+                    event.route.destinationId,
+                    event.route.getArguments(),
+                    options
                 )
             }
             is UpEvent -> {
@@ -126,24 +144,24 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
             }
             is BackToEvent -> {
                 val controller = fragment.findNavController()
-                controller.popBackStack(navEvent.destinationId, navEvent.inclusive)
+                controller.popBackStack(event.destinationId, event.inclusive)
             }
             is ResultLauncherEvent<*> -> {
-                val request = navEvent.resultLauncher
+                val request = event.resultLauncher
                 val launcher = resultLaunchers[request] ?: throw IllegalStateException(
                     "No launcher registered for $request!\nMake sure you called the appropriate " +
                         "AbstractNavigator.registerFor... method"
                 )
                 @Suppress("UNCHECKED_CAST")
-                (launcher as ActivityResultLauncher<Any?>).launch(navEvent.input)
+                (launcher as ActivityResultLauncher<Any?>).launch(event.input)
             }
             is FragmentResultEvent -> {
                 val result = Bundle(1).apply {
-                    putParcelable(KEY_FRAGMENT_RESULT, navEvent.result)
+                    putParcelable(KEY_FRAGMENT_RESULT, event.result)
                 }
-                fragment.parentFragmentManager.setFragmentResult(navEvent.requestKey, result)
+                fragment.parentFragmentManager.setFragmentResult(event.requestKey, result)
             }
-            else -> throw IllegalArgumentException("Unknown NavEvent $navEvent")
+            else -> throw IllegalArgumentException("Unknown NavEvent $event")
         }
     }
 

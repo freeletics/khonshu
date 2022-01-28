@@ -14,7 +14,6 @@ import org.junit.Test
 public class FragmentNavEventNavigatorTest {
 
     private class TestNavigator : FragmentNavEventNavigator()
-    private data class SimpleRoute(override val destinationId: Int) : NavRoute
 
     @Test
     public fun `navigateBackWithResult is received`(): Unit = runBlocking {

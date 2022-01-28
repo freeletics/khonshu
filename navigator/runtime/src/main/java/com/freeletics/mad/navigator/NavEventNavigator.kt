@@ -119,6 +119,19 @@ public abstract class NavEventNavigator : Navigator {
     }
 
     /**
+     * Triggers a new [NavEvent] to navigate to the given [route]. The current back stack will
+     * be popped and saved. Whether the backstack of the given route is restored depends
+     * on [restoreTabState].
+     */
+    public fun navigateToTab(
+        route: TabRoute,
+        restoreTabState: Boolean = false,
+    ) {
+        val event = NavEvent.NavigateToTabEvent(route, restoreTabState)
+        sendNavEvent(event)
+    }
+
+    /**
      * Triggers a new [NavEvent] that causes up navigation.
      */
     public fun navigateUp() {
@@ -144,21 +157,21 @@ public abstract class NavEventNavigator : Navigator {
     }
 
     /**
-     * Triggers a new [NavEvent] that launches the given [resultLauncher].
+     * Triggers a new [NavEvent] that launches the given [launcher].
      *
-     * The [resultLauncher] can be obtained by calling [registerForActivityResult].
+     * The [launcher] can be obtained by calling [registerForActivityResult].
      */
-    public fun navigateForResult(resultLauncher: ResultLauncher<Void?>) {
-        navigateForResult(resultLauncher, null)
+    public fun navigateForResult(launcher: ResultLauncher<Void?>) {
+        navigateForResult(launcher, null)
     }
 
     /**
-     * Triggers a new [NavEvent] that launches the given [resultLauncher] with the given [input].
+     * Triggers a new [NavEvent] that launches the given [launcher] with the given [input].
      *
-     * The [resultLauncher] can be obtained by calling [registerForActivityResult].
+     * The [launcher] can be obtained by calling [registerForActivityResult].
      */
-    public fun <I> navigateForResult(resultLauncher: ResultLauncher<I>, input: I) {
-        val event = ResultLauncherEvent(resultLauncher, input)
+    public fun <I> navigateForResult(launcher: ResultLauncher<I>, input: I) {
+        val event = ResultLauncherEvent(launcher, input)
         sendNavEvent(event)
     }
 

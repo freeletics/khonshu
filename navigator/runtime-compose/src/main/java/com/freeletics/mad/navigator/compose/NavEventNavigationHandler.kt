@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.NavEvent.BackEvent
@@ -111,18 +112,34 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
     private fun navigate(
         controller: NavController,
         resultLaunchers: Map<ResultLauncher<*>, ActivityResultLauncher<*>>,
-        navEvent: NavEvent
+        event: NavEvent
     ) {
-        if (handleNavEvent(navEvent)) {
+        if (handleNavEvent(event)) {
             return
         }
 
-        when (navEvent) {
+        when (event) {
             is NavigateToEvent -> {
                 controller.navigate(
-                    navEvent.navRoute.destinationId,
-                    navEvent.navRoute.getArguments(),
-                    navEvent.navOptions,
+                    event.route.destinationId,
+                    event.route.getArguments(),
+                    event.options,
+                )
+            }
+            is NavEvent.NavigateToTabEvent -> {
+                val options = NavOptions.Builder()
+                    // save the state of the current tab before leaving it
+                    .setPopUpTo(controller.graph.startDestinationId, inclusive = false, saveState = true)
+                    // restoring the state of the target tab
+                    .setRestoreState(event.restoreTabState)
+                    // makes sure that if the destination is already on the backstack, it and
+                    // everything above it gets removed
+                    .setLaunchSingleTop(true)
+                    .build()
+                controller.navigate(
+                    event.route.destinationId,
+                    event.route.getArguments(),
+                    options
                 )
             }
             is UpEvent -> {
@@ -132,18 +149,18 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
                 controller.popBackStack()
             }
             is BackToEvent -> {
-                controller.popBackStack(navEvent.destinationId, navEvent.inclusive)
+                controller.popBackStack(event.destinationId, event.inclusive)
             }
             is ResultLauncherEvent<*> -> {
-                val request = navEvent.resultLauncher
+                val request = event.resultLauncher
                 val launcher = resultLaunchers[request] ?: throw IllegalStateException(
                     "No launcher registered for $request!\nMake sure you called the appropriate " +
                         "AbstractNavigator.registerFor... method"
                 )
                 @Suppress("UNCHECKED_CAST")
-                (launcher as ActivityResultLauncher<Any?>).launch(navEvent.input)
+                (launcher as ActivityResultLauncher<Any?>).launch(event.input)
             }
-            else -> throw IllegalArgumentException("Unknown NavEvent $navEvent")
+            else -> throw IllegalArgumentException("Unknown NavEvent $event")
         }
     }
 

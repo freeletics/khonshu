@@ -14,11 +14,20 @@ import androidx.navigation.NavOptions
 public interface NavEvent {
 
     /**
-     * Navigates to the given [navRoute] using the optionally passed [navOptions].
+     * Navigates to the given [route] using the optionally passed [options].
      */
     public data class NavigateToEvent(
-        val navRoute: NavRoute,
-        val navOptions: NavOptions? = null,
+        val route: NavRoute,
+        val options: NavOptions? = null,
+    ) : NavEvent
+
+    /**
+     * Navigates to the given [route]. The current back stack will be popped and saved.
+     * Whether the backstack of the given route is restored depends on [restoreTabState].
+     */
+    public data class NavigateToTabEvent(
+        val route: TabRoute,
+        val restoreTabState: Boolean,
     ) : NavEvent
 
     /**

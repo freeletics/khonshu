@@ -54,5 +54,5 @@ dependencies {
 
     implementation project(":navigator:common-compose")
     implementation project(":state-machine")
-    implementation "androidx.navigation:navigation-runtime:2.3.5"
+    implementation "androidx.navigation:navigation-runtime:2.4.0"
 }
