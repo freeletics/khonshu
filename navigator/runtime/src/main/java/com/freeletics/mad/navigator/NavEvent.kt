@@ -25,7 +25,7 @@ public interface NavEvent {
      * Navigates to the given [root]. The current back stack will be popped and saved.
      * Whether the backstack of the given route is restored depends on [restoreTabState].
      */
-    public data class NavigateToTabEvent(
+    public data class NavigateToRootEvent(
         val root: NavRoot,
         val restoreTabState: Boolean,
     ) : NavEvent
