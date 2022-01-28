@@ -53,7 +53,7 @@ public class NavEventNavigatorTest {
         navigator.navEvents.test {
             navigator.navigateToRoot(SimpleNavRoot(1), true)
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.NavigateToTabEvent(SimpleNavRoot(1), true))
+            assertThat(awaitItem()).isEqualTo(NavEvent.NavigateToRootEvent(SimpleNavRoot(1), true))
 
             cancel()
         }

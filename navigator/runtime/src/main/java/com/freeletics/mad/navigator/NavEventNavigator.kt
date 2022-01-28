@@ -127,7 +127,7 @@ public abstract class NavEventNavigator : Navigator {
         root: NavRoot,
         restoreRootState: Boolean = false,
     ) {
-        val event = NavEvent.NavigateToTabEvent(root, restoreTabState)
+        val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
         sendNavEvent(event)
     }
 

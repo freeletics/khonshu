@@ -117,13 +117,13 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
                     event.options,
                 )
             }
-            is NavEvent.NavigateToTabEvent -> {
+            is NavEvent.NavigateToRootEvent -> {
                 val controller = fragment.findNavController()
                 val options = NavOptions.Builder()
-                    // save the state of the current tab before leaving it
+                    // save the state of the current root before leaving it
                     .setPopUpTo(controller.graph.startDestinationId, inclusive = false, saveState = true)
-                    // restoring the state of the target tab
-                    .setRestoreState(event.restoreTabState)
+                    // restoring the state of the target root
+                    .setRestoreState(event.restoreRootState)
                     // makes sure that if the destination is already on the backstack, it and
                     // everything above it gets removed
                     .setLaunchSingleTop(true)
