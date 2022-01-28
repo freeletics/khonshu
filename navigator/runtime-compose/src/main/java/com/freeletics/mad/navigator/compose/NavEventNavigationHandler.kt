@@ -130,7 +130,7 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
                 val options = NavOptions.Builder()
                     // save the state of the current root before leaving it
                     .setPopUpTo(controller.graph.startDestinationId, inclusive = false, saveState = true)
-                    // restoring the state of the target tab
+                    // restoring the state of the target root
                     .setRestoreState(event.restoreTabState)
                     // makes sure that if the destination is already on the backstack, it and
                     // everything above it gets removed
