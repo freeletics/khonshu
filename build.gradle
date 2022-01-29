@@ -36,9 +36,8 @@ dependencyAnalysis {
                 severity('fail')
             }
 
-            onIncorrectConfiguration {
-                // https://github.com/autonomousapps/dependency-analysis-android-gradle-plugin/issues/522
-                exclude("androidx.compose.runtime:runtime")
+            onUnusedDependencies {
+                exclude("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
             }
         }
     }
