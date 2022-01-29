@@ -20,7 +20,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.4"
+        kotlinCompilerExtensionVersion = "1.1.0-rc03"
     }
 }
 
@@ -50,7 +50,7 @@ tasks.withType(JavaCompile).configureEach {
 
 dependencies {
     api project(":navigator:common")
-    api "androidx.compose.runtime:runtime:1.0.4"
+    api "androidx.compose.runtime:runtime:1.1.0-rc03"
 
     implementation project(":navigator:common-compose")
     implementation project(":state-machine")

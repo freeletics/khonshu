@@ -22,7 +22,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.4"
+        kotlinCompilerExtensionVersion = "1.1.0-rc03"
     }
 }
 
@@ -51,9 +51,9 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
-    api "androidx.compose.runtime:runtime:1.0.4"
+    api "androidx.compose.runtime:runtime:1.1.0-rc03"
 
-    implementation "androidx.compose.ui:ui:1.0.4"
+    implementation "androidx.compose.ui:ui:1.1.0-rc03"
 
     compileOnly "androidx.annotation:annotation:1.2.0"
 }

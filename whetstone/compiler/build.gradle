@@ -19,15 +19,15 @@ kotlin {
 }
 
 dependencies {
-    api "org.jetbrains.kotlin:kotlin-compiler-embeddable:1.5.31"
-    api "com.squareup.anvil:compiler-api:2.3.7"
-    implementation "com.squareup.anvil:annotations:2.3.7"
-    implementation "com.squareup.anvil:compiler-utils:2.3.7"
+    api "org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.10"
+    api "com.squareup.anvil:compiler-api:2.3.11-1-6-10"
+    implementation "com.squareup.anvil:annotations:2.3.11-1-6-10"
+    implementation "com.squareup.anvil:compiler-utils:2.3.11-1-6-10"
     implementation "com.squareup:kotlinpoet:1.10.2"
 
-    compileOnly "com.google.auto.service:auto-service-annotations:1.0"
-    kapt "com.google.auto.service:auto-service:1.0"
+    compileOnly "com.google.auto.service:auto-service-annotations:1.0.1"
+    kapt "com.google.auto.service:auto-service:1.0.1"
 
     testImplementation "junit:junit:4.13.2"
-    testImplementation "io.kotest:kotest-assertions-shared-jvm:4.6.3"
+    testImplementation "io.kotest:kotest-assertions-shared-jvm:5.1.0"
 }
