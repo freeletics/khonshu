@@ -10,8 +10,9 @@ import kotlin.reflect.KClass
 /**
  * A generated implementation of this can be used to retrieve a generated [NavEntryComponent].
  *
- * The implementation will be bound into a `Map<String, NavEntryComponentGetter>` were the key
- * is the same scope that is used in [NavEntryId] and [NavEntryComponent].
+ * The implementation will be bound into a `Map<Class<*>, NavEntryComponentGetter>` were the key
+ * is the same scope that is used in [NavEntryId] and [NavEntryComponent]. It can be used through
+ * [com.freeletics.mad.whetstone.NavEntryComponents].
  */
 @InternalWhetstoneApi
 public interface NavEntryComponentGetter {
