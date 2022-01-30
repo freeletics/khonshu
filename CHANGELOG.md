@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha15 *(Unreleased)*
+----------------------------
+
+- Whetstone: Added `NavEntryComponents` as higher level API to retrieve a generated `NavEntryComponent`.
+It abstracts away the `Map` of component getters.
+- Whetstone: `NavEntryComponentGetter` is now marked as internal API, use `NavEntryComponents` instead
+- Whetstone: `NavEntryComponentGetter` will now use the class as map key instead of the fully qualified
+name as string. This resolves issues with proguard obfuscation. The only downside is that
+`NavEntryComponents` needs to do a one time mapping from `Class` to `String` during construction.
+
+
 Version 0.3.0-alpha14 *(2022-01-28)*
 ----------------------------
 

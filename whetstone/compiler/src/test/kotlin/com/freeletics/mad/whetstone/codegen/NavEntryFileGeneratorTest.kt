@@ -5,7 +5,7 @@ import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 
-class NavEntryFileGeneratorTest {
+internal class NavEntryFileGeneratorTest {
 
     private val full = NavEntryData(
         baseName = "TestFlow",
@@ -26,10 +26,10 @@ class NavEntryFileGeneratorTest {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import androidx.navigation.NavBackStackEntry
-            import com.freeletics.mad.whetstone.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.NavEntryId
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.ContributesTo
@@ -90,6 +90,7 @@ class NavEntryFileGeneratorTest {
               }
             }
 
+            @OptIn(InternalWhetstoneApi::class)
             public class TestFlowComponentGetter @Inject constructor(
               @NavEntryId(TestFlowScope::class)
               private val id: Int
@@ -112,7 +113,7 @@ class NavEntryFileGeneratorTest {
             public interface WhetstoneTestFlowModule {
               @Binds
               @IntoMap
-              @NavEntryComponentGetterKey("com.test.TestFlowScope")
+              @NavEntryComponentGetterKey(TestFlowScope::class)
               @OptIn(InternalWhetstoneApi::class)
               public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }
@@ -132,10 +133,10 @@ class NavEntryFileGeneratorTest {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import androidx.navigation.NavBackStackEntry
-            import com.freeletics.mad.whetstone.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.NavEntryId
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.ContributesTo
@@ -189,6 +190,7 @@ class NavEntryFileGeneratorTest {
               }
             }
 
+            @OptIn(InternalWhetstoneApi::class)
             public class TestFlowComponentGetter @Inject constructor(
               @NavEntryId(TestFlowScope::class)
               private val id: Int
@@ -211,7 +213,7 @@ class NavEntryFileGeneratorTest {
             public interface WhetstoneTestFlowModule {
               @Binds
               @IntoMap
-              @NavEntryComponentGetterKey("com.test.TestFlowScope")
+              @NavEntryComponentGetterKey(TestFlowScope::class)
               @OptIn(InternalWhetstoneApi::class)
               public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }
@@ -231,10 +233,10 @@ class NavEntryFileGeneratorTest {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import androidx.navigation.NavBackStackEntry
-            import com.freeletics.mad.whetstone.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.NavEntryId
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.ContributesTo
@@ -290,6 +292,7 @@ class NavEntryFileGeneratorTest {
               }
             }
 
+            @OptIn(InternalWhetstoneApi::class)
             public class TestFlowComponentGetter @Inject constructor(
               @NavEntryId(TestFlowScope::class)
               private val id: Int
@@ -312,7 +315,7 @@ class NavEntryFileGeneratorTest {
             public interface WhetstoneTestFlowModule {
               @Binds
               @IntoMap
-              @NavEntryComponentGetterKey("com.test.TestFlowScope")
+              @NavEntryComponentGetterKey(TestFlowScope::class)
               @OptIn(InternalWhetstoneApi::class)
               public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }

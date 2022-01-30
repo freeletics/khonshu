@@ -2,6 +2,9 @@ package com.freeletics.mad.whetstone
 
 import android.content.Context
 import androidx.navigation.NavBackStackEntry
+import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
+import com.freeletics.mad.whetstone.internal.NavEntryComponentGetter
+import javax.inject.Inject
 import javax.inject.Qualifier
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.FUNCTION
@@ -63,16 +66,23 @@ public annotation class NavEntryComponent(
 public annotation class NavEntryId(val value: KClass<*>)
 
 /**
- * A generated implementation of this can be used to retrieve a generated [NavEntryComponent].
- *
- * The implementation will be bound into a `Map<String, NavEntryComponentGetter>` were the key
- * is the same scope that is used in [NavEntryId] and [NavEntryComponent].
+ * Class that allows to retrieve generated [NavEntryComponent] instances.
  */
-public interface NavEntryComponentGetter {
+@OptIn(InternalWhetstoneApi::class)
+public class NavEntryComponents @Inject constructor(
+    getters: @JvmSuppressWildcards Map<Class<*>, NavEntryComponentGetter>
+) {
+    private val navEntryComponentGetters = getters.mapKeys { it.key.name }
+
     /**
+     * Tries to retrieve a generated [NavEntryComponent] for the given [name], where `name` is the
+     * fully qualified name of the [NavEntryComponent.scope].
+     *
      * The id that is passed as parameter to [findEntry] is the id that was provided with
      * [NavEntryId]. The given [findEntry] should look up a back strack entry for that id
      * in the current `NavController`.
      */
-    public fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any
+    public fun get(name: String, context: Context, findEntry: (Int) -> NavBackStackEntry): Any? {
+        return navEntryComponentGetters[name]?.retrieve(findEntry, context)
+    }
 }

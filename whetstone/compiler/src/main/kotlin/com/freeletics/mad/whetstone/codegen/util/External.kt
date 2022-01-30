@@ -19,7 +19,6 @@ internal val composeFqName = FqName(compose.canonicalName)
 internal val scopeTo = ClassName("com.freeletics.mad.whetstone", "ScopeTo")
 internal val navEntryComponent = ClassName("com.freeletics.mad.whetstone", "NavEntryComponent")
 internal val navEntryComponentFqName = FqName(navEntryComponent.canonicalName)
-internal val navEntryComponentGetter = ClassName("com.freeletics.mad.whetstone", "NavEntryComponentGetter")
 internal val navEntryIdScope = ClassName("com.freeletics.mad.whetstone", "NavEntryId")
 
 // Whetstone Internal API
@@ -29,6 +28,7 @@ internal val emptyNavigator = ClassName("com.freeletics.mad.whetstone.internal",
 internal val internalWhetstoneApi = ClassName("com.freeletics.mad.whetstone.internal", "InternalWhetstoneApi")
 internal val viewModelProvider = MemberName("com.freeletics.mad.whetstone.internal", "viewModelProvider")
 internal val rememberViewModelProvider = MemberName("com.freeletics.mad.whetstone.internal", "rememberViewModelProvider")
+internal val navEntryComponentGetter = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetter")
 internal val navEntryComponentGetterKey = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetterKey")
 internal val composeProviderValueModule = ClassName("com.freeletics.mad.whetstone.internal", "ComposeProviderValueModule")
 
@@ -61,6 +61,8 @@ internal val subcomponentFactory = subcomponent.nestedClass("Factory")
 internal val binds = ClassName("dagger", "Binds")
 internal val intoMap = ClassName("dagger.multibindings", "IntoMap")
 internal val bindsInstance = ClassName("dagger", "BindsInstance")
+internal val subcomponent = ClassName("dagger", "Subcomponent")
+internal val subcomponentFactory = subcomponent.nestedClass("Factory")
 internal val module = ClassName("dagger", "Module")
 internal val moduleFqName = FqName(module.canonicalName)
 

@@ -7,9 +7,11 @@ import com.freeletics.mad.whetstone.codegen.util.context
 import com.freeletics.mad.whetstone.codegen.util.inject
 import com.freeletics.mad.whetstone.codegen.util.navBackStackEntry
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
+import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
 import com.freeletics.mad.whetstone.codegen.util.navEntryIdScope
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.viewModelProvider
+import com.squareup.anvil.annotations.ContributesMultibinding
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -30,8 +32,11 @@ internal class NavEntryComponentGetterGenerator(
 
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(componentGetterClassName)
-            //.addAnnotation(mapKeyAnnotation())
-            //.addAnnotation(contributesMultibindingAnnotation())
+            .addAnnotation(optInAnnotation())
+// TODO use this and delete NavEntryComponentGetterModuleGenerator after
+//  https://github.com/square/anvil/issues/477 is fixed
+//            .addAnnotation(mapKeyAnnotation())
+//            .addAnnotation(contributesMultibindingAnnotation())
             .addSuperinterface(navEntryComponentGetter)
             .primaryConstructor(ctor())
             .addProperty(idProperty())
@@ -39,11 +44,9 @@ internal class NavEntryComponentGetterGenerator(
             .build()
     }
 
-// TODO leads to an Anvil failure
-//
 //    private fun mapKeyAnnotation(): AnnotationSpec {
 //        return AnnotationSpec.builder(navEntryComponentGetterKey)
-//            .addMember("%S", data.scope)
+//            .addMember("%T::class", data.scope)
 //            .build()
 //    }
 //
