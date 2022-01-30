@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha27 *(2022-03-??)*
+----------------------------
+
+- Whetstone: Updated to Anvil 2.4.0-M1
+- Whetstone: Use `@ContributesMultibinding` for the generated `NavEntryComponentGetter` instead of
+generating an extra `@Module` class
+
+
 Version 0.3.0-alpha26 *(2022-02-14)*
 ----------------------------
 
