@@ -61,8 +61,6 @@ internal val subcomponentFactory = subcomponent.nestedClass("Factory")
 internal val binds = ClassName("dagger", "Binds")
 internal val intoMap = ClassName("dagger.multibindings", "IntoMap")
 internal val bindsInstance = ClassName("dagger", "BindsInstance")
-internal val subcomponent = ClassName("dagger", "Subcomponent")
-internal val subcomponentFactory = subcomponent.nestedClass("Factory")
 internal val module = ClassName("dagger", "Module")
 internal val moduleFqName = FqName(module.canonicalName)
 
