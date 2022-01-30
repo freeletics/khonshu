@@ -9,7 +9,6 @@ import com.freeletics.mad.whetstone.codegen.common.ViewModelGenerator
 import com.freeletics.mad.whetstone.codegen.compose.ComposeFragmentGenerator
 import com.freeletics.mad.whetstone.codegen.compose.ComposeGenerator
 import com.freeletics.mad.whetstone.codegen.naventry.NavEntryComponentGetterGenerator
-import com.freeletics.mad.whetstone.codegen.naventry.NavEntryFactoryProviderGenerator
 import com.freeletics.mad.whetstone.codegen.naventry.NavEntrySubcomponentGenerator
 import com.freeletics.mad.whetstone.codegen.naventry.NavEntryViewModelGenerator
 import com.freeletics.mad.whetstone.codegen.renderer.RendererFragmentGenerator
@@ -57,13 +56,11 @@ internal class FileGenerator{
 
     fun generate(data: NavEntryData): FileSpec {
         val subcomponentGenerator = NavEntrySubcomponentGenerator(data)
-        val factoryProviderGenerator = NavEntryFactoryProviderGenerator(data)
         val viewModelGenerator = NavEntryViewModelGenerator(data)
         val componentGetterGenerator = NavEntryComponentGetterGenerator(data)
 
         return FileSpec.builder(data.packageName, "WhetstoneNavEntry${data.baseName}")
             .addType(subcomponentGenerator.generate())
-            .addType(factoryProviderGenerator.generate())
             .addType(viewModelGenerator.generate())
             .addType(componentGetterGenerator.generate())
             .build()

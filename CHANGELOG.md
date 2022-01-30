@@ -7,6 +7,11 @@ Version 0.3.0-alpha27 *(2022-03-??)*
 - Whetstone: Updated to Anvil 2.4.0-M1
 - Whetstone: Use `@ContributesMultibinding` for the generated `NavEntryComponentGetter` instead of
 generating an extra `@Module` class
+- Whetstone: Use `@ContributesSubcomponent` instead of `@MergeSubcomponent` for the generated
+`NavEntryComponent`. This delays the merging of the subcomponent to when the parent scope
+is processed and allows to use `@NavEntryComponent` in modules other than the app module.
+- Whetstone: Because of the above, the generated FactoryProvider interface is now nested in the
+component and called `ParentComponent` like Anvil expects.
 
 
 Version 0.3.0-alpha26 *(2022-02-14)*
