@@ -1,5 +1,6 @@
 package com.freeletics.mad.whetstone.codegen.util
 
+import com.squareup.anvil.annotations.ContributesSubcomponent
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent
 import com.squareup.anvil.annotations.MergeSubcomponent
@@ -52,6 +53,10 @@ internal fun subcomponentAnnotation(scope: ClassName): AnnotationSpec {
     return AnnotationSpec.builder(MergeSubcomponent::class)
         .addMember("scope = %T::class", scope)
         .build()
+}
+
+internal fun subcomponentFactoryAnnotation(): AnnotationSpec {
+    return AnnotationSpec.builder(subcomponentFactory).build()
 }
 
 internal fun scopeToAnnotation(scope: ClassName): AnnotationSpec {

@@ -31,7 +31,7 @@ internal class NavEntryComponentGetterModuleGenerator(
 
     private fun mapKeyAnnotation(): AnnotationSpec {
         return AnnotationSpec.builder(navEntryComponentGetterKey)
-            .addMember("%S", data.scope)
+            .addMember("%T::class", data.scope)
             .build()
     }
 

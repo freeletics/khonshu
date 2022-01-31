@@ -5,12 +5,14 @@ import com.freeletics.mad.whetstone.codegen.util.Generator
 import com.freeletics.mad.whetstone.codegen.util.bindsInstanceParameter
 import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
+import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.coroutineScope
 import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
+import com.freeletics.mad.whetstone.codegen.util.internalWhetstoneApi
 import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
 import com.freeletics.mad.whetstone.codegen.util.scopeToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.subcomponentAnnotation
-import com.freeletics.mad.whetstone.codegen.util.subcomponentFactory
+import com.freeletics.mad.whetstone.codegen.util.subcomponentFactoryAnnotation
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.TypeSpec
@@ -50,7 +52,7 @@ internal class NavEntrySubcomponentGenerator(
             .returns(navEntrySubcomponentClassName)
             .build()
         return TypeSpec.interfaceBuilder(navEntrySubcomponentFactoryClassName)
-            .addAnnotation(subcomponentFactory)
+            .addAnnotation(subcomponentFactoryAnnotation())
             .addFunction(createFun)
             .build()
     }
