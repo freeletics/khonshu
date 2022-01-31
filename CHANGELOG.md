@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 0.3.0-alpha15 *(Unreleased)*
+Version 0.3.0-alpha15 *(2022-01-31)*
 ----------------------------
 
 - Whetstone: Added `NavEntryComponents` as higher level API to retrieve a generated `NavEntryComponent`.
