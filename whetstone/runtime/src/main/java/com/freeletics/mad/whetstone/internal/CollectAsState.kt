@@ -1,10 +1,9 @@
-package com.freeletics.mad.whetstone.fragment.internal
+package com.freeletics.mad.whetstone.internal
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.produceState
 import com.freeletics.mad.statemachine.StateMachine
-import kotlinx.coroutines.flow.collect
 
 @Composable
 @InternalWhetstoneApi

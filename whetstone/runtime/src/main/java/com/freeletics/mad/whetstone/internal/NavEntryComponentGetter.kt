@@ -1,4 +1,4 @@
-package com.freeletics.mad.whetstone.fragment.internal
+package com.freeletics.mad.whetstone.internal
 
 import android.content.Context
 import androidx.navigation.NavBackStackEntry

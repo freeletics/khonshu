@@ -1,4 +1,4 @@
-package com.freeletics.mad.whetstone.fragment.internal
+package com.freeletics.mad.whetstone.internal
 
 import androidx.compose.runtime.ProvidedValue
 import dagger.Module

@@ -1,4 +1,4 @@
-package com.freeletics.mad.whetstone.fragment.internal
+package com.freeletics.mad.whetstone.internal
 
 /**
  * Marks runtime APIs as well as generated code that should only be used by other generated code.

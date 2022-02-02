@@ -5,6 +5,8 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
+import com.freeletics.mad.whetstone.internal.SimpleSavedStateViewModelFactory
 import kotlin.reflect.KClass
 
 /**
