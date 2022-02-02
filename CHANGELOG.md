@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha17 *(2022-02-02)*
+----------------------------
+
+- Whetstone: Fixed package name mix-match.
+
+
 Version 0.3.0-alpha16 *(2022-02-02)*
 ----------------------------
 
