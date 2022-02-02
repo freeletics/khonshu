@@ -52,7 +52,7 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
-            import com.freeletics.mad.whetstone.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
             import com.google.accompanist.insets.LocalWindowInsets
             import com.google.accompanist.insets.ViewWindowInsetObserver
             import com.squareup.anvil.annotations.MergeComponent
@@ -221,7 +221,7 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
-            import com.freeletics.mad.whetstone.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
             import com.google.accompanist.insets.LocalWindowInsets
             import com.google.accompanist.insets.ViewWindowInsetObserver
             import com.squareup.anvil.annotations.MergeComponent
@@ -388,7 +388,7 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
-            import com.freeletics.mad.whetstone.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.navigation.TestNavigationHandler
             import com.test.parent.TestParentScope

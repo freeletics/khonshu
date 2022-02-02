@@ -7,8 +7,6 @@ import com.freeletics.mad.whetstone.codegen.util.composeEmptyNavigator
 import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.dialogFragment
-import com.freeletics.mad.whetstone.codegen.util.emptyNavigationHandler
-import com.freeletics.mad.whetstone.codegen.util.emptyNavigator
 import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.fragmentEmptyNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.fragmentEmptyNavigator

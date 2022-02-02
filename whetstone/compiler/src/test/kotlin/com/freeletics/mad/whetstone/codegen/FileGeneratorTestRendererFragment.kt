@@ -39,7 +39,7 @@ class FileGeneratorTestRendererFragment {
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.navigation.TestNavigationHandler
@@ -157,7 +157,7 @@ class FileGeneratorTestRendererFragment {
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
@@ -268,7 +268,7 @@ class FileGeneratorTestRendererFragment {
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.navigation.TestNavigationHandler
