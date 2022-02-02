@@ -7,9 +7,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.CallSuper
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentResultOwner
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
@@ -21,7 +19,6 @@ import com.freeletics.mad.navigator.NavEvent.BackToEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
 import com.freeletics.mad.navigator.NavEvent.ResultLauncherEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
-import com.freeletics.mad.navigator.fragment.result.FragmentResultRequest
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
@@ -31,17 +28,16 @@ import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DE
 import com.freeletics.mad.navigator.ResultLauncher
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import java.lang.IllegalArgumentException
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
  * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
  */
-public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEventNavigator> {
+public open class NavEventNavigationHandler<T : NavEventNavigator> : NavigationHandler<T> {
 
     @OptIn(InternalNavigatorApi::class)
     @CallSuper
-    override fun handle(fragment: Fragment, navigator: FragmentNavEventNavigator) {
+    override fun handle(fragment: Fragment, navigator: T) {
         val activityLaunchers = navigator.activityResultRequests.associateWith {
             it.registerIn(fragment)
         }
@@ -49,10 +45,6 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
             it.registerIn(fragment, fragment.requireActivity())
         }
         val launchers: Map<ResultLauncher<*>, ActivityResultLauncher<*>> = activityLaunchers + permissionLaunchers
-
-        navigator.fragmentResultRequests.forEach {
-            it.registerIn(fragment.parentFragmentManager, fragment)
-        }
 
         val dispatcher = fragment.requireActivity().onBackPressedDispatcher
         dispatcher.addCallback(fragment, navigator.onBackPressedCallback)
@@ -90,21 +82,12 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
         }
     }
 
-    private fun <O> FragmentResultRequest<O>.registerIn(
-        fragmentResultOwner: FragmentResultOwner,
-        lifecycleOwner: LifecycleOwner
-    ) {
-        fragmentResultOwner.setFragmentResultListener(requestKey, lifecycleOwner) { _, bundle ->
-            onResult(bundle.getParcelable(KEY_FRAGMENT_RESULT)!!)
-        }
-    }
-
     private fun navigate(
         fragment: Fragment,
         resultLaunchers: Map<ResultLauncher<*>, ActivityResultLauncher<*>>,
         event: NavEvent
     ) {
-        if (handleNavEvent(event)) {
+        if (handleNavEvent(fragment, event)) {
             return
         }
 
@@ -155,12 +138,6 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
                 @Suppress("UNCHECKED_CAST")
                 (launcher as ActivityResultLauncher<Any?>).launch(event.input)
             }
-            is FragmentResultEvent -> {
-                val result = Bundle(1).apply {
-                    putParcelable(KEY_FRAGMENT_RESULT, event.result)
-                }
-                fragment.parentFragmentManager.setFragmentResult(event.requestKey, result)
-            }
             else -> throw IllegalArgumentException("Unknown NavEvent $event")
         }
     }
@@ -171,12 +148,7 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
      *
      * @return `true` if event was handled, `false` otherwise
      */
-    protected open fun handleNavEvent(event: NavEvent): Boolean {
+    protected open fun handleNavEvent(fragment: Fragment, event: NavEvent): Boolean {
        return false
     }
 }
-
-/**
- * Internal key used to store the result data in the result [Bundle].
- */
-private const val KEY_FRAGMENT_RESULT = "fragment_result"

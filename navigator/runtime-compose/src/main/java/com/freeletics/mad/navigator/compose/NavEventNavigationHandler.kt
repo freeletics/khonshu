@@ -32,17 +32,16 @@ import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DE
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED
 import com.freeletics.mad.navigator.ResultLauncher
 import java.lang.IllegalArgumentException
-import kotlinx.coroutines.flow.collect
 
 /**
  * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
  */
-public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigator> {
+public open class NavEventNavigationHandler<T : NavEventNavigator> : NavigationHandler<T> {
 
     @Composable
     @OptIn(InternalNavigatorApi::class)
     @CallSuper
-    override fun Navigation(navController: NavController, navigator: NavEventNavigator) {
+    override fun Navigation(navController: NavController, navigator: T) {
         val lifecycleOwner = LocalLifecycleOwner.current
 
         val activityLaunchers = navigator.activityResultRequests.associateWith {
@@ -114,7 +113,7 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
         resultLaunchers: Map<ResultLauncher<*>, ActivityResultLauncher<*>>,
         event: NavEvent
     ) {
-        if (handleNavEvent(event)) {
+        if (handleNavEvent(controller, event)) {
             return
         }
 
@@ -170,7 +169,7 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
      *
      * @return `true` if event was handled, `false` otherwise
      */
-    protected open fun handleNavEvent(event: NavEvent): Boolean {
+    protected open fun handleNavEvent(controller: NavController, event: NavEvent): Boolean {
         return false
     }
 }
