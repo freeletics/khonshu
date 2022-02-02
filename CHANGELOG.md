@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha18 *(2022-02-02)*
+----------------------------
+
+- Whetstone: Fixed import in generated nav entry code.
+
+
 Version 0.3.0-alpha17 *(2022-02-02)*
 ----------------------------
 
