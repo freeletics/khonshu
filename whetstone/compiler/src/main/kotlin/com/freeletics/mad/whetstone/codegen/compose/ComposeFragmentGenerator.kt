@@ -9,7 +9,6 @@ import com.freeletics.mad.whetstone.codegen.util.composeView
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.disposeOnLifecycleDestroyed
 import com.freeletics.mad.whetstone.codegen.util.findNavController
-import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
 import com.freeletics.mad.whetstone.codegen.util.layoutParams
 import com.freeletics.mad.whetstone.codegen.util.localWindowInsets
@@ -18,7 +17,7 @@ import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.view
 import com.freeletics.mad.whetstone.codegen.util.viewGroup
-import com.freeletics.mad.whetstone.codegen.util.viewModelProvider
+import com.freeletics.mad.whetstone.codegen.util.fragmentViewModelProvider
 import com.freeletics.mad.whetstone.codegen.util.viewWindowInsetsObserver
 import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.FunSpec
@@ -112,7 +111,7 @@ internal class ComposeFragmentGenerator(
     private fun setupNavigationFun(): FunSpec {
         return FunSpec.builder("setupNavigation")
             .addModifiers(PRIVATE)
-            .beginControlFlow("val viewModelProvider = %M<%T>(this, %T::class) { dependencies, handle -> ", viewModelProvider, data.dependencies, data.parentScope)
+            .beginControlFlow("val viewModelProvider = %M<%T>(this, %T::class) { dependencies, handle -> ", fragmentViewModelProvider, data.dependencies, data.parentScope)
             // arguments: external method
             .addStatement("val arguments = arguments ?: %T.EMPTY", bundle)
             .addStatement("%T(dependencies, handle, arguments)", viewModelClassName)

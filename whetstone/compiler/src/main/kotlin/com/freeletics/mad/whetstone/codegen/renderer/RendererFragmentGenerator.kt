@@ -6,7 +6,6 @@ import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.util.Generator
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.bundle
-import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.lateinitPropertySpec
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
 import com.freeletics.mad.whetstone.codegen.util.navigationHandlerHandle
@@ -14,7 +13,7 @@ import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.rendererConnect
 import com.freeletics.mad.whetstone.codegen.util.view
 import com.freeletics.mad.whetstone.codegen.util.viewGroup
-import com.freeletics.mad.whetstone.codegen.util.viewModelProvider
+import com.freeletics.mad.whetstone.codegen.util.fragmentViewModelProvider
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
@@ -62,7 +61,7 @@ internal class RendererFragmentGenerator(
     private fun rendererInjectFun(): FunSpec {
         return FunSpec.builder(rendererFragmentInjectName)
             .addModifiers(PRIVATE)
-            .beginControlFlow("val viewModelProvider = %M<%T>(this, %T::class) { dependencies, handle -> ", viewModelProvider, data.dependencies, data.parentScope)
+            .beginControlFlow("val viewModelProvider = %M<%T>(this, %T::class) { dependencies, handle -> ", fragmentViewModelProvider, data.dependencies, data.parentScope)
             // arguments: external method
             .addStatement("val arguments = arguments ?: %T.EMPTY", bundle)
             .addStatement("%T(dependencies, handle, arguments)", viewModelClassName)

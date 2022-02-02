@@ -31,7 +31,7 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeSubcomponent
             import com.test.parent.TestParentScope
@@ -138,7 +138,7 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeSubcomponent
             import com.test.parent.TestParentScope
@@ -238,7 +238,7 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeSubcomponent
             import com.test.parent.TestParentScope

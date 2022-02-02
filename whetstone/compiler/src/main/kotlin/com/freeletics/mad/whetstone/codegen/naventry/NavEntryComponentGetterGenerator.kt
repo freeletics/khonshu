@@ -7,11 +7,10 @@ import com.freeletics.mad.whetstone.codegen.util.context
 import com.freeletics.mad.whetstone.codegen.util.inject
 import com.freeletics.mad.whetstone.codegen.util.navBackStackEntry
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
-import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
 import com.freeletics.mad.whetstone.codegen.util.navEntryIdScope
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
-import com.freeletics.mad.whetstone.codegen.util.viewModelProvider
-import com.squareup.anvil.annotations.ContributesMultibinding
+import com.freeletics.mad.whetstone.codegen.util.fragmentViewModelProvider
+import com.freeletics.mad.whetstone.codegen.util.navEntryViewModelProvider
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -84,7 +83,7 @@ internal class NavEntryComponentGetterGenerator(
             .addParameter("context", context)
             .returns(ANY)
             .addStatement("val entry = findEntry(id)")
-            .beginControlFlow("val viewModelProvider = %M<%T>(entry, context, %T::class) { component, handle -> ", viewModelProvider, navEntrySubcomponentFactoryProviderClassName, data.parentScope)
+            .beginControlFlow("val viewModelProvider = %M<%T>(entry, context, %T::class) { component, handle -> ", navEntryViewModelProvider, navEntrySubcomponentFactoryProviderClassName, data.parentScope)
             // arguments: external method
             .addStatement("val arguments = entry.arguments ?: %T.EMPTY", bundle)
             .addStatement("%T(component, handle, arguments)", viewModelClassName)
