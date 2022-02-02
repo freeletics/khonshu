@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha16 *(2022-02-02)*
+----------------------------
+
+- Whetstone: Fixed that `whetstone-runtime-compose` and `whetstone-runtime-fragment` contain a class
+  with the same fully qualified name and can not co exist in the same app.
+
+
 Version 0.3.0-alpha15 *(2022-01-31)*
 ----------------------------
 
