@@ -1,10 +1,10 @@
 package com.freeletics.mad.whetstone
 
 import androidx.fragment.app.DialogFragment
-import com.freeletics.mad.whetstone.internal.EmptyNavigator
+import com.freeletics.mad.whetstone.fragment.internal.EmptyNavigator
 import com.freeletics.mad.navigator.fragment.NavigationHandler
 import com.freeletics.mad.navigator.Navigator
-import com.freeletics.mad.whetstone.internal.EmptyNavigationHandler
+import com.freeletics.mad.whetstone.fragment.internal.EmptyNavigationHandler
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.CLASS
 import kotlin.reflect.KClass
@@ -64,13 +64,14 @@ public annotation class RendererDialogFragment(
     val parentScope: KClass<*>,
     val dependencies: KClass<*>,
 
+    val dialogFragmentBaseClass: KClass<out DialogFragment> = DialogFragment::class,
+
     //TODO should be KClass<out ViewRenderer.Factory<*, *>>
     // leaving out the constraint for now to be compatible with some custom factories using the same signature
     val rendererFactory: KClass<*>,
     //TODO should be KClass<out StateMachine<*, *>>
     // leaving out the constraint for now to be compatible with Renderer's LiveDataStateMachine
     val stateMachine: KClass<*>,
-    val dialogFragmentBaseClass: KClass<out DialogFragment> = DialogFragment::class,
 
     val navigator: KClass<out Navigator> = EmptyNavigator::class,
     val navigationHandler: KClass<out NavigationHandler<*>> = EmptyNavigationHandler::class,

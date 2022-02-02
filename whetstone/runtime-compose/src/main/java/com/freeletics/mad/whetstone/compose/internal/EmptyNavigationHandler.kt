@@ -1,4 +1,4 @@
-package com.freeletics.mad.whetstone.internal
+package com.freeletics.mad.whetstone.compose.internal
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController

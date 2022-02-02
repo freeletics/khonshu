@@ -1,4 +1,4 @@
-package com.freeletics.mad.whetstone.internal
+package com.freeletics.mad.whetstone.fragment.internal
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State

@@ -4,8 +4,8 @@ import androidx.fragment.app.DialogFragment
 import com.freeletics.mad.navigator.fragment.NavigationHandler
 import com.freeletics.mad.navigator.Navigator
 import com.freeletics.mad.statemachine.StateMachine
-import com.freeletics.mad.whetstone.internal.EmptyNavigationHandler
-import com.freeletics.mad.whetstone.internal.EmptyNavigator
+import com.freeletics.mad.whetstone.fragment.internal.EmptyNavigationHandler
+import com.freeletics.mad.whetstone.fragment.internal.EmptyNavigator
 import kotlin.reflect.KClass
 
 /**

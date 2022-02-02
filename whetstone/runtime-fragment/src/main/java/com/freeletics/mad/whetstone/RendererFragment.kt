@@ -1,9 +1,9 @@
 package com.freeletics.mad.whetstone
 
-import com.freeletics.mad.whetstone.internal.EmptyNavigator
+import com.freeletics.mad.whetstone.fragment.internal.EmptyNavigator
 import com.freeletics.mad.navigator.fragment.NavigationHandler
 import com.freeletics.mad.navigator.Navigator
-import com.freeletics.mad.whetstone.internal.EmptyNavigationHandler
+import com.freeletics.mad.whetstone.fragment.internal.EmptyNavigationHandler
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.CLASS
 import kotlin.reflect.KClass

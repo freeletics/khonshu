@@ -2,12 +2,16 @@ package com.freeletics.mad.whetstone
 
 import com.freeletics.mad.whetstone.codegen.FileGenerator
 import com.freeletics.mad.whetstone.codegen.util.composeDialogFragmentFqName
+import com.freeletics.mad.whetstone.codegen.util.composeEmptyNavigationHandler
+import com.freeletics.mad.whetstone.codegen.util.composeEmptyNavigator
 import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.dialogFragment
 import com.freeletics.mad.whetstone.codegen.util.emptyNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.emptyNavigator
 import com.freeletics.mad.whetstone.codegen.util.fragment
+import com.freeletics.mad.whetstone.codegen.util.fragmentEmptyNavigationHandler
+import com.freeletics.mad.whetstone.codegen.util.fragmentEmptyNavigator
 import com.freeletics.mad.whetstone.codegen.util.moduleFqName
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
 import com.freeletics.mad.whetstone.codegen.util.rendererDialogFragmentFqName
@@ -89,7 +93,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             factory = renderer.requireClassArgument("rendererFactory", 3, module),
             stateMachine = renderer.requireClassArgument("stateMachine", 4, module),
             fragmentBaseClass = fragment,
-            navigation = renderer.toNavigation(5, 6, module),
+            navigation = renderer.toFragmentNavigation(5, 6, module),
             coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 7) ?: false,
             rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 8) ?: false,
         )
@@ -119,7 +123,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             factory = renderer.requireClassArgument("rendererFactory", 3, module),
             stateMachine = renderer.requireClassArgument("stateMachine", 4, module),
             fragmentBaseClass = renderer.optionalClassArgument("dialogFragmentBaseClass", 5, module) ?: dialogFragment,
-            navigation = renderer.toNavigation(6, 7, module),
+            navigation = renderer.toFragmentNavigation(6, 7, module),
             coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 8) ?: false,
             rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 9) ?: false,
         )
@@ -149,7 +153,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             fragmentBaseClass = fragment,
             stateMachine = composeFragment.requireClassArgument("stateMachine", 3, module),
             enableInsetHandling = composeFragment.optionalBooleanArgument("enableInsetHandling", 4) ?: false,
-            navigation = composeFragment.toNavigation(5, 6, module),
+            navigation = composeFragment.toFragmentNavigation(5, 6, module),
             coroutinesEnabled = composeFragment.optionalBooleanArgument("coroutinesEnabled", 7) ?: false,
             rxJavaEnabled = composeFragment.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
         )
@@ -179,11 +183,10 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             fragmentBaseClass = composeFragment.optionalClassArgument("dialogFragmentBaseClass", 3, module) ?:  dialogFragment,
             stateMachine = composeFragment.requireClassArgument("stateMachine", 4, module),
             enableInsetHandling = composeFragment.optionalBooleanArgument("enableInsetHandling", 5) ?: false,
-            navigation = composeFragment.toNavigation(6, 7, module),
+            navigation = composeFragment.toFragmentNavigation(6, 7, module),
             coroutinesEnabled = composeFragment.optionalBooleanArgument("coroutinesEnabled", 8) ?: false,
             rxJavaEnabled = composeFragment.optionalBooleanArgument("rxJavaEnabled", 9) ?: false,
         )
-        //TODO check that navigationHandler type fits to fragment
 
         val file = FileGenerator().generate(data)
         return createGeneratedFile(
@@ -207,11 +210,10 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             parentScope = compose.requireClassArgument("parentScope", 1, module),
             dependencies = compose.requireClassArgument("dependencies", 2, module),
             stateMachine = compose.requireClassArgument("stateMachine", 3, module),
-            navigation = compose.toNavigation(4, 5, module),
+            navigation = compose.toComposeNavigation(4, 5, module),
             coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
             rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
         )
-        //TODO check that navigationHandler type fits to compose
 
         val file = FileGenerator().generate(data)
         return createGeneratedFile(
@@ -222,7 +224,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         )
     }
 
-    private fun KtAnnotationEntry.toNavigation(
+    private fun KtAnnotationEntry.toComposeNavigation(
         navigatorIndex: Int,
         navigationHandlerIndex: Int,
         module: ModuleDescriptor
@@ -231,14 +233,37 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         val navigationHandler = optionalClassArgument("navigationHandler", navigationHandlerIndex, module)
 
         if (navigator != null && navigationHandler != null &&
-            navigator != emptyNavigator && navigationHandler != emptyNavigationHandler
+            navigator != composeEmptyNavigator && navigationHandler != composeEmptyNavigationHandler
         ) {
             return CommonData.Navigation(navigator, navigationHandler)
         }
         if (navigator == null && navigationHandler == null) {
             return null
         }
-        if (navigator == emptyNavigator && navigationHandler == emptyNavigationHandler) {
+        if (navigator == composeEmptyNavigator && navigationHandler == composeEmptyNavigationHandler) {
+            return null
+        }
+
+        throw IllegalStateException("navigator and navigationHandler need to be set together")
+    }
+
+    private fun KtAnnotationEntry.toFragmentNavigation(
+        navigatorIndex: Int,
+        navigationHandlerIndex: Int,
+        module: ModuleDescriptor
+    ): CommonData.Navigation? {
+        val navigator = optionalClassArgument("navigator", navigatorIndex, module)
+        val navigationHandler = optionalClassArgument("navigationHandler", navigationHandlerIndex, module)
+
+        if (navigator != null && navigationHandler != null &&
+            navigator != fragmentEmptyNavigator && navigationHandler != fragmentEmptyNavigationHandler
+        ) {
+            return CommonData.Navigation(navigator, navigationHandler)
+        }
+        if (navigator == null && navigationHandler == null) {
+            return null
+        }
+        if (navigator == fragmentEmptyNavigator && navigationHandler == fragmentEmptyNavigationHandler) {
             return null
         }
 

@@ -1,7 +1,8 @@
-package com.freeletics.mad.whetstone.internal
+package com.freeletics.mad.whetstone.compose.internal
 
 import com.freeletics.mad.whetstone.ComposeScreen
 import com.freeletics.mad.navigator.Navigator
+import com.freeletics.mad.navigator.compose.NavigationHandler
 
 /**
  * Default value for the `navigator` parameter of [ComposeScreen]. When the generator finds

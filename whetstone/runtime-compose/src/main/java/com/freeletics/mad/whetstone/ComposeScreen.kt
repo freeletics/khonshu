@@ -3,8 +3,8 @@ package com.freeletics.mad.whetstone
 import com.freeletics.mad.navigator.compose.NavigationHandler
 import com.freeletics.mad.navigator.Navigator
 import com.freeletics.mad.statemachine.StateMachine
-import com.freeletics.mad.whetstone.internal.EmptyNavigationHandler
-import com.freeletics.mad.whetstone.internal.EmptyNavigator
+import com.freeletics.mad.whetstone.compose.internal.EmptyNavigationHandler
+import com.freeletics.mad.whetstone.compose.internal.EmptyNavigator
 import kotlin.reflect.KClass
 
 /**
