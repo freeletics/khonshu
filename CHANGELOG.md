@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha19 *(2022-02-03)*
+----------------------------
+
+- Navigator: Added `NavDestination` for both fragments and compose to support
+  declaring destinations.
+- Navigator: `NavHost` composable to support creating an AndroidX `NavHost` with
+  a set of `NavDestination` objects
+- Navigator: `NavHostFragment.setGraph` extension method to support creating
+  setting a graph with a set of `NavDestination` objects
+
+
 Version 0.3.0-alpha18 *(2022-02-02)*
 ----------------------------
 
