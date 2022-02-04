@@ -1,9 +1,11 @@
 package com.freeletics.mad.whetstone
 
+import androidx.fragment.app.Fragment
 import com.freeletics.mad.whetstone.fragment.internal.EmptyNavigator
 import com.freeletics.mad.navigator.fragment.NavigationHandler
 import com.freeletics.mad.navigator.Navigator
 import com.freeletics.mad.whetstone.fragment.internal.EmptyNavigationHandler
+import com.freeletics.mad.statemachine.StateMachine
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.CLASS
 import kotlin.reflect.KClass
@@ -62,12 +64,12 @@ public annotation class RendererFragment(
     val parentScope: KClass<*>,
     val dependencies: KClass<*>,
 
+    val stateMachine: KClass<out StateMachine<*, *>>,
     //TODO should be KClass<out ViewRenderer.Factory<*, *>>
     // leaving out the constraint for now to be compatible with some custom factories using the same signature
     val rendererFactory: KClass<*>,
-    //TODO should be KClass<out StateMachine<*, *>>
-    // leaving out the constraint for now to be compatible with Renderer's LiveDataStateMachine
-    val stateMachine: KClass<*>,
+
+    val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
 
     val navigator: KClass<out Navigator> = EmptyNavigator::class,
     val navigationHandler: KClass<out NavigationHandler<*>> = EmptyNavigationHandler::class,

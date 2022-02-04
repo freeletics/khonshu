@@ -1,5 +1,7 @@
 package com.freeletics.mad.whetstone
 
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.freeletics.mad.navigator.fragment.NavigationHandler
 import com.freeletics.mad.navigator.Navigator
 import com.freeletics.mad.statemachine.StateMachine
@@ -66,11 +68,13 @@ public annotation class ComposeFragment(
     val dependencies: KClass<*>,
 
     val stateMachine: KClass<out StateMachine<*, *>>,
-    val enableInsetHandling: Boolean = false,
+
+    val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
 
     val navigator: KClass<out Navigator> = EmptyNavigator::class,
     val navigationHandler: KClass<out NavigationHandler<*>> = EmptyNavigationHandler::class,
 
+    val enableInsetHandling: Boolean = false,
     val coroutinesEnabled: Boolean = false,
     val rxJavaEnabled: Boolean = false,
 )
