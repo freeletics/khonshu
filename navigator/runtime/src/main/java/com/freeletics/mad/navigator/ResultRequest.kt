@@ -1,6 +1,13 @@
 package com.freeletics.mad.navigator
 
+import android.app.Activity
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult
+import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED
+import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED_PERMANENTLY
+import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.GRANTED
+import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 
 /**
  * Class returned from [NavEventNavigator.registerForActivityResult].
@@ -12,7 +19,13 @@ import androidx.activity.result.contract.ActivityResultContract
  */
 public class ActivityResultRequest<I, O> internal constructor(
     public val contract: ActivityResultContract<I, O>
-) : ResultOwner<O>()
+) : ResultOwner<O>() {
+
+    @InternalNavigatorApi
+    public fun handleResult(result: O) {
+        onResult(result)
+    }
+}
 
 /**
  * Class returned from [NavEventNavigator.registerForPermissionsResult].
@@ -28,7 +41,19 @@ public class ActivityResultRequest<I, O> internal constructor(
  *  permanent denials.
  */
 public class PermissionsResultRequest internal constructor() :
-    ResultOwner<Map<String, PermissionsResultRequest.PermissionResult>>() {
+    ResultOwner<Map<String, PermissionResult>>() {
+
+    @InternalNavigatorApi
+    public fun handleResult(resultMap: Map<String, Boolean>, activity: Activity) {
+        val result = resultMap.mapValues { (permission, granted) ->
+            when {
+                granted -> GRANTED
+                shouldShowRequestPermissionRationale(activity, permission) -> DENIED
+                else -> DENIED_PERMANENTLY
+            }
+        }
+        onResult(result)
+    }
 
     /**
      * The status of the requested permission.

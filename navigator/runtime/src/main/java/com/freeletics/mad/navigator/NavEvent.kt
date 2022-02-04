@@ -16,7 +16,7 @@ public interface NavEvent {
      * Navigates to the given [route].
      */
     public data class NavigateToEvent(
-        val route: NavRoute,
+        internal val route: NavRoute,
     ) : NavEvent
 
     /**
@@ -24,9 +24,9 @@ public interface NavEvent {
      * itself will also be popped of the back stack. Then navigates to the given [route].
      */
     public data class NavigateBackAndThenToEvent(
-        val route: NavRoute,
-        @IdRes val popUpToDestinationId: Int,
-        val inclusive: Boolean,
+        internal val route: NavRoute,
+        internal val popUpToDestinationId: Int,
+        internal val inclusive: Boolean,
     ) : NavEvent
 
     /**
@@ -34,8 +34,8 @@ public interface NavEvent {
      * Whether the backstack of the given route is restored depends on [restoreRootState].
      */
     public data class NavigateToRootEvent(
-        val root: NavRoot,
-        val restoreRootState: Boolean,
+        internal val root: NavRoot,
+        internal val restoreRootState: Boolean,
     ) : NavEvent
 
     /**
@@ -53,23 +53,23 @@ public interface NavEvent {
      * will also be popped of the back stack.
      */
     public data class BackToEvent(
-        @IdRes val destinationId: Int,
-        val inclusive: Boolean,
+        internal val destinationId: Int,
+        internal val inclusive: Boolean,
     ) : NavEvent
 
     /**
      * Launches the [request] to retrieve an event.
      */
     public data class ActivityResultEvent<I>(
-        val request: ActivityResultRequest<I, *>,
-        val input: I,
+        internal val request: ActivityResultRequest<I, *>,
+        internal val input: I,
     ) : NavEvent
 
     /**
      * Launches the [request] to retrieve an event.
      */
     public data class PermissionsResultEvent(
-        val request: PermissionsResultRequest,
-        val permissions: List<String>,
+        internal val request: PermissionsResultRequest,
+        internal val permissions: List<String>,
     ) : NavEvent
 }

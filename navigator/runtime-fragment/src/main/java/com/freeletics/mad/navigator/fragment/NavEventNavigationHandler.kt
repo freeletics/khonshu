@@ -5,38 +5,29 @@ import android.os.Bundle
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.CallSuper
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
-import com.freeletics.mad.navigator.NavEvent.BackEvent
-import com.freeletics.mad.navigator.NavEvent.BackToEvent
-import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
-import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
-import com.freeletics.mad.navigator.NavEvent.UpEvent
-import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
-import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.GRANTED
-import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED_PERMANENTLY
-import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED
+import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
+import com.freeletics.mad.navigator.internal.navigate
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
  * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
  */
+@OptIn(InternalNavigatorApi::class)
 public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEventNavigator> {
 
-    @OptIn(InternalNavigatorApi::class)
     @CallSuper
     override fun handle(fragment: Fragment, navigator: FragmentNavEventNavigator) {
         val activityLaunchers = navigator.activityResultRequests.associateWith {
@@ -56,8 +47,8 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
         val lifecycle = fragment.lifecycle
         lifecycle.coroutineScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                navigator.navEvents.collect { navEvent ->
-                    navigate(fragment, activityLaunchers, permissionLaunchers, navEvent)
+                navigator.navEvents.collect { event ->
+                    navigate(fragment, activityLaunchers, permissionLaunchers, event)
                 }
             }
         }
@@ -66,23 +57,15 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
     private fun <I, O> ActivityResultRequest<I, O>.registerIn(
         caller: ActivityResultCaller
     ): ActivityResultLauncher<*> {
-        return caller.registerForActivityResult(contract, ::onResult)
+        return caller.registerForActivityResult(contract, ::handleResult)
     }
 
-    @OptIn(InternalNavigatorApi::class)
     private fun PermissionsResultRequest.registerIn(
         caller: ActivityResultCaller,
         activity: Activity
     ): ActivityResultLauncher<List<String>> {
         return caller.registerForActivityResult(RequestPermissionsContract()) { resultMap ->
-            val permissionsResult = resultMap.mapValues { (permission, granted) ->
-                when {
-                    granted -> GRANTED
-                    shouldShowRequestPermissionRationale(activity, permission) -> DENIED
-                    else -> DENIED_PERMANENTLY
-                }
-            }
-            onResult(permissionsResult)
+            handleResult(resultMap, activity)
         }
     }
 
@@ -105,68 +88,13 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
             return
         }
 
-        when (event) {
-            is NavigateToEvent -> {
-                val controller = fragment.findNavController()
-                controller.navigate(event.route.destinationId, event.route.getArguments())
+        if (event is FragmentResultEvent) {
+            val result = Bundle(1).apply {
+                putParcelable(KEY_FRAGMENT_RESULT, event.result)
             }
-            is NavEvent.NavigateBackAndThenToEvent -> {
-                val controller = fragment.findNavController()
-                val options = NavOptions.Builder()
-                    .setPopUpTo(event.popUpToDestinationId, inclusive = event.inclusive)
-                    .build()
-                controller.navigate(event.route.destinationId, event.route.getArguments(), options)
-            }
-            is NavEvent.NavigateToRootEvent -> {
-                val controller = fragment.findNavController()
-                val options = NavOptions.Builder()
-                    // save the state of the current root before leaving it
-                    .setPopUpTo(controller.graph.startDestinationId, inclusive = false, saveState = true)
-                    // restoring the state of the target root
-                    .setRestoreState(event.restoreRootState)
-                    // makes sure that if the destination is already on the backstack, it and
-                    // everything above it gets removed
-                    .setLaunchSingleTop(true)
-                    .build()
-                controller.navigate(event.root.destinationId, event.root.getArguments(), options)
-            }
-            is UpEvent -> {
-                val controller = fragment.findNavController()
-                controller.navigateUp()
-            }
-            is BackEvent -> {
-                val controller = fragment.findNavController()
-                controller.popBackStack()
-            }
-            is BackToEvent -> {
-                val controller = fragment.findNavController()
-                controller.popBackStack(event.destinationId, event.inclusive)
-            }
-            is ActivityResultEvent<*> -> {
-                val request = event.request
-                val launcher = activityLaunchers[request] ?: throw IllegalStateException(
-                    "No launcher registered for $request!\nMake sure you called the appropriate " +
-                        "AbstractNavigator.registerFor... method"
-                )
-                @Suppress("UNCHECKED_CAST")
-                (launcher as ActivityResultLauncher<Any?>).launch(event.input)
-            }
-            is NavEvent.PermissionsResultEvent -> {
-                val request = event.request
-                val launcher = permissionLaunchers[request] ?: throw IllegalStateException(
-                    "No launcher registered for $request!\nMake sure you called the appropriate " +
-                        "AbstractNavigator.registerFor... method"
-                )
-                @Suppress("UNCHECKED_CAST")
-                (launcher as ActivityResultLauncher<Any?>).launch(event.permissions)
-            }
-            is FragmentResultEvent -> {
-                val result = Bundle(1).apply {
-                    putParcelable(KEY_FRAGMENT_RESULT, event.result)
-                }
-                fragment.parentFragmentManager.setFragmentResult(event.requestKey, result)
-            }
-            else -> throw IllegalArgumentException("Unknown NavEvent $event")
+            fragment.parentFragmentManager.setFragmentResult(event.requestKey, result)
+        } else {
+            navigate(event, fragment.findNavController(), activityLaunchers, permissionLaunchers)
         }
     }
 
