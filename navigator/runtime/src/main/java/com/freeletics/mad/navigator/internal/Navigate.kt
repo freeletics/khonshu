@@ -64,6 +64,5 @@ public fun navigate(
             @Suppress("UNCHECKED_CAST")
             (launcher as ActivityResultLauncher<Any?>).launch(event.permissions)
         }
-        else -> throw IllegalArgumentException("Unknown NavEvent $event")
     }
 }

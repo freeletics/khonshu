@@ -48,7 +48,7 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
         lifecycle.coroutineScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 navigator.navEvents.collect { event ->
-                    navigate(fragment, activityLaunchers, permissionLaunchers, event)
+                    navigate(event, fragment.findNavController(), activityLaunchers, permissionLaunchers)
                 }
             }
         }
@@ -85,35 +85,12 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
         }
     }
 
-    private fun navigate(
-        fragment: Fragment,
-        activityLaunchers: Map<ActivityResultRequest<*, *>, ActivityResultLauncher<*>>,
-        permissionLaunchers: Map<PermissionsResultRequest, ActivityResultLauncher<List<String>>>,
-        event: NavEvent
-    ) {
-        if (handleNavEvent(event)) {
-            return
-        }
-
-        navigate(event, fragment.findNavController(), activityLaunchers, permissionLaunchers)
-    }
-
     private fun navigate(fragment: Fragment, event: FragmentResultEvent) {
         val result = Bundle(1).apply {
             putParcelable(KEY_FRAGMENT_RESULT, event.result)
         }
         fragment.parentFragmentManager.setFragmentResult(event.requestKey, result)
         fragment.findNavController().popBackStack()
-    }
-
-    /**
-     * This method can be overridden to handle custom [NavEvent] implementations or handle
-     * the standard events in a different way.
-     *
-     * @return `true` if event was handled, `false` otherwise
-     */
-    protected open fun handleNavEvent(event: NavEvent): Boolean {
-       return false
     }
 }
 

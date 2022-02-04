@@ -55,7 +55,7 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
             navigator.navEvents
                 .flowWithLifecycle(lifecycleOwner.lifecycle)
                 .collect { event ->
-                    navigate(controller, activityLaunchers, permissionLaunchers, event)
+                    navigate(event, controller, activityLaunchers, permissionLaunchers)
                 }
         }
     }
@@ -84,28 +84,5 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
             context = context.baseContext
         }
         throw IllegalStateException("Permissions should be called in the context of an Activity")
-    }
-
-    private fun navigate(
-        controller: NavController,
-        activityLaunchers: Map<ActivityResultRequest<*, *>, ActivityResultLauncher<*>>,
-        permissionLaunchers: Map<PermissionsResultRequest, ActivityResultLauncher<List<String>>>,
-        event: NavEvent
-    ) {
-        if (handleNavEvent(event)) {
-            return
-        }
-
-        navigate(event, controller, activityLaunchers, permissionLaunchers)
-    }
-
-    /**
-     * This method can be overridden to handle custom [NavEvent] implementations or handle
-     * the standard events in a different way.
-     *
-     * @return `true` if event was handled, `false` otherwise
-     */
-    protected open fun handleNavEvent(event: NavEvent): Boolean {
-        return false
     }
 }

@@ -90,14 +90,6 @@ public abstract class NavEventNavigator : Navigator {
     }
 
     /**
-     * Sends the given new [NavEvent] to the `NavigationHandler` connected to this navigator.
-     */
-    protected fun sendNavEvent(event: NavEvent) {
-        val result = _navEvents.trySendBlocking(event)
-        check(result.isSuccess)
-    }
-
-    /**
      * Triggers a new [NavEvent] to navigate to the given [route].
      */
     public fun navigateTo(route: NavRoute) {
@@ -202,6 +194,11 @@ public abstract class NavEventNavigator : Navigator {
     public fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>) {
         val event = PermissionsResultEvent(request, permissions)
         sendNavEvent(event)
+    }
+
+    private fun sendNavEvent(event: NavEvent) {
+        val result = _navEvents.trySendBlocking(event)
+        check(result.isSuccess)
     }
 
     /**

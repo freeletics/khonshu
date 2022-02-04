@@ -8,7 +8,7 @@ package com.freeletics.mad.navigator
  * Custom subclasses of `NavEvent` can be sent using [NavEventNavigator.sendNavEvent] but require
  * providing a custom `NavEventNavigationHandler` that supports handling those events.
  */
-public interface NavEvent {
+public sealed interface NavEvent {
 
     /**
      * Navigates to the given [route].
