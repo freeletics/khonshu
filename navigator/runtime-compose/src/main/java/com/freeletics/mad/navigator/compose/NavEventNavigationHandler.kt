@@ -12,33 +12,24 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
+import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
-import com.freeletics.mad.navigator.NavEvent.BackEvent
-import com.freeletics.mad.navigator.NavEvent.BackToEvent
-import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
-import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
-import com.freeletics.mad.navigator.NavEvent.UpEvent
+import com.freeletics.mad.navigator.PermissionsResultRequest
+import com.freeletics.mad.navigator.internal.navigate
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
-import com.freeletics.mad.navigator.ActivityResultRequest
-import com.freeletics.mad.navigator.PermissionsResultRequest
-import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.GRANTED
-import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED_PERMANENTLY
-import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED
 import kotlinx.coroutines.flow.collect
 
 /**
  * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
  */
+@OptIn(InternalNavigatorApi::class)
 public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigator> {
 
     @Composable
-    @OptIn(InternalNavigatorApi::class)
     @CallSuper
     override fun Navigation(navigator: NavEventNavigator) {
         val controller = LocalNavController.current
@@ -63,8 +54,8 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
         LaunchedEffect(lifecycleOwner, controller, navigator) {
             navigator.navEvents
                 .flowWithLifecycle(lifecycleOwner.lifecycle)
-                .collect { navEvent ->
-                    navigate(controller, activityLaunchers, permissionLaunchers, navEvent)
+                .collect { event ->
+                    navigate(controller, activityLaunchers, permissionLaunchers, event)
                 }
         }
     }
@@ -73,29 +64,17 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
     private fun <I, O> rememberResultLaunchers(
         request: ActivityResultRequest<I, O>,
     ): ActivityResultLauncher<*> {
-        return rememberLauncherForActivityResult(request.contract, request::onResult)
+        return rememberLauncherForActivityResult(request.contract, request::handleResult)
     }
 
     @Composable
-    @OptIn(InternalNavigatorApi::class)
     private fun rememberResultLaunchers(
         request: PermissionsResultRequest,
     ): ActivityResultLauncher<List<String>> {
         val context = LocalContext.current
         return rememberLauncherForActivityResult(RequestPermissionsContract()) { resultMap ->
-            val permissionsResult = resultMap.mapValues { (permission, granted) ->
-                when {
-                    granted -> GRANTED
-                    context.shouldShowRequestPermissionRationale(permission) -> DENIED
-                    else -> DENIED_PERMANENTLY
-                }
-            }
-            request.onResult(permissionsResult)
+            request.handleResult(resultMap, context.findActivity())
         }
-    }
-
-    private fun Context.shouldShowRequestPermissionRationale(permission: String): Boolean {
-        return ActivityCompat.shouldShowRequestPermissionRationale(findActivity(), permission)
     }
 
     private fun Context.findActivity(): Activity {
@@ -117,57 +96,7 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
             return
         }
 
-        when (event) {
-            is NavigateToEvent -> {
-                controller.navigate(event.route.destinationId, event.route.getArguments())
-            }
-            is NavEvent.NavigateBackAndThenToEvent -> {
-                val options = NavOptions.Builder()
-                    .setPopUpTo(event.popUpToDestinationId, inclusive = event.inclusive)
-                    .build()
-                controller.navigate(event.route.destinationId, event.route.getArguments(), options)
-            }
-            is NavEvent.NavigateToRootEvent -> {
-                val options = NavOptions.Builder()
-                    // save the state of the current root before leaving it
-                    .setPopUpTo(controller.graph.startDestinationId, inclusive = false, saveState = true)
-                    // restoring the state of the target root
-                    .setRestoreState(event.restoreRootState)
-                    // makes sure that if the destination is already on the backstack, it and
-                    // everything above it gets removed
-                    .setLaunchSingleTop(true)
-                    .build()
-                controller.navigate(event.root.destinationId, event.root.getArguments(), options)
-            }
-            is UpEvent -> {
-                controller.navigateUp()
-            }
-            is BackEvent -> {
-                controller.popBackStack()
-            }
-            is BackToEvent -> {
-                controller.popBackStack(event.destinationId, event.inclusive)
-            }
-            is ActivityResultEvent<*> -> {
-                val request = event.request
-                val launcher = activityLaunchers[request] ?: throw IllegalStateException(
-                    "No launcher registered for $request!\nMake sure you called the appropriate " +
-                        "AbstractNavigator.registerFor... method"
-                )
-                @Suppress("UNCHECKED_CAST")
-                (launcher as ActivityResultLauncher<Any?>).launch(event.input)
-            }
-            is NavEvent.PermissionsResultEvent -> {
-                val request = event.request
-                val launcher = permissionLaunchers[request] ?: throw IllegalStateException(
-                    "No launcher registered for $request!\nMake sure you called the appropriate " +
-                        "AbstractNavigator.registerFor... method"
-                )
-                @Suppress("UNCHECKED_CAST")
-                (launcher as ActivityResultLauncher<Any?>).launch(event.permissions)
-            }
-            else -> throw IllegalArgumentException("Unknown NavEvent $event")
-        }
+        navigate(event, controller, activityLaunchers, permissionLaunchers)
     }
 
     /**
