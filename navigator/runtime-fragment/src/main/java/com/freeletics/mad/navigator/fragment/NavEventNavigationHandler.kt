@@ -31,7 +31,6 @@ import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DE
 import com.freeletics.mad.navigator.ResultLauncher
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import java.lang.IllegalArgumentException
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
@@ -111,11 +110,14 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
         when (event) {
             is NavigateToEvent -> {
                 val controller = fragment.findNavController()
-                controller.navigate(
-                    event.route.destinationId,
-                    event.route.getArguments(),
-                    event.options,
-                )
+                controller.navigate(event.route.destinationId, event.route.getArguments())
+            }
+            is NavEvent.NavigateBackAndThenToEvent -> {
+                val controller = fragment.findNavController()
+                val options = NavOptions.Builder()
+                    .setPopUpTo(event.popUpToDestinationId, inclusive = event.inclusive)
+                    .build()
+                controller.navigate(event.route.destinationId, event.route.getArguments(), options)
             }
             is NavEvent.NavigateToRootEvent -> {
                 val controller = fragment.findNavController()
@@ -128,11 +130,7 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
                     // everything above it gets removed
                     .setLaunchSingleTop(true)
                     .build()
-                controller.navigate(
-                    event.root.destinationId,
-                    event.root.getArguments(),
-                    options
-                )
+                controller.navigate(event.root.destinationId, event.root.getArguments(), options)
             }
             is UpEvent -> {
                 val controller = fragment.findNavController()
