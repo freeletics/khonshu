@@ -11,9 +11,12 @@ import kotlin.annotation.AnnotationTarget.CLASS
 import kotlin.reflect.KClass
 
 /**
- * By adding this annotation to a [com.gabrielittner.renderer.ViewRenderer] class, a Fragment is
+ * By adding this annotation to a [com.gabrielittner.renderer.ViewRenderer] class, a `Fragment` is
  * generated that will have the same name with `Fragment` as suffix. The Fragment will use the
  * given [rendererFactory] as it's view.
+ *
+ * The generated `Fragment` will use the given [fragmentBaseClass] as it's super class, with
+ * [androidx.fragment.app.Fragment] class used as default if nothing is specified.
  *
  * **StateMachine**
  *
