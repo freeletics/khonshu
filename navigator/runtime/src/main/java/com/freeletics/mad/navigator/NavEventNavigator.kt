@@ -3,12 +3,10 @@ package com.freeletics.mad.navigator
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.IdRes
-import androidx.navigation.NavOptions
-import androidx.navigation.NavOptionsBuilder
-import androidx.navigation.navOptions
 import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
 import com.freeletics.mad.navigator.NavEvent.BackEvent
 import com.freeletics.mad.navigator.NavEvent.BackToEvent
+import com.freeletics.mad.navigator.NavEvent.NavigateBackAndThenToEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
 import com.freeletics.mad.navigator.NavEvent.PermissionsResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
@@ -108,14 +106,15 @@ public abstract class NavEventNavigator : Navigator {
     }
 
     /**
-     * Triggers a new [NavEvent] to navigate to the given [route], using [NavOptions]
-     * built with [optionsBuilder].
+     * Triggers a new [NavEvent] that pops the back stack to [popUpTo]. If [inclusive] is `true`
+     * [popUpTo] destination itself will also be popped. Afterwards it will navigate to [route].
      */
     public fun navigateTo(
         route: NavRoute,
-        optionsBuilder: NavOptionsBuilder.() -> Unit
+        @IdRes popUpTo: Int,
+        inclusive: Boolean = false
     ) {
-        val event = NavigateToEvent(route, navOptions(optionsBuilder))
+        val event = NavigateBackAndThenToEvent(route, popUpTo, inclusive)
         sendNavEvent(event)
     }
 
@@ -149,11 +148,11 @@ public abstract class NavEventNavigator : Navigator {
     }
 
     /**
-     * Triggers a new [NavEvent] that pops the back stack to [actionId]. If [inclusive] is `true`
-     * [actionId] itself will also be popped.
+     * Triggers a new [NavEvent] that pops the back stack to [destinationId]. If [inclusive] is
+     * `true` [destinationId] itself will also be popped.
      */
-    public fun navigateBack(@IdRes actionId: Int, inclusive: Boolean = false) {
-        val event = BackToEvent(actionId, inclusive)
+    public fun navigateBack(@IdRes destinationId: Int, inclusive: Boolean = false) {
+        val event = BackToEvent(destinationId, inclusive)
         sendNavEvent(event)
     }
 

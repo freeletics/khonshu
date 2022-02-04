@@ -1,7 +1,6 @@
 package com.freeletics.mad.navigator
 
 import androidx.annotation.IdRes
-import androidx.navigation.NavOptions
 
 /**
  * Represents a navigation event that is being sent by a [NavEventNavigator] and handled by
@@ -14,11 +13,20 @@ import androidx.navigation.NavOptions
 public interface NavEvent {
 
     /**
-     * Navigates to the given [route] using the optionally passed [options].
+     * Navigates to the given [route].
      */
     public data class NavigateToEvent(
         val route: NavRoute,
-        val options: NavOptions? = null,
+    ) : NavEvent
+
+    /**
+     * Navigates back to the given [popUpToDestinationId]. If [inclusive] is `true` the destination
+     * itself will also be popped of the back stack. Then navigates to the given [route].
+     */
+    public data class NavigateBackAndThenToEvent(
+        val route: NavRoute,
+        @IdRes val popUpToDestinationId: Int,
+        val inclusive: Boolean,
     ) : NavEvent
 
     /**

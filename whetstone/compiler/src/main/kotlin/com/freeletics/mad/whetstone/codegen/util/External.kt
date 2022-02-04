@@ -8,12 +8,8 @@ import org.jetbrains.kotlin.name.FqName
 // Whetstone Public API
 internal val rendererFragment = ClassName("com.freeletics.mad.whetstone", "RendererFragment")
 internal val rendererFragmentFqName = FqName(rendererFragment.canonicalName)
-internal val rendererDialogFragment = ClassName("com.freeletics.mad.whetstone", "RendererDialogFragment")
-internal val rendererDialogFragmentFqName = FqName(rendererDialogFragment.canonicalName)
 internal val composeFragment = ClassName("com.freeletics.mad.whetstone", "ComposeFragment")
 internal val composeFragmentFqName = FqName(composeFragment.canonicalName)
-internal val composeDialogFragment = ClassName("com.freeletics.mad.whetstone", "ComposeDialogFragment")
-internal val composeDialogFragmentFqName = FqName(composeDialogFragment.canonicalName)
 internal val compose = ClassName("com.freeletics.mad.whetstone", "ComposeScreen")
 internal val composeFqName = FqName(compose.canonicalName)
 internal val scopeTo = ClassName("com.freeletics.mad.whetstone", "ScopeTo")

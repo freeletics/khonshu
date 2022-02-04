@@ -1,5 +1,6 @@
 package com.freeletics.mad.whetstone
 
+import androidx.fragment.app.Fragment
 import com.freeletics.mad.navigator.fragment.NavigationHandler
 import com.freeletics.mad.navigator.Navigator
 import com.freeletics.mad.statemachine.StateMachine
@@ -8,11 +9,14 @@ import com.freeletics.mad.whetstone.fragment.internal.EmptyNavigator
 import kotlin.reflect.KClass
 
 /**
- * By adding this annotation to a [androidx.compose.runtime.Composable] function, a Fragment is
+ * By adding this annotation to a [androidx.compose.runtime.Composable] function, a `Fragment` is
  * generated that will have the same name with `Fragment` as suffix. The Fragment will create a
  * `ComposeView` that will call the annotated composable. It is required that the annotated function
  * has `State` as first parameter and `(Action) -> Unit` as second parameter, where `State` and
  * `Action` match the given `StateMachine`.
+ *
+ * The generated `Fragment` will use the given [fragmentBaseClass] as it's super class, with
+ * [androidx.fragment.app.Fragment] class used as default if nothing is specified.
  *
  * **StateMachine**
  *
@@ -66,11 +70,13 @@ public annotation class ComposeFragment(
     val dependencies: KClass<*>,
 
     val stateMachine: KClass<out StateMachine<*, *>>,
-    val enableInsetHandling: Boolean = false,
+
+    val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
 
     val navigator: KClass<out Navigator> = EmptyNavigator::class,
     val navigationHandler: KClass<out NavigationHandler<*>> = EmptyNavigationHandler::class,
 
+    val enableInsetHandling: Boolean = false,
     val coroutinesEnabled: Boolean = false,
     val rxJavaEnabled: Boolean = false,
 )
