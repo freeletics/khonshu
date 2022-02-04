@@ -1,5 +1,7 @@
 package com.freeletics.mad.navigator
 
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +24,7 @@ public abstract class ResultOwner<O> {
      * Deliver a new [result] to [results]. This method should be called by a
      * `NavEventNavigationHandler`.
      */
+    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
     public fun onResult(result: O) {
         val channelResult = _results.trySendBlocking(result)
         check(channelResult.isSuccess)

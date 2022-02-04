@@ -6,14 +6,12 @@ import android.content.ContextWrapper
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
-import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
-import androidx.navigation.NavController
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
@@ -27,10 +25,9 @@ import kotlinx.coroutines.flow.collect
  * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
  */
 @OptIn(InternalNavigatorApi::class)
-public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigator> {
+public class NavEventNavigationHandler : NavigationHandler<NavEventNavigator> {
 
     @Composable
-    @CallSuper
     override fun Navigation(navigator: NavEventNavigator) {
         val controller = LocalNavController.current
         val lifecycleOwner = LocalLifecycleOwner.current

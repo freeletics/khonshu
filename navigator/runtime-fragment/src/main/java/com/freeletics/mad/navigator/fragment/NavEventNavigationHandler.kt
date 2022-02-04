@@ -1,10 +1,10 @@
 package com.freeletics.mad.navigator.fragment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
-import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultOwner
 import androidx.lifecycle.Lifecycle
@@ -26,9 +26,8 @@ import kotlinx.coroutines.launch
  * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
  */
 @OptIn(InternalNavigatorApi::class)
-public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEventNavigator> {
+public class NavEventNavigationHandler : NavigationHandler<FragmentNavEventNavigator> {
 
-    @CallSuper
     override fun handle(fragment: Fragment, navigator: FragmentNavEventNavigator) {
         val activityLaunchers = navigator.activityResultRequests.associateWith {
             it.registerIn(fragment)
@@ -76,6 +75,7 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
         }
     }
 
+    @SuppressLint("VisibleForTests") // it's ok to use onResult internally
     private fun <O> FragmentResultRequest<O>.registerIn(
         fragmentResultOwner: FragmentResultOwner,
         lifecycleOwner: LifecycleOwner

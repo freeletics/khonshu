@@ -6,7 +6,6 @@ import androidx.navigation.NavOptions
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.PermissionsResultRequest
-import java.lang.IllegalArgumentException
 
 @InternalNavigatorApi
 public fun navigate(

@@ -1,6 +1,8 @@
 package com.freeletics.mad.navigator.fragment
 
 import android.os.Parcelable
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
@@ -13,7 +15,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * An extension to [NavEventNavigator] that adds support for `Fragment` result APIs. See
  * [registerForFragmentResult] and [navigateBackWithResult].
  */
-@Suppress("MemberVisibilityCanBePrivate", "unused")
 public abstract class FragmentNavEventNavigator : NavEventNavigator() {
 
     private val _resultEvents = Channel<FragmentResultEvent>(Channel.UNLIMITED)
@@ -21,6 +22,7 @@ public abstract class FragmentNavEventNavigator : NavEventNavigator() {
     /**
      * A [Flow] to collect [FragmentResultEvents][FragmentResultEvent] produced by this navigator.
      */
+    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
     public val resultEvents: Flow<FragmentResultEvent> = _resultEvents.receiveAsFlow()
 
     private val _fragmentResultRequests = mutableListOf<FragmentResultRequest<*>>()
@@ -64,8 +66,7 @@ public abstract class FragmentNavEventNavigator : NavEventNavigator() {
      * [registerForFragmentResult]. A `NavEventNavigationHandler` can use these to register
      * the requests during setup so that results are delivered to them.
      */
-    @InternalNavigatorApi
-    public val fragmentResultRequests: List<FragmentResultRequest<*>>
+    internal val fragmentResultRequests: List<FragmentResultRequest<*>>
         get() {
             allowedToAddRequests = false
             return _fragmentResultRequests.toList()

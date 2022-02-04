@@ -59,9 +59,9 @@ public inline fun <reified T : NavRoute> ActivityDestination(
  * [route] will be used as a unique identifier together with [destinationId]. The destination can
  * be reached by navigating using an instance of [route].
  */
-public abstract class NavDestination {
-    public abstract val route: KClass<*>
-    @get:IdRes public abstract val destinationId: Int
+public interface NavDestination {
+    public val route: KClass<*>
+    @get:IdRes public val destinationId: Int
 
     /**
      * Represents a full screen. The [route] will be used as a unique identifier together
@@ -72,7 +72,7 @@ public abstract class NavDestination {
         override val route: KClass<out NavRoute>,
         override val destinationId: Int,
         internal val fragmentClass: KClass<out Fragment>,
-    ) : NavDestination()
+    ) : NavDestination
 
     /**
      * Represents a full screen. The [route] will be used as a unique identifier together
@@ -83,7 +83,7 @@ public abstract class NavDestination {
         override val route: KClass<out NavRoot>,
         override val destinationId: Int,
         internal val fragmentClass: KClass<out Fragment>,
-    ) : NavDestination()
+    ) : NavDestination
 
     /**
      * Represents a dialog. The [route] will be used as a unique identifier together
@@ -94,7 +94,7 @@ public abstract class NavDestination {
         override val route: KClass<out NavRoute>,
         override val destinationId: Int,
         internal val fragmentClass: KClass<out DialogFragment>,
-    ) : NavDestination()
+    ) : NavDestination
 
     /**
      * Represents an `Activity`. The [route] will be used as a unique identifier together
@@ -105,5 +105,5 @@ public abstract class NavDestination {
         override val route: KClass<out NavRoute>,
         override val destinationId: Int,
         internal val intent: Intent,
-    ) : NavDestination()
+    ) : NavDestination
 }
