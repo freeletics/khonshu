@@ -6,10 +6,11 @@ import androidx.annotation.IdRes
 import androidx.navigation.NavOptions
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.navOptions
+import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
 import com.freeletics.mad.navigator.NavEvent.BackEvent
 import com.freeletics.mad.navigator.NavEvent.BackToEvent
-import com.freeletics.mad.navigator.NavEvent.ResultLauncherEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
+import com.freeletics.mad.navigator.NavEvent.PermissionsResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
 import com.freeletics.mad.navigator.internal.DelegatingOnBackPressedCallback
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
@@ -161,7 +162,7 @@ public abstract class NavEventNavigator : Navigator {
      *
      * The [launcher] can be obtained by calling [registerForActivityResult].
      */
-    public fun navigateForResult(launcher: ResultLauncher<Void?>) {
+    public fun navigateForResult(launcher: ActivityResultRequest<Void?, *>) {
         navigateForResult(launcher, null)
     }
 
@@ -170,8 +171,8 @@ public abstract class NavEventNavigator : Navigator {
      *
      * The [launcher] can be obtained by calling [registerForActivityResult].
      */
-    public fun <I> navigateForResult(launcher: ResultLauncher<I>, input: I) {
-        val event = ResultLauncherEvent(launcher, input)
+    public fun <I> navigateForResult(launcher: ActivityResultRequest<I, *>, input: I) {
+        val event = ActivityResultEvent(launcher, input)
         sendNavEvent(event)
     }
 
@@ -200,7 +201,8 @@ public abstract class NavEventNavigator : Navigator {
      * The [request] can be obtained by calling [registerForPermissionsResult].
      */
     public fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>) {
-        navigateForResult(request, permissions.toList())
+        val event = PermissionsResultEvent(request, permissions)
+        sendNavEvent(event)
     }
 
     /**

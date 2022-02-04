@@ -3,14 +3,6 @@ package com.freeletics.mad.navigator
 import androidx.activity.result.contract.ActivityResultContract
 
 /**
- * A marker interface for anything that can be passed into [NavEventNavigator.navigateForResult]
- * to launch a result request.
- *
- * [I] is the type of input that needs to be provided at the time of launching.
- */
-public sealed interface ResultLauncher<I>
-
-/**
  * Class returned from [NavEventNavigator.registerForActivityResult].
  *
  * This class has two purposes:
@@ -20,7 +12,7 @@ public sealed interface ResultLauncher<I>
  */
 public class ActivityResultRequest<I, O> internal constructor(
     public val contract: ActivityResultContract<I, O>
-) : ResultOwner<O>(), ResultLauncher<I>
+) : ResultOwner<O>()
 
 /**
  * Class returned from [NavEventNavigator.registerForPermissionsResult].
@@ -36,8 +28,7 @@ public class ActivityResultRequest<I, O> internal constructor(
  *  permanent denials.
  */
 public class PermissionsResultRequest internal constructor() :
-    ResultOwner<Map<String, PermissionsResultRequest.PermissionResult>>(),
-    ResultLauncher<List<String>> {
+    ResultOwner<Map<String, PermissionsResultRequest.PermissionResult>>() {
 
     /**
      * The status of the requested permission.

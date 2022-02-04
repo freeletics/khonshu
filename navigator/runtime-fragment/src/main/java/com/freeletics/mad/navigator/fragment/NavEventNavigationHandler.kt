@@ -19,18 +19,15 @@ import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.NavEvent.BackEvent
 import com.freeletics.mad.navigator.NavEvent.BackToEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
-import com.freeletics.mad.navigator.NavEvent.ResultLauncherEvent
+import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
-import com.freeletics.mad.navigator.fragment.result.FragmentResultRequest
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.GRANTED
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED_PERMANENTLY
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED
-import com.freeletics.mad.navigator.ResultLauncher
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
-import java.lang.IllegalArgumentException
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -48,7 +45,6 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
         val permissionLaunchers = navigator.permissionsResultRequests.associateWith {
             it.registerIn(fragment, fragment.requireActivity())
         }
-        val launchers: Map<ResultLauncher<*>, ActivityResultLauncher<*>> = activityLaunchers + permissionLaunchers
 
         navigator.fragmentResultRequests.forEach {
             it.registerIn(fragment.parentFragmentManager, fragment)
@@ -61,7 +57,7 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
         lifecycle.coroutineScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 navigator.navEvents.collect { navEvent ->
-                    navigate(fragment, launchers, navEvent)
+                    navigate(fragment, activityLaunchers, permissionLaunchers, navEvent)
                 }
             }
         }
@@ -101,7 +97,8 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
 
     private fun navigate(
         fragment: Fragment,
-        resultLaunchers: Map<ResultLauncher<*>, ActivityResultLauncher<*>>,
+        activityLaunchers: Map<ActivityResultRequest<*, *>, ActivityResultLauncher<*>>,
+        permissionLaunchers: Map<PermissionsResultRequest, ActivityResultLauncher<List<String>>>,
         event: NavEvent
     ) {
         if (handleNavEvent(event)) {
@@ -146,14 +143,23 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
                 val controller = fragment.findNavController()
                 controller.popBackStack(event.destinationId, event.inclusive)
             }
-            is ResultLauncherEvent<*> -> {
-                val request = event.resultLauncher
-                val launcher = resultLaunchers[request] ?: throw IllegalStateException(
+            is ActivityResultEvent<*> -> {
+                val request = event.request
+                val launcher = activityLaunchers[request] ?: throw IllegalStateException(
                     "No launcher registered for $request!\nMake sure you called the appropriate " +
                         "AbstractNavigator.registerFor... method"
                 )
                 @Suppress("UNCHECKED_CAST")
                 (launcher as ActivityResultLauncher<Any?>).launch(event.input)
+            }
+            is NavEvent.PermissionsResultEvent -> {
+                val request = event.request
+                val launcher = permissionLaunchers[request] ?: throw IllegalStateException(
+                    "No launcher registered for $request!\nMake sure you called the appropriate " +
+                        "AbstractNavigator.registerFor... method"
+                )
+                @Suppress("UNCHECKED_CAST")
+                (launcher as ActivityResultLauncher<Any?>).launch(event.permissions)
             }
             is FragmentResultEvent -> {
                 val result = Bundle(1).apply {

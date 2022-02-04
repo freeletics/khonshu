@@ -50,10 +50,18 @@ public interface NavEvent {
     ) : NavEvent
 
     /**
-     * Launches the [resultLauncher] to retrieve an event.
+     * Launches the [request] to retrieve an event.
      */
-    public data class ResultLauncherEvent<I>(
-        val resultLauncher: ResultLauncher<I>,
+    public data class ActivityResultEvent<I>(
+        val request: ActivityResultRequest<I, *>,
         val input: I,
+    ) : NavEvent
+
+    /**
+     * Launches the [request] to retrieve an event.
+     */
+    public data class PermissionsResultEvent(
+        val request: PermissionsResultRequest,
+        val permissions: List<String>,
     ) : NavEvent
 }

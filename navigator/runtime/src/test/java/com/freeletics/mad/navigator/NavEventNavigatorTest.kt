@@ -106,7 +106,7 @@ public class NavEventNavigatorTest {
             val launcher = navigator.registerForActivityResult(ActivityResultContracts.GetContent())
             navigator.navigateForResult(launcher, "image/*")
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.ResultLauncherEvent(launcher, "image/*"))
+            assertThat(awaitItem()).isEqualTo(NavEvent.ActivityResultEvent(launcher, "image/*"))
 
             cancel()
         }
@@ -121,7 +121,7 @@ public class NavEventNavigatorTest {
             val permission = "android.permission.READ_CALENDAR"
             navigator.requestPermissions(launcher, permission)
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.ResultLauncherEvent(launcher, listOf(permission)))
+            assertThat(awaitItem()).isEqualTo(NavEvent.PermissionsResultEvent(launcher, listOf(permission)))
 
             cancel()
         }
