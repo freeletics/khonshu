@@ -25,6 +25,7 @@ import com.freeletics.mad.navigator.compose.NavDestination.RootScreen
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 
 /**
@@ -41,7 +42,9 @@ public fun NavHost(
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
     val startDestinationId = startRoot.destinationId
-    NavHost(navController, startDestinationId, destinations) { null }
+    ModalBottomSheetLayout(bottomSheetNavigator) {
+        NavHost(navController, startDestinationId, destinations) { null }
+    }
 }
 
 /**
@@ -58,7 +61,9 @@ public fun NavHost(
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
     val startDestinationId = startRoute.destinationId
-    NavHost(navController, startDestinationId, destinations) { null }
+    ModalBottomSheetLayout(bottomSheetNavigator) {
+        NavHost(navController, startDestinationId, destinations) { null }
+    }
 }
 
 /**
@@ -67,7 +72,8 @@ public fun NavHost(
  * the start destination of the graph.
  *
  * To support [NavDestination.BottomSheet] the given [navController] needs to contain a navigator
- * created with [rememberBottomSheetNavigator].
+ * created with [rememberBottomSheetNavigator] and this `Composable` needs a
+ * [ModalBottomSheetLayout] as parent.
  *
  * [destinationCreator] can be passed to add support for custom subclasses of [NavDestination].
  */
@@ -88,7 +94,8 @@ public fun NavHost(
  * the start destination of the graph.
  *
  * To support [NavDestination.BottomSheet] the given [navController] needs to contain a navigator
- * created with [rememberBottomSheetNavigator].
+ * created with [rememberBottomSheetNavigator] and this `Composable` needs a
+ * [ModalBottomSheetLayout] as parent.
  *
  * [destinationCreator] can be passed to add support for custom subclasses of [NavDestination].
  */
