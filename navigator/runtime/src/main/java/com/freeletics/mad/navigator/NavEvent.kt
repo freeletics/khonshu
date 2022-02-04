@@ -1,7 +1,5 @@
 package com.freeletics.mad.navigator
 
-import androidx.annotation.IdRes
-
 /**
  * Represents a navigation event that is being sent by a [NavEventNavigator] and handled by
  * a `NavEventNavigationHandler` implementation. Default implementations of such a handler are
