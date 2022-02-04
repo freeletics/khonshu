@@ -1,7 +1,6 @@
 package com.freeletics.mad.navigator.compose
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import com.freeletics.mad.navigator.Navigator
 
 /**
@@ -11,7 +10,7 @@ import com.freeletics.mad.navigator.Navigator
  * An example usage would be that there is an implementation of [Navigator] that exposes a
  * Kotlin Coroutines `Flow` of navigation events. An implementation of `NavigationHandler`
  * could then `collect` that `Flow` in it's `handle` method and then execute the correct navigation
- * methods on the [NavController] based on the received event.
+ * methods on a `NavController` based on the received event.
  *
  * This set up allows to have the general navigation logic (when action x happens navigate to
  * screen y) in your business logic layer, for example as a side effect in your state machine.
@@ -26,5 +25,5 @@ public interface NavigationHandler<N : Navigator> {
      * when it leaves the composition.
      */
     @Composable
-    public fun Navigation(navController: NavController, navigator: N)
+    public fun Navigation(navigator: N)
 }

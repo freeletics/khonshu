@@ -1,9 +1,9 @@
 package com.freeletics.mad.navigator.compose
 
 import android.content.Intent
+import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.compose.NavDestination.Activity
@@ -22,7 +22,7 @@ import kotlin.reflect.KClass
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> ScreenDestination(
     destinationId: Int,
-    noinline screenContent: @Composable (NavController) -> Unit,
+    noinline screenContent: @Composable (Bundle) -> Unit,
 ): NavDestination = Screen(T::class, destinationId, screenContent)
 
 /**
@@ -33,7 +33,7 @@ public inline fun <reified T : NavRoute> ScreenDestination(
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoot> RootScreenDestination(
     destinationId: Int,
-    noinline screenContent: @Composable (NavController) -> Unit,
+    noinline screenContent: @Composable (Bundle) -> Unit,
 ): NavDestination = RootScreen(T::class, destinationId, screenContent)
 
 /**
@@ -44,7 +44,7 @@ public inline fun <reified T : NavRoot> RootScreenDestination(
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> DialogDestination(
     destinationId: Int,
-    noinline dialogContent: @Composable (NavController) -> Unit,
+    noinline dialogContent: @Composable (Bundle) -> Unit,
 ): NavDestination = Dialog(T::class, destinationId, dialogContent)
 
 /**
@@ -56,7 +56,7 @@ public inline fun <reified T : NavRoute> DialogDestination(
 @ExperimentalMaterialNavigationApi
 public inline fun <reified T : NavRoute> BottomSheetDestination(
     destinationId: Int,
-    noinline bottomSheetContent: @Composable (NavController) -> Unit,
+    noinline bottomSheetContent: @Composable (Bundle) -> Unit,
 ): NavDestination = BottomSheet(T::class, destinationId, bottomSheetContent)
 
 /**
@@ -88,7 +88,7 @@ public abstract class NavDestination {
     public class Screen(
         override val route: KClass<out NavRoute>,
         override val destinationId: Int,
-        internal val screenContent: @Composable (NavController) -> Unit,
+        internal val screenContent: @Composable (Bundle) -> Unit,
     ) : NavDestination()
 
     /**
@@ -99,7 +99,7 @@ public abstract class NavDestination {
     public class RootScreen(
         override val route: KClass<out NavRoot>,
         override val destinationId: Int,
-        internal val screenContent: @Composable (NavController) -> Unit,
+        internal val screenContent: @Composable (Bundle) -> Unit,
     ) : NavDestination()
 
     /**
@@ -110,7 +110,7 @@ public abstract class NavDestination {
     public class Dialog(
         override val route: KClass<out NavRoute>,
         override val destinationId: Int,
-        internal val dialogContent: @Composable (NavController) -> Unit,
+        internal val dialogContent: @Composable (Bundle) -> Unit,
     ) : NavDestination()
 
     /**
@@ -122,7 +122,7 @@ public abstract class NavDestination {
     public class BottomSheet(
         override val route: KClass<out NavRoute>,
         override val destinationId: Int,
-        internal val bottomSheetContent: @Composable (NavController) -> Unit,
+        internal val bottomSheetContent: @Composable (Bundle) -> Unit,
     ) : NavDestination()
 
     /**

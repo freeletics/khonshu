@@ -74,9 +74,7 @@ internal val dialogFragment = ClassName("androidx.fragment.app", "DialogFragment
 internal val viewModel = ClassName("androidx.lifecycle", "ViewModel")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
 
-internal val navController = ClassName("androidx.navigation", "NavController")
 internal val navBackStackEntry = ClassName("androidx.navigation", "NavBackStackEntry")
-internal val findNavController = MemberName("androidx.navigation.fragment", "findNavController")
 
 // Compose
 internal val composable = ClassName("androidx.compose.runtime", "Composable")

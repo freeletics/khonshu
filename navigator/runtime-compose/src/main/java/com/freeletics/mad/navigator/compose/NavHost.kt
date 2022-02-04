@@ -7,6 +7,8 @@ import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination as AndroidXNavDestination
 import androidx.navigation.compose.NavHost as AndroidXNavHost
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
@@ -29,40 +31,34 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
  * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
  * containing all given [destinations]. [startRoot] will be used as the start destination
  * of the graph.
- *
- * [destinationCreator] can be passed to add support for custom subclasses of [NavDestination].
  */
 @ExperimentalMaterialNavigationApi
 @Composable
 public fun NavHost(
     startRoot: NavRoot,
     destinations: Set<NavDestination>,
-    destinationCreator: (NavDestination) -> AndroidXNavDestination? = { null },
 ) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
     val startDestinationId = startRoot.destinationId
-    NavHost(navController, startDestinationId, destinations, destinationCreator)
+    NavHost(navController, startDestinationId, destinations) { null }
 }
 
 /**
  * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
  * containing all given [destinations]. [startRoute] will be used as the start destination
  * of the graph.
- *
- * [destinationCreator] can be passed to add support for custom subclasses of [NavDestination].
  */
 @ExperimentalMaterialNavigationApi
 @Composable
 public fun NavHost(
     startRoute: NavRoute,
     destinations: Set<NavDestination>,
-    destinationCreator: (NavDestination) -> AndroidXNavDestination? = { null },
 ) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
     val startDestinationId = startRoute.destinationId
-    NavHost(navController, startDestinationId, destinations, destinationCreator)
+    NavHost(navController, startDestinationId, destinations) { null }
 }
 
 /**
@@ -122,7 +118,10 @@ private fun NavHost(
             }
         }
     }
-    AndroidXNavHost(navController, graph)
+
+    CompositionLocalProvider(LocalNavController provides navController) {
+        AndroidXNavHost(navController, graph)
+    }
 }
 
 // the BottomSheet class and creator methods are marked with ExperimentalMaterialNavigationApi
@@ -150,9 +149,7 @@ private fun Screen.toDestination(
     controller: NavController,
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
-    return ComposeNavigator.Destination(navigator) {
-        screenContent(controller)
-    }.also {
+    return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!) }.also {
         it.id = destinationId
     }
 }
@@ -161,7 +158,7 @@ private fun RootScreen.toDestination(
     controller: NavController,
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
-    return ComposeNavigator.Destination(navigator) { screenContent(controller) }.also {
+    return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!) }.also {
         it.id = destinationId
     }
 }
@@ -170,7 +167,7 @@ private fun Dialog.toDestination(
     controller: NavController,
 ): DialogNavigator.Destination {
     val navigator = controller.navigatorProvider[DialogNavigator::class]
-    return DialogNavigator.Destination(navigator) { dialogContent(controller) }.also {
+    return DialogNavigator.Destination(navigator) { dialogContent(it.arguments!!) }.also {
         it.id = destinationId
     }
 }
@@ -182,7 +179,7 @@ private fun BottomSheet.toDestination(
     controller: NavController,
 ): BottomSheetNavigator.Destination {
     val navigator = controller.navigatorProvider[BottomSheetNavigator::class]
-    return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(controller) }.also {
+    return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(it.arguments!!) }.also {
         it.id = destinationId
     }
 }
@@ -195,4 +192,8 @@ private fun Activity.toDestination(
         it.id = destinationId
         it.setIntent(intent)
     }
+}
+
+internal val LocalNavController = staticCompositionLocalOf<NavController> {
+    throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
 }
