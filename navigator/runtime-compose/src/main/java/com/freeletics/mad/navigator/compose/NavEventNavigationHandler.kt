@@ -40,7 +40,8 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
     @Composable
     @OptIn(InternalNavigatorApi::class)
     @CallSuper
-    override fun Navigation(navController: NavController, navigator: NavEventNavigator) {
+    override fun Navigation(navigator: NavEventNavigator) {
+        val controller = LocalNavController.current
         val lifecycleOwner = LocalLifecycleOwner.current
 
         val activityLaunchers = navigator.activityResultRequests.associateWith {
@@ -59,11 +60,11 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
             }
         }
 
-        LaunchedEffect(lifecycleOwner, navController, navigator) {
+        LaunchedEffect(lifecycleOwner, controller, navigator) {
             navigator.navEvents
                 .flowWithLifecycle(lifecycleOwner.lifecycle)
                 .collect { navEvent ->
-                    navigate(navController, activityLaunchers, permissionLaunchers, navEvent)
+                    navigate(controller, activityLaunchers, permissionLaunchers, navEvent)
                 }
         }
     }

@@ -18,7 +18,7 @@ internal class EmptyNavigationHandler : NavigationHandler<EmptyNavigator> {
     }
 
     @Composable
-    override fun Navigation(navController: NavController, navigator: EmptyNavigator) {
+    override fun Navigation(navigator: EmptyNavigator) {
         throw UnsupportedOperationException("This is a marker class that should never be used")
     }
 }

@@ -45,8 +45,6 @@ class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import androidx.navigation.NavController
-            import androidx.navigation.fragment.findNavController
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -120,10 +118,9 @@ class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(navController: NavController): Unit {
+            public fun TestScreen(arguments: Bundle): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                val arguments = navController.currentBackStackEntry!!.arguments ?: Bundle.EMPTY
                 TestViewModel(dependencies, handle, arguments)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
@@ -157,7 +154,6 @@ class FileGeneratorTestComposeFragment {
                   setupNavigation()
                 }
             
-                val navController = findNavController()
                 return ComposeView(requireContext()).apply {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
 
@@ -168,7 +164,7 @@ class FileGeneratorTestComposeFragment {
 
                   setContent {
                     CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
-                      TestScreen(navController)
+                      TestScreen(requireArguments())
                     }
                   }
                 }
@@ -214,8 +210,6 @@ class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.DialogFragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import androidx.navigation.NavController
-            import androidx.navigation.fragment.findNavController
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -289,10 +283,9 @@ class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(navController: NavController): Unit {
+            public fun TestScreen(arguments: Bundle): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                val arguments = navController.currentBackStackEntry!!.arguments ?: Bundle.EMPTY
                 TestViewModel(dependencies, handle, arguments)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
@@ -326,7 +319,6 @@ class FileGeneratorTestComposeFragment {
                   setupNavigation()
                 }
             
-                val navController = findNavController()
                 return ComposeView(requireContext()).apply {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
 
@@ -337,7 +329,7 @@ class FileGeneratorTestComposeFragment {
 
                   setContent {
                     CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
-                      TestScreen(navController)
+                      TestScreen(requireArguments())
                     }
                   }
                 }
@@ -381,8 +373,6 @@ class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import androidx.navigation.NavController
-            import androidx.navigation.fragment.findNavController
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -454,10 +444,9 @@ class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(navController: NavController): Unit {
+            public fun TestScreen(arguments: Bundle): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                val arguments = navController.currentBackStackEntry!!.arguments ?: Bundle.EMPTY
                 TestViewModel(dependencies, handle, arguments)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
@@ -491,12 +480,11 @@ class FileGeneratorTestComposeFragment {
                   setupNavigation()
                 }
             
-                val navController = findNavController()
                 return ComposeView(requireContext()).apply {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
 
                   setContent {
-                    TestScreen(navController)
+                    TestScreen(requireArguments())
                   }
                 }
               }
@@ -539,8 +527,6 @@ class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import androidx.navigation.NavController
-            import androidx.navigation.fragment.findNavController
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -607,10 +593,9 @@ class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(navController: NavController): Unit {
+            public fun TestScreen(arguments: Bundle): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                val arguments = navController.currentBackStackEntry!!.arguments ?: Bundle.EMPTY
                 TestViewModel(dependencies, handle, arguments)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
@@ -636,20 +621,17 @@ class FileGeneratorTestComposeFragment {
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
-              ): View {
-                val navController = findNavController()
-                return ComposeView(requireContext()).apply {
-                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+              ): View = ComposeView(requireContext()).apply {
+                setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
 
-                  layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                      ViewGroup.LayoutParams.MATCH_PARENT)
-                  val observer = ViewWindowInsetObserver(this)
-                  val windowInsets = observer.start()
+                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT)
+                val observer = ViewWindowInsetObserver(this)
+                val windowInsets = observer.start()
 
-                  setContent {
-                    CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
-                      TestScreen(navController)
-                    }
+                setContent {
+                  CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
+                    TestScreen(requireArguments())
                   }
                 }
               }

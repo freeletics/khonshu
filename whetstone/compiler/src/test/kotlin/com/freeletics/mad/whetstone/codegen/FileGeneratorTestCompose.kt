@@ -35,7 +35,6 @@ class FileGeneratorTestCompose {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import androidx.navigation.NavController
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -105,10 +104,9 @@ class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(navController: NavController): Unit {
+            public fun TestScreen(arguments: Bundle): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                val arguments = navController.currentBackStackEntry!!.arguments ?: Bundle.EMPTY
                 TestViewModel(dependencies, handle, arguments)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
@@ -116,7 +114,7 @@ class FileGeneratorTestCompose {
 
               val handler = component.testNavigationHandler
               val navigator = component.testNavigator
-              handler.Navigation(navController, navigator)
+              handler.Navigation(navigator)
 
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
@@ -149,7 +147,6 @@ class FileGeneratorTestCompose {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import androidx.navigation.NavController
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -214,10 +211,9 @@ class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(navController: NavController): Unit {
+            public fun TestScreen(arguments: Bundle): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                val arguments = navController.currentBackStackEntry!!.arguments ?: Bundle.EMPTY
                 TestViewModel(dependencies, handle, arguments)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
@@ -254,7 +250,6 @@ class FileGeneratorTestCompose {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import androidx.navigation.NavController
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -317,10 +312,9 @@ class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(navController: NavController): Unit {
+            public fun TestScreen(arguments: Bundle): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                val arguments = navController.currentBackStackEntry!!.arguments ?: Bundle.EMPTY
                 TestViewModel(dependencies, handle, arguments)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
@@ -328,7 +322,7 @@ class FileGeneratorTestCompose {
 
               val handler = component.testNavigationHandler
               val navigator = component.testNavigator
-              handler.Navigation(navController, navigator)
+              handler.Navigation(navigator)
 
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
@@ -361,7 +355,6 @@ class FileGeneratorTestCompose {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import androidx.navigation.NavController
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -425,10 +418,9 @@ class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(navController: NavController): Unit {
+            public fun TestScreen(arguments: Bundle): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                val arguments = navController.currentBackStackEntry!!.arguments ?: Bundle.EMPTY
                 TestViewModel(dependencies, handle, arguments)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
@@ -436,7 +428,7 @@ class FileGeneratorTestCompose {
 
               val handler = component.testNavigationHandler
               val navigator = component.testNavigator
-              handler.Navigation(navController, navigator)
+              handler.Navigation(navigator)
 
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
