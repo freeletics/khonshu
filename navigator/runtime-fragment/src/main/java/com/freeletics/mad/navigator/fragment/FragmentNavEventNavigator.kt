@@ -3,10 +3,7 @@ package com.freeletics.mad.navigator.fragment
 import android.os.Parcelable
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
-import com.freeletics.mad.navigator.Navigator
-import com.freeletics.mad.navigator.fragment.result.FragmentResultRequest
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
-import kotlinx.coroutines.flow.Flow
 
 /**
  * An extension to [NavEventNavigator] that adds support for `Fragment` result APIs. See

@@ -21,7 +21,7 @@ import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.NavEvent.BackEvent
 import com.freeletics.mad.navigator.NavEvent.BackToEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
-import com.freeletics.mad.navigator.NavEvent.ResultLauncherEvent
+import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
@@ -30,8 +30,7 @@ import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.GRANTED
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED_PERMANENTLY
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED
-import com.freeletics.mad.navigator.ResultLauncher
-import java.lang.IllegalArgumentException
+import kotlinx.coroutines.flow.collect
 
 /**
  * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
@@ -51,7 +50,6 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
         val permissionLaunchers = navigator.permissionsResultRequests.associateWith {
             rememberResultLaunchers(it)
         }
-        val launchers: Map<ResultLauncher<*>, ActivityResultLauncher<*>> = activityLaunchers + permissionLaunchers
 
         val backDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
         DisposableEffect(lifecycleOwner, backDispatcher, navigator) {
@@ -66,7 +64,7 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
             navigator.navEvents
                 .flowWithLifecycle(lifecycleOwner.lifecycle)
                 .collect { navEvent ->
-                    navigate(controller, launchers, navEvent)
+                    navigate(controller, activityLaunchers, permissionLaunchers, navEvent)
                 }
         }
     }
@@ -111,7 +109,8 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
 
     private fun navigate(
         controller: NavController,
-        resultLaunchers: Map<ResultLauncher<*>, ActivityResultLauncher<*>>,
+        activityLaunchers: Map<ActivityResultRequest<*, *>, ActivityResultLauncher<*>>,
+        permissionLaunchers: Map<PermissionsResultRequest, ActivityResultLauncher<List<String>>>,
         event: NavEvent
     ) {
         if (handleNavEvent(event)) {
@@ -149,14 +148,23 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
             is BackToEvent -> {
                 controller.popBackStack(event.destinationId, event.inclusive)
             }
-            is ResultLauncherEvent<*> -> {
-                val request = event.resultLauncher
-                val launcher = resultLaunchers[request] ?: throw IllegalStateException(
+            is ActivityResultEvent<*> -> {
+                val request = event.request
+                val launcher = activityLaunchers[request] ?: throw IllegalStateException(
                     "No launcher registered for $request!\nMake sure you called the appropriate " +
                         "AbstractNavigator.registerFor... method"
                 )
                 @Suppress("UNCHECKED_CAST")
                 (launcher as ActivityResultLauncher<Any?>).launch(event.input)
+            }
+            is NavEvent.PermissionsResultEvent -> {
+                val request = event.request
+                val launcher = permissionLaunchers[request] ?: throw IllegalStateException(
+                    "No launcher registered for $request!\nMake sure you called the appropriate " +
+                        "AbstractNavigator.registerFor... method"
+                )
+                @Suppress("UNCHECKED_CAST")
+                (launcher as ActivityResultLauncher<Any?>).launch(event.permissions)
             }
             else -> throw IllegalArgumentException("Unknown NavEvent $event")
         }

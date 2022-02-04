@@ -1,4 +1,4 @@
-package com.freeletics.mad.navigator.fragment.result
+package com.freeletics.mad.navigator.fragment
 
 import com.freeletics.mad.navigator.ResultOwner
 

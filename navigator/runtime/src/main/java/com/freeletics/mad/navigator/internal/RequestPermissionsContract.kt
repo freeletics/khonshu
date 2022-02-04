@@ -8,7 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 /**
  * Wrapper for [ActivityResultContracts.RequestMultiplePermissions] so that a [List] is used
  * as input instead of [Array]. The reason for this is that [Array.equals] does not compare
- * the contents which makes testing [com.freeletics.mad.navigator.NavEvent.ResultLauncherEvent]
+ * the contents which makes testing [com.freeletics.mad.navigator.NavEvent.ActivityResultEvent]
  * painful.
  */
 @InternalNavigatorApi
