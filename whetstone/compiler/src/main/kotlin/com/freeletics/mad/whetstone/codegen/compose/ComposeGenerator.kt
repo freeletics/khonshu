@@ -11,7 +11,6 @@ import com.freeletics.mad.whetstone.codegen.util.asComposeState
 import com.freeletics.mad.whetstone.codegen.util.composable
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.launch
-import com.freeletics.mad.whetstone.codegen.util.navController
 import com.freeletics.mad.whetstone.codegen.util.navigationHandlerNavigation
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.rememberCoroutineScope
@@ -29,11 +28,8 @@ internal class ComposeGenerator(
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
             .addAnnotation(optInAnnotation())
-            .addParameter("navController", navController)
+            .addParameter("arguments", bundle)
             .beginControlFlow("val viewModelProvider = %M<%T>(%T::class) { dependencies, handle -> ", rememberViewModelProvider, data.dependencies, data.parentScope)
-            // currentBackStackEntry: external method
-            // arguments: external method
-            .addStatement("val arguments = navController.currentBackStackEntry!!.arguments ?: %T.EMPTY", bundle)
             .addStatement("%T(dependencies, handle, arguments)", viewModelClassName)
             .endControlFlow()
             .addStatement("val viewModel = viewModelProvider[%T::class.java]", viewModelClassName)
@@ -64,7 +60,7 @@ internal class ComposeGenerator(
         return CodeBlock.builder()
             .addStatement("val handler = component.%L", data.navigation!!.navigationHandler.propertyName)
             .addStatement("val navigator = component.%L", data.navigation!!.navigator.propertyName)
-            .addStatement("handler.%N(navController, navigator)", navigationHandlerNavigation)
+            .addStatement("handler.%N(navigator)", navigationHandlerNavigation)
             .add("\n")
             .build()
     }
