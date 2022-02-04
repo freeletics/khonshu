@@ -120,11 +120,13 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
 
         when (event) {
             is NavigateToEvent -> {
-                controller.navigate(
-                    event.route.destinationId,
-                    event.route.getArguments(),
-                    event.options,
-                )
+                controller.navigate(event.route.destinationId, event.route.getArguments())
+            }
+            is NavEvent.NavigateBackAndThenToEvent -> {
+                val options = NavOptions.Builder()
+                    .setPopUpTo(event.popUpToDestinationId, inclusive = event.inclusive)
+                    .build()
+                controller.navigate(event.route.destinationId, event.route.getArguments(), options)
             }
             is NavEvent.NavigateToRootEvent -> {
                 val options = NavOptions.Builder()
@@ -136,11 +138,7 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
                     // everything above it gets removed
                     .setLaunchSingleTop(true)
                     .build()
-                controller.navigate(
-                    event.root.destinationId,
-                    event.root.getArguments(),
-                    options
-                )
+                controller.navigate(event.root.destinationId, event.root.getArguments(), options)
             }
             is UpEvent -> {
                 controller.navigateUp()
