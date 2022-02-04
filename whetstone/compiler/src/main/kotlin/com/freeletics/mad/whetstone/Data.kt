@@ -1,6 +1,7 @@
 package com.freeletics.mad.whetstone
 
-import com.freeletics.mad.whetstone.CommonData.Navigation
+import com.freeletics.mad.whetstone.codegen.util.fragmentNavEventNavigator
+import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.squareup.kotlinpoet.ClassName
 
 internal sealed interface BaseData {
@@ -16,15 +17,11 @@ internal sealed interface CommonData : BaseData {
 
     val stateMachine: ClassName
 
-    val navigation: Navigation?
+    val navigationEnabled: Boolean
+    val navigator: ClassName?
 
     val coroutinesEnabled: Boolean
     val rxJavaEnabled: Boolean
-
-    data class Navigation(
-        val navigator: ClassName,
-        val navigationHandler: ClassName,
-    )
 }
 
 internal data class ComposeScreenData(
@@ -38,11 +35,14 @@ internal data class ComposeScreenData(
 
     override val stateMachine: ClassName,
 
-    override val navigation: Navigation?,
+    override val navigationEnabled: Boolean,
 
     override val coroutinesEnabled: Boolean,
     override val rxJavaEnabled: Boolean,
-) :  CommonData
+) :  CommonData {
+    override val navigator: ClassName?
+        get() = navEventNavigator.takeIf { navigationEnabled }
+}
 
 internal data class ComposeFragmentData(
     override val baseName: String,
@@ -56,13 +56,16 @@ internal data class ComposeFragmentData(
     val fragmentBaseClass: ClassName,
 
     override val stateMachine: ClassName,
+
+    override val navigationEnabled: Boolean,
+
     val enableInsetHandling: Boolean,
-
-    override val navigation: Navigation?,
-
     override val coroutinesEnabled: Boolean,
     override val rxJavaEnabled: Boolean,
-) :  CommonData
+) :  CommonData {
+    override val navigator: ClassName?
+        get() = fragmentNavEventNavigator.takeIf { navigationEnabled }
+}
 
 internal data class RendererFragmentData(
     override val baseName: String,
@@ -77,11 +80,14 @@ internal data class RendererFragmentData(
     override val stateMachine: ClassName,
     val fragmentBaseClass: ClassName,
 
-    override val navigation: Navigation?,
+    override val navigationEnabled: Boolean,
 
     override val coroutinesEnabled: Boolean,
     override val rxJavaEnabled: Boolean,
-) : CommonData
+) : CommonData {
+    override val navigator: ClassName?
+        get() = fragmentNavEventNavigator.takeIf { navigationEnabled }
+}
 
 internal data class NavEntryData(
     override val baseName: String,

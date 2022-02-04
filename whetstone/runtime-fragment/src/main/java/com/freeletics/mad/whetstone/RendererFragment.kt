@@ -1,10 +1,6 @@
 package com.freeletics.mad.whetstone
 
 import androidx.fragment.app.Fragment
-import com.freeletics.mad.whetstone.fragment.internal.EmptyNavigator
-import com.freeletics.mad.navigator.fragment.NavigationHandler
-import com.freeletics.mad.navigator.Navigator
-import com.freeletics.mad.whetstone.fragment.internal.EmptyNavigationHandler
 import com.freeletics.mad.statemachine.StateMachine
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.CLASS
@@ -27,8 +23,8 @@ import kotlin.reflect.KClass
  *
  * **Navigation**
  *
- * If the 2 optional `navigator` and `navigationHandler` are set the generated `Fragment` will use
- * these together with it's `NavController` to set up navigation after it was created.
+ * If the optional `navigator` is set the generated `Fragment` will use this to set up navigation
+ * to set up navigation after it was created.
  *
  * **Scopes, Dagger and Anvil**
  *
@@ -73,9 +69,6 @@ public annotation class RendererFragment(
     val rendererFactory: KClass<*>,
 
     val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
-
-    val navigator: KClass<out Navigator> = EmptyNavigator::class,
-    val navigationHandler: KClass<out NavigationHandler<*>> = EmptyNavigationHandler::class,
 
     val coroutinesEnabled: Boolean = false,
     val rxJavaEnabled: Boolean = false,

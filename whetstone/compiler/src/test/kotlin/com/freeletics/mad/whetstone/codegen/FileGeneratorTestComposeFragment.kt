@@ -1,6 +1,5 @@
 package com.freeletics.mad.whetstone.codegen
 
-import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.codegen.util.dialogFragment
 import com.freeletics.mad.whetstone.codegen.util.fragment
@@ -19,10 +18,7 @@ class FileGeneratorTestComposeFragment {
         fragmentBaseClass = fragment,
         stateMachine = ClassName("com.test", "TestStateMachine"),
         enableInsetHandling = true,
-        navigation = CommonData.Navigation(
-            navigator = ClassName("com.test", "TestNavigator"),
-            navigationHandler = ClassName("com.test.navigation", "TestNavigationHandler"),
-        ),
+        navigationEnabled = true,
         coroutinesEnabled = true,
         rxJavaEnabled = true,
     )
@@ -45,6 +41,7 @@ class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
+            import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -54,7 +51,6 @@ class FileGeneratorTestComposeFragment {
             import com.google.accompanist.insets.LocalWindowInsets
             import com.google.accompanist.insets.ViewWindowInsetObserver
             import com.squareup.anvil.annotations.MergeComponent
-            import com.test.navigation.TestNavigationHandler
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
@@ -78,9 +74,7 @@ class FileGeneratorTestComposeFragment {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val testNavigator: TestNavigator
-
-              public val testNavigationHandler: TestNavigationHandler
+              public val fragmentNavEventNavigator: FragmentNavEventNavigator
 
               public val providedValues: Set<ProvidedValue<*>>
 
@@ -179,9 +173,8 @@ class FileGeneratorTestComposeFragment {
                 val viewModel = viewModelProvider[TestViewModel::class.java]
                 val component = viewModel.component
             
-                val handler = component.testNavigationHandler
-                val navigator = component.testNavigator
-                handler.handle(this, navigator)
+                val navigator = component.fragmentNavEventNavigator
+                handleNavigation(this, navigator)
               }
             }
             
@@ -210,6 +203,7 @@ class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.DialogFragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
+            import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -219,7 +213,6 @@ class FileGeneratorTestComposeFragment {
             import com.google.accompanist.insets.LocalWindowInsets
             import com.google.accompanist.insets.ViewWindowInsetObserver
             import com.squareup.anvil.annotations.MergeComponent
-            import com.test.navigation.TestNavigationHandler
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
@@ -243,9 +236,7 @@ class FileGeneratorTestComposeFragment {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val testNavigator: TestNavigator
-
-              public val testNavigationHandler: TestNavigationHandler
+              public val fragmentNavEventNavigator: FragmentNavEventNavigator
 
               public val providedValues: Set<ProvidedValue<*>>
 
@@ -344,16 +335,15 @@ class FileGeneratorTestComposeFragment {
                 val viewModel = viewModelProvider[TestViewModel::class.java]
                 val component = viewModel.component
             
-                val handler = component.testNavigationHandler
-                val navigator = component.testNavigator
-                handler.handle(this, navigator)
+                val navigator = component.fragmentNavEventNavigator
+                handleNavigation(this, navigator)
               }
             }
             
         """.trimIndent()
     }
 
-        @Test
+    @Test
     fun `generates code for ComposeFragmentData, no inset handling`() {
         val noInsetHandling = full.copy(enableInsetHandling = false)
 
@@ -373,6 +363,7 @@ class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
+            import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -380,7 +371,6 @@ class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
-            import com.test.navigation.TestNavigationHandler
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
@@ -404,9 +394,7 @@ class FileGeneratorTestComposeFragment {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val testNavigator: TestNavigator
-
-              public val testNavigationHandler: TestNavigationHandler
+              public val fragmentNavEventNavigator: FragmentNavEventNavigator
 
               public val providedValues: Set<ProvidedValue<*>>
 
@@ -497,10 +485,9 @@ class FileGeneratorTestComposeFragment {
                 }
                 val viewModel = viewModelProvider[TestViewModel::class.java]
                 val component = viewModel.component
-            
-                val handler = component.testNavigationHandler
-                val navigator = component.testNavigator
-                handler.handle(this, navigator)
+
+                val navigator = component.fragmentNavEventNavigator
+                handleNavigation(this, navigator)
               }
             }
             
@@ -509,7 +496,7 @@ class FileGeneratorTestComposeFragment {
 
     @Test
     fun `generates code for ComposeFragmentData, no navigation`() {
-        val noNavigation = full.copy(navigation = null)
+        val noNavigation = full.copy(navigationEnabled = false)
 
         FileGenerator().generate(noNavigation).toString() shouldBe """
             package com.test

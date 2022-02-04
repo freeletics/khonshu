@@ -1,14 +1,12 @@
 package com.freeletics.mad.whetstone
 
 import com.freeletics.mad.whetstone.codegen.FileGenerator
-import com.freeletics.mad.whetstone.codegen.util.composeEmptyNavigationHandler
-import com.freeletics.mad.whetstone.codegen.util.composeEmptyNavigator
 import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.fragment
-import com.freeletics.mad.whetstone.codegen.util.fragmentEmptyNavigationHandler
-import com.freeletics.mad.whetstone.codegen.util.fragmentEmptyNavigator
 import com.freeletics.mad.whetstone.codegen.util.moduleFqName
+import com.freeletics.mad.whetstone.codegen.util.navDestination
+import com.freeletics.mad.whetstone.codegen.util.navDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
 import com.google.auto.service.AutoService
@@ -71,20 +69,20 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         declaration: KtDeclaration
     ): GeneratedFile? {
         val renderer = declaration.findAnnotation(rendererFragmentFqName, module) ?: return null
+        val navigation = declaration.findAnnotation(navDestinationFqName, module)
         val data = RendererFragmentData(
             baseName = declaration.name!!,
-            packageName = declaration.containingKtFile.packageFqName.pathSegments().joinToString(separator = "."),
+            packageName = declaration.containingKtFile.packageName(),
             scope = renderer.requireClassArgument("scope", 0, module),
             parentScope = renderer.requireClassArgument("parentScope", 1, module),
             dependencies = renderer.requireClassArgument("dependencies", 2, module),
             stateMachine = renderer.requireClassArgument("stateMachine", 3, module),
             factory = renderer.requireClassArgument("rendererFactory", 4, module),
             fragmentBaseClass = renderer.optionalClassArgument("fragmentBaseClass", 5, module) ?: fragment,
-            navigation = renderer.toFragmentNavigation(6, 7, module),
-            coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 8) ?: false,
-            rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 9) ?: false,
+            coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
+            rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
+            navigationEnabled = navigation != null
         )
-        //TODO check that navigationHandler type fits to fragment
 
         val file = FileGenerator().generate(data)
         return createGeneratedFile(
@@ -101,18 +99,19 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         declaration: KtDeclaration
     ): GeneratedFile? {
         val compose = declaration.findAnnotation(composeFragmentFqName, module) ?: return null
+        val navigation = declaration.findAnnotation(navDestinationFqName, module)
         val data = ComposeFragmentData(
             baseName = declaration.name!!,
-            packageName = declaration.containingKtFile.packageFqName.pathSegments().joinToString(separator = "."),
+            packageName = declaration.containingKtFile.packageName(),
             scope = compose.requireClassArgument("scope", 0, module),
             parentScope = compose.requireClassArgument("parentScope", 1, module),
             dependencies = compose.requireClassArgument("dependencies", 2, module),
             stateMachine = compose.requireClassArgument("stateMachine", 3, module),
             fragmentBaseClass = compose.optionalClassArgument("fragmentBaseClass", 4, module) ?: fragment,
-            navigation = compose.toFragmentNavigation(5, 6, module),
-            enableInsetHandling = compose.optionalBooleanArgument("enableInsetHandling", 7) ?: false,
-            coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 8) ?: false,
-            rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 9) ?: false,
+            enableInsetHandling = compose.optionalBooleanArgument("enableInsetHandling", 5) ?: false,
+            coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
+            rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
+            navigationEnabled = navigation != null
         )
 
         val file = FileGenerator().generate(data)
@@ -130,16 +129,17 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         declaration: KtDeclaration
     ): GeneratedFile? {
         val compose = declaration.findAnnotation(composeFqName, module) ?: return null
+        val navigation = declaration.findAnnotation(navDestinationFqName, module)
         val data = ComposeScreenData(
             baseName = declaration.name!!,
-            packageName = declaration.containingKtFile.packageFqName.pathSegments().joinToString(separator = "."),
+            packageName = declaration.containingKtFile.packageName(),
             scope = compose.requireClassArgument("scope", 0, module),
             parentScope = compose.requireClassArgument("parentScope", 1, module),
             dependencies = compose.requireClassArgument("dependencies", 2, module),
             stateMachine = compose.requireClassArgument("stateMachine", 3, module),
-            navigation = compose.toComposeNavigation(4, 5, module),
-            coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
-            rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
+            coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 4) ?: false,
+            rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 5) ?: false,
+            navigationEnabled = navigation != null,
         )
 
         val file = FileGenerator().generate(data)
@@ -151,52 +151,6 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         )
     }
 
-    private fun KtAnnotationEntry.toComposeNavigation(
-        navigatorIndex: Int,
-        navigationHandlerIndex: Int,
-        module: ModuleDescriptor
-    ): CommonData.Navigation? {
-        val navigator = optionalClassArgument("navigator", navigatorIndex, module)
-        val navigationHandler = optionalClassArgument("navigationHandler", navigationHandlerIndex, module)
-
-        if (navigator != null && navigationHandler != null &&
-            navigator != composeEmptyNavigator && navigationHandler != composeEmptyNavigationHandler
-        ) {
-            return CommonData.Navigation(navigator, navigationHandler)
-        }
-        if (navigator == null && navigationHandler == null) {
-            return null
-        }
-        if (navigator == composeEmptyNavigator && navigationHandler == composeEmptyNavigationHandler) {
-            return null
-        }
-
-        throw IllegalStateException("navigator and navigationHandler need to be set together")
-    }
-
-    private fun KtAnnotationEntry.toFragmentNavigation(
-        navigatorIndex: Int,
-        navigationHandlerIndex: Int,
-        module: ModuleDescriptor
-    ): CommonData.Navigation? {
-        val navigator = optionalClassArgument("navigator", navigatorIndex, module)
-        val navigationHandler = optionalClassArgument("navigationHandler", navigationHandlerIndex, module)
-
-        if (navigator != null && navigationHandler != null &&
-            navigator != fragmentEmptyNavigator && navigationHandler != fragmentEmptyNavigationHandler
-        ) {
-            return CommonData.Navigation(navigator, navigationHandler)
-        }
-        if (navigator == null && navigationHandler == null) {
-            return null
-        }
-        if (navigator == fragmentEmptyNavigator && navigationHandler == fragmentEmptyNavigationHandler) {
-            return null
-        }
-
-        throw IllegalStateException("navigator and navigationHandler need to be set together")
-    }
-
     private fun generateNavEntryCode(
         codeGenDir: File,
         module: ModuleDescriptor,
@@ -206,7 +160,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         val scope = component.requireClassArgument("scope", 0, module)
         val data = NavEntryData(
             baseName = scope.simpleName,
-            packageName = declaration.containingKtFile.packageFqName.pathSegments().joinToString(separator = "."),
+            packageName = declaration.containingKtFile.packageName(),
             scope = scope,
             parentScope = component.requireClassArgument("parentScope", 1, module),
             coroutinesEnabled = component.optionalBooleanArgument("coroutinesEnabled", 2) ?: false,
@@ -250,6 +204,19 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         return null
     }
 
+    private fun KtAnnotationEntry.optionalClassArgumentIfNot(
+        name: String,
+        index: Int,
+        module: ModuleDescriptor,
+        filteredOutClass: ClassName,
+    ): ClassName? {
+        val className = optionalClassArgument(name, index, module)
+        if (className != filteredOutClass) {
+            return className
+        }
+        return null
+    }
+
     //TODO replace with a way to get default value
     private fun KtAnnotationEntry.optionalBooleanArgument(
         name: String,
@@ -260,5 +227,9 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             return boolean.node.firstChildNode.text.toBoolean()
         }
         return null
+    }
+
+    private fun KtFile.packageName(): String {
+        return packageFqName.pathSegments().joinToString(separator = ".")
     }
 }

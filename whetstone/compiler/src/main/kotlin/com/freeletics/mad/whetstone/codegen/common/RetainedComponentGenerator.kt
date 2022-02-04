@@ -59,9 +59,8 @@ internal class RetainedComponentGenerator(
     private fun componentProperties(): List<PropertySpec> {
         val properties = mutableListOf<PropertySpec>()
         properties += simplePropertySpec(data.stateMachine)
-        if (data.navigation != null) {
-            properties += simplePropertySpec(data.navigation!!.navigator)
-            properties += simplePropertySpec(data.navigation!!.navigationHandler)
+        if (data.navigator != null) {
+            properties += simplePropertySpec(data.navigator!!)
         }
         properties += when (data) {
             is ComposeFragmentData -> providedValueSetProperty()

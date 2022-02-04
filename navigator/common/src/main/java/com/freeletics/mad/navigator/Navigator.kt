@@ -15,4 +15,3 @@ package com.freeletics.mad.navigator
  * makes the navigation related logic easily testable on the JVM.
  */
 public interface Navigator
-

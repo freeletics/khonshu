@@ -1,6 +1,5 @@
 package com.freeletics.mad.whetstone.codegen
 
-import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeScreenData
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
@@ -15,10 +14,7 @@ class FileGeneratorTestCompose {
         parentScope = ClassName("com.test.parent", "TestParentScope"),
         dependencies = ClassName("com.test", "TestDependencies"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
-        navigation = CommonData.Navigation(
-            navigator = ClassName("com.test", "TestNavigator"),
-            navigationHandler = ClassName("com.test.navigation", "TestNavigationHandler"),
-        ),
+        navigationEnabled = true,
         coroutinesEnabled = true,
         rxJavaEnabled = true,
     )
@@ -35,13 +31,14 @@ class FileGeneratorTestCompose {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
+            import com.freeletics.mad.navigator.NavEventNavigator
+            import com.freeletics.mad.navigator.compose.NavigationSetup
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
-            import com.test.navigation.TestNavigationHandler
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
@@ -64,9 +61,7 @@ class FileGeneratorTestCompose {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val testNavigator: TestNavigator
-
-              public val testNavigationHandler: TestNavigationHandler
+              public val navEventNavigator: NavEventNavigator
 
               public val providedValues: Set<ProvidedValue<*>>
 
@@ -112,9 +107,8 @@ class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
-              val handler = component.testNavigationHandler
-              val navigator = component.testNavigator
-              handler.Navigation(navigator)
+              val navigator = component.navEventNavigator
+              NavigationSetup(navigator)
 
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
@@ -135,7 +129,7 @@ class FileGeneratorTestCompose {
 
     @Test
     fun `generates code for ComposeScreenData, no navigation`() {
-        val noNavigation = full.copy(navigation = null)
+        val noNavigation = full.copy(navigationEnabled = false)
 
         FileGenerator().generate(noNavigation).toString() shouldBe """
             package com.test
@@ -250,13 +244,14 @@ class FileGeneratorTestCompose {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
+            import com.freeletics.mad.navigator.NavEventNavigator
+            import com.freeletics.mad.navigator.compose.NavigationSetup
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
-            import com.test.navigation.TestNavigationHandler
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
@@ -276,9 +271,7 @@ class FileGeneratorTestCompose {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val testNavigator: TestNavigator
-
-              public val testNavigationHandler: TestNavigationHandler
+              public val navEventNavigator: NavEventNavigator
 
               public val providedValues: Set<ProvidedValue<*>>
 
@@ -320,9 +313,8 @@ class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
-              val handler = component.testNavigationHandler
-              val navigator = component.testNavigator
-              handler.Navigation(navigator)
+              val navigator = component.navEventNavigator
+              NavigationSetup(navigator)
 
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
@@ -355,13 +347,14 @@ class FileGeneratorTestCompose {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
+            import com.freeletics.mad.navigator.NavEventNavigator
+            import com.freeletics.mad.navigator.compose.NavigationSetup
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
-            import com.test.navigation.TestNavigationHandler
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
@@ -383,9 +376,7 @@ class FileGeneratorTestCompose {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val testNavigator: TestNavigator
-
-              public val testNavigationHandler: TestNavigationHandler
+              public val navEventNavigator: NavEventNavigator
 
               public val providedValues: Set<ProvidedValue<*>>
 
@@ -426,9 +417,8 @@ class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
-              val handler = component.testNavigationHandler
-              val navigator = component.testNavigator
-              handler.Navigation(navigator)
+              val navigator = component.navEventNavigator
+              NavigationSetup(navigator)
 
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
