@@ -52,6 +52,13 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
                 }
             }
         }
+        lifecycle.coroutineScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                navigator.resultEvents.collect { event ->
+                    navigate(fragment, event)
+                }
+            }
+        }
     }
 
     private fun <I, O> ActivityResultRequest<I, O>.registerIn(
@@ -88,14 +95,15 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
             return
         }
 
-        if (event is FragmentResultEvent) {
-            val result = Bundle(1).apply {
-                putParcelable(KEY_FRAGMENT_RESULT, event.result)
-            }
-            fragment.parentFragmentManager.setFragmentResult(event.requestKey, result)
-        } else {
-            navigate(event, fragment.findNavController(), activityLaunchers, permissionLaunchers)
+        navigate(event, fragment.findNavController(), activityLaunchers, permissionLaunchers)
+    }
+
+    private fun navigate(fragment: Fragment, event: FragmentResultEvent) {
+        val result = Bundle(1).apply {
+            putParcelable(KEY_FRAGMENT_RESULT, event.result)
         }
+        fragment.parentFragmentManager.setFragmentResult(event.requestKey, result)
+        fragment.findNavController().popBackStack()
     }
 
     /**

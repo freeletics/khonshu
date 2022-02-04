@@ -9,6 +9,6 @@ import com.freeletics.mad.navigator.NavEventNavigator
  * [NavEventNavigator.navigateForResult].
  */
 public data class FragmentResultEvent(
-    val requestKey: String,
-    val result: Parcelable
-) : NavEvent
+    internal val requestKey: String,
+    internal val result: Parcelable
+)
