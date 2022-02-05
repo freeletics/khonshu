@@ -11,10 +11,12 @@ buildscript {
         classpath "com.vanniktech:gradle-maven-publish-plugin:0.18.0"
         classpath "com.autonomousapps.dependency-analysis:com.autonomousapps.dependency-analysis.gradle.plugin:0.80.0"
         classpath "com.github.ben-manes:gradle-versions-plugin:0.41.0"
+        classpath "org.jetbrains.kotlinx:binary-compatibility-validator:0.8.0"
     }
 }
 
 apply plugin: "com.autonomousapps.dependency-analysis"
+apply plugin: "org.jetbrains.kotlinx.binary-compatibility-validator"
 apply plugin: "com.github.ben-manes.versions"
 
 
@@ -41,6 +43,16 @@ dependencyAnalysis {
             }
         }
     }
+}
+
+apiValidation {
+    ignoredProjects += ["compiler"]
+
+    nonPublicMarkers += [
+        "androidx.annotation.VisibleForTesting",
+        "com.freeletics.mad.navigator.internal.InternalNavigatorApi",
+        "com.freeletics.mad.whetstone.internal.InternalWhetstoneApi",
+    ]
 }
 
 def isNonStable = { String version ->

@@ -127,7 +127,7 @@ public class NavEventNavigatorTest {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class, InternalNavigatorApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     public fun `backPresses sends out events`(): Unit = runBlocking {
         val navigator = TestNavigator()
@@ -151,7 +151,6 @@ public class NavEventNavigatorTest {
         assertThat(navigator.onBackPressedCallback.isEnabled).isFalse()
     }
 
-    @OptIn(InternalNavigatorApi::class)
     @Test
     public fun `registerForActivityResult after read is disallowed`(): Unit = runBlocking {
         val navigator = TestNavigator()
@@ -166,7 +165,6 @@ public class NavEventNavigatorTest {
             "fragment, e.g. during initialisation of your navigator subclass.")
     }
 
-    @OptIn(InternalNavigatorApi::class)
     @Test
     public fun `registerForPermissionsResult after read is disallowed`(): Unit = runBlocking {
         val navigator = TestNavigator()

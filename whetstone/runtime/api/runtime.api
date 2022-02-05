@@ -1,0 +1,30 @@
+public abstract interface annotation class com/freeletics/mad/whetstone/NavEntryComponent : java/lang/annotation/Annotation {
+	public abstract fun coroutinesEnabled ()Z
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun rxJavaEnabled ()Z
+	public abstract fun scope ()Ljava/lang/Class;
+}
+
+public final class com/freeletics/mad/whetstone/NavEntryComponents {
+	public static final field $stable I
+	public fun <init> (Ljava/util/Map;)V
+	public final fun get (Ljava/lang/String;Landroid/content/Context;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+}
+
+public abstract interface annotation class com/freeletics/mad/whetstone/NavEntryId : java/lang/annotation/Annotation {
+	public abstract fun value ()Ljava/lang/Class;
+}
+
+public abstract interface annotation class com/freeletics/mad/whetstone/ScopeTo : java/lang/annotation/Annotation {
+	public abstract fun marker ()Ljava/lang/Class;
+}
+
+public final class com/freeletics/mad/whetstone/internal/CollectAsStateKt {
+}
+
+public abstract interface annotation class com/freeletics/mad/whetstone/internal/InternalWhetstoneApi : java/lang/annotation/Annotation {
+}
+
+public final class com/freeletics/mad/whetstone/internal/ViewModelProviderKt {
+}
+

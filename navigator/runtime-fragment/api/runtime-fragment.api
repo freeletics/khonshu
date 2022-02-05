@@ -1,0 +1,52 @@
+public abstract class com/freeletics/mad/navigator/fragment/FragmentNavEventNavigator : com/freeletics/mad/navigator/NavEventNavigator {
+	public fun <init> ()V
+	public final fun getResultEvents ()Lkotlinx/coroutines/flow/Flow;
+	public final fun navigateBackWithResult (Ljava/lang/String;Landroid/os/Parcelable;)V
+	public final fun registerForFragmentResult (Ljava/lang/String;)Lcom/freeletics/mad/navigator/fragment/FragmentResultRequest;
+}
+
+public final class com/freeletics/mad/navigator/fragment/FragmentResultRequest : com/freeletics/mad/navigator/ResultOwner {
+}
+
+public abstract interface class com/freeletics/mad/navigator/fragment/NavDestination {
+	public abstract fun getDestinationId ()I
+	public abstract fun getRoute ()Lkotlin/reflect/KClass;
+}
+
+public final class com/freeletics/mad/navigator/fragment/NavDestination$Activity : com/freeletics/mad/navigator/fragment/NavDestination {
+	public fun <init> (Lkotlin/reflect/KClass;ILandroid/content/Intent;)V
+	public fun getDestinationId ()I
+	public fun getRoute ()Lkotlin/reflect/KClass;
+}
+
+public final class com/freeletics/mad/navigator/fragment/NavDestination$Dialog : com/freeletics/mad/navigator/fragment/NavDestination {
+	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/reflect/KClass;)V
+	public fun getDestinationId ()I
+	public fun getRoute ()Lkotlin/reflect/KClass;
+}
+
+public final class com/freeletics/mad/navigator/fragment/NavDestination$RootScreen : com/freeletics/mad/navigator/fragment/NavDestination {
+	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/reflect/KClass;)V
+	public fun getDestinationId ()I
+	public fun getRoute ()Lkotlin/reflect/KClass;
+}
+
+public final class com/freeletics/mad/navigator/fragment/NavDestination$Screen : com/freeletics/mad/navigator/fragment/NavDestination {
+	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/reflect/KClass;)V
+	public fun getDestinationId ()I
+	public fun getRoute ()Lkotlin/reflect/KClass;
+}
+
+public final class com/freeletics/mad/navigator/fragment/NavEventNavigationHandler : com/freeletics/mad/navigator/fragment/NavigationHandler {
+	public fun <init> ()V
+	public synthetic fun handle (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/Navigator;)V
+	public fun handle (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/fragment/FragmentNavEventNavigator;)V
+}
+
+public final class com/freeletics/mad/navigator/fragment/NavHostFragmentKt {
+	public static final fun setGraph (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/NavRoot;Ljava/util/Set;Lkotlin/jvm/functions/Function1;)V
+	public static final fun setGraph (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/NavRoute;Ljava/util/Set;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun setGraph$default (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/NavRoot;Ljava/util/Set;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static synthetic fun setGraph$default (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/NavRoute;Ljava/util/Set;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+

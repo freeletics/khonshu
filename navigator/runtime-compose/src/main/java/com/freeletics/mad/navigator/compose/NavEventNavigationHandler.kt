@@ -17,14 +17,12 @@ import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.internal.navigate
-import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import kotlinx.coroutines.flow.collect
 
 /**
  * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
  */
-@OptIn(InternalNavigatorApi::class)
 public class NavEventNavigationHandler : NavigationHandler<NavEventNavigator> {
 
     @Composable

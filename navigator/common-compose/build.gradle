@@ -9,14 +9,15 @@ android {
         minSdkVersion 21
     }
 
+    buildFeatures {
+        compose = true
+        buildConfig = false
+    }
+
     // still needed for Android projects despite toolchain
     compileOptions {
         sourceCompatibility(JavaVersion.VERSION_11)
         targetCompatibility(JavaVersion.VERSION_11)
-    }
-
-    buildFeatures {
-        compose = true
     }
 
     // still needed for Android projects despite toolchain
