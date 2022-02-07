@@ -6,14 +6,12 @@ import android.content.ContextWrapper
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
-import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
-import androidx.navigation.NavController
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
@@ -27,10 +25,9 @@ import kotlinx.coroutines.flow.collect
  * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
  */
 @OptIn(InternalNavigatorApi::class)
-public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigator> {
+public class NavEventNavigationHandler : NavigationHandler<NavEventNavigator> {
 
     @Composable
-    @CallSuper
     override fun Navigation(navigator: NavEventNavigator) {
         val controller = LocalNavController.current
         val lifecycleOwner = LocalLifecycleOwner.current
@@ -55,7 +52,7 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
             navigator.navEvents
                 .flowWithLifecycle(lifecycleOwner.lifecycle)
                 .collect { event ->
-                    navigate(controller, activityLaunchers, permissionLaunchers, event)
+                    navigate(event, controller, activityLaunchers, permissionLaunchers)
                 }
         }
     }
@@ -84,28 +81,5 @@ public open class NavEventNavigationHandler : NavigationHandler<NavEventNavigato
             context = context.baseContext
         }
         throw IllegalStateException("Permissions should be called in the context of an Activity")
-    }
-
-    private fun navigate(
-        controller: NavController,
-        activityLaunchers: Map<ActivityResultRequest<*, *>, ActivityResultLauncher<*>>,
-        permissionLaunchers: Map<PermissionsResultRequest, ActivityResultLauncher<List<String>>>,
-        event: NavEvent
-    ) {
-        if (handleNavEvent(event)) {
-            return
-        }
-
-        navigate(event, controller, activityLaunchers, permissionLaunchers)
-    }
-
-    /**
-     * This method can be overridden to handle custom [NavEvent] implementations or handle
-     * the standard events in a different way.
-     *
-     * @return `true` if event was handled, `false` otherwise
-     */
-    protected open fun handleNavEvent(event: NavEvent): Boolean {
-        return false
     }
 }

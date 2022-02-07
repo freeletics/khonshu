@@ -18,7 +18,7 @@ import com.freeletics.mad.navigator.internal.InternalNavigatorApi
  *    request
  */
 public class ActivityResultRequest<I, O> internal constructor(
-    public val contract: ActivityResultContract<I, O>
+    @property:InternalNavigatorApi public val contract: ActivityResultContract<I, O>
 ) : ResultOwner<O>() {
 
     @InternalNavigatorApi

@@ -6,7 +6,6 @@ import androidx.navigation.NavOptions
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.PermissionsResultRequest
-import java.lang.IllegalArgumentException
 
 @InternalNavigatorApi
 public fun navigate(
@@ -64,6 +63,5 @@ public fun navigate(
             @Suppress("UNCHECKED_CAST")
             (launcher as ActivityResultLauncher<Any?>).launch(event.permissions)
         }
-        else -> throw IllegalArgumentException("Unknown NavEvent $event")
     }
 }

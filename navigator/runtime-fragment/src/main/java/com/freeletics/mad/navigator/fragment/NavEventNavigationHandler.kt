@@ -1,10 +1,10 @@
 package com.freeletics.mad.navigator.fragment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
-import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultOwner
 import androidx.lifecycle.Lifecycle
@@ -26,9 +26,8 @@ import kotlinx.coroutines.launch
  * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
  */
 @OptIn(InternalNavigatorApi::class)
-public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEventNavigator> {
+public class NavEventNavigationHandler : NavigationHandler<FragmentNavEventNavigator> {
 
-    @CallSuper
     override fun handle(fragment: Fragment, navigator: FragmentNavEventNavigator) {
         val activityLaunchers = navigator.activityResultRequests.associateWith {
             it.registerIn(fragment)
@@ -48,7 +47,7 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
         lifecycle.coroutineScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 navigator.navEvents.collect { event ->
-                    navigate(fragment, activityLaunchers, permissionLaunchers, event)
+                    navigate(event, fragment.findNavController(), activityLaunchers, permissionLaunchers)
                 }
             }
         }
@@ -76,6 +75,7 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
         }
     }
 
+    @SuppressLint("VisibleForTests") // it's ok to use onResult internally
     private fun <O> FragmentResultRequest<O>.registerIn(
         fragmentResultOwner: FragmentResultOwner,
         lifecycleOwner: LifecycleOwner
@@ -85,35 +85,12 @@ public open class NavEventNavigationHandler : NavigationHandler<FragmentNavEvent
         }
     }
 
-    private fun navigate(
-        fragment: Fragment,
-        activityLaunchers: Map<ActivityResultRequest<*, *>, ActivityResultLauncher<*>>,
-        permissionLaunchers: Map<PermissionsResultRequest, ActivityResultLauncher<List<String>>>,
-        event: NavEvent
-    ) {
-        if (handleNavEvent(event)) {
-            return
-        }
-
-        navigate(event, fragment.findNavController(), activityLaunchers, permissionLaunchers)
-    }
-
     private fun navigate(fragment: Fragment, event: FragmentResultEvent) {
         val result = Bundle(1).apply {
             putParcelable(KEY_FRAGMENT_RESULT, event.result)
         }
         fragment.parentFragmentManager.setFragmentResult(event.requestKey, result)
         fragment.findNavController().popBackStack()
-    }
-
-    /**
-     * This method can be overridden to handle custom [NavEvent] implementations or handle
-     * the standard events in a different way.
-     *
-     * @return `true` if event was handled, `false` otherwise
-     */
-    protected open fun handleNavEvent(event: NavEvent): Boolean {
-       return false
     }
 }
 

@@ -3,6 +3,8 @@ package com.freeletics.mad.navigator
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.IdRes
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
 import com.freeletics.mad.navigator.NavEvent.BackEvent
 import com.freeletics.mad.navigator.NavEvent.BackToEvent
@@ -32,7 +34,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * permission requests can be handled through [registerForActivityResult]/[navigateForResult]
  * and [registerForPermissionsResult]/[requestPermissions] respectively.
  */
-@Suppress("MemberVisibilityCanBePrivate", "unused")
 public abstract class NavEventNavigator : Navigator {
 
     private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
@@ -40,6 +41,7 @@ public abstract class NavEventNavigator : Navigator {
     /**
      * A [Flow] to collect [NavEvents][NavEvent] produced by this navigator.
      */
+    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
     public val navEvents: Flow<NavEvent> = _navEvents.receiveAsFlow()
 
     private val _activityResultRequests = mutableListOf<ActivityResultRequest<*, *>>()
@@ -87,14 +89,6 @@ public abstract class NavEventNavigator : Navigator {
         val request = PermissionsResultRequest()
         _permissionsResultRequests.add(request)
         return request
-    }
-
-    /**
-     * Sends the given new [NavEvent] to the `NavigationHandler` connected to this navigator.
-     */
-    protected fun sendNavEvent(event: NavEvent) {
-        val result = _navEvents.trySendBlocking(event)
-        check(result.isSuccess)
     }
 
     /**
@@ -202,6 +196,11 @@ public abstract class NavEventNavigator : Navigator {
     public fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>) {
         val event = PermissionsResultEvent(request, permissions)
         sendNavEvent(event)
+    }
+
+    private fun sendNavEvent(event: NavEvent) {
+        val result = _navEvents.trySendBlocking(event)
+        check(result.isSuccess)
     }
 
     /**
