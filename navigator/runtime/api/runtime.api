@@ -27,22 +27,12 @@ public abstract class com/freeletics/mad/navigator/NavEventNavigator : com/freel
 	public final fun requestPermissions (Lcom/freeletics/mad/navigator/PermissionsResultRequest;[Ljava/lang/String;)V
 }
 
-public abstract interface class com/freeletics/mad/navigator/NavRoot {
-	public abstract fun getArguments ()Landroid/os/Bundle;
+public abstract interface class com/freeletics/mad/navigator/NavRoot : android/os/Parcelable {
 	public abstract fun getDestinationId ()I
 }
 
-public final class com/freeletics/mad/navigator/NavRoot$DefaultImpls {
-	public static fun getArguments (Lcom/freeletics/mad/navigator/NavRoot;)Landroid/os/Bundle;
-}
-
-public abstract interface class com/freeletics/mad/navigator/NavRoute {
-	public abstract fun getArguments ()Landroid/os/Bundle;
+public abstract interface class com/freeletics/mad/navigator/NavRoute : android/os/Parcelable {
 	public abstract fun getDestinationId ()I
-}
-
-public final class com/freeletics/mad/navigator/NavRoute$DefaultImpls {
-	public static fun getArguments (Lcom/freeletics/mad/navigator/NavRoute;)Landroid/os/Bundle;
 }
 
 public final class com/freeletics/mad/navigator/PermissionsResultRequest : com/freeletics/mad/navigator/ResultOwner {
