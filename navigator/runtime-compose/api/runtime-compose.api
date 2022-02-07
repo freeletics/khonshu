@@ -34,8 +34,6 @@ public final class com/freeletics/mad/navigator/compose/NavEventNavigationHandle
 }
 
 public final class com/freeletics/mad/navigator/compose/NavHostKt {
-	public static final fun NavHost (Landroidx/navigation/NavHostController;Lcom/freeletics/mad/navigator/NavRoot;Ljava/util/Set;Landroidx/compose/runtime/Composer;I)V
-	public static final fun NavHost (Landroidx/navigation/NavHostController;Lcom/freeletics/mad/navigator/NavRoute;Ljava/util/Set;Landroidx/compose/runtime/Composer;I)V
 	public static final fun NavHost (Lcom/freeletics/mad/navigator/NavRoot;Ljava/util/Set;Landroidx/compose/runtime/Composer;I)V
 	public static final fun NavHost (Lcom/freeletics/mad/navigator/NavRoute;Ljava/util/Set;Landroidx/compose/runtime/Composer;I)V
 }
