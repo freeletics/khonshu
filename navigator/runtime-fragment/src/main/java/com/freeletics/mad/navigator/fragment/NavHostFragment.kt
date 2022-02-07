@@ -1,7 +1,9 @@
 package com.freeletics.mad.navigator.fragment
 
 import androidx.navigation.NavDestination as AndroidXNavDestination
+import android.os.Bundle
 import androidx.navigation.ActivityNavigator
+import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.createGraph
@@ -15,43 +17,36 @@ import com.freeletics.mad.navigator.NavRoute
 /**
  * Creates and sets a [androidx.navigation.NavGraph] containing all given [destinations].
  * [startRoot] will be used as the start destination of the graph.
- *
- * [destinationCreator] can be passed to add support for custom subclasses of [NavDestination].
  */
 public fun NavHostFragment.setGraph(
     startRoot: NavRoot,
     destinations: Set<NavDestination>,
-    destinationCreator: (NavDestination) -> AndroidXNavDestination? = { null },
 ) {
     val startDestinationId = startRoot.destinationId
-    navController.setGraph(startDestinationId, destinations, destinationCreator)
+    navController.setGraph(startDestinationId, destinations)
 }
 
 /**
  * Creates and sets a [androidx.navigation.NavGraph] containing all given [destinations].
  * [startRoute] will be used as the start destination of the graph.
- *
- * [destinationCreator] can be passed to add support for custom subclasses of [NavDestination].
  */
 public fun NavHostFragment.setGraph(
     startRoute: NavRoute,
     destinations: Set<NavDestination>,
-    destinationCreator: (NavDestination) -> AndroidXNavDestination? = { null },
 ) {
     val startDestinationId = startRoute.destinationId
-    navController.setGraph(startDestinationId, destinations, destinationCreator)
+    navController.setGraph(startDestinationId, destinations)
 }
 
 
 private fun NavController.setGraph(
     startDestinationId: Int,
     destinations: Set<NavDestination>,
-    destinationCreator: (NavDestination) -> AndroidXNavDestination?,
 ) {
     @Suppress("deprecation")
     val graph = createGraph(startDestination = startDestinationId) {
         destinations.forEach { destination ->
-            addDestination(this@setGraph, destination, destinationCreator)
+            addDestination(this@setGraph, destination)
         }
     }
     setGraph(graph, null)
@@ -60,17 +55,13 @@ private fun NavController.setGraph(
 private fun NavGraphBuilder.addDestination(
     controller: NavController,
     destination: NavDestination,
-    destinationCreator: (NavDestination) -> AndroidXNavDestination?,
 ) {
     val newDestination = when (destination) {
         is NavDestination.Screen -> destination.toDestination(controller)
         is NavDestination.RootScreen -> destination.toDestination(controller)
         is NavDestination.Dialog -> destination.toDestination(controller)
         is NavDestination.Activity -> destination.toDestination(controller)
-        else -> destinationCreator(destination)
-    } ?: throw IllegalArgumentException("Unable to create destination for unknown type " +
-        "${destination::class.java}. Handle it in destinationCreator")
-
+    }
     addDestination(newDestination)
 }
 
@@ -81,6 +72,7 @@ private fun NavDestination.Screen.toDestination(
     return FragmentNavigator.Destination(navigator).also {
         it.id = destinationId
         it.setClassName(fragmentClass.java.name)
+        it.addDefaultArguments(defaultArguments)
     }
 }
 
@@ -91,6 +83,7 @@ private fun NavDestination.RootScreen.toDestination(
     return FragmentNavigator.Destination(navigator).also {
         it.id = destinationId
         it.setClassName(fragmentClass.java.name)
+        it.addDefaultArguments(defaultArguments)
     }
 }
 
@@ -101,6 +94,7 @@ private fun NavDestination.Dialog.toDestination(
     return DialogFragmentNavigator.Destination(navigator).also {
         it.id = destinationId
         it.setClassName(fragmentClass.java.name)
+        it.addDefaultArguments(defaultArguments)
     }
 }
 
@@ -111,5 +105,15 @@ private fun NavDestination.Activity.toDestination(
     return ActivityNavigator.Destination(navigator).also {
         it.id = destinationId
         it.setIntent(intent)
+    }
+}
+
+private fun AndroidXNavDestination.addDefaultArguments(extras: Bundle?) {
+    extras?.keySet()?.forEach { key ->
+        val argument = NavArgument.Builder()
+            .setDefaultValue(extras.get(key))
+            .setIsNullable(false)
+            .build()
+        addArgument(key, argument)
     }
 }

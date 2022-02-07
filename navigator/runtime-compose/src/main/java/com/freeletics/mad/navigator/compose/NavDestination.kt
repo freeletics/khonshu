@@ -11,6 +11,7 @@ import com.freeletics.mad.navigator.compose.NavDestination.BottomSheet
 import com.freeletics.mad.navigator.compose.NavDestination.Dialog
 import com.freeletics.mad.navigator.compose.NavDestination.RootScreen
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
+import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import kotlin.reflect.KClass
 
@@ -72,46 +73,61 @@ public inline fun <reified T : NavRoute> ActivityDestination(
 
 /**
  * A destination that can be navigated to. See [NavHost] for how to configure a `NavGraph` with it.
- *
- * [route] will be used as a unique identifier together with [destinationId]. The destination can
- * be reached by navigating using an instance of [route].
  */
-public interface NavDestination {
-    public val route: KClass<*>
-    @get:IdRes public val destinationId: Int
+public sealed interface NavDestination {
+    /**
+     * Represents a full screen. The [route] will be used as a unique identifier together
+     * with [destinationId]. The given [screenContent] will be shown when the screen is being
+     * navigated to using an instance of [route].
+     */
+    public class Screen @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<out NavRoute>,
+        internal val destinationId: Int,
+        internal val defaultArguments: Bundle?,
+        internal val screenContent: @Composable (Bundle) -> Unit,
+    ) : NavDestination {
+        public constructor(
+            route: KClass<out NavRoute>,
+            destinationId: Int,
+            screenContent: @Composable (Bundle) -> Unit,
+        ) : this(route, destinationId, null, screenContent)
+    }
 
     /**
      * Represents a full screen. The [route] will be used as a unique identifier together
      * with [destinationId]. The given [screenContent] will be shown when the screen is being
      * navigated to using an instance of [route].
      */
-    public class Screen(
-        override val route: KClass<out NavRoute>,
-        override val destinationId: Int,
+    public class RootScreen @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<out NavRoot>,
+        internal val destinationId: Int,
+        internal val defaultArguments: Bundle?,
         internal val screenContent: @Composable (Bundle) -> Unit,
-    ) : NavDestination
-
-    /**
-     * Represents a full screen. The [route] will be used as a unique identifier together
-     * with [destinationId]. The given [screenContent] will be shown when the screen is being
-     * navigated to using an instance of [route].
-     */
-    public class RootScreen(
-        override val route: KClass<out NavRoot>,
-        override val destinationId: Int,
-        internal val screenContent: @Composable (Bundle) -> Unit,
-    ) : NavDestination
+    ) : NavDestination {
+        public constructor(
+            route: KClass<out NavRoot>,
+            destinationId: Int,
+            screenContent: @Composable (Bundle) -> Unit,
+        ) : this(route, destinationId, null, screenContent)
+    }
 
     /**
      * Represents a dialog. The [route] will be used as a unique identifier together
      * with [destinationId]. The given [dialogContent] will be shown inside the dialog window
      * when navigating to it by using an instance of [route].
      */
-    public class Dialog(
-        override val route: KClass<out NavRoute>,
-        override val destinationId: Int,
+    public class Dialog @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<out NavRoute>,
+        internal val destinationId: Int,
+        internal val defaultArguments: Bundle?,
         internal val dialogContent: @Composable (Bundle) -> Unit,
-    ) : NavDestination
+    ) : NavDestination {
+        public constructor(
+            route: KClass<out NavRoute>,
+            destinationId: Int,
+            dialogContent: @Composable (Bundle) -> Unit,
+        ) : this(route, destinationId, null, dialogContent)
+    }
 
     /**
      * Represents a bottom sheet. The [route] will be used as a unique identifier together
@@ -119,11 +135,18 @@ public interface NavDestination {
      * when navigating to it by using an instance of [route].
      */
     @ExperimentalMaterialNavigationApi
-    public class BottomSheet(
-        override val route: KClass<out NavRoute>,
-        override val destinationId: Int,
+    public class BottomSheet @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<out NavRoute>,
+        internal val destinationId: Int,
+        internal val defaultArguments: Bundle?,
         internal val bottomSheetContent: @Composable (Bundle) -> Unit,
-    ) : NavDestination
+    ) : NavDestination {
+        public constructor(
+            route: KClass<out NavRoute>,
+            destinationId: Int,
+            bottomSheetContent: @Composable (Bundle) -> Unit,
+        ) : this(route, destinationId, null, bottomSheetContent)
+    }
 
     /**
      * Represents an `Activity`. The [route] will be used as a unique identifier together
@@ -131,8 +154,8 @@ public interface NavDestination {
      * an instance of [route] for navigation.
      */
     public class Activity(
-        override val route: KClass<out NavRoute>,
-        override val destinationId: Int,
+        internal val route: KClass<out NavRoute>,
+        internal val destinationId: Int,
         internal val intent: Intent,
     ) : NavDestination
 }

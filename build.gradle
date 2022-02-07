@@ -51,6 +51,7 @@ apiValidation {
     nonPublicMarkers += [
         "androidx.annotation.VisibleForTesting",
         "com.freeletics.mad.navigator.internal.InternalNavigatorApi",
+        "com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi",
         "com.freeletics.mad.whetstone.internal.InternalWhetstoneApi",
     ]
 }

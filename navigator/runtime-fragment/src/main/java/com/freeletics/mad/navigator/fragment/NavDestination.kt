@@ -1,7 +1,7 @@
 package com.freeletics.mad.navigator.fragment
 
 import android.content.Intent
-import androidx.annotation.IdRes
+import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.freeletics.mad.navigator.NavRoot
@@ -10,6 +10,7 @@ import com.freeletics.mad.navigator.fragment.NavDestination.Activity
 import com.freeletics.mad.navigator.fragment.NavDestination.Dialog
 import com.freeletics.mad.navigator.fragment.NavDestination.RootScreen
 import com.freeletics.mad.navigator.fragment.NavDestination.Screen
+import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import kotlin.reflect.KClass
 
 /**
@@ -59,42 +60,60 @@ public inline fun <reified T : NavRoute> ActivityDestination(
  * [route] will be used as a unique identifier together with [destinationId]. The destination can
  * be reached by navigating using an instance of [route].
  */
-public interface NavDestination {
-    public val route: KClass<*>
-    @get:IdRes public val destinationId: Int
+public sealed interface NavDestination {
+    /**
+     * Represents a full screen. The [route] will be used as a unique identifier together
+     * with [destinationId]. The given [fragmentClass] will be shown when the screen is being
+     * navigated to using an instance of [route].
+     */
+    public class Screen @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<out NavRoute>,
+        internal val destinationId: Int,
+        internal val fragmentClass: KClass<out Fragment>,
+        internal val defaultArguments: Bundle?,
+    ) : NavDestination {
+        public constructor(
+            route: KClass<out NavRoute>,
+            destinationId: Int,
+            fragmentClass: KClass<out Fragment>,
+        ) : this(route, destinationId, fragmentClass, null)
+    }
 
     /**
      * Represents a full screen. The [route] will be used as a unique identifier together
      * with [destinationId]. The given [fragmentClass] will be shown when the screen is being
      * navigated to using an instance of [route].
      */
-    public class Screen(
-        override val route: KClass<out NavRoute>,
-        override val destinationId: Int,
+    public class RootScreen @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<out NavRoot>,
+        internal val destinationId: Int,
         internal val fragmentClass: KClass<out Fragment>,
-    ) : NavDestination
-
-    /**
-     * Represents a full screen. The [route] will be used as a unique identifier together
-     * with [destinationId]. The given [fragmentClass] will be shown when the screen is being
-     * navigated to using an instance of [route].
-     */
-    public class RootScreen(
-        override val route: KClass<out NavRoot>,
-        override val destinationId: Int,
-        internal val fragmentClass: KClass<out Fragment>,
-    ) : NavDestination
+        internal val defaultArguments: Bundle?,
+    ) : NavDestination {
+        public constructor(
+            route: KClass<out NavRoot>,
+            destinationId: Int,
+            fragmentClass: KClass<out Fragment>,
+        ) : this(route, destinationId, fragmentClass, null)
+    }
 
     /**
      * Represents a dialog. The [route] will be used as a unique identifier together
      * with [destinationId]. The given [fragmentClass] will be shown when it's being navigated to
      * using an instance of [route].
      */
-    public class Dialog(
-        override val route: KClass<out NavRoute>,
-        override val destinationId: Int,
+    public class Dialog @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<out NavRoute>,
+        internal val destinationId: Int,
         internal val fragmentClass: KClass<out DialogFragment>,
-    ) : NavDestination
+        internal val defaultArguments: Bundle?,
+    ) : NavDestination {
+        public constructor(
+            route: KClass<out NavRoute>,
+            destinationId: Int,
+            fragmentClass: KClass<out DialogFragment>,
+        ) : this(route, destinationId, fragmentClass, null)
+    }
 
     /**
      * Represents an `Activity`. The [route] will be used as a unique identifier together
@@ -102,8 +121,8 @@ public interface NavDestination {
      * an instance of [route] for navigation.
      */
     public class Activity(
-        override val route: KClass<out NavRoute>,
-        override val destinationId: Int,
+        internal val route: KClass<out NavRoute>,
+        internal val destinationId: Int,
         internal val intent: Intent,
     ) : NavDestination
 }

@@ -6,9 +6,12 @@ import androidx.compose.runtime.remember
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination as AndroidXNavDestination
+import androidx.navigation.NavDestination as AndroidxNavDestination
 import androidx.navigation.compose.NavHost as AndroidXNavHost
+import android.os.Bundle
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.navigation.NavArgument
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
@@ -43,7 +46,7 @@ public fun NavHost(
     val navController = rememberNavController(bottomSheetNavigator)
     val startDestinationId = startRoot.destinationId
     ModalBottomSheetLayout(bottomSheetNavigator) {
-        NavHost(navController, startDestinationId, destinations) { null }
+        NavHost(navController, startDestinationId, destinations)
     }
 }
 
@@ -62,7 +65,7 @@ public fun NavHost(
     val navController = rememberNavController(bottomSheetNavigator)
     val startDestinationId = startRoute.destinationId
     ModalBottomSheetLayout(bottomSheetNavigator) {
-        NavHost(navController, startDestinationId, destinations) { null }
+        NavHost(navController, startDestinationId, destinations)
     }
 }
 
@@ -74,18 +77,15 @@ public fun NavHost(
  * To support [NavDestination.BottomSheet] the given [navController] needs to contain a navigator
  * created with [rememberBottomSheetNavigator] and this `Composable` needs a
  * [ModalBottomSheetLayout] as parent.
- *
- * [destinationCreator] can be passed to add support for custom subclasses of [NavDestination].
  */
 @Composable
 public fun NavHost(
     navController: NavHostController,
     startRoot: NavRoot,
     destinations: Set<NavDestination>,
-    destinationCreator: (NavDestination) -> AndroidXNavDestination? = { null },
 ) {
     val startDestinationId = startRoot.destinationId
-    NavHost(navController, startDestinationId, destinations, destinationCreator)
+    NavHost(navController, startDestinationId, destinations)
 }
 
 /**
@@ -96,18 +96,15 @@ public fun NavHost(
  * To support [NavDestination.BottomSheet] the given [navController] needs to contain a navigator
  * created with [rememberBottomSheetNavigator] and this `Composable` needs a
  * [ModalBottomSheetLayout] as parent.
- *
- * [destinationCreator] can be passed to add support for custom subclasses of [NavDestination].
  */
 @Composable
 public fun NavHost(
     navController: NavHostController,
     startRoute: NavRoute,
     destinations: Set<NavDestination>,
-    destinationCreator: (NavDestination) -> AndroidXNavDestination? = { null },
 ) {
     val startDestinationId = startRoute.destinationId
-    NavHost(navController, startDestinationId, destinations, destinationCreator)
+    NavHost(navController, startDestinationId, destinations)
 }
 
 @Composable
@@ -115,13 +112,12 @@ private fun NavHost(
     navController: NavHostController,
     @IdRes startDestinationId: Int,
     destinations: Set<NavDestination>,
-    destinationCreator: (NavDestination) -> AndroidXNavDestination?,
 ) {
-    val graph = remember(navController, startDestinationId, destinations, destinationCreator) {
+    val graph = remember(navController, startDestinationId, destinations) {
         @Suppress("deprecation")
         navController.createGraph(startDestination = startDestinationId) {
             destinations.forEach { destination ->
-                addDestination(navController, destination, destinationCreator)
+                addDestination(navController, destination)
             }
         }
     }
@@ -137,7 +133,6 @@ private fun NavHost(
 private fun NavGraphBuilder.addDestination(
     controller: NavController,
     destination: NavDestination,
-    destinationCreator: (NavDestination) -> AndroidXNavDestination?,
 ) {
     val newDestination = when (destination) {
         is Screen -> destination.toDestination(controller)
@@ -145,10 +140,7 @@ private fun NavGraphBuilder.addDestination(
         is Dialog -> destination.toDestination(controller)
         is BottomSheet -> destination.toDestination(controller)
         is Activity -> destination.toDestination(controller)
-        else -> destinationCreator(destination)
-    } ?: throw IllegalArgumentException("Unable to create destination for unknown type " +
-        "${destination::class.java}. Handle it in destinationCreator")
-
+    }
     addDestination(newDestination)
 }
 
@@ -158,6 +150,7 @@ private fun Screen.toDestination(
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
     return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!) }.also {
         it.id = destinationId
+        it.addDefaultArguments(defaultArguments)
     }
 }
 
@@ -167,6 +160,7 @@ private fun RootScreen.toDestination(
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
     return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!) }.also {
         it.id = destinationId
+        it.addDefaultArguments(defaultArguments)
     }
 }
 
@@ -176,6 +170,7 @@ private fun Dialog.toDestination(
     val navigator = controller.navigatorProvider[DialogNavigator::class]
     return DialogNavigator.Destination(navigator) { dialogContent(it.arguments!!) }.also {
         it.id = destinationId
+        it.addDefaultArguments(defaultArguments)
     }
 }
 
@@ -188,6 +183,7 @@ private fun BottomSheet.toDestination(
     val navigator = controller.navigatorProvider[BottomSheetNavigator::class]
     return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(it.arguments!!) }.also {
         it.id = destinationId
+        it.addDefaultArguments(defaultArguments)
     }
 }
 
@@ -203,4 +199,14 @@ private fun Activity.toDestination(
 
 internal val LocalNavController = staticCompositionLocalOf<NavController> {
     throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
+}
+
+private fun AndroidxNavDestination.addDefaultArguments(extras: Bundle?) {
+    extras?.keySet()?.forEach { key ->
+        val argument = NavArgument.Builder()
+            .setDefaultValue(extras.get(key))
+            .setIsNullable(false)
+            .build()
+        addArgument(key, argument)
+    }
 }
