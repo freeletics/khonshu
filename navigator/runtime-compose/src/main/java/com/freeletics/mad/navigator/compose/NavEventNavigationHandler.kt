@@ -27,57 +27,62 @@ public class NavEventNavigationHandler : NavigationHandler<NavEventNavigator> {
 
     @Composable
     override fun Navigation(navigator: NavEventNavigator) {
-        val controller = LocalNavController.current
-        val lifecycleOwner = LocalLifecycleOwner.current
+        NavigationSetup(navigator)
+    }
+}
 
-        val activityLaunchers = navigator.activityResultRequests.associateWith {
-            rememberResultLaunchers(it)
+@Composable
+public fun NavigationSetup(navigator: NavEventNavigator) {
+    val controller = LocalNavController.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    val activityLaunchers = navigator.activityResultRequests.associateWith {
+        rememberResultLaunchers(it)
+    }
+    val permissionLaunchers = navigator.permissionsResultRequests.associateWith {
+        rememberResultLaunchers(it)
+    }
+
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
+    DisposableEffect(lifecycleOwner, backDispatcher, navigator) {
+        backDispatcher.addCallback(lifecycleOwner, navigator.onBackPressedCallback)
+
+        onDispose {
+            navigator.onBackPressedCallback.remove()
         }
-        val permissionLaunchers = navigator.permissionsResultRequests.associateWith {
-            rememberResultLaunchers(it)
-        }
+    }
 
-        val backDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
-        DisposableEffect(lifecycleOwner, backDispatcher, navigator) {
-            backDispatcher.addCallback(lifecycleOwner, navigator.onBackPressedCallback)
-
-            onDispose {
-                navigator.onBackPressedCallback.remove()
+    LaunchedEffect(lifecycleOwner, controller, navigator) {
+        navigator.navEvents
+            .flowWithLifecycle(lifecycleOwner.lifecycle)
+            .collect { event ->
+                navigate(event, controller, activityLaunchers, permissionLaunchers)
             }
-        }
-
-        LaunchedEffect(lifecycleOwner, controller, navigator) {
-            navigator.navEvents
-                .flowWithLifecycle(lifecycleOwner.lifecycle)
-                .collect { event ->
-                    navigate(event, controller, activityLaunchers, permissionLaunchers)
-                }
-        }
     }
+}
 
-    @Composable
-    private fun <I, O> rememberResultLaunchers(
-        request: ActivityResultRequest<I, O>,
-    ): ActivityResultLauncher<*> {
-        return rememberLauncherForActivityResult(request.contract, request::handleResult)
-    }
+@Composable
+private fun <I, O> rememberResultLaunchers(
+    request: ActivityResultRequest<I, O>,
+): ActivityResultLauncher<*> {
+    return rememberLauncherForActivityResult(request.contract, request::handleResult)
+}
 
-    @Composable
-    private fun rememberResultLaunchers(
-        request: PermissionsResultRequest,
-    ): ActivityResultLauncher<List<String>> {
-        val context = LocalContext.current
-        return rememberLauncherForActivityResult(RequestPermissionsContract()) { resultMap ->
-            request.handleResult(resultMap, context.findActivity())
-        }
+@Composable
+private fun rememberResultLaunchers(
+    request: PermissionsResultRequest,
+): ActivityResultLauncher<List<String>> {
+    val context = LocalContext.current
+    return rememberLauncherForActivityResult(RequestPermissionsContract()) { resultMap ->
+        request.handleResult(resultMap, context.findActivity())
     }
+}
 
-    private fun Context.findActivity(): Activity {
-        var context = this
-        while (context is ContextWrapper) {
-            if (context is Activity) return context
-            context = context.baseContext
-        }
-        throw IllegalStateException("Permissions should be called in the context of an Activity")
+private fun Context.findActivity(): Activity {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is Activity) return context
+        context = context.baseContext
     }
+    throw IllegalStateException("Permissions should be called in the context of an Activity")
 }

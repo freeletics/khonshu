@@ -33,6 +33,10 @@ public final class com/freeletics/mad/navigator/fragment/NavEventNavigationHandl
 	public fun handle (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/fragment/FragmentNavEventNavigator;)V
 }
 
+public final class com/freeletics/mad/navigator/fragment/NavEventNavigationHandlerKt {
+	public static final fun handleNavigation (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/fragment/FragmentNavEventNavigator;)V
+}
+
 public final class com/freeletics/mad/navigator/fragment/NavHostFragmentKt {
 	public static final fun setGraph (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/NavRoot;Ljava/util/Set;)V
 	public static final fun setGraph (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/NavRoute;Ljava/util/Set;)V
