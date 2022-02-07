@@ -9,6 +9,10 @@ android {
         minSdkVersion 21
     }
 
+    buildFeatures {
+        buildConfig = false
+    }
+
     // still needed for Android projects despite toolchain
     compileOptions {
         sourceCompatibility(JavaVersion.VERSION_11)

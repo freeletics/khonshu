@@ -29,7 +29,6 @@ public class FragmentNavEventNavigatorTest {
         }
     }
 
-    @OptIn(InternalNavigatorApi::class)
     @Test
     public fun `registerForActivityResult after read is disallowed`(): Unit = runBlocking {
         val navigator = TestNavigator()

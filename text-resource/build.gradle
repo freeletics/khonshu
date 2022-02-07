@@ -13,6 +13,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = false
     }
 
     // still needed for Android projects despite toolchain

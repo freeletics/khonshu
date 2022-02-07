@@ -68,7 +68,6 @@ public annotation class NavEntryId(val value: KClass<*>)
 /**
  * Class that allows to retrieve generated [NavEntryComponent] instances.
  */
-@OptIn(InternalWhetstoneApi::class)
 public class NavEntryComponents @Inject constructor(
     getters: @JvmSuppressWildcards Map<Class<*>, NavEntryComponentGetter>
 ) {

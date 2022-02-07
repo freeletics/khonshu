@@ -9,6 +9,10 @@ android {
         minSdkVersion 21
     }
 
+    buildFeatures {
+        buildConfig = false
+    }
+
     // still needed for Android projects despite toolchain
     compileOptions {
         sourceCompatibility(JavaVersion.VERSION_11)
@@ -29,6 +33,7 @@ kotlin {
     sourceSets.all {
         languageSettings {
             optIn("kotlin.RequiresOptIn")
+            optIn("com.freeletics.mad.navigator.internal.InternalNavigatorApi")
         }
     }
 }

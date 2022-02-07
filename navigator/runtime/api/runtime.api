@@ -1,0 +1,69 @@
+public final class com/freeletics/mad/navigator/ActivityResultRequest : com/freeletics/mad/navigator/ResultOwner {
+	public final fun getContract ()Landroidx/activity/result/contract/ActivityResultContract;
+}
+
+public abstract class com/freeletics/mad/navigator/NavEventNavigator : com/freeletics/mad/navigator/Navigator {
+	public fun <init> ()V
+	public final fun backPresses ()Lkotlinx/coroutines/flow/Flow;
+	public final fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public final fun getActivityResultRequests ()Ljava/util/List;
+	public final fun getNavEvents ()Lkotlinx/coroutines/flow/Flow;
+	public final fun getOnBackPressedCallback ()Landroidx/activity/OnBackPressedCallback;
+	public final fun getPermissionsResultRequests ()Ljava/util/List;
+	public final fun navigateBack ()V
+	public final fun navigateBack (IZ)V
+	public static synthetic fun navigateBack$default (Lcom/freeletics/mad/navigator/NavEventNavigator;IZILjava/lang/Object;)V
+	public final fun navigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;)V
+	public final fun navigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;Ljava/lang/Object;)V
+	public final fun navigateTo (Lcom/freeletics/mad/navigator/NavRoute;)V
+	public final fun navigateTo (Lcom/freeletics/mad/navigator/NavRoute;IZ)V
+	public static synthetic fun navigateTo$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lcom/freeletics/mad/navigator/NavRoute;IZILjava/lang/Object;)V
+	public final fun navigateToRoot (Lcom/freeletics/mad/navigator/NavRoot;Z)V
+	public static synthetic fun navigateToRoot$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lcom/freeletics/mad/navigator/NavRoot;ZILjava/lang/Object;)V
+	public final fun navigateUp ()V
+	public final fun registerForActivityResult (Landroidx/activity/result/contract/ActivityResultContract;)Lcom/freeletics/mad/navigator/ActivityResultRequest;
+	public final fun registerForPermissionsResult ()Lcom/freeletics/mad/navigator/PermissionsResultRequest;
+	public final fun requestPermissions (Lcom/freeletics/mad/navigator/PermissionsResultRequest;Ljava/util/List;)V
+	public final fun requestPermissions (Lcom/freeletics/mad/navigator/PermissionsResultRequest;[Ljava/lang/String;)V
+}
+
+public abstract interface class com/freeletics/mad/navigator/NavRoot {
+	public abstract fun getArguments ()Landroid/os/Bundle;
+	public abstract fun getDestinationId ()I
+}
+
+public final class com/freeletics/mad/navigator/NavRoot$DefaultImpls {
+	public static fun getArguments (Lcom/freeletics/mad/navigator/NavRoot;)Landroid/os/Bundle;
+}
+
+public abstract interface class com/freeletics/mad/navigator/NavRoute {
+	public abstract fun getArguments ()Landroid/os/Bundle;
+	public abstract fun getDestinationId ()I
+}
+
+public final class com/freeletics/mad/navigator/NavRoute$DefaultImpls {
+	public static fun getArguments (Lcom/freeletics/mad/navigator/NavRoute;)Landroid/os/Bundle;
+}
+
+public final class com/freeletics/mad/navigator/PermissionsResultRequest : com/freeletics/mad/navigator/ResultOwner {
+}
+
+public final class com/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult : java/lang/Enum {
+	public static final field DENIED Lcom/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult;
+	public static final field DENIED_PERMANENTLY Lcom/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult;
+	public static final field GRANTED Lcom/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult;
+	public static fun valueOf (Ljava/lang/String;)Lcom/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult;
+	public static fun values ()[Lcom/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult;
+}
+
+public abstract class com/freeletics/mad/navigator/ResultOwner {
+	public fun <init> ()V
+	public final fun getResults ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public abstract interface annotation class com/freeletics/mad/navigator/internal/InternalNavigatorApi : java/lang/annotation/Annotation {
+}
+
+public final class com/freeletics/mad/navigator/internal/NavigateKt {
+}
+

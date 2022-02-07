@@ -1,0 +1,4 @@
+public abstract interface class com/freeletics/mad/navigator/fragment/NavigationHandler {
+	public abstract fun handle (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/Navigator;)V
+}
+
