@@ -4,6 +4,10 @@ import android.os.Parcelable
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
  * An extension to [NavEventNavigator] that adds support for `Fragment` result APIs. See
@@ -11,6 +15,13 @@ import com.freeletics.mad.navigator.internal.InternalNavigatorApi
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 public abstract class FragmentNavEventNavigator : NavEventNavigator() {
+
+    private val _resultEvents = Channel<FragmentResultEvent>(Channel.UNLIMITED)
+
+    /**
+     * A [Flow] to collect [FragmentResultEvents][FragmentResultEvent] produced by this navigator.
+     */
+    public val resultEvents: Flow<FragmentResultEvent> = _resultEvents.receiveAsFlow()
 
     private val _fragmentResultRequests = mutableListOf<FragmentResultRequest<*>>()
 
@@ -36,8 +47,7 @@ public abstract class FragmentNavEventNavigator : NavEventNavigator() {
      */
     public fun <T : Parcelable> navigateBackWithResult(requestKey: String, result: T) {
         val event = FragmentResultEvent(requestKey, result)
-        sendNavEvent(event)
-        navigateBack()
+        check(_resultEvents.trySendBlocking(event).isSuccess)
     }
 
     private var allowedToAddRequests = true

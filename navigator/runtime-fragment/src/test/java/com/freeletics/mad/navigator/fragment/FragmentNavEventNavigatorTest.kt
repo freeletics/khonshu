@@ -19,12 +19,11 @@ public class FragmentNavEventNavigatorTest {
     public fun `navigateBackWithResult is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
-        navigator.navEvents.test {
+        navigator.resultEvents.test {
             val result = Bundle()
             navigator.navigateBackWithResult("test-key", result)
 
             assertThat(awaitItem()).isEqualTo(FragmentResultEvent("test-key", result))
-            assertThat(awaitItem()).isEqualTo(NavEvent.BackEvent)
 
             cancel()
         }
