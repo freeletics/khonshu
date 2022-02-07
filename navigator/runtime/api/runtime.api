@@ -67,3 +67,6 @@ public abstract interface annotation class com/freeletics/mad/navigator/internal
 public final class com/freeletics/mad/navigator/internal/NavigateKt {
 }
 
+public abstract interface annotation class com/freeletics/mad/navigator/internal/ObsoleteNavigatorApi : java/lang/annotation/Annotation {
+}
+
