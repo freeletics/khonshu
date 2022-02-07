@@ -1,16 +1,21 @@
 package com.freeletics.mad.navigator.compose
 
+import android.app.Activity as AndroidActivity
 import androidx.annotation.IdRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination as AndroidXNavDestination
 import androidx.navigation.NavDestination as AndroidxNavDestination
 import androidx.navigation.compose.NavHost as AndroidXNavHost
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Bundle
+import android.view.View
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavArgument
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -26,6 +31,7 @@ import com.freeletics.mad.navigator.compose.NavDestination.BottomSheet
 import com.freeletics.mad.navigator.compose.NavDestination.Dialog
 import com.freeletics.mad.navigator.compose.NavDestination.RootScreen
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
+import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
@@ -69,44 +75,6 @@ public fun NavHost(
     }
 }
 
-/**
- * Create a new [androidx.navigation.compose.NavHost] using [navController] with a
- * [androidx.navigation.NavGraph] containing all given [destinations]. [startRoot] will be used as
- * the start destination of the graph.
- *
- * To support [NavDestination.BottomSheet] the given [navController] needs to contain a navigator
- * created with [rememberBottomSheetNavigator] and this `Composable` needs a
- * [ModalBottomSheetLayout] as parent.
- */
-@Composable
-public fun NavHost(
-    navController: NavHostController,
-    startRoot: NavRoot,
-    destinations: Set<NavDestination>,
-) {
-    val startDestinationId = startRoot.destinationId
-    NavHost(navController, startDestinationId, destinations)
-}
-
-/**
- * Create a new [androidx.navigation.compose.NavHost] using [navController] with a
- * [androidx.navigation.NavGraph] containing all given [destinations]. [startRoute] will be used as
- * the start destination of the graph.
- *
- * To support [NavDestination.BottomSheet] the given [navController] needs to contain a navigator
- * created with [rememberBottomSheetNavigator] and this `Composable` needs a
- * [ModalBottomSheetLayout] as parent.
- */
-@Composable
-public fun NavHost(
-    navController: NavHostController,
-    startRoute: NavRoute,
-    destinations: Set<NavDestination>,
-) {
-    val startDestinationId = startRoute.destinationId
-    NavHost(navController, startDestinationId, destinations)
-}
-
 @Composable
 private fun NavHost(
     navController: NavHostController,
@@ -121,6 +89,8 @@ private fun NavHost(
             }
         }
     }
+
+    LegacyFindNavControllerSupport(navController)
 
     CompositionLocalProvider(LocalNavController provides navController) {
         AndroidXNavHost(navController, graph)
@@ -210,3 +180,32 @@ private fun AndroidxNavDestination.addDefaultArguments(extras: Bundle?) {
         addArgument(key, argument)
     }
 }
+
+@ObsoleteNavigatorApi
+public fun AndroidActivity.findComposeNavController(): NavController? {
+    val view = findViewById<View>(android.R.id.content)!!
+    return view.getTag(navControllerTagId) as NavController?
+}
+
+@Composable
+private fun LegacyFindNavControllerSupport(navController: NavController) {
+    val context = LocalContext.current
+    DisposableEffect(navController, context) {
+        val view = context.findActivity().findViewById<View>(android.R.id.content)!!
+        view.setTag(navControllerTagId, navController)
+        onDispose {
+            view.setTag(navControllerTagId, null)
+        }
+    }
+}
+
+private fun Context.findActivity(): android.app.Activity {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is android.app.Activity) return context
+        context = context.baseContext
+    }
+    throw IllegalStateException("Permissions should be called in the context of an Activity")
+}
+
+private val navControllerTagId = View.generateViewId()
