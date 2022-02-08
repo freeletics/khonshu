@@ -5,6 +5,7 @@ import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.RendererFragmentData
 import com.freeletics.mad.whetstone.codegen.util.Generator
+import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.bindsInstanceParameter
 import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.componentAnnotation
@@ -59,8 +60,9 @@ internal class RetainedComponentGenerator(
     private fun componentProperties(): List<PropertySpec> {
         val properties = mutableListOf<PropertySpec>()
         properties += simplePropertySpec(data.stateMachine)
-        if (data.navigator != null) {
-            properties += simplePropertySpec(data.navigator!!)
+        val navigator = data.navigation?.navigator
+        if (navigator != null) {
+            properties += simplePropertySpec(navigator)
         }
         properties += when (data) {
             is ComposeFragmentData -> providedValueSetProperty()
@@ -82,7 +84,7 @@ internal class RetainedComponentGenerator(
             .addModifiers(ABSTRACT)
             .addParameter("dependencies", data.dependencies)
             .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle))
-            .addParameter(bindsInstanceParameter("arguments", bundle))
+            .addParameter(bindsInstanceParameter(data.navigation.asParameter()))
             .apply {
                 if (data.rxJavaEnabled) {
                     addParameter(bindsInstanceParameter("compositeDisposable", compositeDisposable))

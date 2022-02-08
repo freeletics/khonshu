@@ -11,10 +11,14 @@ internal val composeFragment = ClassName("com.freeletics.mad.whetstone.fragment"
 internal val composeFragmentFqName = FqName(composeFragment.canonicalName)
 internal val fragmentNavDestination = ClassName("com.freeletics.mad.whetstone.fragment", "NavDestination")
 internal val fragmentNavDestinationFqName = FqName(fragmentNavDestination.canonicalName)
+internal val fragmentRootNavDestination = ClassName("com.freeletics.mad.whetstone.fragment", "RootNavDestination")
+internal val fragmentRootNavDestinationFqName = FqName(fragmentNavDestination.canonicalName)
 internal val compose = ClassName("com.freeletics.mad.whetstone.compose", "ComposeScreen")
 internal val composeFqName = FqName(compose.canonicalName)
 internal val composeNavDestination = ClassName("com.freeletics.mad.whetstone.compose", "NavDestination")
 internal val composeNavDestinationFqName = FqName(composeNavDestination.canonicalName)
+internal val composeRootNavDestination = ClassName("com.freeletics.mad.whetstone.compose", "RootNavDestination")
+internal val composeRootNavDestinationFqName = FqName(composeNavDestination.canonicalName)
 internal val scopeTo = ClassName("com.freeletics.mad.whetstone", "ScopeTo")
 internal val navEntryComponent = ClassName("com.freeletics.mad.whetstone", "NavEntryComponent")
 internal val navEntryComponentFqName = FqName(navEntryComponent.canonicalName)
@@ -35,6 +39,8 @@ internal val navEventNavigator = ClassName("com.freeletics.mad.navigator", "NavE
 internal val fragmentNavEventNavigator = ClassName("com.freeletics.mad.navigator.fragment", "FragmentNavEventNavigator")
 internal val composeNavigationHandler = MemberName("com.freeletics.mad.navigator.compose", "NavigationSetup")
 internal val fragmentNavigationHandler = MemberName("com.freeletics.mad.navigator.fragment", "handleNavigation")
+internal val requireNavRoute = MemberName("com.freeletics.mad.navigator.fragment", "requireNavRoute")
+internal val requireNavRoot = MemberName("com.freeletics.mad.navigator.fragment", "requireNavRoot")
 
 // Renderer
 internal val rendererConnect = MemberName("com.gabrielittner.renderer.connect", "connect")

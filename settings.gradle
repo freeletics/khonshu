@@ -4,3 +4,5 @@ include ":state-machine"
 include ":text-resource"
 include ":whetstone:compiler"
 include ":whetstone:runtime", ":whetstone:runtime-compose", ":whetstone:runtime-fragment"
+
+project(":navigator:runtime").setName("navigator-runtime")

@@ -23,7 +23,7 @@ import kotlin.reflect.KClass
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> ScreenDestination(
     destinationId: Int,
-    noinline screenContent: @Composable (Bundle) -> Unit,
+    noinline screenContent: @Composable (T) -> Unit,
 ): NavDestination = Screen(T::class, destinationId, screenContent)
 
 /**
@@ -34,7 +34,7 @@ public inline fun <reified T : NavRoute> ScreenDestination(
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoot> RootScreenDestination(
     destinationId: Int,
-    noinline screenContent: @Composable (Bundle) -> Unit,
+    noinline screenContent: @Composable (T) -> Unit,
 ): NavDestination = RootScreen(T::class, destinationId, screenContent)
 
 /**
@@ -45,7 +45,7 @@ public inline fun <reified T : NavRoot> RootScreenDestination(
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> DialogDestination(
     destinationId: Int,
-    noinline dialogContent: @Composable (Bundle) -> Unit,
+    noinline dialogContent: @Composable (T) -> Unit,
 ): NavDestination = Dialog(T::class, destinationId, dialogContent)
 
 /**
@@ -57,7 +57,7 @@ public inline fun <reified T : NavRoute> DialogDestination(
 @ExperimentalMaterialNavigationApi
 public inline fun <reified T : NavRoute> BottomSheetDestination(
     destinationId: Int,
-    noinline bottomSheetContent: @Composable (Bundle) -> Unit,
+    noinline bottomSheetContent: @Composable (T) -> Unit,
 ): NavDestination = BottomSheet(T::class, destinationId, bottomSheetContent)
 
 /**
@@ -80,16 +80,16 @@ public sealed interface NavDestination {
      * with [destinationId]. The given [screenContent] will be shown when the screen is being
      * navigated to using an instance of [route].
      */
-    public class Screen @ObsoleteNavigatorApi constructor(
-        internal val route: KClass<out NavRoute>,
+    public class Screen<T : NavRoute> @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<T>,
         internal val destinationId: Int,
         internal val defaultArguments: Bundle?,
-        internal val screenContent: @Composable (Bundle) -> Unit,
+        internal val screenContent: @Composable (T) -> Unit,
     ) : NavDestination {
         public constructor(
-            route: KClass<out NavRoute>,
+            route: KClass<T>,
             destinationId: Int,
-            screenContent: @Composable (Bundle) -> Unit,
+            screenContent: @Composable (T) -> Unit,
         ) : this(route, destinationId, null, screenContent)
     }
 
@@ -98,16 +98,16 @@ public sealed interface NavDestination {
      * with [destinationId]. The given [screenContent] will be shown when the screen is being
      * navigated to using an instance of [route].
      */
-    public class RootScreen @ObsoleteNavigatorApi constructor(
+    public class RootScreen<T : NavRoot> @ObsoleteNavigatorApi constructor(
         internal val route: KClass<out NavRoot>,
         internal val destinationId: Int,
         internal val defaultArguments: Bundle?,
-        internal val screenContent: @Composable (Bundle) -> Unit,
+        internal val screenContent: @Composable (T) -> Unit,
     ) : NavDestination {
         public constructor(
             route: KClass<out NavRoot>,
             destinationId: Int,
-            screenContent: @Composable (Bundle) -> Unit,
+            screenContent: @Composable (T) -> Unit,
         ) : this(route, destinationId, null, screenContent)
     }
 
@@ -116,16 +116,16 @@ public sealed interface NavDestination {
      * with [destinationId]. The given [dialogContent] will be shown inside the dialog window
      * when navigating to it by using an instance of [route].
      */
-    public class Dialog @ObsoleteNavigatorApi constructor(
-        internal val route: KClass<out NavRoute>,
+    public class Dialog<T : NavRoute> @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<T>,
         internal val destinationId: Int,
         internal val defaultArguments: Bundle?,
-        internal val dialogContent: @Composable (Bundle) -> Unit,
+        internal val dialogContent: @Composable (T) -> Unit,
     ) : NavDestination {
         public constructor(
-            route: KClass<out NavRoute>,
+            route: KClass<T>,
             destinationId: Int,
-            dialogContent: @Composable (Bundle) -> Unit,
+            dialogContent: @Composable (T) -> Unit,
         ) : this(route, destinationId, null, dialogContent)
     }
 
@@ -135,16 +135,16 @@ public sealed interface NavDestination {
      * when navigating to it by using an instance of [route].
      */
     @ExperimentalMaterialNavigationApi
-    public class BottomSheet @ObsoleteNavigatorApi constructor(
-        internal val route: KClass<out NavRoute>,
+    public class BottomSheet<T : NavRoute> @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<T>,
         internal val destinationId: Int,
         internal val defaultArguments: Bundle?,
-        internal val bottomSheetContent: @Composable (Bundle) -> Unit,
+        internal val bottomSheetContent: @Composable (T) -> Unit,
     ) : NavDestination {
         public constructor(
-            route: KClass<out NavRoute>,
+            route: KClass<T>,
             destinationId: Int,
-            bottomSheetContent: @Composable (Bundle) -> Unit,
+            bottomSheetContent: @Composable (T) -> Unit,
         ) : this(route, destinationId, null, bottomSheetContent)
     }
 

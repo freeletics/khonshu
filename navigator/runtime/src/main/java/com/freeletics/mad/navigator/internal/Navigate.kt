@@ -70,10 +70,10 @@ public fun navigate(
     }
 }
 
-@ObsoleteNavigatorApi
+@InternalNavigatorApi
 public fun <T : NavRoute> Bundle.toNavRoute(): T = getParcelable(EXTRA_ROUTE)!!
 
-@ObsoleteNavigatorApi
+@InternalNavigatorApi
 public fun <T : NavRoot> Bundle.toNavRoot(): T = getParcelable(EXTRA_ROUTE)!!
 
 private fun NavRoute.getArguments(): Bundle = Bundle().also {

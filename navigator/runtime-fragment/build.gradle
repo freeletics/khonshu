@@ -48,7 +48,7 @@ tasks.withType(JavaCompile).configureEach {
 
 dependencies {
     api project(":navigator:common-fragment")
-    api project(":navigator:runtime")
+    api project(":navigator:navigator-runtime")
     api "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
     api "androidx.fragment:fragment:1.4.1"
     api "androidx.navigation:navigation-runtime-ktx:2.4.0"

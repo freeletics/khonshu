@@ -32,6 +32,8 @@ import com.freeletics.mad.navigator.compose.NavDestination.Dialog
 import com.freeletics.mad.navigator.compose.NavDestination.RootScreen
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
 import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
+import com.freeletics.mad.navigator.internal.toNavRoot
+import com.freeletics.mad.navigator.internal.toNavRoute
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
@@ -105,40 +107,40 @@ private fun NavGraphBuilder.addDestination(
     destination: NavDestination,
 ) {
     val newDestination = when (destination) {
-        is Screen -> destination.toDestination(controller)
-        is RootScreen -> destination.toDestination(controller)
-        is Dialog -> destination.toDestination(controller)
-        is BottomSheet -> destination.toDestination(controller)
+        is Screen<*> -> destination.toDestination(controller)
+        is RootScreen<*> -> destination.toDestination(controller)
+        is Dialog<*> -> destination.toDestination(controller)
+        is BottomSheet<*> -> destination.toDestination(controller)
         is Activity -> destination.toDestination(controller)
     }
     addDestination(newDestination)
 }
 
-private fun Screen.toDestination(
+private fun <T : NavRoute> Screen<T>.toDestination(
     controller: NavController,
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
-    return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!) }.also {
+    return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!.toNavRoute()) }.also {
         it.id = destinationId
         it.addDefaultArguments(defaultArguments)
     }
 }
 
-private fun RootScreen.toDestination(
+private fun <T : NavRoot> RootScreen<T>.toDestination(
     controller: NavController,
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
-    return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!) }.also {
+    return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!.toNavRoot()) }.also {
         it.id = destinationId
         it.addDefaultArguments(defaultArguments)
     }
 }
 
-private fun Dialog.toDestination(
+private fun <T : NavRoute> Dialog<T>.toDestination(
     controller: NavController,
 ): DialogNavigator.Destination {
     val navigator = controller.navigatorProvider[DialogNavigator::class]
-    return DialogNavigator.Destination(navigator) { dialogContent(it.arguments!!) }.also {
+    return DialogNavigator.Destination(navigator) { dialogContent(it.arguments!!.toNavRoute()) }.also {
         it.id = destinationId
         it.addDefaultArguments(defaultArguments)
     }
@@ -147,11 +149,11 @@ private fun Dialog.toDestination(
 // the BottomSheet class and creator methods are marked with ExperimentalMaterialNavigationApi
 // if those stay unused this method is never called, so we swallow the warning here
 @OptIn(ExperimentalMaterialNavigationApi::class)
-private fun BottomSheet.toDestination(
+private fun <T : NavRoute> BottomSheet<T>.toDestination(
     controller: NavController,
 ): BottomSheetNavigator.Destination {
     val navigator = controller.navigatorProvider[BottomSheetNavigator::class]
-    return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(it.arguments!!) }.also {
+    return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(it.arguments!!.toNavRoute()) }.also {
         it.id = destinationId
         it.addDefaultArguments(defaultArguments)
     }

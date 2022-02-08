@@ -1,13 +1,15 @@
 package com.freeletics.mad.whetstone.codegen
 
+import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.codegen.util.dialogFragment
 import com.freeletics.mad.whetstone.codegen.util.fragment
+import com.freeletics.mad.whetstone.codegen.util.fragmentNavEventNavigator
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 
-class FileGeneratorTestComposeFragment {
+internal class FileGeneratorTestComposeFragment {
 
     private val full = ComposeFragmentData(
         baseName = "Test",
@@ -18,7 +20,11 @@ class FileGeneratorTestComposeFragment {
         fragmentBaseClass = fragment,
         stateMachine = ClassName("com.test", "TestStateMachine"),
         enableInsetHandling = true,
-        navigationEnabled = true,
+        navigation = CommonData.Navigation(
+            fragmentNavEventNavigator,
+            ClassName("com.test", "TestRoute"),
+            null,
+        ),
         coroutinesEnabled = true,
         rxJavaEnabled = true,
     )
@@ -42,6 +48,7 @@ class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
+            import com.freeletics.mad.navigator.fragment.requireNavRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -83,7 +90,7 @@ class FileGeneratorTestComposeFragment {
                 public fun create(
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance arguments: Bundle,
+                  @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
@@ -94,14 +101,14 @@ class FileGeneratorTestComposeFragment {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              arguments: Bundle
+              testRoute: TestRoute
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
               private val scope: CoroutineScope = MainScope()
 
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, arguments,
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute,
                   disposable, scope)
 
               public override fun onCleared(): Unit {
@@ -112,10 +119,10 @@ class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(arguments: Bundle): Unit {
+            public fun TestScreen(testRoute: TestRoute): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                TestViewModel(dependencies, handle, arguments)
+                TestViewModel(dependencies, handle, testRoute)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
@@ -143,9 +150,10 @@ class FileGeneratorTestComposeFragment {
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
               ): View {
+                val testRoute = requireNavRoute<TestRoute>()
                 if (!navigationSetup) {
                   navigationSetup = true
-                  setupNavigation()
+                  setupNavigation(testRoute)
                 }
             
                 return ComposeView(requireContext()).apply {
@@ -158,17 +166,16 @@ class FileGeneratorTestComposeFragment {
 
                   setContent {
                     CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
-                      TestScreen(requireArguments())
+                      TestScreen(testRoute)
                     }
                   }
                 }
               }
             
-              private fun setupNavigation(): Unit {
+              private fun setupNavigation(testRoute: TestRoute): Unit {
                 val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
                     dependencies, handle -> 
-                  val arguments = arguments ?: Bundle.EMPTY
-                  TestViewModel(dependencies, handle, arguments)
+                  TestViewModel(dependencies, handle, testRoute)
                 }
                 val viewModel = viewModelProvider[TestViewModel::class.java]
                 val component = viewModel.component
@@ -204,6 +211,7 @@ class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
+            import com.freeletics.mad.navigator.fragment.requireNavRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -245,7 +253,7 @@ class FileGeneratorTestComposeFragment {
                 public fun create(
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance arguments: Bundle,
+                  @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
@@ -256,14 +264,14 @@ class FileGeneratorTestComposeFragment {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              arguments: Bundle
+              testRoute: TestRoute
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
               private val scope: CoroutineScope = MainScope()
 
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, arguments,
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute,
                   disposable, scope)
 
               public override fun onCleared(): Unit {
@@ -274,10 +282,10 @@ class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(arguments: Bundle): Unit {
+            public fun TestScreen(testRoute: TestRoute): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                TestViewModel(dependencies, handle, arguments)
+                TestViewModel(dependencies, handle, testRoute)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
@@ -305,9 +313,10 @@ class FileGeneratorTestComposeFragment {
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
               ): View {
+                val testRoute = requireNavRoute<TestRoute>()
                 if (!navigationSetup) {
                   navigationSetup = true
-                  setupNavigation()
+                  setupNavigation(testRoute)
                 }
             
                 return ComposeView(requireContext()).apply {
@@ -320,17 +329,16 @@ class FileGeneratorTestComposeFragment {
 
                   setContent {
                     CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
-                      TestScreen(requireArguments())
+                      TestScreen(testRoute)
                     }
                   }
                 }
               }
             
-              private fun setupNavigation(): Unit {
+              private fun setupNavigation(testRoute: TestRoute): Unit {
                 val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
                     dependencies, handle -> 
-                  val arguments = arguments ?: Bundle.EMPTY
-                  TestViewModel(dependencies, handle, arguments)
+                  TestViewModel(dependencies, handle, testRoute)
                 }
                 val viewModel = viewModelProvider[TestViewModel::class.java]
                 val component = viewModel.component
@@ -364,6 +372,7 @@ class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
+            import com.freeletics.mad.navigator.fragment.requireNavRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -403,7 +412,7 @@ class FileGeneratorTestComposeFragment {
                 public fun create(
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance arguments: Bundle,
+                  @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
@@ -414,14 +423,14 @@ class FileGeneratorTestComposeFragment {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              arguments: Bundle
+              testRoute: TestRoute
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
               private val scope: CoroutineScope = MainScope()
 
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, arguments,
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute,
                   disposable, scope)
 
               public override fun onCleared(): Unit {
@@ -432,10 +441,10 @@ class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(arguments: Bundle): Unit {
+            public fun TestScreen(testRoute: TestRoute): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                TestViewModel(dependencies, handle, arguments)
+                TestViewModel(dependencies, handle, testRoute)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
@@ -463,25 +472,25 @@ class FileGeneratorTestComposeFragment {
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
               ): View {
+                val testRoute = requireNavRoute<TestRoute>()
                 if (!navigationSetup) {
                   navigationSetup = true
-                  setupNavigation()
+                  setupNavigation(testRoute)
                 }
             
                 return ComposeView(requireContext()).apply {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
 
                   setContent {
-                    TestScreen(requireArguments())
+                    TestScreen(testRoute)
                   }
                 }
               }
             
-              private fun setupNavigation(): Unit {
+              private fun setupNavigation(testRoute: TestRoute): Unit {
                 val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
                     dependencies, handle -> 
-                  val arguments = arguments ?: Bundle.EMPTY
-                  TestViewModel(dependencies, handle, arguments)
+                  TestViewModel(dependencies, handle, testRoute)
                 }
                 val viewModel = viewModelProvider[TestViewModel::class.java]
                 val component = viewModel.component
@@ -496,7 +505,7 @@ class FileGeneratorTestComposeFragment {
 
     @Test
     fun `generates code for ComposeFragmentData, no navigation`() {
-        val noNavigation = full.copy(navigationEnabled = false)
+        val noNavigation = full.copy(navigation = null)
 
         FileGenerator().generate(noNavigation).toString() shouldBe """
             package com.test
@@ -608,22 +617,25 @@ class FileGeneratorTestComposeFragment {
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
-              ): View = ComposeView(requireContext()).apply {
-                setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+              ): View {
+                val arguments = requireArguments()
+                return ComposeView(requireContext()).apply {
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
 
-                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT)
-                val observer = ViewWindowInsetObserver(this)
-                val windowInsets = observer.start()
-
-                setContent {
-                  CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
-                    TestScreen(requireArguments())
+                  layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                      ViewGroup.LayoutParams.MATCH_PARENT)
+                  val observer = ViewWindowInsetObserver(this)
+                  val windowInsets = observer.start()
+  
+                  setContent {
+                    CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
+                      TestScreen(arguments)
+                    }
                   }
                 }
               }
             }
-            
+
         """.trimIndent()
     }
 }

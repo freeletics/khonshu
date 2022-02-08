@@ -1,11 +1,13 @@
 package com.freeletics.mad.whetstone.codegen
 
+import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeScreenData
+import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 
-class FileGeneratorTestCompose {
+internal class FileGeneratorTestCompose {
 
     private val full = ComposeScreenData(
         baseName = "Test",
@@ -14,7 +16,11 @@ class FileGeneratorTestCompose {
         parentScope = ClassName("com.test.parent", "TestParentScope"),
         dependencies = ClassName("com.test", "TestDependencies"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
-        navigationEnabled = true,
+        navigation = CommonData.Navigation(
+            navEventNavigator,
+            ClassName("com.test", "TestRoute"),
+            null,
+        ),
         coroutinesEnabled = true,
         rxJavaEnabled = true,
     )
@@ -24,7 +30,6 @@ class FileGeneratorTestCompose {
         FileGenerator().generate(full).toString() shouldBe """
             package com.test
 
-            import android.os.Bundle
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.ProvidedValue
@@ -70,7 +75,7 @@ class FileGeneratorTestCompose {
                 public fun create(
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance arguments: Bundle,
+                  @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
@@ -81,14 +86,14 @@ class FileGeneratorTestCompose {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              arguments: Bundle
+              testRoute: TestRoute
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
               private val scope: CoroutineScope = MainScope()
 
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, arguments,
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute,
                   disposable, scope)
 
               public override fun onCleared(): Unit {
@@ -99,10 +104,10 @@ class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(arguments: Bundle): Unit {
+            public fun TestScreen(testRoute: TestRoute): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                TestViewModel(dependencies, handle, arguments)
+                TestViewModel(dependencies, handle, testRoute)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
@@ -129,7 +134,7 @@ class FileGeneratorTestCompose {
 
     @Test
     fun `generates code for ComposeScreenData, no navigation`() {
-        val noNavigation = full.copy(navigationEnabled = false)
+        val noNavigation = full.copy(navigation = null)
 
         FileGenerator().generate(noNavigation).toString() shouldBe """
             package com.test
@@ -237,7 +242,6 @@ class FileGeneratorTestCompose {
         FileGenerator().generate(withoutCoroutines).toString() shouldBe """
             package com.test
 
-            import android.os.Bundle
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.ProvidedValue
@@ -280,7 +284,7 @@ class FileGeneratorTestCompose {
                 public fun create(
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance arguments: Bundle,
+                  @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable
                 ): RetainedTestComponent
               }
@@ -290,12 +294,12 @@ class FileGeneratorTestCompose {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              arguments: Bundle
+              testRoute: TestRoute
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, arguments,
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute,
                   disposable)
 
               public override fun onCleared(): Unit {
@@ -305,10 +309,10 @@ class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(arguments: Bundle): Unit {
+            public fun TestScreen(testRoute: TestRoute): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                TestViewModel(dependencies, handle, arguments)
+                TestViewModel(dependencies, handle, testRoute)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
@@ -340,7 +344,6 @@ class FileGeneratorTestCompose {
         FileGenerator().generate(withoutRxJava).toString() shouldBe """
             package com.test
 
-            import android.os.Bundle
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.ProvidedValue
@@ -385,7 +388,7 @@ class FileGeneratorTestCompose {
                 public fun create(
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance arguments: Bundle,
+                  @BindsInstance testRoute: TestRoute,
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
               }
@@ -395,12 +398,12 @@ class FileGeneratorTestCompose {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              arguments: Bundle
+              testRoute: TestRoute
             ) : ViewModel() {
               private val scope: CoroutineScope = MainScope()
 
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, arguments, scope)
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute, scope)
 
               public override fun onCleared(): Unit {
                 scope.cancel()
@@ -409,10 +412,10 @@ class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun TestScreen(arguments: Bundle): Unit {
+            public fun TestScreen(testRoute: TestRoute): Unit {
               val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
                   dependencies, handle -> 
-                TestViewModel(dependencies, handle, arguments)
+                TestViewModel(dependencies, handle, testRoute)
               }
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component

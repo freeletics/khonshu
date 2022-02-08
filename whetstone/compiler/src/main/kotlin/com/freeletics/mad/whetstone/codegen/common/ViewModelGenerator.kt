@@ -2,7 +2,7 @@ package com.freeletics.mad.whetstone.codegen.common
 
 import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.codegen.util.Generator
-import com.freeletics.mad.whetstone.codegen.util.bundle
+import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
 import com.freeletics.mad.whetstone.codegen.util.coroutineScope
 import com.freeletics.mad.whetstone.codegen.util.coroutineScopeCancel
@@ -16,6 +16,7 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.KModifier.PRIVATE
 import com.squareup.kotlinpoet.KModifier.PUBLIC
+import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
@@ -28,30 +29,32 @@ internal class ViewModelGenerator(
 ) : Generator<CommonData>() {
 
     internal fun generate(): TypeSpec {
+        val argumentsParameter = data.navigation.asParameter()
         return TypeSpec.classBuilder(viewModelClassName)
             .addModifiers(KModifier.INTERNAL)
             .addAnnotation(internalApiAnnotation())
             .superclass(viewModel)
-            .primaryConstructor(viewModelCtor())
-            .addProperties(viewModelProperties())
+            .primaryConstructor(viewModelCtor(argumentsParameter))
+            .addProperties(viewModelProperties(argumentsParameter))
             .addFunction(viewModelOnClearedFun())
             .build()
     }
 
-    private fun viewModelCtor(): FunSpec {
+    private fun viewModelCtor(argumentsParameter: ParameterSpec): FunSpec {
         return FunSpec.constructorBuilder()
             .addParameter("dependencies", data.dependencies)
             .addParameter("savedStateHandle", savedStateHandle)
-            .addParameter("arguments", bundle)
+            .addParameter(argumentsParameter)
             .build()
     }
 
-    private fun viewModelProperties(): List<PropertySpec> {
+    private fun viewModelProperties(argumentsParameter: ParameterSpec): List<PropertySpec> {
         val properties = mutableListOf<PropertySpec>()
         val componentInitializer = CodeBlock.builder().add(
-            "%T.factory().%L(dependencies, savedStateHandle, arguments",
+            "%T.factory().%L(dependencies, savedStateHandle, %N",
             retainedComponentClassName.peerClass("Dagger${retainedComponentClassName.simpleName}"),
             retainedComponentFactoryCreateName,
+            argumentsParameter,
         )
         if (data.rxJavaEnabled) {
             properties += PropertySpec.builder("disposable", compositeDisposable)
