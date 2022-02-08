@@ -13,15 +13,8 @@ import org.junit.Test
 public class NavEventNavigatorTest {
 
     private class TestNavigator : NavEventNavigator()
-    private data class SimpleRoute(override val destinationId: Int) :
-        NavRoute {
-        override fun describeContents(): Int = 0
-        override fun writeToParcel(dest: Parcel?, flags: Int) {}
-    }
-    private data class SimpleNavRoot(override val destinationId: Int) : NavRoot {
-        override fun describeContents(): Int = 0
-        override fun writeToParcel(dest: Parcel?, flags: Int) {}
-    }
+    private data class SimpleRoute(override val destinationId: Int) : NavRoute
+    private data class SimpleNavRoot(override val destinationId: Int) : NavRoot
 
     @Test
     public fun `navigateTo event is received`(): Unit = runBlocking {
