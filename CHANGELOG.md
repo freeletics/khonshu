@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha20 *(2022-02-08)*
+----------------------------
+
+- Navigator: Make `NavRoute` and `NavRoot` parcelable, remove `getArguments`
+- Navigator: Remove `NavController` parameter from navigation handler
+- Navigator: fix bottom sheet layout missing for the compose `NavHost`
+- Navigator: remove AndroidX Navigation from public API
+- Navigator: clean up public API
+- Whetstone: merge dialog annotations into main annotations
+
+
 Version 0.3.0-alpha19 *(2022-02-03)*
 ----------------------------
 
