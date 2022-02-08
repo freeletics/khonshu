@@ -20,11 +20,6 @@ import kotlin.reflect.KClass
  * It is recommended to annotate the given `StateMachine` class with a Dagger scope like
  * explained below.
  *
- * **Navigation**
- *
- * If the optional `navigator` is set the generated composable will use to set up navigation while
- * the composition is active.
- *
  * **Scopes, Dagger and Anvil**
  *
  * There will also be a generated Dagger component that is tied to the composable function but

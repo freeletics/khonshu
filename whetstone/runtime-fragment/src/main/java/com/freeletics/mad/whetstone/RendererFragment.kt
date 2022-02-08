@@ -21,11 +21,6 @@ import kotlin.reflect.KClass
  * be passed to the `render` function of the `Renderer`. The `actions` of the `Renderer will also
  * be collected in the mean time and dispatched to the `StateMachine`.
  *
- * **Navigation**
- *
- * If the optional `navigator` is set the generated `Fragment` will use this to set up navigation
- * to set up navigation after it was created.
- *
  * **Scopes, Dagger and Anvil**
  *
  * There will also be a generated Dagger component that is tied to the composable function but
