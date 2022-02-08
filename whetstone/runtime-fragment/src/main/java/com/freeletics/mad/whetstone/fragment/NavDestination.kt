@@ -10,6 +10,6 @@ package com.freeletics.mad.whetstone.fragment
  * This can be achieved by adding
  * `@ContributesBinding(TheScope::class, FragmentNavEventNavigator::class)` to it.
  */
-@Target(AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class NavDestination
