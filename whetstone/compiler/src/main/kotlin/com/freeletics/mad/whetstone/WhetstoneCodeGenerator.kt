@@ -3,10 +3,10 @@ package com.freeletics.mad.whetstone
 import com.freeletics.mad.whetstone.codegen.FileGenerator
 import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
+import com.freeletics.mad.whetstone.codegen.util.composeNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.moduleFqName
-import com.freeletics.mad.whetstone.codegen.util.navDestination
-import com.freeletics.mad.whetstone.codegen.util.navDestinationFqName
+import com.freeletics.mad.whetstone.codegen.util.fragmentNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
 import com.google.auto.service.AutoService
@@ -69,7 +69,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         declaration: KtDeclaration
     ): GeneratedFile? {
         val renderer = declaration.findAnnotation(rendererFragmentFqName, module) ?: return null
-        val navigation = declaration.findAnnotation(navDestinationFqName, module)
+        val navigation = declaration.findAnnotation(fragmentNavDestinationFqName, module)
         val data = RendererFragmentData(
             baseName = declaration.name!!,
             packageName = declaration.containingKtFile.packageName(),
@@ -99,7 +99,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         declaration: KtDeclaration
     ): GeneratedFile? {
         val compose = declaration.findAnnotation(composeFragmentFqName, module) ?: return null
-        val navigation = declaration.findAnnotation(navDestinationFqName, module)
+        val navigation = declaration.findAnnotation(fragmentNavDestinationFqName, module)
         val data = ComposeFragmentData(
             baseName = declaration.name!!,
             packageName = declaration.containingKtFile.packageName(),
@@ -129,7 +129,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         declaration: KtDeclaration
     ): GeneratedFile? {
         val compose = declaration.findAnnotation(composeFqName, module) ?: return null
-        val navigation = declaration.findAnnotation(navDestinationFqName, module)
+        val navigation = declaration.findAnnotation(composeNavDestinationFqName, module)
         val data = ComposeScreenData(
             baseName = declaration.name!!,
             packageName = declaration.containingKtFile.packageName(),
