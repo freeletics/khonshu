@@ -1,4 +1,4 @@
-package com.freeletics.mad.whetstone
+package com.freeletics.mad.whetstone.fragment
 
 import androidx.fragment.app.Fragment
 import com.freeletics.mad.statemachine.StateMachine

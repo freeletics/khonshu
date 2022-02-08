@@ -1,18 +1,15 @@
-package com.freeletics.mad.whetstone
+package com.freeletics.mad.whetstone.compose
 
-import androidx.fragment.app.Fragment
 import com.freeletics.mad.statemachine.StateMachine
 import kotlin.reflect.KClass
 
 /**
- * By adding this annotation to a [androidx.compose.runtime.Composable] function, a `Fragment` is
- * generated that will have the same name with `Fragment` as suffix. The Fragment will create a
- * `ComposeView` that will call the annotated composable. It is required that the annotated function
- * has `State` as first parameter and `(Action) -> Unit` as second parameter, where `State` and
- * `Action` match the given `StateMachine`.
- *
- * The generated `Fragment` will use the given [fragmentBaseClass] as it's super class, with
- * [androidx.fragment.app.Fragment] class used as default if nothing is specified.
+ * By adding this annotation to a [androidx.compose.runtime.Composable] function, another
+ * Composable is generated that will have the same name with `Screen` as suffix. The generated
+ * function has [androidx.navigation.NavController] as it's sole parameter. It will internally
+ * call the annotated composable. It is required that the annotated function has `State` as first
+ * parameter and `(Action) -> Unit` as second parameter, where `State` and `Action` match the given
+ * `StateMachine`.
  *
  * **StateMachine**
  *
@@ -35,7 +32,7 @@ import kotlin.reflect.KClass
  * [com.squareup.anvil.annotations.MergeComponent.scope], so it can be used to contribute modules
  * and bindings to the generated component.
  *
- * E.g. for `@ComposeFragment(scope = CoachScreen::class, ...)` the scope of the generated
+ * E.g. for `@ComposeScreen(scope = CoachScreen::class, ...)` the scope of the generated
  * component will be `@ScopeTo(CoachScreen::class)`, modules can be contributed with
  * `@ContributesTo(CoachScreen::class)` and bindings with
  * `@ContributesBinding(CoachScreen::class, ...)`.
@@ -52,19 +49,36 @@ import kotlin.reflect.KClass
  * [android.app.Application] context. The parameter passed to `getSystemService` is the fully
  * qualified name of [parentScope]. It is recommended to use the same marker class that is used as
  * Anvil scope for the [parentScope].
+ *
+ * **Example**
+ *
+ * This example code:
+ * ```
+ * @ComposeScreen(...)
+ * fun Coach(state: CoachState, actions: (CoachAction) -> Unit)
+ * ```
+ *
+ * Generates the following composable:
+ * ```
+ * @Composable
+ * fun CoachScreen(navController: NavController) {
+ *   // setup code omitted
+ *   val state by stateMachine.asComposeState()
+ *   Coach(state.value) { action ->
+ *     scope.launch { stateMachine.dispatch(action) }
+ *   }
+ * }
+ * ```
  */
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
-public annotation class ComposeFragment(
+public annotation class ComposeScreen(
     val scope: KClass<*>,
     val parentScope: KClass<*>,
     val dependencies: KClass<*>,
 
     val stateMachine: KClass<out StateMachine<*, *>>,
 
-    val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
-
-    val enableInsetHandling: Boolean = false,
     val coroutinesEnabled: Boolean = false,
     val rxJavaEnabled: Boolean = false,
 )
