@@ -27,69 +27,73 @@ import kotlinx.coroutines.launch
 public class NavEventNavigationHandler : NavigationHandler<FragmentNavEventNavigator> {
 
     override fun handle(fragment: Fragment, navigator: FragmentNavEventNavigator) {
-        val activityLaunchers = navigator.activityResultRequests.associateWith {
-            it.registerIn(fragment)
-        }
-        val permissionLaunchers = navigator.permissionsResultRequests.associateWith {
-            it.registerIn(fragment, fragment.requireActivity())
-        }
+        handleNavigation(fragment, navigator)
+    }
+}
 
-        navigator.fragmentResultRequests.forEach {
-            it.registerIn(fragment.parentFragmentManager, fragment)
-        }
+public fun handleNavigation(fragment: Fragment, navigator: FragmentNavEventNavigator) {
+    val activityLaunchers = navigator.activityResultRequests.associateWith {
+        it.registerIn(fragment)
+    }
+    val permissionLaunchers = navigator.permissionsResultRequests.associateWith {
+        it.registerIn(fragment, fragment.requireActivity())
+    }
 
-        val dispatcher = fragment.requireActivity().onBackPressedDispatcher
-        dispatcher.addCallback(fragment, navigator.onBackPressedCallback)
+    navigator.fragmentResultRequests.forEach {
+        it.registerIn(fragment.parentFragmentManager, fragment)
+    }
 
-        val lifecycle = fragment.lifecycle
-        lifecycle.coroutineScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                navigator.navEvents.collect { event ->
-                    navigate(event, fragment.findNavController(), activityLaunchers, permissionLaunchers)
-                }
-            }
-        }
-        lifecycle.coroutineScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                navigator.resultEvents.collect { event ->
-                    navigate(fragment, event)
-                }
+    val dispatcher = fragment.requireActivity().onBackPressedDispatcher
+    dispatcher.addCallback(fragment, navigator.onBackPressedCallback)
+
+    val lifecycle = fragment.lifecycle
+    lifecycle.coroutineScope.launch {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            navigator.navEvents.collect { event ->
+                navigate(event, fragment.findNavController(), activityLaunchers, permissionLaunchers)
             }
         }
     }
-
-    private fun <I, O> ActivityResultRequest<I, O>.registerIn(
-        caller: ActivityResultCaller
-    ): ActivityResultLauncher<*> {
-        return caller.registerForActivityResult(contract, ::handleResult)
-    }
-
-    private fun PermissionsResultRequest.registerIn(
-        caller: ActivityResultCaller,
-        activity: Activity
-    ): ActivityResultLauncher<List<String>> {
-        return caller.registerForActivityResult(RequestPermissionsContract()) { resultMap ->
-            handleResult(resultMap, activity)
+    lifecycle.coroutineScope.launch {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            navigator.resultEvents.collect { event ->
+                navigate(fragment, event)
+            }
         }
     }
+}
 
-    @SuppressLint("VisibleForTests") // it's ok to use onResult internally
-    private fun <O> FragmentResultRequest<O>.registerIn(
-        fragmentResultOwner: FragmentResultOwner,
-        lifecycleOwner: LifecycleOwner
-    ) {
-        fragmentResultOwner.setFragmentResultListener(requestKey, lifecycleOwner) { _, bundle ->
-            onResult(bundle.getParcelable(KEY_FRAGMENT_RESULT)!!)
-        }
-    }
+private fun <I, O> ActivityResultRequest<I, O>.registerIn(
+    caller: ActivityResultCaller
+): ActivityResultLauncher<*> {
+    return caller.registerForActivityResult(contract, ::handleResult)
+}
 
-    private fun navigate(fragment: Fragment, event: FragmentResultEvent) {
-        val result = Bundle(1).apply {
-            putParcelable(KEY_FRAGMENT_RESULT, event.result)
-        }
-        fragment.parentFragmentManager.setFragmentResult(event.requestKey, result)
-        fragment.findNavController().popBackStack()
+private fun PermissionsResultRequest.registerIn(
+    caller: ActivityResultCaller,
+    activity: Activity
+): ActivityResultLauncher<List<String>> {
+    return caller.registerForActivityResult(RequestPermissionsContract()) { resultMap ->
+        handleResult(resultMap, activity)
     }
+}
+
+@SuppressLint("VisibleForTests") // it's ok to use onResult internally
+private fun <O> FragmentResultRequest<O>.registerIn(
+    fragmentResultOwner: FragmentResultOwner,
+    lifecycleOwner: LifecycleOwner
+) {
+    fragmentResultOwner.setFragmentResultListener(requestKey, lifecycleOwner) { _, bundle ->
+        onResult(bundle.getParcelable(KEY_FRAGMENT_RESULT)!!)
+    }
+}
+
+private fun navigate(fragment: Fragment, event: FragmentResultEvent) {
+    val result = Bundle(1).apply {
+        putParcelable(KEY_FRAGMENT_RESULT, event.result)
+    }
+    fragment.parentFragmentManager.setFragmentResult(event.requestKey, result)
+    fragment.findNavController().popBackStack()
 }
 
 /**
