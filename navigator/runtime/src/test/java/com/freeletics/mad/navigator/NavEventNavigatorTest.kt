@@ -4,7 +4,6 @@ import android.os.Parcel
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
-import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import kotlinx.coroutines.runBlocking
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,7 +13,8 @@ import org.junit.Test
 public class NavEventNavigatorTest {
 
     private class TestNavigator : NavEventNavigator()
-    private data class SimpleRoute(override val destinationId: Int) : NavRoute {
+    private data class SimpleRoute(override val destinationId: Int) :
+        NavRoute {
         override fun describeContents(): Int = 0
         override fun writeToParcel(dest: Parcel?, flags: Int) {}
     }
