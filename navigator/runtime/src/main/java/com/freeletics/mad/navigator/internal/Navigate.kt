@@ -1,10 +1,13 @@
 package com.freeletics.mad.navigator.internal
 
+import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEvent
+import com.freeletics.mad.navigator.NavRoot
+import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.PermissionsResultRequest
 
 @InternalNavigatorApi
@@ -65,3 +68,19 @@ public fun navigate(
         }
     }
 }
+
+@ObsoleteNavigatorApi
+public fun <T : NavRoute> Bundle.toNavRoute(): T = getParcelable(EXTRA_ROUTE)!!
+
+@ObsoleteNavigatorApi
+public fun <T : NavRoot> Bundle.toNavRoot(): T = getParcelable(EXTRA_ROUTE)!!
+
+private fun NavRoute.getArguments(): Bundle = Bundle().also {
+    it.putParcelable(EXTRA_ROUTE, this)
+}
+
+private fun NavRoot.getArguments(): Bundle = Bundle().also {
+    it.putParcelable(EXTRA_ROUTE, this)
+}
+
+private const val EXTRA_ROUTE = "com.freeletics.mad.navigation.ROUTE"
