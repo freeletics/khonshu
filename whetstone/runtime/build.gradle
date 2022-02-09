@@ -57,7 +57,7 @@ dependencies {
     api "androidx.savedstate:savedstate:1.1.0"
     api "androidx.lifecycle:lifecycle-viewmodel:2.4.0"
     api "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.0"
-    api "androidx.navigation:navigation-runtime:2.4.0"
+    api "androidx.navigation:navigation-common:2.4.0"
     api project(":state-machine")
 
     implementation "androidx.compose.ui:ui:1.1.0-rc03"
