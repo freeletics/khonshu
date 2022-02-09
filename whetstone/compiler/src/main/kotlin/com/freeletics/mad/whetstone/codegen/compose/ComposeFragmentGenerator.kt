@@ -8,10 +8,10 @@ import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.composeView
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.disposeOnLifecycleDestroyed
+import com.freeletics.mad.whetstone.codegen.util.fragmentNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
 import com.freeletics.mad.whetstone.codegen.util.layoutParams
 import com.freeletics.mad.whetstone.codegen.util.localWindowInsets
-import com.freeletics.mad.whetstone.codegen.util.navigationHandlerHandle
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.view
@@ -37,7 +37,7 @@ internal class ComposeFragmentGenerator(
             .superclass(data.fragmentBaseClass)
             .addFunction(composeOnCreateViewFun())
             .apply {
-                if (data.navigation != null) {
+                if (data.navigator != null) {
                     addProperty(navigationSetupProperty())
                     addFunction(setupNavigationFun())
                 }
@@ -54,7 +54,7 @@ internal class ComposeFragmentGenerator(
             .addParameter("savedInstanceState", bundle.copy(nullable = true))
             .returns(view)
             .apply {
-                if (data.navigation != null) {
+                if (data.navigator != null) {
                     beginControlFlow("if (!%L)", navigationSetupPropertyName)
                     addStatement("%L = true", navigationSetupPropertyName)
                     addStatement("%L()", navigationSetupFunctionName)
@@ -118,10 +118,8 @@ internal class ComposeFragmentGenerator(
             .addStatement("val viewModel = viewModelProvider[%T::class.java]", viewModelClassName)
             .addStatement("val component = viewModel.%L", viewModelComponentName)
             .addCode("\n")
-            .addStatement("val handler = component.%L", data.navigation!!.navigationHandler.propertyName)
-            .addStatement("val navigator = component.%L", data.navigation.navigator.propertyName)
-            // lifecycle: external method
-            .addStatement("handler.%N(this, navigator)", navigationHandlerHandle)
+            .addStatement("val navigator = component.%L", data.navigator!!.propertyName)
+            .addStatement("%N(this, navigator)", fragmentNavigationHandler)
             .build()
     }
 }

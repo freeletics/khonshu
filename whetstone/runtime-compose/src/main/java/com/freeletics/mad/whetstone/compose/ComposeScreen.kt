@@ -1,10 +1,6 @@
-package com.freeletics.mad.whetstone
+package com.freeletics.mad.whetstone.compose
 
-import com.freeletics.mad.navigator.compose.NavigationHandler
-import com.freeletics.mad.navigator.Navigator
 import com.freeletics.mad.statemachine.StateMachine
-import com.freeletics.mad.whetstone.compose.internal.EmptyNavigationHandler
-import com.freeletics.mad.whetstone.compose.internal.EmptyNavigator
 import kotlin.reflect.KClass
 
 /**
@@ -23,12 +19,6 @@ import kotlin.reflect.KClass
  *
  * It is recommended to annotate the given `StateMachine` class with a Dagger scope like
  * explained below.
- *
- * **Navigation**
- *
- * If the 2 optional `navigator` and `navigationHandler` are set the generated composable will use
- * these together with the passed in `NavController` to set up navigation while the composition
- * is active.
  *
  * **Scopes, Dagger and Anvil**
  *
@@ -88,9 +78,6 @@ public annotation class ComposeScreen(
     val dependencies: KClass<*>,
 
     val stateMachine: KClass<out StateMachine<*, *>>,
-
-    val navigator: KClass<out Navigator> = EmptyNavigator::class,
-    val navigationHandler: KClass<out NavigationHandler<*>> = EmptyNavigationHandler::class,
 
     val coroutinesEnabled: Boolean = false,
     val rxJavaEnabled: Boolean = false,

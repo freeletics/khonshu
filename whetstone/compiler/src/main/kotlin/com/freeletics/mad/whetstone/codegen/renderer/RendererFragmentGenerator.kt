@@ -6,9 +6,9 @@ import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.util.Generator
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.bundle
+import com.freeletics.mad.whetstone.codegen.util.fragmentNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.lateinitPropertySpec
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
-import com.freeletics.mad.whetstone.codegen.util.navigationHandlerHandle
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.rendererConnect
 import com.freeletics.mad.whetstone.codegen.util.view
@@ -76,16 +76,15 @@ internal class RendererFragmentGenerator(
     }
 
     private fun rendererNavigationCode(): CodeBlock {
-        if (data.navigation == null) {
+        val navigator = data.navigator
+        if (navigator == null) {
             return CodeBlock.of("")
         }
 
         return CodeBlock.builder()
             .add("\n")
-            .addStatement("val handler = component.%L", data.navigation.navigationHandler.propertyName)
-            .addStatement("val navigator = component.%L", data.navigation.navigator.propertyName)
-            // lifecycle: external method
-            .addStatement("handler.%N(this, navigator)", navigationHandlerHandle)
+            .addStatement("val navigator = component.%L", navigator.propertyName)
+            .addStatement("%N(this, navigator)", fragmentNavigationHandler)
             .build()
     }
 }

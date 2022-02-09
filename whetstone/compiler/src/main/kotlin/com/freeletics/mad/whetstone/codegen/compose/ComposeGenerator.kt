@@ -9,9 +9,9 @@ import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.asComposeState
 import com.freeletics.mad.whetstone.codegen.util.composable
+import com.freeletics.mad.whetstone.codegen.util.composeNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.launch
-import com.freeletics.mad.whetstone.codegen.util.navigationHandlerNavigation
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.rememberCoroutineScope
 import com.freeletics.mad.whetstone.codegen.util.rememberViewModelProvider
@@ -53,14 +53,14 @@ internal class ComposeGenerator(
     }
 
     private fun composableNavigationSetup(disableNavigation: Boolean): CodeBlock {
-        if (data.navigation == null || disableNavigation) {
+        val navigator = data.navigator
+        if (navigator == null || disableNavigation) {
             return CodeBlock.of("")
         }
 
         return CodeBlock.builder()
-            .addStatement("val handler = component.%L", data.navigation!!.navigationHandler.propertyName)
-            .addStatement("val navigator = component.%L", data.navigation!!.navigator.propertyName)
-            .addStatement("handler.%N(navigator)", navigationHandlerNavigation)
+            .addStatement("val navigator = component.%L", navigator.propertyName)
+            .addStatement("%M(navigator)", composeNavigationHandler)
             .add("\n")
             .build()
     }

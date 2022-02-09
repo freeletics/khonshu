@@ -17,10 +17,7 @@ class FileGeneratorTestRendererFragment {
         fragmentBaseClass = ClassName("androidx.fragment.app", "Fragment"),
         factory = ClassName("com.test", "RendererFactory"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
-        navigation = CommonData.Navigation(
-            navigator = ClassName("com.test", "TestNavigator"),
-            navigationHandler = ClassName("com.test.navigation", "TestNavigationHandler"),
-        ),
+        navigationEnabled = true,
         coroutinesEnabled = true,
         rxJavaEnabled = true,
     )
@@ -37,12 +34,12 @@ class FileGeneratorTestRendererFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
+            import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.MergeComponent
-            import com.test.navigation.TestNavigationHandler
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
@@ -62,9 +59,7 @@ class FileGeneratorTestRendererFragment {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val testNavigator: TestNavigator
-
-              public val testNavigationHandler: TestNavigationHandler
+              public val fragmentNavEventNavigator: FragmentNavEventNavigator
             
               public val rendererFactory: RendererFactory
 
@@ -132,9 +127,8 @@ class FileGeneratorTestRendererFragment {
                 rendererFactory = component.rendererFactory
                 testStateMachine = component.testStateMachine
 
-                val handler = component.testNavigationHandler
-                val navigator = component.testNavigator
-                handler.handle(this, navigator)
+                val navigator = component.fragmentNavEventNavigator
+                handleNavigation(this, navigator)
               }
             }
             
@@ -143,7 +137,7 @@ class FileGeneratorTestRendererFragment {
 
     @Test
     fun `generates code for RendererFragmentData, no navigation`() {
-        val noNavigation = full.copy(navigation = null)
+        val noNavigation = full.copy(navigationEnabled = false)
 
         FileGenerator().generate(noNavigation).toString() shouldBe """
             package com.test
@@ -266,12 +260,12 @@ class FileGeneratorTestRendererFragment {
             import androidx.fragment.app.DialogFragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
+            import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.MergeComponent
-            import com.test.navigation.TestNavigationHandler
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
@@ -291,9 +285,7 @@ class FileGeneratorTestRendererFragment {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val testNavigator: TestNavigator
-
-              public val testNavigationHandler: TestNavigationHandler
+              public val fragmentNavEventNavigator: FragmentNavEventNavigator
             
               public val rendererFactory: RendererFactory
 
@@ -361,9 +353,8 @@ class FileGeneratorTestRendererFragment {
                 rendererFactory = component.rendererFactory
                 testStateMachine = component.testStateMachine
 
-                val handler = component.testNavigationHandler
-                val navigator = component.testNavigator
-                handler.handle(this, navigator)
+                val navigator = component.fragmentNavEventNavigator
+                handleNavigation(this, navigator)
               }
             }
             

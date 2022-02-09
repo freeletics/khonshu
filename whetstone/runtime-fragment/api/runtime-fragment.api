@@ -1,22 +1,21 @@
-public abstract interface annotation class com/freeletics/mad/whetstone/ComposeFragment : java/lang/annotation/Annotation {
+public abstract interface annotation class com/freeletics/mad/whetstone/fragment/ComposeFragment : java/lang/annotation/Annotation {
 	public abstract fun coroutinesEnabled ()Z
 	public abstract fun dependencies ()Ljava/lang/Class;
 	public abstract fun enableInsetHandling ()Z
 	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
-	public abstract fun navigationHandler ()Ljava/lang/Class;
-	public abstract fun navigator ()Ljava/lang/Class;
 	public abstract fun parentScope ()Ljava/lang/Class;
 	public abstract fun rxJavaEnabled ()Z
 	public abstract fun scope ()Ljava/lang/Class;
 	public abstract fun stateMachine ()Ljava/lang/Class;
 }
 
-public abstract interface annotation class com/freeletics/mad/whetstone/RendererFragment : java/lang/annotation/Annotation {
+public abstract interface annotation class com/freeletics/mad/whetstone/fragment/NavDestination : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class com/freeletics/mad/whetstone/fragment/RendererFragment : java/lang/annotation/Annotation {
 	public abstract fun coroutinesEnabled ()Z
 	public abstract fun dependencies ()Ljava/lang/Class;
 	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
-	public abstract fun navigationHandler ()Ljava/lang/Class;
-	public abstract fun navigator ()Ljava/lang/Class;
 	public abstract fun parentScope ()Ljava/lang/Class;
 	public abstract fun rendererFactory ()Ljava/lang/Class;
 	public abstract fun rxJavaEnabled ()Z
