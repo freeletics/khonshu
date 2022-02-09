@@ -8,6 +8,7 @@ import com.freeletics.mad.whetstone.codegen.util.Generator
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.asComposeState
+import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.composable
 import com.freeletics.mad.whetstone.codegen.util.composeNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
@@ -17,6 +18,7 @@ import com.freeletics.mad.whetstone.codegen.util.rememberCoroutineScope
 import com.freeletics.mad.whetstone.codegen.util.rememberViewModelProvider
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.ParameterSpec
 
 internal val Generator<out CommonData>.composableName get() = "${data.baseName}Screen"
 
@@ -25,12 +27,13 @@ internal class ComposeGenerator(
 ) : Generator<CommonData>() {
 
     internal fun generate(disableNavigation: Boolean): FunSpec {
+        val parameter = data.navigation.asParameter()
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
             .addAnnotation(optInAnnotation())
-            .addParameter("arguments", bundle)
+            .addParameter(parameter)
             .beginControlFlow("val viewModelProvider = %M<%T>(%T::class) { dependencies, handle -> ", rememberViewModelProvider, data.dependencies, data.parentScope)
-            .addStatement("%T(dependencies, handle, arguments)", viewModelClassName)
+            .addStatement("%T(dependencies, handle, %N)", viewModelClassName, parameter)
             .endControlFlow()
             .addStatement("val viewModel = viewModelProvider[%T::class.java]", viewModelClassName)
             .addStatement("val component = viewModel.%L", viewModelComponentName)
@@ -53,7 +56,7 @@ internal class ComposeGenerator(
     }
 
     private fun composableNavigationSetup(disableNavigation: Boolean): CodeBlock {
-        val navigator = data.navigator
+        val navigator = data.navigation?.navigator
         if (navigator == null || disableNavigation) {
             return CodeBlock.of("")
         }

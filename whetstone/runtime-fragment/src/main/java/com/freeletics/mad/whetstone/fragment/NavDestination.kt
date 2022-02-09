@@ -1,5 +1,9 @@
 package com.freeletics.mad.whetstone.fragment
 
+import com.freeletics.mad.navigator.NavRoot
+import com.freeletics.mad.navigator.NavRoute
+import kotlin.reflect.KClass
+
 /**
  * This annotation can be used in combination with [ComposeFragment] and [RendererFragment] to
  * enable the integration of a `FragmentNavEventNavigator` into the generated code. The navigator
@@ -12,4 +16,15 @@ package com.freeletics.mad.whetstone.fragment
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
-public annotation class NavDestination
+public annotation class NavDestination(
+    val route: KClass<out NavRoute>
+)
+
+/**
+ * Like [NavDestination] but for a screen represented by a [NavRoot].
+ */
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+public annotation class RootNavDestination(
+    val route: KClass<out NavRoot>
+)

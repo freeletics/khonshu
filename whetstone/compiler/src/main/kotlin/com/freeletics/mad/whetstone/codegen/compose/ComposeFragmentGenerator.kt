@@ -4,10 +4,12 @@ import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
 import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.util.Generator
+import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.composeView
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.disposeOnLifecycleDestroyed
+import com.freeletics.mad.whetstone.codegen.util.fragmentConverter
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
 import com.freeletics.mad.whetstone.codegen.util.layoutParams
@@ -22,6 +24,7 @@ import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.KModifier.PRIVATE
+import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
@@ -32,32 +35,36 @@ internal class ComposeFragmentGenerator(
     private val composeFragmentClassName = ClassName("${data.baseName}Fragment")
 
     internal fun generate(): TypeSpec {
+        val argumentsParameter = data.navigation.asParameter()
         return TypeSpec.classBuilder(composeFragmentClassName)
             .addAnnotation(optInAnnotation())
             .superclass(data.fragmentBaseClass)
-            .addFunction(composeOnCreateViewFun())
+            .addFunction(composeOnCreateViewFun(argumentsParameter))
             .apply {
-                if (data.navigator != null) {
+                if (data.navigation != null) {
                     addProperty(navigationSetupProperty())
-                    addFunction(setupNavigationFun())
+                    addFunction(setupNavigationFun(argumentsParameter))
                 }
             }
             .build()
     }
 
 
-    private fun composeOnCreateViewFun(): FunSpec {
+    private fun composeOnCreateViewFun(argumentsParameter: ParameterSpec): FunSpec {
         return FunSpec.builder("onCreateView")
             .addModifiers(OVERRIDE)
             .addParameter("inflater", layoutInflater)
             .addParameter("container", viewGroup.copy(nullable = true))
             .addParameter("savedInstanceState", bundle.copy(nullable = true))
             .returns(view)
+            .addCode("val %N = ", argumentsParameter)
+            .addCode(data.navigation.fragmentConverter())
+            .addCode("\n")
             .apply {
-                if (data.navigator != null) {
+                if (data.navigation != null) {
                     beginControlFlow("if (!%L)", navigationSetupPropertyName)
                     addStatement("%L = true", navigationSetupPropertyName)
-                    addStatement("%L()", navigationSetupFunctionName)
+                    addStatement("%L(%N)", navigationSetupFunctionName, argumentsParameter)
                     endControlFlow()
                     addCode("\n")
                 }
@@ -85,7 +92,7 @@ internal class ComposeFragmentGenerator(
                 }
             }
             // requireArguments: external method
-            .addStatement("%L(requireArguments())", composableName)
+            .addStatement("%L(%N)", composableName, argumentsParameter)
             .apply {
                 if (data.enableInsetHandling) {
                     endControlFlow()
@@ -107,18 +114,18 @@ internal class ComposeFragmentGenerator(
 
     private val navigationSetupFunctionName = "setupNavigation"
 
-    private fun setupNavigationFun(): FunSpec {
+    private fun setupNavigationFun(argumentsParameter: ParameterSpec): FunSpec {
         return FunSpec.builder("setupNavigation")
             .addModifiers(PRIVATE)
+            .addParameter(argumentsParameter)
             .beginControlFlow("val viewModelProvider = %M<%T>(this, %T::class) { dependencies, handle -> ", fragmentViewModelProvider, data.dependencies, data.parentScope)
             // arguments: external method
-            .addStatement("val arguments = arguments ?: %T.EMPTY", bundle)
-            .addStatement("%T(dependencies, handle, arguments)", viewModelClassName)
+            .addStatement("%T(dependencies, handle, %N)", viewModelClassName, argumentsParameter)
             .endControlFlow()
             .addStatement("val viewModel = viewModelProvider[%T::class.java]", viewModelClassName)
             .addStatement("val component = viewModel.%L", viewModelComponentName)
             .addCode("\n")
-            .addStatement("val navigator = component.%L", data.navigator!!.propertyName)
+            .addStatement("val navigator = component.%L", data.navigation!!.navigator.propertyName)
             .addStatement("%N(this, navigator)", fragmentNavigationHandler)
             .build()
     }

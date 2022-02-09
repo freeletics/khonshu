@@ -4,10 +4,14 @@ import com.freeletics.mad.whetstone.codegen.FileGenerator
 import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.composeNavDestinationFqName
+import com.freeletics.mad.whetstone.codegen.util.composeRootNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.moduleFqName
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavDestinationFqName
+import com.freeletics.mad.whetstone.codegen.util.fragmentNavEventNavigator
+import com.freeletics.mad.whetstone.codegen.util.fragmentRootNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
+import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
 import com.google.auto.service.AutoService
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
@@ -69,7 +73,6 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         declaration: KtDeclaration
     ): GeneratedFile? {
         val renderer = declaration.findAnnotation(rendererFragmentFqName, module) ?: return null
-        val navigation = declaration.findAnnotation(fragmentNavDestinationFqName, module)
         val data = RendererFragmentData(
             baseName = declaration.name!!,
             packageName = declaration.containingKtFile.packageName(),
@@ -81,7 +84,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             fragmentBaseClass = renderer.optionalClassArgument("fragmentBaseClass", 5, module) ?: fragment,
             coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
             rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
-            navigationEnabled = navigation != null
+            navigation = fragmentNavigation(module, declaration),
         )
 
         val file = FileGenerator().generate(data)
@@ -99,7 +102,6 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         declaration: KtDeclaration
     ): GeneratedFile? {
         val compose = declaration.findAnnotation(composeFragmentFqName, module) ?: return null
-        val navigation = declaration.findAnnotation(fragmentNavDestinationFqName, module)
         val data = ComposeFragmentData(
             baseName = declaration.name!!,
             packageName = declaration.containingKtFile.packageName(),
@@ -111,7 +113,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             enableInsetHandling = compose.optionalBooleanArgument("enableInsetHandling", 5) ?: false,
             coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
             rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
-            navigationEnabled = navigation != null
+            navigation = fragmentNavigation(module, declaration),
         )
 
         val file = FileGenerator().generate(data)
@@ -123,13 +125,35 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         )
     }
 
+    private fun fragmentNavigation(
+        module: ModuleDescriptor,
+        declaration: KtDeclaration
+    ): CommonData.Navigation? {
+        val navigation = declaration.findAnnotation(fragmentNavDestinationFqName, module)
+        if (navigation != null) {
+            return CommonData.Navigation(
+                navigator = fragmentNavEventNavigator,
+                navRoute = navigation.requireClassArgument("route", 0, module),
+                navRoot = null,
+            )
+        }
+        val rootNavigation = declaration.findAnnotation(fragmentRootNavDestinationFqName, module)
+        if (rootNavigation != null) {
+            return CommonData.Navigation(
+                navigator = fragmentNavEventNavigator,
+                navRoute = null,
+                navRoot = rootNavigation.requireClassArgument("route", 0, module),
+            )
+        }
+        return null
+    }
+
     private fun generateComposeScreenCode(
         codeGenDir: File,
         module: ModuleDescriptor,
         declaration: KtDeclaration
     ): GeneratedFile? {
         val compose = declaration.findAnnotation(composeFqName, module) ?: return null
-        val navigation = declaration.findAnnotation(composeNavDestinationFqName, module)
         val data = ComposeScreenData(
             baseName = declaration.name!!,
             packageName = declaration.containingKtFile.packageName(),
@@ -139,7 +163,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             stateMachine = compose.requireClassArgument("stateMachine", 3, module),
             coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 4) ?: false,
             rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 5) ?: false,
-            navigationEnabled = navigation != null,
+            navigation = composeNavigation(module, declaration),
         )
 
         val file = FileGenerator().generate(data)
@@ -149,6 +173,29 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             fileName = file.name,
             content = file.toString()
         )
+    }
+
+    private fun composeNavigation(
+        module: ModuleDescriptor,
+        declaration: KtDeclaration
+    ): CommonData.Navigation? {
+        val navigation = declaration.findAnnotation(composeNavDestinationFqName, module)
+        if (navigation != null) {
+            return CommonData.Navigation(
+                navigator = navEventNavigator,
+                navRoute = navigation.requireClassArgument("route", 0, module),
+                navRoot = null,
+            )
+        }
+        val rootNavigation = declaration.findAnnotation(composeRootNavDestinationFqName, module)
+        if (rootNavigation != null) {
+            return CommonData.Navigation(
+                navEventNavigator,
+                navRoute = null,
+                navRoot = rootNavigation.requireClassArgument("route", 0, module),
+            )
+        }
+        return null
     }
 
     private fun generateNavEntryCode(

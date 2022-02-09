@@ -2,11 +2,12 @@ package com.freeletics.mad.whetstone.codegen
 
 import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.RendererFragmentData
+import com.freeletics.mad.whetstone.codegen.util.fragmentNavEventNavigator
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 
-class FileGeneratorTestRendererFragment {
+internal class FileGeneratorTestRendererFragment {
 
     private val full = RendererFragmentData(
         baseName = "Test",
@@ -17,7 +18,11 @@ class FileGeneratorTestRendererFragment {
         fragmentBaseClass = ClassName("androidx.fragment.app", "Fragment"),
         factory = ClassName("com.test", "RendererFactory"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
-        navigationEnabled = true,
+        navigation = CommonData.Navigation(
+            fragmentNavEventNavigator,
+            ClassName("com.test", "TestRoute"),
+            null,
+        ),
         coroutinesEnabled = true,
         rxJavaEnabled = true,
     )
@@ -35,6 +40,7 @@ class FileGeneratorTestRendererFragment {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
+            import com.freeletics.mad.navigator.fragment.requireNavRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
@@ -68,7 +74,7 @@ class FileGeneratorTestRendererFragment {
                 public fun create(
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance arguments: Bundle,
+                  @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
@@ -79,14 +85,14 @@ class FileGeneratorTestRendererFragment {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              arguments: Bundle
+              testRoute: TestRoute
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
               private val scope: CoroutineScope = MainScope()
 
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, arguments,
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute,
                   disposable, scope)
 
               public override fun onCleared(): Unit {
@@ -107,7 +113,8 @@ class FileGeneratorTestRendererFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::testStateMachine.isInitialized) {
-                  inject()
+                  val testRoute = requireNavRoute<TestRoute>()
+                  inject(testRoute)
                 }
             
                 val renderer = rendererFactory.inflate(inflater, container)
@@ -115,11 +122,10 @@ class FileGeneratorTestRendererFragment {
                 return renderer.rootView
               }
 
-              private fun inject(): Unit {
+              private fun inject(testRoute: TestRoute): Unit {
                 val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
                     dependencies, handle -> 
-                  val arguments = arguments ?: Bundle.EMPTY
-                  TestViewModel(dependencies, handle, arguments)
+                  TestViewModel(dependencies, handle, testRoute)
                 }
                 val viewModel = viewModelProvider[TestViewModel::class.java]
                 val component = viewModel.component
@@ -137,7 +143,7 @@ class FileGeneratorTestRendererFragment {
 
     @Test
     fun `generates code for RendererFragmentData, no navigation`() {
-        val noNavigation = full.copy(navigationEnabled = false)
+        val noNavigation = full.copy(navigation = null)
 
         FileGenerator().generate(noNavigation).toString() shouldBe """
             package com.test
@@ -219,7 +225,8 @@ class FileGeneratorTestRendererFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::testStateMachine.isInitialized) {
-                  inject()
+                  val arguments = requireArguments()
+                  inject(arguments)
                 }
             
                 val renderer = rendererFactory.inflate(inflater, container)
@@ -227,10 +234,9 @@ class FileGeneratorTestRendererFragment {
                 return renderer.rootView
               }
 
-              private fun inject(): Unit {
+              private fun inject(arguments: Bundle): Unit {
                 val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
                     dependencies, handle -> 
-                  val arguments = arguments ?: Bundle.EMPTY
                   TestViewModel(dependencies, handle, arguments)
                 }
                 val viewModel = viewModelProvider[TestViewModel::class.java]
@@ -261,6 +267,7 @@ class FileGeneratorTestRendererFragment {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
+            import com.freeletics.mad.navigator.fragment.requireNavRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
@@ -294,7 +301,7 @@ class FileGeneratorTestRendererFragment {
                 public fun create(
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance arguments: Bundle,
+                  @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
@@ -305,14 +312,14 @@ class FileGeneratorTestRendererFragment {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              arguments: Bundle
+              testRoute: TestRoute
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
               private val scope: CoroutineScope = MainScope()
 
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, arguments,
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute,
                   disposable, scope)
 
               public override fun onCleared(): Unit {
@@ -333,7 +340,8 @@ class FileGeneratorTestRendererFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::testStateMachine.isInitialized) {
-                  inject()
+                  val testRoute = requireNavRoute<TestRoute>()
+                  inject(testRoute)
                 }
             
                 val renderer = rendererFactory.inflate(inflater, container)
@@ -341,11 +349,10 @@ class FileGeneratorTestRendererFragment {
                 return renderer.rootView
               }
 
-              private fun inject(): Unit {
+              private fun inject(testRoute: TestRoute): Unit {
                 val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
                     dependencies, handle -> 
-                  val arguments = arguments ?: Bundle.EMPTY
-                  TestViewModel(dependencies, handle, arguments)
+                  TestViewModel(dependencies, handle, testRoute)
                 }
                 val viewModel = viewModelProvider[TestViewModel::class.java]
                 val component = viewModel.component

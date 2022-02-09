@@ -8,6 +8,11 @@ public abstract class com/freeletics/mad/navigator/fragment/FragmentNavEventNavi
 public final class com/freeletics/mad/navigator/fragment/FragmentResultRequest : com/freeletics/mad/navigator/ResultOwner {
 }
 
+public final class com/freeletics/mad/navigator/fragment/FragmentRouteKt {
+	public static final fun requireNavRoot (Landroidx/fragment/app/Fragment;)Lcom/freeletics/mad/navigator/NavRoot;
+	public static final fun requireNavRoute (Landroidx/fragment/app/Fragment;)Lcom/freeletics/mad/navigator/NavRoute;
+}
+
 public final class com/freeletics/mad/navigator/fragment/HandleNavigationKt {
 	public static final fun handleNavigation (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/fragment/FragmentNavEventNavigator;)V
 }

@@ -8,5 +8,10 @@ public abstract interface annotation class com/freeletics/mad/whetstone/compose/
 }
 
 public abstract interface annotation class com/freeletics/mad/whetstone/compose/NavDestination : java/lang/annotation/Annotation {
+	public abstract fun route ()Ljava/lang/Class;
+}
+
+public abstract interface annotation class com/freeletics/mad/whetstone/compose/RootNavDestination : java/lang/annotation/Annotation {
+	public abstract fun route ()Ljava/lang/Class;
 }
 
