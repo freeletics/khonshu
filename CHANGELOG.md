@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha21 *(2022-02-09)*
+----------------------------
+
+- Whetstone: add `@NavDestination` annotation to enable navigator integration
+- Whetstone: generated code will now directly use a `NavRoute` instead of a `Bundle`
+- Navigator: removed `common`, `common-compose` and `common-fragment` artifacts
+- Navigator: Make `NavRoute` and `NavRoot` are not parcelable anymore but keep
+  the same behavior if an implementation of them is
+
+
 Version 0.3.0-alpha20 *(2022-02-08)*
 ----------------------------
 
