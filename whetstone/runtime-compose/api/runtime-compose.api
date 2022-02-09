@@ -7,11 +7,23 @@ public abstract interface annotation class com/freeletics/mad/whetstone/compose/
 	public abstract fun stateMachine ()Ljava/lang/Class;
 }
 
+public final class com/freeletics/mad/whetstone/compose/DestinationType : java/lang/Enum {
+	public static final field BOTTOM_SHEET Lcom/freeletics/mad/whetstone/compose/DestinationType;
+	public static final field DIALOG Lcom/freeletics/mad/whetstone/compose/DestinationType;
+	public static final field NONE Lcom/freeletics/mad/whetstone/compose/DestinationType;
+	public static final field SCREEN Lcom/freeletics/mad/whetstone/compose/DestinationType;
+	public static fun valueOf (Ljava/lang/String;)Lcom/freeletics/mad/whetstone/compose/DestinationType;
+	public static fun values ()[Lcom/freeletics/mad/whetstone/compose/DestinationType;
+}
+
 public abstract interface annotation class com/freeletics/mad/whetstone/compose/NavDestination : java/lang/annotation/Annotation {
+	public abstract fun destinationScope ()Ljava/lang/Class;
 	public abstract fun route ()Ljava/lang/Class;
+	public abstract fun type ()Lcom/freeletics/mad/whetstone/compose/DestinationType;
 }
 
 public abstract interface annotation class com/freeletics/mad/whetstone/compose/RootNavDestination : java/lang/annotation/Annotation {
+	public abstract fun destinationScope ()Ljava/lang/Class;
 	public abstract fun route ()Ljava/lang/Class;
 }
 
