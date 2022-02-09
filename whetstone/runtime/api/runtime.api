@@ -25,6 +25,9 @@ public final class com/freeletics/mad/whetstone/internal/CollectAsStateKt {
 public abstract interface annotation class com/freeletics/mad/whetstone/internal/InternalWhetstoneApi : java/lang/annotation/Annotation {
 }
 
+public abstract interface annotation class com/freeletics/mad/whetstone/internal/ObsoleteWhetstoneApi : java/lang/annotation/Annotation {
+}
+
 public final class com/freeletics/mad/whetstone/internal/ViewModelProviderKt {
 }
 

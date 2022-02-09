@@ -9,8 +9,17 @@ public abstract interface annotation class com/freeletics/mad/whetstone/fragment
 	public abstract fun stateMachine ()Ljava/lang/Class;
 }
 
+public final class com/freeletics/mad/whetstone/fragment/DestinationType : java/lang/Enum {
+	public static final field DIALOG Lcom/freeletics/mad/whetstone/fragment/DestinationType;
+	public static final field NONE Lcom/freeletics/mad/whetstone/fragment/DestinationType;
+	public static final field SCREEN Lcom/freeletics/mad/whetstone/fragment/DestinationType;
+	public static fun valueOf (Ljava/lang/String;)Lcom/freeletics/mad/whetstone/fragment/DestinationType;
+	public static fun values ()[Lcom/freeletics/mad/whetstone/fragment/DestinationType;
+}
+
 public abstract interface annotation class com/freeletics/mad/whetstone/fragment/NavDestination : java/lang/annotation/Annotation {
 	public abstract fun route ()Ljava/lang/Class;
+	public abstract fun type ()Lcom/freeletics/mad/whetstone/fragment/DestinationType;
 }
 
 public abstract interface annotation class com/freeletics/mad/whetstone/fragment/RendererFragment : java/lang/annotation/Annotation {
