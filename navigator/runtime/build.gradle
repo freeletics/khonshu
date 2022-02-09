@@ -47,7 +47,6 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
-    api project(":navigator:common")
     api "androidx.activity:activity:1.4.0"
     //TODO exclude internal classes from build health check
     api "androidx.navigation:navigation-runtime:2.4.0"

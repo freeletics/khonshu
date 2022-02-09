@@ -13,24 +13,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.freeletics.mad.navigator.ActivityResultRequest
-import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.internal.navigate
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
-import kotlinx.coroutines.flow.collect
 
 /**
- * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
+ * Sets up the [NavEventNavigator] inside the current composition so that it's events
+ * are handled while the composition is active.
  */
-public class NavEventNavigationHandler : NavigationHandler<NavEventNavigator> {
-
-    @Composable
-    override fun Navigation(navigator: NavEventNavigator) {
-        NavigationSetup(navigator)
-    }
-}
-
 @Composable
 public fun NavigationSetup(navigator: NavEventNavigator) {
     val controller = LocalNavController.current

@@ -13,6 +13,10 @@ public final class com/freeletics/mad/navigator/fragment/FragmentRouteKt {
 	public static final fun requireNavRoute (Landroidx/fragment/app/Fragment;)Lcom/freeletics/mad/navigator/NavRoute;
 }
 
+public final class com/freeletics/mad/navigator/fragment/HandleNavigationKt {
+	public static final fun handleNavigation (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/fragment/FragmentNavEventNavigator;)V
+}
+
 public abstract interface class com/freeletics/mad/navigator/fragment/NavDestination {
 }
 
@@ -30,16 +34,6 @@ public final class com/freeletics/mad/navigator/fragment/NavDestination$RootScre
 
 public final class com/freeletics/mad/navigator/fragment/NavDestination$Screen : com/freeletics/mad/navigator/fragment/NavDestination {
 	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/reflect/KClass;)V
-}
-
-public final class com/freeletics/mad/navigator/fragment/NavEventNavigationHandler : com/freeletics/mad/navigator/fragment/NavigationHandler {
-	public fun <init> ()V
-	public synthetic fun handle (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/Navigator;)V
-	public fun handle (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/fragment/FragmentNavEventNavigator;)V
-}
-
-public final class com/freeletics/mad/navigator/fragment/NavEventNavigationHandlerKt {
-	public static final fun handleNavigation (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/fragment/FragmentNavEventNavigator;)V
 }
 
 public final class com/freeletics/mad/navigator/fragment/NavHostFragmentKt {

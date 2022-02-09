@@ -1,4 +1,0 @@
-public abstract interface class com/freeletics/mad/navigator/compose/NavigationHandler {
-	public abstract fun Navigation (Lcom/freeletics/mad/navigator/Navigator;Landroidx/compose/runtime/Composer;I)V
-}
-
