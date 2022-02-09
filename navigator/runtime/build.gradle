@@ -47,7 +47,6 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
-    api project(":navigator:common")
     api "androidx.activity:activity:1.4.0"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
 

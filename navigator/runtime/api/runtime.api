@@ -2,7 +2,7 @@ public final class com/freeletics/mad/navigator/ActivityResultRequest : com/free
 	public final fun getContract ()Landroidx/activity/result/contract/ActivityResultContract;
 }
 
-public abstract class com/freeletics/mad/navigator/NavEventNavigator : com/freeletics/mad/navigator/Navigator {
+public abstract class com/freeletics/mad/navigator/NavEventNavigator {
 	public fun <init> ()V
 	public final fun backPresses ()Lkotlinx/coroutines/flow/Flow;
 	public final fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;

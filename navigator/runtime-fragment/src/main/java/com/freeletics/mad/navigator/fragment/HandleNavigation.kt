@@ -22,15 +22,9 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
- * A [NavigationHandler] that handles [NavEvent] emitted by a [NavEventNavigator].
+ * Handles the [FragmentNavEventNavigator] events while the Fragment's lifecycle is at least
+ * started.
  */
-public class NavEventNavigationHandler : NavigationHandler<FragmentNavEventNavigator> {
-
-    override fun handle(fragment: Fragment, navigator: FragmentNavEventNavigator) {
-        handleNavigation(fragment, navigator)
-    }
-}
-
 public fun handleNavigation(fragment: Fragment, navigator: FragmentNavEventNavigator) {
     val activityLaunchers = navigator.activityResultRequests.associateWith {
         it.registerIn(fragment)
