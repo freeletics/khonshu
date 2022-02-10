@@ -126,7 +126,7 @@ internal class ComposeFragmentGenerator(
             .addStatement("val component = viewModel.%L", viewModelComponentName)
             .addCode("\n")
             .addStatement("val navigator = component.%L", data.navigation!!.navigator.propertyName)
-            .addStatement("%N(this, navigator)", fragmentNavigationHandler)
+            .addStatement("%M(this, navigator)", fragmentNavigationHandler)
             .build()
     }
 }

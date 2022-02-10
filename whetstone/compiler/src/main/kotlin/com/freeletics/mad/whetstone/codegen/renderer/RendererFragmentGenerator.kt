@@ -89,7 +89,7 @@ internal class RendererFragmentGenerator(
         return CodeBlock.builder()
             .add("\n")
             .addStatement("val navigator = component.%L", navigator.propertyName)
-            .addStatement("%N(this, navigator)", fragmentNavigationHandler)
+            .addStatement("%M(this, navigator)", fragmentNavigationHandler)
             .build()
     }
 }
