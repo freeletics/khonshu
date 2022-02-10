@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha23 *(2022-02-10)*
+----------------------------
+
+- Whetstone: make it possible to use `@RootNavDestination` on classes for renderer fragments
+
+
 Version 0.3.0-alpha22 *(2022-02-10)*
 ----------------------------
 
