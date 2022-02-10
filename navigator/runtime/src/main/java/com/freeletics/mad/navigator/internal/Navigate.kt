@@ -76,13 +76,15 @@ public fun <T : NavRoute> Bundle.toNavRoute(): T = getParcelable(EXTRA_ROUTE)!!
 @InternalNavigatorApi
 public fun <T : NavRoot> Bundle.toNavRoot(): T = getParcelable(EXTRA_ROUTE)!!
 
-private fun NavRoute.getArguments(): Bundle = Bundle().also {
+@InternalNavigatorApi
+public fun NavRoute.getArguments(): Bundle = Bundle().also {
     if (this is Parcelable) {
         it.putParcelable(EXTRA_ROUTE, this)
     }
 }
 
-private fun NavRoot.getArguments(): Bundle = Bundle().also {
+@InternalNavigatorApi
+public fun NavRoot.getArguments(): Bundle = Bundle().also {
     if (this is Parcelable) {
         it.putParcelable(EXTRA_ROUTE, this)
     }
