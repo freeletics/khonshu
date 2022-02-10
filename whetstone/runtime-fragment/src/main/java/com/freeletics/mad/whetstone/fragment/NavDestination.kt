@@ -36,9 +36,9 @@ public enum class DestinationType {
 /**
  * Like [NavDestination] but for a screen represented by a [NavRoot].
  */
-@Target(AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class RootNavDestination(
-    val route: KClass<out NavRoot>,
+    val root: KClass<out NavRoot>,
     val destinationScope: KClass<*>,
 )

@@ -39,6 +39,6 @@ public enum class DestinationType {
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class RootNavDestination(
-    val route: KClass<out NavRoot>,
+    val root: KClass<out NavRoot>,
     val destinationScope: KClass<*>,
 )

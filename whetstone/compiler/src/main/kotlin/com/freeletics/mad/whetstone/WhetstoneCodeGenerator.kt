@@ -142,7 +142,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             return CommonData.Navigation(
                 navigator = fragmentNavEventNavigator,
                 navRoute = null,
-                navRoot = rootNavigation.requireClassArgument("route", 0, module),
+                navRoot = rootNavigation.requireClassArgument("root", 0, module),
             )
         }
         return null
@@ -192,7 +192,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             return CommonData.Navigation(
                 navEventNavigator,
                 navRoute = null,
-                navRoot = rootNavigation.requireClassArgument("route", 0, module),
+                navRoot = rootNavigation.requireClassArgument("root", 0, module),
             )
         }
         return null
