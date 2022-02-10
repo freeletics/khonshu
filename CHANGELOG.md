@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha22 *(2022-02-10)*
+----------------------------
+
+- Whetstone: fix missing import in Fragment codegen
+
+
 Version 0.3.0-alpha21 *(2022-02-09)*
 ----------------------------
 
