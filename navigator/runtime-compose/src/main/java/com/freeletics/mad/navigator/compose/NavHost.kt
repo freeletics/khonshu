@@ -1,7 +1,6 @@
 package com.freeletics.mad.navigator.compose
 
 import android.app.Activity as AndroidActivity
-import androidx.annotation.IdRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.ActivityNavigator
@@ -18,7 +17,6 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavArgument
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.DialogNavigator
 import androidx.navigation.compose.rememberNavController
@@ -32,12 +30,14 @@ import com.freeletics.mad.navigator.compose.NavDestination.Dialog
 import com.freeletics.mad.navigator.compose.NavDestination.RootScreen
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
 import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
+import com.freeletics.mad.navigator.internal.getArguments
 import com.freeletics.mad.navigator.internal.toNavRoot
 import com.freeletics.mad.navigator.internal.toNavRoute
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
+import kotlin.reflect.KClass
 
 /**
  * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
@@ -50,12 +50,10 @@ public fun NavHost(
     startRoot: NavRoot,
     destinations: Set<NavDestination>,
 ) {
-    val bottomSheetNavigator = rememberBottomSheetNavigator()
-    val navController = rememberNavController(bottomSheetNavigator)
+    val startDestinationClass = startRoot::class
     val startDestinationId = startRoot.destinationId
-    ModalBottomSheetLayout(bottomSheetNavigator) {
-        NavHost(navController, startDestinationId, destinations)
-    }
+    val startDestinationArgs = startRoot.getArguments()
+    NavHost(startDestinationClass, startDestinationId, startDestinationArgs, destinations)
 }
 
 /**
@@ -69,33 +67,38 @@ public fun NavHost(
     startRoute: NavRoute,
     destinations: Set<NavDestination>,
 ) {
-    val bottomSheetNavigator = rememberBottomSheetNavigator()
-    val navController = rememberNavController(bottomSheetNavigator)
+    val startDestinationClass = startRoute::class
     val startDestinationId = startRoute.destinationId
-    ModalBottomSheetLayout(bottomSheetNavigator) {
-        NavHost(navController, startDestinationId, destinations)
-    }
+    val startDestinationArgs = startRoute.getArguments()
+    NavHost(startDestinationClass, startDestinationId, startDestinationArgs, destinations)
 }
 
+@ExperimentalMaterialNavigationApi
 @Composable
 private fun NavHost(
-    navController: NavHostController,
-    @IdRes startDestinationId: Int,
+    startDestinationClass: KClass<*>,
+    startDestinationId: Int,
+    startDestinationArgs: Bundle,
     destinations: Set<NavDestination>,
 ) {
-    val graph = remember(navController, startDestinationId, destinations) {
+    val bottomSheetNavigator = rememberBottomSheetNavigator()
+    val navController = rememberNavController(bottomSheetNavigator)
+
+    val graph = remember(navController, startDestinationClass, startDestinationId, startDestinationArgs, destinations) {
         @Suppress("deprecation")
         navController.createGraph(startDestination = startDestinationId) {
             destinations.forEach { destination ->
-                addDestination(navController, destination)
+                addDestination(navController, destination, startDestinationClass, startDestinationArgs)
             }
         }
     }
 
     LegacyFindNavControllerSupport(navController)
 
-    CompositionLocalProvider(LocalNavController provides navController) {
-        AndroidXNavHost(navController, graph)
+    ModalBottomSheetLayout(bottomSheetNavigator) {
+        CompositionLocalProvider(LocalNavController provides navController) {
+            AndroidXNavHost(navController, graph)
+        }
     }
 }
 
@@ -105,10 +108,12 @@ private fun NavHost(
 private fun NavGraphBuilder.addDestination(
     controller: NavController,
     destination: NavDestination,
+    startDestinationClass: KClass<*>,
+    startDestinationArgs: Bundle,
 ) {
     val newDestination = when (destination) {
-        is Screen<*> -> destination.toDestination(controller)
-        is RootScreen<*> -> destination.toDestination(controller)
+        is Screen<*> -> destination.toDestination(controller, startDestinationClass, startDestinationArgs)
+        is RootScreen<*> -> destination.toDestination(controller, startDestinationClass, startDestinationArgs)
         is Dialog<*> -> destination.toDestination(controller)
         is BottomSheet<*> -> destination.toDestination(controller)
         is Activity -> destination.toDestination(controller)
@@ -118,21 +123,31 @@ private fun NavGraphBuilder.addDestination(
 
 private fun <T : NavRoute> Screen<T>.toDestination(
     controller: NavController,
+    startDestinationClass: KClass<*>,
+    startDestinationArgs: Bundle,
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
     return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!.toNavRoute()) }.also {
         it.id = destinationId
         it.addDefaultArguments(defaultArguments)
+        if (startDestinationClass == route) {
+            it.addDefaultArguments(startDestinationArgs)
+        }
     }
 }
 
 private fun <T : NavRoot> RootScreen<T>.toDestination(
     controller: NavController,
+    startDestinationClass: KClass<*>,
+    startDestinationArgs: Bundle,
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
     return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!.toNavRoot()) }.also {
         it.id = destinationId
         it.addDefaultArguments(defaultArguments)
+        if (startDestinationClass == route) {
+            it.addDefaultArguments(startDestinationArgs)
+        }
     }
 }
 
