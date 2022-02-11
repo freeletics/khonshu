@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha24 *(2022-02-11)*
+----------------------------
+
+- Navigator: set arguments for the start destination to avoid a crash
+- Whetstone: fix codegen for `@RootNavDestination`
+
+
 Version 0.3.0-alpha23 *(2022-02-10)*
 ----------------------------
 
