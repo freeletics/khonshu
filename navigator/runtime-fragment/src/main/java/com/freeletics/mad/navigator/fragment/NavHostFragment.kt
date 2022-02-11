@@ -1,6 +1,7 @@
 package com.freeletics.mad.navigator.fragment
 
 import androidx.navigation.NavDestination as AndroidXNavDestination
+import android.os.Bundle
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -24,7 +25,8 @@ public fun NavHostFragment.setGraph(
     destinationCreator: (NavDestination) -> AndroidXNavDestination? = { null },
 ) {
     val startDestinationId = startRoot.destinationId
-    navController.setGraph(startDestinationId, destinations, destinationCreator)
+    val startDestinationArgs = startRoot.getArguments()
+    navController.setGraph(startDestinationId, startDestinationArgs, destinations, destinationCreator)
 }
 
 /**
@@ -39,12 +41,14 @@ public fun NavHostFragment.setGraph(
     destinationCreator: (NavDestination) -> AndroidXNavDestination? = { null },
 ) {
     val startDestinationId = startRoute.destinationId
-    navController.setGraph(startDestinationId, destinations, destinationCreator)
+    val startDestinationArgs = startRoute.getArguments()
+    navController.setGraph(startDestinationId, startDestinationArgs, destinations, destinationCreator)
 }
 
 
 private fun NavController.setGraph(
     startDestinationId: Int,
+    startDestinationArgs: Bundle,
     destinations: Set<NavDestination>,
     destinationCreator: (NavDestination) -> AndroidXNavDestination?,
 ) {
@@ -54,7 +58,7 @@ private fun NavController.setGraph(
             addDestination(this@setGraph, destination, destinationCreator)
         }
     }
-    setGraph(graph, null)
+    setGraph(graph, startDestinationArgs)
 }
 
 private fun NavGraphBuilder.addDestination(
