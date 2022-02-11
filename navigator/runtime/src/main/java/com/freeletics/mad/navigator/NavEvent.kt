@@ -2,6 +2,7 @@ package com.freeletics.mad.navigator
 
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
+import kotlin.reflect.KClass
 
 /**
  * Represents a navigation event that is being sent by a [NavEventNavigator] and handled by
@@ -23,13 +24,24 @@ public sealed interface NavEvent {
     ) : NavEvent
 
     /**
-     * Navigates back to the given [popUpToDestinationId]. If [inclusive] is `true` the destination
+     * Navigates back to the given [popUpTo]. If [inclusive] is `true` the destination
      * itself will also be popped of the back stack. Then navigates to the given [route].
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class NavigateBackAndThenToEvent(
+    public data class NavigateToOnTopOfEvent(
         internal val route: NavRoute,
-        internal val popUpToDestinationId: Int,
+        internal val popUpTo: KClass<out NavRoute>,
+        internal val inclusive: Boolean,
+    ) : NavEvent
+
+    /**
+     * Navigates back to the given [popUpTo]. If [inclusive] is `true` the destination
+     * itself will also be popped of the back stack. Then navigates to the given [route].
+     */
+    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
+    public data class NavigateToOnTopOfRootEvent(
+        internal val route: NavRoute,
+        internal val popUpTo: KClass<out NavRoot>,
         internal val inclusive: Boolean,
     ) : NavEvent
 
@@ -56,12 +68,22 @@ public sealed interface NavEvent {
     public object BackEvent : NavEvent
 
     /**
-     * Navigates back to the given [destinationId]. If [inclusive] is `true` the destination itself
+     * Navigates back to the given [popUpTo]. If [inclusive] is `true` the destination itself
      * will also be popped of the back stack.
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
     public data class BackToEvent(
-        internal val destinationId: Int,
+        internal val popUpTo: KClass<out NavRoute>,
+        internal val inclusive: Boolean,
+    ) : NavEvent
+
+    /**
+     * Navigates back to the given [popUpTo]. If [inclusive] is `true` the destination itself
+     * will also be popped of the back stack.
+     */
+    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
+    public data class BackToRootEvent(
+        internal val popUpTo: KClass<out NavRoot>,
         internal val inclusive: Boolean,
     ) : NavEvent
 

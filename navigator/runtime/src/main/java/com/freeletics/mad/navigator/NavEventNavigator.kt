@@ -2,18 +2,20 @@ package com.freeletics.mad.navigator
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.annotation.IdRes
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
 import com.freeletics.mad.navigator.NavEvent.BackEvent
 import com.freeletics.mad.navigator.NavEvent.BackToEvent
-import com.freeletics.mad.navigator.NavEvent.NavigateBackAndThenToEvent
+import com.freeletics.mad.navigator.NavEvent.BackToRootEvent
+import com.freeletics.mad.navigator.NavEvent.NavigateToOnTopOfEvent
+import com.freeletics.mad.navigator.NavEvent.NavigateToOnTopOfRootEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
 import com.freeletics.mad.navigator.NavEvent.PermissionsResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
 import com.freeletics.mad.navigator.internal.DelegatingOnBackPressedCallback
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
+import kotlin.reflect.KClass
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
@@ -100,15 +102,50 @@ public abstract class NavEventNavigator {
     }
 
     /**
-     * Triggers a new [NavEvent] that pops the back stack to [popUpTo]. If [inclusive] is `true`
-     * [popUpTo] destination itself will also be popped. Afterwards it will navigate to [route].
+     * Triggers a new [NavEvent] that pops the back stack to [T]. If [inclusive] is `true` the
+     * [T] destination itself will also be popped. Afterwards it will navigate to [route].
      */
-    public fun navigateTo(
+    public inline fun <reified T : NavRoute> navigateToOnTopOf(
         route: NavRoute,
-        @IdRes popUpTo: Int,
         inclusive: Boolean = false
     ) {
-        val event = NavigateBackAndThenToEvent(route, popUpTo, inclusive)
+        navigateToOnTopOf(route, T::class, inclusive)
+    }
+
+    /**
+     * Triggers a new [NavEvent] that pops the back stack to [popUpTo]. If [inclusive] is `true`
+     * the [popUpTo] destination itself will also be popped. Afterwards it will navigate to [route].
+     */
+    public fun navigateToOnTopOf(
+        route: NavRoute,
+        popUpTo: KClass<out NavRoute>,
+        inclusive: Boolean = false
+    ) {
+        val event = NavigateToOnTopOfEvent(route, popUpTo, inclusive)
+        sendNavEvent(event)
+    }
+
+    /**
+     * Triggers a new [NavEvent] that pops the back stack to [T]. If [inclusive] is `true` the
+     * [T] destination itself will also be popped. Afterwards it will navigate to [route].
+     */
+    public inline fun <reified T : NavRoot> navigateToOnTopOfRoot(
+        route: NavRoute,
+        inclusive: Boolean = false
+    ) {
+        navigateToOnTopOfRoot(route, T::class, inclusive)
+    }
+
+    /**
+     * Triggers a new [NavEvent] that pops the back stack to [popUpTo]. If [inclusive] is `true`
+     * the [popUpTo] destination itself will also be popped. Afterwards it will navigate to [route].
+     */
+    public fun navigateToOnTopOfRoot(
+        route: NavRoute,
+        popUpTo: KClass<out NavRoot>,
+        inclusive: Boolean = false
+    ) {
+        val event = NavigateToOnTopOfRootEvent(route, popUpTo, inclusive)
         sendNavEvent(event)
     }
 
@@ -142,11 +179,36 @@ public abstract class NavEventNavigator {
     }
 
     /**
-     * Triggers a new [NavEvent] that pops the back stack to [destinationId]. If [inclusive] is
-     * `true` [destinationId] itself will also be popped.
+     * Triggers a new [NavEvent] that pops the back stack to [T]. If [inclusive] is
+     * `true` [T] itself will also be popped.
      */
-    public fun navigateBack(@IdRes destinationId: Int, inclusive: Boolean = false) {
-        val event = BackToEvent(destinationId, inclusive)
+    public inline fun <reified T: NavRoute> navigateBackTo(inclusive: Boolean = false) {
+        navigateBackTo(T::class, inclusive)
+    }
+
+    /**
+     * Triggers a new [NavEvent] that pops the back stack to [popUpTo]. If [inclusive] is
+     * `true` [popUpTo] itself will also be popped.
+     */
+    public fun navigateBackTo(popUpTo: KClass<out NavRoute>, inclusive: Boolean = false) {
+        val event = BackToEvent(popUpTo, inclusive)
+        sendNavEvent(event)
+    }
+
+    /**
+     * Triggers a new [NavEvent] that pops the back stack to [T]. If [inclusive] is
+     * `true` [T] itself will also be popped.
+     */
+    public inline fun <reified T: NavRoot> navigateBackToRoot(inclusive: Boolean = false) {
+        navigateBackToRoot(T::class, inclusive)
+    }
+
+    /**
+     * Triggers a new [NavEvent] that pops the back stack to [popUpTo]. If [inclusive] is
+     * `true` [popUpTo] itself will also be popped.
+     */
+    public fun navigateBackToRoot(popUpTo: KClass<out NavRoot>, inclusive: Boolean = false) {
+        val event = BackToRootEvent(popUpTo, inclusive)
         sendNavEvent(event)
     }
 

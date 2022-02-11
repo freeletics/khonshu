@@ -33,6 +33,8 @@ import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import com.freeletics.mad.navigator.internal.getArguments
 import com.freeletics.mad.navigator.internal.toNavRoot
 import com.freeletics.mad.navigator.internal.toNavRoute
+import com.freeletics.mad.navigator.internal.destinationId
+import com.freeletics.mad.navigator.internal.rootDestinationId
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
@@ -51,7 +53,7 @@ public fun NavHost(
     destinations: Set<NavDestination>,
 ) {
     val startDestinationClass = startRoot::class
-    val startDestinationId = startRoot.destinationId
+    val startDestinationId = startRoot.destinationId()
     val startDestinationArgs = startRoot.getArguments()
     NavHost(startDestinationClass, startDestinationId, startDestinationArgs, destinations)
 }
@@ -68,7 +70,7 @@ public fun NavHost(
     destinations: Set<NavDestination>,
 ) {
     val startDestinationClass = startRoute::class
-    val startDestinationId = startRoute.destinationId
+    val startDestinationId = startRoute.destinationId()
     val startDestinationArgs = startRoute.getArguments()
     NavHost(startDestinationClass, startDestinationId, startDestinationArgs, destinations)
 }
@@ -128,7 +130,7 @@ private fun <T : NavRoute> Screen<T>.toDestination(
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
     return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!.toNavRoute()) }.also {
-        it.id = destinationId
+        it.id = route.destinationId()
         it.addDefaultArguments(defaultArguments)
         if (startDestinationClass == route) {
             it.addDefaultArguments(startDestinationArgs)
@@ -143,7 +145,7 @@ private fun <T : NavRoot> RootScreen<T>.toDestination(
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
     return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!.toNavRoot()) }.also {
-        it.id = destinationId
+        it.id = root.rootDestinationId()
         it.addDefaultArguments(defaultArguments)
         if (startDestinationClass == root) {
             it.addDefaultArguments(startDestinationArgs)
@@ -156,7 +158,7 @@ private fun <T : NavRoute> Dialog<T>.toDestination(
 ): DialogNavigator.Destination {
     val navigator = controller.navigatorProvider[DialogNavigator::class]
     return DialogNavigator.Destination(navigator) { dialogContent(it.arguments!!.toNavRoute()) }.also {
-        it.id = destinationId
+        it.id = route.destinationId()
         it.addDefaultArguments(defaultArguments)
     }
 }
@@ -169,7 +171,7 @@ private fun <T : NavRoute> BottomSheet<T>.toDestination(
 ): BottomSheetNavigator.Destination {
     val navigator = controller.navigatorProvider[BottomSheetNavigator::class]
     return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(it.arguments!!.toNavRoute()) }.also {
-        it.id = destinationId
+        it.id = route.destinationId()
         it.addDefaultArguments(defaultArguments)
     }
 }
@@ -179,7 +181,7 @@ private fun Activity.toDestination(
 ): ActivityNavigator.Destination {
     val navigator = controller.navigatorProvider[ActivityNavigator::class]
     return ActivityNavigator.Destination(navigator).also {
-        it.id = destinationId
+        it.id = route.destinationId()
         it.setIntent(intent)
     }
 }

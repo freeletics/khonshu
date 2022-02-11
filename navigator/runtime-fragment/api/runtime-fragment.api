@@ -21,19 +21,19 @@ public abstract interface class com/freeletics/mad/navigator/fragment/NavDestina
 }
 
 public final class com/freeletics/mad/navigator/fragment/NavDestination$Activity : com/freeletics/mad/navigator/fragment/NavDestination {
-	public fun <init> (Lkotlin/reflect/KClass;ILandroid/content/Intent;)V
+	public fun <init> (Lkotlin/reflect/KClass;Landroid/content/Intent;)V
 }
 
 public final class com/freeletics/mad/navigator/fragment/NavDestination$Dialog : com/freeletics/mad/navigator/fragment/NavDestination {
-	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/reflect/KClass;)V
+	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)V
 }
 
 public final class com/freeletics/mad/navigator/fragment/NavDestination$RootScreen : com/freeletics/mad/navigator/fragment/NavDestination {
-	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/reflect/KClass;)V
+	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)V
 }
 
 public final class com/freeletics/mad/navigator/fragment/NavDestination$Screen : com/freeletics/mad/navigator/fragment/NavDestination {
-	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/reflect/KClass;)V
+	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)V
 }
 
 public final class com/freeletics/mad/navigator/fragment/NavHostFragmentKt {
