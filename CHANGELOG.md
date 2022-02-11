@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha25 *(2022-02-11)*
+----------------------------
+
+- Whetstone: fix codegen for `@RootNavDestination`
+
+
 Version 0.3.0-alpha24 *(2022-02-11)*
 ----------------------------
 
