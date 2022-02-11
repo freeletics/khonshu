@@ -80,21 +80,21 @@ public sealed interface NavDestination {
     }
 
     /**
-     * Represents a full screen. The [route] will be used as a unique identifier together
+     * Represents a full screen. The [root] will be used as a unique identifier together
      * with [destinationId]. The given [fragmentClass] will be shown when the screen is being
-     * navigated to using an instance of [route].
+     * navigated to using an instance of [root].
      */
     public class RootScreen @ObsoleteNavigatorApi constructor(
-        internal val route: KClass<out NavRoot>,
+        internal val root: KClass<out NavRoot>,
         internal val destinationId: Int,
         internal val fragmentClass: KClass<out Fragment>,
         internal val defaultArguments: Bundle?,
     ) : NavDestination {
         public constructor(
-            route: KClass<out NavRoot>,
+            root: KClass<out NavRoot>,
             destinationId: Int,
             fragmentClass: KClass<out Fragment>,
-        ) : this(route, destinationId, fragmentClass, null)
+        ) : this(root, destinationId, fragmentClass, null)
     }
 
     /**

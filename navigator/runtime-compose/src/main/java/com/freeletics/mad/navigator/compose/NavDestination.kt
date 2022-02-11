@@ -2,7 +2,6 @@ package com.freeletics.mad.navigator.compose
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.IdRes
 import androidx.compose.runtime.Composable
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
@@ -94,21 +93,21 @@ public sealed interface NavDestination {
     }
 
     /**
-     * Represents a full screen. The [route] will be used as a unique identifier together
+     * Represents a full screen. The [root] will be used as a unique identifier together
      * with [destinationId]. The given [screenContent] will be shown when the screen is being
-     * navigated to using an instance of [route].
+     * navigated to using an instance of [root].
      */
     public class RootScreen<T : NavRoot> @ObsoleteNavigatorApi constructor(
-        internal val route: KClass<out NavRoot>,
+        internal val root: KClass<out NavRoot>,
         internal val destinationId: Int,
         internal val defaultArguments: Bundle?,
         internal val screenContent: @Composable (T) -> Unit,
     ) : NavDestination {
         public constructor(
-            route: KClass<out NavRoot>,
+            root: KClass<out NavRoot>,
             destinationId: Int,
             screenContent: @Composable (T) -> Unit,
-        ) : this(route, destinationId, null, screenContent)
+        ) : this(root, destinationId, null, screenContent)
     }
 
     /**

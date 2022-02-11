@@ -145,7 +145,7 @@ private fun <T : NavRoot> RootScreen<T>.toDestination(
     return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!.toNavRoot()) }.also {
         it.id = destinationId
         it.addDefaultArguments(defaultArguments)
-        if (startDestinationClass == route) {
+        if (startDestinationClass == root) {
             it.addDefaultArguments(startDestinationArgs)
         }
     }
