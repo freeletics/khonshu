@@ -3,7 +3,6 @@ package com.freeletics.mad.navigator
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
-import com.freeletics.mad.navigator.NavEvent.NavigateToOnTopOfEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToRootEvent
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
