@@ -3,6 +3,8 @@ package com.freeletics.mad.navigator
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
+import com.freeletics.mad.navigator.NavEvent.NavigateToOnTopOfEvent
+import com.freeletics.mad.navigator.NavEvent.NavigateToRootEvent
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -12,8 +14,9 @@ import org.junit.Test
 public class NavEventNavigatorTest {
 
     private class TestNavigator : NavEventNavigator()
-    private data class SimpleRoute(override val destinationId: Int) : NavRoute
-    private data class SimpleNavRoot(override val destinationId: Int) : NavRoot
+    private data class SimpleRoute(val number: Int) : NavRoute
+    private data class OtherRoute(val number: Int) : NavRoute
+    private data class SimpleRoot(val number: Int) : NavRoot
 
     @Test
     public fun `navigateTo event is received`(): Unit = runBlocking {
@@ -34,12 +37,25 @@ public class NavEventNavigatorTest {
 
         navigator.navEvents.test {
             navigator.navigateTo(SimpleRoute(1))
-            navigator.navigateTo(SimpleRoute(1))
+            navigator.navigateTo(OtherRoute(1))
             navigator.navigateTo(SimpleRoute(2))
 
             assertThat(awaitItem()).isEqualTo(NavigateToEvent(SimpleRoute(1)))
-            assertThat(awaitItem()).isEqualTo(NavigateToEvent(SimpleRoute(1)))
+            assertThat(awaitItem()).isEqualTo(NavigateToEvent(OtherRoute(1)))
             assertThat(awaitItem()).isEqualTo(NavigateToEvent(SimpleRoute(2)))
+
+            cancel()
+        }
+    }
+
+    @Test
+    public fun `navigateToOnTopOf event is received`(): Unit = runBlocking {
+        val navigator = TestNavigator()
+
+        navigator.navEvents.test {
+            navigator.navigateToOnTopOf<SimpleRoute>(OtherRoute(1), true)
+
+            assertThat(awaitItem()).isEqualTo(NavigateToOnTopOfEvent(OtherRoute(1), SimpleRoute::class, true))
 
             cancel()
         }
@@ -50,9 +66,9 @@ public class NavEventNavigatorTest {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
-            navigator.navigateToRoot(SimpleNavRoot(1), true)
+            navigator.navigateToRoot(SimpleRoot(1), true)
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.NavigateToRootEvent(SimpleNavRoot(1), true))
+            assertThat(awaitItem()).isEqualTo(NavigateToRootEvent(SimpleRoot(1), true))
 
             cancel()
         }
@@ -85,13 +101,13 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `navigateBack with popUpTo event is received`(): Unit = runBlocking {
+    public fun `navigateBackTo event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
-            navigator.navigateBack(5, true)
+            navigator.navigateBackTo<SimpleRoute>(true)
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.BackToEvent(5, true))
+            assertThat(awaitItem()).isEqualTo(NavEvent.BackToEvent(SimpleRoute::class, true))
 
             cancel()
         }

@@ -2,12 +2,7 @@ package com.freeletics.mad.navigator
 
 import android.os.Parcelable
 
-public sealed interface BaseRoute {
-    /**
-     * The destination this route leads to.
-     */
-    public val destinationId: Int
-}
+public sealed interface BaseRoute
 
 /**
  * Represents the route to a destination.

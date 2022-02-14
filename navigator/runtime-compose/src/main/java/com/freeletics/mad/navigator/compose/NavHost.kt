@@ -29,12 +29,14 @@ import com.freeletics.mad.navigator.compose.NavDestination.BottomSheet
 import com.freeletics.mad.navigator.compose.NavDestination.Dialog
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
 import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
+import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.navigator.internal.getArguments
 import com.freeletics.mad.navigator.internal.toRoute
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
+import kotlin.reflect.KClass
 
 /**
  * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
@@ -47,13 +49,12 @@ public fun NavHost(
     startRoute: BaseRoute,
     destinations: Set<NavDestination>,
 ) {
-
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
 
     val graph = remember(navController, startRoute, destinations) {
         @Suppress("deprecation")
-        navController.createGraph(startDestination = startRoute.destinationId) {
+        navController.createGraph(startDestination = startRoute.destinationId()) {
             destinations.forEach { destination ->
                 addDestination(navController, destination, startRoute)
             }
@@ -92,7 +93,7 @@ private fun <T : BaseRoute> Screen<T>.toDestination(
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
     return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!.toRoute()) }.also {
-        it.id = destinationId
+        it.id = route.destinationId()
         it.addDefaultArguments(defaultArguments)
         if (startRoute::class == route) {
             it.addDefaultArguments(startRoute.getArguments())
@@ -105,7 +106,7 @@ private fun <T : NavRoute> Dialog<T>.toDestination(
 ): DialogNavigator.Destination {
     val navigator = controller.navigatorProvider[DialogNavigator::class]
     return DialogNavigator.Destination(navigator) { dialogContent(it.arguments!!.toRoute()) }.also {
-        it.id = destinationId
+        it.id = route.destinationId()
         it.addDefaultArguments(defaultArguments)
     }
 }
@@ -118,7 +119,7 @@ private fun <T : NavRoute> BottomSheet<T>.toDestination(
 ): BottomSheetNavigator.Destination {
     val navigator = controller.navigatorProvider[BottomSheetNavigator::class]
     return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(it.arguments!!.toRoute()) }.also {
-        it.id = destinationId
+        it.id = route.destinationId()
         it.addDefaultArguments(defaultArguments)
     }
 }
@@ -128,7 +129,7 @@ private fun Activity.toDestination(
 ): ActivityNavigator.Destination {
     val navigator = controller.navigatorProvider[ActivityNavigator::class]
     return ActivityNavigator.Destination(navigator).also {
-        it.id = destinationId
+        it.id = route.destinationId()
         it.setIntent(intent)
     }
 }

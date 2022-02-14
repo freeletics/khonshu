@@ -3,22 +3,22 @@ public abstract interface class com/freeletics/mad/navigator/compose/NavDestinat
 
 public final class com/freeletics/mad/navigator/compose/NavDestination$Activity : com/freeletics/mad/navigator/compose/NavDestination {
 	public static final field $stable I
-	public fun <init> (Lkotlin/reflect/KClass;ILandroid/content/Intent;)V
+	public fun <init> (Lkotlin/reflect/KClass;Landroid/content/Intent;)V
 }
 
 public final class com/freeletics/mad/navigator/compose/NavDestination$BottomSheet : com/freeletics/mad/navigator/compose/NavDestination {
 	public static final field $stable I
-	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/jvm/functions/Function3;)V
+	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;)V
 }
 
 public final class com/freeletics/mad/navigator/compose/NavDestination$Dialog : com/freeletics/mad/navigator/compose/NavDestination {
 	public static final field $stable I
-	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/jvm/functions/Function3;)V
+	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;)V
 }
 
 public final class com/freeletics/mad/navigator/compose/NavDestination$Screen : com/freeletics/mad/navigator/compose/NavDestination {
 	public static final field $stable I
-	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/jvm/functions/Function3;)V
+	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;)V
 }
 
 public final class com/freeletics/mad/navigator/compose/NavHostKt {

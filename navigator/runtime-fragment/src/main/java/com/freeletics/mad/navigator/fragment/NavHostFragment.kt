@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.get
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.internal.getArguments
+import com.freeletics.mad.navigator.internal.destinationId
 
 /**
  * Creates and sets a [androidx.navigation.NavGraph] containing all given [destinations].
@@ -23,7 +24,7 @@ public fun NavHostFragment.setGraph(
     destinations: Set<NavDestination>,
 ) {
     @Suppress("deprecation")
-    val graph = navController.createGraph(startDestination = startRoute.destinationId) {
+    val graph = navController.createGraph(startDestination = startRoute.destinationId()) {
         destinations.forEach { destination ->
             addDestination(navController, destination)
         }
@@ -37,41 +38,41 @@ private fun NavGraphBuilder.addDestination(
     destination: NavDestination,
 ) {
     val newDestination = when (destination) {
-        is NavDestination.Screen -> destination.toDestination(controller)
-        is NavDestination.Dialog -> destination.toDestination(controller)
-        is NavDestination.Activity -> destination.toDestination(controller)
+        is NavDestination.Screen<*> -> destination.toDestination(controller)
+        is NavDestination.Dialog<*> -> destination.toDestination(controller)
+        is NavDestination.Activity<*> -> destination.toDestination(controller)
     }
     addDestination(newDestination)
 }
 
-private fun NavDestination.Screen.toDestination(
+private fun NavDestination.Screen<*>.toDestination(
     controller: NavController,
 ): FragmentNavigator.Destination {
     val navigator = controller.navigatorProvider[FragmentNavigator::class]
     return FragmentNavigator.Destination(navigator).also {
-        it.id = destinationId
+        it.id = route.destinationId()
         it.setClassName(fragmentClass.java.name)
         it.addDefaultArguments(defaultArguments)
     }
 }
 
-private fun NavDestination.Dialog.toDestination(
+private fun NavDestination.Dialog<*>.toDestination(
     controller: NavController,
 ): DialogFragmentNavigator.Destination {
     val navigator = controller.navigatorProvider[DialogFragmentNavigator::class]
     return DialogFragmentNavigator.Destination(navigator).also {
-        it.id = destinationId
+        it.id = route.destinationId()
         it.setClassName(fragmentClass.java.name)
         it.addDefaultArguments(defaultArguments)
     }
 }
 
-private fun NavDestination.Activity.toDestination(
+private fun NavDestination.Activity<*>.toDestination(
     controller: NavController,
 ): ActivityNavigator.Destination {
     val navigator = controller.navigatorProvider[ActivityNavigator::class]
     return ActivityNavigator.Destination(navigator).also {
-        it.id = destinationId
+        it.id = route.destinationId()
         it.setIntent(intent)
     }
 }

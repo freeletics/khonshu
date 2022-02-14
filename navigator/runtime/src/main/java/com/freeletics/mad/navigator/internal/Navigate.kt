@@ -9,6 +9,7 @@ import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.PermissionsResultRequest
+import kotlin.reflect.KClass
 
 @InternalNavigatorApi
 public fun navigate(
@@ -19,13 +20,13 @@ public fun navigate(
 ) {
     when (event) {
         is NavEvent.NavigateToEvent -> {
-            controller.navigate(event.route.destinationId, event.route.getArguments())
+            controller.navigate(event.route.destinationId(), event.route.getArguments())
         }
-        is NavEvent.NavigateBackAndThenToEvent -> {
+        is NavEvent.NavigateToOnTopOfEvent -> {
             val options = NavOptions.Builder()
-                .setPopUpTo(event.popUpToDestinationId, inclusive = event.inclusive)
+                .setPopUpTo(event.popUpTo.destinationId(), inclusive = event.inclusive)
                 .build()
-            controller.navigate(event.route.destinationId, event.route.getArguments(), options)
+            controller.navigate(event.route.destinationId(), event.route.getArguments(), options)
         }
         is NavEvent.NavigateToRootEvent -> {
             val options = NavOptions.Builder()
@@ -37,7 +38,7 @@ public fun navigate(
                 // everything above it gets removed
                 .setLaunchSingleTop(true)
                 .build()
-            controller.navigate(event.root.destinationId, event.root.getArguments(), options)
+            controller.navigate(event.root.destinationId(), event.root.getArguments(), options)
         }
         is NavEvent.UpEvent -> {
             controller.navigateUp()
@@ -46,7 +47,7 @@ public fun navigate(
             controller.popBackStack()
         }
         is NavEvent.BackToEvent -> {
-            controller.popBackStack(event.destinationId, event.inclusive)
+            controller.popBackStack(event.popUpTo.destinationId(), event.inclusive)
         }
         is NavEvent.ActivityResultEvent<*> -> {
             val request = event.request
@@ -68,6 +69,12 @@ public fun navigate(
         }
     }
 }
+
+@InternalNavigatorApi
+public fun BaseRoute.destinationId(): Int = this::class.destinationId()
+
+@InternalNavigatorApi
+public fun KClass<out BaseRoute>.destinationId(): Int = qualifiedName!!.hashCode()
 
 @InternalNavigatorApi
 public fun <T : BaseRoute> Bundle.toRoute(): T = getParcelable(EXTRA_ROUTE)!!
