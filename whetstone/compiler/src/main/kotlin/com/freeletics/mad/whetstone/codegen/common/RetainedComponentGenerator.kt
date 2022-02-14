@@ -7,7 +7,6 @@ import com.freeletics.mad.whetstone.RendererFragmentData
 import com.freeletics.mad.whetstone.codegen.util.Generator
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.bindsInstanceParameter
-import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.componentAnnotation
 import com.freeletics.mad.whetstone.codegen.util.componentFactory
 import com.freeletics.mad.whetstone.codegen.util.composeProviderValueModule

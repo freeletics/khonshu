@@ -9,8 +9,8 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import java.util.IllegalFormatException
-import kotlinx.parcelize.RawValue
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 /**
  * A simple text representation that allows you to model text without the need

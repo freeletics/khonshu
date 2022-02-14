@@ -11,6 +11,7 @@ import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.disposeOnLifecycleDestroyed
 import com.freeletics.mad.whetstone.codegen.util.fragmentConverter
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavigationHandler
+import com.freeletics.mad.whetstone.codegen.util.fragmentViewModelProvider
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
 import com.freeletics.mad.whetstone.codegen.util.layoutParams
 import com.freeletics.mad.whetstone.codegen.util.localWindowInsets
@@ -18,7 +19,6 @@ import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.view
 import com.freeletics.mad.whetstone.codegen.util.viewGroup
-import com.freeletics.mad.whetstone.codegen.util.fragmentViewModelProvider
 import com.freeletics.mad.whetstone.codegen.util.viewWindowInsetsObserver
 import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.FunSpec

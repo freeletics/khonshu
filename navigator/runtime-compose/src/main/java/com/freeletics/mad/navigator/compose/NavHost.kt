@@ -1,21 +1,21 @@
 package com.freeletics.mad.navigator.compose
 
 import android.app.Activity as AndroidActivity
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.navigation.ActivityNavigator
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination as AndroidxNavDestination
 import androidx.navigation.compose.NavHost as AndroidXNavHost
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.Bundle
 import android.view.View
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavArgument
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.DialogNavigator

@@ -2,7 +2,6 @@ package com.freeletics.mad.whetstone
 
 import android.content.Context
 import androidx.navigation.NavBackStackEntry
-import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
 import com.freeletics.mad.whetstone.internal.NavEntryComponentGetter
 import javax.inject.Inject
 import javax.inject.Qualifier

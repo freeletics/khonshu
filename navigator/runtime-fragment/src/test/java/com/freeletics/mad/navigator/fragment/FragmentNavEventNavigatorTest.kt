@@ -1,11 +1,7 @@
 package com.freeletics.mad.navigator.fragment
 
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
-import com.freeletics.mad.navigator.NavEvent
-import com.freeletics.mad.navigator.NavRoute
-import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertThrows

@@ -48,11 +48,12 @@ tasks.withType(JavaCompile).configureEach {
 
 dependencies {
     api project(":navigator:navigator-runtime")
-    api "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
     api "androidx.fragment:fragment:1.4.1"
-    api "androidx.navigation:navigation-runtime-ktx:2.4.0"
-    api "androidx.navigation:navigation-fragment-ktx:2.4.0"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
+    api "androidx.navigation:navigation-fragment:2.4.1"
+
+    implementation "androidx.activity:activity:1.4.0"
+    implementation "androidx.lifecycle:lifecycle-runtime:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.1"
 
     testImplementation "junit:junit:4.13.2"
     testImplementation "com.google.truth:truth:1.1.3"
