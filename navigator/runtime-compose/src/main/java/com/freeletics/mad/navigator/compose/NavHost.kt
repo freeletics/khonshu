@@ -32,6 +32,7 @@ import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.navigator.internal.getArguments
 import com.freeletics.mad.navigator.internal.toRoute
+import com.freeletics.mad.navigator.runtime.compose.R
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
@@ -175,4 +176,4 @@ private fun Context.findActivity(): android.app.Activity {
     throw IllegalStateException("Permissions should be called in the context of an Activity")
 }
 
-private val navControllerTagId = View.generateViewId()
+private val navControllerTagId = R.id.internal_nav_controller_tag
