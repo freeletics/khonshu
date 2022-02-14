@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha26 *(2022-02-14)*
+----------------------------
+
+- Navigator: remove `destinationId` from `NavRoute`/`NavRoot`, the route class itself is now the identifier
+- Navigator: add `BaseRoute` interface to reduce API duplication between `NavRoute` and `NavRoot`
+- Navigator: `NavEventNavigator` is now `open` instead of `abstract`
+- Navigator: remove `navigateTo` with `popUpTo`, use `navigateBackTo` followed by a `navigateTo` instead
+- Navigator: fix legacy compose `NavController` API
+
+
 Version 0.3.0-alpha25 *(2022-02-11)*
 ----------------------------
 
