@@ -16,19 +16,13 @@ public final class com/freeletics/mad/navigator/compose/NavDestination$Dialog : 
 	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/jvm/functions/Function3;)V
 }
 
-public final class com/freeletics/mad/navigator/compose/NavDestination$RootScreen : com/freeletics/mad/navigator/compose/NavDestination {
-	public static final field $stable I
-	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/jvm/functions/Function3;)V
-}
-
 public final class com/freeletics/mad/navigator/compose/NavDestination$Screen : com/freeletics/mad/navigator/compose/NavDestination {
 	public static final field $stable I
 	public fun <init> (Lkotlin/reflect/KClass;ILkotlin/jvm/functions/Function3;)V
 }
 
 public final class com/freeletics/mad/navigator/compose/NavHostKt {
-	public static final fun NavHost (Lcom/freeletics/mad/navigator/NavRoot;Ljava/util/Set;Landroidx/compose/runtime/Composer;I)V
-	public static final fun NavHost (Lcom/freeletics/mad/navigator/NavRoute;Ljava/util/Set;Landroidx/compose/runtime/Composer;I)V
+	public static final fun NavHost (Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/freeletics/mad/navigator/compose/NavigationSetupKt {

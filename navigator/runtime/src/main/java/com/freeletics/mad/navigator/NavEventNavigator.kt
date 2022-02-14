@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
- * A [Navigator] implementation that allows to fire [events][NavEvent] through it's methods. These
+ * A navigator that allows to fire [events][NavEvent] through it's methods. These
  * events are publicly exposed through the [navEvents] [Flow] that can be collected and acted upon
  * by a `NavigationHandler`. This allows to trigger navigation actions from outside the view layer
  * without keeping references to Android framework classes that might leak. It also improves

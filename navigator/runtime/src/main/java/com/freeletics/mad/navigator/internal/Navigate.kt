@@ -6,9 +6,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.freeletics.mad.navigator.ActivityResultRequest
+import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavEvent
-import com.freeletics.mad.navigator.NavRoot
-import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.PermissionsResultRequest
 
 @InternalNavigatorApi
@@ -71,20 +70,10 @@ public fun navigate(
 }
 
 @InternalNavigatorApi
-public fun <T : NavRoute> Bundle.toNavRoute(): T = getParcelable(EXTRA_ROUTE)!!
+public fun <T : BaseRoute> Bundle.toRoute(): T = getParcelable(EXTRA_ROUTE)!!
 
 @InternalNavigatorApi
-public fun <T : NavRoot> Bundle.toNavRoot(): T = getParcelable(EXTRA_ROUTE)!!
-
-@InternalNavigatorApi
-public fun NavRoute.getArguments(): Bundle = Bundle().also {
-    if (this is Parcelable) {
-        it.putParcelable(EXTRA_ROUTE, this)
-    }
-}
-
-@InternalNavigatorApi
-public fun NavRoot.getArguments(): Bundle = Bundle().also {
+public fun BaseRoute.getArguments(): Bundle = Bundle().also {
     if (this is Parcelable) {
         it.putParcelable(EXTRA_ROUTE, this)
     }
