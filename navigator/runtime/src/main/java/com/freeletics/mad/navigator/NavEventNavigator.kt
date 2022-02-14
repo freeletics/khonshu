@@ -101,30 +101,6 @@ public abstract class NavEventNavigator {
     }
 
     /**
-     * Triggers a new [NavEvent] that pops the back stack to [T]. If [inclusive] is `true` the
-     * [T] destination itself will also be popped. Afterwards it will navigate to [route].
-     *
-     * Replace calls to this with a call to [navigateBackTo] followed by a call to [navigateTo].
-     */
-    @ObsoleteNavigatorApi
-    public inline fun <reified T : BaseRoute> navigateToOnTopOf(
-        route: NavRoute,
-        inclusive: Boolean = false
-    ) {
-        navigateToOnTopOf(route, T::class, inclusive)
-    }
-
-    @InternalNavigatorApi
-    public fun navigateToOnTopOf(
-        route: NavRoute,
-        popUpTo: KClass<out BaseRoute>,
-        inclusive: Boolean = false
-    ) {
-        val event = NavigateToOnTopOfEvent(route, popUpTo, inclusive)
-        sendNavEvent(event)
-    }
-
-    /**
      * Triggers a new [NavEvent] to navigate to the given [root]. The current back stack will
      * be popped and saved. Whether the backstack of the given root is restored depends
      * on [restoreRootState].
