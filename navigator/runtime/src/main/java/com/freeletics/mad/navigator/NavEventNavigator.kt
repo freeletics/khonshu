@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * permission requests can be handled through [registerForActivityResult]/[navigateForResult]
  * and [registerForPermissionsResult]/[requestPermissions] respectively.
  */
-public abstract class NavEventNavigator {
+public open class NavEventNavigator {
 
     private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
 
