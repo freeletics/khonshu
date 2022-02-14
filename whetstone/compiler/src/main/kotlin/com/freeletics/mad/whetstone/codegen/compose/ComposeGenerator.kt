@@ -11,6 +11,7 @@ import com.freeletics.mad.whetstone.codegen.util.composable
 import com.freeletics.mad.whetstone.codegen.util.composeNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.launch
+import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.rememberCoroutineScope
@@ -54,13 +55,12 @@ internal class ComposeGenerator(
     }
 
     private fun composableNavigationSetup(disableNavigation: Boolean): CodeBlock {
-        val navigator = data.navigation?.navigator
-        if (navigator == null || disableNavigation) {
+        if (data.navigation == null || disableNavigation) {
             return CodeBlock.of("")
         }
 
         return CodeBlock.builder()
-            .addStatement("val navigator = component.%L", navigator.propertyName)
+            .addStatement("val navigator = component.%L", navEventNavigator.propertyName)
             .addStatement("%M(navigator)", composeNavigationHandler)
             .add("\n")
             .build()

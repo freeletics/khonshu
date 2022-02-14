@@ -9,11 +9,9 @@ import com.freeletics.mad.whetstone.codegen.util.composeRootNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.findAnnotation
 import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavDestinationFqName
-import com.freeletics.mad.whetstone.codegen.util.fragmentNavEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.fragmentRootNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.moduleFqName
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
-import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.optionalBooleanArgument
 import com.freeletics.mad.whetstone.codegen.util.optionalClassArgument
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
@@ -135,14 +133,12 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         val navigation = declaration.findAnnotation(fragmentNavDestinationFqName)
         if (navigation != null) {
             return CommonData.Navigation(
-                navigator = fragmentNavEventNavigator,
                 route = navigation.requireClassArgument("route", 0),
             )
         }
         val rootNavigation = declaration.findAnnotation(fragmentRootNavDestinationFqName)
         if (rootNavigation != null) {
             return CommonData.Navigation(
-                navigator = fragmentNavEventNavigator,
                 route = rootNavigation.requireClassArgument("root", 0),
             )
         }
@@ -183,14 +179,12 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         val navigation = declaration.findAnnotation(composeNavDestinationFqName)
         if (navigation != null) {
             return CommonData.Navigation(
-                navigator = navEventNavigator,
                 route = navigation.requireClassArgument("route", 0),
             )
         }
         val rootNavigation = declaration.findAnnotation(composeRootNavDestinationFqName)
         if (rootNavigation != null) {
             return CommonData.Navigation(
-                navEventNavigator,
                 route = rootNavigation.requireClassArgument("root", 0),
             )
         }

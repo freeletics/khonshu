@@ -9,8 +9,10 @@ public class com/freeletics/mad/navigator/NavEventNavigator {
 	public fun <init> ()V
 	public final fun backPresses ()Lkotlinx/coroutines/flow/Flow;
 	public final fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public final fun deliverNavigationResult (Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
 	public final fun getActivityResultRequests ()Ljava/util/List;
 	public final fun getNavEvents ()Lkotlinx/coroutines/flow/Flow;
+	public final fun getNavigationResultRequest ()Ljava/util/List;
 	public final fun getOnBackPressedCallback ()Landroidx/activity/OnBackPressedCallback;
 	public final fun getPermissionsResultRequests ()Ljava/util/List;
 	public final fun navigateBack ()V
@@ -33,6 +35,33 @@ public abstract interface class com/freeletics/mad/navigator/NavRoot : com/freel
 public abstract interface class com/freeletics/mad/navigator/NavRoute : com/freeletics/mad/navigator/BaseRoute {
 }
 
+public final class com/freeletics/mad/navigator/NavigationResultRequest : com/freeletics/mad/navigator/ResultOwner {
+	public final fun getKey ()Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;
+}
+
+public final class com/freeletics/mad/navigator/NavigationResultRequest$Key : android/os/Parcelable {
+	public static final field CREATOR Lcom/freeletics/mad/navigator/NavigationResultRequest$Key$CREATOR;
+	public fun <init> (Landroid/os/Parcel;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (ILjava/lang/String;)Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;
+	public static synthetic fun copy$default (Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;ILjava/lang/String;ILjava/lang/Object;)Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestinationId ()I
+	public final fun getRequestKey ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/freeletics/mad/navigator/NavigationResultRequest$Key$CREATOR : android/os/Parcelable$Creator {
+	public fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public fun newArray (I)[Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
 public final class com/freeletics/mad/navigator/PermissionsResultRequest : com/freeletics/mad/navigator/ResultOwner {
 }
 
@@ -45,7 +74,6 @@ public final class com/freeletics/mad/navigator/PermissionsResultRequest$Permiss
 }
 
 public abstract class com/freeletics/mad/navigator/ResultOwner {
-	public fun <init> ()V
 	public final fun getResults ()Lkotlinx/coroutines/flow/Flow;
 }
 

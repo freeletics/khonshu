@@ -1,5 +1,6 @@
 package com.freeletics.mad.navigator
 
+import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import kotlin.reflect.KClass
@@ -71,5 +72,14 @@ public sealed interface NavEvent {
     public data class PermissionsResultEvent(
         internal val request: PermissionsResultRequest,
         internal val permissions: List<String>,
+    ) : NavEvent
+
+    /**
+     * Delivers the [result] to the destination that created [key].
+     */
+    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
+    public data class DestinationResultEvent(
+        internal val key: NavigationResultRequest.Key,
+        internal val result: Parcelable,
     ) : NavEvent
 }

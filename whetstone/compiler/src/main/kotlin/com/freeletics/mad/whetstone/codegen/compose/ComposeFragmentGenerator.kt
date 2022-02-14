@@ -15,6 +15,7 @@ import com.freeletics.mad.whetstone.codegen.util.fragmentViewModelProvider
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
 import com.freeletics.mad.whetstone.codegen.util.layoutParams
 import com.freeletics.mad.whetstone.codegen.util.localWindowInsets
+import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.view
@@ -125,7 +126,7 @@ internal class ComposeFragmentGenerator(
             .addStatement("val viewModel = viewModelProvider[%T::class.java]", viewModelClassName)
             .addStatement("val component = viewModel.%L", viewModelComponentName)
             .addCode("\n")
-            .addStatement("val navigator = component.%L", data.navigation!!.navigator.propertyName)
+            .addStatement("val navigator = component.%L", navEventNavigator.propertyName)
             .addStatement("%M(this, navigator)", fragmentNavigationHandler)
             .build()
     }

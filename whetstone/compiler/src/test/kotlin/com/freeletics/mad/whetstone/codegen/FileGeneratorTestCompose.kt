@@ -2,7 +2,6 @@ package com.freeletics.mad.whetstone.codegen
 
 import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeScreenData
-import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
@@ -17,7 +16,6 @@ internal class FileGeneratorTestCompose {
         dependencies = ClassName("com.test", "TestDependencies"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
         navigation = CommonData.Navigation(
-            navEventNavigator,
             ClassName("com.test", "TestRoute"),
         ),
         coroutinesEnabled = true,

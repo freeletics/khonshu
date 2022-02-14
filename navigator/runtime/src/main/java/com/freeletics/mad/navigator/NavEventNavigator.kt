@@ -1,5 +1,6 @@
 package com.freeletics.mad.navigator
 
+import android.os.Parcelable
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.VisibleForTesting
@@ -12,6 +13,7 @@ import com.freeletics.mad.navigator.NavEvent.PermissionsResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
 import com.freeletics.mad.navigator.internal.DelegatingOnBackPressedCallback
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
+import com.freeletics.mad.navigator.internal.destinationId
 import kotlin.reflect.KClass
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -45,6 +47,7 @@ public open class NavEventNavigator {
 
     private val _activityResultRequests = mutableListOf<ActivityResultRequest<*, *>>()
     private val _permissionsResultRequests = mutableListOf<PermissionsResultRequest>()
+    private val _navigationResultRequests = mutableListOf<NavigationResultRequest<*>>()
     private val _onBackPressedCallback = DelegatingOnBackPressedCallback()
 
     /**
@@ -87,6 +90,35 @@ public open class NavEventNavigator {
         checkAllowedToAddRequests()
         val request = PermissionsResultRequest()
         _permissionsResultRequests.add(request)
+        return request
+    }
+
+    /**
+     * Register for receiving navigation results that were delivered through
+     * [deliverNavigationResult]. [T] is expected to be the [BaseRoute] to the current destination.
+     * The [requestKey] should be a unique string that is only used for this call.
+     *
+     * The returned [NavigationResultRequest] has a [NavigationResultRequest.Key]. This `key` should
+     * be passed to the target destination which can then use it to call [deliverNavigationResult].
+     *
+     * Note: This has to be called *before* this [NavEventNavigator] gets attached to a fragment.
+     *   In practice, this means it should usually be called during initialisation of your subclass.
+     */
+    public inline fun <reified T : BaseRoute, O : Parcelable> registerForNavigationResult(
+        requestKey: String
+    ): NavigationResultRequest<O> {
+        return registerForNavigationResult(T::class, requestKey)
+    }
+
+    @InternalNavigatorApi
+    public fun <O : Parcelable> registerForNavigationResult(
+        route: KClass<out BaseRoute>,
+        requestKey: String
+    ): NavigationResultRequest<O> {
+        checkAllowedToAddRequests()
+        val key = NavigationResultRequest.Key(route.destinationId(), requestKey)
+        val request = NavigationResultRequest<O>(key)
+        _navigationResultRequests.add(request)
         return request
     }
 
@@ -189,6 +221,14 @@ public open class NavEventNavigator {
         sendNavEvent(event)
     }
 
+    /**
+     * Delivers the [result] to the destination that created [key].
+     */
+    public fun deliverNavigationResult(key: NavigationResultRequest.Key, result: Parcelable) {
+        val event = NavEvent.DestinationResultEvent(key, result)
+        sendNavEvent(event)
+    }
+
     private fun sendNavEvent(event: NavEvent) {
         val result = _navEvents.trySendBlocking(event)
         check(result.isSuccess)
@@ -235,22 +275,13 @@ public open class NavEventNavigator {
         }
     }
 
-    /**
-     * Access to [ActivityResultRequest] objects that were registered with
-     * [registerForActivityResult]. A `NavEventNavigationHandler` can use these to register
-     * the requests during setup so that results are delivered to them.
-     */
     @InternalNavigatorApi
     public val activityResultRequests: List<ActivityResultRequest<*, *>>
         get() {
             allowedToAddRequests = false
             return _activityResultRequests.toList()
         }
-    /**
-     * Access to [PermissionsResultRequest] objects that were registered with
-     * [registerForPermissionsResult]. A `NavEventNavigationHandler` can use these to register
-     * the requests during setup so that results are delivered to them.
-     */
+
     @InternalNavigatorApi
     public val permissionsResultRequests: List<PermissionsResultRequest>
         get() {
@@ -258,11 +289,13 @@ public open class NavEventNavigator {
             return _permissionsResultRequests.toList()
         }
 
-    /**
-     * Access to the internal [OnBackPressedCallback] that backs the [backPresses] `Flow`.
-     * A `NavEventNavigationHandler` can add this to an `OnBackPressedDispatcher` to enable
-     * [backPresses].
-     */
+    @InternalNavigatorApi
+    public val navigationResultRequest: List<NavigationResultRequest<*>>
+        get() {
+            allowedToAddRequests = false
+            return _navigationResultRequests.toList()
+        }
+
     @InternalNavigatorApi
     public val onBackPressedCallback: OnBackPressedCallback get() = _onBackPressedCallback
 }

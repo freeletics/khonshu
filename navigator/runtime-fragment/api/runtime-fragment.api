@@ -1,19 +1,9 @@
-public abstract class com/freeletics/mad/navigator/fragment/FragmentNavEventNavigator : com/freeletics/mad/navigator/NavEventNavigator {
-	public fun <init> ()V
-	public final fun getResultEvents ()Lkotlinx/coroutines/flow/Flow;
-	public final fun navigateBackWithResult (Ljava/lang/String;Landroid/os/Parcelable;)V
-	public final fun registerForFragmentResult (Ljava/lang/String;)Lcom/freeletics/mad/navigator/fragment/FragmentResultRequest;
-}
-
-public final class com/freeletics/mad/navigator/fragment/FragmentResultRequest : com/freeletics/mad/navigator/ResultOwner {
-}
-
 public final class com/freeletics/mad/navigator/fragment/FragmentRouteKt {
 	public static final fun requireRoute (Landroidx/fragment/app/Fragment;)Lcom/freeletics/mad/navigator/BaseRoute;
 }
 
 public final class com/freeletics/mad/navigator/fragment/HandleNavigationKt {
-	public static final fun handleNavigation (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/fragment/FragmentNavEventNavigator;)V
+	public static final fun handleNavigation (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/NavEventNavigator;)V
 }
 
 public abstract interface class com/freeletics/mad/navigator/fragment/NavDestination {
