@@ -22,12 +22,6 @@ public fun navigate(
         is NavEvent.NavigateToEvent -> {
             controller.navigate(event.route.destinationId(), event.route.getArguments())
         }
-        is NavEvent.NavigateToOnTopOfEvent -> {
-            val options = NavOptions.Builder()
-                .setPopUpTo(event.popUpTo.destinationId(), inclusive = event.inclusive)
-                .build()
-            controller.navigate(event.route.destinationId(), event.route.getArguments(), options)
-        }
         is NavEvent.NavigateToRootEvent -> {
             val options = NavOptions.Builder()
                 // save the state of the current root before leaving it

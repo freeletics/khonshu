@@ -7,13 +7,11 @@ import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
 import com.freeletics.mad.navigator.NavEvent.BackEvent
 import com.freeletics.mad.navigator.NavEvent.BackToEvent
-import com.freeletics.mad.navigator.NavEvent.NavigateToOnTopOfEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
 import com.freeletics.mad.navigator.NavEvent.PermissionsResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
 import com.freeletics.mad.navigator.internal.DelegatingOnBackPressedCallback
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
-import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import kotlin.reflect.KClass
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel

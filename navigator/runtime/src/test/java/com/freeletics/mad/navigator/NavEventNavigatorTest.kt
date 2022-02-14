@@ -49,19 +49,6 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `navigateToOnTopOf event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
-
-        navigator.navEvents.test {
-            navigator.navigateToOnTopOf<SimpleRoute>(OtherRoute(1), true)
-
-            assertThat(awaitItem()).isEqualTo(NavigateToOnTopOfEvent(OtherRoute(1), SimpleRoute::class, true))
-
-            cancel()
-        }
-    }
-
-    @Test
     public fun `navigateToRoot event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
