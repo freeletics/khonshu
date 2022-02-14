@@ -9,8 +9,7 @@ public final class com/freeletics/mad/navigator/fragment/FragmentResultRequest :
 }
 
 public final class com/freeletics/mad/navigator/fragment/FragmentRouteKt {
-	public static final fun requireNavRoot (Landroidx/fragment/app/Fragment;)Lcom/freeletics/mad/navigator/NavRoot;
-	public static final fun requireNavRoute (Landroidx/fragment/app/Fragment;)Lcom/freeletics/mad/navigator/NavRoute;
+	public static final fun requireRoute (Landroidx/fragment/app/Fragment;)Lcom/freeletics/mad/navigator/BaseRoute;
 }
 
 public final class com/freeletics/mad/navigator/fragment/HandleNavigationKt {
@@ -28,16 +27,11 @@ public final class com/freeletics/mad/navigator/fragment/NavDestination$Dialog :
 	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)V
 }
 
-public final class com/freeletics/mad/navigator/fragment/NavDestination$RootScreen : com/freeletics/mad/navigator/fragment/NavDestination {
-	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)V
-}
-
 public final class com/freeletics/mad/navigator/fragment/NavDestination$Screen : com/freeletics/mad/navigator/fragment/NavDestination {
 	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)V
 }
 
 public final class com/freeletics/mad/navigator/fragment/NavHostFragmentKt {
-	public static final fun setGraph (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/NavRoot;Ljava/util/Set;)V
-	public static final fun setGraph (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/NavRoute;Ljava/util/Set;)V
+	public static final fun setGraph (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;)V
 }
 

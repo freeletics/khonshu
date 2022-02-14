@@ -2,6 +2,9 @@ public final class com/freeletics/mad/navigator/ActivityResultRequest : com/free
 	public final fun getContract ()Landroidx/activity/result/contract/ActivityResultContract;
 }
 
+public abstract interface class com/freeletics/mad/navigator/BaseRoute {
+}
+
 public abstract class com/freeletics/mad/navigator/NavEventNavigator {
 	public fun <init> ()V
 	public final fun backPresses ()Lkotlinx/coroutines/flow/Flow;
@@ -11,17 +14,11 @@ public abstract class com/freeletics/mad/navigator/NavEventNavigator {
 	public final fun getOnBackPressedCallback ()Landroidx/activity/OnBackPressedCallback;
 	public final fun getPermissionsResultRequests ()Ljava/util/List;
 	public final fun navigateBack ()V
-	public final fun navigateBackTo (Lkotlin/reflect/KClass;Z)V
 	public static synthetic fun navigateBackTo$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
-	public final fun navigateBackToRoot (Lkotlin/reflect/KClass;Z)V
-	public static synthetic fun navigateBackToRoot$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
 	public final fun navigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;)V
 	public final fun navigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;Ljava/lang/Object;)V
 	public final fun navigateTo (Lcom/freeletics/mad/navigator/NavRoute;)V
-	public final fun navigateToOnTopOf (Lcom/freeletics/mad/navigator/NavRoute;Lkotlin/reflect/KClass;Z)V
 	public static synthetic fun navigateToOnTopOf$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lcom/freeletics/mad/navigator/NavRoute;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
-	public final fun navigateToOnTopOfRoot (Lcom/freeletics/mad/navigator/NavRoute;Lkotlin/reflect/KClass;Z)V
-	public static synthetic fun navigateToOnTopOfRoot$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lcom/freeletics/mad/navigator/NavRoute;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
 	public final fun navigateToRoot (Lcom/freeletics/mad/navigator/NavRoot;Z)V
 	public static synthetic fun navigateToRoot$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lcom/freeletics/mad/navigator/NavRoot;ZILjava/lang/Object;)V
 	public final fun navigateUp ()V
@@ -31,10 +28,10 @@ public abstract class com/freeletics/mad/navigator/NavEventNavigator {
 	public final fun requestPermissions (Lcom/freeletics/mad/navigator/PermissionsResultRequest;[Ljava/lang/String;)V
 }
 
-public abstract interface class com/freeletics/mad/navigator/NavRoot {
+public abstract interface class com/freeletics/mad/navigator/NavRoot : com/freeletics/mad/navigator/BaseRoute {
 }
 
-public abstract interface class com/freeletics/mad/navigator/NavRoute {
+public abstract interface class com/freeletics/mad/navigator/NavRoute : com/freeletics/mad/navigator/BaseRoute {
 }
 
 public final class com/freeletics/mad/navigator/PermissionsResultRequest : com/freeletics/mad/navigator/ResultOwner {

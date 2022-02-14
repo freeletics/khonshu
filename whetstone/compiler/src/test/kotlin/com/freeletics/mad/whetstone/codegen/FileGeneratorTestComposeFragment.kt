@@ -23,7 +23,6 @@ internal class FileGeneratorTestComposeFragment {
         navigation = CommonData.Navigation(
             fragmentNavEventNavigator,
             ClassName("com.test", "TestRoute"),
-            null,
         ),
         coroutinesEnabled = true,
         rxJavaEnabled = true,
@@ -49,7 +48,7 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
             import com.freeletics.mad.navigator.fragment.handleNavigation
-            import com.freeletics.mad.navigator.fragment.requireNavRoute
+            import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -151,7 +150,7 @@ internal class FileGeneratorTestComposeFragment {
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
               ): View {
-                val testRoute = requireNavRoute<TestRoute>()
+                val testRoute = requireRoute<TestRoute>()
                 if (!navigationSetup) {
                   navigationSetup = true
                   setupNavigation(testRoute)
@@ -213,7 +212,7 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
             import com.freeletics.mad.navigator.fragment.handleNavigation
-            import com.freeletics.mad.navigator.fragment.requireNavRoute
+            import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -315,7 +314,7 @@ internal class FileGeneratorTestComposeFragment {
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
               ): View {
-                val testRoute = requireNavRoute<TestRoute>()
+                val testRoute = requireRoute<TestRoute>()
                 if (!navigationSetup) {
                   navigationSetup = true
                   setupNavigation(testRoute)
@@ -375,7 +374,7 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
             import com.freeletics.mad.navigator.fragment.handleNavigation
-            import com.freeletics.mad.navigator.fragment.requireNavRoute
+            import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -475,7 +474,7 @@ internal class FileGeneratorTestComposeFragment {
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
               ): View {
-                val testRoute = requireNavRoute<TestRoute>()
+                val testRoute = requireRoute<TestRoute>()
                 if (!navigationSetup) {
                   navigationSetup = true
                   setupNavigation(testRoute)

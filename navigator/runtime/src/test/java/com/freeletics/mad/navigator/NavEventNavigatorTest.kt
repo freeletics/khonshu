@@ -62,19 +62,6 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `navigateToOnTopOfRoot event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
-
-        navigator.navEvents.test {
-            navigator.navigateToOnTopOfRoot<SimpleRoot>(OtherRoute(1), true)
-
-            assertThat(awaitItem()).isEqualTo(NavEvent.NavigateToOnTopOfRootEvent(OtherRoute(1), SimpleRoot::class, true))
-
-            cancel()
-        }
-    }
-
-    @Test
     public fun `navigateToRoot event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
@@ -121,19 +108,6 @@ public class NavEventNavigatorTest {
             navigator.navigateBackTo<SimpleRoute>(true)
 
             assertThat(awaitItem()).isEqualTo(NavEvent.BackToEvent(SimpleRoute::class, true))
-
-            cancel()
-        }
-    }
-
-    @Test
-    public fun `navigateBack with popUpTo event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
-
-        navigator.navEvents.test {
-            navigator.navigateBackToRoot<SimpleRoot>(true)
-
-            assertThat(awaitItem()).isEqualTo(NavEvent.BackToRootEvent(SimpleRoot::class, true))
 
             cancel()
         }

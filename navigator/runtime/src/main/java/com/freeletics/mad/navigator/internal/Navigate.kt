@@ -6,9 +6,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.freeletics.mad.navigator.ActivityResultRequest
+import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavEvent
-import com.freeletics.mad.navigator.NavRoot
-import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.PermissionsResultRequest
 import kotlin.reflect.KClass
 
@@ -26,12 +25,6 @@ public fun navigate(
         is NavEvent.NavigateToOnTopOfEvent -> {
             val options = NavOptions.Builder()
                 .setPopUpTo(event.popUpTo.destinationId(), inclusive = event.inclusive)
-                .build()
-            controller.navigate(event.route.destinationId(), event.route.getArguments(), options)
-        }
-        is NavEvent.NavigateToOnTopOfRootEvent -> {
-            val options = NavOptions.Builder()
-                .setPopUpTo(event.popUpTo.rootDestinationId(), inclusive = event.inclusive)
                 .build()
             controller.navigate(event.route.destinationId(), event.route.getArguments(), options)
         }
@@ -56,9 +49,6 @@ public fun navigate(
         is NavEvent.BackToEvent -> {
             controller.popBackStack(event.popUpTo.destinationId(), event.inclusive)
         }
-        is NavEvent.BackToRootEvent -> {
-            controller.popBackStack(event.popUpTo.rootDestinationId(), event.inclusive)
-        }
         is NavEvent.ActivityResultEvent<*> -> {
             val request = event.request
             val launcher = activityLaunchers[request] ?: throw IllegalStateException(
@@ -81,32 +71,16 @@ public fun navigate(
 }
 
 @InternalNavigatorApi
-public fun NavRoute.destinationId(): Int = this::class.destinationId()
+public fun BaseRoute.destinationId(): Int = this::class.destinationId()
 
 @InternalNavigatorApi
-public fun KClass<out NavRoute>.destinationId(): Int = qualifiedName!!.hashCode()
+public fun KClass<out BaseRoute>.destinationId(): Int = qualifiedName!!.hashCode()
 
 @InternalNavigatorApi
-public fun NavRoot.destinationId(): Int = this::class.rootDestinationId()
+public fun <T : BaseRoute> Bundle.toRoute(): T = getParcelable(EXTRA_ROUTE)!!
 
 @InternalNavigatorApi
-public fun KClass<out NavRoot>.rootDestinationId(): Int = qualifiedName!!.hashCode()
-
-@InternalNavigatorApi
-public fun <T : NavRoute> Bundle.toNavRoute(): T = getParcelable(EXTRA_ROUTE)!!
-
-@InternalNavigatorApi
-public fun <T : NavRoot> Bundle.toNavRoot(): T = getParcelable(EXTRA_ROUTE)!!
-
-@InternalNavigatorApi
-public fun NavRoute.getArguments(): Bundle = Bundle().also {
-    if (this is Parcelable) {
-        it.putParcelable(EXTRA_ROUTE, this)
-    }
-}
-
-@InternalNavigatorApi
-public fun NavRoot.getArguments(): Bundle = Bundle().also {
+public fun BaseRoute.getArguments(): Bundle = Bundle().also {
     if (this is Parcelable) {
         it.putParcelable(EXTRA_ROUTE, this)
     }

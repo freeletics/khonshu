@@ -4,11 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.freeletics.mad.navigator.NavRoot
+import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.fragment.NavDestination.Activity
 import com.freeletics.mad.navigator.fragment.NavDestination.Dialog
-import com.freeletics.mad.navigator.fragment.NavDestination.RootScreen
 import com.freeletics.mad.navigator.fragment.NavDestination.Screen
 import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import kotlin.reflect.KClass
@@ -19,17 +18,8 @@ import kotlin.reflect.KClass
  * navigated to using an instance of [T].
  */
 @Suppress("FunctionName")
-public inline fun <reified T : NavRoute, reified F : Fragment> ScreenDestination():
+public inline fun <reified T : BaseRoute, reified F : Fragment> ScreenDestination():
     NavDestination = Screen(T::class, F::class)
-
-/**
- * Creates a new [NavDestination] that represents a full screen. The class of [T] will be used
- * as a unique identifier. The given `Fragment` class  [F] will be shown when the screen is being
- * navigated to using an instance of [T].
- */
-@Suppress("FunctionName")
-public inline fun <reified T : NavRoot, reified F : Fragment> RootScreenDestination():
-    NavDestination = RootScreen(T::class, F::class)
 
 /**
  * Creates a new [NavDestination] that represents a dialog. The class of [T] will be used
@@ -62,44 +52,28 @@ public sealed interface NavDestination {
      * [fragmentClass] will be shown when the screen is being
      * navigated to using an instance of [route].
      */
-    public class Screen @ObsoleteNavigatorApi constructor(
-        internal val route: KClass<out NavRoute>,
+    public class Screen<T : BaseRoute> @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<T>,
         internal val fragmentClass: KClass<out Fragment>,
         internal val defaultArguments: Bundle?,
     ) : NavDestination {
         public constructor(
-            route: KClass<out NavRoute>,
+            route: KClass<T>,
             fragmentClass: KClass<out Fragment>,
         ) : this(route, fragmentClass, null)
-    }
-
-    /**
-     * Represents a full screen. The [root] will be used as a unique identifier. The given
-     * [fragmentClass] will be shown when the screen is being navigated to using an instance of
-     * [root].
-     */
-    public class RootScreen @ObsoleteNavigatorApi constructor(
-        internal val root: KClass<out NavRoot>,
-        internal val fragmentClass: KClass<out Fragment>,
-        internal val defaultArguments: Bundle?,
-    ) : NavDestination {
-        public constructor(
-            root: KClass<out NavRoot>,
-            fragmentClass: KClass<out Fragment>,
-        ) : this(root, fragmentClass, null)
     }
 
     /**
      * Represents a dialog. The [route] will be used as a unique identifier. The given
      * [fragmentClass] will be shown when it's being navigated to using an instance of [route].
      */
-    public class Dialog @ObsoleteNavigatorApi constructor(
-        internal val route: KClass<out NavRoute>,
+    public class Dialog<T : NavRoute> @ObsoleteNavigatorApi constructor(
+        internal val route: KClass<T>,
         internal val fragmentClass: KClass<out DialogFragment>,
         internal val defaultArguments: Bundle?,
     ) : NavDestination {
         public constructor(
-            route: KClass<out NavRoute>,
+            route: KClass<T>,
             fragmentClass: KClass<out DialogFragment>,
         ) : this(route, fragmentClass, null)
     }
@@ -109,8 +83,8 @@ public sealed interface NavDestination {
      * [intent] will be used to launch the `Activity` when using an instance of [route] for
      * navigation.
      */
-    public class Activity(
-        internal val route: KClass<out NavRoute>,
+    public class Activity<T : NavRoute>(
+        internal val route: KClass<T>,
         internal val intent: Intent,
     ) : NavDestination
 }

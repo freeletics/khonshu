@@ -30,18 +30,7 @@ public sealed interface NavEvent {
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
     public data class NavigateToOnTopOfEvent(
         internal val route: NavRoute,
-        internal val popUpTo: KClass<out NavRoute>,
-        internal val inclusive: Boolean,
-    ) : NavEvent
-
-    /**
-     * Navigates back to the given [popUpTo]. If [inclusive] is `true` the destination
-     * itself will also be popped of the back stack. Then navigates to the given [route].
-     */
-    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class NavigateToOnTopOfRootEvent(
-        internal val route: NavRoute,
-        internal val popUpTo: KClass<out NavRoot>,
+        internal val popUpTo: KClass<out BaseRoute>,
         internal val inclusive: Boolean,
     ) : NavEvent
 
@@ -73,17 +62,7 @@ public sealed interface NavEvent {
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
     public data class BackToEvent(
-        internal val popUpTo: KClass<out NavRoute>,
-        internal val inclusive: Boolean,
-    ) : NavEvent
-
-    /**
-     * Navigates back to the given [popUpTo]. If [inclusive] is `true` the destination itself
-     * will also be popped of the back stack.
-     */
-    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class BackToRootEvent(
-        internal val popUpTo: KClass<out NavRoot>,
+        internal val popUpTo: KClass<out BaseRoute>,
         internal val inclusive: Boolean,
     ) : NavEvent
 

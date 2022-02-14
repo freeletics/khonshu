@@ -89,21 +89,15 @@ internal fun optInAnnotation(): AnnotationSpec {
 }
 
 internal fun CommonData.Navigation?.asParameter(): ParameterSpec {
-    if (this?.navRoute != null) {
-        return ParameterSpec.builder(navRoute.propertyName, navRoute).build()
-    }
-    if (this?.navRoot != null) {
-        return ParameterSpec.builder(navRoot.propertyName, navRoot).build()
+    if (this?.route != null) {
+        return ParameterSpec.builder(route.propertyName, route).build()
     }
     return ParameterSpec.builder("arguments", bundle).build()
 }
 
 internal fun CommonData.Navigation?.fragmentConverter(): CodeBlock {
-    if (this?.navRoute != null) {
-        return CodeBlock.of("%M<%T>()", requireNavRoute, navRoute)
-    }
-    if (this?.navRoot != null) {
-        return CodeBlock.of("%M<%T>()", requireNavRoot, navRoot)
+    if (this?.route != null) {
+        return CodeBlock.of("%M<%T>()", requireRoute, route)
     }
     return CodeBlock.of("requireArguments()")
 }

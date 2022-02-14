@@ -23,8 +23,7 @@ internal sealed interface CommonData : BaseData {
 
     data class Navigation(
         val navigator: ClassName,
-        val navRoute: ClassName?,
-        val navRoot: ClassName?,
+        val route: ClassName?,
     )
 }
 

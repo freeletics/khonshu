@@ -3,12 +3,11 @@ package com.freeletics.mad.navigator.compose
 import android.content.Intent
 import android.os.Bundle
 import androidx.compose.runtime.Composable
-import com.freeletics.mad.navigator.NavRoot
+import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.compose.NavDestination.Activity
 import com.freeletics.mad.navigator.compose.NavDestination.BottomSheet
 import com.freeletics.mad.navigator.compose.NavDestination.Dialog
-import com.freeletics.mad.navigator.compose.NavDestination.RootScreen
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
 import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
@@ -20,19 +19,9 @@ import kotlin.reflect.KClass
  * navigated to using an instance of [T].
  */
 @Suppress("FunctionName")
-public inline fun <reified T : NavRoute> ScreenDestination(
+public inline fun <reified T : BaseRoute> ScreenDestination(
     noinline screenContent: @Composable (T) -> Unit,
 ): NavDestination = Screen(T::class, screenContent)
-
-/**
- * Creates a new [NavDestination] that represents a full screen. The class of [T] will be used
- * as a unique identifier. The given [screenContent] will be shown when the screen is being
- * navigated to using an instance of [T].
- */
-@Suppress("FunctionName")
-public inline fun <reified T : NavRoot> RootScreenDestination(
-    noinline screenContent: @Composable (T) -> Unit,
-): NavDestination = RootScreen(T::class, screenContent)
 
 /**
  * Creates a new [NavDestination] that represents a dialog. The class of [T] will be used
@@ -74,7 +63,7 @@ public sealed interface NavDestination {
      * The given [screenContent] will be shown when the screen is being
      * navigated to using an instance of [route].
      */
-    public class Screen<T : NavRoute> @ObsoleteNavigatorApi constructor(
+    public class Screen<T : BaseRoute> @ObsoleteNavigatorApi constructor(
         internal val route: KClass<T>,
         internal val defaultArguments: Bundle?,
         internal val screenContent: @Composable (T) -> Unit,
@@ -83,22 +72,6 @@ public sealed interface NavDestination {
             route: KClass<T>,
             screenContent: @Composable (T) -> Unit,
         ) : this(route, null, screenContent)
-    }
-
-    /**
-     * Represents a full screen. The [root] will be used as a unique identifier.
-     * The given [screenContent] will be shown when the screen is being
-     * navigated to using an instance of [root].
-     */
-    public class RootScreen<T : NavRoot> @ObsoleteNavigatorApi constructor(
-        internal val root: KClass<T>,
-        internal val defaultArguments: Bundle?,
-        internal val screenContent: @Composable (T) -> Unit,
-    ) : NavDestination {
-        public constructor(
-            root: KClass<T>,
-            screenContent: @Composable (T) -> Unit,
-        ) : this(root, null, screenContent)
     }
 
     /**
