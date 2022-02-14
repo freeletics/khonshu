@@ -6,10 +6,10 @@ import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.composeNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.composeRootNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.fragment
-import com.freeletics.mad.whetstone.codegen.util.moduleFqName
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.fragmentRootNavDestinationFqName
+import com.freeletics.mad.whetstone.codegen.util.moduleFqName
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
 import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName

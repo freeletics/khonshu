@@ -5,12 +5,12 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.1.0"
+        classpath "com.android.tools.build:gradle:7.1.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.6.10"
         classpath "com.vanniktech:gradle-maven-publish-plugin:0.18.0"
-        classpath "com.autonomousapps.dependency-analysis:com.autonomousapps.dependency-analysis.gradle.plugin:0.80.0"
-        classpath "com.github.ben-manes:gradle-versions-plugin:0.41.0"
+        classpath "com.autonomousapps:dependency-analysis-gradle-plugin:0.80.0"
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.42.0"
         classpath "org.jetbrains.kotlinx:binary-compatibility-validator:0.8.0"
     }
 }
@@ -41,6 +41,12 @@ dependencyAnalysis {
             onUnusedDependencies {
                 exclude("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
             }
+        }
+    }
+
+    abi {
+        exclusions {
+            excludeClasses(".*\\.navigator\\.internal\\..*")
         }
     }
 }

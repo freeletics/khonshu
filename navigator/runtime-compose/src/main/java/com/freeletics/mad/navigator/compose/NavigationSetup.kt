@@ -15,8 +15,8 @@ import androidx.lifecycle.flowWithLifecycle
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.PermissionsResultRequest
-import com.freeletics.mad.navigator.internal.navigate
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
+import com.freeletics.mad.navigator.internal.navigate
 
 /**
  * Sets up the [NavEventNavigator] inside the current composition so that it's events

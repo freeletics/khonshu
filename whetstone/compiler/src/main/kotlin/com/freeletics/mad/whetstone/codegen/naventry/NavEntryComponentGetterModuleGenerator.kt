@@ -10,7 +10,6 @@ import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.squareup.kotlinpoet.AnnotationSpec
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.TypeSpec

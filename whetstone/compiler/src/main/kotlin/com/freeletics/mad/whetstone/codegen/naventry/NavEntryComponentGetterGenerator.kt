@@ -8,9 +8,8 @@ import com.freeletics.mad.whetstone.codegen.util.inject
 import com.freeletics.mad.whetstone.codegen.util.navBackStackEntry
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
 import com.freeletics.mad.whetstone.codegen.util.navEntryIdScope
-import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
-import com.freeletics.mad.whetstone.codegen.util.fragmentViewModelProvider
 import com.freeletics.mad.whetstone.codegen.util.navEntryViewModelProvider
+import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FunSpec
