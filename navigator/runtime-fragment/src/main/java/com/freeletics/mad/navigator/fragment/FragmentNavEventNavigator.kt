@@ -5,7 +5,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
-import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow

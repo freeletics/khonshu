@@ -5,8 +5,6 @@ import com.freeletics.mad.whetstone.codegen.common.providedValueSetPropertyName
 import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
 import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.util.Generator
-import com.freeletics.mad.whetstone.codegen.util.propertyName
-import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.asComposeState
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.composable
@@ -14,11 +12,11 @@ import com.freeletics.mad.whetstone.codegen.util.composeNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.launch
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
+import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.rememberCoroutineScope
 import com.freeletics.mad.whetstone.codegen.util.rememberViewModelProvider
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.ParameterSpec
 
 internal val Generator<out CommonData>.composableName get() = "${data.baseName}Screen"
 

@@ -144,7 +144,7 @@ Version 0.3.0-alpha07 *(2021-09-29)*
 Version 0.3.0-alpha06 *(2021-09-29)*
 ----------------------------
 
-- Kotlin 1.5.30 and Compose 1.1.0-rc03
+- Kotlin 1.5.30 and Compose 1.1.0
 - add Apple Silicon targets to `state-machine`
 - change generated Whetstone code to be compatible with Kotlin 1.5.30
 
