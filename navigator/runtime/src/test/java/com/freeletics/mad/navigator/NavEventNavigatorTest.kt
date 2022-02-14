@@ -3,7 +3,6 @@ package com.freeletics.mad.navigator
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
-import com.freeletics.mad.navigator.NavEvent.NavigateToOnTopOfEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToRootEvent
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,19 +42,6 @@ public class NavEventNavigatorTest {
             assertThat(awaitItem()).isEqualTo(NavigateToEvent(SimpleRoute(1)))
             assertThat(awaitItem()).isEqualTo(NavigateToEvent(OtherRoute(1)))
             assertThat(awaitItem()).isEqualTo(NavigateToEvent(SimpleRoute(2)))
-
-            cancel()
-        }
-    }
-
-    @Test
-    public fun `navigateToOnTopOf event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
-
-        navigator.navEvents.test {
-            navigator.navigateToOnTopOf<SimpleRoute>(OtherRoute(1), true)
-
-            assertThat(awaitItem()).isEqualTo(NavigateToOnTopOfEvent(OtherRoute(1), SimpleRoute::class, true))
 
             cancel()
         }

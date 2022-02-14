@@ -7,13 +7,11 @@ import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
 import com.freeletics.mad.navigator.NavEvent.BackEvent
 import com.freeletics.mad.navigator.NavEvent.BackToEvent
-import com.freeletics.mad.navigator.NavEvent.NavigateToOnTopOfEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
 import com.freeletics.mad.navigator.NavEvent.PermissionsResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
 import com.freeletics.mad.navigator.internal.DelegatingOnBackPressedCallback
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
-import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import kotlin.reflect.KClass
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -97,30 +95,6 @@ public open class NavEventNavigator {
      */
     public fun navigateTo(route: NavRoute) {
         val event = NavigateToEvent(route)
-        sendNavEvent(event)
-    }
-
-    /**
-     * Triggers a new [NavEvent] that pops the back stack to [T]. If [inclusive] is `true` the
-     * [T] destination itself will also be popped. Afterwards it will navigate to [route].
-     *
-     * Replace calls to this with a call to [navigateBackTo] followed by a call to [navigateTo].
-     */
-    @ObsoleteNavigatorApi
-    public inline fun <reified T : BaseRoute> navigateToOnTopOf(
-        route: NavRoute,
-        inclusive: Boolean = false
-    ) {
-        navigateToOnTopOf(route, T::class, inclusive)
-    }
-
-    @InternalNavigatorApi
-    public fun navigateToOnTopOf(
-        route: NavRoute,
-        popUpTo: KClass<out BaseRoute>,
-        inclusive: Boolean = false
-    ) {
-        val event = NavigateToOnTopOfEvent(route, popUpTo, inclusive)
         sendNavEvent(event)
     }
 

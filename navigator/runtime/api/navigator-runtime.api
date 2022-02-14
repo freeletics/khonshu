@@ -18,7 +18,6 @@ public class com/freeletics/mad/navigator/NavEventNavigator {
 	public final fun navigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;)V
 	public final fun navigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;Ljava/lang/Object;)V
 	public final fun navigateTo (Lcom/freeletics/mad/navigator/NavRoute;)V
-	public static synthetic fun navigateToOnTopOf$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lcom/freeletics/mad/navigator/NavRoute;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
 	public final fun navigateToRoot (Lcom/freeletics/mad/navigator/NavRoot;Z)V
 	public static synthetic fun navigateToRoot$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lcom/freeletics/mad/navigator/NavRoot;ZILjava/lang/Object;)V
 	public final fun navigateUp ()V

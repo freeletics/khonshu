@@ -24,17 +24,6 @@ public sealed interface NavEvent {
     ) : NavEvent
 
     /**
-     * Navigates back to the given [popUpTo]. If [inclusive] is `true` the destination
-     * itself will also be popped of the back stack. Then navigates to the given [route].
-     */
-    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class NavigateToOnTopOfEvent(
-        internal val route: NavRoute,
-        internal val popUpTo: KClass<out BaseRoute>,
-        internal val inclusive: Boolean,
-    ) : NavEvent
-
-    /**
      * Navigates to the given [root]. The current back stack will be popped and saved.
      * Whether the backstack of the given route is restored depends on [restoreRootState].
      */
