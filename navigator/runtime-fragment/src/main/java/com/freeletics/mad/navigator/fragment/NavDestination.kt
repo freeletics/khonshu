@@ -4,11 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.freeletics.mad.navigator.NavRoot
+import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.fragment.NavDestination.Activity
 import com.freeletics.mad.navigator.fragment.NavDestination.Dialog
-import com.freeletics.mad.navigator.fragment.NavDestination.RootScreen
 import com.freeletics.mad.navigator.fragment.NavDestination.Screen
 import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import kotlin.reflect.KClass
@@ -22,16 +21,6 @@ import kotlin.reflect.KClass
 public inline fun <reified T : NavRoute, reified F : Fragment> ScreenDestination(
     destinationId: Int,
 ): NavDestination = Screen(T::class, destinationId, F::class)
-
-/**
- * Creates a new [NavDestination] that represents a full screen. The class of [T] will be used
- * as a unique identifier together with [destinationId]. The given `Fragment` class  [F] will be
- * shown when the screen is being navigated to using an instance of [T].
- */
-@Suppress("FunctionName")
-public inline fun <reified T : NavRoot, reified F : Fragment> RootScreenDestination(
-    destinationId: Int,
-): NavDestination = RootScreen(T::class, destinationId, F::class)
 
 /**
  * Creates a new [NavDestination] that represents a dialog. The class of [T] will be used
@@ -67,34 +56,16 @@ public sealed interface NavDestination {
      * navigated to using an instance of [route].
      */
     public class Screen @ObsoleteNavigatorApi constructor(
-        internal val route: KClass<out NavRoute>,
+        internal val route: KClass<out BaseRoute>,
         internal val destinationId: Int,
         internal val fragmentClass: KClass<out Fragment>,
         internal val defaultArguments: Bundle?,
     ) : NavDestination {
         public constructor(
-            route: KClass<out NavRoute>,
+            route: KClass<out BaseRoute>,
             destinationId: Int,
             fragmentClass: KClass<out Fragment>,
         ) : this(route, destinationId, fragmentClass, null)
-    }
-
-    /**
-     * Represents a full screen. The [root] will be used as a unique identifier together
-     * with [destinationId]. The given [fragmentClass] will be shown when the screen is being
-     * navigated to using an instance of [root].
-     */
-    public class RootScreen @ObsoleteNavigatorApi constructor(
-        internal val root: KClass<out NavRoot>,
-        internal val destinationId: Int,
-        internal val fragmentClass: KClass<out Fragment>,
-        internal val defaultArguments: Bundle?,
-    ) : NavDestination {
-        public constructor(
-            root: KClass<out NavRoot>,
-            destinationId: Int,
-            fragmentClass: KClass<out Fragment>,
-        ) : this(root, destinationId, fragmentClass, null)
     }
 
     /**

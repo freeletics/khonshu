@@ -133,16 +133,14 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         if (navigation != null) {
             return CommonData.Navigation(
                 navigator = fragmentNavEventNavigator,
-                navRoute = navigation.requireClassArgument("route", 0, module),
-                navRoot = null,
+                route = navigation.requireClassArgument("route", 0, module),
             )
         }
         val rootNavigation = declaration.findAnnotation(fragmentRootNavDestinationFqName, module)
         if (rootNavigation != null) {
             return CommonData.Navigation(
                 navigator = fragmentNavEventNavigator,
-                navRoute = null,
-                navRoot = rootNavigation.requireClassArgument("root", 0, module),
+                route = rootNavigation.requireClassArgument("root", 0, module),
             )
         }
         return null
@@ -183,16 +181,14 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         if (navigation != null) {
             return CommonData.Navigation(
                 navigator = navEventNavigator,
-                navRoute = navigation.requireClassArgument("route", 0, module),
-                navRoot = null,
+                route = navigation.requireClassArgument("route", 0, module),
             )
         }
         val rootNavigation = declaration.findAnnotation(composeRootNavDestinationFqName, module)
         if (rootNavigation != null) {
             return CommonData.Navigation(
                 navEventNavigator,
-                navRoute = null,
-                navRoot = rootNavigation.requireClassArgument("root", 0, module),
+                route = rootNavigation.requireClassArgument("root", 0, module),
             )
         }
         return null

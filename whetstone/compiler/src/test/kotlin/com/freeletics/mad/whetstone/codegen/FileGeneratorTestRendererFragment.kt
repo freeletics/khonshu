@@ -21,7 +21,6 @@ internal class FileGeneratorTestRendererFragment {
         navigation = CommonData.Navigation(
             fragmentNavEventNavigator,
             ClassName("com.test", "TestRoute"),
-            null,
         ),
         coroutinesEnabled = true,
         rxJavaEnabled = true,
@@ -41,7 +40,7 @@ internal class FileGeneratorTestRendererFragment {
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
             import com.freeletics.mad.navigator.fragment.handleNavigation
-            import com.freeletics.mad.navigator.fragment.requireNavRoute
+            import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
@@ -114,7 +113,7 @@ internal class FileGeneratorTestRendererFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::testStateMachine.isInitialized) {
-                  val testRoute = requireNavRoute<TestRoute>()
+                  val testRoute = requireRoute<TestRoute>()
                   inject(testRoute)
                 }
             
@@ -269,7 +268,7 @@ internal class FileGeneratorTestRendererFragment {
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
             import com.freeletics.mad.navigator.fragment.handleNavigation
-            import com.freeletics.mad.navigator.fragment.requireNavRoute
+            import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
@@ -342,7 +341,7 @@ internal class FileGeneratorTestRendererFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::testStateMachine.isInitialized) {
-                  val testRoute = requireNavRoute<TestRoute>()
+                  val testRoute = requireRoute<TestRoute>()
                   inject(testRoute)
                 }
             

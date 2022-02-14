@@ -19,7 +19,6 @@ internal class FileGeneratorTestCompose {
         navigation = CommonData.Navigation(
             navEventNavigator,
             ClassName("com.test", "TestRoute"),
-            null,
         ),
         coroutinesEnabled = true,
         rxJavaEnabled = true,

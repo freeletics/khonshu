@@ -9,8 +9,6 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.KModifier.LATEINIT
 import com.squareup.kotlinpoet.KModifier.PRIVATE
-import com.squareup.kotlinpoet.MemberName
-import com.squareup.kotlinpoet.MemberName.Companion.member
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 
@@ -91,21 +89,15 @@ internal fun optInAnnotation(): AnnotationSpec {
 }
 
 internal fun CommonData.Navigation?.asParameter(): ParameterSpec {
-    if (this?.navRoute != null) {
-        return ParameterSpec.builder(navRoute.propertyName, navRoute).build()
-    }
-    if (this?.navRoot != null) {
-        return ParameterSpec.builder(navRoot.propertyName, navRoot).build()
+    if (this?.route != null) {
+        return ParameterSpec.builder(route.propertyName, route).build()
     }
     return ParameterSpec.builder("arguments", bundle).build()
 }
 
 internal fun CommonData.Navigation?.fragmentConverter(): CodeBlock {
-    if (this?.navRoute != null) {
-        return CodeBlock.of("%M<%T>()", requireNavRoute, navRoute)
-    }
-    if (this?.navRoot != null) {
-        return CodeBlock.of("%M<%T>()", requireNavRoot, navRoot)
+    if (this?.route != null) {
+        return CodeBlock.of("%M<%T>()", requireRoute, route)
     }
     return CodeBlock.of("requireArguments()")
 }
