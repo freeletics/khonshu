@@ -9,7 +9,7 @@ import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.composeView
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.disposeOnLifecycleDestroyed
-import com.freeletics.mad.whetstone.codegen.util.fragmentConverter
+import com.freeletics.mad.whetstone.codegen.util.requireArguments
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.fragmentViewModelProvider
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
@@ -59,7 +59,7 @@ internal class ComposeFragmentGenerator(
             .addParameter("savedInstanceState", bundle.copy(nullable = true))
             .returns(view)
             .addCode("val %N = ", argumentsParameter)
-            .addCode(data.navigation.fragmentConverter())
+            .addCode(data.navigation.requireArguments())
             .addCode("\n")
             .apply {
                 if (data.navigation != null) {
@@ -119,7 +119,8 @@ internal class ComposeFragmentGenerator(
         return FunSpec.builder("setupNavigation")
             .addModifiers(PRIVATE)
             .addParameter(argumentsParameter)
-            .beginControlFlow("val viewModelProvider = %M<%T>(this, %T::class) { dependencies, handle -> ", fragmentViewModelProvider, data.dependencies, data.parentScope)
+            .beginControlFlow("val viewModelProvider = %M<%T>(this, %T::class) { dependencies, handle -> ",
+                fragmentViewModelProvider, data.dependencies, data.parentScope)
             // arguments: external method
             .addStatement("%T(dependencies, handle, %N)", viewModelClassName, argumentsParameter)
             .endControlFlow()

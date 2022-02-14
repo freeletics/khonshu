@@ -1,6 +1,5 @@
 package com.freeletics.mad.whetstone
 
-import com.freeletics.mad.whetstone.CommonData.Navigation
 import com.squareup.kotlinpoet.ClassName
 
 internal sealed interface BaseData {
@@ -20,10 +19,24 @@ internal sealed interface CommonData : BaseData {
 
     val coroutinesEnabled: Boolean
     val rxJavaEnabled: Boolean
+}
 
-    data class Navigation(
-        val route: ClassName?,
-    )
+internal sealed interface Navigation {
+    val route: ClassName
+    val destinationType: String
+    val destinationScope: ClassName
+
+    data class Compose(
+        override val route: ClassName,
+        override val destinationType: String,
+        override val destinationScope: ClassName,
+    ) : Navigation
+
+    data class Fragment(
+        override val route: ClassName,
+        override  val destinationType: String,
+        override val destinationScope: ClassName,
+    ) : Navigation
 }
 
 internal data class ComposeScreenData(
@@ -37,7 +50,7 @@ internal data class ComposeScreenData(
 
     override val stateMachine: ClassName,
 
-    override val navigation: Navigation?,
+    override val navigation: Navigation.Compose?,
 
     override val coroutinesEnabled: Boolean,
     override val rxJavaEnabled: Boolean,
@@ -55,7 +68,7 @@ internal data class ComposeFragmentData(
     override val stateMachine: ClassName,
     val fragmentBaseClass: ClassName,
 
-    override val navigation: Navigation?,
+    override val navigation: Navigation.Fragment?,
 
     val enableInsetHandling: Boolean,
     override val coroutinesEnabled: Boolean,
@@ -75,7 +88,7 @@ internal data class RendererFragmentData(
     val factory: ClassName,
     val fragmentBaseClass: ClassName,
 
-    override val navigation: Navigation?,
+    override val navigation: Navigation.Fragment?,
 
     override val coroutinesEnabled: Boolean,
     override val rxJavaEnabled: Boolean,

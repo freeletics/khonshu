@@ -20,7 +20,8 @@ import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
-internal val Generator<out CommonData>.viewModelClassName get() = ClassName("${data.baseName}ViewModel")
+internal val Generator<out CommonData>.viewModelClassName
+    get() = ClassName("${data.baseName}ViewModel")
 
 internal const val viewModelComponentName = "component"
 

@@ -6,7 +6,7 @@ import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.bundle
-import com.freeletics.mad.whetstone.codegen.util.fragmentConverter
+import com.freeletics.mad.whetstone.codegen.util.requireArguments
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.fragmentViewModelProvider
 import com.freeletics.mad.whetstone.codegen.util.lateinitPropertySpec
@@ -51,7 +51,7 @@ internal class RendererFragmentGenerator(
             .returns(view)
             .beginControlFlow("if (!::%L.isInitialized)", data.stateMachine.propertyName)
             .addCode("val %N = ", argumentsParameter)
-            .addCode(data.navigation.fragmentConverter())
+            .addCode(data.navigation.requireArguments())
             .addCode("\n")
             .addStatement("%L(%N)", rendererFragmentInjectName, argumentsParameter)
             .endControlFlow()
@@ -69,7 +69,8 @@ internal class RendererFragmentGenerator(
         return FunSpec.builder(rendererFragmentInjectName)
             .addModifiers(PRIVATE)
             .addParameter(argumentsParameter)
-            .beginControlFlow("val viewModelProvider = %M<%T>(this, %T::class) { dependencies, handle -> ", fragmentViewModelProvider, data.dependencies, data.parentScope)
+            .beginControlFlow("val viewModelProvider = %M<%T>(this, %T::class) { dependencies, handle -> ",
+                fragmentViewModelProvider, data.dependencies, data.parentScope)
             .addStatement("%T(dependencies, handle, %N)", viewModelClassName, argumentsParameter)
             .endControlFlow()
             .addStatement("val viewModel = viewModelProvider[%T::class.java]", viewModelClassName)

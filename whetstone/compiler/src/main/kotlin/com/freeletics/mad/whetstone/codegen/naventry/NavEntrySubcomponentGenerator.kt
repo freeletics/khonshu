@@ -17,9 +17,11 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.TypeSpec
 
-internal val Generator<NavEntryData>.navEntrySubcomponentClassName get() = ClassName("NavEntry${data.baseName}Component")
+internal val Generator<NavEntryData>.navEntrySubcomponentClassName
+    get() = ClassName("NavEntry${data.baseName}Component")
 
-internal val Generator<NavEntryData>.navEntrySubcomponentFactoryClassName get() = navEntrySubcomponentClassName.nestedClass("Factory")
+internal val Generator<NavEntryData>.navEntrySubcomponentFactoryClassName
+    get() = navEntrySubcomponentClassName.nestedClass("Factory")
 
 internal const val navEntrySubcomponentFactoryCreateName = "create"
 

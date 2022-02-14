@@ -28,7 +28,8 @@ import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeSpec
 
-internal val Generator<out CommonData>.retainedComponentClassName get() = ClassName("Retained${data.baseName}Component")
+internal val Generator<out CommonData>.retainedComponentClassName
+    get() = ClassName("Retained${data.baseName}Component")
 
 internal const val retainedComponentFactoryCreateName = "create"
 

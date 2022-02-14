@@ -16,6 +16,7 @@ import com.freeletics.mad.whetstone.codegen.util.optionalBooleanArgument
 import com.freeletics.mad.whetstone.codegen.util.optionalClassArgument
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.requireClassArgument
+import com.freeletics.mad.whetstone.codegen.util.requireEnumArgument
 import com.freeletics.mad.whetstone.codegen.util.toFunctionReference
 import com.google.auto.service.AutoService
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
@@ -47,30 +48,29 @@ public class WhetstoneCodeGenerator : CodeGenerator {
     ): Collection<GeneratedFile> {
         val rendererFragment = projectFiles
             .classAndInnerClassReferences(module)
-            .mapNotNull { reference -> generateRendererCode(codeGenDir, module, reference) }
+            .mapNotNull { reference -> generateRendererCode(codeGenDir, reference) }
 
         val composeScreen = projectFiles
             .flatMap { it.declarations.filterIsInstance<KtNamedFunction>() }
             .map { it.toFunctionReference(module) }
-            .mapNotNull { function -> generateComposeScreenCode(codeGenDir, module, function) }
+            .mapNotNull { function -> generateComposeScreenCode(codeGenDir, function) }
 
         val composeFragment = projectFiles
             .flatMap { it.declarations.filterIsInstance<KtNamedFunction>() }
             .map { it.toFunctionReference(module) }
-            .mapNotNull { function -> generateComposeFragmentCode(codeGenDir, module, function) }
+            .mapNotNull { function -> generateComposeFragmentCode(codeGenDir, function) }
 
         val navEntry = projectFiles
             .classAndInnerClassReferences(module)
             .filter { it.isAnnotatedWith(moduleFqName) }
             .flatMap { it.functions }
-            .mapNotNull { function -> generateNavEntryCode(codeGenDir, module, function) }
+            .mapNotNull { function -> generateNavEntryCode(codeGenDir, function) }
 
         return rendererFragment.toList() + composeFragment + composeScreen + navEntry
     }
 
     private fun generateRendererCode(
         codeGenDir: File,
-        module: ModuleDescriptor,
         declaration: ClassReference
     ): GeneratedFile? {
         val renderer = declaration.findAnnotation(rendererFragmentFqName) ?: return null
@@ -85,7 +85,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             fragmentBaseClass = renderer.optionalClassArgument("fragmentBaseClass", 5) ?: fragment,
             coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
             rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
-            navigation = fragmentNavigation(module, declaration),
+            navigation = fragmentNavigation(declaration),
         )
 
         val file = FileGenerator().generate(data)
@@ -99,7 +99,6 @@ public class WhetstoneCodeGenerator : CodeGenerator {
 
     private fun generateComposeFragmentCode(
         codeGenDir: File,
-        module: ModuleDescriptor,
         declaration: TopLevelFunctionReference.Psi
     ): GeneratedFile? {
         val compose = declaration.findAnnotation(composeFragmentFqName) ?: return null
@@ -114,7 +113,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             enableInsetHandling = compose.optionalBooleanArgument("enableInsetHandling", 5) ?: false,
             coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
             rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
-            navigation = fragmentNavigation(module, declaration),
+            navigation = fragmentNavigation(declaration),
         )
 
         val file = FileGenerator().generate(data)
@@ -127,19 +126,22 @@ public class WhetstoneCodeGenerator : CodeGenerator {
     }
 
     private fun fragmentNavigation(
-        module: ModuleDescriptor,
         declaration: AnnotatedReference
-    ): CommonData.Navigation? {
+    ): Navigation.Fragment? {
         val navigation = declaration.findAnnotation(fragmentNavDestinationFqName)
         if (navigation != null) {
-            return CommonData.Navigation(
+            return Navigation.Fragment(
                 route = navigation.requireClassArgument("route", 0),
+                destinationType = navigation.requireEnumArgument("type", 1),
+                destinationScope = navigation.requireClassArgument("destinationScope", 2),
             )
         }
         val rootNavigation = declaration.findAnnotation(fragmentRootNavDestinationFqName)
         if (rootNavigation != null) {
-            return CommonData.Navigation(
+            return Navigation.Fragment(
                 route = rootNavigation.requireClassArgument("root", 0),
+                destinationType = "SCREEN",
+                destinationScope = rootNavigation.requireClassArgument("destinationScope", 1),
             )
         }
         return null
@@ -147,7 +149,6 @@ public class WhetstoneCodeGenerator : CodeGenerator {
 
     private fun generateComposeScreenCode(
         codeGenDir: File,
-        module: ModuleDescriptor,
         declaration: TopLevelFunctionReference.Psi,
     ): GeneratedFile? {
         val compose = declaration.findAnnotation(composeFqName) ?: return null
@@ -160,7 +161,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             stateMachine = compose.requireClassArgument("stateMachine", 3),
             coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 4) ?: false,
             rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 5) ?: false,
-            navigation = composeNavigation(module, declaration),
+            navigation = composeNavigation(declaration),
         )
 
         val file = FileGenerator().generate(data)
@@ -173,19 +174,22 @@ public class WhetstoneCodeGenerator : CodeGenerator {
     }
 
     private fun composeNavigation(
-        module: ModuleDescriptor,
         declaration: AnnotatedReference,
-    ): CommonData.Navigation? {
+    ): Navigation.Compose? {
         val navigation = declaration.findAnnotation(composeNavDestinationFqName)
         if (navigation != null) {
-            return CommonData.Navigation(
+            return Navigation.Compose(
                 route = navigation.requireClassArgument("route", 0),
+                destinationType = navigation.requireEnumArgument("type", 1),
+                destinationScope = navigation.requireClassArgument("destinationScope", 2),
             )
         }
         val rootNavigation = declaration.findAnnotation(composeRootNavDestinationFqName)
         if (rootNavigation != null) {
-            return CommonData.Navigation(
+            return Navigation.Compose(
                 route = rootNavigation.requireClassArgument("root", 0),
+                destinationType = "SCREEN",
+                destinationScope = rootNavigation.requireClassArgument("destinationScope", 1),
             )
         }
         return null
@@ -193,7 +197,6 @@ public class WhetstoneCodeGenerator : CodeGenerator {
 
     private fun generateNavEntryCode(
         codeGenDir: File,
-        module: ModuleDescriptor,
         declaration: FunctionReference
     ): GeneratedFile? {
         val component = declaration.findAnnotation(navEntryComponentFqName) ?: return null
