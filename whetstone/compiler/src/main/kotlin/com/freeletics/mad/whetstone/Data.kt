@@ -1,6 +1,14 @@
 package com.freeletics.mad.whetstone
 
+import com.freeletics.mad.whetstone.codegen.util.composeBottomSheetDestination
+import com.freeletics.mad.whetstone.codegen.util.composeDestination
+import com.freeletics.mad.whetstone.codegen.util.composeDialogDestination
+import com.freeletics.mad.whetstone.codegen.util.composeScreenDestination
+import com.freeletics.mad.whetstone.codegen.util.fragmentDestination
+import com.freeletics.mad.whetstone.codegen.util.fragmentDialogDestination
+import com.freeletics.mad.whetstone.codegen.util.fragmentScreenDestination
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.MemberName
 
 internal sealed interface BaseData {
     val baseName: String
@@ -23,20 +31,40 @@ internal sealed interface CommonData : BaseData {
 
 internal sealed interface Navigation {
     val route: ClassName
-    val destinationType: String
+    val destinationClass: ClassName
     val destinationScope: ClassName
+    val destinationMethod: MemberName?
 
     data class Compose(
         override val route: ClassName,
-        override val destinationType: String,
+        private val destinationType: String,
         override val destinationScope: ClassName,
-    ) : Navigation
+    ) : Navigation {
+        override val destinationClass: ClassName = composeDestination
+
+        override val destinationMethod = when(destinationType) {
+            "NONE" -> null
+            "SCREEN" -> composeScreenDestination
+            "DIALOG" -> composeDialogDestination
+            "BOTTOM_SHEET" -> composeBottomSheetDestination
+            else -> throw IllegalArgumentException("Unknown destinationType $destinationType")
+        }
+    }
 
     data class Fragment(
         override val route: ClassName,
-        override  val destinationType: String,
+        private val destinationType: String,
         override val destinationScope: ClassName,
-    ) : Navigation
+    ) : Navigation {
+        override val destinationClass: ClassName = fragmentDestination
+
+        override val destinationMethod = when(destinationType) {
+            "NONE" -> null
+            "SCREEN" -> fragmentScreenDestination
+            "DIALOG" -> fragmentDialogDestination
+            else -> throw IllegalArgumentException("Unknown destinationType $destinationType")
+        }
+    }
 }
 
 internal data class ComposeScreenData(

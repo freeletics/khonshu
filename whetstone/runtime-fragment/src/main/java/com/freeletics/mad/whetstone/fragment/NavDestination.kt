@@ -19,7 +19,7 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class NavDestination(
     val route: KClass<out NavRoute>,
-    val type: DestinationType = DestinationType.NONE,
+    val type: DestinationType,
     val destinationScope: KClass<*>,
 )
 
