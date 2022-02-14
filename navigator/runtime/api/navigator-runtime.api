@@ -5,7 +5,7 @@ public final class com/freeletics/mad/navigator/ActivityResultRequest : com/free
 public abstract interface class com/freeletics/mad/navigator/BaseRoute {
 }
 
-public abstract class com/freeletics/mad/navigator/NavEventNavigator {
+public class com/freeletics/mad/navigator/NavEventNavigator {
 	public fun <init> ()V
 	public final fun backPresses ()Lkotlinx/coroutines/flow/Flow;
 	public final fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
