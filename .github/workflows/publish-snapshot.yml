@@ -3,7 +3,8 @@ name: Publish Snapshot
 on:
   push:
     branches:
-      - main
+      - '**'
+  pull_request:
 
 jobs:
   publish:
@@ -22,14 +23,18 @@ jobs:
       - name: Install Android SDK
         run: ./.github/android-sdk.sh
 
-      - name: Retrieve version
+      - name: Set version for branch
+        if: github.event_name != 'pull_request'
         run: |
-          echo "VERSION_NAME=$(cat gradle.properties | grep -w "VERSION_NAME" | cut -d'=' -f2)" >> $GITHUB_ENV
-        shell: bash
+          echo "ORG_GRADLE_PROJECT_VERSION_NAME=${{ github.ref_name }}-SNAPSHOT" >> $GITHUB_ENV
+
+      - name: Set version for pull request
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "ORG_GRADLE_PROJECT_VERSION_NAME=pr${{ github.event.number }}-SNAPSHOT" >> $GITHUB_ENV
 
       - name: Publish snapshot
         run: ./gradlew publish --no-daemon --no-parallel
-        if: ${{ endsWith(env.VERSION_NAME, '-SNAPSHOT') }}
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
