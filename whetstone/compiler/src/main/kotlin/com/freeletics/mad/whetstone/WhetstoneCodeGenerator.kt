@@ -79,12 +79,12 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         val data = RendererFragmentData(
             baseName = declaration.shortName,
             packageName = declaration.packageFqName.packageString(),
-            scope = renderer.requireClassArgument("scope", 0, module),
-            parentScope = renderer.requireClassArgument("parentScope", 1, module),
-            dependencies = renderer.requireClassArgument("dependencies", 2, module),
-            stateMachine = renderer.requireClassArgument("stateMachine", 3, module),
-            factory = renderer.requireClassArgument("rendererFactory", 4, module),
-            fragmentBaseClass = renderer.optionalClassArgument("fragmentBaseClass", 5, module) ?: fragment,
+            scope = renderer.requireClassArgument("scope", 0),
+            parentScope = renderer.requireClassArgument("parentScope", 1),
+            dependencies = renderer.requireClassArgument("dependencies", 2),
+            stateMachine = renderer.requireClassArgument("stateMachine", 3),
+            factory = renderer.requireClassArgument("rendererFactory", 4),
+            fragmentBaseClass = renderer.optionalClassArgument("fragmentBaseClass", 5) ?: fragment,
             coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
             rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
             navigation = fragmentNavigation(module, declaration),
@@ -108,11 +108,11 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         val data = ComposeFragmentData(
             baseName = declaration.name,
             packageName = declaration.packageName(),
-            scope = compose.requireClassArgument("scope", 0, module),
-            parentScope = compose.requireClassArgument("parentScope", 1, module),
-            dependencies = compose.requireClassArgument("dependencies", 2, module),
-            stateMachine = compose.requireClassArgument("stateMachine", 3, module),
-            fragmentBaseClass = compose.optionalClassArgument("fragmentBaseClass", 4, module) ?: fragment,
+            scope = compose.requireClassArgument("scope", 0),
+            parentScope = compose.requireClassArgument("parentScope", 1),
+            dependencies = compose.requireClassArgument("dependencies", 2),
+            stateMachine = compose.requireClassArgument("stateMachine", 3),
+            fragmentBaseClass = compose.optionalClassArgument("fragmentBaseClass", 4) ?: fragment,
             enableInsetHandling = compose.optionalBooleanArgument("enableInsetHandling", 5) ?: false,
             coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
             rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
@@ -136,14 +136,14 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         if (navigation != null) {
             return CommonData.Navigation(
                 navigator = fragmentNavEventNavigator,
-                route = navigation.requireClassArgument("route", 0, module),
+                route = navigation.requireClassArgument("route", 0),
             )
         }
         val rootNavigation = declaration.findAnnotation(fragmentRootNavDestinationFqName)
         if (rootNavigation != null) {
             return CommonData.Navigation(
                 navigator = fragmentNavEventNavigator,
-                route = rootNavigation.requireClassArgument("root", 0, module),
+                route = rootNavigation.requireClassArgument("root", 0),
             )
         }
         return null
@@ -158,10 +158,10 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         val data = ComposeScreenData(
             baseName = declaration.name,
             packageName = declaration.packageName(),
-            scope = compose.requireClassArgument("scope", 0, module),
-            parentScope = compose.requireClassArgument("parentScope", 1, module),
-            dependencies = compose.requireClassArgument("dependencies", 2, module),
-            stateMachine = compose.requireClassArgument("stateMachine", 3, module),
+            scope = compose.requireClassArgument("scope", 0),
+            parentScope = compose.requireClassArgument("parentScope", 1),
+            dependencies = compose.requireClassArgument("dependencies", 2),
+            stateMachine = compose.requireClassArgument("stateMachine", 3),
             coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 4) ?: false,
             rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 5) ?: false,
             navigation = composeNavigation(module, declaration),
@@ -184,14 +184,14 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         if (navigation != null) {
             return CommonData.Navigation(
                 navigator = navEventNavigator,
-                route = navigation.requireClassArgument("route", 0, module),
+                route = navigation.requireClassArgument("route", 0),
             )
         }
         val rootNavigation = declaration.findAnnotation(composeRootNavDestinationFqName)
         if (rootNavigation != null) {
             return CommonData.Navigation(
                 navEventNavigator,
-                route = rootNavigation.requireClassArgument("root", 0, module),
+                route = rootNavigation.requireClassArgument("root", 0),
             )
         }
         return null
@@ -203,12 +203,12 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         declaration: FunctionReference
     ): GeneratedFile? {
         val component = declaration.findAnnotation(navEntryComponentFqName) ?: return null
-        val scope = component.requireClassArgument("scope", 0, module)
+        val scope = component.requireClassArgument("scope", 0)
         val data = NavEntryData(
             baseName = scope.simpleName,
             packageName = declaration.declaringClass.packageName(),
             scope = scope,
-            parentScope = component.requireClassArgument("parentScope", 1, module),
+            parentScope = component.requireClassArgument("parentScope", 1),
             coroutinesEnabled = component.optionalBooleanArgument("coroutinesEnabled", 2) ?: false,
             rxJavaEnabled = component.optionalBooleanArgument("rxJavaEnabled", 3) ?: false,
         )
