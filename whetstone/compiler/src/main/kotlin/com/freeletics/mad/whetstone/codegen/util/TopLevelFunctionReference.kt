@@ -23,12 +23,12 @@ import org.jetbrains.kotlin.descriptors.ModuleDescriptor
  * [FunctionDescriptor] references, to streamline parsing.
  */
 @ExperimentalAnvilApi
-public sealed class TopLevelFunctionReference : AnnotatedReference {
+internal sealed class TopLevelFunctionReference : AnnotatedReference {
 
-  public abstract val fqName: FqName
-  public val name: String get() = fqName.shortName().asString()
+  abstract val fqName: FqName
+  val name: String get() = fqName.shortName().asString()
 
-  public abstract val module: ModuleDescriptor
+  abstract val module: ModuleDescriptor
 
   override fun toString(): String = "$fqName()"
 
@@ -45,26 +45,26 @@ public sealed class TopLevelFunctionReference : AnnotatedReference {
     return fqName.hashCode()
   }
 
-  public class Psi internal constructor(
-    public val function: KtFunction,
-    public override val module: ModuleDescriptor,
-    public override val fqName: FqName,
+  class Psi internal constructor(
+    val function: KtFunction,
+    override val module: ModuleDescriptor,
+    override val fqName: FqName,
   ) : TopLevelFunctionReference() {
 
-    public override val annotations: List<AnnotationReference.Psi> by lazy(NONE) {
+    override val annotations: List<AnnotationReference.Psi> by lazy(NONE) {
       function.annotationEntries.map {
         it.toAnnotationReference(declaringClass = null, module)
       }
     }
   }
 
-  public class Descriptor internal constructor(
-    public val function: FunctionDescriptor,
-    public override val module: ModuleDescriptor,
-    public override val fqName: FqName = function.fqNameSafe,
+  class Descriptor internal constructor(
+    val function: FunctionDescriptor,
+    override val module: ModuleDescriptor,
+    override val fqName: FqName = function.fqNameSafe,
   ) : TopLevelFunctionReference() {
 
-    public override val annotations: List<AnnotationReference.Descriptor> by lazy(NONE) {
+    override val annotations: List<AnnotationReference.Descriptor> by lazy(NONE) {
       function.annotations.map {
         it.toAnnotationReference(declaringClass = null, module)
       }
@@ -73,7 +73,7 @@ public sealed class TopLevelFunctionReference : AnnotatedReference {
 }
 
 @ExperimentalAnvilApi
-public fun KtFunction.toFunctionReference(
+internal fun KtFunction.toFunctionReference(
   module: ModuleDescriptor,
 ): TopLevelFunctionReference.Psi {
   val fqName = requireFqName()
@@ -81,7 +81,7 @@ public fun KtFunction.toFunctionReference(
 }
 
 @ExperimentalAnvilApi
-public fun FunctionDescriptor.toFunctionReference(
+internal fun FunctionDescriptor.toFunctionReference(
   module: ModuleDescriptor,
 ): TopLevelFunctionReference.Descriptor {
   return TopLevelFunctionReference.Descriptor(this, module)
@@ -89,7 +89,7 @@ public fun FunctionDescriptor.toFunctionReference(
 
 @ExperimentalAnvilApi
 @Suppress("FunctionName")
-public fun AnvilCompilationExceptionTopLevelFunctionReference(
+internal fun AnvilCompilationExceptionTopLevelFunctionReference(
   functionReference: TopLevelFunctionReference,
   message: String,
   cause: Throwable? = null
