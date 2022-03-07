@@ -1,7 +1,7 @@
 package com.freeletics.mad.whetstone.codegen.common
 
 import com.freeletics.mad.whetstone.CommonData
-import com.freeletics.mad.whetstone.codegen.util.Generator
+import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
 import com.freeletics.mad.whetstone.codegen.util.coroutineScope

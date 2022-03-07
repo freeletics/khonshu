@@ -1,7 +1,7 @@
 package com.freeletics.mad.whetstone.codegen.naventry
 
 import com.freeletics.mad.whetstone.NavEntryData
-import com.freeletics.mad.whetstone.codegen.util.Generator
+import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.internalWhetstoneApi
 import com.squareup.kotlinpoet.FunSpec

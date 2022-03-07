@@ -1,10 +1,12 @@
 package com.freeletics.mad.whetstone
 
 import com.freeletics.mad.whetstone.codegen.FileGenerator
+import com.freeletics.mad.whetstone.codegen.util.TopLevelFunctionReference
 import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.composeNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.composeRootNavDestinationFqName
+import com.freeletics.mad.whetstone.codegen.util.findAnnotation
 import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavEventNavigator
@@ -12,26 +14,25 @@ import com.freeletics.mad.whetstone.codegen.util.fragmentRootNavDestinationFqNam
 import com.freeletics.mad.whetstone.codegen.util.moduleFqName
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
 import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
+import com.freeletics.mad.whetstone.codegen.util.optionalBooleanArgument
+import com.freeletics.mad.whetstone.codegen.util.optionalClassArgument
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
+import com.freeletics.mad.whetstone.codegen.util.requireClassArgument
+import com.freeletics.mad.whetstone.codegen.util.toFunctionReference
 import com.google.auto.service.AutoService
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
-import com.squareup.anvil.compiler.api.AnvilCompilationException
 import com.squareup.anvil.compiler.api.AnvilContext
 import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.api.GeneratedFile
 import com.squareup.anvil.compiler.api.createGeneratedFile
-import com.squareup.anvil.compiler.internal.asClassName
-import com.squareup.anvil.compiler.internal.classesAndInnerClass
-import com.squareup.anvil.compiler.internal.findAnnotation
-import com.squareup.anvil.compiler.internal.findAnnotationArgument
-import com.squareup.anvil.compiler.internal.requireFqName
-import com.squareup.kotlinpoet.ClassName
+import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
+import com.squareup.anvil.compiler.internal.reference.ClassReference
+import com.squareup.anvil.compiler.internal.reference.FunctionReference
+import com.squareup.anvil.compiler.internal.reference.classAndInnerClassReferences
 import java.io.File
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
-import org.jetbrains.kotlin.psi.KtAnnotationEntry
-import org.jetbrains.kotlin.psi.KtClassLiteralExpression
-import org.jetbrains.kotlin.psi.KtConstantExpression
-import org.jetbrains.kotlin.psi.KtDeclaration
+import org.jetbrains.kotlin.descriptors.containingPackage
+import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
 
@@ -47,22 +48,24 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         projectFiles: Collection<KtFile>
     ): Collection<GeneratedFile> {
         val rendererFragment = projectFiles
-            .classesAndInnerClass(module)
-            .mapNotNull { clazz -> generateRendererCode(codeGenDir, module, clazz) }
+            .classAndInnerClassReferences(module)
+            .mapNotNull { reference -> generateRendererCode(codeGenDir, module, reference) }
 
         val composeScreen = projectFiles
             .flatMap { it.declarations.filterIsInstance<KtNamedFunction>() }
+            .map { it.toFunctionReference(module) }
             .mapNotNull { function -> generateComposeScreenCode(codeGenDir, module, function) }
 
         val composeFragment = projectFiles
             .flatMap { it.declarations.filterIsInstance<KtNamedFunction>() }
+            .map { it.toFunctionReference(module) }
             .mapNotNull { function -> generateComposeFragmentCode(codeGenDir, module, function) }
 
         val navEntry = projectFiles
-            .classesAndInnerClass(module)
-            .filter { it.findAnnotation(moduleFqName, module) != null}
-            .flatMap { it.declarations }
-            .mapNotNull { clazz -> generateNavEntryCode(codeGenDir, module, clazz) }
+            .classAndInnerClassReferences(module)
+            .filter { it.isAnnotatedWith(moduleFqName) }
+            .flatMap { it.functions }
+            .mapNotNull { function -> generateNavEntryCode(codeGenDir, module, function) }
 
         return rendererFragment.toList() + composeFragment + composeScreen + navEntry
     }
@@ -70,12 +73,12 @@ public class WhetstoneCodeGenerator : CodeGenerator {
     private fun generateRendererCode(
         codeGenDir: File,
         module: ModuleDescriptor,
-        declaration: KtDeclaration
+        declaration: ClassReference
     ): GeneratedFile? {
-        val renderer = declaration.findAnnotation(rendererFragmentFqName, module) ?: return null
+        val renderer = declaration.findAnnotation(rendererFragmentFqName) ?: return null
         val data = RendererFragmentData(
-            baseName = declaration.name!!,
-            packageName = declaration.containingKtFile.packageName(),
+            baseName = declaration.shortName,
+            packageName = declaration.packageFqName.packageString(),
             scope = renderer.requireClassArgument("scope", 0, module),
             parentScope = renderer.requireClassArgument("parentScope", 1, module),
             dependencies = renderer.requireClassArgument("dependencies", 2, module),
@@ -99,12 +102,12 @@ public class WhetstoneCodeGenerator : CodeGenerator {
     private fun generateComposeFragmentCode(
         codeGenDir: File,
         module: ModuleDescriptor,
-        declaration: KtDeclaration
+        declaration: TopLevelFunctionReference.Psi
     ): GeneratedFile? {
-        val compose = declaration.findAnnotation(composeFragmentFqName, module) ?: return null
+        val compose = declaration.findAnnotation(composeFragmentFqName) ?: return null
         val data = ComposeFragmentData(
-            baseName = declaration.name!!,
-            packageName = declaration.containingKtFile.packageName(),
+            baseName = declaration.name,
+            packageName = declaration.packageName(),
             scope = compose.requireClassArgument("scope", 0, module),
             parentScope = compose.requireClassArgument("parentScope", 1, module),
             dependencies = compose.requireClassArgument("dependencies", 2, module),
@@ -127,16 +130,16 @@ public class WhetstoneCodeGenerator : CodeGenerator {
 
     private fun fragmentNavigation(
         module: ModuleDescriptor,
-        declaration: KtDeclaration
+        declaration: AnnotatedReference
     ): CommonData.Navigation? {
-        val navigation = declaration.findAnnotation(fragmentNavDestinationFqName, module)
+        val navigation = declaration.findAnnotation(fragmentNavDestinationFqName)
         if (navigation != null) {
             return CommonData.Navigation(
                 navigator = fragmentNavEventNavigator,
                 route = navigation.requireClassArgument("route", 0, module),
             )
         }
-        val rootNavigation = declaration.findAnnotation(fragmentRootNavDestinationFqName, module)
+        val rootNavigation = declaration.findAnnotation(fragmentRootNavDestinationFqName)
         if (rootNavigation != null) {
             return CommonData.Navigation(
                 navigator = fragmentNavEventNavigator,
@@ -149,12 +152,12 @@ public class WhetstoneCodeGenerator : CodeGenerator {
     private fun generateComposeScreenCode(
         codeGenDir: File,
         module: ModuleDescriptor,
-        declaration: KtDeclaration
+        declaration: TopLevelFunctionReference.Psi,
     ): GeneratedFile? {
-        val compose = declaration.findAnnotation(composeFqName, module) ?: return null
+        val compose = declaration.findAnnotation(composeFqName) ?: return null
         val data = ComposeScreenData(
-            baseName = declaration.name!!,
-            packageName = declaration.containingKtFile.packageName(),
+            baseName = declaration.name,
+            packageName = declaration.packageName(),
             scope = compose.requireClassArgument("scope", 0, module),
             parentScope = compose.requireClassArgument("parentScope", 1, module),
             dependencies = compose.requireClassArgument("dependencies", 2, module),
@@ -175,16 +178,16 @@ public class WhetstoneCodeGenerator : CodeGenerator {
 
     private fun composeNavigation(
         module: ModuleDescriptor,
-        declaration: KtDeclaration
+        declaration: AnnotatedReference,
     ): CommonData.Navigation? {
-        val navigation = declaration.findAnnotation(composeNavDestinationFqName, module)
+        val navigation = declaration.findAnnotation(composeNavDestinationFqName)
         if (navigation != null) {
             return CommonData.Navigation(
                 navigator = navEventNavigator,
                 route = navigation.requireClassArgument("route", 0, module),
             )
         }
-        val rootNavigation = declaration.findAnnotation(composeRootNavDestinationFqName, module)
+        val rootNavigation = declaration.findAnnotation(composeRootNavDestinationFqName)
         if (rootNavigation != null) {
             return CommonData.Navigation(
                 navEventNavigator,
@@ -197,13 +200,13 @@ public class WhetstoneCodeGenerator : CodeGenerator {
     private fun generateNavEntryCode(
         codeGenDir: File,
         module: ModuleDescriptor,
-        declaration: KtDeclaration
+        declaration: FunctionReference
     ): GeneratedFile? {
-        val component = declaration.findAnnotation(navEntryComponentFqName, module) ?: return null
+        val component = declaration.findAnnotation(navEntryComponentFqName) ?: return null
         val scope = component.requireClassArgument("scope", 0, module)
         val data = NavEntryData(
             baseName = scope.simpleName,
-            packageName = declaration.containingKtFile.packageName(),
+            packageName = declaration.declaringClass.packageName(),
             scope = scope,
             parentScope = component.requireClassArgument("parentScope", 1, module),
             coroutinesEnabled = component.optionalBooleanArgument("coroutinesEnabled", 2) ?: false,
@@ -219,60 +222,18 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         )
     }
 
-    private fun KtAnnotationEntry.requireClassArgument(
-        name: String,
-        index: Int,
-        module: ModuleDescriptor
-    ): ClassName {
-        val classLiteralExpression = findAnnotationArgument<KtClassLiteralExpression>(name, index)
-        if (classLiteralExpression != null) {
-            return classLiteralExpression.requireFqName(module).asClassName(module)
-        }
-        throw AnvilCompilationException(
-            "Couldn't find $name for ${requireFqName(module)}",
-            element = this
-        )
+    private fun TopLevelFunctionReference.packageName(): String {
+        return when(this) {
+            is TopLevelFunctionReference.Psi -> function.containingKtFile.packageFqName
+            is TopLevelFunctionReference.Descriptor -> function.containingPackage()!!
+        }.packageString()
     }
 
-    //TODO replace with a way to get default value
-    private fun KtAnnotationEntry.optionalClassArgument(
-        name: String,
-        index: Int,
-        module: ModuleDescriptor
-    ): ClassName? {
-        val classLiteralExpression = findAnnotationArgument<KtClassLiteralExpression>(name, index)
-        if (classLiteralExpression != null) {
-            return classLiteralExpression.requireFqName(module).asClassName(module)
-        }
-        return null
+    private fun ClassReference.packageName(): String {
+        return packageFqName.packageString()
     }
 
-    private fun KtAnnotationEntry.optionalClassArgumentIfNot(
-        name: String,
-        index: Int,
-        module: ModuleDescriptor,
-        filteredOutClass: ClassName,
-    ): ClassName? {
-        val className = optionalClassArgument(name, index, module)
-        if (className != filteredOutClass) {
-            return className
-        }
-        return null
-    }
-
-    //TODO replace with a way to get default value
-    private fun KtAnnotationEntry.optionalBooleanArgument(
-        name: String,
-        index: Int,
-    ): Boolean? {
-        val boolean = findAnnotationArgument<KtConstantExpression>(name, index)
-        if (boolean != null) {
-            return boolean.node.firstChildNode.text.toBoolean()
-        }
-        return null
-    }
-
-    private fun KtFile.packageName(): String {
-        return packageFqName.pathSegments().joinToString(separator = ".")
+    private fun FqName.packageString(): String {
+        return pathSegments().joinToString(separator = ".")
     }
 }

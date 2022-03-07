@@ -4,7 +4,7 @@ import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.RendererFragmentData
-import com.freeletics.mad.whetstone.codegen.util.Generator
+import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.bindsInstanceParameter
 import com.freeletics.mad.whetstone.codegen.util.componentAnnotation
