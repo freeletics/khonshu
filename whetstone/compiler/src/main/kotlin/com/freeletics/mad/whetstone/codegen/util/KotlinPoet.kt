@@ -101,7 +101,3 @@ internal fun CommonData.Navigation?.fragmentConverter(): CodeBlock {
     }
     return CodeBlock.of("requireArguments()")
 }
-
-internal fun String.capitalize(): String = replaceFirstChar(Char::uppercaseChar)
-
-internal fun String.decapitalize(): String = replaceFirstChar(Char::lowercaseChar)

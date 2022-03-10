@@ -21,7 +21,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0"
+        kotlinCompilerExtensionVersion = "1.1.1"
     }
 }
 
@@ -54,7 +54,7 @@ tasks.withType(JavaCompile).configureEach {
 dependencies {
     api project(":whetstone:runtime")
     api project(":state-machine")
-    api "androidx.compose.runtime:runtime:1.1.0"
+    api "androidx.compose.runtime:runtime:1.1.1"
 
     compileOnly project(":navigator:navigator-runtime")
 }
