@@ -32,14 +32,12 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
+            import com.squareup.anvil.annotations.ContributesMultibinding
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeSubcomponent
             import com.test.parent.TestParentScope
-            import dagger.Binds
             import dagger.BindsInstance
-            import dagger.Module
             import dagger.Subcomponent
-            import dagger.multibindings.IntoMap
             import io.reactivex.disposables.CompositeDisposable
             import javax.inject.Inject
             import kotlin.Any
@@ -91,6 +89,11 @@ internal class NavEntryFileGeneratorTest {
             }
 
             @OptIn(InternalWhetstoneApi::class)
+            @NavEntryComponentGetterKey(TestFlowScope::class)
+            @ContributesMultibinding(
+              TestParentScope::class,
+              NavEntryComponentGetter::class
+            )
             public class TestFlowComponentGetter @Inject constructor(
               @NavEntryId(TestFlowScope::class)
               private val id: Int
@@ -106,16 +109,6 @@ internal class NavEntryFileGeneratorTest {
                 val viewModel = viewModelProvider[TestFlowViewModel::class.java]
                 return viewModel.component
               }
-            }
-
-            @Module
-            @ContributesTo(TestParentScope::class)
-            public interface WhetstoneTestFlowModule {
-              @Binds
-              @IntoMap
-              @NavEntryComponentGetterKey(TestFlowScope::class)
-              @OptIn(InternalWhetstoneApi::class)
-              public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }
 
         """.trimIndent()
@@ -139,14 +132,12 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
+            import com.squareup.anvil.annotations.ContributesMultibinding
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeSubcomponent
             import com.test.parent.TestParentScope
-            import dagger.Binds
             import dagger.BindsInstance
-            import dagger.Module
             import dagger.Subcomponent
-            import dagger.multibindings.IntoMap
             import io.reactivex.disposables.CompositeDisposable
             import javax.inject.Inject
             import kotlin.Any
@@ -191,6 +182,11 @@ internal class NavEntryFileGeneratorTest {
             }
 
             @OptIn(InternalWhetstoneApi::class)
+            @NavEntryComponentGetterKey(TestFlowScope::class)
+            @ContributesMultibinding(
+              TestParentScope::class,
+              NavEntryComponentGetter::class
+            )
             public class TestFlowComponentGetter @Inject constructor(
               @NavEntryId(TestFlowScope::class)
               private val id: Int
@@ -206,16 +202,6 @@ internal class NavEntryFileGeneratorTest {
                 val viewModel = viewModelProvider[TestFlowViewModel::class.java]
                 return viewModel.component
               }
-            }
-
-            @Module
-            @ContributesTo(TestParentScope::class)
-            public interface WhetstoneTestFlowModule {
-              @Binds
-              @IntoMap
-              @NavEntryComponentGetterKey(TestFlowScope::class)
-              @OptIn(InternalWhetstoneApi::class)
-              public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }
 
         """.trimIndent()
@@ -239,14 +225,12 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
+            import com.squareup.anvil.annotations.ContributesMultibinding
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeSubcomponent
             import com.test.parent.TestParentScope
-            import dagger.Binds
             import dagger.BindsInstance
-            import dagger.Module
             import dagger.Subcomponent
-            import dagger.multibindings.IntoMap
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.Int
@@ -293,6 +277,11 @@ internal class NavEntryFileGeneratorTest {
             }
 
             @OptIn(InternalWhetstoneApi::class)
+            @NavEntryComponentGetterKey(TestFlowScope::class)
+            @ContributesMultibinding(
+              TestParentScope::class,
+              NavEntryComponentGetter::class
+            )
             public class TestFlowComponentGetter @Inject constructor(
               @NavEntryId(TestFlowScope::class)
               private val id: Int
@@ -308,16 +297,6 @@ internal class NavEntryFileGeneratorTest {
                 val viewModel = viewModelProvider[TestFlowViewModel::class.java]
                 return viewModel.component
               }
-            }
-
-            @Module
-            @ContributesTo(TestParentScope::class)
-            public interface WhetstoneTestFlowModule {
-              @Binds
-              @IntoMap
-              @NavEntryComponentGetterKey(TestFlowScope::class)
-              @OptIn(InternalWhetstoneApi::class)
-              public fun bindComponentGetter(getter: TestFlowComponentGetter): NavEntryComponentGetter
             }
 
         """.trimIndent()
