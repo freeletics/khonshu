@@ -33,11 +33,10 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.ContributesMultibinding
+            import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.MergeSubcomponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
-            import dagger.Subcomponent
             import io.reactivex.disposables.CompositeDisposable
             import javax.inject.Inject
             import kotlin.Any
@@ -50,9 +49,12 @@ internal class NavEntryFileGeneratorTest {
 
             @InternalWhetstoneApi
             @ScopeTo(TestFlowScope::class)
-            @MergeSubcomponent(scope = TestFlowScope::class)
+            @ContributesSubcomponent(
+              scope = TestFlowScope::class,
+              parentScope = TestParentScope::class
+            )
             public interface NavEntryTestFlowComponent {
-              @Subcomponent.Factory
+              @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(
                   @BindsInstance savedStateHandle: SavedStateHandle,
@@ -61,17 +63,17 @@ internal class NavEntryFileGeneratorTest {
                   @BindsInstance coroutineScope: CoroutineScope
                 ): NavEntryTestFlowComponent
               }
-            }
 
-            @ContributesTo(TestParentScope::class)
-            public interface NavEntryTestFlowComponentFactoryProvider {
-              @InternalWhetstoneApi
-              public fun getNavEntryTestFlowComponent(): NavEntryTestFlowComponent.Factory
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                @InternalWhetstoneApi
+                public fun getNavEntryTestFlowComponent(): Factory
+              }
             }
 
             @InternalWhetstoneApi
             internal class TestFlowViewModel(
-              factory: NavEntryTestFlowComponentFactoryProvider,
+              factory: NavEntryTestFlowComponent.ParentComponent,
               savedStateHandle: SavedStateHandle,
               arguments: Bundle
             ) : ViewModel() {
@@ -101,7 +103,7 @@ internal class NavEntryFileGeneratorTest {
               @OptIn(InternalWhetstoneApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
-                val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,
+                val viewModelProvider = viewModelProvider<NavEntryTestFlowComponent.ParentComponent>(entry,
                     context, TestParentScope::class) { component, handle -> 
                   val arguments = entry.arguments ?: Bundle.EMPTY
                   TestFlowViewModel(component, handle, arguments)
@@ -133,11 +135,10 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.ContributesMultibinding
+            import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.MergeSubcomponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
-            import dagger.Subcomponent
             import io.reactivex.disposables.CompositeDisposable
             import javax.inject.Inject
             import kotlin.Any
@@ -147,9 +148,12 @@ internal class NavEntryFileGeneratorTest {
 
             @InternalWhetstoneApi
             @ScopeTo(TestFlowScope::class)
-            @MergeSubcomponent(scope = TestFlowScope::class)
+            @ContributesSubcomponent(
+              scope = TestFlowScope::class,
+              parentScope = TestParentScope::class
+            )
             public interface NavEntryTestFlowComponent {
-              @Subcomponent.Factory
+              @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(
                   @BindsInstance savedStateHandle: SavedStateHandle,
@@ -157,17 +161,17 @@ internal class NavEntryFileGeneratorTest {
                   @BindsInstance compositeDisposable: CompositeDisposable
                 ): NavEntryTestFlowComponent
               }
-            }
 
-            @ContributesTo(TestParentScope::class)
-            public interface NavEntryTestFlowComponentFactoryProvider {
-              @InternalWhetstoneApi
-              public fun getNavEntryTestFlowComponent(): NavEntryTestFlowComponent.Factory
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                @InternalWhetstoneApi
+                public fun getNavEntryTestFlowComponent(): Factory
+              }
             }
 
             @InternalWhetstoneApi
             internal class TestFlowViewModel(
-              factory: NavEntryTestFlowComponentFactoryProvider,
+              factory: NavEntryTestFlowComponent.ParentComponent,
               savedStateHandle: SavedStateHandle,
               arguments: Bundle
             ) : ViewModel() {
@@ -194,7 +198,7 @@ internal class NavEntryFileGeneratorTest {
               @OptIn(InternalWhetstoneApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
-                val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,
+                val viewModelProvider = viewModelProvider<NavEntryTestFlowComponent.ParentComponent>(entry,
                     context, TestParentScope::class) { component, handle -> 
                   val arguments = entry.arguments ?: Bundle.EMPTY
                   TestFlowViewModel(component, handle, arguments)
@@ -226,11 +230,10 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.viewModelProvider
             import com.squareup.anvil.annotations.ContributesMultibinding
+            import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.MergeSubcomponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
-            import dagger.Subcomponent
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.Int
@@ -242,9 +245,12 @@ internal class NavEntryFileGeneratorTest {
 
             @InternalWhetstoneApi
             @ScopeTo(TestFlowScope::class)
-            @MergeSubcomponent(scope = TestFlowScope::class)
+            @ContributesSubcomponent(
+              scope = TestFlowScope::class,
+              parentScope = TestParentScope::class
+            )
             public interface NavEntryTestFlowComponent {
-              @Subcomponent.Factory
+              @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(
                   @BindsInstance savedStateHandle: SavedStateHandle,
@@ -252,17 +258,17 @@ internal class NavEntryFileGeneratorTest {
                   @BindsInstance coroutineScope: CoroutineScope
                 ): NavEntryTestFlowComponent
               }
-            }
 
-            @ContributesTo(TestParentScope::class)
-            public interface NavEntryTestFlowComponentFactoryProvider {
-              @InternalWhetstoneApi
-              public fun getNavEntryTestFlowComponent(): NavEntryTestFlowComponent.Factory
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                @InternalWhetstoneApi
+                public fun getNavEntryTestFlowComponent(): Factory
+              }
             }
 
             @InternalWhetstoneApi
             internal class TestFlowViewModel(
-              factory: NavEntryTestFlowComponentFactoryProvider,
+              factory: NavEntryTestFlowComponent.ParentComponent,
               savedStateHandle: SavedStateHandle,
               arguments: Bundle
             ) : ViewModel() {
@@ -289,7 +295,7 @@ internal class NavEntryFileGeneratorTest {
               @OptIn(InternalWhetstoneApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(id)
-                val viewModelProvider = viewModelProvider<NavEntryTestFlowComponentFactoryProvider>(entry,
+                val viewModelProvider = viewModelProvider<NavEntryTestFlowComponent.ParentComponent>(entry,
                     context, TestParentScope::class) { component, handle -> 
                   val arguments = entry.arguments ?: Bundle.EMPTY
                   TestFlowViewModel(component, handle, arguments)
