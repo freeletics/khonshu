@@ -96,7 +96,6 @@ public open class NavEventNavigator {
     /**
      * Register for receiving navigation results that were delivered through
      * [deliverNavigationResult]. [T] is expected to be the [BaseRoute] to the current destination.
-     * The [requestKey] should be a unique string that is only used for this call.
      *
      * The returned [NavigationResultRequest] has a [NavigationResultRequest.Key]. This `key` should
      * be passed to the target destination which can then use it to call [deliverNavigationResult].
@@ -104,18 +103,18 @@ public open class NavEventNavigator {
      * Note: This has to be called *before* this [NavEventNavigator] gets attached to a fragment.
      *   In practice, this means it should usually be called during initialisation of your subclass.
      */
-    public inline fun <reified T : BaseRoute, O : Parcelable> registerForNavigationResult(
-        requestKey: String
-    ): NavigationResultRequest<O> {
-        return registerForNavigationResult(T::class, requestKey)
+    public inline fun <reified T : BaseRoute, reified O : Parcelable> registerForNavigationResult():
+        NavigationResultRequest<O> {
+        return registerForNavigationResult(T::class, O::class)
     }
 
     @InternalNavigatorApi
     public fun <O : Parcelable> registerForNavigationResult(
         route: KClass<out BaseRoute>,
-        requestKey: String
+        result: KClass<*>
     ): NavigationResultRequest<O> {
         checkAllowedToAddRequests()
+        val requestKey = route.qualifiedName!! + result.qualifiedName!!
         val key = NavigationResultRequest.Key(route.destinationId(), requestKey)
         val request = NavigationResultRequest<O>(key)
         _navigationResultRequests.add(request)
