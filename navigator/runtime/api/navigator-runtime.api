@@ -12,7 +12,7 @@ public class com/freeletics/mad/navigator/NavEventNavigator {
 	public final fun deliverNavigationResult (Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
 	public final fun getActivityResultRequests ()Ljava/util/List;
 	public final fun getNavEvents ()Lkotlinx/coroutines/flow/Flow;
-	public final fun getNavigationResultRequest ()Ljava/util/List;
+	public final fun getNavigationResultRequests ()Ljava/util/List;
 	public final fun getOnBackPressedCallback ()Landroidx/activity/OnBackPressedCallback;
 	public final fun getPermissionsResultRequests ()Ljava/util/List;
 	public final fun navigateBack ()V
