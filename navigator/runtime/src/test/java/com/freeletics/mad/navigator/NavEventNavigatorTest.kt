@@ -2,19 +2,32 @@ package com.freeletics.mad.navigator
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToRootEvent
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
 public class NavEventNavigatorTest {
 
-    private class TestNavigator : NavEventNavigator()
+    private class TestNavigator : NavEventNavigator() {
+        fun <I, O> testRegisterForActivityResult(contract: ActivityResultContract<I, O>): ActivityResultRequest<I, O> {
+            return registerForActivityResult(contract)
+        }
+
+        fun testRegisterForPermissionResult(): PermissionsResultRequest {
+            return registerForPermissionsResult()
+        }
+
+        inline fun <reified I : BaseRoute, reified O : Parcelable> testRegisterForNavigationResult(): NavigationResultRequest<O> {
+            return registerForNavigationResult<I, O>()
+        }
+    }
+
     private data class SimpleRoute(val number: Int) : NavRoute
     private data class OtherRoute(val number: Int) : NavRoute
     private data class SimpleRoot(val number: Int) : NavRoot
@@ -115,7 +128,7 @@ public class NavEventNavigatorTest {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
-            val launcher = navigator.registerForActivityResult(ActivityResultContracts.GetContent())
+            val launcher = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
             navigator.navigateForResult(launcher, "image/*")
 
             assertThat(awaitItem()).isEqualTo(NavEvent.ActivityResultEvent(launcher, "image/*"))
@@ -129,7 +142,7 @@ public class NavEventNavigatorTest {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
-            val launcher = navigator.registerForPermissionsResult()
+            val launcher = navigator.testRegisterForPermissionResult()
             val permission = "android.permission.READ_CALENDAR"
             navigator.requestPermissions(launcher, permission)
 
@@ -144,7 +157,7 @@ public class NavEventNavigatorTest {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
-            val launcher = navigator.registerForNavigationResult<SimpleRoute, TestParcelable>()
+            val launcher = navigator.testRegisterForNavigationResult<SimpleRoute, TestParcelable>()
             navigator.deliverNavigationResult(launcher.key, TestParcelable(1))
 
             assertThat(awaitItem()).isEqualTo(
@@ -154,7 +167,6 @@ public class NavEventNavigatorTest {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     public fun `backPresses sends out events`(): Unit = runBlocking {
         val navigator = TestNavigator()
@@ -185,7 +197,7 @@ public class NavEventNavigatorTest {
         navigator.activityResultRequests
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            navigator.registerForActivityResult(ActivityResultContracts.GetContent())
+            navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
         }
         assertThat(exception).hasMessageThat().isEqualTo("Failed to register for " +
             "result! You must call this before this navigator gets attached to a " +
@@ -199,7 +211,7 @@ public class NavEventNavigatorTest {
         navigator.permissionsResultRequests
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            navigator.registerForPermissionsResult()
+            navigator.testRegisterForPermissionResult()
         }
         assertThat(exception).hasMessageThat().isEqualTo("Failed to register for " +
             "result! You must call this before this navigator gets attached to a " +
@@ -213,7 +225,7 @@ public class NavEventNavigatorTest {
         navigator.navigationResultRequests
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            navigator.registerForNavigationResult<SimpleRoute, TestParcelable>()
+            navigator.testRegisterForNavigationResult<SimpleRoute, TestParcelable>()
         }
         assertThat(exception).hasMessageThat().isEqualTo("Failed to register for " +
             "result! You must call this before this navigator gets attached to a " +
