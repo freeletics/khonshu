@@ -13,6 +13,7 @@ import com.freeletics.mad.whetstone.codegen.util.composeProviderValueModule
 import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
 import com.freeletics.mad.whetstone.codegen.util.coroutineScope
 import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
+import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.providedValue
 import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
 import com.freeletics.mad.whetstone.codegen.util.scopeToAnnotation
@@ -59,7 +60,7 @@ internal class RetainedComponentGenerator(
     private fun componentProperties(): List<PropertySpec> {
         val properties = mutableListOf<PropertySpec>()
         properties += simplePropertySpec(data.stateMachine)
-        val navigator = data.navigation?.navigator
+        val navigator = data.navigation?.let { navEventNavigator }
         if (navigator != null) {
             properties += simplePropertySpec(navigator)
         }

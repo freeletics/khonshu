@@ -11,6 +11,7 @@ import com.freeletics.mad.whetstone.codegen.util.fragmentNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.fragmentViewModelProvider
 import com.freeletics.mad.whetstone.codegen.util.lateinitPropertySpec
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
+import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.rendererConnect
@@ -81,14 +82,13 @@ internal class RendererFragmentGenerator(
     }
 
     private fun rendererNavigationCode(): CodeBlock {
-        val navigator = data.navigation?.navigator
-        if (navigator == null) {
+        if (data.navigation == null) {
             return CodeBlock.of("")
         }
 
         return CodeBlock.builder()
             .add("\n")
-            .addStatement("val navigator = component.%L", navigator.propertyName)
+            .addStatement("val navigator = component.%L", navEventNavigator.propertyName)
             .addStatement("%M(this, navigator)", fragmentNavigationHandler)
             .build()
     }

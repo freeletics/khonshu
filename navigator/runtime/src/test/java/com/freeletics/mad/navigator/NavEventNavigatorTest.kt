@@ -1,5 +1,7 @@
 package com.freeletics.mad.navigator
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
@@ -16,6 +18,15 @@ public class NavEventNavigatorTest {
     private data class SimpleRoute(val number: Int) : NavRoute
     private data class OtherRoute(val number: Int) : NavRoute
     private data class SimpleRoot(val number: Int) : NavRoot
+
+    private data class TestParcelable(
+        val value: Int
+    ) : Parcelable {
+        override fun writeToParcel(dest: Parcel?, flags: Int) {}
+        override fun describeContents() = 0
+
+
+    }
 
     @Test
     public fun `navigateTo event is received`(): Unit = runBlocking {
@@ -128,6 +139,21 @@ public class NavEventNavigatorTest {
         }
     }
 
+    @Test
+    public fun `deliverResult event is received`(): Unit = runBlocking {
+        val navigator = TestNavigator()
+
+        navigator.navEvents.test {
+            val launcher = navigator.registerForNavigationResult<SimpleRoute, TestParcelable>()
+            navigator.deliverNavigationResult(launcher.key, TestParcelable(1))
+
+            assertThat(awaitItem()).isEqualTo(
+                NavEvent.DestinationResultEvent(launcher.key, TestParcelable(1)))
+
+            cancel()
+        }
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     public fun `backPresses sends out events`(): Unit = runBlocking {
@@ -174,6 +200,20 @@ public class NavEventNavigatorTest {
 
         val exception = assertThrows(IllegalStateException::class.java) {
             navigator.registerForPermissionsResult()
+        }
+        assertThat(exception).hasMessageThat().isEqualTo("Failed to register for " +
+            "result! You must call this before this navigator gets attached to a " +
+            "fragment, e.g. during initialisation of your navigator subclass.")
+    }
+
+    @Test
+    public fun `registerForNavigationResult after read is disallowed`(): Unit = runBlocking {
+        val navigator = TestNavigator()
+
+        navigator.navigationResultRequests
+
+        val exception = assertThrows(IllegalStateException::class.java) {
+            navigator.registerForNavigationResult<SimpleRoute, TestParcelable>()
         }
         assertThat(exception).hasMessageThat().isEqualTo("Failed to register for " +
             "result! You must call this before this navigator gets attached to a " +

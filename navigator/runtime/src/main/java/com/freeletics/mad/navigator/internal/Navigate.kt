@@ -61,6 +61,10 @@ public fun navigate(
             @Suppress("UNCHECKED_CAST")
             (launcher as ActivityResultLauncher<Any?>).launch(event.permissions)
         }
+        is NavEvent.DestinationResultEvent<*> -> {
+            val entry = controller.getBackStackEntry(event.key.destinationId)
+            entry.savedStateHandle.set(event.key.requestKey, event.result)
+        }
     }
 }
 

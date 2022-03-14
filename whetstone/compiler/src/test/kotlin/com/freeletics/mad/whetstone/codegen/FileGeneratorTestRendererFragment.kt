@@ -2,7 +2,6 @@ package com.freeletics.mad.whetstone.codegen
 
 import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.RendererFragmentData
-import com.freeletics.mad.whetstone.codegen.util.fragmentNavEventNavigator
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
@@ -19,7 +18,6 @@ internal class FileGeneratorTestRendererFragment {
         factory = ClassName("com.test", "RendererFactory"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
         navigation = CommonData.Navigation(
-            fragmentNavEventNavigator,
             ClassName("com.test", "TestRoute"),
         ),
         coroutinesEnabled = true,
@@ -38,7 +36,7 @@ internal class FileGeneratorTestRendererFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
+            import com.freeletics.mad.navigator.NavEventNavigator
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
@@ -65,7 +63,7 @@ internal class FileGeneratorTestRendererFragment {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val fragmentNavEventNavigator: FragmentNavEventNavigator
+              public val navEventNavigator: NavEventNavigator
             
               public val rendererFactory: RendererFactory
 
@@ -133,7 +131,7 @@ internal class FileGeneratorTestRendererFragment {
                 rendererFactory = component.rendererFactory
                 testStateMachine = component.testStateMachine
 
-                val navigator = component.fragmentNavEventNavigator
+                val navigator = component.navEventNavigator
                 handleNavigation(this, navigator)
               }
             }
@@ -266,7 +264,7 @@ internal class FileGeneratorTestRendererFragment {
             import androidx.fragment.app.DialogFragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
+            import com.freeletics.mad.navigator.NavEventNavigator
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
@@ -293,7 +291,7 @@ internal class FileGeneratorTestRendererFragment {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val fragmentNavEventNavigator: FragmentNavEventNavigator
+              public val navEventNavigator: NavEventNavigator
             
               public val rendererFactory: RendererFactory
 
@@ -361,7 +359,7 @@ internal class FileGeneratorTestRendererFragment {
                 rendererFactory = component.rendererFactory
                 testStateMachine = component.testStateMachine
 
-                val navigator = component.fragmentNavEventNavigator
+                val navigator = component.navEventNavigator
                 handleNavigation(this, navigator)
               }
             }

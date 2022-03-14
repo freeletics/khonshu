@@ -22,7 +22,6 @@ internal sealed interface CommonData : BaseData {
     val rxJavaEnabled: Boolean
 
     data class Navigation(
-        val navigator: ClassName,
         val route: ClassName?,
     )
 }

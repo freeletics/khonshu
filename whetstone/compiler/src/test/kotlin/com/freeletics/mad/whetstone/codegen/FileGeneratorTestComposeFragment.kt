@@ -4,7 +4,6 @@ import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.codegen.util.dialogFragment
 import com.freeletics.mad.whetstone.codegen.util.fragment
-import com.freeletics.mad.whetstone.codegen.util.fragmentNavEventNavigator
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
@@ -21,7 +20,6 @@ internal class FileGeneratorTestComposeFragment {
         stateMachine = ClassName("com.test", "TestStateMachine"),
         enableInsetHandling = true,
         navigation = CommonData.Navigation(
-            fragmentNavEventNavigator,
             ClassName("com.test", "TestRoute"),
         ),
         coroutinesEnabled = true,
@@ -46,7 +44,7 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
+            import com.freeletics.mad.navigator.NavEventNavigator
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
@@ -81,7 +79,7 @@ internal class FileGeneratorTestComposeFragment {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val fragmentNavEventNavigator: FragmentNavEventNavigator
+              public val navEventNavigator: NavEventNavigator
 
               public val providedValues: Set<ProvidedValue<*>>
 
@@ -180,7 +178,7 @@ internal class FileGeneratorTestComposeFragment {
                 val viewModel = viewModelProvider[TestViewModel::class.java]
                 val component = viewModel.component
             
-                val navigator = component.fragmentNavEventNavigator
+                val navigator = component.navEventNavigator
                 handleNavigation(this, navigator)
               }
             }
@@ -210,7 +208,7 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.DialogFragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
+            import com.freeletics.mad.navigator.NavEventNavigator
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
@@ -245,7 +243,7 @@ internal class FileGeneratorTestComposeFragment {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val fragmentNavEventNavigator: FragmentNavEventNavigator
+              public val navEventNavigator: NavEventNavigator
 
               public val providedValues: Set<ProvidedValue<*>>
 
@@ -344,7 +342,7 @@ internal class FileGeneratorTestComposeFragment {
                 val viewModel = viewModelProvider[TestViewModel::class.java]
                 val component = viewModel.component
             
-                val navigator = component.fragmentNavEventNavigator
+                val navigator = component.navEventNavigator
                 handleNavigation(this, navigator)
               }
             }
@@ -372,7 +370,7 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import com.freeletics.mad.navigator.fragment.FragmentNavEventNavigator
+            import com.freeletics.mad.navigator.NavEventNavigator
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
@@ -405,7 +403,7 @@ internal class FileGeneratorTestComposeFragment {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
-              public val fragmentNavEventNavigator: FragmentNavEventNavigator
+              public val navEventNavigator: NavEventNavigator
 
               public val providedValues: Set<ProvidedValue<*>>
 
@@ -497,7 +495,7 @@ internal class FileGeneratorTestComposeFragment {
                 val viewModel = viewModelProvider[TestViewModel::class.java]
                 val component = viewModel.component
 
-                val navigator = component.fragmentNavEventNavigator
+                val navigator = component.navEventNavigator
                 handleNavigation(this, navigator)
               }
             }

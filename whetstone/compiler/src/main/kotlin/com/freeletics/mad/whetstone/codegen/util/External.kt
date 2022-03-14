@@ -36,7 +36,6 @@ internal val composeProviderValueModule = ClassName("com.freeletics.mad.whetston
 
 // Navigator
 internal val navEventNavigator = ClassName("com.freeletics.mad.navigator", "NavEventNavigator")
-internal val fragmentNavEventNavigator = ClassName("com.freeletics.mad.navigator.fragment", "FragmentNavEventNavigator")
 internal val composeNavigationHandler = MemberName("com.freeletics.mad.navigator.compose", "NavigationSetup")
 internal val fragmentNavigationHandler = MemberName("com.freeletics.mad.navigator.fragment", "handleNavigation")
 internal val requireRoute = MemberName("com.freeletics.mad.navigator.fragment", "requireRoute")

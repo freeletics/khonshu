@@ -3,6 +3,7 @@ package com.freeletics.mad.navigator.compose
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.os.Parcelable
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -11,9 +12,12 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
+import androidx.navigation.NavController
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEventNavigator
+import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import com.freeletics.mad.navigator.internal.navigate
@@ -32,6 +36,10 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
     }
     val permissionLaunchers = navigator.permissionsResultRequests.associateWith {
         rememberResultLaunchers(it)
+    }
+
+    navigator.navigationResultRequests.forEach {
+        ResultEffect(it, controller)
     }
 
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
@@ -76,4 +84,26 @@ private fun Context.findActivity(): Activity {
         context = context.baseContext
     }
     throw IllegalStateException("Permissions should be called in the context of an Activity")
+}
+
+@Composable
+private fun <O : Parcelable> ResultEffect(
+    request: NavigationResultRequest<O>,
+    controller: NavController,
+) {
+    DisposableEffect(request, controller) {
+        val liveData = controller.getBackStackEntry(request.key.destinationId).savedStateHandle
+            .getLiveData<Parcelable>(request.key.requestKey)
+
+        val observer = Observer<Parcelable> { result ->
+            @Suppress("UNCHECKED_CAST")
+            request.handleResult(result as O)
+        }
+
+        liveData.observeForever(observer)
+
+        onDispose {
+            liveData.removeObserver(observer)
+        }
+    }
 }
