@@ -114,7 +114,7 @@ public open class NavEventNavigator {
         result: KClass<*>
     ): NavigationResultRequest<O> {
         checkAllowedToAddRequests()
-        val requestKey = route.qualifiedName!! + result.qualifiedName!!
+        val requestKey = "${route.qualifiedName!!}-${result.qualifiedName!!}"
         val key = NavigationResultRequest.Key<O>(route.destinationId(), requestKey)
         val request = NavigationResultRequest(key)
         _navigationResultRequests.add(request)
