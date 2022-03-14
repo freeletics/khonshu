@@ -115,8 +115,8 @@ public open class NavEventNavigator {
     ): NavigationResultRequest<O> {
         checkAllowedToAddRequests()
         val requestKey = route.qualifiedName!! + result.qualifiedName!!
-        val key = NavigationResultRequest.Key(route.destinationId(), requestKey)
-        val request = NavigationResultRequest<O>(key)
+        val key = NavigationResultRequest.Key<O>(route.destinationId(), requestKey)
+        val request = NavigationResultRequest(key)
         _navigationResultRequests.add(request)
         return request
     }
@@ -223,7 +223,7 @@ public open class NavEventNavigator {
     /**
      * Delivers the [result] to the destination that created [key].
      */
-    public fun deliverNavigationResult(key: NavigationResultRequest.Key, result: Parcelable) {
+    public fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
         val event = NavEvent.DestinationResultEvent(key, result)
         sendNavEvent(event)
     }
@@ -289,7 +289,7 @@ public open class NavEventNavigator {
         }
 
     @InternalNavigatorApi
-    public val navigationResultRequest: List<NavigationResultRequest<*>>
+    public val navigationResultRequests: List<NavigationResultRequest<*>>
         get() {
             allowedToAddRequests = false
             return _navigationResultRequests.toList()

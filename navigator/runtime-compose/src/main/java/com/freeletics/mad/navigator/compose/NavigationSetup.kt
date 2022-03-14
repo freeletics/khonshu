@@ -20,7 +20,6 @@ import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
-import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.navigator.internal.navigate
 
 /**
@@ -39,7 +38,7 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
         rememberResultLaunchers(it)
     }
 
-    navigator.navigationResultRequest.forEach {
+    navigator.navigationResultRequests.forEach {
         ResultEffect(it, controller)
     }
 

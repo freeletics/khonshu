@@ -105,7 +105,7 @@ public class PermissionsResultRequest internal constructor() :
  * See [ResultOwner] and [NavEventNavigator.registerForNavigationResult].
  */
 public class NavigationResultRequest<O : Parcelable> internal constructor(
-    public val key: Key
+    public val key: Key<O>
 ) : ResultOwner<O>() {
 
     @InternalNavigatorApi
@@ -116,7 +116,7 @@ public class NavigationResultRequest<O : Parcelable> internal constructor(
     /**
      * Use to identify where the result should be delivered to.
      */
-    public data class Key internal constructor(
+    public data class Key<@Suppress("unused") O : Parcelable> internal constructor(
         @property:InternalNavigatorApi
         public val destinationId: Int,
         @property:InternalNavigatorApi
@@ -136,12 +136,12 @@ public class NavigationResultRequest<O : Parcelable> internal constructor(
             return 0
         }
 
-        public companion object CREATOR : Parcelable.Creator<Key> {
-            override fun createFromParcel(parcel: Parcel): Key {
-                return Key(parcel)
+        public companion object CREATOR : Parcelable.Creator<Key<*>> {
+            override fun createFromParcel(parcel: Parcel): Key<*> {
+                return Key<Parcelable>(parcel)
             }
 
-            override fun newArray(size: Int): Array<Key?> {
+            override fun newArray(size: Int): Array<Key<*>?> {
                 return arrayOfNulls(size)
             }
         }

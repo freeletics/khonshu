@@ -78,8 +78,8 @@ public sealed interface NavEvent {
      * Delivers the [result] to the destination that created [key].
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class DestinationResultEvent(
-        internal val key: NavigationResultRequest.Key,
-        internal val result: Parcelable,
+    public data class DestinationResultEvent<O : Parcelable>(
+        internal val key: NavigationResultRequest.Key<O>,
+        internal val result: O,
     ) : NavEvent
 }

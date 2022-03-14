@@ -34,7 +34,7 @@ public fun handleNavigation(fragment: Fragment, navigator: NavEventNavigator) {
     }
 
     val controller = fragment.findNavController()
-    navigator.navigationResultRequest.forEach {
+    navigator.navigationResultRequests.forEach {
         it.registerIn(controller, fragment)
     }
 
