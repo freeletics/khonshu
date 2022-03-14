@@ -15,7 +15,6 @@ import com.freeletics.mad.navigator.internal.DelegatingOnBackPressedCallback
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.destinationId
 import kotlin.reflect.KClass
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -62,7 +61,7 @@ public open class NavEventNavigator {
      * Note: This has to be called *before* this [NavEventNavigator] gets attached to a fragment.
      *   In practice, this means it should usually be called during initialisation of your subclass.
      */
-    public fun <I, O> registerForActivityResult(
+    protected fun <I, O> registerForActivityResult(
         contract: ActivityResultContract<I, O>
     ): ActivityResultRequest<I, O> {
         checkAllowedToAddRequests()
@@ -86,7 +85,7 @@ public open class NavEventNavigator {
      * Note: This has to be called *before* this [NavEventNavigator] gets attached to a fragment.
      *   In practice, this means it should usually be called during initialisation of your subclass.
      */
-    public fun registerForPermissionsResult(): PermissionsResultRequest {
+    protected fun registerForPermissionsResult(): PermissionsResultRequest {
         checkAllowedToAddRequests()
         val request = PermissionsResultRequest()
         _permissionsResultRequests.add(request)
@@ -103,13 +102,13 @@ public open class NavEventNavigator {
      * Note: This has to be called *before* this [NavEventNavigator] gets attached to a fragment.
      *   In practice, this means it should usually be called during initialisation of your subclass.
      */
-    public inline fun <reified T : BaseRoute, reified O : Parcelable> registerForNavigationResult():
+    protected inline fun <reified T : BaseRoute, reified O : Parcelable> registerForNavigationResult():
         NavigationResultRequest<O> {
         return registerForNavigationResult(T::class, O::class)
     }
 
     @InternalNavigatorApi
-    public fun <O : Parcelable> registerForNavigationResult(
+    protected fun <O : Parcelable> registerForNavigationResult(
         route: KClass<out BaseRoute>,
         result: KClass<*>
     ): NavigationResultRequest<O> {
@@ -239,7 +238,6 @@ public open class NavEventNavigator {
      *
      * When this is called multiple times only the latest caller will receive emissions.
      */
-    @ExperimentalCoroutinesApi
     public fun backPresses(): Flow<Unit> {
         return backPresses(Unit)
     }
@@ -250,7 +248,6 @@ public open class NavEventNavigator {
      *
      * When this is called multiple times only the latest caller will receive emissions.
      */
-    @ExperimentalCoroutinesApi
     public fun <T> backPresses(value: T): Flow<T> {
         return callbackFlow {
             val onBackPressed = {
@@ -295,6 +292,6 @@ public open class NavEventNavigator {
             return _navigationResultRequests.toList()
         }
 
-    @InternalNavigatorApi
+    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
     public val onBackPressedCallback: OnBackPressedCallback get() = _onBackPressedCallback
 }
