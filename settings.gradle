@@ -1,4 +1,3 @@
-include ":navigator:common", ":navigator:common-compose", ":navigator:common-fragment"
 include ":navigator:runtime", ":navigator:runtime-compose", ":navigator:runtime-fragment"
 include ":state-machine"
 include ":text-resource"
