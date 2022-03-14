@@ -66,7 +66,6 @@ internal class NavEntryFileGeneratorTest {
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                @InternalWhetstoneApi
                 public fun getNavEntryTestFlowComponent(): Factory
               }
             }
@@ -164,7 +163,6 @@ internal class NavEntryFileGeneratorTest {
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                @InternalWhetstoneApi
                 public fun getNavEntryTestFlowComponent(): Factory
               }
             }
@@ -261,7 +259,6 @@ internal class NavEntryFileGeneratorTest {
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                @InternalWhetstoneApi
                 public fun getNavEntryTestFlowComponent(): Factory
               }
             }
