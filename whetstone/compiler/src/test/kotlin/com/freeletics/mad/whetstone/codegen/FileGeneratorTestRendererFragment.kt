@@ -1,12 +1,18 @@
 package com.freeletics.mad.whetstone.codegen
 
-import com.freeletics.mad.whetstone.CommonData
+import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.RendererFragmentData
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 
 internal class FileGeneratorTestRendererFragment {
+
+    private val navigation = Navigation.Fragment(
+        ClassName("com.test", "TestRoute"),
+        "NONE",
+        ClassName("com.test.destination", "TestDestinationScope"),
+    )
 
     private val full = RendererFragmentData(
         baseName = "Test",
@@ -17,9 +23,7 @@ internal class FileGeneratorTestRendererFragment {
         fragmentBaseClass = ClassName("androidx.fragment.app", "Fragment"),
         factory = ClassName("com.test", "RendererFactory"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
-        navigation = CommonData.Navigation(
-            ClassName("com.test", "TestRoute"),
-        ),
+        navigation = navigation,
         coroutinesEnabled = true,
         rxJavaEnabled = true,
     )

@@ -1,12 +1,18 @@
 package com.freeletics.mad.whetstone.codegen
 
-import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeScreenData
+import com.freeletics.mad.whetstone.Navigation
 import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 
 internal class FileGeneratorTestCompose {
+
+    private val navigation = Navigation.Compose(
+        ClassName("com.test", "TestRoute"),
+        "NONE",
+        ClassName("com.test.destination", "TestDestinationScope"),
+    )
 
     private val full = ComposeScreenData(
         baseName = "Test",
@@ -15,9 +21,7 @@ internal class FileGeneratorTestCompose {
         parentScope = ClassName("com.test.parent", "TestParentScope"),
         dependencies = ClassName("com.test", "TestDependencies"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
-        navigation = CommonData.Navigation(
-            ClassName("com.test", "TestRoute"),
-        ),
+        navigation = navigation,
         coroutinesEnabled = true,
         rxJavaEnabled = true,
     )

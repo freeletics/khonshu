@@ -1,7 +1,7 @@
 package com.freeletics.mad.whetstone.codegen
 
-import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeFragmentData
+import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.codegen.util.dialogFragment
 import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.squareup.kotlinpoet.ClassName
@@ -9,6 +9,12 @@ import io.kotest.matchers.shouldBe
 import org.junit.Test
 
 internal class FileGeneratorTestComposeFragment {
+
+    private val navigation = Navigation.Fragment(
+        ClassName("com.test", "TestRoute"),
+        "NONE",
+        ClassName("com.test.destination", "TestDestinationScope"),
+    )
 
     private val full = ComposeFragmentData(
         baseName = "Test",
@@ -19,9 +25,7 @@ internal class FileGeneratorTestComposeFragment {
         fragmentBaseClass = fragment,
         stateMachine = ClassName("com.test", "TestStateMachine"),
         enableInsetHandling = true,
-        navigation = CommonData.Navigation(
-            ClassName("com.test", "TestRoute"),
-        ),
+        navigation = navigation,
         coroutinesEnabled = true,
         rxJavaEnabled = true,
     )

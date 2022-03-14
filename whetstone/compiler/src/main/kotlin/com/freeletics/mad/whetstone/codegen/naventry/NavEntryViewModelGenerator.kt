@@ -19,7 +19,8 @@ import com.squareup.kotlinpoet.KModifier.PUBLIC
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
-internal val Generator<NavEntryData>.viewModelClassName get() = ClassName("${data.baseName}ViewModel")
+internal val Generator<NavEntryData>.viewModelClassName
+    get() = ClassName("${data.baseName}ViewModel")
 
 internal const val viewModelComponentName = "component"
 

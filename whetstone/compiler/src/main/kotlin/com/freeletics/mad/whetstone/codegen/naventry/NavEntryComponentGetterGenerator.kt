@@ -23,7 +23,8 @@ import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
-internal val Generator<NavEntryData>.componentGetterClassName get() = ClassName("${data.baseName}ComponentGetter")
+internal val Generator<NavEntryData>.componentGetterClassName
+    get() = ClassName("${data.baseName}ComponentGetter")
 
 internal class NavEntryComponentGetterGenerator(
     override val data: NavEntryData,

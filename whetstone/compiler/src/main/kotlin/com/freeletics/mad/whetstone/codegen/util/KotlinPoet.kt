@@ -1,10 +1,9 @@
 package com.freeletics.mad.whetstone.codegen.util
 
-import com.freeletics.mad.whetstone.CommonData
 import com.squareup.anvil.annotations.ContributesSubcomponent
+import com.freeletics.mad.whetstone.Navigation
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent
-import com.squareup.anvil.annotations.MergeSubcomponent
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -90,15 +89,15 @@ internal fun optInAnnotation(): AnnotationSpec {
         .build()
 }
 
-internal fun CommonData.Navigation?.asParameter(): ParameterSpec {
-    if (this?.route != null) {
+internal fun Navigation?.asParameter(): ParameterSpec {
+    if (this != null) {
         return ParameterSpec.builder(route.propertyName, route).build()
     }
     return ParameterSpec.builder("arguments", bundle).build()
 }
 
-internal fun CommonData.Navigation?.fragmentConverter(): CodeBlock {
-    if (this?.route != null) {
+internal fun Navigation.Fragment?.requireArguments(): CodeBlock {
+    if (this != null) {
         return CodeBlock.of("%M<%T>()", requireRoute, route)
     }
     return CodeBlock.of("requireArguments()")

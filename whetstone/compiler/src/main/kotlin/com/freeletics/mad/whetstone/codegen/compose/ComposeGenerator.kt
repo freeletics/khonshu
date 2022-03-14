@@ -19,7 +19,8 @@ import com.freeletics.mad.whetstone.codegen.util.rememberViewModelProvider
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 
-internal val Generator<out CommonData>.composableName get() = "${data.baseName}Screen"
+internal val Generator<out CommonData>.composableName
+    get() = "${data.baseName}Screen"
 
 internal class ComposeGenerator(
     override val data: CommonData,
@@ -31,7 +32,8 @@ internal class ComposeGenerator(
             .addAnnotation(composable)
             .addAnnotation(optInAnnotation())
             .addParameter(parameter)
-            .beginControlFlow("val viewModelProvider = %M<%T>(%T::class) { dependencies, handle -> ", rememberViewModelProvider, data.dependencies, data.parentScope)
+            .beginControlFlow("val viewModelProvider = %M<%T>(%T::class) { dependencies, handle -> ",
+                rememberViewModelProvider, data.dependencies, data.parentScope)
             .addStatement("%T(dependencies, handle, %N)", viewModelClassName, parameter)
             .endControlFlow()
             .addStatement("val viewModel = viewModelProvider[%T::class.java]", viewModelClassName)
