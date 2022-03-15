@@ -67,7 +67,6 @@ internal class NavEntrySubcomponentGenerator(
     private fun navEntrySubcomponentFactoryParentComponent(): TypeSpec {
         val getterFun = FunSpec.builder(navEntrySubcomponentFactoryProviderGetterName)
             .addModifiers(ABSTRACT)
-            .addAnnotation(internalWhetstoneApi)
             .returns(navEntrySubcomponentFactoryClassName)
             .build()
         return TypeSpec.interfaceBuilder(navEntrySubcomponentFactoryProviderClassName)
