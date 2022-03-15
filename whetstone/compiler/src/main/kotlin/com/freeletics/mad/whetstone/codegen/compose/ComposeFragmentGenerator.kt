@@ -1,5 +1,6 @@
 package com.freeletics.mad.whetstone.codegen.compose
 
+import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
 import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
@@ -29,15 +30,16 @@ import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
+internal val Generator<out CommonData>.fragmentName
+    get() = "${data.baseName}Fragment"
+
 internal class ComposeFragmentGenerator(
     override val data: ComposeFragmentData,
 ) : Generator<ComposeFragmentData>() {
 
-    private val composeFragmentClassName = ClassName("${data.baseName}Fragment")
-
     internal fun generate(): TypeSpec {
         val argumentsParameter = data.navigation.asParameter()
-        return TypeSpec.classBuilder(composeFragmentClassName)
+        return TypeSpec.classBuilder(fragmentName)
             .addAnnotation(optInAnnotation())
             .superclass(data.fragmentBaseClass)
             .addFunction(composeOnCreateViewFun(argumentsParameter))

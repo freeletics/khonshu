@@ -3,6 +3,7 @@ package com.freeletics.mad.whetstone.codegen.renderer
 import com.freeletics.mad.whetstone.RendererFragmentData
 import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
 import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
+import com.freeletics.mad.whetstone.codegen.compose.fragmentName
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.bundle
@@ -28,11 +29,9 @@ internal class RendererFragmentGenerator(
     override val data: RendererFragmentData,
 ) : Generator<RendererFragmentData>() {
 
-    private val rendererFragmentClassName = ClassName("${data.baseName}Fragment")
-
     internal fun generate(): TypeSpec {
         val argumentsParameter = data.navigation.asParameter()
-        return TypeSpec.classBuilder(rendererFragmentClassName)
+        return TypeSpec.classBuilder(fragmentName)
             .addAnnotation(optInAnnotation())
             .superclass(data.fragmentBaseClass)
             .addProperty(lateinitPropertySpec(data.factory))

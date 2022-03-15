@@ -4,6 +4,7 @@ import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.RendererFragmentData
+import com.freeletics.mad.whetstone.codegen.common.NavDestinationModuleGenerator
 import com.freeletics.mad.whetstone.codegen.common.RetainedComponentGenerator
 import com.freeletics.mad.whetstone.codegen.common.ViewModelGenerator
 import com.freeletics.mad.whetstone.codegen.compose.ComposeFragmentGenerator
@@ -20,11 +21,17 @@ internal class FileGenerator{
         val retainedComponentGenerator = RetainedComponentGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
         val composeGenerator = ComposeGenerator(data)
+        val navDestinationGenerator = NavDestinationModuleGenerator(data)
 
         return FileSpec.builder(data.packageName, "Whetstone${data.baseName}")
             .addType(retainedComponentGenerator.generate())
             .addType(viewModelGenerator.generate())
             .addFunction(composeGenerator.generate(disableNavigation = false))
+            .also {
+                if (data.navigation?.destinationMethod != null) {
+                    it.addType(navDestinationGenerator.generate())
+                }
+            }
             .build()
     }
 
@@ -33,12 +40,18 @@ internal class FileGenerator{
         val viewModelGenerator = ViewModelGenerator(data)
         val composeFragmentGenerator = ComposeFragmentGenerator(data)
         val composeGenerator = ComposeGenerator(data)
+        val navDestinationGenerator = NavDestinationModuleGenerator(data)
 
         return FileSpec.builder(data.packageName, "Whetstone${data.baseName}")
             .addType(retainedComponentGenerator.generate())
             .addType(viewModelGenerator.generate())
             .addFunction(composeGenerator.generate(disableNavigation = true))
             .addType(composeFragmentGenerator.generate())
+            .also {
+                if (data.navigation?.destinationMethod != null) {
+                    it.addType(navDestinationGenerator.generate())
+                }
+            }
             .build()
     }
 
@@ -46,11 +59,17 @@ internal class FileGenerator{
         val retainedComponentGenerator = RetainedComponentGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
         val rendererFragmentGenerator = RendererFragmentGenerator(data)
+        val navDestinationGenerator = NavDestinationModuleGenerator(data)
 
         return FileSpec.builder(data.packageName, "Whetstone${data.baseName}")
             .addType(retainedComponentGenerator.generate())
             .addType(viewModelGenerator.generate())
             .addType(rendererFragmentGenerator.generate())
+            .also {
+                if (data.navigation?.destinationMethod != null) {
+                    it.addType(navDestinationGenerator.generate())
+                }
+            }
             .build()
     }
 
