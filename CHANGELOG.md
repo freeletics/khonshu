@@ -1,10 +1,15 @@
 Change Log
 ==========
 
-Version 0.3.0-alpha27 *(2022-03-??)*
+Version 0.3.0-alpha27 *(2022-03-15)*
 ----------------------------
 
+- Navigator: add new `registerForNavigationResult` and `deliverResult` APIs
+- Navigator: the Fragment result APIs where removed in favor of the above
+- Navigator: removed `FragmentNavEventNavigator`, use `NavEventNavigator` instead
 - Whetstone: Updated to Anvil 2.4.0-M1
+- Whetstone: Generate and contribute `NavDestination` objects into a set base on the
+`type` field of the `@NavDestination` annotation
 - Whetstone: Use `@ContributesMultibinding` for the generated `NavEntryComponentGetter` instead of
 generating an extra `@Module` class
 - Whetstone: Use `@ContributesSubcomponent` instead of `@MergeSubcomponent` for the generated
