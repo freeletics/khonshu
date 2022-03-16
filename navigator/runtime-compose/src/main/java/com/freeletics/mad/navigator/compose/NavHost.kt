@@ -64,8 +64,8 @@ public fun NavHost(
 
     LegacyFindNavControllerSupport(navController)
 
-    ModalBottomSheetLayout(bottomSheetNavigator) {
-        CompositionLocalProvider(LocalNavController provides navController) {
+    CompositionLocalProvider(LocalNavController provides navController) {
+        ModalBottomSheetLayout(bottomSheetNavigator) {
             AndroidXNavHost(navController, graph)
         }
     }
