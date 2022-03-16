@@ -1,11 +1,9 @@
 package com.freeletics.mad.navigator.compose
 
 import android.app.Activity as AndroidActivity
-import androidx.navigation.NavDestination as AndroidxNavDestination
 import androidx.navigation.compose.NavHost as AndroidXNavHost
 import android.content.Context
 import android.content.ContextWrapper
-import android.os.Bundle
 import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -37,7 +35,6 @@ import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
-import kotlin.reflect.KClass
 
 /**
  * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
@@ -95,9 +92,15 @@ private fun <T : BaseRoute> Screen<T>.toDestination(
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
     return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!.toRoute()) }.also {
         it.id = route.destinationId()
-        it.addDefaultArguments(defaultArguments)
         if (startRoute::class == route) {
-            it.addDefaultArguments(startRoute.getArguments())
+            val arguments = startRoute.getArguments()
+            arguments.keySet().forEach { key ->
+                val argument = NavArgument.Builder()
+                    .setDefaultValue(arguments.get(key))
+                    .setIsNullable(false)
+                    .build()
+                it.addArgument(key, argument)
+            }
         }
     }
 }
@@ -108,7 +111,6 @@ private fun <T : NavRoute> Dialog<T>.toDestination(
     val navigator = controller.navigatorProvider[DialogNavigator::class]
     return DialogNavigator.Destination(navigator) { dialogContent(it.arguments!!.toRoute()) }.also {
         it.id = route.destinationId()
-        it.addDefaultArguments(defaultArguments)
     }
 }
 
@@ -121,7 +123,6 @@ private fun <T : NavRoute> BottomSheet<T>.toDestination(
     val navigator = controller.navigatorProvider[BottomSheetNavigator::class]
     return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(it.arguments!!.toRoute()) }.also {
         it.id = route.destinationId()
-        it.addDefaultArguments(defaultArguments)
     }
 }
 
@@ -137,16 +138,6 @@ private fun Activity.toDestination(
 
 internal val LocalNavController = staticCompositionLocalOf<NavController> {
     throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
-}
-
-private fun AndroidxNavDestination.addDefaultArguments(extras: Bundle?) {
-    extras?.keySet()?.forEach { key ->
-        val argument = NavArgument.Builder()
-            .setDefaultValue(extras.get(key))
-            .setIsNullable(false)
-            .build()
-        addArgument(key, argument)
-    }
 }
 
 @ObsoleteNavigatorApi

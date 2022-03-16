@@ -1,7 +1,6 @@
 package com.freeletics.mad.navigator.fragment
 
 import android.content.Intent
-import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.freeletics.mad.navigator.BaseRoute
@@ -9,7 +8,6 @@ import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.fragment.NavDestination.Activity
 import com.freeletics.mad.navigator.fragment.NavDestination.Dialog
 import com.freeletics.mad.navigator.fragment.NavDestination.Screen
-import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import kotlin.reflect.KClass
 
 /**
@@ -52,31 +50,19 @@ public sealed interface NavDestination {
      * [fragmentClass] will be shown when the screen is being
      * navigated to using an instance of [route].
      */
-    public class Screen<T : BaseRoute> @ObsoleteNavigatorApi constructor(
+    public class Screen<T : BaseRoute>(
         internal val route: KClass<T>,
         internal val fragmentClass: KClass<out Fragment>,
-        internal val defaultArguments: Bundle?,
-    ) : NavDestination {
-        public constructor(
-            route: KClass<T>,
-            fragmentClass: KClass<out Fragment>,
-        ) : this(route, fragmentClass, null)
-    }
+    ) : NavDestination
 
     /**
      * Represents a dialog. The [route] will be used as a unique identifier. The given
      * [fragmentClass] will be shown when it's being navigated to using an instance of [route].
      */
-    public class Dialog<T : NavRoute> @ObsoleteNavigatorApi constructor(
+    public class Dialog<T : NavRoute>(
         internal val route: KClass<T>,
         internal val fragmentClass: KClass<out DialogFragment>,
-        internal val defaultArguments: Bundle?,
-    ) : NavDestination {
-        public constructor(
-            route: KClass<T>,
-            fragmentClass: KClass<out DialogFragment>,
-        ) : this(route, fragmentClass, null)
-    }
+    ) : NavDestination
 
     /**
      * Represents an `Activity`. The [route] will be used as a unique identifier. The given

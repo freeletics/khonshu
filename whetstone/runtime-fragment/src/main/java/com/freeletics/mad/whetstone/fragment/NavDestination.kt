@@ -2,7 +2,6 @@ package com.freeletics.mad.whetstone.fragment
 
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
-import com.freeletics.mad.whetstone.internal.ObsoleteWhetstoneApi
 import kotlin.reflect.KClass
 
 /**
@@ -27,8 +26,6 @@ public annotation class NavDestination(
  * Describing the type of [NavDestination].
  */
 public enum class DestinationType {
-    @ObsoleteWhetstoneApi
-    NONE,
     SCREEN,
     DIALOG,
 }

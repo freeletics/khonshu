@@ -34,7 +34,6 @@ kotlin {
         languageSettings {
             optIn("kotlin.RequiresOptIn")
             optIn("com.freeletics.mad.whetstone.internal.InternalWhetstoneApi")
-            optIn("com.freeletics.mad.whetstone.internal.ObsoleteWhetstoneApi")
         }
     }
 }

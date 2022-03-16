@@ -1,7 +1,6 @@
 package com.freeletics.mad.navigator.compose
 
 import android.content.Intent
-import android.os.Bundle
 import androidx.compose.runtime.Composable
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoute
@@ -9,7 +8,6 @@ import com.freeletics.mad.navigator.compose.NavDestination.Activity
 import com.freeletics.mad.navigator.compose.NavDestination.BottomSheet
 import com.freeletics.mad.navigator.compose.NavDestination.Dialog
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
-import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import kotlin.reflect.KClass
 
@@ -63,32 +61,20 @@ public sealed interface NavDestination {
      * The given [screenContent] will be shown when the screen is being
      * navigated to using an instance of [route].
      */
-    public class Screen<T : BaseRoute> @ObsoleteNavigatorApi constructor(
+    public class Screen<T : BaseRoute>(
         internal val route: KClass<T>,
-        internal val defaultArguments: Bundle?,
         internal val screenContent: @Composable (T) -> Unit,
-    ) : NavDestination {
-        public constructor(
-            route: KClass<T>,
-            screenContent: @Composable (T) -> Unit,
-        ) : this(route, null, screenContent)
-    }
+    ) : NavDestination
 
     /**
      * Represents a dialog. The [route] will be used as a unique identifier together.
      * The given [dialogContent] will be shown inside the dialog window
      * when navigating to it by using an instance of [route].
      */
-    public class Dialog<T : NavRoute> @ObsoleteNavigatorApi constructor(
+    public class Dialog<T : NavRoute>(
         internal val route: KClass<T>,
-        internal val defaultArguments: Bundle?,
         internal val dialogContent: @Composable (T) -> Unit,
-    ) : NavDestination {
-        public constructor(
-            route: KClass<T>,
-            dialogContent: @Composable (T) -> Unit,
-        ) : this(route, null, dialogContent)
-    }
+    ) : NavDestination
 
     /**
      * Represents a bottom sheet. The [route] will be used as a unique identifier.
@@ -96,16 +82,10 @@ public sealed interface NavDestination {
      * when navigating to it by using an instance of [route].
      */
     @ExperimentalMaterialNavigationApi
-    public class BottomSheet<T : NavRoute> @ObsoleteNavigatorApi constructor(
+    public class BottomSheet<T : NavRoute>(
         internal val route: KClass<T>,
-        internal val defaultArguments: Bundle?,
         internal val bottomSheetContent: @Composable (T) -> Unit,
-    ) : NavDestination {
-        public constructor(
-            route: KClass<T>,
-            bottomSheetContent: @Composable (T) -> Unit,
-        ) : this(route, null, bottomSheetContent)
-    }
+    ) : NavDestination
 
     /**
      * Represents an `Activity`. The [route] will be used as a unique identifier.
