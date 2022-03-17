@@ -84,8 +84,12 @@ internal fun internalApiAnnotation(): AnnotationSpec {
 }
 
 internal fun optInAnnotation(): AnnotationSpec {
+    return optInAnnotation(internalWhetstoneApi)
+}
+
+internal fun optInAnnotation(className: ClassName): AnnotationSpec {
     return AnnotationSpec.builder(optIn)
-        .addMember("%T::class", internalWhetstoneApi)
+        .addMember("%T::class", className)
         .build()
 }
 

@@ -46,6 +46,8 @@ internal val fragmentDestination = ClassName("com.freeletics.mad.navigator.fragm
 internal val fragmentScreenDestination = MemberName("com.freeletics.mad.navigator.fragment", "ScreenDestination")
 internal val fragmentDialogDestination = MemberName("com.freeletics.mad.navigator.fragment", "DialogDestination")
 internal val requireRoute = MemberName("com.freeletics.mad.navigator.fragment", "requireRoute")
+internal val destinationId = MemberName("com.freeletics.mad.navigator.internal", "destinationId")
+internal val internalNavigatorApi = ClassName("com.freeletics.mad.navigator.internal", "InternalNavigatorApi")
 
 // Renderer
 internal val rendererConnect = MemberName("com.gabrielittner.renderer.connect", "connect")
