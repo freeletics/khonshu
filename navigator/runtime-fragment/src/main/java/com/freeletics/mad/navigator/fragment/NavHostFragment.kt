@@ -1,9 +1,6 @@
 package com.freeletics.mad.navigator.fragment
 
-import androidx.navigation.NavDestination as AndroidXNavDestination
-import android.os.Bundle
 import androidx.navigation.ActivityNavigator
-import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.createGraph
@@ -52,7 +49,6 @@ private fun NavDestination.Screen<*>.toDestination(
     return FragmentNavigator.Destination(navigator).also {
         it.id = route.destinationId()
         it.setClassName(fragmentClass.java.name)
-        it.addDefaultArguments(defaultArguments)
     }
 }
 
@@ -63,7 +59,6 @@ private fun NavDestination.Dialog<*>.toDestination(
     return DialogFragmentNavigator.Destination(navigator).also {
         it.id = route.destinationId()
         it.setClassName(fragmentClass.java.name)
-        it.addDefaultArguments(defaultArguments)
     }
 }
 
@@ -74,15 +69,5 @@ private fun NavDestination.Activity<*>.toDestination(
     return ActivityNavigator.Destination(navigator).also {
         it.id = route.destinationId()
         it.setIntent(intent)
-    }
-}
-
-private fun AndroidXNavDestination.addDefaultArguments(extras: Bundle?) {
-    extras?.keySet()?.forEach { key ->
-        val argument = NavArgument.Builder()
-            .setDefaultValue(extras.get(key))
-            .setIsNullable(false)
-            .build()
-        addArgument(key, argument)
     }
 }
