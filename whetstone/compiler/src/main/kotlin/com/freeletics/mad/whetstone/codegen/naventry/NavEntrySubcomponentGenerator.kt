@@ -8,7 +8,6 @@ import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.coroutineScope
 import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
-import com.freeletics.mad.whetstone.codegen.util.internalWhetstoneApi
 import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
 import com.freeletics.mad.whetstone.codegen.util.scopeToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.subcomponentAnnotation
@@ -25,9 +24,10 @@ internal val Generator<NavEntryData>.navEntrySubcomponentFactoryClassName
 
 internal const val navEntrySubcomponentFactoryCreateName = "create"
 
-internal val Generator<NavEntryData>.navEntrySubcomponentFactoryProviderClassName get() = navEntrySubcomponentClassName.nestedClass("ParentComponent")
+internal val Generator<NavEntryData>.navEntryParentComponentClassName
+    get() = navEntrySubcomponentClassName.nestedClass("ParentComponent")
 
-internal val Generator<NavEntryData>.navEntrySubcomponentFactoryProviderGetterName get() = "get${navEntrySubcomponentClassName.simpleName}"
+internal val navEntryParentComponentGetterName get() = "factory"
 
 internal class NavEntrySubcomponentGenerator(
     override val data: NavEntryData,
@@ -65,11 +65,11 @@ internal class NavEntrySubcomponentGenerator(
     }
 
     private fun navEntrySubcomponentFactoryParentComponent(): TypeSpec {
-        val getterFun = FunSpec.builder(navEntrySubcomponentFactoryProviderGetterName)
+        val getterFun = FunSpec.builder(navEntryParentComponentGetterName)
             .addModifiers(ABSTRACT)
             .returns(navEntrySubcomponentFactoryClassName)
             .build()
-        return TypeSpec.interfaceBuilder(navEntrySubcomponentFactoryProviderClassName)
+        return TypeSpec.interfaceBuilder(navEntryParentComponentClassName)
             .addAnnotation(contributesToAnnotation(data.parentScope))
             .addFunction(getterFun)
             .build()

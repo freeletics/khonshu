@@ -83,10 +83,11 @@ internal class NavEntryComponentGetterGenerator(
             .addParameter("context", context)
             .returns(ANY)
             .addStatement("val entry = findEntry(id)")
-            .beginControlFlow("val viewModelProvider = %M<%T>(entry, context, %T::class) { component, handle -> ", navEntryViewModelProvider, navEntrySubcomponentFactoryProviderClassName, data.parentScope)
+            .beginControlFlow("val viewModelProvider = %M<%T>(entry, context, %T::class) { parentComponent, handle -> ",
+                navEntryViewModelProvider, navEntryParentComponentClassName, data.parentScope)
             // arguments: external method
             .addStatement("val arguments = entry.arguments ?: %T.EMPTY", bundle)
-            .addStatement("%T(component, handle, arguments)", viewModelClassName)
+            .addStatement("%T(parentComponent.%L, handle, arguments)", viewModelClassName, navEntryParentComponentGetterName)
             .endControlFlow()
             .addStatement("val viewModel = viewModelProvider[%T::class.java]", viewModelClassName)
             .addStatement("return viewModel.%L", viewModelComponentName)
