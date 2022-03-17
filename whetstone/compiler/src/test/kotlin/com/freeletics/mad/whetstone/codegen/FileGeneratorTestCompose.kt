@@ -119,6 +119,7 @@ internal class FileGeneratorTestCompose {
             }
             
             @Composable
+            @OptIn(InternalWhetstoneApi::class)
             private fun TestScreen(component: RetainedTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
@@ -239,6 +240,7 @@ internal class FileGeneratorTestCompose {
             }
             
             @Composable
+            @OptIn(InternalWhetstoneApi::class)
             private fun TestScreen(component: RetainedTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
@@ -357,6 +359,7 @@ internal class FileGeneratorTestCompose {
             }
             
             @Composable
+            @OptIn(InternalWhetstoneApi::class)
             private fun TestScreen(component: RetainedTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
@@ -463,6 +466,7 @@ internal class FileGeneratorTestCompose {
             }
             
             @Composable
+            @OptIn(InternalWhetstoneApi::class)
             private fun TestScreen(component: RetainedTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
@@ -570,6 +574,7 @@ internal class FileGeneratorTestCompose {
             }
             
             @Composable
+            @OptIn(InternalWhetstoneApi::class)
             private fun TestScreen(component: RetainedTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {

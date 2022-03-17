@@ -6,6 +6,7 @@ import com.freeletics.mad.whetstone.codegen.util.asComposeState
 import com.freeletics.mad.whetstone.codegen.util.composable
 import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.launch
+import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.rememberCoroutineScope
 import com.squareup.kotlinpoet.FunSpec
@@ -21,6 +22,7 @@ internal class ComposeGenerator(
     internal fun generate(): FunSpec {
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
+            .addAnnotation(optInAnnotation())
             .addModifiers(PRIVATE)
             .addParameter("component", retainedComponentClassName)
             .addStatement("val providedValues = component.%L", providedValueSetPropertyName)
