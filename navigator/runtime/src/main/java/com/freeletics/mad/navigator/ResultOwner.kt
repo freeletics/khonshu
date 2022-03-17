@@ -13,8 +13,11 @@ import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DE
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.GRANTED
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
@@ -28,7 +31,11 @@ public sealed class ResultOwner<O> {
      * Emits any result passed to [onResult]. Results will only be delivered
      * to one collector at a time.
      */
-    public val results: Flow<O> = _results.receiveAsFlow()
+    public val results: Flow<O> = flow {
+        for (result in _results) {
+            emit(result)
+        }
+    }
 
     /**
      * Deliver a new [result] to [results]. This method should be called by a
