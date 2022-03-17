@@ -7,6 +7,7 @@ import com.freeletics.mad.whetstone.codegen.util.context
 import com.freeletics.mad.whetstone.codegen.util.destinationId
 import com.freeletics.mad.whetstone.codegen.util.inject
 import com.freeletics.mad.whetstone.codegen.util.internalNavigatorApi
+import com.freeletics.mad.whetstone.codegen.util.internalWhetstoneApi
 import com.freeletics.mad.whetstone.codegen.util.navBackStackEntry
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
@@ -66,8 +67,7 @@ internal class NavEntryComponentGetterGenerator(
     private fun retrieveFunction(): FunSpec {
         return FunSpec.builder("retrieve")
             .addModifiers(OVERRIDE)
-            .addAnnotation(optInAnnotation())
-            .addAnnotation(optInAnnotation(internalNavigatorApi))
+            .addAnnotation(optInAnnotation(internalWhetstoneApi, internalNavigatorApi))
             .addParameter("findEntry", LambdaTypeName.get(parameters = arrayOf(INT), returnType = navBackStackEntry))
             .addParameter("context", context)
             .returns(ANY)

@@ -98,8 +98,7 @@ internal class NavEntryFileGeneratorTest {
               NavEntryComponentGetter::class
             )
             public class TestFlowScopeComponentGetter @Inject constructor() : NavEntryComponentGetter {
-              @OptIn(InternalWhetstoneApi::class)
-              @OptIn(InternalNavigatorApi::class)
+              @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(TestRoute::class.destinationId())
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowScopeComponent.ParentComponent>(entry,
@@ -191,8 +190,7 @@ internal class NavEntryFileGeneratorTest {
               NavEntryComponentGetter::class
             )
             public class TestFlowScopeComponentGetter @Inject constructor() : NavEntryComponentGetter {
-              @OptIn(InternalWhetstoneApi::class)
-              @OptIn(InternalNavigatorApi::class)
+              @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(TestRoute::class.destinationId())
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowScopeComponent.ParentComponent>(entry,
@@ -286,8 +284,7 @@ internal class NavEntryFileGeneratorTest {
               NavEntryComponentGetter::class
             )
             public class TestFlowScopeComponentGetter @Inject constructor() : NavEntryComponentGetter {
-              @OptIn(InternalWhetstoneApi::class)
-              @OptIn(InternalNavigatorApi::class)
+              @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(TestRoute::class.destinationId())
                 val viewModelProvider = viewModelProvider<NavEntryTestFlowScopeComponent.ParentComponent>(entry,
