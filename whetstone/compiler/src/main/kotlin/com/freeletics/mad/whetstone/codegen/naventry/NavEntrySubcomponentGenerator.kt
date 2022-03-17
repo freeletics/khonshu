@@ -3,15 +3,17 @@ package com.freeletics.mad.whetstone.codegen.naventry
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.bindsInstanceParameter
-import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.coroutineScope
 import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
+import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
 import com.freeletics.mad.whetstone.codegen.util.scopeToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.subcomponentAnnotation
 import com.freeletics.mad.whetstone.codegen.util.subcomponentFactoryAnnotation
+import com.squareup.anvil.annotations.ExperimentalAnvilApi
+import com.squareup.anvil.compiler.internal.decapitalize
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.TypeSpec
@@ -27,7 +29,9 @@ internal const val navEntrySubcomponentFactoryCreateName = "create"
 internal val Generator<NavEntryData>.navEntryParentComponentClassName
     get() = navEntrySubcomponentClassName.nestedClass("ParentComponent")
 
-internal val navEntryParentComponentGetterName get() = "factory"
+@OptIn(ExperimentalAnvilApi::class)
+internal val Generator<NavEntryData>.navEntryParentComponentGetterName
+    get() = "${navEntrySubcomponentClassName.simpleName.decapitalize()}Factory"
 
 internal class NavEntrySubcomponentGenerator(
     override val data: NavEntryData,
@@ -47,7 +51,7 @@ internal class NavEntrySubcomponentGenerator(
         val createFun = FunSpec.builder(navEntrySubcomponentFactoryCreateName)
             .addModifiers(ABSTRACT)
             .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle))
-            .addParameter(bindsInstanceParameter("arguments", bundle))
+            .addParameter(bindsInstanceParameter(data.route.propertyName, data.route))
             .apply {
                 if (data.rxJavaEnabled) {
                     addParameter(bindsInstanceParameter("compositeDisposable", compositeDisposable))
