@@ -105,38 +105,32 @@ internal class FileGeneratorTestRendererFragment {
             
             @OptIn(InternalWhetstoneApi::class)
             public class TestFragment : Fragment() {
-              private lateinit var rendererFactory: RendererFactory
-
-              private lateinit var testStateMachine: TestStateMachine
+              private lateinit var retainedTestComponent: RetainedTestComponent
 
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
               ): View {
-                if (!::testStateMachine.isInitialized) {
-                  val testRoute = requireRoute<TestRoute>()
-                  inject(testRoute)
+                if (!::retainedTestComponent.isInitialized) {
+                  inject()
+            
+                  handleNavigation(this, retainedTestComponent.navEventNavigator)
                 }
             
-                val renderer = rendererFactory.inflate(inflater, container)
-                connect(renderer, testStateMachine)
+                val renderer = retainedTestComponent.rendererFactory.inflate(inflater, container)
+                connect(renderer, retainedTestComponent.testStateMachine)
                 return renderer.rootView
               }
 
-              private fun inject(testRoute: TestRoute): Unit {
+              private fun inject(): Unit {
+                val testRoute = requireRoute<TestRoute>()
                 val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
                     dependencies, handle -> 
                   TestViewModel(dependencies, handle, testRoute)
                 }
                 val viewModel = viewModelProvider[TestViewModel::class.java]
-                val component = viewModel.component
-
-                rendererFactory = component.rendererFactory
-                testStateMachine = component.testStateMachine
-
-                val navigator = component.navEventNavigator
-                handleNavigation(this, navigator)
+                retainedTestComponent = viewModel.component
               }
             }
             
@@ -229,38 +223,32 @@ internal class FileGeneratorTestRendererFragment {
             
             @OptIn(InternalWhetstoneApi::class)
             public class TestFragment : Fragment() {
-              private lateinit var rendererFactory: RendererFactory
-
-              private lateinit var testStateMachine: TestStateMachine
+              private lateinit var retainedTestComponent: RetainedTestComponent
 
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
               ): View {
-                if (!::testStateMachine.isInitialized) {
-                  val testRoute = requireRoute<TestRoute>()
-                  inject(testRoute)
+                if (!::retainedTestComponent.isInitialized) {
+                  inject()
+            
+                  handleNavigation(this, retainedTestComponent.navEventNavigator)
                 }
             
-                val renderer = rendererFactory.inflate(inflater, container)
-                connect(renderer, testStateMachine)
+                val renderer = retainedTestComponent.rendererFactory.inflate(inflater, container)
+                connect(renderer, retainedTestComponent.testStateMachine)
                 return renderer.rootView
               }
 
-              private fun inject(testRoute: TestRoute): Unit {
+              private fun inject(): Unit {
+                val testRoute = requireRoute<TestRoute>()
                 val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
                     dependencies, handle -> 
                   TestViewModel(dependencies, handle, testRoute)
                 }
                 val viewModel = viewModelProvider[TestViewModel::class.java]
-                val component = viewModel.component
-
-                rendererFactory = component.rendererFactory
-                testStateMachine = component.testStateMachine
-
-                val navigator = component.navEventNavigator
-                handleNavigation(this, navigator)
+                retainedTestComponent = viewModel.component
               }
             }
             
@@ -349,35 +337,30 @@ internal class FileGeneratorTestRendererFragment {
             
             @OptIn(InternalWhetstoneApi::class)
             public class TestFragment : Fragment() {
-              private lateinit var rendererFactory: RendererFactory
-
-              private lateinit var testStateMachine: TestStateMachine
+              private lateinit var retainedTestComponent: RetainedTestComponent
 
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
               ): View {
-                if (!::testStateMachine.isInitialized) {
-                  val arguments = requireArguments()
-                  inject(arguments)
+                if (!::retainedTestComponent.isInitialized) {
+                  inject()
                 }
             
-                val renderer = rendererFactory.inflate(inflater, container)
-                connect(renderer, testStateMachine)
+                val renderer = retainedTestComponent.rendererFactory.inflate(inflater, container)
+                connect(renderer, retainedTestComponent.testStateMachine)
                 return renderer.rootView
               }
 
-              private fun inject(arguments: Bundle): Unit {
+              private fun inject(): Unit {
+                val arguments = requireArguments()
                 val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
                     dependencies, handle -> 
                   TestViewModel(dependencies, handle, arguments)
                 }
                 val viewModel = viewModelProvider[TestViewModel::class.java]
-                val component = viewModel.component
-
-                rendererFactory = component.rendererFactory
-                testStateMachine = component.testStateMachine
+                retainedTestComponent = viewModel.component
               }
             }
             
@@ -465,38 +448,32 @@ internal class FileGeneratorTestRendererFragment {
             
             @OptIn(InternalWhetstoneApi::class)
             public class TestFragment : DialogFragment() {
-              private lateinit var rendererFactory: RendererFactory
-
-              private lateinit var testStateMachine: TestStateMachine
+              private lateinit var retainedTestComponent: RetainedTestComponent
 
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?
               ): View {
-                if (!::testStateMachine.isInitialized) {
-                  val testRoute = requireRoute<TestRoute>()
-                  inject(testRoute)
+                if (!::retainedTestComponent.isInitialized) {
+                  inject()
+            
+                  handleNavigation(this, retainedTestComponent.navEventNavigator)
                 }
             
-                val renderer = rendererFactory.inflate(inflater, container)
-                connect(renderer, testStateMachine)
+                val renderer = retainedTestComponent.rendererFactory.inflate(inflater, container)
+                connect(renderer, retainedTestComponent.testStateMachine)
                 return renderer.rootView
               }
 
-              private fun inject(testRoute: TestRoute): Unit {
+              private fun inject(): Unit {
+                val testRoute = requireRoute<TestRoute>()
                 val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
                     dependencies, handle -> 
                   TestViewModel(dependencies, handle, testRoute)
                 }
                 val viewModel = viewModelProvider[TestViewModel::class.java]
-                val component = viewModel.component
-
-                rendererFactory = component.rendererFactory
-                testStateMachine = component.testStateMachine
-
-                val navigator = component.navEventNavigator
-                handleNavigation(this, navigator)
+                retainedTestComponent = viewModel.component
               }
             }
             

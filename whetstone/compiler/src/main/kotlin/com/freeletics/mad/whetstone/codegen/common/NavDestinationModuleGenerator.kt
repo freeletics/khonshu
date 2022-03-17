@@ -3,8 +3,7 @@ package com.freeletics.mad.whetstone.codegen.common
 import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.codegen.Generator
-import com.freeletics.mad.whetstone.codegen.compose.composableName
-import com.freeletics.mad.whetstone.codegen.compose.fragmentName
+import com.freeletics.mad.whetstone.codegen.fragment.fragmentName
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.intoSet
 import com.freeletics.mad.whetstone.codegen.util.module
