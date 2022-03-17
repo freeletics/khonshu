@@ -43,7 +43,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
@@ -158,7 +158,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.destination.TestDestinationScope
@@ -285,7 +285,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
@@ -394,7 +394,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
@@ -500,7 +500,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.`internal`.rememberViewModelProvider
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModelProvider
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
