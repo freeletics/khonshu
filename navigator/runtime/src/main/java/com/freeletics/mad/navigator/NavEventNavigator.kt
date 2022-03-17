@@ -20,6 +20,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
@@ -42,7 +43,11 @@ public open class NavEventNavigator {
      * A [Flow] to collect [NavEvents][NavEvent] produced by this navigator.
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public val navEvents: Flow<NavEvent> = _navEvents.receiveAsFlow()
+    public val navEvents: Flow<NavEvent> = flow {
+        for (result in _navEvents) {
+            emit(result)
+        }
+    }
 
     private val _activityResultRequests = mutableListOf<ActivityResultRequest<*, *>>()
     private val _permissionsResultRequests = mutableListOf<PermissionsResultRequest>()
