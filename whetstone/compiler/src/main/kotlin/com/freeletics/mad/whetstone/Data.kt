@@ -29,6 +29,11 @@ internal sealed interface CommonData : BaseData {
     val rxJavaEnabled: Boolean
 }
 
+internal sealed interface FragmentCommonData : CommonData {
+    val fragmentBaseClass: ClassName
+    override val navigation: Navigation.Fragment?
+}
+
 internal sealed interface Navigation {
     val route: ClassName
     val destinationClass: ClassName
@@ -94,14 +99,14 @@ internal data class ComposeFragmentData(
     override val dependencies: ClassName,
 
     override val stateMachine: ClassName,
-    val fragmentBaseClass: ClassName,
+    override val fragmentBaseClass: ClassName,
 
     override val navigation: Navigation.Fragment?,
 
     val enableInsetHandling: Boolean,
     override val coroutinesEnabled: Boolean,
     override val rxJavaEnabled: Boolean,
-) : CommonData
+) : FragmentCommonData
 
 internal data class RendererFragmentData(
     override val baseName: String,
@@ -114,13 +119,13 @@ internal data class RendererFragmentData(
 
     override val stateMachine: ClassName,
     val factory: ClassName,
-    val fragmentBaseClass: ClassName,
+    override val fragmentBaseClass: ClassName,
 
     override val navigation: Navigation.Fragment?,
 
     override val coroutinesEnabled: Boolean,
     override val rxJavaEnabled: Boolean,
-) : CommonData
+) : FragmentCommonData
 
 internal data class NavEntryData(
     override val baseName: String,

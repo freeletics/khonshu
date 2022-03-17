@@ -4,15 +4,16 @@ import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.RendererFragmentData
+import com.freeletics.mad.whetstone.codegen.common.ComposeGenerator
 import com.freeletics.mad.whetstone.codegen.common.NavDestinationModuleGenerator
 import com.freeletics.mad.whetstone.codegen.common.RetainedComponentGenerator
 import com.freeletics.mad.whetstone.codegen.common.ViewModelGenerator
-import com.freeletics.mad.whetstone.codegen.compose.ComposeFragmentGenerator
-import com.freeletics.mad.whetstone.codegen.compose.ComposeGenerator
+import com.freeletics.mad.whetstone.codegen.compose.ComposeScreenGenerator
+import com.freeletics.mad.whetstone.codegen.fragment.ComposeFragmentGenerator
 import com.freeletics.mad.whetstone.codegen.naventry.NavEntryComponentGetterGenerator
 import com.freeletics.mad.whetstone.codegen.naventry.NavEntrySubcomponentGenerator
 import com.freeletics.mad.whetstone.codegen.naventry.NavEntryViewModelGenerator
-import com.freeletics.mad.whetstone.codegen.renderer.RendererFragmentGenerator
+import com.freeletics.mad.whetstone.codegen.fragment.RendererFragmentGenerator
 import com.squareup.kotlinpoet.FileSpec
 
 internal class FileGenerator{
@@ -20,13 +21,15 @@ internal class FileGenerator{
     fun generate(data: ComposeScreenData): FileSpec {
         val retainedComponentGenerator = RetainedComponentGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
+        val composeScreenGenerator = ComposeScreenGenerator(data)
         val composeGenerator = ComposeGenerator(data)
         val navDestinationGenerator = NavDestinationModuleGenerator(data)
 
         return FileSpec.builder(data.packageName, "Whetstone${data.baseName}")
             .addType(retainedComponentGenerator.generate())
             .addType(viewModelGenerator.generate())
-            .addFunction(composeGenerator.generate(disableNavigation = false))
+            .addFunction(composeScreenGenerator.generate())
+            .addFunction(composeGenerator.generate())
             .also {
                 if (data.navigation?.destinationMethod != null) {
                     it.addType(navDestinationGenerator.generate())
@@ -45,8 +48,8 @@ internal class FileGenerator{
         return FileSpec.builder(data.packageName, "Whetstone${data.baseName}")
             .addType(retainedComponentGenerator.generate())
             .addType(viewModelGenerator.generate())
-            .addFunction(composeGenerator.generate(disableNavigation = true))
             .addType(composeFragmentGenerator.generate())
+            .addFunction(composeGenerator.generate())
             .also {
                 if (data.navigation?.destinationMethod != null) {
                     it.addType(navDestinationGenerator.generate())

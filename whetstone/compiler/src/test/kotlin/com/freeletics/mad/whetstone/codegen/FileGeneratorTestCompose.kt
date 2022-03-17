@@ -113,9 +113,13 @@ internal class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
-              val navigator = component.navEventNavigator
-              NavigationSetup(navigator)
+              NavigationSetup(component.navEventNavigator)
 
+              TestScreen(component)
+            }
+            
+            @Composable
+            private fun TestScreen(component: RetainedTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
@@ -229,9 +233,13 @@ internal class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
-              val navigator = component.navEventNavigator
-              NavigationSetup(navigator)
+              NavigationSetup(component.navEventNavigator)
 
+              TestScreen(component)
+            }
+            
+            @Composable
+            private fun TestScreen(component: RetainedTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
@@ -345,6 +353,11 @@ internal class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
+              TestScreen(component)
+            }
+            
+            @Composable
+            private fun TestScreen(component: RetainedTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
@@ -444,9 +457,13 @@ internal class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
-              val navigator = component.navEventNavigator
-              NavigationSetup(navigator)
+              NavigationSetup(component.navEventNavigator)
 
+              TestScreen(component)
+            }
+            
+            @Composable
+            private fun TestScreen(component: RetainedTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
@@ -547,9 +564,13 @@ internal class FileGeneratorTestCompose {
               val viewModel = viewModelProvider[TestViewModel::class.java]
               val component = viewModel.component
 
-              val navigator = component.navEventNavigator
-              NavigationSetup(navigator)
+              NavigationSetup(component.navEventNavigator)
 
+              TestScreen(component)
+            }
+            
+            @Composable
+            private fun TestScreen(component: RetainedTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
                 val stateMachine = component.testStateMachine
