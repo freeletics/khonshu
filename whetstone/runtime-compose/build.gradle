@@ -56,5 +56,7 @@ dependencies {
     api project(":state-machine")
     api "androidx.compose.runtime:runtime:1.1.1"
 
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1"
+
     compileOnly project(":navigator:navigator-runtime")
 }

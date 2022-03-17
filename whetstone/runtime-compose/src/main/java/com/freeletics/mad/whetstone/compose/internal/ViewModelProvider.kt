@@ -1,10 +1,14 @@
-package com.freeletics.mad.whetstone.fragment.internal
+package com.freeletics.mad.whetstone.compose.internal
 
-import androidx.fragment.app.Fragment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
 import com.freeletics.mad.whetstone.internal.WhetstoneViewModelFactory
 import kotlin.reflect.KClass
@@ -19,12 +23,16 @@ import kotlin.reflect.KClass
  * To be used in generated code.
  */
 @InternalWhetstoneApi
-public fun <D> viewModelProvider(
-    fragment: Fragment,
+@Composable
+public fun <D> rememberViewModelProvider(
     scope: KClass<*>,
     factory: (D, SavedStateHandle) -> ViewModel
 ): ViewModelProvider {
-    val context = fragment.requireContext()
-    val viewModelFactory = WhetstoneViewModelFactory(fragment, context, scope, factory)
-    return ViewModelProvider(fragment, viewModelFactory)
+    val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
+    val savedStateRegistryOwner = LocalSavedStateRegistryOwner.current
+    val context = LocalContext.current
+    return remember(scope, viewModelStoreOwner, savedStateRegistryOwner) {
+        val viewModelFactory = WhetstoneViewModelFactory(savedStateRegistryOwner, context, scope, factory)
+        ViewModelProvider(viewModelStoreOwner, viewModelFactory)
+    }
 }
