@@ -22,8 +22,8 @@ jobs:
       - name: Install Android SDK
         run: ./.github/android-sdk.sh
 
-      - name: Build release
-        run: ./gradlew assemble
+      - name: Build release and docs
+        run: ./gradlew assemble dokkaHtml javaDocDebugJar javaDocReleaseJar
 
       - name: Upload release
         run: ./gradlew publish --no-daemon --no-parallel
