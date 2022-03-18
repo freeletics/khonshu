@@ -8,6 +8,7 @@ import com.freeletics.mad.whetstone.codegen.util.coroutineScope
 import com.freeletics.mad.whetstone.codegen.util.coroutineScopeCancel
 import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
 import com.freeletics.mad.whetstone.codegen.util.mainScope
+import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
 import com.freeletics.mad.whetstone.codegen.util.viewModel
 import com.squareup.kotlinpoet.CodeBlock

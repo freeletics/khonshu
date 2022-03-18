@@ -2,12 +2,12 @@ package com.freeletics.mad.whetstone.codegen.naventry
 
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.codegen.Generator
-import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
 import com.freeletics.mad.whetstone.codegen.util.coroutineScope
 import com.freeletics.mad.whetstone.codegen.util.coroutineScopeCancel
 import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
 import com.freeletics.mad.whetstone.codegen.util.mainScope
+import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
 import com.freeletics.mad.whetstone.codegen.util.viewModel
 import com.squareup.kotlinpoet.CodeBlock
@@ -16,6 +16,7 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.KModifier.PRIVATE
 import com.squareup.kotlinpoet.KModifier.PUBLIC
+import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
@@ -29,29 +30,31 @@ internal class NavEntryViewModelGenerator(
 ) : Generator<NavEntryData>() {
 
     internal fun generate(): TypeSpec {
+        val argumentsParameter = ParameterSpec.builder(data.route.propertyName, data.route).build()
         return TypeSpec.classBuilder(viewModelClassName)
             .addModifiers(KModifier.INTERNAL)
             .addAnnotation(internalApiAnnotation())
             .superclass(viewModel)
-            .primaryConstructor(viewModelCtor())
-            .addProperties(viewModelProperties())
+            .primaryConstructor(viewModelCtor(argumentsParameter))
+            .addProperties(viewModelProperties(argumentsParameter))
             .addFunction(viewModelOnClearedFun())
             .build()
     }
 
-    private fun viewModelCtor(): FunSpec {
+    private fun viewModelCtor(argumentsParameter: ParameterSpec): FunSpec {
         return FunSpec.constructorBuilder()
             .addParameter("factory", navEntrySubcomponentFactoryClassName)
             .addParameter("savedStateHandle", savedStateHandle)
-            .addParameter("arguments", bundle)
+            .addParameter(argumentsParameter)
             .build()
     }
 
-    private fun viewModelProperties(): List<PropertySpec> {
+    private fun viewModelProperties(argumentsParameter: ParameterSpec): List<PropertySpec> {
         val properties = mutableListOf<PropertySpec>()
         val componentInitializer = CodeBlock.builder().add(
-            "factory.%L(savedStateHandle, arguments",
+            "factory.%L(savedStateHandle, %N",
             navEntrySubcomponentFactoryCreateName,
+            argumentsParameter,
         )
         if (data.rxJavaEnabled) {
             properties += PropertySpec.builder("disposable", compositeDisposable)

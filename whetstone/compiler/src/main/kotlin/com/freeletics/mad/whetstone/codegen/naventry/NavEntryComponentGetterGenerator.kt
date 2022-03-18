@@ -14,6 +14,7 @@ import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
 import com.freeletics.mad.whetstone.codegen.util.navEntryIdScope
 import com.freeletics.mad.whetstone.codegen.util.navEntryViewModelProvider
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
+import com.freeletics.mad.whetstone.codegen.util.toRoute
 import com.squareup.anvil.annotations.ContributesMultibinding
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.AnnotationSpec
@@ -75,8 +76,8 @@ internal class NavEntryComponentGetterGenerator(
             .beginControlFlow("val viewModelProvider = %M<%T>(entry, context, %T::class) { parentComponent, handle -> ",
                 navEntryViewModelProvider, navEntryParentComponentClassName, data.parentScope)
             // arguments: external method
-            .addStatement("val arguments = entry.arguments ?: %T.EMPTY", bundle)
-            .addStatement("%T(parentComponent.%L, handle, arguments)", viewModelClassName, navEntryParentComponentGetterName)
+            .addStatement("val route: %T = entry.arguments!!.%M()", data.route, toRoute)
+            .addStatement("%T(parentComponent.%L(), handle, route)", viewModelClassName, navEntryParentComponentGetterName)
             .endControlFlow()
             .addStatement("val viewModel = viewModelProvider[%T::class.java]", viewModelClassName)
             .addStatement("return viewModel.%L", viewModelComponentName)
