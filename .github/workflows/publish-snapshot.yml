@@ -35,6 +35,9 @@ jobs:
 
       - name: Build snapshot
         run: ./gradlew assemble
+        
+      - name: Build docs
+        run: ./gradlew dokka javaDocDebugJar javaDocReleaseJar
 
       - name: Publish snapshot
         run: ./gradlew publish
