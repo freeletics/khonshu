@@ -39,9 +39,6 @@ import kotlin.reflect.KClass
  *
  * The generated component can be accessed through a `Map<Class<*>, NavEntryComponentGetter` that
  * will automatically be available in the parent component. See [NavEntryComponentGetter].
- *
- * It's recommended to put this annotation on the method that provides the matching [NavEntryId]
- * value.
  */
 @Target(CLASS, FUNCTION)
 @Retention(RUNTIME)
