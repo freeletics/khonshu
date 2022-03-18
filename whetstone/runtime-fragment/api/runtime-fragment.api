@@ -38,6 +38,3 @@ public abstract interface annotation class com/freeletics/mad/whetstone/fragment
 	public abstract fun root ()Ljava/lang/Class;
 }
 
-public final class com/freeletics/mad/whetstone/fragment/internal/FragmentViewModelProviderKt {
-}
-

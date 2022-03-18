@@ -46,7 +46,7 @@ internal class FileGeneratorTestRendererFragment {
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
@@ -114,7 +114,9 @@ internal class FileGeneratorTestRendererFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
-                  inject()
+                  val testRoute = requireRoute<TestRoute>()
+                  val viewModel = viewModel(TestParentScope::class, testRoute, ::TestViewModel)
+                  retainedTestComponent = viewModel.component
             
                   handleNavigation(this, retainedTestComponent.navEventNavigator)
                 }
@@ -122,16 +124,6 @@ internal class FileGeneratorTestRendererFragment {
                 val renderer = retainedTestComponent.rendererFactory.inflate(inflater, container)
                 connect(renderer, retainedTestComponent.testStateMachine)
                 return renderer.rootView
-              }
-
-              private fun inject(): Unit {
-                val testRoute = requireRoute<TestRoute>()
-                val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
-                    dependencies, handle -> 
-                  TestViewModel(dependencies, handle, testRoute)
-                }
-                val viewModel = viewModelProvider[TestViewModel::class.java]
-                retainedTestComponent = viewModel.component
               }
             }
             
@@ -159,7 +151,7 @@ internal class FileGeneratorTestRendererFragment {
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeComponent
@@ -232,7 +224,9 @@ internal class FileGeneratorTestRendererFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
-                  inject()
+                  val testRoute = requireRoute<TestRoute>()
+                  val viewModel = viewModel(TestParentScope::class, testRoute, ::TestViewModel)
+                  retainedTestComponent = viewModel.component
             
                   handleNavigation(this, retainedTestComponent.navEventNavigator)
                 }
@@ -240,16 +234,6 @@ internal class FileGeneratorTestRendererFragment {
                 val renderer = retainedTestComponent.rendererFactory.inflate(inflater, container)
                 connect(renderer, retainedTestComponent.testStateMachine)
                 return renderer.rootView
-              }
-
-              private fun inject(): Unit {
-                val testRoute = requireRoute<TestRoute>()
-                val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
-                    dependencies, handle -> 
-                  TestViewModel(dependencies, handle, testRoute)
-                }
-                val viewModel = viewModelProvider[TestViewModel::class.java]
-                retainedTestComponent = viewModel.component
               }
             }
             
@@ -280,7 +264,7 @@ internal class FileGeneratorTestRendererFragment {
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
@@ -346,22 +330,14 @@ internal class FileGeneratorTestRendererFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
-                  inject()
+                  val arguments = requireArguments()
+                  val viewModel = viewModel(TestParentScope::class, arguments, ::TestViewModel)
+                  retainedTestComponent = viewModel.component
                 }
             
                 val renderer = retainedTestComponent.rendererFactory.inflate(inflater, container)
                 connect(renderer, retainedTestComponent.testStateMachine)
                 return renderer.rootView
-              }
-
-              private fun inject(): Unit {
-                val arguments = requireArguments()
-                val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
-                    dependencies, handle -> 
-                  TestViewModel(dependencies, handle, arguments)
-                }
-                val viewModel = viewModelProvider[TestViewModel::class.java]
-                retainedTestComponent = viewModel.component
               }
             }
             
@@ -389,7 +365,7 @@ internal class FileGeneratorTestRendererFragment {
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
@@ -457,7 +433,9 @@ internal class FileGeneratorTestRendererFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
-                  inject()
+                  val testRoute = requireRoute<TestRoute>()
+                  val viewModel = viewModel(TestParentScope::class, testRoute, ::TestViewModel)
+                  retainedTestComponent = viewModel.component
             
                   handleNavigation(this, retainedTestComponent.navEventNavigator)
                 }
@@ -465,16 +443,6 @@ internal class FileGeneratorTestRendererFragment {
                 val renderer = retainedTestComponent.rendererFactory.inflate(inflater, container)
                 connect(renderer, retainedTestComponent.testStateMachine)
                 return renderer.rootView
-              }
-
-              private fun inject(): Unit {
-                val testRoute = requireRoute<TestRoute>()
-                val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
-                    dependencies, handle -> 
-                  TestViewModel(dependencies, handle, testRoute)
-                }
-                val viewModel = viewModelProvider[TestViewModel::class.java]
-                retainedTestComponent = viewModel.component
               }
             }
             

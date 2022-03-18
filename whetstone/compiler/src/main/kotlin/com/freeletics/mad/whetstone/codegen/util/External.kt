@@ -27,9 +27,9 @@ internal val navEntryIdScope = ClassName("com.freeletics.mad.whetstone", "NavEnt
 // Whetstone Internal API
 internal val asComposeState = MemberName("com.freeletics.mad.whetstone.internal", "asComposeState")
 internal val internalWhetstoneApi = ClassName("com.freeletics.mad.whetstone.internal", "InternalWhetstoneApi")
-internal val navEntryViewModelProvider = MemberName("com.freeletics.mad.whetstone.internal", "viewModelProvider")
-internal val fragmentViewModelProvider = MemberName("com.freeletics.mad.whetstone.fragment.internal", "viewModelProvider")
-internal val rememberViewModelProvider = MemberName("com.freeletics.mad.whetstone.compose.internal", "rememberViewModelProvider")
+internal val navEntryViewModel = MemberName("com.freeletics.mad.whetstone.internal", "viewModel")
+internal val fragmentViewModel = MemberName("com.freeletics.mad.whetstone.fragment.internal", "viewModel")
+internal val rememberViewModel = MemberName("com.freeletics.mad.whetstone.compose.internal", "rememberViewModel")
 internal val navEntryComponentGetter = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetter")
 internal val navEntryComponentGetterKey = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetterKey")
 internal val composeProviderValueModule = ClassName("com.freeletics.mad.whetstone.internal", "ComposeProviderValueModule")
