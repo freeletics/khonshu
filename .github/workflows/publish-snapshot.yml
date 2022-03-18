@@ -33,11 +33,8 @@ jobs:
         run: |
           echo "ORG_GRADLE_PROJECT_VERSION_NAME=pr${{ github.event.number }}-SNAPSHOT" >> $GITHUB_ENV
 
-      - name: Build snapshot
-        run: ./gradlew assemble
-        
-      - name: Build docs
-        run: ./gradlew dokkaHtml javaDocDebugJar javaDocReleaseJar
+      - name: Build snapshot and docs
+        run: ./gradlew assemble dokkaHtml javaDocDebugJar javaDocReleaseJar
 
       - name: Publish snapshot
         run: ./gradlew publish
