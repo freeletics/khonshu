@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+Version 0.3.0-alpha28 *(2022-03-18)*
+----------------------------
+
+- Navigator: fix events and results getting lost while no one is collecting them
+- Navigator: fix a crash in compose navigation when using bottom sheets
+- Navigator: remove obsolete navigation APIs
+- Whetstone: move `@NavEntryComponent` to where the other annotations go, on a composable or renderer
+- Whetstone: remove `@NavEntryId` the value is inferred from other annotations
+- Whetstone: make the route of the screen available inside the `NavEntryComponent` instead of it's arguments `Bundle`
+- Whetstone: some internal improvements to generated code
+
+
 Version 0.3.0-alpha27 *(2022-03-15)*
 ----------------------------
 
