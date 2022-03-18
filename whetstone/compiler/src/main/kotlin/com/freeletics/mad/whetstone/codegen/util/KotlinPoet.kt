@@ -84,8 +84,19 @@ internal fun internalApiAnnotation(): AnnotationSpec {
 }
 
 internal fun optInAnnotation(): AnnotationSpec {
+    return optInAnnotation(internalWhetstoneApi)
+}
+
+internal fun optInAnnotation(vararg classNames: ClassName): AnnotationSpec {
+    val member = CodeBlock.builder()
+    classNames.forEachIndexed { index, className ->
+        if (index > 0) {
+            member.add(", ")
+        }
+        member.add("%T::class", className)
+    }
     return AnnotationSpec.builder(optIn)
-        .addMember("%T::class", internalWhetstoneApi)
+        .addMember(member.build())
         .build()
 }
 

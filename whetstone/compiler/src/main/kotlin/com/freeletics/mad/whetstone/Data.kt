@@ -39,11 +39,13 @@ internal sealed interface Navigation {
     val destinationClass: ClassName
     val destinationScope: ClassName
     val destinationMethod: MemberName?
+    val navEntryData: NavEntryData?
 
     data class Compose(
         override val route: ClassName,
         private val destinationType: String,
         override val destinationScope: ClassName,
+        override val navEntryData: NavEntryData?,
     ) : Navigation {
         override val destinationClass: ClassName = composeDestination
 
@@ -60,6 +62,7 @@ internal sealed interface Navigation {
         override val route: ClassName,
         private val destinationType: String,
         override val destinationScope: ClassName,
+        override val navEntryData: NavEntryData?,
     ) : Navigation {
         override val destinationClass: ClassName = fragmentDestination
 
@@ -128,13 +131,17 @@ internal data class RendererFragmentData(
 ) : FragmentCommonData
 
 internal data class NavEntryData(
-    override val baseName: String,
     override val packageName: String,
 
     val scope: ClassName,
 
     val parentScope: ClassName,
+    val destinationScope: ClassName,
+
+    val route: ClassName,
 
     val coroutinesEnabled: Boolean,
     val rxJavaEnabled: Boolean,
-): BaseData
+): BaseData {
+    override val baseName: String = scope.simpleName
+}

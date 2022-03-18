@@ -9,9 +9,10 @@ import org.junit.Test
 internal class FileGeneratorTestRendererFragment {
 
     private val navigation = Navigation.Fragment(
-        ClassName("com.test", "TestRoute"),
-        "NONE",
-        ClassName("com.test.destination", "TestDestinationScope"),
+        route = ClassName("com.test", "TestRoute"),
+        destinationType = "NONE",
+        destinationScope = ClassName("com.test.destination", "TestDestinationScope"),
+        navEntryData = null,
     )
 
     private val full = RendererFragmentData(

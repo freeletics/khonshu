@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.navigation.NavBackStackEntry
 import com.freeletics.mad.whetstone.internal.NavEntryComponentGetter
 import javax.inject.Inject
-import javax.inject.Qualifier
 import kotlin.annotation.AnnotationRetention.RUNTIME
+import kotlin.annotation.AnnotationTarget.CLASS
 import kotlin.annotation.AnnotationTarget.FUNCTION
 import kotlin.reflect.KClass
 
@@ -39,11 +39,8 @@ import kotlin.reflect.KClass
  *
  * The generated component can be accessed through a `Map<Class<*>, NavEntryComponentGetter` that
  * will automatically be available in the parent component. See [NavEntryComponentGetter].
- *
- * It's recommended to put this annotation on the method that provides the matching [NavEntryId]
- * value.
  */
-@Target(FUNCTION)
+@Target(CLASS, FUNCTION)
 @Retention(RUNTIME)
 public annotation class NavEntryComponent(
     val scope: KClass<*>,
@@ -52,17 +49,6 @@ public annotation class NavEntryComponent(
     val coroutinesEnabled: Boolean = false,
     val rxJavaEnabled: Boolean = false,
 )
-
-/**
- * A qualifier that should be used to provide a resource id that represents an androidx.navigation
- * destination. This navigation id will be the one that a [NavEntryComponent], that uses the same
- * scope as the given [value], is tied to.
- *
- * It is recommended to put [NavEntryComponent] onto the same method that uses this qualifier
- * annotation.
- */
-@Qualifier
-public annotation class NavEntryId(val value: KClass<*>)
 
 /**
  * Class that allows to retrieve generated [NavEntryComponent] instances.
@@ -76,9 +62,8 @@ public class NavEntryComponents @Inject constructor(
      * Tries to retrieve a generated [NavEntryComponent] for the given [name], where `name` is the
      * fully qualified name of the [NavEntryComponent.scope].
      *
-     * The id that is passed as parameter to [findEntry] is the id that was provided with
-     * [NavEntryId]. The given [findEntry] should look up a back strack entry for that id
-     * in the current `NavController`.
+     * The given [findEntry] should look up a back stack entry for that id in the current
+     * `NavController`.
      */
     public fun get(name: String, context: Context, findEntry: (Int) -> NavBackStackEntry): Any? {
         return navEntryComponentGetters[name]?.retrieve(findEntry, context)

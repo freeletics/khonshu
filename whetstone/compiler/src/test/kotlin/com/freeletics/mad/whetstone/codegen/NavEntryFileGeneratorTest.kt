@@ -8,10 +8,11 @@ import org.junit.Test
 internal class NavEntryFileGeneratorTest {
 
     private val full = NavEntryData(
-        baseName = "TestFlow",
         packageName = "com.test",
         scope = ClassName("com.test", "TestFlowScope"),
         parentScope = ClassName("com.test.parent", "TestParentScope"),
+        destinationScope = ClassName("com.test", "TestDestinationScope"),
+        route = ClassName("com.test", "TestRoute"),
         coroutinesEnabled = true,
         rxJavaEnabled = true,
     )
@@ -26,7 +27,8 @@ internal class NavEntryFileGeneratorTest {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import androidx.navigation.NavBackStackEntry
-            import com.freeletics.mad.whetstone.NavEntryId
+            import com.freeletics.mad.navigator.`internal`.InternalNavigatorApi
+            import com.freeletics.mad.navigator.`internal`.destinationId
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
@@ -53,7 +55,7 @@ internal class NavEntryFileGeneratorTest {
               scope = TestFlowScope::class,
               parentScope = TestParentScope::class
             )
-            public interface NavEntryTestFlowComponent {
+            public interface NavEntryTestFlowScopeComponent {
               @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(
@@ -61,7 +63,7 @@ internal class NavEntryFileGeneratorTest {
                   @BindsInstance arguments: Bundle,
                   @BindsInstance compositeDisposable: CompositeDisposable,
                   @BindsInstance coroutineScope: CoroutineScope
-                ): NavEntryTestFlowComponent
+                ): NavEntryTestFlowScopeComponent
               }
 
               @ContributesTo(TestParentScope::class)
@@ -71,8 +73,8 @@ internal class NavEntryFileGeneratorTest {
             }
 
             @InternalWhetstoneApi
-            internal class TestFlowViewModel(
-              factory: NavEntryTestFlowComponent.Factory,
+            internal class TestFlowScopeViewModel(
+              factory: NavEntryTestFlowScopeComponent.Factory,
               savedStateHandle: SavedStateHandle,
               arguments: Bundle
             ) : ViewModel() {
@@ -80,7 +82,7 @@ internal class NavEntryFileGeneratorTest {
 
               private val scope: CoroutineScope = MainScope()
 
-              public val component: NavEntryTestFlowComponent = factory.create(savedStateHandle, arguments,
+              public val component: NavEntryTestFlowScopeComponent = factory.create(savedStateHandle, arguments,
                   disposable, scope)
 
               public override fun onCleared(): Unit {
@@ -92,22 +94,19 @@ internal class NavEntryFileGeneratorTest {
             @OptIn(InternalWhetstoneApi::class)
             @NavEntryComponentGetterKey(TestFlowScope::class)
             @ContributesMultibinding(
-              TestParentScope::class,
+              TestDestinationScope::class,
               NavEntryComponentGetter::class
             )
-            public class TestFlowComponentGetter @Inject constructor(
-              @NavEntryId(TestFlowScope::class)
-              private val id: Int
-            ) : NavEntryComponentGetter {
-              @OptIn(InternalWhetstoneApi::class)
+            public class TestFlowScopeComponentGetter @Inject constructor() : NavEntryComponentGetter {
+              @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
-                val entry = findEntry(id)
-                val viewModelProvider = viewModelProvider<NavEntryTestFlowComponent.ParentComponent>(entry,
+                val entry = findEntry(TestRoute::class.destinationId())
+                val viewModelProvider = viewModelProvider<NavEntryTestFlowScopeComponent.ParentComponent>(entry,
                     context, TestParentScope::class) { parentComponent, handle -> 
                   val arguments = entry.arguments ?: Bundle.EMPTY
-                  TestFlowViewModel(parentComponent.factory, handle, arguments)
+                  TestFlowScopeViewModel(parentComponent.factory, handle, arguments)
                 }
-                val viewModel = viewModelProvider[TestFlowViewModel::class.java]
+                val viewModel = viewModelProvider[TestFlowScopeViewModel::class.java]
                 return viewModel.component
               }
             }
@@ -127,7 +126,8 @@ internal class NavEntryFileGeneratorTest {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import androidx.navigation.NavBackStackEntry
-            import com.freeletics.mad.whetstone.NavEntryId
+            import com.freeletics.mad.navigator.`internal`.InternalNavigatorApi
+            import com.freeletics.mad.navigator.`internal`.destinationId
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
@@ -151,14 +151,14 @@ internal class NavEntryFileGeneratorTest {
               scope = TestFlowScope::class,
               parentScope = TestParentScope::class
             )
-            public interface NavEntryTestFlowComponent {
+            public interface NavEntryTestFlowScopeComponent {
               @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance arguments: Bundle,
                   @BindsInstance compositeDisposable: CompositeDisposable
-                ): NavEntryTestFlowComponent
+                ): NavEntryTestFlowScopeComponent
               }
 
               @ContributesTo(TestParentScope::class)
@@ -168,14 +168,14 @@ internal class NavEntryFileGeneratorTest {
             }
 
             @InternalWhetstoneApi
-            internal class TestFlowViewModel(
-              factory: NavEntryTestFlowComponent.Factory,
+            internal class TestFlowScopeViewModel(
+              factory: NavEntryTestFlowScopeComponent.Factory,
               savedStateHandle: SavedStateHandle,
               arguments: Bundle
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
-              public val component: NavEntryTestFlowComponent = factory.create(savedStateHandle, arguments,
+              public val component: NavEntryTestFlowScopeComponent = factory.create(savedStateHandle, arguments,
                   disposable)
 
               public override fun onCleared(): Unit {
@@ -186,22 +186,19 @@ internal class NavEntryFileGeneratorTest {
             @OptIn(InternalWhetstoneApi::class)
             @NavEntryComponentGetterKey(TestFlowScope::class)
             @ContributesMultibinding(
-              TestParentScope::class,
+              TestDestinationScope::class,
               NavEntryComponentGetter::class
             )
-            public class TestFlowComponentGetter @Inject constructor(
-              @NavEntryId(TestFlowScope::class)
-              private val id: Int
-            ) : NavEntryComponentGetter {
-              @OptIn(InternalWhetstoneApi::class)
+            public class TestFlowScopeComponentGetter @Inject constructor() : NavEntryComponentGetter {
+              @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
-                val entry = findEntry(id)
-                val viewModelProvider = viewModelProvider<NavEntryTestFlowComponent.ParentComponent>(entry,
+                val entry = findEntry(TestRoute::class.destinationId())
+                val viewModelProvider = viewModelProvider<NavEntryTestFlowScopeComponent.ParentComponent>(entry,
                     context, TestParentScope::class) { parentComponent, handle -> 
                   val arguments = entry.arguments ?: Bundle.EMPTY
-                  TestFlowViewModel(parentComponent.factory, handle, arguments)
+                  TestFlowScopeViewModel(parentComponent.factory, handle, arguments)
                 }
-                val viewModel = viewModelProvider[TestFlowViewModel::class.java]
+                val viewModel = viewModelProvider[TestFlowScopeViewModel::class.java]
                 return viewModel.component
               }
             }
@@ -221,7 +218,8 @@ internal class NavEntryFileGeneratorTest {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import androidx.navigation.NavBackStackEntry
-            import com.freeletics.mad.whetstone.NavEntryId
+            import com.freeletics.mad.navigator.`internal`.InternalNavigatorApi
+            import com.freeletics.mad.navigator.`internal`.destinationId
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
@@ -247,14 +245,14 @@ internal class NavEntryFileGeneratorTest {
               scope = TestFlowScope::class,
               parentScope = TestParentScope::class
             )
-            public interface NavEntryTestFlowComponent {
+            public interface NavEntryTestFlowScopeComponent {
               @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance arguments: Bundle,
                   @BindsInstance coroutineScope: CoroutineScope
-                ): NavEntryTestFlowComponent
+                ): NavEntryTestFlowScopeComponent
               }
 
               @ContributesTo(TestParentScope::class)
@@ -264,14 +262,14 @@ internal class NavEntryFileGeneratorTest {
             }
 
             @InternalWhetstoneApi
-            internal class TestFlowViewModel(
-              factory: NavEntryTestFlowComponent.Factory,
+            internal class TestFlowScopeViewModel(
+              factory: NavEntryTestFlowScopeComponent.Factory,
               savedStateHandle: SavedStateHandle,
               arguments: Bundle
             ) : ViewModel() {
               private val scope: CoroutineScope = MainScope()
 
-              public val component: NavEntryTestFlowComponent = factory.create(savedStateHandle, arguments,
+              public val component: NavEntryTestFlowScopeComponent = factory.create(savedStateHandle, arguments,
                   scope)
 
               public override fun onCleared(): Unit {
@@ -282,22 +280,19 @@ internal class NavEntryFileGeneratorTest {
             @OptIn(InternalWhetstoneApi::class)
             @NavEntryComponentGetterKey(TestFlowScope::class)
             @ContributesMultibinding(
-              TestParentScope::class,
+              TestDestinationScope::class,
               NavEntryComponentGetter::class
             )
-            public class TestFlowComponentGetter @Inject constructor(
-              @NavEntryId(TestFlowScope::class)
-              private val id: Int
-            ) : NavEntryComponentGetter {
-              @OptIn(InternalWhetstoneApi::class)
+            public class TestFlowScopeComponentGetter @Inject constructor() : NavEntryComponentGetter {
+              @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
-                val entry = findEntry(id)
-                val viewModelProvider = viewModelProvider<NavEntryTestFlowComponent.ParentComponent>(entry,
+                val entry = findEntry(TestRoute::class.destinationId())
+                val viewModelProvider = viewModelProvider<NavEntryTestFlowScopeComponent.ParentComponent>(entry,
                     context, TestParentScope::class) { parentComponent, handle -> 
                   val arguments = entry.arguments ?: Bundle.EMPTY
-                  TestFlowViewModel(parentComponent.factory, handle, arguments)
+                  TestFlowScopeViewModel(parentComponent.factory, handle, arguments)
                 }
-                val viewModel = viewModelProvider[TestFlowViewModel::class.java]
+                val viewModel = viewModelProvider[TestFlowScopeViewModel::class.java]
                 return viewModel.component
               }
             }

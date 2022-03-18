@@ -4,7 +4,10 @@ import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.context
+import com.freeletics.mad.whetstone.codegen.util.destinationId
 import com.freeletics.mad.whetstone.codegen.util.inject
+import com.freeletics.mad.whetstone.codegen.util.internalNavigatorApi
+import com.freeletics.mad.whetstone.codegen.util.internalWhetstoneApi
 import com.freeletics.mad.whetstone.codegen.util.navBackStackEntry
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
@@ -38,7 +41,6 @@ internal class NavEntryComponentGetterGenerator(
             .addAnnotation(contributesMultibindingAnnotation())
             .addSuperinterface(navEntryComponentGetter)
             .primaryConstructor(ctor())
-            .addProperty(idProperty())
             .addFunction(retrieveFunction())
             .build()
     }
@@ -51,38 +53,25 @@ internal class NavEntryComponentGetterGenerator(
 
     private fun contributesMultibindingAnnotation(): AnnotationSpec {
         return AnnotationSpec.builder(ContributesMultibinding::class)
-            .addMember("%T::class", data.parentScope)
+            .addMember("%T::class", data.destinationScope)
             .addMember("%T::class", navEntryComponentGetter)
             .build()
     }
 
     private fun ctor(): FunSpec {
-        val scopeIdAnnoation = AnnotationSpec.builder(navEntryIdScope)
-            .addMember("%T::class", data.scope)
-            .build()
-        val parameter = ParameterSpec.builder("id", INT)
-            .addAnnotation(scopeIdAnnoation)
-            .build()
         return FunSpec.constructorBuilder()
             .addAnnotation(inject)
-            .addParameter(parameter)
-            .build()
-    }
-
-    private fun idProperty(): PropertySpec {
-        return PropertySpec.builder("id", INT, PRIVATE)
-            .initializer("id")
             .build()
     }
 
     private fun retrieveFunction(): FunSpec {
         return FunSpec.builder("retrieve")
             .addModifiers(OVERRIDE)
-            .addAnnotation(optInAnnotation())
+            .addAnnotation(optInAnnotation(internalWhetstoneApi, internalNavigatorApi))
             .addParameter("findEntry", LambdaTypeName.get(parameters = arrayOf(INT), returnType = navBackStackEntry))
             .addParameter("context", context)
             .returns(ANY)
-            .addStatement("val entry = findEntry(id)")
+            .addStatement("val entry = findEntry(%T::class.%M())", data.route, destinationId)
             .beginControlFlow("val viewModelProvider = %M<%T>(entry, context, %T::class) { parentComponent, handle -> ",
                 navEntryViewModelProvider, navEntryParentComponentClassName, data.parentScope)
             // arguments: external method
