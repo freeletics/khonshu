@@ -43,7 +43,7 @@ internal class NavEntryViewModelGenerator(
 
     private fun viewModelCtor(argumentsParameter: ParameterSpec): FunSpec {
         return FunSpec.constructorBuilder()
-            .addParameter("factory", navEntrySubcomponentFactoryClassName)
+            .addParameter("parentComponent", navEntryParentComponentClassName)
             .addParameter("savedStateHandle", savedStateHandle)
             .addParameter(argumentsParameter)
             .build()
@@ -52,7 +52,8 @@ internal class NavEntryViewModelGenerator(
     private fun viewModelProperties(argumentsParameter: ParameterSpec): List<PropertySpec> {
         val properties = mutableListOf<PropertySpec>()
         val componentInitializer = CodeBlock.builder().add(
-            "factory.%L(savedStateHandle, %N",
+            "parentComponent.%L().%L(savedStateHandle, %N",
+            navEntryParentComponentGetterName,
             navEntrySubcomponentFactoryCreateName,
             argumentsParameter,
         )

@@ -18,12 +18,17 @@ import kotlin.reflect.KClass
  * To be used in generated code.
  */
 @InternalWhetstoneApi
-public fun <C> viewModelProvider(
+public inline fun <reified T : ViewModel, D, E> viewModel(
     entry: NavBackStackEntry,
     context: Context,
     scope: KClass<*>,
-    factory: (C, SavedStateHandle) -> ViewModel
-): ViewModelProvider {
-    val viewModelFactory = WhetstoneViewModelFactory(entry, context, scope, factory)
-    return ViewModelProvider(entry, viewModelFactory)
+    extra: E,
+    crossinline factory: (D, SavedStateHandle, E) -> T
+): T {
+    val viewModelFactory = WhetstoneViewModelFactory(entry) {
+        val dependencies = context.findDependencies<D>(scope)
+        factory(dependencies, it, extra)
+    }
+    val viewModelProvider = ViewModelProvider(entry, viewModelFactory)
+    return viewModelProvider[T::class.java]
 }

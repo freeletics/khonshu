@@ -44,7 +44,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModelProvider
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModel
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
@@ -107,11 +107,7 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             public fun TestScreen(testRoute: TestRoute): Unit {
-              val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
-                  dependencies, handle -> 
-                TestViewModel(dependencies, handle, testRoute)
-              }
-              val viewModel = viewModelProvider[TestViewModel::class.java]
+              val viewModel = rememberViewModel(TestParentScope::class, testRoute, ::TestViewModel)
               val component = viewModel.component
 
               NavigationSetup(component.navEventNavigator)
@@ -160,7 +156,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModelProvider
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModel
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.destination.TestDestinationScope
@@ -228,11 +224,7 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             public fun TestScreen(testRoute: TestRoute): Unit {
-              val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
-                  dependencies, handle -> 
-                TestViewModel(dependencies, handle, testRoute)
-              }
-              val viewModel = viewModelProvider[TestViewModel::class.java]
+              val viewModel = rememberViewModel(TestParentScope::class, testRoute, ::TestViewModel)
               val component = viewModel.component
 
               NavigationSetup(component.navEventNavigator)
@@ -288,7 +280,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModelProvider
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModel
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
@@ -349,11 +341,7 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             public fun TestScreen(arguments: Bundle): Unit {
-              val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
-                  dependencies, handle -> 
-                TestViewModel(dependencies, handle, arguments)
-              }
-              val viewModel = viewModelProvider[TestViewModel::class.java]
+              val viewModel = rememberViewModel(TestParentScope::class, arguments, ::TestViewModel)
               val component = viewModel.component
 
               TestScreen(component)
@@ -398,7 +386,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModelProvider
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModel
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
@@ -454,11 +442,7 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             public fun TestScreen(testRoute: TestRoute): Unit {
-              val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
-                  dependencies, handle -> 
-                TestViewModel(dependencies, handle, testRoute)
-              }
-              val viewModel = viewModelProvider[TestViewModel::class.java]
+              val viewModel = rememberViewModel(TestParentScope::class, testRoute, ::TestViewModel)
               val component = viewModel.component
 
               NavigationSetup(component.navEventNavigator)
@@ -505,7 +489,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModelProvider
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModel
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
@@ -562,11 +546,7 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             public fun TestScreen(testRoute: TestRoute): Unit {
-              val viewModelProvider = rememberViewModelProvider<TestDependencies>(TestParentScope::class) {
-                  dependencies, handle -> 
-                TestViewModel(dependencies, handle, testRoute)
-              }
-              val viewModel = viewModelProvider[TestViewModel::class.java]
+              val viewModel = rememberViewModel(TestParentScope::class, testRoute, ::TestViewModel)
               val component = viewModel.component
 
               NavigationSetup(component.navEventNavigator)

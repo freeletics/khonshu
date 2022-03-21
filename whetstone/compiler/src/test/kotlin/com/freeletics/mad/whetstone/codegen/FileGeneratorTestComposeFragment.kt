@@ -56,7 +56,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.google.accompanist.insets.LocalWindowInsets
             import com.google.accompanist.insets.ViewWindowInsetObserver
             import com.squareup.anvil.annotations.MergeComponent
@@ -128,7 +128,9 @@ internal class FileGeneratorTestComposeFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
-                  inject()
+                  val testRoute = requireRoute<TestRoute>()
+                  val viewModel = viewModel(TestParentScope::class, testRoute, ::TestViewModel)
+                  retainedTestComponent = viewModel.component
             
                   handleNavigation(this, retainedTestComponent.navEventNavigator)
                 }
@@ -147,16 +149,6 @@ internal class FileGeneratorTestComposeFragment {
                     }
                   }
                 }
-              }
-
-              private fun inject(): Unit {
-                val testRoute = requireRoute<TestRoute>()
-                val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
-                    dependencies, handle -> 
-                  TestViewModel(dependencies, handle, testRoute)
-                }
-                val viewModel = viewModelProvider[TestViewModel::class.java]
-                retainedTestComponent = viewModel.component
               }
             }
 
@@ -209,7 +201,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.google.accompanist.insets.LocalWindowInsets
             import com.google.accompanist.insets.ViewWindowInsetObserver
             import com.squareup.anvil.annotations.ContributesTo
@@ -286,7 +278,9 @@ internal class FileGeneratorTestComposeFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
-                  inject()
+                  val testRoute = requireRoute<TestRoute>()
+                  val viewModel = viewModel(TestParentScope::class, testRoute, ::TestViewModel)
+                  retainedTestComponent = viewModel.component
             
                   handleNavigation(this, retainedTestComponent.navEventNavigator)
                 }
@@ -305,16 +299,6 @@ internal class FileGeneratorTestComposeFragment {
                     }
                   }
                 }
-              }
-
-              private fun inject(): Unit {
-                val testRoute = requireRoute<TestRoute>()
-                val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
-                    dependencies, handle -> 
-                  TestViewModel(dependencies, handle, testRoute)
-                }
-                val viewModel = viewModelProvider[TestViewModel::class.java]
-                retainedTestComponent = viewModel.component
               }
             }
 
@@ -375,7 +359,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.google.accompanist.insets.LocalWindowInsets
             import com.google.accompanist.insets.ViewWindowInsetObserver
             import com.squareup.anvil.annotations.MergeComponent
@@ -447,7 +431,9 @@ internal class FileGeneratorTestComposeFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
-                  inject()
+                  val testRoute = requireRoute<TestRoute>()
+                  val viewModel = viewModel(TestParentScope::class, testRoute, ::TestViewModel)
+                  retainedTestComponent = viewModel.component
             
                   handleNavigation(this, retainedTestComponent.navEventNavigator)
                 }
@@ -466,16 +452,6 @@ internal class FileGeneratorTestComposeFragment {
                     }
                   }
                 }
-              }
-
-              private fun inject(): Unit {
-                val testRoute = requireRoute<TestRoute>()
-                val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
-                    dependencies, handle -> 
-                  TestViewModel(dependencies, handle, testRoute)
-                }
-                val viewModel = viewModelProvider[TestViewModel::class.java]
-                retainedTestComponent = viewModel.component
               }
             }
 
@@ -526,7 +502,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
@@ -596,7 +572,9 @@ internal class FileGeneratorTestComposeFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
-                  inject()
+                  val testRoute = requireRoute<TestRoute>()
+                  val viewModel = viewModel(TestParentScope::class, testRoute, ::TestViewModel)
+                  retainedTestComponent = viewModel.component
             
                   handleNavigation(this, retainedTestComponent.navEventNavigator)
                 }
@@ -608,16 +586,6 @@ internal class FileGeneratorTestComposeFragment {
                     TestScreen(retainedTestComponent)
                   }
                 }
-              }
-
-              private fun inject(): Unit {
-                val testRoute = requireRoute<TestRoute>()
-                val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
-                    dependencies, handle -> 
-                  TestViewModel(dependencies, handle, testRoute)
-                }
-                val viewModel = viewModelProvider[TestViewModel::class.java]
-                retainedTestComponent = viewModel.component
               }
             }
 
@@ -665,7 +633,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModelProvider
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.google.accompanist.insets.LocalWindowInsets
             import com.google.accompanist.insets.ViewWindowInsetObserver
             import com.squareup.anvil.annotations.MergeComponent
@@ -735,7 +703,9 @@ internal class FileGeneratorTestComposeFragment {
                 savedInstanceState: Bundle?
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
-                  inject()
+                  val arguments = requireArguments()
+                  val viewModel = viewModel(TestParentScope::class, arguments, ::TestViewModel)
+                  retainedTestComponent = viewModel.component
                 }
 
                 return ComposeView(requireContext()).apply {
@@ -752,16 +722,6 @@ internal class FileGeneratorTestComposeFragment {
                     }
                   }
                 }
-              }
-
-              private fun inject(): Unit {
-                val arguments = requireArguments()
-                val viewModelProvider = viewModelProvider<TestDependencies>(this, TestParentScope::class) {
-                    dependencies, handle -> 
-                  TestViewModel(dependencies, handle, arguments)
-                }
-                val viewModel = viewModelProvider[TestViewModel::class.java]
-                retainedTestComponent = viewModel.component
               }
             }
 
