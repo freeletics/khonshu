@@ -6,3 +6,5 @@ include ":whetstone:runtime", ":whetstone:runtime-compose", ":whetstone:runtime-
 include ":whetstone:navigation", ":whetstone:navigation-compose", ":whetstone:navigation-fragment"
 
 project(":navigator:runtime").setName("navigator-runtime")
+project(":navigator:runtime-compose").setName("navigator-runtime-compose")
+project(":navigator:runtime-fragment").setName("navigator-runtime-fragment")

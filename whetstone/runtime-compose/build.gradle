@@ -52,8 +52,12 @@ tasks.withType(JavaCompile).configureEach {
 
 dependencies {
     api project(":whetstone:runtime")
-    api project(":state-machine")
-    api "androidx.compose.runtime:runtime:1.1.1"
 
+    implementation project(":state-machine")
+    implementation "androidx.compose.runtime:runtime:1.1.1"
+    implementation "androidx.compose.ui:ui:1.1.1"
+    implementation "androidx.savedstate:savedstate:1.1.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1"
 }

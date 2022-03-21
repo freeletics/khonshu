@@ -23,6 +23,7 @@ public final class com/freeletics/mad/navigator/compose/NavDestination$Screen : 
 
 public final class com/freeletics/mad/navigator/compose/NavHostKt {
 	public static final fun NavHost (Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;Landroidx/compose/runtime/Composer;I)V
+	public static final fun getLocalNavController ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
 public final class com/freeletics/mad/navigator/compose/NavigationSetupKt {
