@@ -1,17 +1,11 @@
 package com.freeletics.mad.navigator.compose
 
-import android.app.Activity as AndroidActivity
 import androidx.navigation.compose.NavHost as AndroidXNavHost
-import android.content.Context
-import android.content.ContextWrapper
-import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
@@ -28,11 +22,9 @@ import com.freeletics.mad.navigator.compose.NavDestination.BottomSheet
 import com.freeletics.mad.navigator.compose.NavDestination.Dialog
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
-import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.navigator.internal.getArguments
 import com.freeletics.mad.navigator.internal.toRoute
-import com.freeletics.mad.navigator.runtime.compose.R
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
@@ -60,8 +52,6 @@ public fun NavHost(
             }
         }
     }
-
-    LegacyFindNavControllerSupport(navController)
 
     CompositionLocalProvider(LocalNavController provides navController) {
         ModalBottomSheetLayout(bottomSheetNavigator) {
@@ -142,32 +132,3 @@ private fun Activity.toDestination(
 public val LocalNavController: ProvidableCompositionLocal<NavController> = staticCompositionLocalOf {
     throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
 }
-
-@ObsoleteNavigatorApi
-public fun AndroidActivity.findComposeNavController(): NavController? {
-    val view = findViewById<View>(android.R.id.content)!!
-    return view.getTag(navControllerTagId) as NavController?
-}
-
-@Composable
-private fun LegacyFindNavControllerSupport(navController: NavController) {
-    val context = LocalContext.current
-    DisposableEffect(navController, context) {
-        val view = context.findActivity().findViewById<View>(android.R.id.content)!!
-        view.setTag(navControllerTagId, navController)
-        onDispose {
-            view.setTag(navControllerTagId, null)
-        }
-    }
-}
-
-private fun Context.findActivity(): android.app.Activity {
-    var context = this
-    while (context is ContextWrapper) {
-        if (context is android.app.Activity) return context
-        context = context.baseContext
-    }
-    throw IllegalStateException("Permissions should be called in the context of an Activity")
-}
-
-private val navControllerTagId = R.id.internal_nav_controller_tag

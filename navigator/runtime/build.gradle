@@ -34,7 +34,6 @@ kotlin {
         languageSettings {
             optIn("kotlin.RequiresOptIn")
             optIn("com.freeletics.mad.navigator.internal.InternalNavigatorApi")
-            optIn("com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi")
         }
     }
 }
