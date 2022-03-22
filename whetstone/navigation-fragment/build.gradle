@@ -46,9 +46,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
-    api project(":whetstone:runtime")
-    api project(":state-machine")
-    api "androidx.lifecycle:lifecycle-viewmodel:2.4.1"
-    api "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1"
-    api "androidx.fragment:fragment:1.4.1"
+    api project(":whetstone:navigation")
+    api project(":whetstone:runtime-fragment")
+    api project(":navigator:navigator-runtime")
 }

@@ -9,19 +9,6 @@ public abstract interface annotation class com/freeletics/mad/whetstone/fragment
 	public abstract fun stateMachine ()Ljava/lang/Class;
 }
 
-public final class com/freeletics/mad/whetstone/fragment/DestinationType : java/lang/Enum {
-	public static final field DIALOG Lcom/freeletics/mad/whetstone/fragment/DestinationType;
-	public static final field SCREEN Lcom/freeletics/mad/whetstone/fragment/DestinationType;
-	public static fun valueOf (Ljava/lang/String;)Lcom/freeletics/mad/whetstone/fragment/DestinationType;
-	public static fun values ()[Lcom/freeletics/mad/whetstone/fragment/DestinationType;
-}
-
-public abstract interface annotation class com/freeletics/mad/whetstone/fragment/NavDestination : java/lang/annotation/Annotation {
-	public abstract fun destinationScope ()Ljava/lang/Class;
-	public abstract fun route ()Ljava/lang/Class;
-	public abstract fun type ()Lcom/freeletics/mad/whetstone/fragment/DestinationType;
-}
-
 public abstract interface annotation class com/freeletics/mad/whetstone/fragment/RendererFragment : java/lang/annotation/Annotation {
 	public abstract fun coroutinesEnabled ()Z
 	public abstract fun dependencies ()Ljava/lang/Class;
@@ -31,10 +18,5 @@ public abstract interface annotation class com/freeletics/mad/whetstone/fragment
 	public abstract fun rxJavaEnabled ()Z
 	public abstract fun scope ()Ljava/lang/Class;
 	public abstract fun stateMachine ()Ljava/lang/Class;
-}
-
-public abstract interface annotation class com/freeletics/mad/whetstone/fragment/RootNavDestination : java/lang/annotation/Annotation {
-	public abstract fun destinationScope ()Ljava/lang/Class;
-	public abstract fun root ()Ljava/lang/Class;
 }
 

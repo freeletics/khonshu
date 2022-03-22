@@ -42,6 +42,51 @@ dependencyAnalysis {
                 exclude("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
             }
         }
+
+        project(":whetstone:runtime-compose") {
+            onUnusedDependencies {
+                exclude(":whetstone:runtime")
+            }
+            onIncorrectConfiguration {
+                exclude(":whetstone:runtime")
+            }
+        }
+
+        project(":whetstone:runtime-fragment") {
+            onUnusedDependencies {
+                exclude(":whetstone:runtime")
+            }
+            onIncorrectConfiguration {
+                exclude(":whetstone:runtime")
+            }
+        }
+
+        project(":whetstone:navigation") {
+            onUnusedDependencies {
+                exclude(":whetstone:runtime")
+            }
+            onIncorrectConfiguration {
+                exclude(":whetstone:runtime")
+            }
+        }
+
+        project(":whetstone:navigation-compose") {
+            onUnusedDependencies {
+                exclude(":whetstone:navigation", ":whetstone:runtime-compose")
+            }
+            onIncorrectConfiguration {
+                exclude(":whetstone:navigation", ":whetstone:runtime-compose")
+            }
+        }
+
+        project(":whetstone:navigation-fragment") {
+            onUnusedDependencies {
+                exclude(":whetstone:navigation", ":whetstone:runtime-fragment")
+            }
+            onIncorrectConfiguration {
+                exclude(":whetstone:navigation", ":whetstone:runtime-fragment")
+            }
+        }
     }
 
     abi {

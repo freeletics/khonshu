@@ -1,0 +1,12 @@
+public abstract interface annotation class com/freeletics/mad/whetstone/NavEntryComponent : java/lang/annotation/Annotation {
+	public abstract fun coroutinesEnabled ()Z
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun rxJavaEnabled ()Z
+	public abstract fun scope ()Ljava/lang/Class;
+}
+
+public final class com/freeletics/mad/whetstone/NavEntryComponents {
+	public fun <init> (Ljava/util/Map;)V
+	public final fun get (Ljava/lang/String;Landroid/content/Context;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+}
+

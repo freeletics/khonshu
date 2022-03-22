@@ -1,8 +1,5 @@
 package com.freeletics.mad.whetstone.fragment.internal
 
-import android.content.Context
-import android.os.Bundle
-import android.view.View
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
