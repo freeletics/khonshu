@@ -8,6 +8,7 @@ import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +27,7 @@ import com.freeletics.mad.navigator.compose.NavDestination.Activity
 import com.freeletics.mad.navigator.compose.NavDestination.BottomSheet
 import com.freeletics.mad.navigator.compose.NavDestination.Dialog
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
+import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi
 import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.navigator.internal.getArguments
@@ -136,7 +138,8 @@ private fun Activity.toDestination(
     }
 }
 
-internal val LocalNavController = staticCompositionLocalOf<NavController> {
+@InternalNavigatorApi
+public val LocalNavController: ProvidableCompositionLocal<NavController> = staticCompositionLocalOf {
     throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
 }
 

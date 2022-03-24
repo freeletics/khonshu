@@ -51,6 +51,7 @@ dependencies {
     api "com.google.dagger:dagger:2.41"
     api "androidx.navigation:navigation-common:2.4.1"
 
+    implementation project(":navigator:navigator-runtime")
     implementation "androidx.savedstate:savedstate:1.1.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.4.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1"

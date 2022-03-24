@@ -54,4 +54,15 @@ dependencies {
     api project(":whetstone:navigation")
     api project(":whetstone:runtime-compose")
     api project(":navigator:navigator-runtime")
+
+    implementation project(":whetstone:runtime")
+    implementation project(":navigator:navigator-runtime-compose")
+    implementation "androidx.compose.runtime:runtime:1.1.1"
+    implementation "androidx.compose.ui:ui:1.1.1"
+    implementation "androidx.savedstate:savedstate:1.1.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1"
+    implementation "androidx.navigation:navigation-common:2.4.1"
+    implementation "androidx.navigation:navigation-runtime:2.4.1"
 }

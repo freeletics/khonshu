@@ -8,7 +8,8 @@ public fun <T> Context.findDependencies(scope: KClass<*>): T {
     return find(scope)!!
 }
 
-private fun <T : Any> Context.find(service: KClass<*>): T? {
+@InternalWhetstoneApi
+public fun <T : Any> Context.find(service: KClass<*>): T? {
     val serviceName = service.qualifiedName!!
     return find(serviceName) ?: applicationContext.find(serviceName)
 }
