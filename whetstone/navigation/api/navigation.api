@@ -5,11 +5,6 @@ public abstract interface annotation class com/freeletics/mad/whetstone/NavEntry
 	public abstract fun scope ()Ljava/lang/Class;
 }
 
-public final class com/freeletics/mad/whetstone/NavEntryComponents {
-	public fun <init> (Ljava/util/Map;)V
-	public final fun get (Ljava/lang/String;)Ljava/lang/Object;
-}
-
 public final class com/freeletics/mad/whetstone/internal/NavFindKt {
 }
 

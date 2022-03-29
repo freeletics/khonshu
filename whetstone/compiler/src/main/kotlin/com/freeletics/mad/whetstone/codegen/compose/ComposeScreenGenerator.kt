@@ -8,6 +8,7 @@ import com.freeletics.mad.whetstone.codegen.common.composableName
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.composable
 import com.freeletics.mad.whetstone.codegen.util.composeNavigationHandler
+import com.freeletics.mad.whetstone.codegen.util.fragmentViewModel
 import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
@@ -25,8 +26,15 @@ internal class ComposeScreenGenerator(
             .addAnnotation(composable)
             .addAnnotation(optInAnnotation())
             .addParameter(parameter)
-            .addStatement("val viewModel = %M(%T::class, %N, ::%T)",
-                rememberViewModel, data.parentScope, parameter, viewModelClassName)
+            .also {
+                if (data.navigation != null) {
+                    it.addStatement("val viewModel = %M(%T::class, %T::class, %N, ::%T)",
+                        rememberViewModel, data.parentScope, data.navigation!!.destinationScope, parameter, viewModelClassName)
+                } else {
+                    it.addStatement("val viewModel = %M(%T::class, %N, ::%T)",
+                        rememberViewModel, data.parentScope, parameter, viewModelClassName)
+                }
+            }
             .addStatement("val component = viewModel.%L", viewModelComponentName)
             .addCode("\n")
             .addCode(composableNavigationSetup())

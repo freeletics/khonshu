@@ -103,8 +103,8 @@ internal class NavEntryFileGeneratorTest {
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(TestRoute::class.destinationId())
                 val route: TestRoute = entry.arguments!!.toRoute()
-                val viewModel = viewModel(entry, context, TestParentScope::class, route,
-                    ::TestFlowScopeViewModel)
+                val viewModel = viewModel(entry, context, TestParentScope::class, TestDestinationScope::class,
+                    route, ::TestFlowScopeViewModel)
                 return viewModel.component
               }
             }
@@ -193,8 +193,8 @@ internal class NavEntryFileGeneratorTest {
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(TestRoute::class.destinationId())
                 val route: TestRoute = entry.arguments!!.toRoute()
-                val viewModel = viewModel(entry, context, TestParentScope::class, route,
-                    ::TestFlowScopeViewModel)
+                val viewModel = viewModel(entry, context, TestParentScope::class, TestDestinationScope::class,
+                    route, ::TestFlowScopeViewModel)
                 return viewModel.component
               }
             }
@@ -285,8 +285,8 @@ internal class NavEntryFileGeneratorTest {
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(TestRoute::class.destinationId())
                 val route: TestRoute = entry.arguments!!.toRoute()
-                val viewModel = viewModel(entry, context, TestParentScope::class, route,
-                    ::TestFlowScopeViewModel)
+                val viewModel = viewModel(entry, context, TestParentScope::class, TestDestinationScope::class,
+                    route, ::TestFlowScopeViewModel)
                 return viewModel.component
               }
             }

@@ -51,8 +51,15 @@ internal abstract class BaseFragmentGenerator<T : FragmentCommonData> : Generato
             .addCode("val %N = ", argumentsParameter)
             .addCode(data.navigation.requireArguments())
             .addCode("\n")
-            .addStatement("val viewModel = %M(%T::class, %N, ::%T)",
-                fragmentViewModel, data.parentScope, argumentsParameter, viewModelClassName)
+            .also {
+                if (data.navigation != null) {
+                    it.addStatement("val viewModel = %M(%T::class, %T::class, %N, ::%T)",
+                        fragmentViewModel, data.parentScope, data.navigation!!.destinationScope, argumentsParameter, viewModelClassName)
+                } else {
+                    it.addStatement("val viewModel = %M(%T::class, %N, ::%T)",
+                        fragmentViewModel, data.parentScope, argumentsParameter, viewModelClassName)
+                }
+            }
             .addStatement("%L = viewModel.%L", retainedComponentClassName.propertyName, viewModelComponentName)
             .addCode(navigationCode())
             .endControlFlow()

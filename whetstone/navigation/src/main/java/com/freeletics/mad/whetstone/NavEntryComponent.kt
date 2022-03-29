@@ -49,32 +49,3 @@ public annotation class NavEntryComponent(
     val coroutinesEnabled: Boolean = false,
     val rxJavaEnabled: Boolean = false,
 )
-
-/**
- * Class that allows to retrieve generated [NavEntryComponent] instances.
- */
-public class NavEntryComponents @Inject constructor(
-    private val getters: @JvmSuppressWildcards Map<Class<*>, NavEntryComponentGetter>
-) {
-    /**
-     * Tries to retrieve a generated [NavEntryComponent] for the given [scope], where `name` is the
-     * fully qualified name of the [NavEntryComponent.scope].
-     *
-     * The given [findEntry] should look up a back stack entry for that id in the current
-     * `NavController`.
-     */
-    @Suppress("UNCHECKED_CAST")
-    internal fun <T> get(scope: KClass<*>, context: Context, findEntry: (Int) -> NavBackStackEntry): T? {
-        return getters[scope.java]?.retrieve(findEntry, context) as T?
-    }
-
-    /**
-     * TODO
-     */
-    public fun get(name: String): Any? {
-        if (name == NavEntryComponents::class.qualifiedName) {
-            return this
-        }
-        return null
-    }
-}

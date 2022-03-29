@@ -2,7 +2,6 @@ package com.freeletics.mad.whetstone.internal
 
 import android.content.Context
 import androidx.navigation.NavBackStackEntry
-import com.freeletics.mad.whetstone.NavEntryComponents
 import kotlin.reflect.KClass
 
 /**
@@ -10,7 +9,16 @@ import kotlin.reflect.KClass
  * [Context.getSystemService].
  */
 @InternalWhetstoneApi
-public fun <T> Context.findDependencies(scope: KClass<*>, findEntry: (Int) -> NavBackStackEntry): T {
-    val components = find<NavEntryComponents>(NavEntryComponents::class)
-    return components?.get(scope, this, findEntry) ?: find(scope)!!
+public fun <T> Context.findDependencies(
+    scope: KClass<*>,
+    destinationScope: KClass<*>,
+    findEntry: (Int) -> NavBackStackEntry
+): T {
+    val destinationComponent = find<DestinationComponent>(destinationScope)
+    val getter = destinationComponent?.navEntryComponentGetters?.get(scope.java)
+    if (getter != null) {
+        @Suppress("UNCHECKED_CAST")
+        return getter.retrieve(findEntry, this) as T
+    }
+    return find(scope)!!
 }

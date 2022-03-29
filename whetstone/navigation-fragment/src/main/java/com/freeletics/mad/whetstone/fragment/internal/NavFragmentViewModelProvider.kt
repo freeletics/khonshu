@@ -22,12 +22,13 @@ import kotlin.reflect.KClass
 @InternalWhetstoneApi
 public inline fun <reified T : ViewModel, D, R : BaseRoute> Fragment.viewModel(
     scope: KClass<*>,
+    destinationScope: KClass<*>,
     route: R,
     crossinline factory: @DisallowComposableCalls (D, SavedStateHandle, R) -> T
 ): T {
     val viewModelFactory = WhetstoneViewModelFactory(this) {
         val navController = findNavController()
-        val dependencies = requireContext().findDependencies<D>(scope, navController::getBackStackEntry)
+        val dependencies = requireContext().findDependencies<D>(scope, destinationScope, navController::getBackStackEntry)
         factory(dependencies, it, route)
     }
     val viewModelProvider = ViewModelProvider(this, viewModelFactory)
