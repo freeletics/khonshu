@@ -45,10 +45,13 @@ internal class FileGeneratorTestRendererFragment {
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.DestinationComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.gabrielittner.renderer.connect.connect
+            import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeComponent
+            import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
@@ -82,6 +85,10 @@ internal class FileGeneratorTestRendererFragment {
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
               }
+
+              @ContributesTo(TestDestinationScope::class)
+              @OptIn(InternalWhetstoneApi::class)
+              public interface NavEntryTestDestinationComponent : DestinationComponent
             }
 
             @InternalWhetstoneApi
@@ -115,7 +122,8 @@ internal class FileGeneratorTestRendererFragment {
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
-                  val viewModel = viewModel(TestParentScope::class, testRoute, ::TestViewModel)
+                  val viewModel = viewModel(TestParentScope::class, TestDestinationScope::class, testRoute,
+                      ::TestViewModel)
                   retainedTestComponent = viewModel.component
             
                   handleNavigation(this, retainedTestComponent.navEventNavigator)
@@ -150,6 +158,7 @@ internal class FileGeneratorTestRendererFragment {
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.DestinationComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.gabrielittner.renderer.connect.connect
@@ -192,6 +201,10 @@ internal class FileGeneratorTestRendererFragment {
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
               }
+
+              @ContributesTo(TestDestinationScope::class)
+              @OptIn(InternalWhetstoneApi::class)
+              public interface NavEntryTestDestinationComponent : DestinationComponent
             }
 
             @InternalWhetstoneApi
@@ -225,7 +238,8 @@ internal class FileGeneratorTestRendererFragment {
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
-                  val viewModel = viewModel(TestParentScope::class, testRoute, ::TestViewModel)
+                  val viewModel = viewModel(TestParentScope::class, TestDestinationScope::class, testRoute,
+                      ::TestViewModel)
                   retainedTestComponent = viewModel.component
             
                   handleNavigation(this, retainedTestComponent.navEventNavigator)
@@ -364,10 +378,13 @@ internal class FileGeneratorTestRendererFragment {
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.DestinationComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.gabrielittner.renderer.connect.connect
+            import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeComponent
+            import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
@@ -401,6 +418,10 @@ internal class FileGeneratorTestRendererFragment {
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
               }
+
+              @ContributesTo(TestDestinationScope::class)
+              @OptIn(InternalWhetstoneApi::class)
+              public interface NavEntryTestDestinationComponent : DestinationComponent
             }
 
             @InternalWhetstoneApi
@@ -434,7 +455,8 @@ internal class FileGeneratorTestRendererFragment {
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
-                  val viewModel = viewModel(TestParentScope::class, testRoute, ::TestViewModel)
+                  val viewModel = viewModel(TestParentScope::class, TestDestinationScope::class, testRoute,
+                      ::TestViewModel)
                   retainedTestComponent = viewModel.component
             
                   handleNavigation(this, retainedTestComponent.navEventNavigator)

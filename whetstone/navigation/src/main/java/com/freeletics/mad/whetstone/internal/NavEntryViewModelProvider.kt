@@ -20,12 +20,13 @@ public inline fun <reified T : ViewModel, D, R : BaseRoute> viewModel(
     entry: NavBackStackEntry,
     context: Context,
     scope: KClass<*>,
+    destinationScope: KClass<*>,
     route: R,
     noinline findEntry: (Int) -> NavBackStackEntry,
     crossinline factory: (D, SavedStateHandle, R) -> T
 ): T {
     val viewModelFactory = WhetstoneViewModelFactory(entry) {
-        val dependencies = context.findDependencies<D>(scope, findEntry)
+        val dependencies = context.findDependencies<D>(scope, destinationScope, findEntry)
         factory(dependencies, it, route)
     }
     val viewModelProvider = ViewModelProvider(entry, viewModelFactory)
