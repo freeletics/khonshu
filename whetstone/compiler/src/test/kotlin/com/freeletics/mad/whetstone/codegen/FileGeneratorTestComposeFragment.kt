@@ -99,10 +99,6 @@ internal class FileGeneratorTestComposeFragment {
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
               }
-
-              @ContributesTo(TestDestinationScope::class)
-              @OptIn(InternalWhetstoneApi::class)
-              public interface NavEntryTestDestinationComponent : DestinationComponent
             }
 
             @InternalWhetstoneApi
@@ -176,6 +172,10 @@ internal class FileGeneratorTestComposeFragment {
                 }
               }
             }
+            
+            @ContributesTo(TestDestinationScope::class)
+            @OptIn(InternalWhetstoneApi::class)
+            public interface NavEntryTestDestinationComponent : DestinationComponent
             
         """.trimIndent()
     }
@@ -255,10 +255,6 @@ internal class FileGeneratorTestComposeFragment {
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
               }
-
-              @ContributesTo(TestDestinationScope::class)
-              @OptIn(InternalWhetstoneApi::class)
-              public interface NavEntryTestDestinationComponent : DestinationComponent
             }
 
             @InternalWhetstoneApi
@@ -332,6 +328,10 @@ internal class FileGeneratorTestComposeFragment {
                 }
               }
             }
+            
+            @ContributesTo(TestDestinationScope::class)
+            @OptIn(InternalWhetstoneApi::class)
+            public interface NavEntryTestDestinationComponent : DestinationComponent
             
             @Module
             @ContributesTo(TestDestinationScope::class)
@@ -416,10 +416,6 @@ internal class FileGeneratorTestComposeFragment {
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
               }
-
-              @ContributesTo(TestDestinationScope::class)
-              @OptIn(InternalWhetstoneApi::class)
-              public interface NavEntryTestDestinationComponent : DestinationComponent
             }
 
             @InternalWhetstoneApi
@@ -494,6 +490,10 @@ internal class FileGeneratorTestComposeFragment {
               }
             }
             
+            @ContributesTo(TestDestinationScope::class)
+            @OptIn(InternalWhetstoneApi::class)
+            public interface NavEntryTestDestinationComponent : DestinationComponent
+            
         """.trimIndent()
     }
 
@@ -565,10 +565,6 @@ internal class FileGeneratorTestComposeFragment {
                   @BindsInstance coroutineScope: CoroutineScope
                 ): RetainedTestComponent
               }
-
-              @ContributesTo(TestDestinationScope::class)
-              @OptIn(InternalWhetstoneApi::class)
-              public interface NavEntryTestDestinationComponent : DestinationComponent
             }
 
             @InternalWhetstoneApi
@@ -635,6 +631,10 @@ internal class FileGeneratorTestComposeFragment {
                 }
               }
             }
+            
+            @ContributesTo(TestDestinationScope::class)
+            @OptIn(InternalWhetstoneApi::class)
+            public interface NavEntryTestDestinationComponent : DestinationComponent
             
         """.trimIndent()
     }

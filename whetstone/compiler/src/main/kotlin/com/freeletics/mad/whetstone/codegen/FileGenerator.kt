@@ -6,6 +6,7 @@ import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.RendererFragmentData
 import com.freeletics.mad.whetstone.codegen.common.ComposeGenerator
+import com.freeletics.mad.whetstone.codegen.common.DestinationComponentGenerator
 import com.freeletics.mad.whetstone.codegen.common.NavDestinationModuleGenerator
 import com.freeletics.mad.whetstone.codegen.common.RetainedComponentGenerator
 import com.freeletics.mad.whetstone.codegen.common.ViewModelGenerator
@@ -66,6 +67,12 @@ internal class FileGenerator{
     }
 
     private fun FileSpec.Builder.addNavDestinationType(data: CommonData) = apply {
+        val destinationScope = data.navigation?.destinationScope
+        if (destinationScope != null && destinationScope != data.parentScope) {
+            val destinationComponentGenerator = DestinationComponentGenerator(data)
+            addType(destinationComponentGenerator.generate())
+        }
+
         if (data.navigation?.destinationMethod != null) {
             val navDestinationGenerator = NavDestinationModuleGenerator(data)
             addType(navDestinationGenerator.generate())
