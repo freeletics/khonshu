@@ -11,12 +11,9 @@ import com.freeletics.mad.whetstone.codegen.util.componentAnnotation
 import com.freeletics.mad.whetstone.codegen.util.componentFactory
 import com.freeletics.mad.whetstone.codegen.util.composeProviderValueModule
 import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
-import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.coroutineScope
-import com.freeletics.mad.whetstone.codegen.util.destinationComponent
 import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
 import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
-import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.providedValue
 import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
 import com.freeletics.mad.whetstone.codegen.util.scopeToAnnotation
@@ -50,7 +47,6 @@ internal class RetainedComponentGenerator(
             .addAnnotation(componentAnnotation(data.scope, data.dependencies, moduleClassName()))
             .addProperties(componentProperties())
             .addType(retainedComponentFactory())
-            .addDestinationComponent()
             .build()
     }
 
@@ -104,17 +100,5 @@ internal class RetainedComponentGenerator(
             .addAnnotation(componentFactory)
             .addFunction(createFun)
             .build()
-    }
-
-    private fun TypeSpec.Builder.addDestinationComponent() = apply {
-        val destinationScope = data.navigation?.destinationScope
-        if (destinationScope != null && destinationScope != data.parentScope) {
-            val type = TypeSpec.interfaceBuilder("NavEntry${data.baseName}DestinationComponent")
-                .addAnnotation(contributesToAnnotation(destinationScope))
-                .addAnnotation(optInAnnotation())
-                .addSuperinterface(destinationComponent)
-                .build()
-            addType(type)
-        }
     }
 }
