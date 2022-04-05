@@ -104,7 +104,7 @@ internal class NavEntryFileGeneratorTest {
                 val entry = findEntry(TestRoute::class.destinationId())
                 val route: TestRoute = entry.arguments!!.toRoute()
                 val viewModel = viewModel(entry, context, TestParentScope::class, TestDestinationScope::class,
-                    route, ::TestFlowScopeViewModel)
+                    route, findEntry, ::TestFlowScopeViewModel)
                 return viewModel.component
               }
             }
@@ -194,7 +194,7 @@ internal class NavEntryFileGeneratorTest {
                 val entry = findEntry(TestRoute::class.destinationId())
                 val route: TestRoute = entry.arguments!!.toRoute()
                 val viewModel = viewModel(entry, context, TestParentScope::class, TestDestinationScope::class,
-                    route, ::TestFlowScopeViewModel)
+                    route, findEntry, ::TestFlowScopeViewModel)
                 return viewModel.component
               }
             }
@@ -286,7 +286,7 @@ internal class NavEntryFileGeneratorTest {
                 val entry = findEntry(TestRoute::class.destinationId())
                 val route: TestRoute = entry.arguments!!.toRoute()
                 val viewModel = viewModel(entry, context, TestParentScope::class, TestDestinationScope::class,
-                    route, ::TestFlowScopeViewModel)
+                    route, findEntry, ::TestFlowScopeViewModel)
                 return viewModel.component
               }
             }

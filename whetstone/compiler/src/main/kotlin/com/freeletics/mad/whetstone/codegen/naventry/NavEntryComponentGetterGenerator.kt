@@ -69,7 +69,7 @@ internal class NavEntryComponentGetterGenerator(
             .returns(ANY)
             .addStatement("val entry = findEntry(%T::class.%M())", data.route, destinationId)
             .addStatement("val route: %T = entry.arguments!!.%M()", data.route, toRoute)
-            .addStatement("val viewModel = %M(entry, context, %T::class, %T::class, route, ::%T)",
+            .addStatement("val viewModel = %M(entry, context, %T::class, %T::class, route, findEntry, ::%T)",
                 navEntryViewModel, data.parentScope, data.destinationScope, viewModelClassName)
             .addStatement("return viewModel.%L", viewModelComponentName)
             .build()
