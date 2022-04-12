@@ -12,6 +12,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.NavController
@@ -53,7 +55,7 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
 
     LaunchedEffect(lifecycleOwner, controller, navigator) {
         navigator.navEvents
-            .flowWithLifecycle(lifecycleOwner.lifecycle)
+            .flowWithLifecycle(lifecycleOwner.lifecycle, minActiveState = RESUMED)
             .collect { event ->
                 navigate(event, controller, activityLaunchers, permissionLaunchers)
             }
