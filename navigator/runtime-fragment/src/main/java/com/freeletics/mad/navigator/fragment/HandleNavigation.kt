@@ -43,7 +43,7 @@ public fun handleNavigation(fragment: Fragment, navigator: NavEventNavigator) {
 
     val lifecycle = fragment.lifecycle
     lifecycle.coroutineScope.launch {
-        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             navigator.navEvents.collect { event ->
                 navigate(event, fragment.findNavController(), activityLaunchers, permissionLaunchers)
             }
