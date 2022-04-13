@@ -34,7 +34,7 @@ In compose the `StateMachine` can be observed using `produceState()` and actions
 to it by simply launching them from a `CoroutineScope` created with `rememberCoroutineScope()`.
 
 ```groovy
-implementation 'com.freeletics.mad:state-machine:0.2.1'
+implementation 'com.freeletics.mad:state-machine:0.3.0'
 ```
 
 ## TextResource
@@ -49,7 +49,7 @@ For more information about the motivation for this abstraction check out this
 [blog post][1].
 
 ```groovy
-implementation 'com.freeletics.mad:text-resource:0.2.1'
+implementation 'com.freeletics.mad:text-resource:0.3.0'
 ```
 
 # License
