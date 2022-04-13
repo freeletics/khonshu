@@ -4,7 +4,7 @@ This library sits on top of AndroidX Navigation and solves 2 problems that we ra
 starting to adopt it.
 
 1. We believe that navigation should be triggered from the business logic. This way it is easily
-   testable where it is easily testable in isolation without having to actually navigate inside a
+   testable in isolation without having to actually navigate inside a
    running app. However you usually want to keep Android specific components out of these layers
    and passing `NavController` there would risk leaking the Activity.
 
@@ -18,14 +18,14 @@ starting to adopt it.
 
 ## Destinations
 
-To replace the XML and get type safety for navigation the library has it's own concept of
-destinations. A destination consists of 2 things the declaration of the destination itself
-which determines what is shown when the destination is navigated to and a way route to reach the
-destination.
+To replace the XML and get type safety for navigation the library has its own concept of
+destinations. A destination consists of 2 things:
+- the declaration of the destination itself which determines what is shown when the destination is navigated to;
+- the route - a way to reach the destination.
 
 ### NavRoute
 
-The route part is represented by the `NavRoute` interface. Each destination will get it's own
+The route part is represented by the `NavRoute` interface. Each destination will get its own
 implementation of this interface and screens can use it to navigate to the destination.
 
 The most minimal implementation of `NavRoute` would be for a screen that doesn't require any
@@ -43,7 +43,7 @@ data class DetailScreenRoute(
 ) : NavRoute, Parcelable
 ```
 
-Both of these use `Parcelable` and `Parcelize` because internally PLACEHOLDER will pass the route
+Both of these use `Parcelable` and `Parcelize` because internally the library will pass the route
 to the screen itself so that it can access the parameters.
 
 ### NavDestination
@@ -67,8 +67,7 @@ The `screenDestination` function will return a new `NavDestination` which is lin
 that was passed as the generic type parameter. The lambda function then gets an instance of that
 `NavRoute` and calls the `@Composable` function that should be shown.
 
-The other 2 functions to create destinations are `dialogDestination` and `bottomSheetDestination`
-to declare destinations that use a dialog or bottom sheet as a container instead of being shown
+The other 2 functions to create destinations are `dialogDestination` and `bottomSheetDestination` - they declare destinations that use a dialog or bottom sheet as a container instead of being shown
 full screen.
 
 These destinations can then be passed to a `NavHost` by putting them into a set:
@@ -91,7 +90,7 @@ val detailScreenDestination: NavDestination = screenDestination<DetailScreenRout
 
 The `screenDestination` function will return a new `NavDestination` which is linked to the route
 that was passed as the first generic type parameter. The second type parameter is the `Fragment`
-that will be shown for this destination
+that will be shown for this destination.
 
 Like the compose destination functions there is also `dialogDestination` to have a `DialogFragment`
 destination. `bottomSheetDestination` does not exist because this would simply be a
@@ -118,7 +117,7 @@ val route = requireRoute<DetailScreenRoute>()
 
 For the simplicity of the examples above the destinations were just kept in a variable and
 the set was created directly calling `NavHost`/`setGraph`. In practice it makes more sense
-to use dagger multibindings for these
+to use dagger multibindings for these:
 
 ```kotlin
 @Module
@@ -152,9 +151,9 @@ class MainActivity : ComponentActivity() {
 
 ## Nav events
 
-The third main class that PLACEHOLDER provides is `NavEventNavigator`. This class solves the first
-of our 2 problems, triggering navigation from outside the ui layer. For that it has all the
-primitive navigation operations
+The third main class that the library provides is `NavEventNavigator`. This class solves the first
+of our 2 problems, triggering navigation from outside the UI layer. For that it has all the
+primitive navigation operations:
 
 ```kotlin
 // navigate to the destination that the given route leads to
@@ -169,7 +168,7 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 ```
 
 These methods can be called from anywhere and it's safe to hold an instance of the
-`NavEventNavigator` in places where it's survives configuration changes.
+`NavEventNavigator` in places where it survives configuration changes.
 
 For the navigation to actually be executed call `handleNavigation(this, navigator)` from your one of
 the Fragment lifecycle methods or `NavigationSetup(navigator)` from a composable function.
@@ -179,7 +178,7 @@ base we usually create a subclass in each feature module that has some higher le
 example it could have a method that encapsulates the creation of the route:
 ```kotlin
 fun navigateToDetail(id: String) {
-    navigateTo(DetailScreenRoute("some-id"))
+    navigateTo(DetailScreenRoute(id))
 }
 ```
 They can also contain more complex logic like navigating to one route or another based on a
@@ -208,7 +207,7 @@ is disabled. This can be used to for example show a confirmation dialog before n
 
 ### Activity results
 
-External SDKs and the framework often provide an `Activity` that is supposed to use be used with
+External SDKs and the framework often provide an `Activity` that is supposed to be used with
 `startActivityForResult`. AndroidX already introduced `ActivityResultContract` to simplify handling
 this and `NavEventNavigator` uses them to also enable starting them from outside the UI layer
 and receiving results there.
@@ -258,7 +257,7 @@ The `PermissionResult` is the main advantage of using the API instead for the Ac
 Instead of being a simple `Boolean` for granted/denied it is an enum with `GRANTED`, `DENIED` 
 and `DENIED_PERMANENTLY`. After it receives the result from the contract, the library will 
 internally use `Activity.shouldShowRequestPermissionRationale(permission)` to figure out if a 
-denial was a permanent, meaning the user won't be asked again, or not. This is ususally not easily 
+denial was a permanent, meaning the user won't be asked again, or not. This is usually not easily 
 possible since it requires a reference to an `Activity`.
 
 An example usage can look like this:
@@ -298,10 +297,10 @@ The navigation to the screen from which the result should be returned is a regul
 `NavigationResultRequest.Key<Result>` as a parameter. An instance of such a `Key` can be obtained
 from the `key` property of the request object.
 
-The target screen can then simply call `devliverNavigationResult(route.key, result)` on it's own
+The target screen can then simply call `devliverNavigationResult(route.key, result)` on its own
 navigator to send the result and afterwards remove itself from the back stack with `navigateBack`.
 
-The navigator for a hypothetical ScreenA that wants to receive a result from ScreenB would look
+The navigator for a hypothetical `ScreenA` that wants to receive a result from `ScreenB` would look
 like this
 ```kotlin
 data class MessageResult(val message: String): Parcelable
