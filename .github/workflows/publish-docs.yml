@@ -38,7 +38,7 @@ jobs:
           cp README.md docs/index.md
           cp navigator/README.md docs/navigator.md
           mkdir -p docs/Javadoc/navigator
-          cp -R text-resource/build/dokka/gfm/. docs/Javadoc/navigator/
+          cp -R navigator/build/dokka/gfm/. docs/Javadoc/navigator/
           mkdir -p docs/Javadoc/text-resource
           cp -R text-resource/build/dokka/gfm/. docs/Javadoc/text-resource/
           mkdir -p docs/Javadoc/state-machine
