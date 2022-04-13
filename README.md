@@ -7,6 +7,22 @@ as well as some of our own utilities.
 
 **This repository is a work in progress. More will be added over time.**
 
+## Navigator
+
+The navigator library is a wrapper around AndroidX navigation that allows to separate navigation
+logic from the UI layer and provides a scalable approach to type safe navigation in a highly
+modularized code base.
+
+For more information check out it's [README][4].
+
+```groovy
+implementation 'com.freeletics.mad:navigator:0.3.0'
+// when using composables for navigation
+implementation 'com.freeletics.mad:navigator-compose:0.3.0'
+// when using fragments for navigation (even if these contain composables)
+implementation 'com.freeletics.mad:navigator-fragment:0.3.0'
+```
+
 ## StateMachine
 
 `StateMachine` is a very simple interface to implement a StateMachine with the concept of emitting
@@ -57,3 +73,4 @@ limitations under the License.
   [1]: https://freeletics.engineering/2021/01/22/abstraction-text-resource.html
   [2]: https://freeletics.github.io/FlowRedux/dsl/
   [3]: https://github.com/gabrielittner/renderer
+  [4]: navigator/README.md
