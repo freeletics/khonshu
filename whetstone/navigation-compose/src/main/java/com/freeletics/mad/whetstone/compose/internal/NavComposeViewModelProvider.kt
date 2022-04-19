@@ -39,7 +39,7 @@ public inline fun <reified T : ViewModel, D, R : BaseRoute> rememberViewModel(
     val navController = LocalNavController.current
     return remember(viewModelStoreOwner, savedStateRegistryOwner, context, navController, route) {
         val viewModelFactory = WhetstoneViewModelFactory(savedStateRegistryOwner) {
-            val dependencies = context.findDependencies<D>(scope::class, destinationScope, navController::getBackStackEntry)
+            val dependencies = context.findDependencies<D>(scope, destinationScope, navController::getBackStackEntry)
             factory(dependencies, it, route)
         }
         val viewModelProvider = ViewModelProvider(viewModelStoreOwner, viewModelFactory)
