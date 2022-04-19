@@ -35,7 +35,7 @@ public inline fun <reified T : ViewModel, D> rememberViewModel(
     val context = LocalContext.current
     return remember(viewModelStoreOwner, savedStateRegistryOwner, context, arguments) {
         val viewModelFactory = WhetstoneViewModelFactory(savedStateRegistryOwner) {
-            val dependencies = context.findDependencies<D>(scope::class)
+            val dependencies = context.findDependencies<D>(scope)
             factory(dependencies, it, arguments)
         }
         val viewModelProvider = ViewModelProvider(viewModelStoreOwner, viewModelFactory)
