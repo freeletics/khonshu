@@ -27,7 +27,7 @@ import kotlin.reflect.KClass
 @InternalWhetstoneApi
 @OptIn(InternalNavigatorApi::class)
 @Composable
-public inline fun <reified T : ViewModel, D, R : BaseRoute> rememberViewModel(
+public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> rememberViewModel(
     scope: KClass<*>,
     destinationScope: KClass<*>,
     route: R,
