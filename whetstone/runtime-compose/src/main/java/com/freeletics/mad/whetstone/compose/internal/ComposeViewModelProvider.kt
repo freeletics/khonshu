@@ -25,7 +25,7 @@ import kotlin.reflect.KClass
  */
 @InternalWhetstoneApi
 @Composable
-public inline fun <reified T : ViewModel, D> rememberViewModel(
+public inline fun <reified T : ViewModel, D : Any> rememberViewModel(
     scope: KClass<*>,
     arguments: Bundle,
     crossinline factory: @DisallowComposableCalls (D, SavedStateHandle, Bundle) -> T

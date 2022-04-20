@@ -5,16 +5,20 @@ import kotlin.reflect.KClass
 
 @InternalWhetstoneApi
 public fun <T> Context.findDependencies(scope: KClass<*>): T {
-    return find(scope)!!
+    val dependency = find(scope)
+    checkNotNull(dependency) {
+        "Could not find scope ${scope.qualifiedName} through getSystemService"
+    }
+    @Suppress("UNCHECKED_CAST")
+    return dependency as T
 }
 
 @InternalWhetstoneApi
-public fun <T : Any> Context.find(service: KClass<*>): T? {
+public fun Context.find(service: KClass<*>): Any? {
     val serviceName = service.qualifiedName!!
     return find(serviceName) ?: applicationContext.find(serviceName)
 }
 
-@Suppress("UNCHECKED_CAST")
-private fun <T> Context.find(serviceName: String): T? {
-    return getSystemService(serviceName) as T?
+private fun Context.find(serviceName: String): Any? {
+    return getSystemService(serviceName)
 }

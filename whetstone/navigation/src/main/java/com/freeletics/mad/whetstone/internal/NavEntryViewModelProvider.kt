@@ -16,7 +16,7 @@ import kotlin.reflect.KClass
  * To be used in generated code.
  */
 @InternalWhetstoneApi
-public inline fun <reified T : ViewModel, D, R : BaseRoute> viewModel(
+public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> viewModel(
     entry: NavBackStackEntry,
     context: Context,
     scope: KClass<*>,

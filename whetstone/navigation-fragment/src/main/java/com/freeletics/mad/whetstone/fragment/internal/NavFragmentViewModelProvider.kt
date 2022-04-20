@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
  * To be used in generated code.
  */
 @InternalWhetstoneApi
-public inline fun <reified T : ViewModel, D, R : BaseRoute> Fragment.viewModel(
+public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> Fragment.viewModel(
     scope: KClass<*>,
     destinationScope: KClass<*>,
     route: R,

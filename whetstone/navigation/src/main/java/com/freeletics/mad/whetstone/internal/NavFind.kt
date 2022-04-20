@@ -9,16 +9,23 @@ import kotlin.reflect.KClass
  * [Context.getSystemService].
  */
 @InternalWhetstoneApi
-public fun <T> Context.findDependencies(
+public fun <T : Any> Context.findDependencies(
     scope: KClass<*>,
     destinationScope: KClass<*>,
     findEntry: (Int) -> NavBackStackEntry
 ): T {
-    val destinationComponent = find<DestinationComponent>(destinationScope)
-    val getter = destinationComponent?.navEntryComponentGetters?.get(scope.java)
-    if (getter != null) {
-        @Suppress("UNCHECKED_CAST")
-        return getter.retrieve(findEntry, this) as T
+    if (scope != destinationScope) {
+        val destinationComponent = find(destinationScope) as? DestinationComponent
+        val getter = destinationComponent?.navEntryComponentGetters?.get(scope.java)
+        if (getter != null) {
+            @Suppress("UNCHECKED_CAST")
+            return getter.retrieve(findEntry, this) as T
+        }
     }
-    return find(scope)!!
+    val dependency = find(scope)
+    checkNotNull(dependency) {
+        "Could not find scope ${scope.qualifiedName} through getSystemService"
+    }
+    @Suppress("UNCHECKED_CAST")
+    return dependency as T
 }

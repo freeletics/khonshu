@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
  * To be used in generated code.
  */
 @InternalWhetstoneApi
-public inline fun <reified T : ViewModel, D> Fragment.viewModel(
+public inline fun <reified T : ViewModel, D : Any> Fragment.viewModel(
     scope: KClass<*>,
     arguments: Bundle,
     crossinline factory: @DisallowComposableCalls (D, SavedStateHandle, Bundle) -> T
