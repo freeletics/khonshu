@@ -16,11 +16,11 @@ modularized code base.
 For more information check out it's [README][4].
 
 ```groovy
-implementation 'com.freeletics.mad:navigator:0.3.0'
+implementation 'com.freeletics.mad:navigator:0.3.1'
 // when using composables for navigation
-implementation 'com.freeletics.mad:navigator-compose:0.3.0'
+implementation 'com.freeletics.mad:navigator-compose:0.3.1'
 // when using fragments for navigation (even if these contain composables)
-implementation 'com.freeletics.mad:navigator-fragment:0.3.0'
+implementation 'com.freeletics.mad:navigator-fragment:0.3.1'
 ```
 
 ## StateMachine
@@ -34,7 +34,7 @@ In compose the `StateMachine` can be observed using `produceState()` and actions
 to it by simply launching them from a `CoroutineScope` created with `rememberCoroutineScope()`.
 
 ```groovy
-implementation 'com.freeletics.mad:state-machine:0.3.0'
+implementation 'com.freeletics.mad:state-machine:0.3.1'
 ```
 
 ## TextResource
@@ -49,7 +49,7 @@ For more information about the motivation for this abstraction check out this
 [blog post][1].
 
 ```groovy
-implementation 'com.freeletics.mad:text-resource:0.3.0'
+implementation 'com.freeletics.mad:text-resource:0.3.1'
 ```
 
 # License

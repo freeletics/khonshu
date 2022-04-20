@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+Version 0.3.1 *(2022-04-20)*
+----------------------------
+
+### Whetstone
+
+- fix a crash when `@NavEntryComponent` is completely unused
+- fix a crash when using Whetstone with Compose navigation
+
+
 Version 0.3.0 *(2022-04-13)*
 ----------------------------
 
@@ -20,9 +29,9 @@ implementation 'com.freeletics.mad:navigator-fragment:0.3.0'
 
 ### Whetstone
 
-Experimental release of an Anvil plugin that generates components and more for a screen. The 
-experimental status only means that this will have breaking changes in the future and 
-functionality might change significantly and that the documentation is missing (other than 
+Experimental release of an Anvil plugin that generates components and more for a screen. The
+experimental status only means that this will have breaking changes in the future and
+functionality might change significantly and that the documentation is missing (other than
 comments on the code). It is already being used in production at Freeletics.
 
 
