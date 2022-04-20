@@ -9,6 +9,7 @@ import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.get
 import com.freeletics.mad.navigator.BaseRoute
+import com.freeletics.mad.navigator.internal.activityDestinationId
 import com.freeletics.mad.navigator.internal.getArguments
 import com.freeletics.mad.navigator.internal.destinationId
 
@@ -67,7 +68,7 @@ private fun NavDestination.Activity<*>.toDestination(
 ): ActivityNavigator.Destination {
     val navigator = controller.navigatorProvider[ActivityNavigator::class]
     return ActivityNavigator.Destination(navigator).also {
-        it.id = route.destinationId()
+        it.id = route.activityDestinationId()
         it.setIntent(intent)
     }
 }

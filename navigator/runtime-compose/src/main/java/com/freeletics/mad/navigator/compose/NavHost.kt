@@ -22,6 +22,7 @@ import com.freeletics.mad.navigator.compose.NavDestination.BottomSheet
 import com.freeletics.mad.navigator.compose.NavDestination.Dialog
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
+import com.freeletics.mad.navigator.internal.activityDestinationId
 import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.navigator.internal.getArguments
 import com.freeletics.mad.navigator.internal.toRoute
@@ -123,8 +124,9 @@ private fun Activity.toDestination(
 ): ActivityNavigator.Destination {
     val navigator = controller.navigatorProvider[ActivityNavigator::class]
     return ActivityNavigator.Destination(navigator).also {
-        it.id = route.destinationId()
+        it.id = route.activityDestinationId()
         it.setIntent(intent)
+        it.setDataPattern("{test}")
     }
 }
 

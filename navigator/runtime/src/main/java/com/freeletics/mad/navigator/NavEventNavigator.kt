@@ -8,6 +8,7 @@ import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
 import com.freeletics.mad.navigator.NavEvent.BackEvent
 import com.freeletics.mad.navigator.NavEvent.BackToEvent
+import com.freeletics.mad.navigator.NavEvent.NavigateToActivityEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
 import com.freeletics.mad.navigator.NavEvent.PermissionsResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
@@ -21,7 +22,6 @@ import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
  * A navigator that allows to fire [events][NavEvent] through it's methods. These
@@ -143,6 +143,14 @@ public open class NavEventNavigator {
         restoreRootState: Boolean = false,
     ) {
         val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
+        sendNavEvent(event)
+    }
+
+    /**
+     * Triggers a new [NavEvent] to navigate to the given [route].
+     */
+    public fun navigateTo(route: ActivityRoute) {
+        val event = NavigateToActivityEvent(route)
         sendNavEvent(event)
     }
 

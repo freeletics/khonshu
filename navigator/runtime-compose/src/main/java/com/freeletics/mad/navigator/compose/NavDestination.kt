@@ -2,6 +2,7 @@ package com.freeletics.mad.navigator.compose
 
 import android.content.Intent
 import androidx.compose.runtime.Composable
+import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.compose.NavDestination.Activity
@@ -48,7 +49,7 @@ public inline fun <reified T : NavRoute> BottomSheetDestination(
  * instance of [T] for navigation.
  */
 @Suppress("FunctionName")
-public inline fun <reified T : NavRoute> ActivityDestination(
+public inline fun <reified T : ActivityRoute> ActivityDestination(
     intent: Intent,
 ): NavDestination = Activity(T::class, intent)
 
@@ -93,7 +94,7 @@ public sealed interface NavDestination {
      * an instance of [route] for navigation.
      */
     public class Activity(
-        internal val route: KClass<out NavRoute>,
+        internal val route: KClass<out ActivityRoute>,
         internal val intent: Intent,
     ) : NavDestination
 }

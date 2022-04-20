@@ -3,6 +3,7 @@ package com.freeletics.mad.navigator.fragment
 import android.content.Intent
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.fragment.NavDestination.Activity
@@ -34,7 +35,7 @@ public inline fun <reified T : NavRoute, reified F : DialogFragment> DialogDesti
  * instance of [T] for navigation.
  */
 @Suppress("FunctionName")
-public inline fun <reified T : NavRoute> ActivityDestination(
+public inline fun <reified T : ActivityRoute> ActivityDestination(
     intent: Intent,
 ): NavDestination = Activity(T::class, intent)
 
@@ -69,7 +70,7 @@ public sealed interface NavDestination {
      * [intent] will be used to launch the `Activity` when using an instance of [route] for
      * navigation.
      */
-    public class Activity<T : NavRoute>(
+    public class Activity<T : ActivityRoute>(
         internal val route: KClass<T>,
         internal val intent: Intent,
     ) : NavDestination
