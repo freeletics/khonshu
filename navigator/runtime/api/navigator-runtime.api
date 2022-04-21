@@ -90,19 +90,6 @@ public abstract class com/freeletics/mad/navigator/ResultOwner {
 	public final fun getResults ()Lkotlinx/coroutines/flow/Flow;
 }
 
-public final class com/freeletics/mad/navigator/internal/CustomActivityNavigator$Companion {
-}
-
-public class com/freeletics/mad/navigator/internal/CustomActivityNavigator$Destination : androidx/navigation/NavDestination {
-	public fun <init> (Landroidx/navigation/Navigator;)V
-	public fun <init> (Landroidx/navigation/NavigatorProvider;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getIntent ()Landroid/content/Intent;
-	public fun hashCode ()I
-	public final fun setIntent (Landroid/content/Intent;)V
-	public fun supportsActions ()Z
-}
-
 public abstract interface annotation class com/freeletics/mad/navigator/internal/InternalNavigatorApi : java/lang/annotation/Annotation {
 }
 

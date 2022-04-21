@@ -34,7 +34,7 @@ import com.freeletics.mad.navigator.ActivityRoute
 @Navigator.Name("activity")
 @InternalNavigatorApi
 public open class CustomActivityNavigator(
-    public val context: Context
+    private val context: Context
 ) : Navigator<CustomActivityNavigator.Destination>() {
     private val hostActivity: Activity? = generateSequence(context) {
         if (it is ContextWrapper) {
@@ -85,7 +85,7 @@ public open class CustomActivityNavigator(
         }
         val intent = Intent(destination.intent)
         if (args != null) {
-            val fillInIntent = intent.getParcelableExtra<Intent>(EXTRA_FILL_IN_INTENT)
+            val fillInIntent = args.getParcelable<Intent>(EXTRA_FILL_IN_INTENT)
             if (fillInIntent != null) {
                 intent.fillIn(fillInIntent, 0)
             }
@@ -128,6 +128,7 @@ public open class CustomActivityNavigator(
      * [NavigatorProvider.getNavigator] method.
      */
     @NavDestination.ClassType(Activity::class)
+    @InternalNavigatorApi
     public open class Destination(
         activityNavigator: Navigator<out Destination>
     ) : NavDestination(activityNavigator) {
@@ -148,10 +149,6 @@ public open class CustomActivityNavigator(
             navigatorProvider: NavigatorProvider
         ) : this(navigatorProvider.getNavigator(CustomActivityNavigator::class.java))
 
-        public override fun supportsActions(): Boolean {
-            return false
-        }
-
         override fun equals(other: Any?): Boolean {
             if (other == null || other !is Destination) return false
             return super.equals(other) &&
@@ -165,7 +162,7 @@ public open class CustomActivityNavigator(
         }
     }
 
-    public companion object {
+    private companion object {
         private const val EXTRA_NAV_SOURCE = "android-support-navigation:ActivityNavigator:source"
         private const val EXTRA_NAV_CURRENT = "android-support-navigation:ActivityNavigator:current"
     }

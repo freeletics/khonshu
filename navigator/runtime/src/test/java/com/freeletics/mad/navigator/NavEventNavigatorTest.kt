@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
+import com.freeletics.mad.navigator.NavEvent.NavigateToActivityEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToRootEvent
 import com.google.common.truth.Truth.assertThat
@@ -40,6 +41,7 @@ public class NavEventNavigatorTest {
         override fun describeContents(): Int = 0
         override fun writeToParcel(dest: Parcel?, flags: Int) {}
     }
+    private data class SimpleActivity(val number: Int) : ActivityRoute
 
     private data class TestParcelable(
         val value: Int
@@ -88,6 +90,19 @@ public class NavEventNavigatorTest {
             navigator.navigateToRoot(SimpleRoot(1), true)
 
             assertThat(awaitItem()).isEqualTo(NavigateToRootEvent(SimpleRoot(1), true))
+
+            cancel()
+        }
+    }
+
+    @Test
+    public fun `navigateTo Activity event is received`(): Unit = runBlocking {
+        val navigator = TestNavigator()
+
+        navigator.navEvents.test {
+            navigator.navigateTo(SimpleActivity(1))
+
+            assertThat(awaitItem()).isEqualTo(NavigateToActivityEvent(SimpleActivity(1)))
 
             cancel()
         }
