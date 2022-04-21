@@ -232,26 +232,48 @@ It is possible to add static extras to the destination or to dynamically add ext
 by implementing `intentExtras`:
 
 ```kotlin
-class BrowserRoute(
-    uri: Uri,
-) : ActivityRoute {
-    // any of the returned extra is added to the launched `Intent`
-    override fun intentExtras: Bundle = Bundle().apply {
-        putExtra("uri", uri.toString())
-    }
-}
-
-val browserDestination: NavDestination = ActivityDestination<BrowserRoute>(
-    // basic intent
-    intent = Intent(ACTION_VIEW)
-)
-
 // minimal route
 object PlayStoreRoute : ActivityRoute
 
 val playStoreDestination: NavDestination = ActivityDestination<PlayStoreRoute>(
     // full intent is statically defined
-    intent = Intent(ACTION_VIEW, Uri.parse("market://details?id=${context.packageName}"))
+    intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${context.packageName}"))
+)
+
+// route with extra values
+class ShareRoute(
+    private val title: String,
+    private val message: String
+) : ActivityRoute {
+    // the returned Bundle is added to the launched `Intent`
+    override fun intentExtras() = Bundle().apply {
+        putString(Intent.EXTRA_TITLE, title)
+        putParcelable(Intent.EXTRA_INTENT, Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, message)
+        })
+    }
+}
+
+val shareDestination: NavDestination = ActivityDestination<ShareRoute>(
+    // basic intent that is extended with the extras above
+    intent = Intent(Intent.ACTION_CHOOSER)
+)
+
+// route with a data uri extra
+class BrowserRoute(
+    uri: Uri,
+) : ActivityRoute {
+    // any of the returned extra is added to the launched `Intent`
+    override fun intentExtras: Bundle = Bundle().apply {
+        putExtra(ActivityRoute.INTENT_DATA_URI_STRING, uri.toString())
+    }
+}
+
+val browserDestination: NavDestination = ActivityDestination<BrowserRoute>(
+    // basic intent that gets the ActivityRoute.INTENT_DATA_URI_STRING String extra set as data
+    intent = Intent(Intent.ACTION_VIEW)
 )
 ```
 

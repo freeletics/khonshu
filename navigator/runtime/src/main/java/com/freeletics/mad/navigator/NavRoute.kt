@@ -32,4 +32,8 @@ public interface NavRoot : BaseRoute
  */
 public interface ActivityRoute {
     public fun intentExtras(): Bundle = Bundle.EMPTY
+
+    public companion object {
+        public const val INTENT_DATA_URI_STRING: String = "com.freeletics.navigator.INTENT_DATA_URI"
+    }
 }

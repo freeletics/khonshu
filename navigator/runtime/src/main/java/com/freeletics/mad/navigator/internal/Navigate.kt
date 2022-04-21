@@ -90,6 +90,9 @@ private fun KClass<*>.internalDestinationId() = qualifiedName!!.hashCode()
 public fun <T : BaseRoute> Bundle.toRoute(): T = getParcelable(EXTRA_ROUTE)!!
 
 @InternalNavigatorApi
+public fun <T : ActivityRoute> Bundle.toActivityRoute(): T = getParcelable(EXTRA_ROUTE)!!
+
+@InternalNavigatorApi
 public fun BaseRoute.getArguments(): Bundle = Bundle().also {
     it.putParcelable(EXTRA_ROUTE, this)
 }

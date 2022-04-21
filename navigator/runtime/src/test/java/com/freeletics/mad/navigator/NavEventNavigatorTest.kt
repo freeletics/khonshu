@@ -28,9 +28,18 @@ public class NavEventNavigatorTest {
         }
     }
 
-    private data class SimpleRoute(val number: Int) : NavRoute
-    private data class OtherRoute(val number: Int) : NavRoute
-    private data class SimpleRoot(val number: Int) : NavRoot
+    private data class SimpleRoute(val number: Int) : NavRoute {
+        override fun describeContents(): Int = 0
+        override fun writeToParcel(dest: Parcel?, flags: Int) {}
+    }
+    private data class OtherRoute(val number: Int) : NavRoute {
+        override fun describeContents(): Int = 0
+        override fun writeToParcel(dest: Parcel?, flags: Int) {}
+    }
+    private data class SimpleRoot(val number: Int) : NavRoot {
+        override fun describeContents(): Int = 0
+        override fun writeToParcel(dest: Parcel?, flags: Int) {}
+    }
 
     private data class TestParcelable(
         val value: Int

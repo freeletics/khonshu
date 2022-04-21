@@ -6,6 +6,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
@@ -21,6 +22,7 @@ import com.freeletics.mad.navigator.compose.NavDestination.Activity
 import com.freeletics.mad.navigator.compose.NavDestination.BottomSheet
 import com.freeletics.mad.navigator.compose.NavDestination.Dialog
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
+import com.freeletics.mad.navigator.internal.CustomActivityNavigator
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.activityDestinationId
 import com.freeletics.mad.navigator.internal.destinationId
@@ -44,8 +46,10 @@ public fun NavHost(
 ) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
+    val context = LocalContext.current
 
-    val graph = remember(navController, startRoute, destinations) {
+    val graph = remember(navController, context, startRoute, destinations) {
+        navController.navigatorProvider.addNavigator(CustomActivityNavigator(context))
         @Suppress("deprecation")
         navController.createGraph(startDestination = startRoute.destinationId()) {
             destinations.forEach { destination ->
@@ -121,12 +125,11 @@ private fun <T : NavRoute> BottomSheet<T>.toDestination(
 
 private fun Activity.toDestination(
     controller: NavController,
-): ActivityNavigator.Destination {
-    val navigator = controller.navigatorProvider[ActivityNavigator::class]
-    return ActivityNavigator.Destination(navigator).also {
+): CustomActivityNavigator.Destination {
+    val navigator = controller.navigatorProvider[CustomActivityNavigator::class]
+    return CustomActivityNavigator.Destination(navigator).also {
         it.id = route.activityDestinationId()
-        it.setIntent(intent)
-        it.setDataPattern("{test}")
+        it.intent = intent
     }
 }
 
