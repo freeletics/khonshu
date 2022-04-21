@@ -3,11 +3,15 @@ public final class com/freeletics/mad/navigator/ActivityResultRequest : com/free
 }
 
 public abstract interface class com/freeletics/mad/navigator/ActivityRoute {
-	public abstract fun intentExtras ()Landroid/os/Bundle;
+	public static final field Companion Lcom/freeletics/mad/navigator/ActivityRoute$Companion;
+	public abstract fun fillInIntent ()Landroid/content/Intent;
+}
+
+public final class com/freeletics/mad/navigator/ActivityRoute$Companion {
 }
 
 public final class com/freeletics/mad/navigator/ActivityRoute$DefaultImpls {
-	public static fun intentExtras (Lcom/freeletics/mad/navigator/ActivityRoute;)Landroid/os/Bundle;
+	public static fun fillInIntent (Lcom/freeletics/mad/navigator/ActivityRoute;)Landroid/content/Intent;
 }
 
 public abstract interface class com/freeletics/mad/navigator/BaseRoute : android/os/Parcelable {
@@ -84,6 +88,19 @@ public final class com/freeletics/mad/navigator/PermissionsResultRequest$Permiss
 
 public abstract class com/freeletics/mad/navigator/ResultOwner {
 	public final fun getResults ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/freeletics/mad/navigator/internal/CustomActivityNavigator$Companion {
+}
+
+public class com/freeletics/mad/navigator/internal/CustomActivityNavigator$Destination : androidx/navigation/NavDestination {
+	public fun <init> (Landroidx/navigation/Navigator;)V
+	public fun <init> (Landroidx/navigation/NavigatorProvider;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIntent ()Landroid/content/Intent;
+	public fun hashCode ()I
+	public final fun setIntent (Landroid/content/Intent;)V
+	public fun supportsActions ()Z
 }
 
 public abstract interface annotation class com/freeletics/mad/navigator/internal/InternalNavigatorApi : java/lang/annotation/Annotation {

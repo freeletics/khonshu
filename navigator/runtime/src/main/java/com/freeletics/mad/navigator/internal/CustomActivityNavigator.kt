@@ -85,10 +85,9 @@ public open class CustomActivityNavigator(
         }
         val intent = Intent(destination.intent)
         if (args != null) {
-            intent.putExtras(args)
-            val uriString = intent.getStringExtra(ActivityRoute.INTENT_DATA_URI_STRING)
-            if (uriString != null) {
-                intent.data = Uri.parse(uriString)
+            val fillInIntent = intent.getParcelableExtra<Intent>(EXTRA_FILL_IN_INTENT)
+            if (fillInIntent != null) {
+                intent.fillIn(fillInIntent, 0)
             }
         }
         if (hostActivity == null) {

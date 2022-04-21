@@ -245,10 +245,11 @@ class ShareRoute(
     private val title: String,
     private val message: String
 ) : ActivityRoute {
-    // the returned Bundle is added to the launched `Intent`
-    override fun intentExtras() = Bundle().apply {
-        putString(Intent.EXTRA_TITLE, title)
-        putParcelable(Intent.EXTRA_INTENT, Intent().apply {
+    // the returned Intent is filled into the Intent of the destination by calling
+    // destinationIntent.fillIn(fillInIntent())
+    override fun fillInIntent() = Intent()
+        .putExtra(Intent.EXTRA_TITLE, title)
+        .putExtra(Intent.EXTRA_INTENT, Intent().apply {
             action = Intent.ACTION_SEND
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, message)
@@ -257,7 +258,7 @@ class ShareRoute(
 }
 
 val shareDestination: NavDestination = ActivityDestination<ShareRoute>(
-    // basic intent that is extended with the extras above
+    // basic intent that is extended with the Intent above
     intent = Intent(Intent.ACTION_CHOOSER)
 )
 
@@ -265,21 +266,20 @@ val shareDestination: NavDestination = ActivityDestination<ShareRoute>(
 class BrowserRoute(
     uri: Uri,
 ) : ActivityRoute {
-    // any of the returned extra is added to the launched `Intent`
-    override fun intentExtras: Bundle = Bundle().apply {
-        putExtra(ActivityRoute.INTENT_DATA_URI_STRING, uri.toString())
-    }
+    // the returned Intent is filled into the Intent of the destination by calling
+    // destinationIntent.fillIn(fillInIntent())
+    override fun fillInIntent() = Intent().setData(uri)
 }
 
 val browserDestination: NavDestination = ActivityDestination<BrowserRoute>(
-    // basic intent that gets the ActivityRoute.INTENT_DATA_URI_STRING String extra set as data
+    // basic intent that is extended with the Intent above
     intent = Intent(Intent.ACTION_VIEW)
 )
 ```
 
-Both shown approaches can be combined where for example some extras are statically added to the
+All shown approaches can be combined where for example some extras are statically added to the
 `Intent` when the destination is created and some others are dynamically provided through
-`intentExtras`.
+`fillInIntent`.
 
 ### Activity results
 

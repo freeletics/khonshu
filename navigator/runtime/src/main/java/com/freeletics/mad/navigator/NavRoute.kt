@@ -1,5 +1,6 @@
 package com.freeletics.mad.navigator
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 
@@ -31,9 +32,9 @@ public interface NavRoot : BaseRoute
  * route leads to a different app.
  */
 public interface ActivityRoute {
-    public fun intentExtras(): Bundle = Bundle.EMPTY
+    public fun fillInIntent(): Intent = EMPTY_INTENT
 
     public companion object {
-        public const val INTENT_DATA_URI_STRING: String = "com.freeletics.navigator.INTENT_DATA_URI"
+        private val EMPTY_INTENT = Intent()
     }
 }
