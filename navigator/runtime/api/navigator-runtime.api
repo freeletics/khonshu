@@ -2,7 +2,19 @@ public final class com/freeletics/mad/navigator/ActivityResultRequest : com/free
 	public final fun getContract ()Landroidx/activity/result/contract/ActivityResultContract;
 }
 
-public abstract interface class com/freeletics/mad/navigator/BaseRoute {
+public abstract interface class com/freeletics/mad/navigator/ActivityRoute {
+	public static final field Companion Lcom/freeletics/mad/navigator/ActivityRoute$Companion;
+	public abstract fun fillInIntent ()Landroid/content/Intent;
+}
+
+public final class com/freeletics/mad/navigator/ActivityRoute$Companion {
+}
+
+public final class com/freeletics/mad/navigator/ActivityRoute$DefaultImpls {
+	public static fun fillInIntent (Lcom/freeletics/mad/navigator/ActivityRoute;)Landroid/content/Intent;
+}
+
+public abstract interface class com/freeletics/mad/navigator/BaseRoute : android/os/Parcelable {
 }
 
 public class com/freeletics/mad/navigator/NavEventNavigator {
@@ -19,6 +31,7 @@ public class com/freeletics/mad/navigator/NavEventNavigator {
 	public static synthetic fun navigateBackTo$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
 	public final fun navigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;)V
 	public final fun navigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;Ljava/lang/Object;)V
+	public final fun navigateTo (Lcom/freeletics/mad/navigator/ActivityRoute;)V
 	public final fun navigateTo (Lcom/freeletics/mad/navigator/NavRoute;)V
 	public final fun navigateToRoot (Lcom/freeletics/mad/navigator/NavRoot;Z)V
 	public static synthetic fun navigateToRoot$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lcom/freeletics/mad/navigator/NavRoot;ZILjava/lang/Object;)V

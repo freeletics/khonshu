@@ -9,6 +9,8 @@ import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.get
 import com.freeletics.mad.navigator.BaseRoute
+import com.freeletics.mad.navigator.internal.CustomActivityNavigator
+import com.freeletics.mad.navigator.internal.activityDestinationId
 import com.freeletics.mad.navigator.internal.getArguments
 import com.freeletics.mad.navigator.internal.destinationId
 
@@ -20,6 +22,7 @@ public fun NavHostFragment.setGraph(
     startRoute: BaseRoute,
     destinations: Set<NavDestination>,
 ) {
+    navController.navigatorProvider.addNavigator(CustomActivityNavigator(requireContext()))
     @Suppress("deprecation")
     val graph = navController.createGraph(startDestination = startRoute.destinationId()) {
         destinations.forEach { destination ->
@@ -64,10 +67,10 @@ private fun NavDestination.Dialog<*>.toDestination(
 
 private fun NavDestination.Activity<*>.toDestination(
     controller: NavController,
-): ActivityNavigator.Destination {
-    val navigator = controller.navigatorProvider[ActivityNavigator::class]
-    return ActivityNavigator.Destination(navigator).also {
-        it.id = route.destinationId()
-        it.setIntent(intent)
+): CustomActivityNavigator.Destination {
+    val navigator = controller.navigatorProvider[CustomActivityNavigator::class]
+    return CustomActivityNavigator.Destination(navigator).also {
+        it.id = route.activityDestinationId()
+        it.intent = intent
     }
 }

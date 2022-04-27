@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.freeletics.mad.navigator.ActivityResultRequest
+import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.PermissionsResultRequest
@@ -33,6 +34,9 @@ public fun navigate(
                 .setLaunchSingleTop(true)
                 .build()
             controller.navigate(event.root.destinationId(), event.root.getArguments(), options)
+        }
+        is NavEvent.NavigateToActivityEvent -> {
+            controller.navigate(event.route.destinationId(), event.route.getArguments())
         }
         is NavEvent.UpEvent -> {
             controller.navigateUp()
@@ -72,16 +76,34 @@ public fun navigate(
 public fun BaseRoute.destinationId(): Int = this::class.destinationId()
 
 @InternalNavigatorApi
-public fun KClass<out BaseRoute>.destinationId(): Int = qualifiedName!!.hashCode()
+public fun KClass<out BaseRoute>.destinationId(): Int = internalDestinationId()
+
+@InternalNavigatorApi
+public fun ActivityRoute.destinationId(): Int = this::class.activityDestinationId()
+
+@InternalNavigatorApi
+public fun KClass<out ActivityRoute>.activityDestinationId(): Int = internalDestinationId()
+
+private fun KClass<*>.internalDestinationId() = qualifiedName!!.hashCode()
 
 @InternalNavigatorApi
 public fun <T : BaseRoute> Bundle.toRoute(): T = getParcelable(EXTRA_ROUTE)!!
 
 @InternalNavigatorApi
+public fun <T : ActivityRoute> Bundle.toActivityRoute(): T = getParcelable(EXTRA_ROUTE)!!
+
+@InternalNavigatorApi
 public fun BaseRoute.getArguments(): Bundle = Bundle().also {
+    it.putParcelable(EXTRA_ROUTE, this)
+}
+
+@InternalNavigatorApi
+public fun ActivityRoute.getArguments(): Bundle = Bundle().also {
+    it.putParcelable(EXTRA_FILL_IN_INTENT, fillInIntent())
     if (this is Parcelable) {
         it.putParcelable(EXTRA_ROUTE, this)
     }
 }
 
 private const val EXTRA_ROUTE = "com.freeletics.mad.navigation.ROUTE"
+internal const val EXTRA_FILL_IN_INTENT = "com.freeletics.mad.navigation.FILL_IN_INTENT"

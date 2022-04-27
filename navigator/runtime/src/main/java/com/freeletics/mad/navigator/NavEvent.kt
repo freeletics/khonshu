@@ -35,6 +35,14 @@ public sealed interface NavEvent {
     ) : NavEvent
 
     /**
+     * Navigates to the given [route].
+     */
+    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
+    public data class NavigateToActivityEvent(
+        internal val route: ActivityRoute,
+    ) : NavEvent
+
+    /**
      * Navigates up.
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)

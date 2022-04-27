@@ -32,7 +32,7 @@ The most minimal implementation of `NavRoute` would be for a screen that doesn't
 arguments can be a simple Kotlin object:
 ```kotlin
 @Parcelize
-object HomeScreenRoute : NavRoute, Parcelable
+object HomeScreenRoute : NavRoute
 ```
 
 The more common case when a destination needs arguments passed to it would look like this
@@ -40,11 +40,10 @@ The more common case when a destination needs arguments passed to it would look 
 @Parcelize
 data class DetailScreenRoute(
     val id: String,
-) : NavRoute, Parcelable
+) : NavRoute
 ```
 
-Both of these use `Parcelable` and `Parcelize` because internally the library will pass the route
-to the screen itself so that it can access the parameters.
+Internally the library will pass the route to the screen itself so that it can access the parameters.
 
 ### NavDestination
 
@@ -58,16 +57,16 @@ If we take the `DetailScreenRoute` example from above, declaring the destination
 like this
 
 ```kotlin
-val detailScreenDestination: NavDestination = screenDestination<DetailScreenRoute> { route: DetailScreenRoute ->
+val detailScreenDestination: NavDestination = ScreenDestination<DetailScreenRoute> { route: DetailScreenRoute ->
     DetailScreen(route)
 }
 ```
 
-The `screenDestination` function will return a new `NavDestination` which is linked to the route
+The `ScreenDestination` function will return a new `NavDestination` which is linked to the route
 that was passed as the generic type parameter. The lambda function then gets an instance of that
 `NavRoute` and calls the `@Composable` function that should be shown.
 
-The other 2 functions to create destinations are `dialogDestination` and `bottomSheetDestination` - they declare destinations that use a dialog or bottom sheet as a container instead of being shown
+The other 2 functions to create destinations are `DialogDestination` and `BottomSheetDestination` - they declare destinations that use a dialog or bottom sheet as a container instead of being shown
 full screen.
 
 These destinations can then be passed to a `NavHost` by putting them into a set:
@@ -85,16 +84,16 @@ setContent {
 The approach for Fragments is very similar
 
 ```kotlin
-val detailScreenDestination: NavDestination = screenDestination<DetailScreenRoute, DetailFragment>()
+val detailScreenDestination: NavDestination = ScreenDestination<DetailScreenRoute, DetailFragment>()
 ```
 
-The `screenDestination` function will return a new `NavDestination` which is linked to the route
+The `ScreenDestination` function will return a new `NavDestination` which is linked to the route
 that was passed as the first generic type parameter. The second type parameter is the `Fragment`
 that will be shown for this destination.
 
-Like the compose destination functions there is also `dialogDestination` to have a `DialogFragment`
-destination. `bottomSheetDestination` does not exist because this would simply be a
-`dialogDestination` with a `BottomSheetDialogFragment`.
+Like the compose destination functions there is also `DialogDestination` to have a `DialogFragment`
+destination. BottomSheetDestination does not exist because this would simply be a
+`DialogDestination` with a `BottomSheetDialogFragment`.
 
 These destinations can then be passed to a `NavHostFragment` by putting them into a set:
 ```kotlin
@@ -124,7 +123,7 @@ to use dagger multibindings for these:
 object DetailScreenModule {
     @Provides
     @IntoSet
-    fun provideDetailScreenDestinations(): NavDestination = screenDestination<DetailScreenRoute> {
+    fun provideDetailScreenDestinations(): NavDestination = ScreenDestination<DetailScreenRoute> {
         DetailScreen(it)
     }
 }
@@ -204,6 +203,83 @@ the destination for `ProfileTabRoot` will be shown.
 `NavEventNavigator` has a `backPresses()` method that returns `Flow<Unit>` which will emit
 whenever Android's back button is used. While this `Flow` is collected the default back handling
 is disabled. This can be used to for example show a confirmation dialog before navigating back.
+
+### Activity destinations
+
+It is also possible navigate to an `Activity` both inside and outside of the app. In both cases
+it's required to define an `ActivityRoute` and an `ActivityDestination` like for any other screen.
+The route can then simply be passed to `navigateTo` to start the associated `Activity`. The
+`ActivityDestination` is just another `NavDestination` than can be added to the `Set` with all
+other destinations.
+
+For an `Activity` in the same app it's recommended to extend `Parcelable` with will allow the
+started `Activity` to obtain the route and use it to easily access any parameter.
+
+This is example shows the route and destination for a `SettingsActivity`:
+```kotlin
+@Parcelize
+data class SettingsActivityRoute(
+    val id: String,
+) : ActivityRoute, Parcelable
+
+val extraActivityDestination: NavDestination = ActivityDestination<SettingsRoute>(
+    intent = Intent(context, SettingsActivity::class)
+)
+```
+
+In the case of external activities `Parcelable` can't be used because it would crash the other app.
+It is possible to add static extras to the destination or to dynamically add extras to the route
+by implementing `intentExtras`:
+
+```kotlin
+// minimal route
+object PlayStoreRoute : ActivityRoute
+
+val playStoreDestination: NavDestination = ActivityDestination<PlayStoreRoute>(
+    // full intent is statically defined
+    intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${context.packageName}"))
+)
+
+// route with extra values
+class ShareRoute(
+    private val title: String,
+    private val message: String
+) : ActivityRoute {
+    // the returned Intent is filled into the Intent of the destination by calling
+    // destinationIntent.fillIn(fillInIntent())
+    override fun fillInIntent() = Intent()
+        .putExtra(Intent.EXTRA_TITLE, title)
+        .putExtra(Intent.EXTRA_INTENT, Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, message)
+        })
+    }
+}
+
+val shareDestination: NavDestination = ActivityDestination<ShareRoute>(
+    // basic intent that is extended with the Intent above
+    intent = Intent(Intent.ACTION_CHOOSER)
+)
+
+// route with a data uri extra
+class BrowserRoute(
+    uri: Uri,
+) : ActivityRoute {
+    // the returned Intent is filled into the Intent of the destination by calling
+    // destinationIntent.fillIn(fillInIntent())
+    override fun fillInIntent() = Intent().setData(uri)
+}
+
+val browserDestination: NavDestination = ActivityDestination<BrowserRoute>(
+    // basic intent that is extended with the Intent above
+    intent = Intent(Intent.ACTION_VIEW)
+)
+```
+
+All shown approaches can be combined where for example some extras are statically added to the
+`Intent` when the destination is created and some others are dynamically provided through
+`fillInIntent`.
 
 ### Activity results
 
