@@ -66,7 +66,7 @@ internal class FileGeneratorTestRendererFragment {
             @ScopeTo(TestScreen::class)
             @MergeComponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class]
+              dependencies = [TestDependencies::class],
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -82,7 +82,7 @@ internal class FileGeneratorTestRendererFragment {
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope
+                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
               }
             }
@@ -91,7 +91,7 @@ internal class FileGeneratorTestRendererFragment {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute
+              testRoute: TestRoute,
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -114,7 +114,7 @@ internal class FileGeneratorTestRendererFragment {
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
-                savedInstanceState: Bundle?
+                savedInstanceState: Bundle?,
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
@@ -182,7 +182,7 @@ internal class FileGeneratorTestRendererFragment {
             @ScopeTo(TestScreen::class)
             @MergeComponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class]
+              dependencies = [TestDependencies::class],
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -198,7 +198,7 @@ internal class FileGeneratorTestRendererFragment {
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope
+                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
               }
             }
@@ -207,7 +207,7 @@ internal class FileGeneratorTestRendererFragment {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute
+              testRoute: TestRoute,
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -230,7 +230,7 @@ internal class FileGeneratorTestRendererFragment {
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
-                savedInstanceState: Bundle?
+                savedInstanceState: Bundle?,
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
@@ -295,7 +295,7 @@ internal class FileGeneratorTestRendererFragment {
             @ScopeTo(TestScreen::class)
             @MergeComponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class]
+              dependencies = [TestDependencies::class],
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -309,7 +309,7 @@ internal class FileGeneratorTestRendererFragment {
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance arguments: Bundle,
                   @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope
+                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
               }
             }
@@ -318,7 +318,7 @@ internal class FileGeneratorTestRendererFragment {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              arguments: Bundle
+              arguments: Bundle,
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -341,7 +341,7 @@ internal class FileGeneratorTestRendererFragment {
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
-                savedInstanceState: Bundle?
+                savedInstanceState: Bundle?,
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
                   val arguments = requireArguments()
@@ -399,7 +399,7 @@ internal class FileGeneratorTestRendererFragment {
             @ScopeTo(TestScreen::class)
             @MergeComponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class]
+              dependencies = [TestDependencies::class],
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -415,7 +415,7 @@ internal class FileGeneratorTestRendererFragment {
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope
+                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
               }
             }
@@ -424,7 +424,7 @@ internal class FileGeneratorTestRendererFragment {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute
+              testRoute: TestRoute,
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -447,7 +447,7 @@ internal class FileGeneratorTestRendererFragment {
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
-                savedInstanceState: Bundle?
+                savedInstanceState: Bundle?,
               ): View {
                 if (!::retainedTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()

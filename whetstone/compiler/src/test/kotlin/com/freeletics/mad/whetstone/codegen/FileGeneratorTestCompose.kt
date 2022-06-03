@@ -66,7 +66,7 @@ internal class FileGeneratorTestCompose {
             @MergeComponent(
               scope = TestScreen::class,
               dependencies = [TestDependencies::class],
-              modules = [ComposeProviderValueModule::class]
+              modules = [ComposeProviderValueModule::class],
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -82,7 +82,7 @@ internal class FileGeneratorTestCompose {
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope
+                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
               }
             }
@@ -91,7 +91,7 @@ internal class FileGeneratorTestCompose {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute
+              testRoute: TestRoute,
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -189,7 +189,7 @@ internal class FileGeneratorTestCompose {
             @MergeComponent(
               scope = TestScreen::class,
               dependencies = [TestDependencies::class],
-              modules = [ComposeProviderValueModule::class]
+              modules = [ComposeProviderValueModule::class],
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -205,7 +205,7 @@ internal class FileGeneratorTestCompose {
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope
+                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
               }
             }
@@ -214,7 +214,7 @@ internal class FileGeneratorTestCompose {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute
+              testRoute: TestRoute,
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -313,7 +313,7 @@ internal class FileGeneratorTestCompose {
             @MergeComponent(
               scope = TestScreen::class,
               dependencies = [TestDependencies::class],
-              modules = [ComposeProviderValueModule::class]
+              modules = [ComposeProviderValueModule::class],
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -327,7 +327,7 @@ internal class FileGeneratorTestCompose {
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance arguments: Bundle,
                   @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope
+                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
               }
             }
@@ -336,7 +336,7 @@ internal class FileGeneratorTestCompose {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              arguments: Bundle
+              arguments: Bundle,
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -419,7 +419,7 @@ internal class FileGeneratorTestCompose {
             @MergeComponent(
               scope = TestScreen::class,
               dependencies = [TestDependencies::class],
-              modules = [ComposeProviderValueModule::class]
+              modules = [ComposeProviderValueModule::class],
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -434,7 +434,7 @@ internal class FileGeneratorTestCompose {
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
-                  @BindsInstance compositeDisposable: CompositeDisposable
+                  @BindsInstance compositeDisposable: CompositeDisposable,
                 ): RetainedTestComponent
               }
             }
@@ -443,7 +443,7 @@ internal class FileGeneratorTestCompose {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute
+              testRoute: TestRoute,
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -532,7 +532,7 @@ internal class FileGeneratorTestCompose {
             @MergeComponent(
               scope = TestScreen::class,
               dependencies = [TestDependencies::class],
-              modules = [ComposeProviderValueModule::class]
+              modules = [ComposeProviderValueModule::class],
             )
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
@@ -547,7 +547,7 @@ internal class FileGeneratorTestCompose {
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
-                  @BindsInstance coroutineScope: CoroutineScope
+                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
               }
             }
@@ -556,7 +556,7 @@ internal class FileGeneratorTestCompose {
             internal class TestViewModel(
               dependencies: TestDependencies,
               savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute
+              testRoute: TestRoute,
             ) : ViewModel() {
               private val scope: CoroutineScope = MainScope()
 
