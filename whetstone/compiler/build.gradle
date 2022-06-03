@@ -19,7 +19,7 @@ kotlin {
 }
 
 dependencies {
-    api "org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.10"
+    api "org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.21"
     api "com.squareup.anvil:compiler-api:2.4.0"
     implementation "com.squareup.anvil:annotations:2.4.0"
     implementation "com.squareup.anvil:compiler-utils:2.4.0"
