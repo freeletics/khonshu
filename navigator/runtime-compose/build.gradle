@@ -56,7 +56,7 @@ dependencies {
     api "androidx.compose.runtime:runtime:1.1.1"
     api "androidx.navigation:navigation-runtime:2.4.2" // for an obsolete api
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2"
     implementation "androidx.activity:activity:1.4.0"
     implementation "androidx.activity:activity-compose:1.4.0"
     implementation "androidx.compose.ui:ui:1.1.1"
