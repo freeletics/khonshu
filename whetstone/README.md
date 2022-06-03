@@ -263,7 +263,7 @@ interface AppComponent {
     }
 }
 
-class App : Application(), ImageLoaderFactory {
+class App : Application() {
 
     private val component: AppComponent = DaggerAppComponent.factory().create(this)
     
