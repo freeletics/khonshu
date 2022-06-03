@@ -30,7 +30,7 @@ implementation 'com.freeletics.mad:navigator-fragment:0.3.1'
 Whetstone is a plugin for [Anvil][5] that helps with
 generating dependency injection related code and common boilerplate for screens.
 
-For more information check out it's [README][6].
+For more information check out its [README][6].
 
 ```groovy
 anvil  'com.freeletics.mad:whetstone-compiler:0.3.1'

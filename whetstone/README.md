@@ -92,8 +92,8 @@ for example.
 
 ### Views with Fragments
 
-The last covered use case are view based screens in an app that uses Fragments.
-This based on the separate [Renderer library](https://github.com/gabrielittner/renderer)
+The last covered use case is view based screens in an app that uses Fragments.
+This is based on the separate [Renderer library](https://github.com/gabrielittner/renderer)
 which separates the view/ui logic from Fragments or other framework classes.
 Similar to the composables above a Renderer receives a state object and emits
 actions. Whetstone has a `@RendererFragment` annotation which will then, like the
@@ -160,7 +160,7 @@ available which can be injected to classes like the state machine to save state.
 ## Navigator integration
 
 Whetstone has a special integration with the [MAD Navigator library](../navigator/README.md)
-and has `@NavDestination` annotation to also include the navigation setup in the
+and has a `@NavDestination` annotation to also include the navigation setup in the
 generated code.
 
 It can be used like this and is added next to the
@@ -183,7 +183,7 @@ available in the generated component, so it can be injected into the state
 machine or other classes to read the parameters.
 
 When the `NavDestination` is added Whetstone also expects a `NavEventNavigator`
-to be injectable. This can be easily achieved by added
+to be injectable. This can be easily achieved by adding
 `@ScopeTo(ExampleScope::class) @ContributesBinding(ExampleScope::class, NavEventNavigator::class)`
 to a subclass of it. Whetstone will automatically take care of setting up
 the navigator by calling `NavigationSetup` for compose and `handleNavigation`
@@ -193,7 +193,7 @@ The last part of the integration is that Whetstone will automatically generate
 a `NavDestination` for the screen by using the `route` and `type`. This
 generated destination is automatically provided into a `Set` in the component
 that uses `destinationScope` as it's scope (usually an app wide or Activity
-level scope). With that it's not necessary anymore to manually create a `Set`
+level scope). With that it's not necessary to manually create a `Set`
 of all destinations anymore. It can simply be injected.
 
 
