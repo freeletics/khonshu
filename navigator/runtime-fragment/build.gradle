@@ -51,7 +51,7 @@ dependencies {
     api "androidx.fragment:fragment:1.4.1"
     api "androidx.navigation:navigation-fragment:2.4.2"
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2"
     implementation "androidx.activity:activity:1.4.0"
     implementation "androidx.lifecycle:lifecycle-common:2.4.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.1"
