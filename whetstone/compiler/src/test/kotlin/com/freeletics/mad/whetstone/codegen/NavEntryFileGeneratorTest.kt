@@ -53,7 +53,7 @@ internal class NavEntryFileGeneratorTest {
             @ScopeTo(TestFlowScope::class)
             @ContributesSubcomponent(
               scope = TestFlowScope::class,
-              parentScope = TestParentScope::class
+              parentScope = TestParentScope::class,
             )
             public interface NavEntryTestFlowScopeComponent {
               @ContributesSubcomponent.Factory
@@ -62,7 +62,7 @@ internal class NavEntryFileGeneratorTest {
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
                   @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope
+                  @BindsInstance coroutineScope: CoroutineScope,
                 ): NavEntryTestFlowScopeComponent
               }
 
@@ -76,7 +76,7 @@ internal class NavEntryFileGeneratorTest {
             internal class TestFlowScopeViewModel(
               parentComponent: NavEntryTestFlowScopeComponent.ParentComponent,
               savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute
+              testRoute: TestRoute,
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -96,7 +96,7 @@ internal class NavEntryFileGeneratorTest {
             @NavEntryComponentGetterKey(TestFlowScope::class)
             @ContributesMultibinding(
               TestDestinationScope::class,
-              NavEntryComponentGetter::class
+              NavEntryComponentGetter::class,
             )
             public class TestFlowScopeComponentGetter @Inject constructor() : NavEntryComponentGetter {
               @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
@@ -147,7 +147,7 @@ internal class NavEntryFileGeneratorTest {
             @ScopeTo(TestFlowScope::class)
             @ContributesSubcomponent(
               scope = TestFlowScope::class,
-              parentScope = TestParentScope::class
+              parentScope = TestParentScope::class,
             )
             public interface NavEntryTestFlowScopeComponent {
               @ContributesSubcomponent.Factory
@@ -155,7 +155,7 @@ internal class NavEntryFileGeneratorTest {
                 public fun create(
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
-                  @BindsInstance compositeDisposable: CompositeDisposable
+                  @BindsInstance compositeDisposable: CompositeDisposable,
                 ): NavEntryTestFlowScopeComponent
               }
 
@@ -169,7 +169,7 @@ internal class NavEntryFileGeneratorTest {
             internal class TestFlowScopeViewModel(
               parentComponent: NavEntryTestFlowScopeComponent.ParentComponent,
               savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute
+              testRoute: TestRoute,
             ) : ViewModel() {
               private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -186,7 +186,7 @@ internal class NavEntryFileGeneratorTest {
             @NavEntryComponentGetterKey(TestFlowScope::class)
             @ContributesMultibinding(
               TestDestinationScope::class,
-              NavEntryComponentGetter::class
+              NavEntryComponentGetter::class,
             )
             public class TestFlowScopeComponentGetter @Inject constructor() : NavEntryComponentGetter {
               @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
@@ -239,7 +239,7 @@ internal class NavEntryFileGeneratorTest {
             @ScopeTo(TestFlowScope::class)
             @ContributesSubcomponent(
               scope = TestFlowScope::class,
-              parentScope = TestParentScope::class
+              parentScope = TestParentScope::class,
             )
             public interface NavEntryTestFlowScopeComponent {
               @ContributesSubcomponent.Factory
@@ -247,7 +247,7 @@ internal class NavEntryFileGeneratorTest {
                 public fun create(
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
-                  @BindsInstance coroutineScope: CoroutineScope
+                  @BindsInstance coroutineScope: CoroutineScope,
                 ): NavEntryTestFlowScopeComponent
               }
 
@@ -261,7 +261,7 @@ internal class NavEntryFileGeneratorTest {
             internal class TestFlowScopeViewModel(
               parentComponent: NavEntryTestFlowScopeComponent.ParentComponent,
               savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute
+              testRoute: TestRoute,
             ) : ViewModel() {
               private val scope: CoroutineScope = MainScope()
 
@@ -278,7 +278,7 @@ internal class NavEntryFileGeneratorTest {
             @NavEntryComponentGetterKey(TestFlowScope::class)
             @ContributesMultibinding(
               TestDestinationScope::class,
-              NavEntryComponentGetter::class
+              NavEntryComponentGetter::class,
             )
             public class TestFlowScopeComponentGetter @Inject constructor() : NavEntryComponentGetter {
               @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
