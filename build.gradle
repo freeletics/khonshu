@@ -1,4 +1,6 @@
 buildscript {
+    ext.kotlin_version = '1.6.10'
+
     repositories {
         mavenCentral()
         google()
@@ -6,7 +8,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:7.2.1"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_verion"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.6.10"
         classpath "com.vanniktech:gradle-maven-publish-plugin:0.20.0"
         classpath "com.autonomousapps:dependency-analysis-gradle-plugin:1.4.0"
