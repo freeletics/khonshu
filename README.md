@@ -7,6 +7,7 @@ as well as some of our own utilities.
 
 **This repository is a work in progress. More will be added over time.**
 
+
 ## Navigator
 
 The navigator library is a wrapper around AndroidX navigation that allows to separate navigation
@@ -23,6 +24,32 @@ implementation 'com.freeletics.mad:navigator-compose:0.3.1'
 implementation 'com.freeletics.mad:navigator-fragment:0.3.1'
 ```
 
+
+## Whetstone
+
+Whetstone is a plugin for [Anvil][5] that helps with
+generating dependency injection related code and common boilerplate for screens.
+
+For more information check out it's [README][6].
+
+```groovy
+anvil  'com.freeletics.mad:whetstone-compiler:0.3.1'
+
+implementation 'com.freeletics.mad:whetstone-runtime:0.3.1'
+// when using composables
+implementation 'com.freeletics.mad:whetstone-runtime-compose:0.3.1'
+// when using fragments (even if these contain composables)
+implementation 'com.freeletics.mad:whetstone-runtime-fragment:0.3.1'
+
+// for the integration with Navigator
+implementation 'com.freeletics.mad:whetstone-navigation:0.3.1'
+// for the integration with Navigator - when using composables
+implementation 'com.freeletics.mad:whetstone-navigation-compose:0.3.1'
+// for the integration with Navigator - when using fragments (even if these contain composables)
+implementation 'com.freeletics.mad:whetstone-navigation-fragment:0.3.1'
+```
+
+
 ## StateMachine
 
 `StateMachine` is a very simple interface to implement a StateMachine with the concept of emitting
@@ -36,6 +63,7 @@ to it by simply launching them from a `CoroutineScope` created with `rememberCor
 ```groovy
 implementation 'com.freeletics.mad:state-machine:0.3.1'
 ```
+
 
 ## TextResource
 
@@ -51,6 +79,7 @@ For more information about the motivation for this abstraction check out this
 ```groovy
 implementation 'com.freeletics.mad:text-resource:0.3.1'
 ```
+
 
 # License
 
@@ -74,3 +103,5 @@ limitations under the License.
   [2]: https://freeletics.github.io/FlowRedux/dsl/
   [3]: https://github.com/gabrielittner/renderer
   [4]: navigator/README.md
+  [5]: https://github.com/square/anvil
+  [6]: whetstone/README.md
