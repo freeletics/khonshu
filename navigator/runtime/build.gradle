@@ -48,11 +48,11 @@ tasks.withType(JavaCompile).configureEach {
 
 dependencies {
     api "androidx.activity:activity:1.4.0"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.0"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2"
 
-    implementation "androidx.core:core:1.7.0"
-    implementation "androidx.navigation:navigation-common:2.4.1"
-    implementation "androidx.navigation:navigation-runtime:2.4.1"
+    implementation "androidx.core:core:1.8.0"
+    implementation "androidx.navigation:navigation-common:2.4.2"
+    implementation "androidx.navigation:navigation-runtime:2.4.2"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1"
 
     testImplementation "junit:junit:4.13.2"

@@ -55,7 +55,7 @@ dependencies {
     api "androidx.compose.runtime:runtime:1.1.1"
 
     implementation "androidx.compose.ui:ui:1.1.1"
-    implementation "org.jetbrains.kotlin:kotlin-parcelize-runtime:1.6.10"
+    implementation "org.jetbrains.kotlin:kotlin-parcelize-runtime:$kotlin_version"
 
     compileOnly "androidx.annotation:annotation:1.2.0"
 }

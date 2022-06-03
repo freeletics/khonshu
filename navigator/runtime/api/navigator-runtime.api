@@ -1,5 +1,4 @@
 public final class com/freeletics/mad/navigator/ActivityResultRequest : com/freeletics/mad/navigator/ResultOwner {
-	public final fun getContract ()Landroidx/activity/result/contract/ActivityResultContract;
 }
 
 public abstract interface class com/freeletics/mad/navigator/ActivityRoute {
@@ -22,11 +21,8 @@ public class com/freeletics/mad/navigator/NavEventNavigator {
 	public final fun backPresses ()Lkotlinx/coroutines/flow/Flow;
 	public final fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 	public final fun deliverNavigationResult (Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
-	public final fun getActivityResultRequests ()Ljava/util/List;
 	public final fun getNavEvents ()Lkotlinx/coroutines/flow/Flow;
-	public final fun getNavigationResultRequests ()Ljava/util/List;
 	public final fun getOnBackPressedCallback ()Landroidx/activity/OnBackPressedCallback;
-	public final fun getPermissionsResultRequests ()Ljava/util/List;
 	public final fun navigateBack ()V
 	public static synthetic fun navigateBackTo$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
 	public final fun navigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;)V
@@ -61,8 +57,6 @@ public final class com/freeletics/mad/navigator/NavigationResultRequest$Key : an
 	public static synthetic fun copy$default (Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;ILjava/lang/String;ILjava/lang/Object;)Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;
 	public fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getDestinationId ()I
-	public final fun getRequestKey ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public fun writeToParcel (Landroid/os/Parcel;I)V
