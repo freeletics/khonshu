@@ -10,7 +10,7 @@ generating dependency injection related code and common boilerplate for screens.
 - easily let objects survive orientation changes 
 
 One general advantage is around Fragments. If an app uses them or has to use them for legacy 
-reasons, Whetstone will mostly hide them from the developers because it's generating the Fragment
+reasons, Whetstone will mostly hide them from the developers because it generates the Fragment
 for each screen it's used in. This way logic is kept out of them and the actual components like
 UI and state machine (presenter/view model) can be tested more easily in isolation. It also makes
 a migration away from Fragments easier since generated code can be easily replaced by other 
@@ -21,7 +21,7 @@ just using Compose is as easy as replacing a single annotation on each screen.
 
 Using the library depends a bit on the app it's being used in. If the app
 is 100% compose and does not have any Fragments then the `@ComposeScreen`
-annotation is the way to go. For apps build with Fragments there is a
+annotation is the way to go. For apps built with Fragments there is a
 `@ComposeFragment` annotation for screens using compose and for screens build
 with views there is `@RendererFragment`.
 
@@ -142,15 +142,13 @@ to contribute objects into it.
 `scope` is also used for Dagger scopes. The generated component is annotated
 with the `@ScopeTo` annotation that ships with the Whetstone runtime and uses
 the `scope` value as a parameter. To scope a class just add
-`@ScopeTo(ExampleScope::class)` to it. Any object using this scope will
-together with the component automatically survive configuration changes and
-will not be recreated together with the UI.
+`@ScopeTo(ExampleScope::class)` to it. Any object using this scope will automatically survive configuration changes and will not be recreated together with the UI. In fact any scoped object that is created in generated component will do so together with component itself.
 
 The `dependencies` interface for [component dependencies](https://dagger.dev/api/2.22/dagger/Component.html#component-dependencies)
-will be looked up internally using `Context.getSystemService(name)` using the
+will be looked up internally with `Context.getSystemService(name)` using the
 fully qualified name of the given `parentScope` as key for the lookup. It is
-expected that the app will provide it through it's `Application` class or an
-`Activity`. It is recommended to add `@ContributesTo` the dependencies interface
+expected that the app will provide it through its `Application` class or an
+`Activity`. It is recommended to add `@ContributesTo` to the dependencies interface
 and that the `parentScope` value should be the same one that is used in that
 annotation.
 
