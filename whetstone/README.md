@@ -131,8 +131,7 @@ The annotation has the same optional `fragmentBaseClass` parameter that
 
 ## Generated component
 
-All the annotations have the `scope`, `dependencies` and `parentScope` parameter in
-common. The first 2 will be used on `@MergeComponent` annotation of the generated
+All annotations have a parameter for `scope`, `dependencies` and `parentScope`. The first 2 will be used on `@MergeComponent` annotation of the generated
 component, i.e. `@MergeComponent(scope = ExampleScope::class, dependencies = [ExampleDependencies::class])`.
 
 Since the generated component is using Anvil's `@MergeComponent`, it is possible
