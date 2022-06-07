@@ -135,7 +135,7 @@ All the annotations have the `scope`, `dependencies` and `parentScope` parameter
 common. The first 2 will be used on `@MergeComponent` annotation of the generated
 component, i.e. `@MergeComponent(scope = ExampleScope::class, dependencies = [ExampleDependencies::class])`.
 
-Since the generated component is using Anvils `@MergeComponent`, it is possible
+Since the generated component is using Anvil's `@MergeComponent`, it is possible
 to use `@ContributesTo`, `@ContributesBinding` and so on with that same scope
 to contribute objects into it.
 
