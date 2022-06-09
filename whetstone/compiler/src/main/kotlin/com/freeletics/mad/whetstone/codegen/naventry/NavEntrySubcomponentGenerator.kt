@@ -39,7 +39,6 @@ internal class NavEntrySubcomponentGenerator(
 
     fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(navEntrySubcomponentClassName)
-            .addAnnotation(internalApiAnnotation())
             .addAnnotation(scopeToAnnotation(data.scope))
             .addAnnotation(subcomponentAnnotation(data.scope, data.parentScope))
             .addType(navEntrySubcomponentFactory())
