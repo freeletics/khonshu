@@ -44,6 +44,10 @@ public abstract interface class com/freeletics/mad/navigator/NavRoot : com/freel
 public abstract interface class com/freeletics/mad/navigator/NavRoute : com/freeletics/mad/navigator/BaseRoute {
 }
 
+public final class com/freeletics/mad/navigator/NavRouteKt {
+	public static final fun requireRoute (Landroid/app/Activity;)Lcom/freeletics/mad/navigator/ActivityRoute;
+}
+
 public final class com/freeletics/mad/navigator/NavigationResultRequest : com/freeletics/mad/navigator/ResultOwner {
 	public final fun getKey ()Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;
 }
