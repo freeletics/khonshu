@@ -1,8 +1,9 @@
 package com.freeletics.mad.navigator
 
+import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.os.Parcelable
+import com.freeletics.mad.navigator.internal.toActivityRoute
 
 public sealed interface BaseRoute : Parcelable
 
@@ -37,4 +38,11 @@ public interface ActivityRoute {
     public companion object {
         private val EMPTY_INTENT = Intent()
     }
+}
+
+/**
+ * Returns the [ActivityRoute] that was used to navigate to this [Activity].
+ */
+public fun <T : ActivityRoute> Activity.requireRoute(): T {
+    return intent.extras!!.toActivityRoute()
 }
