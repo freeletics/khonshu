@@ -41,12 +41,18 @@ internal class NavEntryFileGeneratorTest {
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
+            import dagger.Module
+            import dagger.Provides
+            import dagger.multibindings.IntoSet
+            import dagger.multibindings.Multibinds
             import io.reactivex.disposables.CompositeDisposable
+            import java.io.Closeable
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.Int
             import kotlin.OptIn
             import kotlin.Unit
+            import kotlin.collections.Set
             import kotlinx.coroutines.CoroutineScope
             import kotlinx.coroutines.MainScope
             import kotlinx.coroutines.cancel
@@ -57,19 +63,48 @@ internal class NavEntryFileGeneratorTest {
               parentScope = TestParentScope::class,
             )
             public interface NavEntryTestFlowScopeComponent {
+              public val closeables: Set<Closeable>
+    
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(
-                  @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance testRoute: TestRoute,
-                  @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope,
-                ): NavEntryTestFlowScopeComponent
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    testRoute: TestRoute): NavEntryTestFlowScopeComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
                 public fun navEntryTestFlowScopeComponentFactory(): Factory
+              }
+            }
+
+            @Module
+            @ContributesTo(TestFlowScope::class)
+            public interface NavEntryTestFlowScopeModule {
+              @Multibinds
+              @IntoSet
+              public fun bindCancellable(): Set<Closeable>
+
+              public companion object {
+                @Provides
+                @ScopeTo(TestFlowScope::class)
+                public fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+
+                @Provides
+                @IntoSet
+                public fun bindCompositeDisposable(compositeDisposable: CompositeDisposable): Closeable =
+                    Closeable {
+                  compositeDisposable.clear()
+                }
+            
+                @Provides
+                @ScopeTo(TestFlowScope::class)
+                public fun provideCoroutineScope(): CoroutineScope = MainScope()
+
+                @Provides
+                @IntoSet
+                public fun bindCoroutineScope(coroutineScope: CoroutineScope): Closeable = Closeable {
+                  coroutineScope.cancel()
+                }
               }
             }
 
@@ -79,17 +114,13 @@ internal class NavEntryFileGeneratorTest {
               savedStateHandle: SavedStateHandle,
               testRoute: TestRoute,
             ) : ViewModel() {
-              private val disposable: CompositeDisposable = CompositeDisposable()
-
-              private val scope: CoroutineScope = MainScope()
-
               public val component: NavEntryTestFlowScopeComponent =
-                  parentComponent.navEntryTestFlowScopeComponentFactory().create(savedStateHandle, testRoute,
-                  disposable, scope)
+                  parentComponent.navEntryTestFlowScopeComponentFactory().create(savedStateHandle, testRoute)
 
               public override fun onCleared(): Unit {
-                disposable.clear()
-                scope.cancel()
+                component.closeables.forEach {
+                  it.close()
+                }
               }
             }
 
@@ -140,12 +171,18 @@ internal class NavEntryFileGeneratorTest {
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
+            import dagger.Module
+            import dagger.Provides
+            import dagger.multibindings.IntoSet
+            import dagger.multibindings.Multibinds
             import io.reactivex.disposables.CompositeDisposable
+            import java.io.Closeable
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.Int
             import kotlin.OptIn
             import kotlin.Unit
+            import kotlin.collections.Set
 
             @ScopeTo(TestFlowScope::class)
             @ContributesSubcomponent(
@@ -153,18 +190,38 @@ internal class NavEntryFileGeneratorTest {
               parentScope = TestParentScope::class,
             )
             public interface NavEntryTestFlowScopeComponent {
+              public val closeables: Set<Closeable>
+
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(
-                  @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance testRoute: TestRoute,
-                  @BindsInstance compositeDisposable: CompositeDisposable,
-                ): NavEntryTestFlowScopeComponent
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    testRoute: TestRoute): NavEntryTestFlowScopeComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
                 public fun navEntryTestFlowScopeComponentFactory(): Factory
+              }
+            }
+
+            @Module
+            @ContributesTo(TestFlowScope::class)
+            public interface NavEntryTestFlowScopeModule {
+              @Multibinds
+              @IntoSet
+              public fun bindCancellable(): Set<Closeable>
+
+              public companion object {
+                @Provides
+                @ScopeTo(TestFlowScope::class)
+                public fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+
+                @Provides
+                @IntoSet
+                public fun bindCompositeDisposable(compositeDisposable: CompositeDisposable): Closeable =
+                    Closeable {
+                  compositeDisposable.clear()
+                }
               }
             }
 
@@ -174,14 +231,13 @@ internal class NavEntryFileGeneratorTest {
               savedStateHandle: SavedStateHandle,
               testRoute: TestRoute,
             ) : ViewModel() {
-              private val disposable: CompositeDisposable = CompositeDisposable()
-
               public val component: NavEntryTestFlowScopeComponent =
-                  parentComponent.navEntryTestFlowScopeComponentFactory().create(savedStateHandle, testRoute,
-                  disposable)
+                  parentComponent.navEntryTestFlowScopeComponentFactory().create(savedStateHandle, testRoute)
 
               public override fun onCleared(): Unit {
-                disposable.clear()
+                component.closeables.forEach {
+                  it.close()
+                }
               }
             }
 
@@ -232,11 +288,17 @@ internal class NavEntryFileGeneratorTest {
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
+            import dagger.Module
+            import dagger.Provides
+            import dagger.multibindings.IntoSet
+            import dagger.multibindings.Multibinds
+            import java.io.Closeable
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.Int
             import kotlin.OptIn
             import kotlin.Unit
+            import kotlin.collections.Set
             import kotlinx.coroutines.CoroutineScope
             import kotlinx.coroutines.MainScope
             import kotlinx.coroutines.cancel
@@ -247,18 +309,37 @@ internal class NavEntryFileGeneratorTest {
               parentScope = TestParentScope::class,
             )
             public interface NavEntryTestFlowScopeComponent {
+              public val closeables: Set<Closeable>
+
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(
-                  @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance testRoute: TestRoute,
-                  @BindsInstance coroutineScope: CoroutineScope,
-                ): NavEntryTestFlowScopeComponent
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    testRoute: TestRoute): NavEntryTestFlowScopeComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
                 public fun navEntryTestFlowScopeComponentFactory(): Factory
+              }
+            }
+
+            @Module
+            @ContributesTo(TestFlowScope::class)
+            public interface NavEntryTestFlowScopeModule {
+              @Multibinds
+              @IntoSet
+              public fun bindCancellable(): Set<Closeable>
+
+              public companion object {
+                @Provides
+                @ScopeTo(TestFlowScope::class)
+                public fun provideCoroutineScope(): CoroutineScope = MainScope()
+
+                @Provides
+                @IntoSet
+                public fun bindCoroutineScope(coroutineScope: CoroutineScope): Closeable = Closeable {
+                  coroutineScope.cancel()
+                }
               }
             }
 
@@ -268,14 +349,13 @@ internal class NavEntryFileGeneratorTest {
               savedStateHandle: SavedStateHandle,
               testRoute: TestRoute,
             ) : ViewModel() {
-              private val scope: CoroutineScope = MainScope()
-
               public val component: NavEntryTestFlowScopeComponent =
-                  parentComponent.navEntryTestFlowScopeComponentFactory().create(savedStateHandle, testRoute,
-                  scope)
+                  parentComponent.navEntryTestFlowScopeComponentFactory().create(savedStateHandle, testRoute)
 
               public override fun onCleared(): Unit {
-                scope.cancel()
+                component.closeables.forEach {
+                  it.close()
+                }
               }
             }
 

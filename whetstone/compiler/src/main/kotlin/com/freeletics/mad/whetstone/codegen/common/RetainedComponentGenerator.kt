@@ -27,6 +27,8 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.asTypeName
+import java.io.Closeable
 
 internal val Generator<out CommonData>.retainedComponentClassName
     get() = ClassName("Retained${data.baseName}Component")
@@ -34,6 +36,7 @@ internal val Generator<out CommonData>.retainedComponentClassName
 internal const val retainedComponentFactoryCreateName = "create"
 
 internal const val providedValueSetPropertyName = "providedValues"
+internal const val closeableSetPropertyName = "closeables"
 
 internal class RetainedComponentGenerator(
     override val data: CommonData,
@@ -65,6 +68,7 @@ internal class RetainedComponentGenerator(
         if (navigator != null) {
             properties += simplePropertySpec(navigator)
         }
+        properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName())).build()
         properties += when (data) {
             is ComposeFragmentData -> providedValueSetProperty()
             is ComposeScreenData -> providedValueSetProperty()
@@ -86,14 +90,6 @@ internal class RetainedComponentGenerator(
             .addParameter("dependencies", data.dependencies)
             .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle))
             .addParameter(bindsInstanceParameter(data.navigation.asParameter()))
-            .apply {
-                if (data.rxJavaEnabled) {
-                    addParameter(bindsInstanceParameter("compositeDisposable", compositeDisposable))
-                }
-                if (data.coroutinesEnabled) {
-                    addParameter(bindsInstanceParameter("coroutineScope", coroutineScope))
-                }
-            }
             .returns(retainedComponentClassName)
             .build()
         return TypeSpec.interfaceBuilder(retainedComponentFactoryClassName)
