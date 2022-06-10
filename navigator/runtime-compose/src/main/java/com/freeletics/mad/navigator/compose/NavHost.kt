@@ -1,12 +1,19 @@
 package com.freeletics.mad.navigator.compose
 
 import androidx.navigation.compose.NavHost as AndroidXNavHost
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetDefaults
+import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
@@ -43,6 +50,11 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 public fun NavHost(
     startRoute: BaseRoute,
     destinations: Set<NavDestination>,
+    bottomSheetShape: Shape = MaterialTheme.shapes.large,
+    bottomSheetElevation: Dp = ModalBottomSheetDefaults.Elevation,
+    bottomSheetBackgroundColor: Color = MaterialTheme.colors.surface,
+    bottomSheetContentColor: Color = contentColorFor(bottomSheetBackgroundColor),
+    bottomSheetScrimColor: Color = ModalBottomSheetDefaults.scrimColor,
 ) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
@@ -59,7 +71,14 @@ public fun NavHost(
     }
 
     CompositionLocalProvider(LocalNavController provides navController) {
-        ModalBottomSheetLayout(bottomSheetNavigator) {
+        ModalBottomSheetLayout(
+            bottomSheetNavigator = bottomSheetNavigator,
+            sheetShape = bottomSheetShape,
+            sheetElevation = bottomSheetElevation,
+            sheetBackgroundColor = bottomSheetBackgroundColor,
+            sheetContentColor = bottomSheetContentColor,
+            scrimColor = bottomSheetScrimColor,
+        ) {
             AndroidXNavHost(navController, graph)
         }
     }
