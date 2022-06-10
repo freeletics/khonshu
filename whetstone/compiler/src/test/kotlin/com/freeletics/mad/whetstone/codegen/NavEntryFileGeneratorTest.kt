@@ -49,7 +49,6 @@ internal class NavEntryFileGeneratorTest {
             import kotlinx.coroutines.MainScope
             import kotlinx.coroutines.cancel
 
-            @InternalWhetstoneApi
             @ScopeTo(TestFlowScope::class)
             @ContributesSubcomponent(
               scope = TestFlowScope::class,
@@ -143,7 +142,6 @@ internal class NavEntryFileGeneratorTest {
             import kotlin.OptIn
             import kotlin.Unit
 
-            @InternalWhetstoneApi
             @ScopeTo(TestFlowScope::class)
             @ContributesSubcomponent(
               scope = TestFlowScope::class,
@@ -235,7 +233,6 @@ internal class NavEntryFileGeneratorTest {
             import kotlinx.coroutines.MainScope
             import kotlinx.coroutines.cancel
 
-            @InternalWhetstoneApi
             @ScopeTo(TestFlowScope::class)
             @ContributesSubcomponent(
               scope = TestFlowScope::class,
