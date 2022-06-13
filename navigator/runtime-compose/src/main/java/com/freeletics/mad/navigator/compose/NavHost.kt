@@ -6,17 +6,17 @@ import androidx.compose.material.ModalBottomSheetDefaults
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
-import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
+import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.DialogNavigator
@@ -44,12 +44,16 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
  * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
  * containing all given [destinations]. [startRoute] will be used as the start destination
  * of the graph.
+ *
+ * The [destinationChangedCallback] can be used to be notified when the current destination
+ * changes. Note that this will not be invoked when navigating to a [NavDestination.Activity].
  */
 @ExperimentalMaterialNavigationApi
 @Composable
 public fun NavHost(
     startRoute: BaseRoute,
     destinations: Set<NavDestination>,
+    destinationChangedCallback: ((NavRoute) -> Unit)? = null,
     bottomSheetShape: Shape = MaterialTheme.shapes.large,
     bottomSheetElevation: Dp = ModalBottomSheetDefaults.Elevation,
     bottomSheetBackgroundColor: Color = MaterialTheme.colors.surface,
@@ -59,6 +63,20 @@ public fun NavHost(
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
     val context = LocalContext.current
+
+    if (destinationChangedCallback != null) {
+        DisposableEffect(key1 = destinationChangedCallback) {
+            val listener = OnDestinationChangedListener { _, _, arguments ->
+                val route = arguments!!.toRoute<NavRoute>()
+                destinationChangedCallback.invoke(route)
+            }
+            navController.addOnDestinationChangedListener(listener)
+
+            onDispose {
+                navController.removeOnDestinationChangedListener(listener)
+            }
+        }
+    }
 
     val graph = remember(navController, context, startRoute, destinations) {
         navController.navigatorProvider.addNavigator(CustomActivityNavigator(context))
