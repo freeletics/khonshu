@@ -22,7 +22,7 @@ public final class com/freeletics/mad/navigator/compose/NavDestination$Screen : 
 }
 
 public final class com/freeletics/mad/navigator/compose/NavHostKt {
-	public static final fun NavHost-MU3DRkM (Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;Landroidx/compose/ui/graphics/Shape;FJJJLandroidx/compose/runtime/Composer;II)V
+	public static final fun NavHost-EqzgXzs (Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/graphics/Shape;FJJJLandroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/freeletics/mad/navigator/compose/NavigationSetupKt {
