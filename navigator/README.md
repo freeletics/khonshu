@@ -227,6 +227,9 @@ val extraActivityDestination: NavDestination = ActivityDestination<SettingsRoute
 )
 ```
 
+The `SettingsActivity` could then access `SettingsActivityRoute` by using the `Activity.requireRoute()`
+extension function.
+
 In the case of external activities `Parcelable` can't be used because it would crash the other app.
 It is possible to add static extras to the destination or to dynamically add extras to the route
 by implementing `intentExtras`:

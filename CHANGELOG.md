@@ -1,6 +1,27 @@
 Change Log
 ==========
 
+Version 0.4.0 *(2022-05-13)*
+----------------------------
+
+### Navigator
+
+- New `ActivityRoute` interface that has to be used for `Activity` destinations. This
+  allows creating a `fillInIntent` with parameters to the routes which will be merged
+  with the destination `Intent`. Before this it was not possible to dynamically add
+  values to the `Intent`. See the [README](navigator/README.md#activity-destinations)
+- New `Activity.requireRoute` extension function that allows obtaining the `ActivityRoute`
+  that was used to navigate to this `Activity`.
+- `NavHost` now has a `destinationChangedCallback` parameter to receive destination
+  changes for debugging purposes
+- `NavHost` now has parameters to change the styling of its bottom sheet
+
+### Whetstone
+
+- Added README with documentation
+- Fix code generation in Kotlin 1.6.20
+
+
 Version 0.3.1 *(2022-04-20)*
 ----------------------------
 

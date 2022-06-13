@@ -43,10 +43,23 @@ jobs:
           cp -R navigator/runtime-compose/build/dokka/gfm/. docs/Javadoc/navigator-compose/
           mkdir -p docs/Javadoc/navigator-fragment
           cp -R navigator/runtime-fragment/build/dokka/gfm/. docs/Javadoc/navigator-fragment/
-          mkdir -p docs/Javadoc/text-resource
-          cp -R text-resource/build/dokka/gfm/. docs/Javadoc/text-resource/
           mkdir -p docs/Javadoc/state-machine
           cp -R state-machine/build/dokka/gfm/. docs/Javadoc/state-machine/
+          mkdir -p docs/Javadoc/text-resource
+          cp -R text-resource/build/dokka/gfm/. docs/Javadoc/text-resource/
+          cp whetstone/README.md docs/whetstone.md
+          mkdir -p docs/Javadoc/whetstone
+          cp -R whetstone/runtime/build/dokka/gfm/. docs/Javadoc/whetstone/
+          mkdir -p docs/Javadoc/whetstone-compose
+          cp -R whetstone/runtime-compose/build/dokka/gfm/. docs/Javadoc/whetstone-compose/
+          mkdir -p docs/Javadoc/whetstone-fragment
+          cp -R whetstone/runtime-fragment/build/dokka/gfm/. docs/Javadoc/whetstone-fragment/
+          mkdir -p docs/Javadoc/whetstone-navigation
+          cp -R whetstone/navigation/build/dokka/gfm/. docs/Javadoc/whetstone-navigation/
+          mkdir -p docs/Javadoc/whetstone-navigation-compose
+          cp -R whetstone/navigation-compose/build/dokka/gfm/. docs/Javadoc/whetstone-navigation-compose/
+          mkdir -p docs/Javadoc/whetstone-navigation-fragment
+          cp -R whetstone/navigation-fragment/build/dokka/gfm/. docs/Javadoc/whetstone-navigation-fragment/
 
       - name: Deploy MkDocs
         run: |
