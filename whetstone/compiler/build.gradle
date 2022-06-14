@@ -29,5 +29,5 @@ dependencies {
     kapt "com.google.auto.service:auto-service:1.0.1"
 
     testImplementation "junit:junit:4.13.2"
-    testImplementation "io.kotest:kotest-assertions-shared-jvm:5.3.0"
+    testImplementation "io.kotest:kotest-assertions-shared-jvm:5.3.1"
 }
