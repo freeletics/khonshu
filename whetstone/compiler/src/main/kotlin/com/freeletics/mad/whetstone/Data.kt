@@ -106,7 +106,6 @@ internal data class ComposeFragmentData(
 
     override val navigation: Navigation.Fragment?,
 
-    val enableInsetHandling: Boolean,
     override val coroutinesEnabled: Boolean,
     override val rxJavaEnabled: Boolean,
 ) : FragmentCommonData

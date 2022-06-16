@@ -1,7 +1,6 @@
 public abstract interface annotation class com/freeletics/mad/whetstone/fragment/ComposeFragment : java/lang/annotation/Annotation {
 	public abstract fun coroutinesEnabled ()Z
 	public abstract fun dependencies ()Ljava/lang/Class;
-	public abstract fun enableInsetHandling ()Z
 	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
 	public abstract fun parentScope ()Ljava/lang/Class;
 	public abstract fun rxJavaEnabled ()Z

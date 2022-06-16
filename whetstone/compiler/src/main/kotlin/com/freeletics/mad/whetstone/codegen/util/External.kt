@@ -22,7 +22,6 @@ internal val composeRootNavDestinationFqName = FqName(composeRootNavDestination.
 internal val scopeTo = ClassName("com.freeletics.mad.whetstone", "ScopeTo")
 internal val navEntryComponent = ClassName("com.freeletics.mad.whetstone", "NavEntryComponent")
 internal val navEntryComponentFqName = FqName(navEntryComponent.canonicalName)
-internal val navEntryIdScope = ClassName("com.freeletics.mad.whetstone", "NavEntryId")
 
 // Whetstone Internal API
 internal val asComposeState = MemberName("com.freeletics.mad.whetstone.internal", "asComposeState")
@@ -95,14 +94,9 @@ internal val composeView = ClassName("androidx.compose.ui.platform", "ComposeVie
 internal val viewCompositionStrategy = ClassName("androidx.compose.ui.platform", "ViewCompositionStrategy")
 internal val disposeOnLifecycleDestroyed = viewCompositionStrategy.nestedClass("DisposeOnLifecycleDestroyed")
 
-// Accompanist
-internal val localWindowInsets = ClassName("com.google.accompanist.insets", "LocalWindowInsets")
-internal val viewWindowInsetsObserver = ClassName("com.google.accompanist.insets", "ViewWindowInsetObserver")
-
 // Android
 internal val layoutInflater = ClassName("android.view", "LayoutInflater")
 internal val viewGroup = ClassName("android.view", "ViewGroup")
 internal val view = ClassName("android.view", "View")
 internal val bundle = ClassName("android.os", "Bundle")
 internal val context = ClassName("android.content", "Context")
-internal val layoutParams = viewGroup.nestedClass("LayoutParams")
