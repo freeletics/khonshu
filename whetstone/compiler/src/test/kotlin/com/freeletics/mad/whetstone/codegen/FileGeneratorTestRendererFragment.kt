@@ -3,7 +3,7 @@ package com.freeletics.mad.whetstone.codegen
 import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.RendererFragmentData
 import com.squareup.kotlinpoet.ClassName
-import io.kotest.matchers.shouldBe
+import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 internal class FileGeneratorTestRendererFragment {
@@ -31,7 +31,9 @@ internal class FileGeneratorTestRendererFragment {
 
     @Test
     fun `generates code for RendererFragmentData`() {
-        FileGenerator().generate(full).toString() shouldBe """
+        val actual = FileGenerator().generate(full).toString()
+
+        val expected = """
             package com.test
 
             import android.os.Bundle
@@ -136,13 +138,16 @@ internal class FileGeneratorTestRendererFragment {
             public interface NavEntryTestDestinationComponent : DestinationComponent
             
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
     fun `generates code for RendererFragmentData with destination`() {
         val withDestination = full.copy(navigation = navigation.copy(destinationType = "SCREEN"))
+        val actual = FileGenerator().generate(withDestination).toString()
 
-        FileGenerator().generate(withDestination).toString() shouldBe """
+        val expected = """
             package com.test
 
             import android.os.Bundle
@@ -260,13 +265,16 @@ internal class FileGeneratorTestRendererFragment {
             }
             
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
     fun `generates code for RendererFragmentData, no navigation`() {
         val noNavigation = full.copy(navigation = null)
+        val actual = FileGenerator().generate(noNavigation).toString()
 
-        FileGenerator().generate(noNavigation).toString() shouldBe """
+        val expected = """
             package com.test
 
             import android.os.Bundle
@@ -356,6 +364,8 @@ internal class FileGeneratorTestRendererFragment {
             }
             
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -363,8 +373,9 @@ internal class FileGeneratorTestRendererFragment {
         val dialogFragment = full.copy(
             fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment")
         )
+        val actual = FileGenerator().generate(dialogFragment).toString()
 
-        FileGenerator().generate(dialogFragment).toString() shouldBe """
+        val expected = """
             package com.test
 
             import android.os.Bundle
@@ -469,5 +480,7 @@ internal class FileGeneratorTestRendererFragment {
             public interface NavEntryTestDestinationComponent : DestinationComponent
             
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 }

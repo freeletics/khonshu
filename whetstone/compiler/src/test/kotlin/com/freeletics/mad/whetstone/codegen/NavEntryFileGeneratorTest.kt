@@ -2,7 +2,7 @@ package com.freeletics.mad.whetstone.codegen
 
 import com.freeletics.mad.whetstone.NavEntryData
 import com.squareup.kotlinpoet.ClassName
-import io.kotest.matchers.shouldBe
+import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 internal class NavEntryFileGeneratorTest {
@@ -19,7 +19,9 @@ internal class NavEntryFileGeneratorTest {
 
     @Test
     fun `generates code for full NavEntryData`() {
-        FileGenerator().generate(full).toString() shouldBe """
+        val actual = FileGenerator().generate(full).toString()
+
+        val expected = """
             package com.test
 
             import android.content.Context
@@ -109,13 +111,16 @@ internal class NavEntryFileGeneratorTest {
             }
 
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
     fun `generates code for NavEntryData without coroutines`() {
         val withoutCoroutines = full.copy(coroutinesEnabled = false)
+        val actual = FileGenerator().generate(withoutCoroutines).toString()
 
-        FileGenerator().generate(withoutCoroutines).toString() shouldBe """
+        val expected = """
             package com.test
 
             import android.content.Context
@@ -198,13 +203,16 @@ internal class NavEntryFileGeneratorTest {
             }
 
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
     fun `generates code for NavEntryData without rxjava`() {
         val withoutRxJava = full.copy(rxJavaEnabled = false)
+        val actual = FileGenerator().generate(withoutRxJava).toString()
 
-        FileGenerator().generate(withoutRxJava).toString() shouldBe """
+        val expected = """
             package com.test
 
             import android.content.Context
@@ -289,5 +297,7 @@ internal class NavEntryFileGeneratorTest {
             }
 
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 }
