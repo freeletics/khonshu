@@ -21,10 +21,7 @@ public class com/freeletics/mad/navigator/NavEventNavigator {
 	public final fun backPresses ()Lkotlinx/coroutines/flow/Flow;
 	public final fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 	public final fun deliverNavigationResult (Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
-	public final fun getNavEvents ()Lkotlinx/coroutines/flow/Flow;
-	public final fun getOnBackPressedCallback ()Landroidx/activity/OnBackPressedCallback;
 	public final fun navigateBack ()V
-	public static synthetic fun navigateBackTo$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
 	public final fun navigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;)V
 	public final fun navigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;Ljava/lang/Object;)V
 	public final fun navigateTo (Lcom/freeletics/mad/navigator/ActivityRoute;)V
