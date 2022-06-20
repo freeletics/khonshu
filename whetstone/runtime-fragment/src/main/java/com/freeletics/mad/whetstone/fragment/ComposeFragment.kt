@@ -64,7 +64,6 @@ public annotation class ComposeFragment(
 
     val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
 
-    val enableInsetHandling: Boolean = false,
     val coroutinesEnabled: Boolean = false,
     val rxJavaEnabled: Boolean = false,
 )

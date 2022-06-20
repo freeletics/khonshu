@@ -103,9 +103,8 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             dependencies = compose.requireClassArgument("dependencies", 2),
             stateMachine = compose.requireClassArgument("stateMachine", 3),
             fragmentBaseClass = compose.optionalClassArgument("fragmentBaseClass", 4) ?: fragment,
-            enableInsetHandling = compose.optionalBooleanArgument("enableInsetHandling", 5) ?: false,
-            coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
-            rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
+            coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 5) ?: false,
+            rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 6) ?: false,
             navigation = fragmentNavigation(declaration, declaration.packageName()),
         )
 
