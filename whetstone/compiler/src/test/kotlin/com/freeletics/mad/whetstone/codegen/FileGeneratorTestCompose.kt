@@ -3,7 +3,7 @@ package com.freeletics.mad.whetstone.codegen
 import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.Navigation
 import com.squareup.kotlinpoet.ClassName
-import io.kotest.matchers.shouldBe
+import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 internal class FileGeneratorTestCompose {
@@ -29,7 +29,9 @@ internal class FileGeneratorTestCompose {
 
     @Test
     fun `generates code for ComposeScreenData`() {
-        FileGenerator().generate(full).toString() shouldBe """
+        val actual = FileGenerator().generate(full).toString()
+
+        val expected = """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -141,13 +143,16 @@ internal class FileGeneratorTestCompose {
             public interface NavEntryTestDestinationComponent : DestinationComponent
             
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
     fun `generates code for ComposeScreenData with destination`() {
         val withDestination = full.copy(navigation = navigation.copy(destinationType = "SCREEN"))
+        val actual = FileGenerator().generate(withDestination).toString()
 
-        FileGenerator().generate(withDestination).toString() shouldBe """
+        val expected = """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -274,13 +279,16 @@ internal class FileGeneratorTestCompose {
             }
             
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
     fun `generates code for ComposeScreenData, no navigation`() {
         val noNavigation = full.copy(navigation = null)
+        val actual = FileGenerator().generate(noNavigation).toString()
 
-        FileGenerator().generate(noNavigation).toString() shouldBe """
+        val expected = """
             package com.test
 
             import android.os.Bundle
@@ -379,13 +387,16 @@ internal class FileGeneratorTestCompose {
             }
             
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
     fun `generates code for ComposeScreenData, without coroutines`() {
         val withoutCoroutines = full.copy(coroutinesEnabled = false)
+        val actual = FileGenerator().generate(withoutCoroutines).toString()
 
-        FileGenerator().generate(withoutCoroutines).toString() shouldBe """
+        val expected = """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -490,13 +501,16 @@ internal class FileGeneratorTestCompose {
             public interface NavEntryTestDestinationComponent : DestinationComponent
             
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
     fun `generates code for ComposeScreenData, without rxjava`() {
         val withoutRxJava = full.copy(rxJavaEnabled = false)
+        val actual = FileGenerator().generate(withoutRxJava).toString()
 
-        FileGenerator().generate(withoutRxJava).toString() shouldBe """
+        val expected = """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -602,6 +616,8 @@ internal class FileGeneratorTestCompose {
             public interface NavEntryTestDestinationComponent : DestinationComponent
             
         """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
     }
 
 }
