@@ -65,7 +65,12 @@ internal class FileGeneratorTestComposeFragment {
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
+            import dagger.Module
+            import dagger.Provides
+            import dagger.multibindings.IntoSet
+            import dagger.multibindings.Multibinds
             import io.reactivex.disposables.CompositeDisposable
+            import java.io.Closeable
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
@@ -86,6 +91,8 @@ internal class FileGeneratorTestComposeFragment {
 
               public val navEventNavigator: NavEventNavigator
 
+              public val closeables: Set<Closeable>
+
               public val providedValues: Set<ProvidedValue<*>>
 
               @Component.Factory
@@ -94,9 +101,37 @@ internal class FileGeneratorTestComposeFragment {
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
-                  @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
+              }
+            }
+
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface RetainedTestModule {
+              @Multibinds
+              public fun bindCancellable(): Set<Closeable>
+
+              public companion object {
+                @Provides
+                @ScopeTo(TestScreen::class)
+                public fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+
+                @Provides
+                @IntoSet
+                public fun bindCompositeDisposable(compositeDisposable: CompositeDisposable): Closeable =
+                    Closeable {
+                  compositeDisposable.clear()
+                }
+            
+                @Provides
+                @ScopeTo(TestScreen::class)
+                public fun provideCoroutineScope(): CoroutineScope = MainScope()
+
+                @Provides
+                @IntoSet
+                public fun bindCoroutineScope(coroutineScope: CoroutineScope): Closeable = Closeable {
+                  coroutineScope.cancel()
+                }
               }
             }
 
@@ -106,17 +141,13 @@ internal class FileGeneratorTestComposeFragment {
               savedStateHandle: SavedStateHandle,
               testRoute: TestRoute,
             ) : ViewModel() {
-              private val disposable: CompositeDisposable = CompositeDisposable()
-
-              private val scope: CoroutineScope = MainScope()
-
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute,
-                  disposable, scope)
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute)
 
               public override fun onCleared(): Unit {
-                disposable.clear()
-                scope.cancel()
+                component.closeables.forEach {
+                  it.close()
+                }
               }
             }
             
@@ -215,7 +246,9 @@ internal class FileGeneratorTestComposeFragment {
             import dagger.Module
             import dagger.Provides
             import dagger.multibindings.IntoSet
+            import dagger.multibindings.Multibinds
             import io.reactivex.disposables.CompositeDisposable
+            import java.io.Closeable
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
@@ -236,6 +269,8 @@ internal class FileGeneratorTestComposeFragment {
 
               public val navEventNavigator: NavEventNavigator
 
+              public val closeables: Set<Closeable>
+
               public val providedValues: Set<ProvidedValue<*>>
 
               @Component.Factory
@@ -244,9 +279,37 @@ internal class FileGeneratorTestComposeFragment {
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
-                  @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
+              }
+            }
+
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface RetainedTestModule {
+              @Multibinds
+              public fun bindCancellable(): Set<Closeable>
+
+              public companion object {
+                @Provides
+                @ScopeTo(TestScreen::class)
+                public fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+
+                @Provides
+                @IntoSet
+                public fun bindCompositeDisposable(compositeDisposable: CompositeDisposable): Closeable =
+                    Closeable {
+                  compositeDisposable.clear()
+                }
+            
+                @Provides
+                @ScopeTo(TestScreen::class)
+                public fun provideCoroutineScope(): CoroutineScope = MainScope()
+
+                @Provides
+                @IntoSet
+                public fun bindCoroutineScope(coroutineScope: CoroutineScope): Closeable = Closeable {
+                  coroutineScope.cancel()
+                }
               }
             }
 
@@ -256,17 +319,13 @@ internal class FileGeneratorTestComposeFragment {
               savedStateHandle: SavedStateHandle,
               testRoute: TestRoute,
             ) : ViewModel() {
-              private val disposable: CompositeDisposable = CompositeDisposable()
-
-              private val scope: CoroutineScope = MainScope()
-
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute,
-                  disposable, scope)
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute)
 
               public override fun onCleared(): Unit {
-                disposable.clear()
-                scope.cancel()
+                component.closeables.forEach {
+                  it.close()
+                }
               }
             }
             
@@ -370,7 +429,12 @@ internal class FileGeneratorTestComposeFragment {
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
+            import dagger.Module
+            import dagger.Provides
+            import dagger.multibindings.IntoSet
+            import dagger.multibindings.Multibinds
             import io.reactivex.disposables.CompositeDisposable
+            import java.io.Closeable
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
@@ -391,6 +455,8 @@ internal class FileGeneratorTestComposeFragment {
 
               public val navEventNavigator: NavEventNavigator
 
+              public val closeables: Set<Closeable>
+
               public val providedValues: Set<ProvidedValue<*>>
 
               @Component.Factory
@@ -399,9 +465,37 @@ internal class FileGeneratorTestComposeFragment {
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance testRoute: TestRoute,
-                  @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
+              }
+            }
+
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface RetainedTestModule {
+              @Multibinds
+              public fun bindCancellable(): Set<Closeable>
+
+              public companion object {
+                @Provides
+                @ScopeTo(TestScreen::class)
+                public fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+
+                @Provides
+                @IntoSet
+                public fun bindCompositeDisposable(compositeDisposable: CompositeDisposable): Closeable =
+                    Closeable {
+                  compositeDisposable.clear()
+                }
+            
+                @Provides
+                @ScopeTo(TestScreen::class)
+                public fun provideCoroutineScope(): CoroutineScope = MainScope()
+
+                @Provides
+                @IntoSet
+                public fun bindCoroutineScope(coroutineScope: CoroutineScope): Closeable = Closeable {
+                  coroutineScope.cancel()
+                }
               }
             }
 
@@ -411,17 +505,13 @@ internal class FileGeneratorTestComposeFragment {
               savedStateHandle: SavedStateHandle,
               testRoute: TestRoute,
             ) : ViewModel() {
-              private val disposable: CompositeDisposable = CompositeDisposable()
-
-              private val scope: CoroutineScope = MainScope()
-
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute,
-                  disposable, scope)
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute)
 
               public override fun onCleared(): Unit {
-                disposable.clear()
-                scope.cancel()
+                component.closeables.forEach {
+                  it.close()
+                }
               }
             }
             
@@ -505,11 +595,17 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Component
+            import dagger.Module
+            import dagger.Provides
+            import dagger.multibindings.IntoSet
+            import dagger.multibindings.Multibinds
             import io.reactivex.disposables.CompositeDisposable
+            import java.io.Closeable
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
@@ -528,6 +624,8 @@ internal class FileGeneratorTestComposeFragment {
             internal interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
+              public val closeables: Set<Closeable>
+
               public val providedValues: Set<ProvidedValue<*>>
 
               @Component.Factory
@@ -536,9 +634,37 @@ internal class FileGeneratorTestComposeFragment {
                   dependencies: TestDependencies,
                   @BindsInstance savedStateHandle: SavedStateHandle,
                   @BindsInstance arguments: Bundle,
-                  @BindsInstance compositeDisposable: CompositeDisposable,
-                  @BindsInstance coroutineScope: CoroutineScope,
                 ): RetainedTestComponent
+              }
+            }
+
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface RetainedTestModule {
+              @Multibinds
+              public fun bindCancellable(): Set<Closeable>
+
+              public companion object {
+                @Provides
+                @ScopeTo(TestScreen::class)
+                public fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+
+                @Provides
+                @IntoSet
+                public fun bindCompositeDisposable(compositeDisposable: CompositeDisposable): Closeable =
+                    Closeable {
+                  compositeDisposable.clear()
+                }
+            
+                @Provides
+                @ScopeTo(TestScreen::class)
+                public fun provideCoroutineScope(): CoroutineScope = MainScope()
+
+                @Provides
+                @IntoSet
+                public fun bindCoroutineScope(coroutineScope: CoroutineScope): Closeable = Closeable {
+                  coroutineScope.cancel()
+                }
               }
             }
 
@@ -548,17 +674,13 @@ internal class FileGeneratorTestComposeFragment {
               savedStateHandle: SavedStateHandle,
               arguments: Bundle,
             ) : ViewModel() {
-              private val disposable: CompositeDisposable = CompositeDisposable()
-
-              private val scope: CoroutineScope = MainScope()
-
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, arguments,
-                  disposable, scope)
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, arguments)
 
               public override fun onCleared(): Unit {
-                disposable.clear()
-                scope.cancel()
+                component.closeables.forEach {
+                  it.close()
+                }
               }
             }
             

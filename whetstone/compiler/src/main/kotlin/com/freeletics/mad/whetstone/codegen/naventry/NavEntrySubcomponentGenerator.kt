@@ -2,11 +2,9 @@ package com.freeletics.mad.whetstone.codegen.naventry
 
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.codegen.Generator
+import com.freeletics.mad.whetstone.codegen.common.closeableSetPropertyName
 import com.freeletics.mad.whetstone.codegen.util.bindsInstanceParameter
-import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
-import com.freeletics.mad.whetstone.codegen.util.coroutineScope
-import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
 import com.freeletics.mad.whetstone.codegen.util.scopeToAnnotation
@@ -16,7 +14,12 @@ import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.decapitalize
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.asTypeName
+import java.io.Closeable
 
 internal val Generator<NavEntryData>.navEntrySubcomponentClassName
     get() = ClassName("NavEntry${data.baseName}Component")
@@ -41,9 +44,16 @@ internal class NavEntrySubcomponentGenerator(
         return TypeSpec.interfaceBuilder(navEntrySubcomponentClassName)
             .addAnnotation(scopeToAnnotation(data.scope))
             .addAnnotation(subcomponentAnnotation(data.scope, data.parentScope))
+            .addProperties(componentProperties())
             .addType(navEntrySubcomponentFactory())
             .addType(navEntrySubcomponentFactoryParentComponent())
             .build()
+    }
+
+    private fun componentProperties(): List<PropertySpec> {
+        val properties = mutableListOf<PropertySpec>()
+        properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName())).build()
+        return properties
     }
 
     private fun navEntrySubcomponentFactory(): TypeSpec {
@@ -51,14 +61,6 @@ internal class NavEntrySubcomponentGenerator(
             .addModifiers(ABSTRACT)
             .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle))
             .addParameter(bindsInstanceParameter(data.route.propertyName, data.route))
-            .apply {
-                if (data.rxJavaEnabled) {
-                    addParameter(bindsInstanceParameter("compositeDisposable", compositeDisposable))
-                }
-                if (data.coroutinesEnabled) {
-                    addParameter(bindsInstanceParameter("coroutineScope", coroutineScope))
-                }
-            }
             .returns(navEntrySubcomponentClassName)
             .build()
         return TypeSpec.interfaceBuilder(navEntrySubcomponentFactoryClassName)
