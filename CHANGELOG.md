@@ -1,7 +1,46 @@
 Change Log
 ==========
 
-Version 0.4.0 *(2022-05-13)*
+Version 0.5.0 *(2022-06-21)*
+----------------------------
+
+### Navigator
+
+- fix an issue where an `ActivityRoute` that is also `Parcelable` would not be added to the `Intent` extras
+
+### Whetstone
+
+- It is now possible to provide `Closeable` objects into a set and have the generated `ViewModel`
+  close all of these when it is cleared. This is meant as a replacement for the `rxJavaEnabled` 
+  and `coroutinesEnabled` flags. You can replace the flags with the following snippet:
+
+```kotlin
+@ContributesTo(MyScreenScope::class)
+object {
+  @Provides
+  @ScopeTo(MyScreenScope::class)
+  public fun provideCompositeDisposable() = CompositeDisposable()
+
+  @Provides
+  @IntoSet
+  public fun bindCompositeDisposable(disposable: CompositeDisposable) = Closeable { disposable.clear() }
+
+  @Provides
+  @ScopeTo(TestScreen::class)
+  public fun provideCoroutineScope(): CoroutineScope = MainScope()
+
+  @Provides
+  @IntoSet
+  public fun bindCoroutineScope(scpe: CoroutineScope) = Closeable { scope.cancel() }
+}
+```
+
+- removed `enableInsetHandling` parameter from `@ComposeFragment`, Compose 1.2.0 provides new inset 
+  APIs that work out of the box without any special integration and the Accompanist Inset library was
+  deprecated
+
+
+Version 0.4.0 *(2022-06-13)*
 ----------------------------
 
 ### Navigator
