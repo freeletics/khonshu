@@ -105,5 +105,5 @@ public fun ActivityRoute.getArguments(): Bundle = Bundle().also {
     }
 }
 
-private const val EXTRA_ROUTE = "com.freeletics.mad.navigation.ROUTE"
+internal const val EXTRA_ROUTE = "com.freeletics.mad.navigation.ROUTE"
 internal const val EXTRA_FILL_IN_INTENT = "com.freeletics.mad.navigation.FILL_IN_INTENT"
