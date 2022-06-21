@@ -21,6 +21,7 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
@@ -39,8 +40,9 @@ public open class CustomActivityNavigator(
     private val hostActivity: Activity? = generateSequence(context) {
         if (it is ContextWrapper) {
             it.baseContext
-        } else
+        } else {
             null
+        }
     }.firstOrNull {
         it is Activity
     } as Activity?
@@ -89,6 +91,9 @@ public open class CustomActivityNavigator(
             if (fillInIntent != null) {
                 intent.fillIn(fillInIntent, 0)
             }
+
+            val route = args.getParcelable<Parcelable>(EXTRA_ROUTE)
+            intent.putExtra(EXTRA_ROUTE, route)
         }
         if (hostActivity == null) {
             // If we're not launching from an Activity context we have to launch in a new task.
