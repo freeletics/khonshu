@@ -761,4 +761,127 @@ internal class FileGeneratorTestCompose {
         assertThat(actual).isEqualTo(expected)
     }
 
+    @Test
+    fun `generates code for ComposeScreenData, without rxjava and coroutines`() {
+        val withoutRxJava = full.copy(rxJavaEnabled = false, coroutinesEnabled = false)
+        val actual = FileGenerator().generate(withoutRxJava).toString()
+
+        val expected = """
+            package com.test
+
+            import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
+            import androidx.compose.runtime.ProvidedValue
+            import androidx.compose.runtime.rememberCoroutineScope
+            import androidx.lifecycle.SavedStateHandle
+            import androidx.lifecycle.ViewModel
+            import com.freeletics.mad.navigator.NavEventNavigator
+            import com.freeletics.mad.navigator.compose.NavigationSetup
+            import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
+            import com.freeletics.mad.whetstone.`internal`.DestinationComponent
+            import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModel
+            import com.squareup.anvil.annotations.ContributesTo
+            import com.squareup.anvil.annotations.MergeComponent
+            import com.test.destination.TestDestinationScope
+            import com.test.parent.TestParentScope
+            import dagger.BindsInstance
+            import dagger.Component
+            import dagger.Module
+            import dagger.multibindings.Multibinds
+            import java.io.Closeable
+            import kotlin.OptIn
+            import kotlin.Unit
+            import kotlin.collections.Set
+            import kotlinx.coroutines.launch
+
+            @InternalWhetstoneApi
+            @ScopeTo(TestScreen::class)
+            @MergeComponent(
+              scope = TestScreen::class,
+              dependencies = [TestDependencies::class],
+              modules = [ComposeProviderValueModule::class],
+            )
+            internal interface RetainedTestComponent {
+              public val testStateMachine: TestStateMachine
+
+              public val navEventNavigator: NavEventNavigator
+    
+              public val closeables: Set<Closeable>
+
+              public val providedValues: Set<ProvidedValue<*>>
+
+              @Component.Factory
+              public interface Factory {
+                public fun create(
+                  dependencies: TestDependencies,
+                  @BindsInstance savedStateHandle: SavedStateHandle,
+                  @BindsInstance testRoute: TestRoute,
+                ): RetainedTestComponent
+              }
+            }
+
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface RetainedTestModule {
+              @Multibinds
+              public fun bindCancellable(): Set<Closeable>
+            }
+
+            @InternalWhetstoneApi
+            internal class TestViewModel(
+              dependencies: TestDependencies,
+              savedStateHandle: SavedStateHandle,
+              testRoute: TestRoute,
+            ) : ViewModel() {
+              public val component: RetainedTestComponent =
+                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute)
+
+              public override fun onCleared(): Unit {
+                component.closeables.forEach {
+                  it.close()
+                }
+              }
+            }
+
+            @Composable
+            @OptIn(InternalWhetstoneApi::class)
+            public fun TestScreen(testRoute: TestRoute): Unit {
+              val viewModel = rememberViewModel(TestParentScope::class, TestDestinationScope::class, testRoute,
+                  ::TestViewModel)
+              val component = viewModel.component
+
+              NavigationSetup(component.navEventNavigator)
+
+              TestScreen(component)
+            }
+            
+            @Composable
+            @OptIn(InternalWhetstoneApi::class)
+            private fun TestScreen(component: RetainedTestComponent): Unit {
+              val providedValues = component.providedValues
+              CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val stateMachine = component.testStateMachine
+                val state = stateMachine.asComposeState()
+                val currentState = state.value
+                if (currentState != null) {
+                  val scope = rememberCoroutineScope()
+                  Test(currentState) { action ->
+                    scope.launch { stateMachine.dispatch(action) }
+                  }
+                }
+              }
+            }
+            
+            @ContributesTo(TestDestinationScope::class)
+            @OptIn(InternalWhetstoneApi::class)
+            public interface NavEntryTestDestinationComponent : DestinationComponent
+            
+        """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
 }
