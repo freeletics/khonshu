@@ -1,21 +1,13 @@
 package com.freeletics.mad.whetstone.codegen.naventry
 
-import com.freeletics.mad.whetstone.ComposeFragmentData
-import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.NavEntryData
-import com.freeletics.mad.whetstone.RendererFragmentData
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.common.closeableSetPropertyName
 import com.freeletics.mad.whetstone.codegen.util.bindsInstanceParameter
-import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
-import com.freeletics.mad.whetstone.codegen.util.coroutineScope
-import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
-import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
 import com.freeletics.mad.whetstone.codegen.util.scopeToAnnotation
-import com.freeletics.mad.whetstone.codegen.util.simplePropertySpec
 import com.freeletics.mad.whetstone.codegen.util.subcomponentAnnotation
 import com.freeletics.mad.whetstone.codegen.util.subcomponentFactoryAnnotation
 import com.squareup.anvil.annotations.ExperimentalAnvilApi

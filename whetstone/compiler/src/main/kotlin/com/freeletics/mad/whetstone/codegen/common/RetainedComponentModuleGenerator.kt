@@ -2,7 +2,6 @@ package com.freeletics.mad.whetstone.codegen.common
 
 import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.codegen.Generator
-import com.freeletics.mad.whetstone.codegen.util.binds
 import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.coroutineScope
@@ -87,7 +86,6 @@ internal class RetainedComponentModuleGenerator(
         return FunSpec.builder("bindCancellable")
             .addModifiers(ABSTRACT)
             .addAnnotation(multibinds)
-            .addAnnotation(intoSet)
             .returns(SET.parameterizedBy(Closeable::class.asClassName()))
             .build()
     }

@@ -75,7 +75,6 @@ internal val multibinds = ClassName("dagger.multibindings", "Multibinds")
 internal val intoSet = ClassName("dagger.multibindings", "IntoSet")
 internal val bindsInstance = ClassName("dagger", "BindsInstance")
 internal val module = ClassName("dagger", "Module")
-internal val moduleFqName = FqName(module.canonicalName)
 
 // AndroidX
 internal val fragment = ClassName("androidx.fragment.app", "Fragment")

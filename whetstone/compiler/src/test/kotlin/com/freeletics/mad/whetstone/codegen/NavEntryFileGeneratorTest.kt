@@ -81,7 +81,6 @@ internal class NavEntryFileGeneratorTest {
             @ContributesTo(TestFlowScope::class)
             public interface NavEntryTestFlowScopeModule {
               @Multibinds
-              @IntoSet
               public fun bindCancellable(): Set<Closeable>
 
               public companion object {
@@ -208,7 +207,6 @@ internal class NavEntryFileGeneratorTest {
             @ContributesTo(TestFlowScope::class)
             public interface NavEntryTestFlowScopeModule {
               @Multibinds
-              @IntoSet
               public fun bindCancellable(): Set<Closeable>
 
               public companion object {
@@ -327,7 +325,6 @@ internal class NavEntryFileGeneratorTest {
             @ContributesTo(TestFlowScope::class)
             public interface NavEntryTestFlowScopeModule {
               @Multibinds
-              @IntoSet
               public fun bindCancellable(): Set<Closeable>
 
               public companion object {

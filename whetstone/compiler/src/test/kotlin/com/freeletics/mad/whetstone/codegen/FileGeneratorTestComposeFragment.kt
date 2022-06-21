@@ -109,7 +109,6 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesTo(TestScreen::class)
             public interface RetainedTestModule {
               @Multibinds
-              @IntoSet
               public fun bindCancellable(): Set<Closeable>
 
               public companion object {
@@ -288,7 +287,6 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesTo(TestScreen::class)
             public interface RetainedTestModule {
               @Multibinds
-              @IntoSet
               public fun bindCancellable(): Set<Closeable>
 
               public companion object {
@@ -475,7 +473,6 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesTo(TestScreen::class)
             public interface RetainedTestModule {
               @Multibinds
-              @IntoSet
               public fun bindCancellable(): Set<Closeable>
 
               public companion object {
@@ -645,7 +642,6 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesTo(TestScreen::class)
             public interface RetainedTestModule {
               @Multibinds
-              @IntoSet
               public fun bindCancellable(): Set<Closeable>
 
               public companion object {

@@ -10,8 +10,6 @@ import com.freeletics.mad.whetstone.codegen.util.bindsInstanceParameter
 import com.freeletics.mad.whetstone.codegen.util.componentAnnotation
 import com.freeletics.mad.whetstone.codegen.util.componentFactory
 import com.freeletics.mad.whetstone.codegen.util.composeProviderValueModule
-import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
-import com.freeletics.mad.whetstone.codegen.util.coroutineScope
 import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
 import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.providedValue

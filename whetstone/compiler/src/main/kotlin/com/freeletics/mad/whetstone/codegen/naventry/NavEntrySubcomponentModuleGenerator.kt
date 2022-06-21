@@ -1,11 +1,7 @@
 package com.freeletics.mad.whetstone.codegen.naventry
 
-import com.freeletics.mad.whetstone.CommonData
 import com.freeletics.mad.whetstone.NavEntryData
-import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.codegen.Generator
-import com.freeletics.mad.whetstone.codegen.fragment.fragmentName
-import com.freeletics.mad.whetstone.codegen.util.binds
 import com.freeletics.mad.whetstone.codegen.util.compositeDisposable
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.coroutineScope
@@ -17,9 +13,7 @@ import com.freeletics.mad.whetstone.codegen.util.multibinds
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.provides
 import com.freeletics.mad.whetstone.codegen.util.scopeToAnnotation
-import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.SET
@@ -92,7 +86,6 @@ internal class NavEntrySubcomponentModuleGenerator(
         return FunSpec.builder("bindCancellable")
             .addModifiers(ABSTRACT)
             .addAnnotation(multibinds)
-            .addAnnotation(intoSet)
             .returns(SET.parameterizedBy(Closeable::class.asClassName()))
             .build()
     }
