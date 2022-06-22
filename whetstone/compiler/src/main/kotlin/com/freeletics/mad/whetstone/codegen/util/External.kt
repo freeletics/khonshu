@@ -20,6 +20,7 @@ internal val composeNavDestinationFqName = FqName(composeNavDestination.canonica
 internal val composeRootNavDestination = ClassName("com.freeletics.mad.whetstone.compose", "RootNavDestination")
 internal val composeRootNavDestinationFqName = FqName(composeRootNavDestination.canonicalName)
 internal val scopeTo = ClassName("com.freeletics.mad.whetstone", "ScopeTo")
+internal val navEntry = ClassName("com.freeletics.mad.whetstone", "NavEntry")
 internal val navEntryComponent = ClassName("com.freeletics.mad.whetstone", "NavEntryComponent")
 internal val navEntryComponentFqName = FqName(navEntryComponent.canonicalName)
 

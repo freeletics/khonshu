@@ -5,6 +5,7 @@ import com.freeletics.mad.whetstone.Navigation
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent
 import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.KModifier.LATEINIT
@@ -20,6 +21,13 @@ internal val ClassName.propertyName: String get() {
 internal fun bindsInstanceParameter(name: String, className: ClassName): ParameterSpec {
     return ParameterSpec.builder(name, className)
         .addAnnotation(bindsInstance)
+        .build()
+}
+
+internal fun bindsInstanceParameter(name: String, className: ClassName, annotation: AnnotationSpec): ParameterSpec {
+    return ParameterSpec.builder(name, className)
+        .addAnnotation(bindsInstance)
+        .addAnnotation(annotation)
         .build()
 }
 
@@ -76,6 +84,13 @@ internal fun scopeToAnnotation(scope: ClassName): AnnotationSpec {
 internal fun contributesToAnnotation(scope: ClassName): AnnotationSpec {
     return AnnotationSpec.builder(ContributesTo::class)
         .addMember("%T::class", scope)
+        .build()
+}
+
+internal fun navEntryAnnotation(scope: ClassName, target: UseSiteTarget? = null): AnnotationSpec {
+    return AnnotationSpec.builder(navEntry)
+        .addMember("%T::class", scope)
+        .useSiteTarget(target)
         .build()
 }
 
