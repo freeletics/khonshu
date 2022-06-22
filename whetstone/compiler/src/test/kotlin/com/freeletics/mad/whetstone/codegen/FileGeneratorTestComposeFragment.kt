@@ -22,9 +22,8 @@ internal class FileGeneratorTestComposeFragment {
         packageName = "com.test",
         scope = ClassName("com.test", "TestScreen"),
         parentScope = ClassName("com.test.parent", "TestParentScope"),
-        dependencies = ClassName("com.test", "TestDependencies"),
-        fragmentBaseClass = fragment,
         stateMachine = ClassName("com.test", "TestStateMachine"),
+        fragmentBaseClass = fragment,
         navigation = navigation,
         coroutinesEnabled = true,
         rxJavaEnabled = true,
@@ -59,12 +58,11 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.MergeComponent
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
-            import dagger.Component
             import dagger.Module
             import dagger.Provides
             import dagger.multibindings.IntoSet
@@ -79,14 +77,14 @@ internal class FileGeneratorTestComposeFragment {
             import kotlinx.coroutines.cancel
             import kotlinx.coroutines.launch
 
-            @InternalWhetstoneApi
+            @OptIn(InternalWhetstoneApi::class)
             @ScopeTo(TestScreen::class)
-            @MergeComponent(
+            @ContributesSubcomponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class],
+              parentScope = TestParentScope::class,
               modules = [ComposeProviderValueModule::class],
             )
-            internal interface RetainedTestComponent {
+            public interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
               public val navEventNavigator: NavEventNavigator
@@ -95,13 +93,15 @@ internal class FileGeneratorTestComposeFragment {
 
               public val providedValues: Set<ProvidedValue<*>>
 
-              @Component.Factory
+              @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(
-                  dependencies: TestDependencies,
-                  @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance testRoute: TestRoute,
-                ): RetainedTestComponent
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    testRoute: TestRoute): RetainedTestComponent
+              }
+
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                public fun retainedTestComponentFactory(): Factory
               }
             }
 
@@ -137,12 +137,12 @@ internal class FileGeneratorTestComposeFragment {
 
             @InternalWhetstoneApi
             internal class TestViewModel(
-              dependencies: TestDependencies,
+              parentComponent: RetainedTestComponent.ParentComponent,
               savedStateHandle: SavedStateHandle,
               testRoute: TestRoute,
             ) : ViewModel() {
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute)
+                  parentComponent.retainedTestComponentFactory().create(savedStateHandle, testRoute)
 
               public override fun onCleared(): Unit {
                 component.closeables.forEach {
@@ -237,12 +237,11 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.MergeComponent
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
-            import dagger.Component
             import dagger.Module
             import dagger.Provides
             import dagger.multibindings.IntoSet
@@ -257,14 +256,14 @@ internal class FileGeneratorTestComposeFragment {
             import kotlinx.coroutines.cancel
             import kotlinx.coroutines.launch
 
-            @InternalWhetstoneApi
+            @OptIn(InternalWhetstoneApi::class)
             @ScopeTo(TestScreen::class)
-            @MergeComponent(
+            @ContributesSubcomponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class],
+              parentScope = TestParentScope::class,
               modules = [ComposeProviderValueModule::class],
             )
-            internal interface RetainedTestComponent {
+            public interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
               public val navEventNavigator: NavEventNavigator
@@ -273,13 +272,15 @@ internal class FileGeneratorTestComposeFragment {
 
               public val providedValues: Set<ProvidedValue<*>>
 
-              @Component.Factory
+              @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(
-                  dependencies: TestDependencies,
-                  @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance testRoute: TestRoute,
-                ): RetainedTestComponent
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    testRoute: TestRoute): RetainedTestComponent
+              }
+
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                public fun retainedTestComponentFactory(): Factory
               }
             }
 
@@ -315,12 +316,12 @@ internal class FileGeneratorTestComposeFragment {
 
             @InternalWhetstoneApi
             internal class TestViewModel(
-              dependencies: TestDependencies,
+              parentComponent: RetainedTestComponent.ParentComponent,
               savedStateHandle: SavedStateHandle,
               testRoute: TestRoute,
             ) : ViewModel() {
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute)
+                  parentComponent.retainedTestComponentFactory().create(savedStateHandle, testRoute)
 
               public override fun onCleared(): Unit {
                 component.closeables.forEach {
@@ -423,12 +424,11 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.MergeComponent
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
-            import dagger.Component
             import dagger.Module
             import dagger.Provides
             import dagger.multibindings.IntoSet
@@ -443,14 +443,14 @@ internal class FileGeneratorTestComposeFragment {
             import kotlinx.coroutines.cancel
             import kotlinx.coroutines.launch
 
-            @InternalWhetstoneApi
+            @OptIn(InternalWhetstoneApi::class)
             @ScopeTo(TestScreen::class)
-            @MergeComponent(
+            @ContributesSubcomponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class],
+              parentScope = TestParentScope::class,
               modules = [ComposeProviderValueModule::class],
             )
-            internal interface RetainedTestComponent {
+            public interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
               public val navEventNavigator: NavEventNavigator
@@ -459,13 +459,15 @@ internal class FileGeneratorTestComposeFragment {
 
               public val providedValues: Set<ProvidedValue<*>>
 
-              @Component.Factory
+              @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(
-                  dependencies: TestDependencies,
-                  @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance testRoute: TestRoute,
-                ): RetainedTestComponent
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    testRoute: TestRoute): RetainedTestComponent
+              }
+
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                public fun retainedTestComponentFactory(): Factory
               }
             }
 
@@ -501,12 +503,12 @@ internal class FileGeneratorTestComposeFragment {
 
             @InternalWhetstoneApi
             internal class TestViewModel(
-              dependencies: TestDependencies,
+              parentComponent: RetainedTestComponent.ParentComponent,
               savedStateHandle: SavedStateHandle,
               testRoute: TestRoute,
             ) : ViewModel() {
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, testRoute)
+                  parentComponent.retainedTestComponentFactory().create(savedStateHandle, testRoute)
 
               public override fun onCleared(): Unit {
                 component.closeables.forEach {
@@ -595,11 +597,10 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.MergeComponent
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
-            import dagger.Component
             import dagger.Module
             import dagger.Provides
             import dagger.multibindings.IntoSet
@@ -614,27 +615,29 @@ internal class FileGeneratorTestComposeFragment {
             import kotlinx.coroutines.cancel
             import kotlinx.coroutines.launch
 
-            @InternalWhetstoneApi
+            @OptIn(InternalWhetstoneApi::class)
             @ScopeTo(TestScreen::class)
-            @MergeComponent(
+            @ContributesSubcomponent(
               scope = TestScreen::class,
-              dependencies = [TestDependencies::class],
+              parentScope = TestParentScope::class,
               modules = [ComposeProviderValueModule::class],
             )
-            internal interface RetainedTestComponent {
+            public interface RetainedTestComponent {
               public val testStateMachine: TestStateMachine
 
               public val closeables: Set<Closeable>
 
               public val providedValues: Set<ProvidedValue<*>>
 
-              @Component.Factory
+              @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(
-                  dependencies: TestDependencies,
-                  @BindsInstance savedStateHandle: SavedStateHandle,
-                  @BindsInstance arguments: Bundle,
-                ): RetainedTestComponent
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    arguments: Bundle): RetainedTestComponent
+              }
+
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                public fun retainedTestComponentFactory(): Factory
               }
             }
 
@@ -670,12 +673,12 @@ internal class FileGeneratorTestComposeFragment {
 
             @InternalWhetstoneApi
             internal class TestViewModel(
-              dependencies: TestDependencies,
+              parentComponent: RetainedTestComponent.ParentComponent,
               savedStateHandle: SavedStateHandle,
               arguments: Bundle,
             ) : ViewModel() {
               public val component: RetainedTestComponent =
-                  DaggerRetainedTestComponent.factory().create(dependencies, savedStateHandle, arguments)
+                  parentComponent.retainedTestComponentFactory().create(savedStateHandle, arguments)
 
               public override fun onCleared(): Unit {
                 component.closeables.forEach {

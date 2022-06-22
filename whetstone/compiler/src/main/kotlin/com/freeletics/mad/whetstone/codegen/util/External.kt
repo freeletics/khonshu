@@ -68,9 +68,6 @@ internal val compositeDisposable = ClassName("io.reactivex.disposables", "Compos
 
 // Dagger
 internal val inject = ClassName("javax.inject", "Inject")
-internal val component = ClassName("dagger", "Component")
-internal val componentFactory = component.nestedClass("Factory")
-internal val binds = ClassName("dagger", "Binds")
 internal val provides = ClassName("dagger", "Provides")
 internal val multibinds = ClassName("dagger.multibindings", "Multibinds")
 internal val intoSet = ClassName("dagger.multibindings", "IntoSet")

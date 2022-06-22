@@ -17,9 +17,7 @@ internal sealed interface BaseData {
 
 internal sealed interface CommonData : BaseData {
     val scope: ClassName
-
     val parentScope: ClassName
-    val dependencies: ClassName
 
     val stateMachine: ClassName
 
@@ -80,9 +78,7 @@ internal data class ComposeScreenData(
     override val packageName: String,
 
     override val scope: ClassName,
-
     override val parentScope: ClassName,
-    override val dependencies: ClassName,
 
     override val stateMachine: ClassName,
 
@@ -97,9 +93,7 @@ internal data class ComposeFragmentData(
     override val packageName: String,
 
     override val scope: ClassName,
-
     override val parentScope: ClassName,
-    override val dependencies: ClassName,
 
     override val stateMachine: ClassName,
     override val fragmentBaseClass: ClassName,
@@ -115,9 +109,7 @@ internal data class RendererFragmentData(
     override val packageName: String,
 
     override val scope: ClassName,
-
     override val parentScope: ClassName,
-    override val dependencies: ClassName,
 
     override val stateMachine: ClassName,
     val factory: ClassName,
