@@ -1,8 +1,9 @@
-package com.freeletics.mad.whetstone.codegen.common
+package com.freeletics.mad.whetstone.codegen.nav
 
-import com.freeletics.mad.whetstone.CommonData
+import com.freeletics.mad.whetstone.BaseData
 import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.codegen.Generator
+import com.freeletics.mad.whetstone.codegen.common.composableName
 import com.freeletics.mad.whetstone.codegen.fragment.fragmentName
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.intoSet
@@ -13,8 +14,8 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
 
 internal class NavDestinationModuleGenerator(
-    override val data: CommonData,
-) : Generator<CommonData>() {
+    override val data: BaseData,
+) : Generator<BaseData>() {
 
     private val moduleClassName = ClassName("Whetstone${data.baseName}NavDestinationModule")
 

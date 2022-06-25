@@ -1,7 +1,9 @@
-package com.freeletics.mad.whetstone.codegen.naventry
+package com.freeletics.mad.whetstone.codegen.nav
 
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.codegen.Generator
+import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
+import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.util.context
 import com.freeletics.mad.whetstone.codegen.util.destinationId
 import com.freeletics.mad.whetstone.codegen.util.inject
@@ -49,7 +51,7 @@ internal class NavEntryComponentGetterGenerator(
 
     private fun contributesMultibindingAnnotation(): AnnotationSpec {
         return AnnotationSpec.builder(ContributesMultibinding::class)
-            .addMember("%T::class", data.destinationScope)
+            .addMember("%T::class", data.navigation.destinationScope)
             .addMember("%T::class", navEntryComponentGetter)
             .build()
     }
@@ -67,10 +69,10 @@ internal class NavEntryComponentGetterGenerator(
             .addParameter("findEntry", LambdaTypeName.get(parameters = arrayOf(INT), returnType = navBackStackEntry))
             .addParameter("context", context)
             .returns(ANY)
-            .addStatement("val entry = findEntry(%T::class.%M())", data.route, destinationId)
-            .addStatement("val route: %T = entry.arguments!!.%M()", data.route, toRoute)
+            .addStatement("val entry = findEntry(%T::class.%M())", data.navigation.route, destinationId)
+            .addStatement("val route: %T = entry.arguments!!.%M()", data.navigation.route, toRoute)
             .addStatement("val viewModel = %M(entry, context, %T::class, %T::class, route, findEntry, ::%T)",
-                navEntryViewModel, data.parentScope, data.destinationScope, viewModelClassName)
+                navEntryViewModel, data.parentScope, data.navigation.destinationScope, viewModelClassName)
             .addStatement("return viewModel.%L", viewModelComponentName)
             .build()
     }
