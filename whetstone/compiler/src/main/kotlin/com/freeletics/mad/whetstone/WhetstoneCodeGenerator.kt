@@ -11,7 +11,6 @@ import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.fragmentRootNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
-import com.freeletics.mad.whetstone.codegen.util.optionalBooleanArgument
 import com.freeletics.mad.whetstone.codegen.util.optionalClassArgument
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.requireClassArgument
@@ -72,12 +71,10 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             packageName = declaration.packageName(),
             scope = renderer.requireClassArgument("scope", 0),
             parentScope = renderer.requireClassArgument("parentScope", 1),
-            stateMachine = renderer.requireClassArgument("stateMachine", 3),
-            factory = renderer.requireClassArgument("rendererFactory", 4),
-            fragmentBaseClass = renderer.optionalClassArgument("fragmentBaseClass", 5) ?: fragment,
+            stateMachine = renderer.requireClassArgument("stateMachine", 2),
+            factory = renderer.requireClassArgument("rendererFactory", 3),
+            fragmentBaseClass = renderer.optionalClassArgument("fragmentBaseClass", 4) ?: fragment,
             navigation = fragmentNavigation(declaration, declaration.packageName()),
-            coroutinesEnabled = renderer.optionalBooleanArgument("coroutinesEnabled", 6) ?: false,
-            rxJavaEnabled = renderer.optionalBooleanArgument("rxJavaEnabled", 7) ?: false,
         )
 
         val file = FileGenerator().generate(data)
@@ -99,11 +96,9 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             packageName = declaration.packageName(),
             scope = compose.requireClassArgument("scope", 0),
             parentScope = compose.requireClassArgument("parentScope", 1),
-            stateMachine = compose.requireClassArgument("stateMachine", 3),
-            fragmentBaseClass = compose.optionalClassArgument("fragmentBaseClass", 4) ?: fragment,
+            stateMachine = compose.requireClassArgument("stateMachine", 2),
+            fragmentBaseClass = compose.optionalClassArgument("fragmentBaseClass", 3) ?: fragment,
             navigation = fragmentNavigation(declaration, declaration.packageName()),
-            coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 5) ?: false,
-            rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 6) ?: false,
         )
 
         val file = FileGenerator().generate(data)
@@ -164,10 +159,8 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             packageName = declaration.packageName(),
             scope = compose.requireClassArgument("scope", 0),
             parentScope = compose.requireClassArgument("parentScope", 1),
-            stateMachine = compose.requireClassArgument("stateMachine", 3),
+            stateMachine = compose.requireClassArgument("stateMachine", 2),
             navigation = composeNavigation(declaration, declaration.packageName()),
-            coroutinesEnabled = compose.optionalBooleanArgument("coroutinesEnabled", 4) ?: false,
-            rxJavaEnabled = compose.optionalBooleanArgument("rxJavaEnabled", 5) ?: false,
         )
 
         val file = FileGenerator().generate(data)
@@ -231,8 +224,6 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             parentScope = component.requireClassArgument("parentScope", 1),
             destinationScope = destinationScope,
             route = route,
-            coroutinesEnabled = component.optionalBooleanArgument("coroutinesEnabled", 2) ?: false,
-            rxJavaEnabled = component.optionalBooleanArgument("rxJavaEnabled", 3) ?: false,
         )
     }
 

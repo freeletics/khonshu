@@ -8,7 +8,6 @@ import com.freeletics.mad.whetstone.codegen.common.composableName
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.composable
 import com.freeletics.mad.whetstone.codegen.util.composeNavigationHandler
-import com.freeletics.mad.whetstone.codegen.util.fragmentViewModel
 import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName

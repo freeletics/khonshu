@@ -22,9 +22,6 @@ internal sealed interface CommonData : BaseData {
     val stateMachine: ClassName
 
     val navigation: Navigation?
-
-    val coroutinesEnabled: Boolean
-    val rxJavaEnabled: Boolean
 }
 
 internal sealed interface FragmentCommonData : CommonData {
@@ -83,9 +80,6 @@ internal data class ComposeScreenData(
     override val stateMachine: ClassName,
 
     override val navigation: Navigation.Compose?,
-
-    override val coroutinesEnabled: Boolean,
-    override val rxJavaEnabled: Boolean,
 ) :  CommonData
 
 internal data class ComposeFragmentData(
@@ -99,9 +93,6 @@ internal data class ComposeFragmentData(
     override val fragmentBaseClass: ClassName,
 
     override val navigation: Navigation.Fragment?,
-
-    override val coroutinesEnabled: Boolean,
-    override val rxJavaEnabled: Boolean,
 ) : FragmentCommonData
 
 internal data class RendererFragmentData(
@@ -116,9 +107,6 @@ internal data class RendererFragmentData(
     override val fragmentBaseClass: ClassName,
 
     override val navigation: Navigation.Fragment?,
-
-    override val coroutinesEnabled: Boolean,
-    override val rxJavaEnabled: Boolean,
 ) : FragmentCommonData
 
 internal data class NavEntryData(
@@ -130,9 +118,6 @@ internal data class NavEntryData(
     val destinationScope: ClassName,
 
     val route: ClassName,
-
-    val coroutinesEnabled: Boolean,
-    val rxJavaEnabled: Boolean,
 ): BaseData {
     override val baseName: String = scope.simpleName
 }

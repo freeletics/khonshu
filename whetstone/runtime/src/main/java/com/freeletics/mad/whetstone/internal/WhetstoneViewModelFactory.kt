@@ -12,7 +12,7 @@ public class WhetstoneViewModelFactory(
 ) : AbstractSavedStateViewModelFactory(savedStateRegistryOwner, null) {
 
     @Suppress("UNCHECKED_CAST")
-    public override fun <T : ViewModel?> create(
+    public override fun <T : ViewModel> create(
         key: String,
         modelClass: Class<T>,
         handle: SavedStateHandle
