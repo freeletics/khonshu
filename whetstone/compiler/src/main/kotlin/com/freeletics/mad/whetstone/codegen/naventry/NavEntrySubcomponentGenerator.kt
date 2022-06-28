@@ -5,6 +5,7 @@ import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.common.closeableSetPropertyName
 import com.freeletics.mad.whetstone.codegen.util.bindsInstanceParameter
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
+import com.freeletics.mad.whetstone.codegen.util.navEntryAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.savedStateHandle
 import com.freeletics.mad.whetstone.codegen.util.scopeToAnnotation
@@ -12,6 +13,8 @@ import com.freeletics.mad.whetstone.codegen.util.subcomponentAnnotation
 import com.freeletics.mad.whetstone.codegen.util.subcomponentFactoryAnnotation
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.decapitalize
+import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget.GET
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -52,15 +55,17 @@ internal class NavEntrySubcomponentGenerator(
 
     private fun componentProperties(): List<PropertySpec> {
         val properties = mutableListOf<PropertySpec>()
-        properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName())).build()
+        properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName()))
+            .addAnnotation(navEntryAnnotation(data.scope, GET))
+            .build()
         return properties
     }
 
     private fun navEntrySubcomponentFactory(): TypeSpec {
         val createFun = FunSpec.builder(navEntrySubcomponentFactoryCreateName)
             .addModifiers(ABSTRACT)
-            .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle))
-            .addParameter(bindsInstanceParameter(data.route.propertyName, data.route))
+            .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle, navEntryAnnotation(data.scope)))
+            .addParameter(bindsInstanceParameter(data.route.propertyName, data.route, navEntryAnnotation(data.scope)))
             .returns(navEntrySubcomponentClassName)
             .build()
         return TypeSpec.interfaceBuilder(navEntrySubcomponentFactoryClassName)

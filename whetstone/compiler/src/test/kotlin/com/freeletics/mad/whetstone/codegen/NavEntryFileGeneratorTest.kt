@@ -31,6 +31,7 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.navigator.`internal`.InternalNavigatorApi
             import com.freeletics.mad.navigator.`internal`.destinationId
             import com.freeletics.mad.navigator.`internal`.toRoute
+            import com.freeletics.mad.whetstone.NavEntry
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
@@ -63,11 +64,13 @@ internal class NavEntryFileGeneratorTest {
               parentScope = TestParentScope::class,
             )
             public interface NavEntryTestFlowScopeComponent {
+              @get:NavEntry(TestFlowScope::class)
               public val closeables: Set<Closeable>
     
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                public fun create(@BindsInstance @NavEntry(TestFlowScope::class)
+                    savedStateHandle: SavedStateHandle, @BindsInstance @NavEntry(TestFlowScope::class)
                     testRoute: TestRoute): NavEntryTestFlowScopeComponent
               }
 
@@ -81,27 +84,33 @@ internal class NavEntryFileGeneratorTest {
             @ContributesTo(TestFlowScope::class)
             public interface NavEntryTestFlowScopeModule {
               @Multibinds
+              @NavEntry(TestFlowScope::class)
               public fun bindCancellable(): Set<Closeable>
 
               public companion object {
                 @Provides
                 @ScopeTo(TestFlowScope::class)
+                @NavEntry(TestFlowScope::class)
                 public fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
 
                 @Provides
                 @IntoSet
-                public fun bindCompositeDisposable(compositeDisposable: CompositeDisposable): Closeable =
-                    Closeable {
+                @NavEntry(TestFlowScope::class)
+                public fun bindCompositeDisposable(@NavEntry(TestFlowScope::class)
+                    compositeDisposable: CompositeDisposable): Closeable = Closeable {
                   compositeDisposable.clear()
                 }
             
                 @Provides
                 @ScopeTo(TestFlowScope::class)
+                @NavEntry(TestFlowScope::class)
                 public fun provideCoroutineScope(): CoroutineScope = MainScope()
 
                 @Provides
                 @IntoSet
-                public fun bindCoroutineScope(coroutineScope: CoroutineScope): Closeable = Closeable {
+                @NavEntry(TestFlowScope::class)
+                public fun bindCoroutineScope(@NavEntry(TestFlowScope::class) coroutineScope: CoroutineScope):
+                    Closeable = Closeable {
                   coroutineScope.cancel()
                 }
               }
@@ -160,6 +169,7 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.navigator.`internal`.InternalNavigatorApi
             import com.freeletics.mad.navigator.`internal`.destinationId
             import com.freeletics.mad.navigator.`internal`.toRoute
+            import com.freeletics.mad.whetstone.NavEntry
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
@@ -189,11 +199,13 @@ internal class NavEntryFileGeneratorTest {
               parentScope = TestParentScope::class,
             )
             public interface NavEntryTestFlowScopeComponent {
+              @get:NavEntry(TestFlowScope::class)
               public val closeables: Set<Closeable>
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                public fun create(@BindsInstance @NavEntry(TestFlowScope::class)
+                    savedStateHandle: SavedStateHandle, @BindsInstance @NavEntry(TestFlowScope::class)
                     testRoute: TestRoute): NavEntryTestFlowScopeComponent
               }
 
@@ -207,17 +219,20 @@ internal class NavEntryFileGeneratorTest {
             @ContributesTo(TestFlowScope::class)
             public interface NavEntryTestFlowScopeModule {
               @Multibinds
+              @NavEntry(TestFlowScope::class)
               public fun bindCancellable(): Set<Closeable>
 
               public companion object {
                 @Provides
                 @ScopeTo(TestFlowScope::class)
+                @NavEntry(TestFlowScope::class)
                 public fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
 
                 @Provides
                 @IntoSet
-                public fun bindCompositeDisposable(compositeDisposable: CompositeDisposable): Closeable =
-                    Closeable {
+                @NavEntry(TestFlowScope::class)
+                public fun bindCompositeDisposable(@NavEntry(TestFlowScope::class)
+                    compositeDisposable: CompositeDisposable): Closeable = Closeable {
                   compositeDisposable.clear()
                 }
               }
@@ -276,6 +291,7 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.navigator.`internal`.InternalNavigatorApi
             import com.freeletics.mad.navigator.`internal`.destinationId
             import com.freeletics.mad.navigator.`internal`.toRoute
+            import com.freeletics.mad.whetstone.NavEntry
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
@@ -307,11 +323,13 @@ internal class NavEntryFileGeneratorTest {
               parentScope = TestParentScope::class,
             )
             public interface NavEntryTestFlowScopeComponent {
+              @get:NavEntry(TestFlowScope::class)
               public val closeables: Set<Closeable>
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                public fun create(@BindsInstance @NavEntry(TestFlowScope::class)
+                    savedStateHandle: SavedStateHandle, @BindsInstance @NavEntry(TestFlowScope::class)
                     testRoute: TestRoute): NavEntryTestFlowScopeComponent
               }
 
@@ -325,16 +343,20 @@ internal class NavEntryFileGeneratorTest {
             @ContributesTo(TestFlowScope::class)
             public interface NavEntryTestFlowScopeModule {
               @Multibinds
+              @NavEntry(TestFlowScope::class)
               public fun bindCancellable(): Set<Closeable>
 
               public companion object {
                 @Provides
                 @ScopeTo(TestFlowScope::class)
+                @NavEntry(TestFlowScope::class)
                 public fun provideCoroutineScope(): CoroutineScope = MainScope()
 
                 @Provides
                 @IntoSet
-                public fun bindCoroutineScope(coroutineScope: CoroutineScope): Closeable = Closeable {
+                @NavEntry(TestFlowScope::class)
+                public fun bindCoroutineScope(@NavEntry(TestFlowScope::class) coroutineScope: CoroutineScope):
+                    Closeable = Closeable {
                   coroutineScope.cancel()
                 }
               }
