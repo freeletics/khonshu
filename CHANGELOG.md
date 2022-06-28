@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+Version 0.6.0 *(2022-06-28)*
+----------------------------
+
+### Whetstone
+
+- For components generated through `@NavEntryComponent` the automatically
+  provided `SavedStateHandle`, `NavRoute`, `Set<Closeable>`, `CoroutineScope`
+  and `CompositeDisposable` objects now use `@NavEntry(Scope::class)` as
+  qualifier
+
+
 Version 0.5.0 *(2022-06-21)*
 ----------------------------
 
@@ -11,7 +22,7 @@ Version 0.5.0 *(2022-06-21)*
 ### Whetstone
 
 - It is now possible to provide `Closeable` objects into a set and have the generated `ViewModel`
-  close all of these when it is cleared. This is meant as a replacement for the `rxJavaEnabled` 
+  close all of these when it is cleared. This is meant as a replacement for the `rxJavaEnabled`
   and `coroutinesEnabled` flags. You can replace the flags with the following snippet:
 
 ```kotlin
@@ -35,7 +46,7 @@ object {
 }
 ```
 
-- removed `enableInsetHandling` parameter from `@ComposeFragment`, Compose 1.2.0 provides new inset 
+- removed `enableInsetHandling` parameter from `@ComposeFragment`, Compose 1.2.0 provides new inset
   APIs that work out of the box without any special integration and the Accompanist Inset library was
   deprecated
 
