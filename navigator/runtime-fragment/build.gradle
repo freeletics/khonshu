@@ -58,5 +58,5 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-core:2.4.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0"
     implementation "androidx.navigation:navigation-common:2.4.2"
-    implementation "androidx.navigation:navigation-runtime:2.4.2"
+    implementation "androidx.navigation:navigation-runtime:2.5.0"
 }

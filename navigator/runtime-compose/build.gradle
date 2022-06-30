@@ -55,7 +55,7 @@ dependencies {
     api project(":navigator:navigator-runtime")
     api "androidx.compose.runtime:runtime:1.1.1"
     api "androidx.compose.ui:ui-graphics:1.1.1"
-    api "androidx.navigation:navigation-runtime:2.4.2" // for an obsolete api
+    api "androidx.navigation:navigation-runtime:2.5.0" // for an obsolete api
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3"
     implementation "androidx.activity:activity:1.4.0"
