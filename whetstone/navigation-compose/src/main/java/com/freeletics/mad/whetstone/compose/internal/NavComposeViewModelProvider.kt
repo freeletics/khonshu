@@ -8,12 +8,14 @@ import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.compose.LocalNavController
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
-import com.freeletics.mad.whetstone.internal.WhetstoneViewModelFactory
 import com.freeletics.mad.whetstone.internal.findDependencies
 import kotlin.reflect.KClass
 
@@ -38,9 +40,12 @@ public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> rememberViewMo
     val context = LocalContext.current
     val navController = LocalNavController.current
     return remember(viewModelStoreOwner, savedStateRegistryOwner, context, navController, route) {
-        val viewModelFactory = WhetstoneViewModelFactory(savedStateRegistryOwner) {
-            val dependencies = context.findDependencies<D>(scope, destinationScope, navController::getBackStackEntry)
-            factory(dependencies, it, route)
+        val viewModelFactory = viewModelFactory {
+            initializer {
+                val dependencies = context.findDependencies<D>(scope, destinationScope, navController::getBackStackEntry)
+                val savedStateHandle = createSavedStateHandle()
+                factory(dependencies, savedStateHandle, route)
+            }
         }
         val viewModelProvider = ViewModelProvider(viewModelStoreOwner, viewModelFactory)
         viewModelProvider[T::class.java]

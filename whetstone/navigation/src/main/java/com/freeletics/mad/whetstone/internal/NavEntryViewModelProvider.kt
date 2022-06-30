@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavBackStackEntry
 import com.freeletics.mad.navigator.BaseRoute
 import kotlin.reflect.KClass
@@ -25,9 +28,12 @@ public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> viewModel(
     noinline findEntry: (Int) -> NavBackStackEntry,
     crossinline factory: (D, SavedStateHandle, R) -> T
 ): T {
-    val viewModelFactory = WhetstoneViewModelFactory(entry) {
-        val dependencies = context.findDependencies<D>(scope, destinationScope, findEntry)
-        factory(dependencies, it, route)
+    val viewModelFactory = viewModelFactory {
+        initializer {
+            val dependencies = context.findDependencies<D>(scope, destinationScope, findEntry)
+            val savedStateHandle = createSavedStateHandle()
+            factory(dependencies, savedStateHandle, route)
+        }
     }
     val viewModelProvider = ViewModelProvider(entry, viewModelFactory)
     return viewModelProvider[T::class.java]

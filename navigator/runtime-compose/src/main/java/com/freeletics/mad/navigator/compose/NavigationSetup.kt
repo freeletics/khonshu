@@ -3,6 +3,7 @@ package com.freeletics.mad.navigator.compose
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -12,9 +13,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.State.RESUMED
-import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.NavController
 import com.freeletics.mad.navigator.ActivityResultRequest
@@ -93,19 +92,16 @@ private fun <O : Parcelable> ResultEffect(
     request: NavigationResultRequest<O>,
     controller: NavController,
 ) {
-    DisposableEffect(request, controller) {
-        val liveData = controller.getBackStackEntry(request.key.destinationId).savedStateHandle
-            .getLiveData<Parcelable>(request.key.requestKey)
-
-        val observer = Observer<Parcelable> { result ->
-            @Suppress("UNCHECKED_CAST")
-            request.handleResult(result as O)
-        }
-
-        liveData.observeForever(observer)
-
-        onDispose {
-            liveData.removeObserver(observer)
-        }
+    LaunchedEffect(request, controller) {
+        val initialValue = Bundle() // initial value marker instance so that we can filter it
+        controller.getBackStackEntry(request.key.destinationId)
+            .savedStateHandle
+            .getStateFlow<Parcelable>(request.key.requestKey, initialValue)
+            .collect { result ->
+                if (result !== initialValue) {
+                    @Suppress("UNCHECKED_CAST")
+                    request.handleResult(result as O)
+                }
+            }
     }
 }
