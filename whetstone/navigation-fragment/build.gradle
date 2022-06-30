@@ -54,7 +54,7 @@ dependencies {
     implementation project(":whetstone:runtime")
     implementation "androidx.compose.runtime:runtime:1.1.1"
     implementation "androidx.savedstate:savedstate:1.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.5.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0"
     implementation "androidx.fragment:fragment:1.5.0"
     implementation "androidx.navigation:navigation-common:2.5.0"
