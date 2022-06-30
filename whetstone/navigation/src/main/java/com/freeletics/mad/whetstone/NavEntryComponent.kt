@@ -16,7 +16,7 @@ import kotlin.reflect.KClass
  *
  * **Scopes, Dagger and Anvil**
  *
- * The generated component uses [com.freeletics.mad.whetstone.ScopeTo] as it's scope where the
+ * The generated component uses [com.freeletics.mad.whetstone.ScopeTo] as its scope where the
  * [com.freeletics.mad.whetstone.ScopeTo.marker] parameter is the specified [scope] class. This
  * scope can be used to scope classes in the component an tie them to to component's life time,
  * effectively making them survive configuration changes. The  annotated class is also used as
