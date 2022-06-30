@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
  * shared between multiple screens of a flow.
  *
  * To use the nav entry component as a parent the relevant screens should use the [scope] of this
- * ANNOTATION AS THEIR PARENT SCOPE.
+ * annotation as their parent scope.
  *
  * **Scopes, Dagger and Anvil**
  *
