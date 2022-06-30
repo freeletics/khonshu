@@ -54,6 +54,6 @@ dependencies {
 
     implementation project(":navigator:navigator-runtime")
     implementation "androidx.savedstate:savedstate:1.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.5.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0"
 }
