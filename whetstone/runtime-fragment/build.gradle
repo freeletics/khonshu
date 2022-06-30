@@ -54,5 +54,5 @@ dependencies {
     implementation "androidx.compose.runtime:runtime:1.1.1"
     implementation "androidx.savedstate:savedstate:1.1.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.4.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0"
 }
