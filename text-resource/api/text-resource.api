@@ -1,3 +1,11 @@
+public final class com/freeletics/mad/text/CompositeTextResource$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/text/CompositeTextResource;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/freeletics/mad/text/CompositeTextResource;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
 public final class com/freeletics/mad/text/LoadingTextResource : com/freeletics/mad/text/TextResource {
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
@@ -8,6 +16,38 @@ public final class com/freeletics/mad/text/LoadingTextResource : com/freeletics/
 	public synthetic fun format (Landroidx/compose/runtime/Composer;I)Ljava/lang/String;
 	public fun format (Landroidx/compose/runtime/Composer;I)Ljava/lang/Void;
 	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/freeletics/mad/text/LoadingTextResource$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/text/LoadingTextResource;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/freeletics/mad/text/LoadingTextResource;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/freeletics/mad/text/PluralTextResource$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/text/PluralTextResource;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/freeletics/mad/text/PluralTextResource;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/freeletics/mad/text/SimpleTextResource$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/text/SimpleTextResource;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/freeletics/mad/text/SimpleTextResource;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/freeletics/mad/text/StringTextResource$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/text/StringTextResource;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/freeletics/mad/text/StringTextResource;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
 public abstract class com/freeletics/mad/text/TextResource : android/os/Parcelable {
