@@ -1,6 +1,26 @@
 Change Log
 ==========
 
+
+Version 0.7.0 *(UNRELEASED)*
+----------------------------
+
+Updated to Kotlin 1.7.0 and Compose compiler 1.2.0.
+
+### Whetstone
+
+- Instead of generating full components Whetstone is now using subcomponents with Anvil's
+  `@ContributesSubcomponent` with a `ParentComponent` interface that is automatically contributed
+  to the `parentScope`. This allows to remove `kapt` from modules using Whetstone and let Anvil
+  do all of the factory generation
+- Because of that the `dependencies` parameter was removed from all annotations
+- To avoid collisions between subcomponents the `SavedStateHandle` as well as the `NavRoute` or
+  `Bundle` that are automatically available in generated `@NavEntryComponent`s now have a
+  `NavEntry(ScopeOfNavEntryComponent::class)` qualifier on them
+- The `rxJavaEnabled` and `coroutinesEnabled` parameters were removed from all annotations. For how
+  to replace them, see the 0.5.0 changelog.
+
+
 Version 0.6.0 *(2022-06-28)*
 ----------------------------
 
@@ -30,19 +50,19 @@ Version 0.5.0 *(2022-06-21)*
 object {
   @Provides
   @ScopeTo(MyScreenScope::class)
-  public fun provideCompositeDisposable() = CompositeDisposable()
+  fun provideCompositeDisposable() = CompositeDisposable()
 
   @Provides
   @IntoSet
-  public fun bindCompositeDisposable(disposable: CompositeDisposable) = Closeable { disposable.clear() }
+  fun bindCompositeDisposable(disposable: CompositeDisposable) = Closeable { disposable.clear() }
 
   @Provides
-  @ScopeTo(TestScreen::class)
-  public fun provideCoroutineScope(): CoroutineScope = MainScope()
+  @ScopeTo(MyScreenScope::class)
+  fun provideCoroutineScope() = MainScope()
 
   @Provides
   @IntoSet
-  public fun bindCoroutineScope(scpe: CoroutineScope) = Closeable { scope.cancel() }
+  fun bindCoroutineScope(scope: CoroutineScope) = Closeable { scope.cancel() }
 }
 ```
 

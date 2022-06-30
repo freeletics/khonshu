@@ -58,13 +58,7 @@ internal val rendererConnect = MemberName("com.gabrielittner.renderer.connect", 
 internal val optIn = ClassName("kotlin", "OptIn")
 
 // Coroutines
-internal val coroutineScope = ClassName("kotlinx.coroutines", "CoroutineScope")
-internal val coroutineScopeCancel = MemberName("kotlinx.coroutines", "cancel")
-internal val mainScope = MemberName("kotlinx.coroutines", "MainScope")
 internal val launch = MemberName("kotlinx.coroutines", "launch")
-
-// RxJava
-internal val compositeDisposable = ClassName("io.reactivex.disposables", "CompositeDisposable")
 
 // Dagger
 internal val inject = ClassName("javax.inject", "Inject")

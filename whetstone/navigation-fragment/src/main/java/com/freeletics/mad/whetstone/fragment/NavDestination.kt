@@ -7,7 +7,8 @@ import kotlin.reflect.KClass
 /**
  * This annotation can be used in combination with [ComposeFragment] and [RendererFragment] to
  * enable the integration of a `FragmentNavEventNavigator` into the generated code. The navigator
- * will automatically be set up so that it's ready to handle events.
+ * will automatically be set up so that it's ready to handle events. It will also make the instance
+ * of [route] that was used to navigate to this destination available for injection.
  *
  * The `FragmentNavEventNavigator` subclass is expected to be bound to `NavEventNavigator` and
  * available in the [ComposeFragment.scope]/[RendererFragment.scope] scoped generated component.

@@ -16,13 +16,11 @@ import com.freeletics.mad.whetstone.codegen.util.layoutInflater
 import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
-import com.freeletics.mad.whetstone.codegen.util.rememberViewModel
 import com.freeletics.mad.whetstone.codegen.util.view
 import com.freeletics.mad.whetstone.codegen.util.viewGroup
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
-import com.squareup.kotlinpoet.KModifier.PRIVATE
 import com.squareup.kotlinpoet.TypeSpec
 
 internal val Generator<out CommonData>.fragmentName
