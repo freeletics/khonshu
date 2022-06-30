@@ -38,19 +38,19 @@ internal class ViewModelGenerator(
 
     private fun viewModelCtor(argumentsParameter: ParameterSpec): FunSpec {
         return FunSpec.constructorBuilder()
-            .addParameter("dependencies", data.dependencies)
+            .addParameter("parentComponent", retainedParentComponentClassName)
             .addParameter("savedStateHandle", savedStateHandle)
             .addParameter(argumentsParameter)
             .build()
     }
 
     private fun viewModelProperty(argumentsParameter: ParameterSpec): PropertySpec {
-        val componentInitializer = CodeBlock.of(
-            "%T.factory().%L(dependencies, savedStateHandle, %N)",
-            retainedComponentClassName.peerClass("Dagger${retainedComponentClassName.simpleName}"),
+        val componentInitializer = CodeBlock.builder().add(
+            "parentComponent.%L().%L(savedStateHandle, %N)",
+            retainedParentComponentGetterName,
             retainedComponentFactoryCreateName,
             argumentsParameter,
-        )
+        ).build()
 
         return PropertySpec.builder(viewModelComponentName, retainedComponentClassName)
             .initializer(componentInitializer)
