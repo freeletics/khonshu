@@ -19,9 +19,9 @@ import kotlin.reflect.KClass
  * The generated component uses [com.freeletics.mad.whetstone.ScopeTo] as its scope where the
  * [com.freeletics.mad.whetstone.ScopeTo.marker] parameter is the specified [scope] class. This
  * scope can be used to scope classes in the component and tie them to component's life time,
- * effectively making them survive configuration changes. The  annotated class is also used as
+ * effectively making them survive configuration changes. The annotated class is also used as
  * [com.squareup.anvil.annotations.ContributesSubcomponent.scope], so it can be used to contribute
- * modulesc and bindings to the generated component.
+ * modules and bindings to the generated component.
  *
  * E.g. for `@NavEntryComponent(scope = CoachScreen::class, ...)` the scope of the generated
  * component will be `@ScopeTo(CoachScreen::class)`, modules can be contributed with
@@ -37,7 +37,7 @@ import kotlin.reflect.KClass
  * `@NavEntry(CoachScreen::class) val savedStateHandle: SavedStateHandle` needs to be used.
  *
  * A factory for the generated subcomponent is automatically generated and contributed to
- * the component that uses [parentScope` as its own scope. This component will be looked up internally
+ * the component that uses [parentScope] as its own scope. This component will be looked up internally
  * with `Context.getSystemService(name)` using the fully qualified name of the given [parentScope] as
  * key for the lookup. It is expected that the app will provide it through its `Application` class or an
  * `Activity`.

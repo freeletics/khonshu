@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 /**
  * By adding this annotation to a [androidx.compose.runtime.Composable] function, another
  * Composable is generated that will have the same name with `Screen` as suffix. The generated
- * function has [android.os.Bundle] as it's sole parameter and will internally call the annotated
+ * function has [android.os.Bundle] as its sole parameter and will internally call the annotated
  * composable. It is required that the annotated function has `State` as first
  * parameter and `(Action) -> Unit` as second parameter, where `State` and `Action` match the given
  * `StateMachine`.
@@ -26,12 +26,12 @@ import kotlin.reflect.KClass
  * survives configuration changes and stays alive while the composable destination is on the
  * backstack.
  *
- * The generated component uses [com.freeletics.mad.whetstone.ScopeTo] as it's scope where the
+ * The generated component uses [com.freeletics.mad.whetstone.ScopeTo] as its scope where the
  * [com.freeletics.mad.whetstone.ScopeTo.marker] parameter is the specified [scope] class. This
- * scope can be used to scope classes in the component an tie them to to component's life time,
- * effectively making them survive configuration changes. The  annotated class is also used as
+ * scope can be used to scope classes in the component and tie them to component's life time,
+ * effectively making them survive configuration changes. The annotated class is also used as
  * [com.squareup.anvil.annotations.ContributesSubcomponent.scope], so it can be used to contribute
- * modulesc and bindings to the generated component.
+ * modules and bindings to the generated component.
  *
  * E.g. for `@ComposeScreen(scope = CoachScreen::class, ...)` the scope of the generated
  * component will be `@ScopeTo(CoachScreen::class)`, modules can be contributed with

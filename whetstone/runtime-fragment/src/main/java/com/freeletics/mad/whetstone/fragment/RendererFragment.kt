@@ -27,12 +27,12 @@ import kotlin.reflect.KClass
  * survives configuration changes and stays alive while the Fragment destination is on the
  * backstack.
  *
- * The generated component uses [com.freeletics.mad.whetstone.ScopeTo] as it's scope where the
+ * The generated component uses [com.freeletics.mad.whetstone.ScopeTo] as its scope where the
  * [com.freeletics.mad.whetstone.ScopeTo.marker] parameter is the specified [scope] class. This
- * scope can be used to scope classes in the component an tie them to to component's life time,
- * effectively making them survive configuration changes. The  annotated class is also used as
+ * scope can be used to scope classes in the component and tie them to component's life time,
+ * effectively making them survive configuration changes. The annotated class is also used as
  * [com.squareup.anvil.annotations.ContributesSubcomponent.scope], so it can be used to contribute
- * modulesc and bindings to the generated component.
+ * modules and bindings to the generated component.
  *
  * E.g. for `@RendererFragment(scope = CoachScreen::class, ...)` the scope of the generated
  * component will be `@ScopeTo(CoachScreen::class)`, modules can be contributed with
@@ -44,7 +44,7 @@ import kotlin.reflect.KClass
  * - a [android.os.Bundle] with arguments passed to the screen
  *
  * A factory for the generated subcomponent is automatically generated and contributed to
- * the component that uses [parentScope` as its own scope. This component will be looked up internally
+ * the component that uses [parentScope] as its own scope. This component will be looked up internally
  * with `Context.getSystemService(name)` using the fully qualified name of the given [parentScope] as
  * key for the lookup. It is expected that the app will provide it through its `Application` class or an
  * `Activity`.
