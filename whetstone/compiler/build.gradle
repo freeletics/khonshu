@@ -21,7 +21,7 @@ kotlin {
 dependencies {
     api "org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlin_version"
     api "com.squareup.anvil:compiler-api:2.4.1"
-    implementation "com.squareup.anvil:annotations:2.4.1"
+    implementation "com.squareup.anvil:annotations:2.4.1-1-6"
     implementation "com.squareup.anvil:compiler-utils:2.4.1"
     implementation "com.squareup:kotlinpoet:1.12.0"
 
