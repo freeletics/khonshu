@@ -13,25 +13,78 @@ import com.squareup.kotlinpoet.MemberName
 internal sealed interface BaseData {
     val baseName: String
     val packageName: String
-}
 
-internal sealed interface CommonData : BaseData {
     val scope: ClassName
-
     val parentScope: ClassName
-    val dependencies: ClassName
 
-    val stateMachine: ClassName
-
+    val stateMachine: ClassName?
     val navigation: Navigation?
-
-    val coroutinesEnabled: Boolean
-    val rxJavaEnabled: Boolean
 }
 
-internal sealed interface FragmentCommonData : CommonData {
+internal sealed interface ComposeData : BaseData {
+    override val stateMachine: ClassName
+    val navEntryData: NavEntryData?
+}
+
+internal data class ComposeScreenData(
+    override val baseName: String,
+    override val packageName: String,
+
+    override val scope: ClassName,
+    override val parentScope: ClassName,
+
+    override val stateMachine: ClassName,
+
+    override val navigation: Navigation.Compose?,
+    override val navEntryData: NavEntryData?,
+) :  ComposeData
+
+internal sealed interface FragmentData : BaseData {
     val fragmentBaseClass: ClassName
     override val navigation: Navigation.Fragment?
+    val navEntryData: NavEntryData?
+}
+
+internal data class ComposeFragmentData(
+    override val baseName: String,
+    override val packageName: String,
+
+    override val scope: ClassName,
+    override val parentScope: ClassName,
+
+    override val stateMachine: ClassName,
+    override val fragmentBaseClass: ClassName,
+
+    override val navigation: Navigation.Fragment?,
+    override val navEntryData: NavEntryData?,
+) : ComposeData, FragmentData
+
+internal data class RendererFragmentData(
+    override val baseName: String,
+    override val packageName: String,
+
+    override val scope: ClassName,
+    override val parentScope: ClassName,
+
+    override val stateMachine: ClassName,
+    val factory: ClassName,
+    override val fragmentBaseClass: ClassName,
+
+    override val navigation: Navigation.Fragment?,
+    override val navEntryData: NavEntryData?,
+) : FragmentData
+
+internal data class NavEntryData(
+    override val packageName: String,
+
+    override val scope: ClassName,
+    override val parentScope: ClassName,
+
+    override val navigation: Navigation
+): BaseData {
+    override val baseName: String = "${scope.simpleName}NavEntry"
+
+    override val stateMachine: ClassName? = null
 }
 
 internal sealed interface Navigation {
@@ -39,13 +92,11 @@ internal sealed interface Navigation {
     val destinationClass: ClassName
     val destinationScope: ClassName
     val destinationMethod: MemberName?
-    val navEntryData: NavEntryData?
 
     data class Compose(
         override val route: ClassName,
         private val destinationType: String,
         override val destinationScope: ClassName,
-        override val navEntryData: NavEntryData?,
     ) : Navigation {
         override val destinationClass: ClassName = composeDestination
 
@@ -62,7 +113,6 @@ internal sealed interface Navigation {
         override val route: ClassName,
         private val destinationType: String,
         override val destinationScope: ClassName,
-        override val navEntryData: NavEntryData?,
     ) : Navigation {
         override val destinationClass: ClassName = fragmentDestination
 
@@ -73,74 +123,4 @@ internal sealed interface Navigation {
             else -> throw IllegalArgumentException("Unknown destinationType $destinationType")
         }
     }
-}
-
-internal data class ComposeScreenData(
-    override val baseName: String,
-    override val packageName: String,
-
-    override val scope: ClassName,
-
-    override val parentScope: ClassName,
-    override val dependencies: ClassName,
-
-    override val stateMachine: ClassName,
-
-    override val navigation: Navigation.Compose?,
-
-    override val coroutinesEnabled: Boolean,
-    override val rxJavaEnabled: Boolean,
-) :  CommonData
-
-internal data class ComposeFragmentData(
-    override val baseName: String,
-    override val packageName: String,
-
-    override val scope: ClassName,
-
-    override val parentScope: ClassName,
-    override val dependencies: ClassName,
-
-    override val stateMachine: ClassName,
-    override val fragmentBaseClass: ClassName,
-
-    override val navigation: Navigation.Fragment?,
-
-    override val coroutinesEnabled: Boolean,
-    override val rxJavaEnabled: Boolean,
-) : FragmentCommonData
-
-internal data class RendererFragmentData(
-    override val baseName: String,
-    override val packageName: String,
-
-    override val scope: ClassName,
-
-    override val parentScope: ClassName,
-    override val dependencies: ClassName,
-
-    override val stateMachine: ClassName,
-    val factory: ClassName,
-    override val fragmentBaseClass: ClassName,
-
-    override val navigation: Navigation.Fragment?,
-
-    override val coroutinesEnabled: Boolean,
-    override val rxJavaEnabled: Boolean,
-) : FragmentCommonData
-
-internal data class NavEntryData(
-    override val packageName: String,
-
-    val scope: ClassName,
-
-    val parentScope: ClassName,
-    val destinationScope: ClassName,
-
-    val route: ClassName,
-
-    val coroutinesEnabled: Boolean,
-    val rxJavaEnabled: Boolean,
-): BaseData {
-    override val baseName: String = scope.simpleName
 }

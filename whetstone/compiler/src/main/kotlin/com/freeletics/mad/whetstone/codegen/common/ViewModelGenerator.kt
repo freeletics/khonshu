@@ -1,6 +1,6 @@
 package com.freeletics.mad.whetstone.codegen.common
 
-import com.freeletics.mad.whetstone.CommonData
+import com.freeletics.mad.whetstone.BaseData
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.internalApiAnnotation
@@ -15,14 +15,14 @@ import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
-internal val Generator<out CommonData>.viewModelClassName
-    get() = ClassName("${data.baseName}ViewModel")
+internal val Generator<out BaseData>.viewModelClassName
+    get() = ClassName("Whetstone${data.baseName}ViewModel")
 
 internal const val viewModelComponentName = "component"
 
 internal class ViewModelGenerator(
-    override val data: CommonData,
-) : Generator<CommonData>() {
+    override val data: BaseData,
+) : Generator<BaseData>() {
 
     internal fun generate(): TypeSpec {
         val argumentsParameter = data.navigation.asParameter()
@@ -38,19 +38,19 @@ internal class ViewModelGenerator(
 
     private fun viewModelCtor(argumentsParameter: ParameterSpec): FunSpec {
         return FunSpec.constructorBuilder()
-            .addParameter("dependencies", data.dependencies)
+            .addParameter("parentComponent", retainedParentComponentClassName)
             .addParameter("savedStateHandle", savedStateHandle)
             .addParameter(argumentsParameter)
             .build()
     }
 
     private fun viewModelProperty(argumentsParameter: ParameterSpec): PropertySpec {
-        val componentInitializer = CodeBlock.of(
-            "%T.factory().%L(dependencies, savedStateHandle, %N)",
-            retainedComponentClassName.peerClass("Dagger${retainedComponentClassName.simpleName}"),
+        val componentInitializer = CodeBlock.builder().add(
+            "parentComponent.%L().%L(savedStateHandle, %N)",
+            retainedParentComponentGetterName,
             retainedComponentFactoryCreateName,
             argumentsParameter,
-        )
+        ).build()
 
         return PropertySpec.builder(viewModelComponentName, retainedComponentClassName)
             .initializer(componentInitializer)

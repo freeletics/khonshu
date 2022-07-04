@@ -6,8 +6,8 @@ import kotlin.reflect.KClass
 /**
  * By adding this annotation to a [androidx.compose.runtime.Composable] function, another
  * Composable is generated that will have the same name with `Screen` as suffix. The generated
- * function has [androidx.navigation.NavController] as it's sole parameter. It will internally
- * call the annotated composable. It is required that the annotated function has `State` as first
+ * function has [android.os.Bundle] as its sole parameter and will internally call the annotated
+ * composable. It is required that the annotated function has `State` as first
  * parameter and `(Action) -> Unit` as second parameter, where `State` and `Action` match the given
  * `StateMachine`.
  *
@@ -22,15 +22,16 @@ import kotlin.reflect.KClass
  *
  * **Scopes, Dagger and Anvil**
  *
- * There will also be a generated Dagger component that is tied to the composable function but
+ * There will also be a generated Dagger subcomponent that is tied to the composable function but
  * survives configuration changes and stays alive while the composable destination is on the
  * backstack.
  *
- * The generated component uses [ScopeTo] as it's scope where the [ScopeTo.marker]
- * parameter is the specified [scope] class. This scope can be used to scope classes
- * in the component an tie them to to component's life time. The annotated class is also used as
- * [com.squareup.anvil.annotations.MergeComponent.scope], so it can be used to contribute modules
- * and bindings to the generated component.
+ * The generated component uses [com.freeletics.mad.whetstone.ScopeTo] as its scope where the
+ * [com.freeletics.mad.whetstone.ScopeTo.marker] parameter is the specified [scope] class. This
+ * scope can be used to scope classes in the component and tie them to component's life time,
+ * effectively making them survive configuration changes. The annotated class is also used as
+ * [com.squareup.anvil.annotations.ContributesSubcomponent.scope], so it can be used to contribute
+ * modules and bindings to the generated component.
  *
  * E.g. for `@ComposeScreen(scope = CoachScreen::class, ...)` the scope of the generated
  * component will be `@ScopeTo(CoachScreen::class)`, modules can be contributed with
@@ -38,17 +39,14 @@ import kotlin.reflect.KClass
  * `@ContributesBinding(CoachScreen::class, ...)`.
  *
  * By default the following classes are available for injection in the component:
- * - everything accessible through the provided [dependencies] interface
  * - a [androidx.lifecycle.SavedStateHandle]
- * - a [android.os.Bundle] obtained from [androidx.navigation.NavController.currentBackStackEntry]
- * - if [coroutinesEnabled] is `true`, a [kotlinx.coroutines.CoroutineScope] that will be cancelled automatically
- * - if [rxJavaEnabled] is `true`, a [io.reactivex.disposables.CompositeDisposable] that will be cleared automatically
+ * - a [android.os.Bundle] with arguments passed to the screen
  *
- * The mentioned [dependencies] interface will be looked up by calling
- * [android.content.Context.getSystemService] on either the [android.app.Activity] context or the
- * [android.app.Application] context. The parameter passed to `getSystemService` is the fully
- * qualified name of [parentScope]. It is recommended to use the same marker class that is used as
- * Anvil scope for the [parentScope].
+ * A factory for the generated subcomponent is automatically generated and contributed to
+ * the component that uses [parentScope` as its own scope. This component will be looked up internally
+ * with `Context.getSystemService(name)` using the fully qualified name of the given [parentScope] as
+ * key for the lookup. It is expected that the app will provide it through its `Application` class or an
+ * `Activity`.
  *
  * **Example**
  *
@@ -75,10 +73,5 @@ import kotlin.reflect.KClass
 public annotation class ComposeScreen(
     val scope: KClass<*>,
     val parentScope: KClass<*>,
-    val dependencies: KClass<*>,
-
     val stateMachine: KClass<out StateMachine<*, *>>,
-
-    val coroutinesEnabled: Boolean = false,
-    val rxJavaEnabled: Boolean = false,
 )

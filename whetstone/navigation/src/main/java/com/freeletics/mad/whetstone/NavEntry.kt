@@ -10,7 +10,8 @@ import kotlin.annotation.AnnotationTarget.VALUE_PARAMETER
 import kotlin.reflect.KClass
 
 /**
- * TODO
+ * This [Qualifier] is used for objects automatically provided inside a generated
+ * subcomponent for [NavEntryComponent].
  */
 @Qualifier
 @Target(CLASS, FUNCTION, PROPERTY, PROPERTY_GETTER, FUNCTION, VALUE_PARAMETER)

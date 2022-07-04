@@ -3,7 +3,6 @@ package com.freeletics.mad.whetstone.codegen.util
 import com.squareup.anvil.annotations.ContributesSubcomponent
 import com.freeletics.mad.whetstone.Navigation
 import com.squareup.anvil.annotations.ContributesTo
-import com.squareup.anvil.annotations.MergeComponent
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget
 import com.squareup.kotlinpoet.ClassName
@@ -18,22 +17,24 @@ internal val ClassName.propertyName: String get() {
             simpleNames.drop(1).joinToString { it.replaceFirstChar(Char::uppercaseChar) }
 }
 
-internal fun bindsInstanceParameter(name: String, className: ClassName): ParameterSpec {
+internal fun bindsInstanceParameter(
+    name: String,
+    className: ClassName,
+    annotation: AnnotationSpec? = null
+): ParameterSpec {
     return ParameterSpec.builder(name, className)
         .addAnnotation(bindsInstance)
+        .apply { if (annotation != null) addAnnotation(annotation) }
         .build()
 }
 
-internal fun bindsInstanceParameter(name: String, className: ClassName, annotation: AnnotationSpec): ParameterSpec {
-    return ParameterSpec.builder(name, className)
-        .addAnnotation(bindsInstance)
-        .addAnnotation(annotation)
-        .build()
-}
-
-internal fun bindsInstanceParameter(spec: ParameterSpec): ParameterSpec {
+internal fun bindsInstanceParameter(
+    spec: ParameterSpec,
+    annotation: AnnotationSpec? = null
+): ParameterSpec {
     return spec.toBuilder()
         .addAnnotation(bindsInstance)
+        .apply { if (annotation != null) addAnnotation(annotation) }
         .build()
 }
 
@@ -48,26 +49,19 @@ internal fun lateinitPropertySpec(className: ClassName): PropertySpec {
         .build()
 }
 
-internal fun componentAnnotation(
+internal fun subcomponentAnnotation(
     scope: ClassName,
-    dependencies: ClassName,
-    module: ClassName? = null
+    parentScope: ClassName,
+    module: ClassName? = null,
 ): AnnotationSpec {
-    return AnnotationSpec.builder(MergeComponent::class)
+    return AnnotationSpec.builder(ContributesSubcomponent::class)
         .addMember("scope = %T::class", scope)
-        .addMember("dependencies = [%T::class]", dependencies)
+        .addMember("parentScope = %T::class", parentScope)
         .apply {
             if (module != null) {
                 addMember("modules = [%T::class]", module)
             }
         }
-        .build()
-}
-
-internal fun subcomponentAnnotation(scope: ClassName, parentScope: ClassName): AnnotationSpec {
-    return AnnotationSpec.builder(ContributesSubcomponent::class)
-        .addMember("scope = %T::class", scope)
-        .addMember("parentScope = %T::class", parentScope)
         .build()
 }
 

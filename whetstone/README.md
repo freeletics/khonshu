@@ -37,7 +37,6 @@ another Composable function called `ExampleUiScreen` and a Dagger component.
 @ComposeScreen(
     scope = ExampleScope::class,
     parentScope = AppScope::class,
-    dependencies = ExampleDependencies::class,
     stateMachine = ExampleStateMachine::class,
 )
 @Composable
@@ -68,7 +67,6 @@ will then generate a `ExampleUiFragment` class and a Dagger component.
 @ComposeFragment(
     scope = ExampleScope::class,
     parentScope = AppScope::class,
-    dependencies = ExampleDependencies::class,
     stateMachine = ExampleStateMachine::class,
 )
 @Composable
@@ -105,7 +103,6 @@ Dagger component.
 @RendererFragment(
     scope = ExampleScope::class,
     parentScope = AppScope::class,
-    dependencies = ExampleDependencies::class,
     rendererFactory = ExampleRenderer.Factory::class, // references the factory below
     stateMachine = ExampleStateMachine::class,
 )
@@ -131,10 +128,11 @@ The annotation has the same optional `fragmentBaseClass` parameter that
 
 ## Generated component
 
-All annotations have a parameter for `scope`, `dependencies` and `parentScope`. The first 2 will be used on `@MergeComponent` annotation of the generated
-component, i.e. `@MergeComponent(scope = ExampleScope::class, dependencies = [ExampleDependencies::class])`.
+All annotations have a `scope` and a `parentScope` parameter. These will be used in Anvil's 
+`@ContributesSubcomponent` annotation on the generated subcomponent, i.e. 
+`@ContributesSubcomponent(scope = ExampleScope::class, parentScope = AppScope::class)`.
 
-Since the generated component is using Anvil's `@MergeComponent`, it is possible
+Since the generated subcomponent is using `@ContributesSubcomponent`, it is possible
 to use `@ContributesTo`, `@ContributesBinding` and so on with that same scope
 to contribute objects into it.
 
@@ -143,13 +141,11 @@ with the `@ScopeTo` annotation that ships with the Whetstone runtime and uses
 the `scope` value as a parameter. To scope a class just add
 `@ScopeTo(ExampleScope::class)` to it. Any object using this scope will automatically survive configuration changes and will not be recreated together with the UI. In fact any scoped object that is created in generated component will do so together with component itself.
 
-The `dependencies` interface for [component dependencies](https://dagger.dev/api/2.22/dagger/Component.html#component-dependencies)
-will be looked up internally with `Context.getSystemService(name)` using the
-fully qualified name of the given `parentScope` as key for the lookup. It is
-expected that the app will provide it through its `Application` class or an
-`Activity`. It is recommended to add `@ContributesTo` to the dependencies interface
-and that the `parentScope` value should be the same one that is used in that
-annotation.
+A factory for the generated subcomponent is automatically generated and contributed to
+the component that uses `parentScope` as its own scope. This component will be looked up internally
+with `Context.getSystemService(name)` using the fully qualified name of the given `parentScope` as 
+key for the lookup. It is expected that the app will provide it through its `Application` class or an
+`Activity`.
 
 For convenience purposes the generated component will make a `SavedStateHandle`
 available which can be injected to classes like the state machine to save state.
@@ -203,17 +199,11 @@ would look like.
 // marker class for the scope
 sealed interface Example
 
-// dependencies interface that is contributed to the AppScope component
-@ContributesTo(AppScope::class)
-interface ExampleDependencies {
-    val repository: ExampleRepository // makes ExampleRepository from AppScope available
-}
-
 // state machine survives orientation changes
 @ScopeTo(Example::class)
 internal class ExampleStateMachine @Inject constructor(
     val route: ExampleRoute, // inject the navigator route that was used to get to this screen
-    val repository: ExampleRepository, // the repository
+    val repository: ExampleRepository, // a repository that pas provided somewhere in the app
     val navigator: ExampleNavigator,
 ) : StateMachine { ... }
 
@@ -226,8 +216,7 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() { ... }
 
 @ComposeScreen(
     scope = Example::class, // uses our marker class
-    parentScope = AppScope::class, // same parent scope as we use to contribute ExampleDependencies
-    dependencies = ExampleDependencies::class, // the dependencies interface
+    parentScope = AppScope::class, // the scope of the app level component
     stateMachine = ExampleStateMachine::class, // the state machine used for this ui
 )
 @NavDestination(
@@ -245,7 +234,7 @@ internal fun ExampleUi(
 ```
 
 Using this would require a one time setup in the app so that the screens can look up the `AppScope`
-component through `getSystemService` to retrieve the dependencies:
+component through `getSystemService` to retrieve the parent component:
 
 ```kotlin
 @Singleton
@@ -271,5 +260,4 @@ class App : Application() {
         return super.getSystemService(name)
     }
 }
-
 ```

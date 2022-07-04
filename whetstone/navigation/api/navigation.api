@@ -3,9 +3,7 @@ public abstract interface annotation class com/freeletics/mad/whetstone/NavEntry
 }
 
 public abstract interface annotation class com/freeletics/mad/whetstone/NavEntryComponent : java/lang/annotation/Annotation {
-	public abstract fun coroutinesEnabled ()Z
 	public abstract fun parentScope ()Ljava/lang/Class;
-	public abstract fun rxJavaEnabled ()Z
 	public abstract fun scope ()Ljava/lang/Class;
 }
 

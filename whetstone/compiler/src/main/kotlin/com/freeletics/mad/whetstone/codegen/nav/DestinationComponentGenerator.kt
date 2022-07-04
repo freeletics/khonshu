@@ -1,6 +1,6 @@
-package com.freeletics.mad.whetstone.codegen.common
+package com.freeletics.mad.whetstone.codegen.nav
 
-import com.freeletics.mad.whetstone.CommonData
+import com.freeletics.mad.whetstone.BaseData
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.destinationComponent
@@ -9,11 +9,11 @@ import com.squareup.kotlinpoet.TypeSpec
 
 
 internal class DestinationComponentGenerator(
-    override val data: CommonData,
-) : Generator<CommonData>() {
+    override val data: BaseData,
+) : Generator<BaseData>() {
 
     fun generate(): TypeSpec {
-        return TypeSpec.interfaceBuilder("NavEntry${data.baseName}DestinationComponent")
+        return TypeSpec.interfaceBuilder("Whetstone${data.baseName}DestinationComponent")
             .addAnnotation(contributesToAnnotation(data.navigation!!.destinationScope))
             .addAnnotation(optInAnnotation())
             .addSuperinterface(destinationComponent)

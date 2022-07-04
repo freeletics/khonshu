@@ -41,9 +41,6 @@ public inline fun <reified T : ActivityRoute> ActivityDestination(
 
 /**
  * A destination that can be navigated to. See [setGraph] for how to configure a `NavGraph` with it.
- *
- * [route] will be used as a unique identifier. The destination can be reached by navigating using
- * an instance of [route].
  */
 public sealed interface NavDestination {
     /**

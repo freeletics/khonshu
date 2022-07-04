@@ -1,6 +1,7 @@
 package com.freeletics.mad.whetstone.codegen.common
 
-import com.freeletics.mad.whetstone.CommonData
+import com.freeletics.mad.whetstone.BaseData
+import com.freeletics.mad.whetstone.ComposeData
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.asComposeState
 import com.freeletics.mad.whetstone.codegen.util.composable
@@ -12,12 +13,12 @@ import com.freeletics.mad.whetstone.codegen.util.rememberCoroutineScope
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.PRIVATE
 
-internal val Generator<out CommonData>.composableName
-    get() = "${data.baseName}Screen"
+internal val Generator<out BaseData>.composableName
+    get() = "Whetstone${data.baseName}"
 
 internal class ComposeGenerator(
-    override val data: CommonData,
-) : Generator<CommonData>() {
+    override val data: ComposeData,
+) : Generator<ComposeData>() {
 
     internal fun generate(): FunSpec {
         return FunSpec.builder(composableName)

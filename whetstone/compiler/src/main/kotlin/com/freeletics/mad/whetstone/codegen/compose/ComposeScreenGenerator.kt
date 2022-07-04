@@ -1,6 +1,6 @@
 package com.freeletics.mad.whetstone.codegen.compose
 
-import com.freeletics.mad.whetstone.CommonData
+import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
 import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.Generator
@@ -8,7 +8,6 @@ import com.freeletics.mad.whetstone.codegen.common.composableName
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.composable
 import com.freeletics.mad.whetstone.codegen.util.composeNavigationHandler
-import com.freeletics.mad.whetstone.codegen.util.fragmentViewModel
 import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
@@ -17,8 +16,8 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 
 internal class ComposeScreenGenerator(
-    override val data: CommonData,
-) : Generator<CommonData>() {
+    override val data: ComposeScreenData,
+) : Generator<ComposeScreenData>() {
 
     internal fun generate(): FunSpec {
         val parameter = data.navigation.asParameter()
