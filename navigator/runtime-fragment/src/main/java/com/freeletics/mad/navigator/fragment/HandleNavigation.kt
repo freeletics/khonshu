@@ -7,8 +7,6 @@ import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
@@ -33,15 +31,16 @@ public fun handleNavigation(fragment: Fragment, navigator: NavEventNavigator) {
         it.registerIn(fragment, fragment.requireActivity())
     }
 
+    val lifecycle = fragment.lifecycle
+
     val controller = fragment.findNavController()
     navigator.navigationResultRequests.forEach {
-        it.registerIn(controller, fragment)
+        it.registerIn(controller, lifecycle)
     }
 
     val dispatcher = fragment.requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(fragment, navigator.onBackPressedCallback)
 
-    val lifecycle = fragment.lifecycle
     lifecycle.coroutineScope.launch {
         lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             navigator.navEvents.collect { event ->
@@ -68,20 +67,19 @@ private fun PermissionsResultRequest.registerIn(
 
 private fun <O : Parcelable> NavigationResultRequest<O>.registerIn(
     controller: NavController,
-    lifecycleOwner: LifecycleOwner,
+    lifecycle: Lifecycle,
 ) {
-    val liveData = controller.getBackStackEntry(key.destinationId).savedStateHandle
-        .getLiveData<Parcelable>(key.requestKey)
+    lifecycle.coroutineScope.launch {
 
-    val observer = Observer<Parcelable> { result ->
-        @Suppress("UNCHECKED_CAST")
-        handleResult(result as O)
+        val initialValue = Bundle() // initial value marker instance so that we can filter it
+        controller.getBackStackEntry(key.destinationId)
+            .savedStateHandle
+            .getStateFlow<Parcelable>(key.requestKey, initialValue)
+            .collect { result ->
+                if (result !== initialValue) {
+                    @Suppress("UNCHECKED_CAST")
+                    handleResult(result as O)
+                }
+            }
     }
-
-    liveData.observe(lifecycleOwner, observer)
 }
-
-/**
- * Internal key used to store the result data in the result [Bundle].
- */
-private const val KEY_FRAGMENT_RESULT = "fragment_result"

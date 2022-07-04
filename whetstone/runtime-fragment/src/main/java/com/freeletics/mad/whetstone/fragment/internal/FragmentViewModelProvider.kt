@@ -3,12 +3,12 @@ package com.freeletics.mad.whetstone.fragment.internal
 import android.os.Bundle
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewmodel.initializer
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
-import com.freeletics.mad.whetstone.internal.WhetstoneViewModelFactory
 import com.freeletics.mad.whetstone.internal.findDependencies
 import kotlin.reflect.KClass
 
@@ -25,9 +25,12 @@ public inline fun <reified T : ViewModel, D : Any> Fragment.viewModel(
     arguments: Bundle,
     crossinline factory: @DisallowComposableCalls (D, SavedStateHandle, Bundle) -> T
 ): T {
-    val viewModelFactory = WhetstoneViewModelFactory(this) {
-        val dependencies = requireContext().findDependencies<D>(scope)
-        factory(dependencies, it, arguments)
+    val viewModelFactory = androidx.lifecycle.viewmodel.viewModelFactory {
+        initializer {
+            val dependencies = requireContext().findDependencies<D>(scope)
+            val savedStateHandle = createSavedStateHandle()
+            factory(dependencies, savedStateHandle, arguments)
+        }
     }
     val viewModelProvider = ViewModelProvider(this, viewModelFactory)
     return viewModelProvider[T::class.java]

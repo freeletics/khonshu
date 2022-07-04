@@ -6,13 +6,14 @@ import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
-import com.freeletics.mad.whetstone.internal.WhetstoneViewModelFactory
 import com.freeletics.mad.whetstone.internal.findDependencies
 import kotlin.reflect.KClass
 
@@ -34,9 +35,12 @@ public inline fun <reified T : ViewModel, D : Any> rememberViewModel(
     val savedStateRegistryOwner = LocalSavedStateRegistryOwner.current
     val context = LocalContext.current
     return remember(viewModelStoreOwner, savedStateRegistryOwner, context, arguments) {
-        val viewModelFactory = WhetstoneViewModelFactory(savedStateRegistryOwner) {
-            val dependencies = context.findDependencies<D>(scope)
-            factory(dependencies, it, arguments)
+        val viewModelFactory = viewModelFactory {
+            initializer {
+                val dependencies = context.findDependencies<D>(scope)
+                val savedStateHandle = createSavedStateHandle()
+                factory(dependencies, savedStateHandle, arguments)
+            }
         }
         val viewModelProvider = ViewModelProvider(viewModelStoreOwner, viewModelFactory)
         viewModelProvider[T::class.java]
