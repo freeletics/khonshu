@@ -17,22 +17,24 @@ internal val ClassName.propertyName: String get() {
             simpleNames.drop(1).joinToString { it.replaceFirstChar(Char::uppercaseChar) }
 }
 
-internal fun bindsInstanceParameter(name: String, className: ClassName): ParameterSpec {
+internal fun bindsInstanceParameter(
+    name: String,
+    className: ClassName,
+    annotation: AnnotationSpec? = null
+): ParameterSpec {
     return ParameterSpec.builder(name, className)
         .addAnnotation(bindsInstance)
+        .apply { if (annotation != null) addAnnotation(annotation) }
         .build()
 }
 
-internal fun bindsInstanceParameter(name: String, className: ClassName, annotation: AnnotationSpec): ParameterSpec {
-    return ParameterSpec.builder(name, className)
-        .addAnnotation(bindsInstance)
-        .addAnnotation(annotation)
-        .build()
-}
-
-internal fun bindsInstanceParameter(spec: ParameterSpec): ParameterSpec {
+internal fun bindsInstanceParameter(
+    spec: ParameterSpec,
+    annotation: AnnotationSpec? = null
+): ParameterSpec {
     return spec.toBuilder()
         .addAnnotation(bindsInstance)
+        .apply { if (annotation != null) addAnnotation(annotation) }
         .build()
 }
 

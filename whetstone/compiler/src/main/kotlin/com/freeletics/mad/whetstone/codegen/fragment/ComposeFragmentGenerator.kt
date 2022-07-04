@@ -22,7 +22,6 @@ internal class ComposeFragmentGenerator(
             .add("\n")
             // setContent: external method
             .beginControlFlow("setContent {")
-            // requireArguments: external method
             .addStatement("%L(%L)", composableName, retainedComponentClassName.propertyName)
             .endControlFlow()
             .endControlFlow()
