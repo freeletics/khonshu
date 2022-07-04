@@ -2,7 +2,7 @@ Change Log
 ==========
 
 
-Version 0.7.0 *(UNRELEASED)*
+Version 0.7.0 *(2022-07-04)*
 ----------------------------
 
 Updated to Kotlin 1.7.0 and Compose compiler 1.2.0.
@@ -19,6 +19,12 @@ Updated to Kotlin 1.7.0 and Compose compiler 1.2.0.
   `NavEntry(ScopeOfNavEntryComponent::class)` qualifier on them
 - The `rxJavaEnabled` and `coroutinesEnabled` parameters were removed from all annotations. For how
   to replace them, see the 0.5.0 changelog.
+
+
+### Navigator
+
+- removed dependency on `LiveData`
+
 
 
 Version 0.6.0 *(2022-06-28)*

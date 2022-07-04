@@ -17,11 +17,11 @@ modularized code base.
 For more information check out it's [README][4].
 
 ```groovy
-implementation 'com.freeletics.mad:navigator:0.6.0'
+implementation 'com.freeletics.mad:navigator:0.7.0'
 // when using composables for navigation
-implementation 'com.freeletics.mad:navigator-compose:0.6.0'
+implementation 'com.freeletics.mad:navigator-compose:0.7.0'
 // when using fragments for navigation (even if these contain composables)
-implementation 'com.freeletics.mad:navigator-fragment:0.6.0'
+implementation 'com.freeletics.mad:navigator-fragment:0.7.0'
 ```
 
 
@@ -33,20 +33,20 @@ generating dependency injection related code and common boilerplate for screens.
 For more information check out its [README][6].
 
 ```groovy
-anvil  'com.freeletics.mad:whetstone-compiler:0.6.0'
+anvil  'com.freeletics.mad:whetstone-compiler:0.7.0'
 
-implementation 'com.freeletics.mad:whetstone-runtime:0.6.0'
+implementation 'com.freeletics.mad:whetstone-runtime:0.7.0'
 // when using composables
-implementation 'com.freeletics.mad:whetstone-runtime-compose:0.6.0'
+implementation 'com.freeletics.mad:whetstone-runtime-compose:0.7.0'
 // when using fragments (even if these contain composables)
-implementation 'com.freeletics.mad:whetstone-runtime-fragment:0.6.0'
+implementation 'com.freeletics.mad:whetstone-runtime-fragment:0.7.0'
 
 // for the integration with Navigator
-implementation 'com.freeletics.mad:whetstone-navigation:0.6.0'
+implementation 'com.freeletics.mad:whetstone-navigation:0.7.0'
 // for the integration with Navigator - when using composables
-implementation 'com.freeletics.mad:whetstone-navigation-compose:0.6.0'
+implementation 'com.freeletics.mad:whetstone-navigation-compose:0.7.0'
 // for the integration with Navigator - when using fragments (even if these contain composables)
-implementation 'com.freeletics.mad:whetstone-navigation-fragment:0.6.0'
+implementation 'com.freeletics.mad:whetstone-navigation-fragment:0.7.0'
 ```
 
 
@@ -61,7 +61,7 @@ In compose the `StateMachine` can be observed using `produceState()` and actions
 to it by simply launching them from a `CoroutineScope` created with `rememberCoroutineScope()`.
 
 ```groovy
-implementation 'com.freeletics.mad:state-machine:0.6.0'
+implementation 'com.freeletics.mad:state-machine:0.7.0'
 ```
 
 
@@ -77,7 +77,7 @@ For more information about the motivation for this abstraction check out this
 [blog post][1].
 
 ```groovy
-implementation 'com.freeletics.mad:text-resource:0.6.0'
+implementation 'com.freeletics.mad:text-resource:0.7.0'
 ```
 
 
