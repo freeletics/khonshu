@@ -18,6 +18,7 @@ import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import com.freeletics.mad.navigator.internal.navigate
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 
 /**
  * Handles the [NavEventNavigator] events while the Fragment's lifecycle is at least
@@ -70,16 +71,17 @@ private fun <O : Parcelable> NavigationResultRequest<O>.registerIn(
     lifecycle: Lifecycle,
 ) {
     lifecycle.coroutineScope.launch {
-
-        val initialValue = Bundle() // initial value marker instance so that we can filter it
         controller.getBackStackEntry(key.destinationId)
             .savedStateHandle
-            .getStateFlow<Parcelable>(key.requestKey, initialValue)
+            .getStateFlow<Parcelable>(key.requestKey, InitialValue)
             .collect { result ->
-                if (result !== initialValue) {
+                if (result != InitialValue) {
                     @Suppress("UNCHECKED_CAST")
                     handleResult(result as O)
                 }
             }
     }
 }
+
+@Parcelize
+private object InitialValue : Parcelable
