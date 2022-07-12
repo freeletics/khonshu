@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+Version 0.7.1 *(2022-07-12)*
+----------------------------
+
+- Sources are now visible in Android Studio again
+
+### Navigator
+
+- Fix a crash in the navigation result APIs
+
 
 Version 0.7.0 *(2022-07-04)*
 ----------------------------
@@ -24,7 +33,6 @@ Updated to Kotlin 1.7.0 and Compose compiler 1.2.0.
 ### Navigator
 
 - removed dependency on `LiveData`
-
 
 
 Version 0.6.0 *(2022-06-28)*
