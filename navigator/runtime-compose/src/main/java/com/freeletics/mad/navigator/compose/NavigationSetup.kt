@@ -22,6 +22,7 @@ import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import com.freeletics.mad.navigator.internal.navigate
+import kotlinx.parcelize.Parcelize
 
 /**
  * Sets up the [NavEventNavigator] inside the current composition so that it's events
@@ -93,15 +94,17 @@ private fun <O : Parcelable> ResultEffect(
     controller: NavController,
 ) {
     LaunchedEffect(request, controller) {
-        val initialValue = Bundle() // initial value marker instance so that we can filter it
         controller.getBackStackEntry(request.key.destinationId)
             .savedStateHandle
-            .getStateFlow<Parcelable>(request.key.requestKey, initialValue)
+            .getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
             .collect { result ->
-                if (result !== initialValue) {
+                if (result != InitialValue) {
                     @Suppress("UNCHECKED_CAST")
                     request.handleResult(result as O)
                 }
             }
     }
 }
+
+@Parcelize
+private object InitialValue : Parcelable
