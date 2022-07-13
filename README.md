@@ -53,7 +53,7 @@ implementation 'com.freeletics.mad:whetstone-navigation-fragment:0.7.1'
 ## StateMachine
 
 `StateMachine` is a very simple interface to implement a StateMachine with the concept of emitting
-state through a `kotlinx.coroutines.flow.StateFlow` and receiving input actions to mutate that state.
+state through a `kotlinx.coroutines.flow.Flow` and receiving input actions to mutate that state.
 
 For an example on how to build such a state machine check out [FlowRedux][2]. To connect a
 `StateMachine` to a user interface you can look at [Renderer][3] for the Android View world.
