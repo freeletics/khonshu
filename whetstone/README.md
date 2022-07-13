@@ -20,7 +20,7 @@ just using Compose is as easy as replacing a single annotation on each screen.
 ## Basic usage
 
 Using the library depends a bit on the app it's being used in. If the app
-is 100% compose and does not have any Fragments then the `@ComposeScreen`
+is 100% Compose UI only and does not have any Fragments then the `@ComposeScreen`
 annotation is the way to go. For apps built with Fragments there is a
 `@ComposeFragment` annotation for screens using compose and for screens build
 with views there is `@RendererFragment`.
@@ -185,7 +185,7 @@ for Fragments inside the generated code.
 The last part of the integration is that Whetstone will automatically generate
 a `NavDestination` for the screen by using the `route` and `type`. This
 generated destination is automatically provided into a `Set` in the component
-that uses `destinationScope` as it's scope (usually an app wide or Activity
+that uses `destinationScope` as its scope (usually an app wide or Activity
 level scope). With that it's not necessary to manually create a `Set`
 of all destinations anymore. It can simply be injected.
 

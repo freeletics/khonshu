@@ -1,8 +1,8 @@
 # Modern Android Development - The Freeletics Way
 
-At Freeletics use many of the Jetpack/AndroidX libraries but we don't
-always use them in the way they are advertised in Google's tutorials.
-This project show cases our own flavored version of Modern Android Development
+At Freeletics we use many of the Jetpack/AndroidX libraries but not always in the way 
+they are advertised and recommended in Google's tutorials.
+This project showcases our own flavored version of Modern Android Development
 as well as some of our own utilities.
 
 **This repository is a work in progress. More will be added over time.**
@@ -14,7 +14,7 @@ The navigator library is a wrapper around AndroidX navigation that allows to sep
 logic from the UI layer and provides a scalable approach to type safe navigation in a highly
 modularized code base.
 
-For more information check out it's [README][4].
+For more information check out its [README][4].
 
 ```groovy
 implementation 'com.freeletics.mad:navigator:0.7.1'
@@ -28,7 +28,7 @@ implementation 'com.freeletics.mad:navigator-fragment:0.7.1'
 ## Whetstone
 
 Whetstone is a plugin for [Anvil][5] that helps with
-generating dependency injection related code and common boilerplate for screens.
+generating dependency injection related code and common boilerplate for feature screens.
 
 For more information check out its [README][6].
 
@@ -36,16 +36,16 @@ For more information check out its [README][6].
 anvil  'com.freeletics.mad:whetstone-compiler:0.7.1'
 
 implementation 'com.freeletics.mad:whetstone-runtime:0.7.1'
-// when using composables
+// when using Compose UI
 implementation 'com.freeletics.mad:whetstone-runtime-compose:0.7.1'
-// when using fragments (even if these contain composables)
+// when using fragments (even if these contain Compose UI)
 implementation 'com.freeletics.mad:whetstone-runtime-fragment:0.7.1'
 
 // for the integration with Navigator
 implementation 'com.freeletics.mad:whetstone-navigation:0.7.1'
-// for the integration with Navigator - when using composables
+// for the integration with Navigator - when using Compose UI
 implementation 'com.freeletics.mad:whetstone-navigation-compose:0.7.1'
-// for the integration with Navigator - when using fragments (even if these contain composables)
+// for the integration with Navigator - when using fragments (even if these contain Compose UI)
 implementation 'com.freeletics.mad:whetstone-navigation-fragment:0.7.1'
 ```
 
@@ -53,11 +53,11 @@ implementation 'com.freeletics.mad:whetstone-navigation-fragment:0.7.1'
 ## StateMachine
 
 `StateMachine` is a very simple interface to implement a StateMachine with the concept of emitting
-state through a `StateFlow` and receiving input actions to mutate that state.
+state through a `kotlinx.coroutines.flow.Flow` and receiving input actions to mutate that state.
 
 For an example on how to build such a state machine check out [FlowRedux][2]. To connect a
 `StateMachine` to a user interface you can look at [Renderer][3] for the Android View world.
-In compose the `StateMachine` can be observed using `produceState()` and actions can be dispatched
+When using Compose UI the `StateMachine` can be observed with `produceState()` and actions can be dispatched
 to it by simply launching them from a `CoroutineScope` created with `rememberCoroutineScope()`.
 
 ```groovy
