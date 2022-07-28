@@ -50,7 +50,7 @@ tasks.withType(JavaCompile).configureEach {
 dependencies {
     api project(":navigator:navigator-runtime")
     api "androidx.fragment:fragment:1.5.0"
-    api "androidx.navigation:navigation-fragment:2.5.0"
+    api "androidx.navigation:navigation-fragment:2.5.1"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
     implementation "androidx.activity:activity:1.5.0"
