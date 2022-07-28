@@ -55,7 +55,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
     implementation "androidx.activity:activity:1.5.0"
     implementation "androidx.lifecycle:lifecycle-common:2.5.0"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0"
     implementation "androidx.navigation:navigation-common:2.5.0"
     implementation "androidx.navigation:navigation-runtime:2.5.0"
