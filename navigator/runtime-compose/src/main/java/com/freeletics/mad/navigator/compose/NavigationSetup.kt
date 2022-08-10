@@ -94,13 +94,16 @@ private fun <O : Parcelable> ResultEffect(
     controller: NavController,
 ) {
     LaunchedEffect(request, controller) {
-        controller.getBackStackEntry(request.key.destinationId)
+        val backStackEntry = controller.getBackStackEntry(request.key.destinationId)
+
+        backStackEntry
             .savedStateHandle
             .getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
             .collect { result ->
                 if (result != InitialValue) {
                     @Suppress("UNCHECKED_CAST")
                     request.handleResult(result as O)
+                    backStackEntry.savedStateHandle[request.key.requestKey] = InitialValue
                 }
             }
     }
