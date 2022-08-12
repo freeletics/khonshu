@@ -1,6 +1,7 @@
 package com.freeletics.mad.navigator.fragment
 
 import androidx.navigation.ActivityNavigator
+import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.createGraph
@@ -26,19 +27,20 @@ public fun NavHostFragment.setGraph(
     @Suppress("deprecation")
     val graph = navController.createGraph(startDestination = startRoute.destinationId()) {
         destinations.forEach { destination ->
-            addDestination(navController, destination)
+            addDestination(navController, destination, startRoute)
         }
     }
 
-    navController.setGraph(graph, startRoute.getArguments())
+    navController.setGraph(graph, null)
 }
 
 private fun NavGraphBuilder.addDestination(
     controller: NavController,
     destination: NavDestination,
+    startRoute: BaseRoute,
 ) {
     val newDestination = when (destination) {
-        is NavDestination.Screen<*> -> destination.toDestination(controller)
+        is NavDestination.Screen<*> -> destination.toDestination(controller, startRoute)
         is NavDestination.Dialog<*> -> destination.toDestination(controller)
         is NavDestination.Activity<*> -> destination.toDestination(controller)
     }
@@ -47,11 +49,22 @@ private fun NavGraphBuilder.addDestination(
 
 private fun NavDestination.Screen<*>.toDestination(
     controller: NavController,
+    startRoute: BaseRoute,
 ): FragmentNavigator.Destination {
     val navigator = controller.navigatorProvider[FragmentNavigator::class]
     return FragmentNavigator.Destination(navigator).also {
         it.id = route.destinationId()
         it.setClassName(fragmentClass.java.name)
+        if (startRoute::class == route) {
+            val arguments = startRoute.getArguments()
+            arguments.keySet().forEach { key ->
+                val argument = NavArgument.Builder()
+                    .setDefaultValue(arguments.get(key))
+                    .setIsNullable(false)
+                    .build()
+                it.addArgument(key, argument)
+            }
+        }
     }
 }
 
