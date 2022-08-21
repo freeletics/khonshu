@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+Version 0.7.2 *(2022-08-12)*
+----------------------------
+
+### Navigator
+
+- Fragment: Fix that the start destination sometimes does not have any arguments
+- Fix an issue that caused navigation results to be delivered multiple times
+
+
 Version 0.7.1 *(2022-07-12)*
 ----------------------------
 

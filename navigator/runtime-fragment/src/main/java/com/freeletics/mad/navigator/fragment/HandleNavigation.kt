@@ -70,14 +70,17 @@ private fun <O : Parcelable> NavigationResultRequest<O>.registerIn(
     controller: NavController,
     lifecycle: Lifecycle,
 ) {
+    val backStackEntry = controller.getBackStackEntry(key.destinationId)
+
     lifecycle.coroutineScope.launch {
-        controller.getBackStackEntry(key.destinationId)
+        backStackEntry
             .savedStateHandle
             .getStateFlow<Parcelable>(key.requestKey, InitialValue)
             .collect { result ->
                 if (result != InitialValue) {
                     @Suppress("UNCHECKED_CAST")
                     handleResult(result as O)
+                    backStackEntry.savedStateHandle[key.requestKey] = InitialValue
                 }
             }
     }
