@@ -1,14 +1,17 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'org.jetbrains.kotlin.plugin.parcelize'
-apply plugin: "org.jetbrains.dokka"
-apply plugin: 'com.vanniktech.maven.publish'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.publish)
+}
 
 android {
-    compileSdkVersion 31
+    namespace = "com.freeletics.mad.navigator.runtime.compose"
+    compileSdkVersion libs.versions.android.compile.get().toInteger()
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion libs.versions.android.min.get().toInteger()
     }
 
     buildFeatures {
@@ -18,12 +21,12 @@ android {
 
     // still needed for Android projects despite toolchain
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_11)
-        targetCompatibility(JavaVersion.VERSION_11)
+        sourceCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
+        targetCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0"
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 }
 
@@ -34,12 +37,11 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
     }
 
     sourceSets.all {
         languageSettings {
-            optIn("kotlin.RequiresOptIn")
             optIn("com.freeletics.mad.navigator.internal.InternalNavigatorApi")
         }
     }
@@ -48,30 +50,26 @@ kotlin {
 // workaround for https://issuetracker.google.com/issues/194113162
 tasks.withType(JavaCompile).configureEach {
     javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
     }
 }
 
 dependencies {
     api project(":navigator:navigator-runtime")
-    api "androidx.compose.runtime:runtime:1.1.1"
-    api "androidx.compose.ui:ui-graphics:1.1.1"
-    api "androidx.navigation:navigation-runtime:2.5.0" // for an obsolete api
+    api libs.androidx.compose.runtime
+    api libs.androidx.compose.ui
+    api libs.androidx.navigation.runtime
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
-    implementation "androidx.activity:activity:1.5.0"
-    implementation "androidx.activity:activity-compose:1.5.0"
-    implementation "androidx.compose.ui:ui:1.1.1"
-    implementation "androidx.compose.ui:ui-unit:1.1.1"
-    implementation "androidx.compose.animation:animation-core:1.1.1"
-    implementation "androidx.compose.foundation:foundation:1.1.1"
-    implementation "androidx.compose.foundation:foundation-layout:1.1.1"
-    implementation "androidx.compose.material:material:1.1.1"
-    implementation "androidx.lifecycle:lifecycle-common:2.5.0"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0"
-    implementation "androidx.navigation:navigation-common:2.5.0"
-    implementation "androidx.navigation:navigation-compose:2.5.0"
-    implementation "com.google.accompanist:accompanist-navigation-material:0.23.1"
-    implementation 'org.jetbrains.kotlin:kotlin-parcelize-runtime:1.7.0'
+    implementation libs.coroutines.core
+    implementation libs.androidx.activity
+    implementation libs.androidx.activity.compose
+    implementation libs.androidx.compose.foundation
+    implementation libs.androidx.compose.material
+    implementation libs.androidx.lifecycle.common
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.androidx.viewmodel.savedstate
+    implementation libs.androidx.navigation.common
+    implementation libs.androidx.navigation.compose
+    implementation libs.accompanist.navigation
+    implementation libs.kotlin.parcelize
 }

@@ -1,3 +1,22 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        google()
+    }
+
+    // https://youtrack.jetbrains.com/issue/KT-51379
+    // repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+}
+
+
 include ":navigator:runtime", ":navigator:runtime-compose", ":navigator:runtime-fragment"
 include ":state-machine"
 include ":text-resource"

@@ -1,13 +1,16 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'org.jetbrains.dokka'
-apply plugin: 'com.vanniktech.maven.publish'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.publish)
+}
 
 android {
-    compileSdkVersion 31
+    namespace = "com.freeletics.mad.whetstone.navigation"
+    compileSdkVersion libs.versions.android.compile.get().toInteger()
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion libs.versions.android.min.get().toInteger()
     }
 
     buildFeatures {
@@ -16,8 +19,8 @@ android {
 
     // still needed for Android projects despite toolchain
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_11)
-        targetCompatibility(JavaVersion.VERSION_11)
+        sourceCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
+        targetCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
     }
 }
 
@@ -28,12 +31,11 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
     }
 
     sourceSets.all {
         languageSettings {
-            optIn("kotlin.RequiresOptIn")
             optIn("com.freeletics.mad.whetstone.internal.InternalWhetstoneApi")
         }
     }
@@ -42,17 +44,17 @@ kotlin {
 // workaround for https://issuetracker.google.com/issues/194113162
 tasks.withType(JavaCompile).configureEach {
     javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
     }
 }
 
 dependencies {
     api project(":whetstone:runtime")
-    api "javax.inject:javax.inject:1"
-    api "com.google.dagger:dagger:2.42"
-    api "androidx.navigation:navigation-common:2.5.0"
+    api libs.inject
+    api libs.dagger
+    api libs.androidx.navigation.common
 
     implementation project(":navigator:navigator-runtime")
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.5.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0"
+    implementation libs.androidx.viewmodel
+    implementation libs.androidx.viewmodel.savedstate
 }

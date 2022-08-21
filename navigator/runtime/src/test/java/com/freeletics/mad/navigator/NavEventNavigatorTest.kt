@@ -31,22 +31,22 @@ public class NavEventNavigatorTest {
 
     private data class SimpleRoute(val number: Int) : NavRoute {
         override fun describeContents(): Int = 0
-        override fun writeToParcel(dest: Parcel?, flags: Int) {}
+        override fun writeToParcel(dest: Parcel, flags: Int) {}
     }
     private data class OtherRoute(val number: Int) : NavRoute {
         override fun describeContents(): Int = 0
-        override fun writeToParcel(dest: Parcel?, flags: Int) {}
+        override fun writeToParcel(dest: Parcel, flags: Int) {}
     }
     private data class SimpleRoot(val number: Int) : NavRoot {
         override fun describeContents(): Int = 0
-        override fun writeToParcel(dest: Parcel?, flags: Int) {}
+        override fun writeToParcel(dest: Parcel, flags: Int) {}
     }
     private data class SimpleActivity(val number: Int) : ActivityRoute
 
     private data class TestParcelable(
         val value: Int
     ) : Parcelable {
-        override fun writeToParcel(dest: Parcel?, flags: Int) {}
+        override fun writeToParcel(dest: Parcel, flags: Int) {}
         override fun describeContents() = 0
 
 
