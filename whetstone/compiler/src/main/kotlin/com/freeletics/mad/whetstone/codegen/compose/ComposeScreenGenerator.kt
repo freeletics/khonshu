@@ -28,7 +28,7 @@ internal class ComposeScreenGenerator(
             .also {
                 if (data.navigation != null) {
                     it.addStatement("val viewModel = %M(%T::class, %T::class, %N, ::%T)",
-                        rememberViewModel, data.parentScope, data.navigation!!.destinationScope, parameter, viewModelClassName)
+                        rememberViewModel, data.parentScope, data.navigation.destinationScope, parameter, viewModelClassName)
                 } else {
                     it.addStatement("val viewModel = %M(%T::class, %N, ::%T)",
                         rememberViewModel, data.parentScope, parameter, viewModelClassName)

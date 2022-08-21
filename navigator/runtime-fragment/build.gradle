@@ -1,14 +1,17 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'org.jetbrains.kotlin.plugin.parcelize'
-apply plugin: "org.jetbrains.dokka"
-apply plugin: 'com.vanniktech.maven.publish'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.publish)
+}
 
 android {
-    compileSdkVersion 31
+    namespace = "com.freeletics.mad.navigator.runtime.fragment"
+    compileSdkVersion libs.versions.android.compile.get().toInteger()
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion libs.versions.android.min.get().toInteger()
     }
 
     buildFeatures {
@@ -17,8 +20,8 @@ android {
 
     // still needed for Android projects despite toolchain
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_11)
-        targetCompatibility(JavaVersion.VERSION_11)
+        sourceCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
+        targetCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
     }
 }
 
@@ -29,12 +32,11 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
     }
 
     sourceSets.all {
         languageSettings {
-            optIn("kotlin.RequiresOptIn")
             optIn("com.freeletics.mad.navigator.internal.InternalNavigatorApi")
         }
     }
@@ -43,21 +45,21 @@ kotlin {
 // workaround for https://issuetracker.google.com/issues/194113162
 tasks.withType(JavaCompile).configureEach {
     javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
     }
 }
 
 dependencies {
     api project(":navigator:navigator-runtime")
-    api "androidx.fragment:fragment:1.5.0"
-    api "androidx.navigation:navigation-fragment:2.5.0"
+    api libs.androidx.fragment
+    api libs.androidx.navigation.fragment
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
-    implementation "androidx.activity:activity:1.5.0"
-    implementation "androidx.lifecycle:lifecycle-common:2.5.0"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0"
-    implementation "androidx.navigation:navigation-common:2.5.0"
-    implementation "androidx.navigation:navigation-runtime:2.5.0"
-    implementation 'org.jetbrains.kotlin:kotlin-parcelize-runtime:1.7.0'
+    implementation libs.coroutines.core
+    implementation libs.androidx.activity
+    implementation libs.androidx.lifecycle.common
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.androidx.viewmodel.savedstate
+    implementation libs.androidx.navigation.common
+    implementation libs.androidx.navigation.runtime
+    implementation libs.kotlin.parcelize
 }

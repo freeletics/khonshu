@@ -1,0 +1,90 @@
+[versions]
+kotlin = "1.7.10"
+coroutines = "1.6.4"
+
+java = "11"
+
+android-gradle = "7.2.2"
+android-min = "21"
+android-target = "33"
+android-compile = "33"
+androidx-activity = "1.5.1"
+androidx-compose-compiler = "1.3.0"
+androidx-compose-runtime = "1.2.1"
+androidx-core = "1.8.0"
+androidx-lifecycle = "2.5.1"
+androidx-fragment = "1.5.2"
+androidx-navigation = "2.5.0"
+androidx-savedstate = "1.2.0"
+
+accompanist = "0.23.1"
+inject = "1"
+dagger = "2.42"
+anvil = "2.4.1"
+kotlinpoet = "1.12.0"
+auto-service = "1.0.1"
+
+junit = "4.13.2"
+truth = "1.1.3"
+turbine = "0.9.0"
+
+publish = "0.21.0"
+dokka = "1.6.10"
+binarycompatibility = "0.11.0"
+dependency-analysis = "1.12.0"
+
+[libraries]
+kotlin-parcelize = { module = "org.jetbrains.kotlin:kotlin-parcelize-runtime", version.ref = "kotlin" }
+kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+
+androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "androidx-compose-runtime" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose-runtime" }
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose-runtime" }
+androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidx-compose-runtime" }
+androidx-core = { module = "androidx.core:core", version.ref = "androidx-core" }
+androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
+androidx-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+androidx-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
+androidx-navigation-common = { module = "androidx.navigation:navigation-common", version.ref = "androidx-navigation" }
+androidx-navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "androidx-navigation" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
+androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "androidx-navigation" }
+androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidx-fragment" }
+androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
+
+
+accompanist-navigation = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
+inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+anvil-compiler = { module = "com.squareup.anvil:compiler-api", version.ref = "anvil" }
+anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }
+anvil-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvil" }
+kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
+auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service" }
+auto-service-compiler = { module = "com.google.auto.service:auto-service", version.ref = "auto-service" }
+
+junit = { module = "junit:junit", version.ref = "junit" } 
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+
+[plugins]
+android-library = { id = "com.android.library", version.ref = "android-gradle" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binarycompatibility" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }

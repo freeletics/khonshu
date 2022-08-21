@@ -1,3 +1,21 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        google()
+    }
+
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+}
+
+
 include ":navigator:runtime", ":navigator:runtime-compose", ":navigator:runtime-fragment"
 include ":state-machine"
 include ":text-resource"

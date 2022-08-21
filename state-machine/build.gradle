@@ -1,6 +1,8 @@
-apply plugin: "org.jetbrains.kotlin.multiplatform"
-apply plugin: "org.jetbrains.dokka"
-apply plugin: "com.vanniktech.maven.publish"
+plugins {
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.publish)
+}
 
 kotlin {
     explicitApi()
@@ -23,19 +25,15 @@ kotlin {
     watchosX86()
 
     sourceSets.all {
-        languageSettings {
-            optIn("kotlin.RequiresOptIn")
-        }
-
         jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(11))
+            languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
         }
     }
 
     sourceSets {
         commonMain {
             dependencies {
-                api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+                api libs.coroutines.core
             }
         }
     }

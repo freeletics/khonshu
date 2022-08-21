@@ -1,33 +1,17 @@
-buildscript {
-    ext.kotlin_version = '1.7.0'
+plugins {
+    alias(libs.plugins.binarycompatibility)
+    alias(libs.plugins.dependency.analysis)
 
-    repositories {
-        mavenCentral()
-        google()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.2.1"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.6.10"
-        classpath "com.vanniktech:gradle-maven-publish-plugin:0.21.0"
-        classpath "com.autonomousapps:dependency-analysis-gradle-plugin:1.10.0"
-        classpath "com.github.ben-manes:gradle-versions-plugin:0.42.0"
-        classpath "org.jetbrains.kotlinx:binary-compatibility-validator:0.11.0"
-    }
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.kotlin.parcelize) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.publish) apply false
 }
-
-apply plugin: "com.autonomousapps.dependency-analysis"
-apply plugin: "org.jetbrains.kotlinx.binary-compatibility-validator"
-apply plugin: "com.github.ben-manes.versions"
-
-
-allprojects {
-    repositories {
-        mavenCentral()
-        google()
-    }
-}
+apply plugin: com.vanniktech.maven.publish.MavenPublishRootPlugin
 
 task clean(type: Delete) {
     delete rootProject.buildDir
@@ -36,12 +20,10 @@ task clean(type: Delete) {
 dependencyAnalysis {
     issues {
         all {
+            ignoreKtx(true)
+
             onAny {
                 severity('fail')
-            }
-
-            onUnusedDependencies {
-                exclude("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
             }
         }
 
@@ -96,6 +78,18 @@ dependencyAnalysis {
             excludeClasses(".*\\.navigator\\.internal\\..*")
         }
     }
+
+    dependencies {
+        bundle("androidx-compose-ui") {
+            primary("androidx.compose.ui:ui")
+            includeGroup("androidx.compose.ui")
+        }
+        bundle("androidx-compose-foundation") {
+            primary("androidx.compose.foundation:foundation")
+            includeGroup("androidx.compose.animation")
+            includeGroup("androidx.compose.foundation")
+        }
+    }
 }
 
 apiValidation {
@@ -104,19 +98,6 @@ apiValidation {
     nonPublicMarkers += [
         "androidx.annotation.VisibleForTesting",
         "com.freeletics.mad.navigator.internal.InternalNavigatorApi",
-        "com.freeletics.mad.navigator.internal.ObsoleteNavigatorApi",
         "com.freeletics.mad.whetstone.internal.InternalWhetstoneApi",
     ]
-}
-
-def isNonStable = { String version ->
-  def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
-  def regex = /^[0-9,.v-]+(-r)?$/
-  return !stableKeyword && !(version ==~ regex)
-}
-
-tasks.named("dependencyUpdates").configure {
-  rejectVersionIf {
-    isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
-  }
 }

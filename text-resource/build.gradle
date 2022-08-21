@@ -1,14 +1,17 @@
-apply plugin: "com.android.library"
-apply plugin: "org.jetbrains.kotlin.android"
-apply plugin: "org.jetbrains.kotlin.plugin.parcelize"
-apply plugin: "org.jetbrains.dokka"
-apply plugin: "com.vanniktech.maven.publish"
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.publish)
+}
 
 android {
-    compileSdkVersion 31
+    namespace = "com.freeletics.mad.text"
+    compileSdkVersion libs.versions.android.compile.get().toInteger()
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion libs.versions.android.min.get().toInteger()
     }
 
     buildFeatures {
@@ -18,12 +21,12 @@ android {
 
     // still needed for Android projects despite toolchain
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_11)
-        targetCompatibility(JavaVersion.VERSION_11)
+        sourceCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
+        targetCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0"
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 }
 
@@ -34,28 +37,22 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
-
-    sourceSets.all {
-        languageSettings {
-            optIn("kotlin.RequiresOptIn")
-        }
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
     }
 }
 
 // workaround for https://issuetracker.google.com/issues/194113162
 tasks.withType(JavaCompile).configureEach {
     javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
     }
 }
 
 dependencies {
-    api "androidx.compose.runtime:runtime:1.1.1"
+    api libs.androidx.compose.runtime
 
-    implementation "androidx.compose.ui:ui:1.1.1"
-    implementation "org.jetbrains.kotlin:kotlin-parcelize-runtime:$kotlin_version"
+    implementation libs.androidx.compose.ui
+    implementation libs.kotlin.parcelize
 
     compileOnly "androidx.annotation:annotation:1.2.0"
 }
