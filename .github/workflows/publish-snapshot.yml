@@ -4,12 +4,9 @@ on:
   push:
     branches:
       - '**'
-  pull_request:
 
 jobs:
   publish:
-    if: ${{ github.actor != 'dependabot[bot]' }}
-
     runs-on: macos-latest
 
     steps:
@@ -42,3 +39,4 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_SIGNING_PRIVATE_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_SIGNING_PASSWORD }}
+        if: "${{ env.ORG_GRADLE_PROJECT_mavenCentralUsername != '' }}"
