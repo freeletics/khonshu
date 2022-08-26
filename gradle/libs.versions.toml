@@ -17,7 +17,7 @@ androidx-fragment = "1.5.2"
 androidx-navigation = "2.5.1"
 androidx-savedstate = "1.2.0"
 
-accompanist = "0.23.1"
+accompanist = "0.25.1"
 inject = "1"
 dagger = "2.42"
 anvil = "2.4.2"
