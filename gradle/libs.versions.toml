@@ -14,7 +14,7 @@ androidx-compose-runtime = "1.2.1"
 androidx-core = "1.8.0"
 androidx-lifecycle = "2.5.1"
 androidx-fragment = "1.5.2"
-androidx-navigation = "2.5.1"
+androidx-navigation = "2.5.2"
 androidx-savedstate = "1.2.0"
 
 accompanist = "0.25.1"
