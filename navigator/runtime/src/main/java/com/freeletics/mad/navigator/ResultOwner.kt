@@ -123,7 +123,7 @@ public class NavigationResultRequest<O : Parcelable> internal constructor(
     /**
      * Use to identify where the result should be delivered to.
      */
-    public data class Key<@Suppress("unused") O : Parcelable> @VisibleForTesting constructor(
+    public data class Key<@Suppress("unused") O : Parcelable> @InternalNavigatorApi constructor(
         @property:InternalNavigatorApi
         public val destinationId: Int,
         @property:InternalNavigatorApi
