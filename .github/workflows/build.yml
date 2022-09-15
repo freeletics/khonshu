@@ -27,5 +27,7 @@ jobs:
       - name: Install Android SDK
         run: ./.github/android-sdk.sh
 
+      - uses: gradle/gradle-build-action@v2
+
       - name: Build with Gradle
         run: ./gradlew build buildHealth --stacktrace
