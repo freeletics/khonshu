@@ -5,4 +5,5 @@ package com.freeletics.mad.navigator.internal
  * at any time.
  */
 @RequiresOptIn
+@Retention(AnnotationRetention.BINARY)
 public annotation class InternalNavigatorApi
