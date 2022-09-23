@@ -94,7 +94,7 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesTo(TestScreen::class)
             public interface WhetstoneTestModule {
               @Multibinds
-              public fun bindCancellable(): Set<Closeable>
+              public fun bindCloseables(): Set<Closeable>
             }
 
             @InternalWhetstoneApi
@@ -235,7 +235,7 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesTo(TestScreen::class)
             public interface WhetstoneTestModule {
               @Multibinds
-              public fun bindCancellable(): Set<Closeable>
+              public fun bindCloseables(): Set<Closeable>
             }
 
             @InternalWhetstoneApi
@@ -387,7 +387,7 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesTo(TestScreen::class)
             public interface WhetstoneTestModule {
               @Multibinds
-              public fun bindCancellable(): Set<Closeable>
+              public fun bindCloseables(): Set<Closeable>
             }
 
             @InternalWhetstoneApi
@@ -537,7 +537,7 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesTo(TestScreen::class)
             public interface WhetstoneTestModule {
               @Multibinds
-              public fun bindCancellable(): Set<Closeable>
+              public fun bindCloseables(): Set<Closeable>
             }
 
             @InternalWhetstoneApi

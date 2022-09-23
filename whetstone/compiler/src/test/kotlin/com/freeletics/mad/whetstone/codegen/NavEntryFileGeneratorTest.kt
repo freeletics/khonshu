@@ -85,7 +85,7 @@ internal class NavEntryFileGeneratorTest {
             public interface WhetstoneTestFlowScopeNavEntryModule {
               @Multibinds
               @NavEntry(TestFlowScope::class)
-              public fun bindCancellable(): Set<Closeable>
+              public fun bindCloseables(): Set<Closeable>
             }
 
             @InternalWhetstoneApi
