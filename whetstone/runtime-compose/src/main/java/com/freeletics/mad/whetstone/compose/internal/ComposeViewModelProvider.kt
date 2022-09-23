@@ -14,7 +14,7 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
-import com.freeletics.mad.whetstone.internal.findDependencies
+import com.freeletics.mad.whetstone.internal.findComponentByScope
 import kotlin.reflect.KClass
 
 /**
@@ -37,7 +37,7 @@ public inline fun <reified T : ViewModel, D : Any> rememberViewModel(
     return remember(viewModelStoreOwner, savedStateRegistryOwner, context, arguments) {
         val viewModelFactory = viewModelFactory {
             initializer {
-                val dependencies = context.findDependencies<D>(scope)
+                val dependencies = context.findComponentByScope<D>(scope)
                 val savedStateHandle = createSavedStateHandle()
                 factory(dependencies, savedStateHandle, arguments)
             }

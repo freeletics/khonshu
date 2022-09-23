@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
-import com.freeletics.mad.whetstone.internal.findDependencies
+import com.freeletics.mad.whetstone.internal.findComponentByScope
 import kotlin.reflect.KClass
 
 /**
@@ -27,7 +27,7 @@ public inline fun <reified T : ViewModel, D : Any> Fragment.viewModel(
 ): T {
     val viewModelFactory = androidx.lifecycle.viewmodel.viewModelFactory {
         initializer {
-            val dependencies = requireContext().findDependencies<D>(scope)
+            val dependencies = requireContext().findComponentByScope<D>(scope)
             val savedStateHandle = createSavedStateHandle()
             factory(dependencies, savedStateHandle, arguments)
         }

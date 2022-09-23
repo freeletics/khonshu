@@ -30,7 +30,7 @@ public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> viewModel(
 ): T {
     val viewModelFactory = viewModelFactory {
         initializer {
-            val dependencies = context.findDependencies<D>(scope, destinationScope, findEntry)
+            val dependencies = context.findComponentByScope<D>(scope, destinationScope, findEntry)
             val savedStateHandle = createSavedStateHandle()
             factory(dependencies, savedStateHandle, route)
         }
