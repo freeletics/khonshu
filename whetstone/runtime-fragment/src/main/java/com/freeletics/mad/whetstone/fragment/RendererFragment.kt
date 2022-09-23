@@ -2,6 +2,7 @@ package com.freeletics.mad.whetstone.fragment
 
 import androidx.fragment.app.Fragment
 import com.freeletics.mad.statemachine.StateMachine
+import com.gabrielittner.renderer.ViewRenderer
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.CLASS
 import kotlin.reflect.KClass
@@ -55,8 +56,6 @@ public annotation class RendererFragment(
     val scope: KClass<*>,
     val parentScope: KClass<*>,
     val stateMachine: KClass<out StateMachine<*, *>>,
-    //TODO should be KClass<out ViewRenderer.Factory<*, *>>
-    // leaving out the constraint for now to be compatible with some custom factories using the same signature
-    val rendererFactory: KClass<*>,
+    val rendererFactory: KClass<out ViewRenderer.Factory<*, *>>,
     val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
 )
