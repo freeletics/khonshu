@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
  * [Context.getSystemService].
  */
 @InternalWhetstoneApi
-public fun <T : Any> Context.findDependencies(
+public fun <T : Any> Context.findComponentByScope(
     scope: KClass<*>,
     destinationScope: KClass<*>,
     findEntry: (Int) -> NavBackStackEntry
