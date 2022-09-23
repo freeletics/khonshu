@@ -72,12 +72,6 @@ internal class FileGenerator{
     }
 
     private fun FileSpec.Builder.addNavDestinationTypes(data: BaseData) = apply {
-        val destinationScope = data.navigation?.destinationScope
-        if (destinationScope != null && destinationScope != data.parentScope) {
-            val destinationComponentGenerator = DestinationComponentGenerator(data)
-            addType(destinationComponentGenerator.generate())
-        }
-
         if (data.navigation?.destinationMethod != null) {
             val navDestinationGenerator = NavDestinationModuleGenerator(data)
             addType(navDestinationGenerator.generate())
@@ -90,11 +84,13 @@ internal class FileGenerator{
             val moduleGenerator = ModuleGenerator(data)
             val viewModelGenerator = ViewModelGenerator(data)
             val componentGetterGenerator = NavEntryComponentGetterGenerator(data)
+            val destinationComponentGenerator = DestinationComponentGenerator(data)
 
             addType(componentGenerator.generate())
             addType(moduleGenerator.generate())
             addType(viewModelGenerator.generate())
             addType(componentGetterGenerator.generate())
+            addType(destinationComponentGenerator.generate())
         }
     }
 

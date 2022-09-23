@@ -148,7 +148,6 @@ internal class FileGeneratorTestRendererFragment {
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.DestinationComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.gabrielittner.renderer.connect.connect
@@ -238,10 +237,6 @@ internal class FileGeneratorTestRendererFragment {
               }
             }
             
-            @ContributesTo(TestDestinationScope::class)
-            @OptIn(InternalWhetstoneApi::class)
-            public interface WhetstoneTestDestinationComponent : DestinationComponent
-            
         """.trimIndent()
 
         assertThat(actual).isEqualTo(expected)
@@ -268,7 +263,6 @@ internal class FileGeneratorTestRendererFragment {
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.DestinationComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.gabrielittner.renderer.connect.connect
@@ -359,10 +353,6 @@ internal class FileGeneratorTestRendererFragment {
                 return renderer.rootView
               }
             }
-            
-            @ContributesTo(TestDestinationScope::class)
-            @OptIn(InternalWhetstoneApi::class)
-            public interface WhetstoneTestDestinationComponent : DestinationComponent
             
             @Module
             @ContributesTo(TestDestinationScope::class)

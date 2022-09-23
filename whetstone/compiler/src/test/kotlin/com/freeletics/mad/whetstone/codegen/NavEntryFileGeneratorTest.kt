@@ -37,6 +37,7 @@ internal class NavEntryFileGeneratorTest {
             import com.freeletics.mad.navigator.`internal`.toRoute
             import com.freeletics.mad.whetstone.NavEntry
             import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.DestinationComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
@@ -121,6 +122,10 @@ internal class NavEntryFileGeneratorTest {
                 return viewModel.component
               }
             }
+            
+            @ContributesTo(TestDestinationScope::class)
+            @OptIn(InternalWhetstoneApi::class)
+            public interface WhetstoneTestFlowScopeNavEntryDestinationComponent : DestinationComponent
 
         """.trimIndent()
 
