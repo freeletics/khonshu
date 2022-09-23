@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -36,10 +35,9 @@ public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> rememberViewMo
     crossinline factory: @DisallowComposableCalls (D, SavedStateHandle, R) -> T
 ): T {
     val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
-    val savedStateRegistryOwner = LocalSavedStateRegistryOwner.current
     val context = LocalContext.current
     val navController = LocalNavController.current
-    return remember(viewModelStoreOwner, savedStateRegistryOwner, context, navController, route) {
+    return remember(viewModelStoreOwner, context, navController, route) {
         val viewModelFactory = viewModelFactory {
             initializer {
                 val dependencies = context.findDependencies<D>(scope, destinationScope, navController::getBackStackEntry)
