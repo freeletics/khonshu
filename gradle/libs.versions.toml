@@ -21,6 +21,7 @@ accompanist = "0.25.1"
 inject = "1"
 dagger = "2.44"
 anvil = "2.4.2"
+renderer = "0.12.0"
 kotlinpoet = "1.12.0"
 auto-service = "1.0.1"
 
@@ -69,6 +70,7 @@ dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 anvil-compiler = { module = "com.squareup.anvil:compiler-api", version.ref = "anvil" }
 anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }
 anvil-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvil" }
+renderer = { module = "com.gabrielittner.renderer:renderer", version.ref = "renderer" }
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service" }
 auto-service-compiler = { module = "com.google.auto.service:auto-service", version.ref = "auto-service" }
