@@ -59,7 +59,6 @@ dependencies {
     implementation project(":state-machine")
     implementation libs.androidx.compose.runtime
     implementation libs.androidx.compose.ui
-    implementation libs.androidx.savedstate
     implementation libs.androidx.viewmodel
     implementation libs.androidx.viewmodel.savedstate
     implementation libs.androidx.viewmodel.compose

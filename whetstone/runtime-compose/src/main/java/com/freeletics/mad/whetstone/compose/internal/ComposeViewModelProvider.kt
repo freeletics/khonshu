@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -32,9 +31,8 @@ public inline fun <reified T : ViewModel, D : Any> rememberViewModel(
     crossinline factory: @DisallowComposableCalls (D, SavedStateHandle, Bundle) -> T
 ): T {
     val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
-    val savedStateRegistryOwner = LocalSavedStateRegistryOwner.current
     val context = LocalContext.current
-    return remember(viewModelStoreOwner, savedStateRegistryOwner, context, arguments) {
+    return remember(viewModelStoreOwner, context, arguments) {
         val viewModelFactory = viewModelFactory {
             initializer {
                 val dependencies = context.findDependencies<D>(scope)
