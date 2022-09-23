@@ -30,7 +30,7 @@ internal class ModuleGenerator(
     }
 
     private fun multibindsFunction(): FunSpec {
-        return FunSpec.builder("bindCancellable")
+        return FunSpec.builder("bindCloseables")
             .addModifiers(ABSTRACT)
             .addAnnotation(multibinds)
             .apply {
