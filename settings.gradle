@@ -17,6 +17,7 @@ dependencyResolutionManagement {
 }
 
 
+include ":navigator:androidx-nav"
 include ":navigator:runtime", ":navigator:runtime-compose", ":navigator:runtime-fragment"
 include ":state-machine"
 include ":text-resource"
