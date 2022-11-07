@@ -93,7 +93,9 @@ public open class CustomActivityNavigator(
             }
 
             val route = args.getParcelable<Parcelable>(EXTRA_ROUTE)
-            intent.putExtra(EXTRA_ROUTE, route)
+            if (route != null) {
+                intent.putExtra(EXTRA_ROUTE, route)
+            }
         }
         if (hostActivity == null) {
             // If we're not launching from an Activity context we have to launch in a new task.
