@@ -1,6 +1,7 @@
 package com.freeletics.mad.navigator.compose
 
 import androidx.navigation.compose.NavHost as AndroidXNavHost
+import android.os.Bundle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetDefaults
 import androidx.compose.material.contentColorFor
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavArgument
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.NavGraphBuilder
@@ -34,7 +36,7 @@ import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.activityDestinationId
 import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.navigator.internal.getArguments
-import com.freeletics.mad.navigator.internal.toRoute
+import com.freeletics.mad.navigator.internal.requireRoute
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
@@ -67,7 +69,7 @@ public fun NavHost(
     if (destinationChangedCallback != null) {
         DisposableEffect(key1 = destinationChangedCallback) {
             val listener = OnDestinationChangedListener { _, _, arguments ->
-                val route = arguments!!.toRoute<NavRoute>()
+                val route = arguments.requireRoute<NavRoute>()
                 destinationChangedCallback.invoke(route)
             }
             navController.addOnDestinationChangedListener(listener)
@@ -124,7 +126,7 @@ private fun <T : BaseRoute> Screen<T>.toDestination(
     startRoute: BaseRoute,
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
-    return ComposeNavigator.Destination(navigator) { screenContent(it.arguments!!.toRoute()) }.also {
+    return ComposeNavigator.Destination(navigator) { screenContent(it.arguments.requireRoute()) }.also {
         it.id = route.destinationId()
         if (startRoute::class == route) {
             val arguments = startRoute.getArguments()
@@ -143,7 +145,7 @@ private fun <T : NavRoute> Dialog<T>.toDestination(
     controller: NavController,
 ): DialogNavigator.Destination {
     val navigator = controller.navigatorProvider[DialogNavigator::class]
-    return DialogNavigator.Destination(navigator) { dialogContent(it.arguments!!.toRoute()) }.also {
+    return DialogNavigator.Destination(navigator) { dialogContent(it.arguments.requireRoute()) }.also {
         it.id = route.destinationId()
     }
 }
@@ -155,7 +157,7 @@ private fun <T : NavRoute> BottomSheet<T>.toDestination(
     controller: NavController,
 ): BottomSheetNavigator.Destination {
     val navigator = controller.navigatorProvider[BottomSheetNavigator::class]
-    return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(it.arguments!!.toRoute()) }.also {
+    return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(it.arguments.requireRoute()) }.also {
         it.id = route.destinationId()
     }
 }
