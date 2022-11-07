@@ -97,7 +97,7 @@ public fun <T : BaseRoute> Bundle?.requireRoute(): T = requireNotNull(this) {
     }
 
 @InternalNavigatorApi
-public fun <T : ActivityRoute> Bundle.toActivityRoute(): T = getParcelable(EXTRA_ROUTE)!!
+public fun <T : ActivityRoute> Bundle.toActivityRoute(): T? = getParcelable(EXTRA_ROUTE)
 
 @InternalNavigatorApi
 public fun BaseRoute.getArguments(): Bundle = Bundle().also {

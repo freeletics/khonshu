@@ -44,7 +44,15 @@ public interface ActivityRoute {
  * Returns the [ActivityRoute] that was used to navigate to this [Activity].
  */
 public fun <T : ActivityRoute> Activity.requireRoute(): T {
-    return requireNotNull(intent.extras?.toActivityRoute()) {
+    return requireNotNull(getRoute()) {
         "Error extracting ActivityRoute from Activity's Intent"
     }
+}
+
+/**
+ * Returns the [ActivityRoute] that was used to navigate to this [Activity] if it's present in
+ * Activity's Intent.
+ */
+public fun <T : ActivityRoute> Activity.getRoute(): T? {
+    return intent.extras?.toActivityRoute()
 }
