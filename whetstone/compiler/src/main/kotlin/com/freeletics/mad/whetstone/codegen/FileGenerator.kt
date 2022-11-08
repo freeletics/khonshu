@@ -4,6 +4,7 @@ import com.freeletics.mad.whetstone.BaseData
 import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.NavEntryData
+import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.RendererFragmentData
 import com.freeletics.mad.whetstone.codegen.common.ComposeGenerator
 import com.freeletics.mad.whetstone.codegen.nav.DestinationComponentGenerator
@@ -15,6 +16,7 @@ import com.freeletics.mad.whetstone.codegen.compose.ComposeScreenGenerator
 import com.freeletics.mad.whetstone.codegen.fragment.ComposeFragmentGenerator
 import com.freeletics.mad.whetstone.codegen.nav.NavEntryComponentGetterGenerator
 import com.freeletics.mad.whetstone.codegen.fragment.RendererFragmentGenerator
+import com.freeletics.mad.whetstone.codegen.util.bundleRequireRoute
 import com.squareup.kotlinpoet.FileSpec
 
 internal class FileGenerator{
@@ -83,6 +85,13 @@ internal class FileGenerator{
             val componentGenerator = ComponentGenerator(data)
             val moduleGenerator = ModuleGenerator(data)
             val viewModelGenerator = ViewModelGenerator(data)
+
+            if (data.navigation is Navigation.Fragment) {
+                // Bundle.requireRoute clashes with Fragment.requireRoute
+                // This is fixed in unreleased version of kotlinpoet
+                // https://github.com/square/kotlinpoet/issues/1089
+                addAliasedImport(bundleRequireRoute, "bundleRequireRoute")
+            }
             val componentGetterGenerator = NavEntryComponentGetterGenerator(data)
             val destinationComponentGenerator = DestinationComponentGenerator(data)
 
@@ -92,12 +101,5 @@ internal class FileGenerator{
             addType(componentGetterGenerator.generate())
             addType(destinationComponentGenerator.generate())
         }
-    }
-
-    // for testing
-    internal fun generate(data: NavEntryData): FileSpec {
-        return FileSpec.builder(data.packageName, "WhetstoneNavEntry${data.baseName}")
-            .addNavEntryTypes(data)
-            .build()
     }
 }
