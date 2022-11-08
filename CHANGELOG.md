@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+Version 0.8.1 *(2022-11-08)*
+----------------------------
+
+### Whetstone
+- Update codegen to use new `Bundle.requireRoute` function
+
+### Other
+- New module for shared androidx navigation
+- Deploy docs directly from Github Actions
+
 Version 0.8.0 *(2022-11-08)*
 ----------------------------
 
