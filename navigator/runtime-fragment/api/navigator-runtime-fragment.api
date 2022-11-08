@@ -1,7 +1,3 @@
-public final class com/freeletics/mad/navigator/fragment/FragmentRouteKt {
-	public static final fun requireRoute (Landroidx/fragment/app/Fragment;)Lcom/freeletics/mad/navigator/BaseRoute;
-}
-
 public final class com/freeletics/mad/navigator/fragment/HandleNavigationKt {
 	public static final fun handleNavigation (Landroidx/fragment/app/Fragment;Lcom/freeletics/mad/navigator/NavEventNavigator;)V
 }
