@@ -190,8 +190,8 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.NavEventNavigator
-            import com.freeletics.mad.navigator.`internal`.requireRoute
             import com.freeletics.mad.navigator.fragment.handleNavigation
+            import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -271,7 +271,7 @@ internal class FileGeneratorTestComposeFragment {
                 savedInstanceState: Bundle?,
               ): View {
                 if (!::whetstoneTestComponent.isInitialized) {
-                  val testRoute = requireArguments().requireRoute<TestRoute>()
+                  val testRoute = requireRoute<TestRoute>()
                   val viewModel = viewModel(TestParentScope::class, TestDestinationScope::class, testRoute,
                       ::WhetstoneTestViewModel)
                   whetstoneTestComponent = viewModel.component
@@ -333,10 +333,10 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.NavEventNavigator
-            import com.freeletics.mad.navigator.`internal`.requireRoute
             import com.freeletics.mad.navigator.fragment.NavDestination
             import com.freeletics.mad.navigator.fragment.ScreenDestination
             import com.freeletics.mad.navigator.fragment.handleNavigation
+            import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -418,7 +418,7 @@ internal class FileGeneratorTestComposeFragment {
                 savedInstanceState: Bundle?,
               ): View {
                 if (!::whetstoneTestComponent.isInitialized) {
-                  val testRoute = requireArguments().requireRoute<TestRoute>()
+                  val testRoute = requireRoute<TestRoute>()
                   val viewModel = viewModel(TestParentScope::class, TestDestinationScope::class, testRoute,
                       ::WhetstoneTestViewModel)
                   whetstoneTestComponent = viewModel.component
@@ -497,10 +497,10 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.navigator.NavEventNavigator
             import com.freeletics.mad.navigator.`internal`.InternalNavigatorApi
             import com.freeletics.mad.navigator.`internal`.destinationId
-            import com.freeletics.mad.navigator.`internal`.requireRoute
             import com.freeletics.mad.navigator.fragment.NavDestination
             import com.freeletics.mad.navigator.fragment.ScreenDestination
             import com.freeletics.mad.navigator.fragment.handleNavigation
+            import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.NavEntry
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
@@ -528,6 +528,7 @@ internal class FileGeneratorTestComposeFragment {
             import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
+            import com.freeletics.mad.navigator.`internal`.requireRoute as bundleRequireRoute
 
             @OptIn(InternalWhetstoneApi::class)
             @ScopeTo(TestScreen::class)
@@ -590,7 +591,7 @@ internal class FileGeneratorTestComposeFragment {
                 savedInstanceState: Bundle?,
               ): View {
                 if (!::whetstoneTestComponent.isInitialized) {
-                  val testRoute = requireArguments().requireRoute<TestRoute>()
+                  val testRoute = requireRoute<TestRoute>()
                   val viewModel = viewModel(TestParentScope::class, TestDestinationScope::class, testRoute,
                       ::WhetstoneTestViewModel)
                   whetstoneTestComponent = viewModel.component
@@ -692,7 +693,7 @@ internal class FileGeneratorTestComposeFragment {
               @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(TestRoute::class.destinationId())
-                val route: TestRoute = entry.arguments.requireRoute()
+                val route: TestRoute = entry.arguments.bundleRequireRoute()
                 val viewModel = com.freeletics.mad.whetstone.`internal`.viewModel(entry, context,
                     TestParentScope::class, TestDestinationScope::class, route, findEntry,
                     ::WhetstoneTestScreenNavEntryViewModel)

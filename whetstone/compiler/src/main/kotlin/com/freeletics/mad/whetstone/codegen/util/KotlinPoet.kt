@@ -118,7 +118,7 @@ internal fun Navigation?.asParameter(): ParameterSpec {
 
 internal fun Navigation.Fragment?.requireArguments(): CodeBlock {
     if (this != null) {
-        return CodeBlock.of("requireArguments().%M<%T>()", bundleRequireRoute, route)
+        return CodeBlock.of("%M<%T>()", fragmentRequireRoute, route)
     }
     return CodeBlock.of("requireArguments()")
 }
