@@ -1,6 +1,54 @@
 Change Log
 ==========
 
+Version 0.8.0 *(2022-11-08)*
+----------------------------
+
+### Navigator
+
+- Add `Activity.getRoute()` function than returns nullable `ActivityRoute`
+- Use `requireNotNull` contracts for `requireRoute` functions
+- Check for route to be not null before adding it to `Intent` in `CustomActivityNavigator`
+- Move generated `DestinationComponent` to the nav entry generator. This reduces how often
+we generate the contributed `DestinationComponent` by generating it only together with the
+`NavEntryComponent` that needs it.
+
+### Whetstone
+
+- Rename `findDependencies` to `findComponentByScope`. After getting rid of component
+dependencies in favor of subcomponents our find methods were not named correctly anymore.
+- Fix `Closeable` typo
+- Remove unused `SavedStateRegistryOwner`
+- Explicitly require a renderer factory to extend `ViewRenderer.Factory`. We relied on some
+custom factories internally. Those are not necessary anymore and we can add the constraint
+to the annotation.
+
+### Dependencies
+
+- Update `kotlin` to v1.7.20
+- Update dependency `app.cash.turbine:turbine` to v0.12.1
+- Update dependency `androidx.fragment:fragment` to v1.5.4
+- Update dependency `com.google.accompanist:accompanist-navigation-material` to v0.27.0
+- Update `androidx-compose-runtime` to v1.3.0
+- Update `androidx-navigation` to v2.5.3
+- Update `androidx-activity` to v1.6.1
+- Update dependency `org.jetbrains.kotlinx.binary-compatibility-validator` to v0.12.1
+- Update dependency `com.android.library` to v7.3.1
+- Update dependency `org.jetbrains.dokka` to v1.7.20
+- Update dependency `com.google.dagger:dagger` to v2.44
+- Update dependency `androidx.core:core` to v1.9.0
+- Update dependency `com.vanniktech.maven.publish` to v0.22.0
+- Update `androidx-navigation` to v2.5.2
+- Update actions/setup-java action to v3
+- Update actions/setup-python action to v4
+- Update actions/checkout action to v3
+- Update dependency `com.autonomousapps.dependency-analysis` to v1.13.1
+- Update `anvil` to v2.4.2
+
+### Other
+
+- Migrate to Gradle version catalog
+
 Version 0.7.2 *(2022-08-12)*
 ----------------------------
 
