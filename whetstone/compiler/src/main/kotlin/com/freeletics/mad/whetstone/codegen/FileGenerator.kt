@@ -93,11 +93,4 @@ internal class FileGenerator{
             addType(destinationComponentGenerator.generate())
         }
     }
-
-    // for testing
-    internal fun generate(data: NavEntryData): FileSpec {
-        return FileSpec.builder(data.packageName, "WhetstoneNavEntry${data.baseName}")
-            .addNavEntryTypes(data)
-            .build()
-    }
 }
