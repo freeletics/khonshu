@@ -87,7 +87,7 @@ internal class FileGenerator{
             val viewModelGenerator = ViewModelGenerator(data)
 
             if (data.navigation is Navigation.Fragment) {
-                // Bundle.requireMore clashes with Fragment.requireMore
+                // Bundle.requireRoute clashes with Fragment.requireRoute
                 // This is fixed in unreleased version of kotlinpoet
                 // https://github.com/square/kotlinpoet/issues/1089
                 addAliasedImport(bundleRequireRoute, "bundleRequireRoute")
