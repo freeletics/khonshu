@@ -14,7 +14,7 @@ import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
 import com.freeletics.mad.whetstone.codegen.util.navEntryViewModel
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
-import com.freeletics.mad.whetstone.codegen.util.toRoute
+import com.freeletics.mad.whetstone.codegen.util.bundleRequireRoute
 import com.squareup.anvil.annotations.ContributesMultibinding
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.AnnotationSpec
@@ -70,7 +70,7 @@ internal class NavEntryComponentGetterGenerator(
             .addParameter("context", context)
             .returns(ANY)
             .addStatement("val entry = findEntry(%T::class.%M())", data.navigation.route, destinationId)
-            .addStatement("val route: %T = entry.arguments!!.%M()", data.navigation.route, toRoute)
+            .addStatement("val route: %T = entry.arguments.%M()", data.navigation.route, bundleRequireRoute)
             .addStatement("val viewModel = %M(entry, context, %T::class, %T::class, route, findEntry, ::%T)",
                 navEntryViewModel, data.parentScope, data.navigation.destinationScope, viewModelClassName)
             .addStatement("return viewModel.%L", viewModelComponentName)

@@ -34,7 +34,7 @@ internal class NavEntryFileGeneratorTest {
             import androidx.navigation.NavBackStackEntry
             import com.freeletics.mad.navigator.`internal`.InternalNavigatorApi
             import com.freeletics.mad.navigator.`internal`.destinationId
-            import com.freeletics.mad.navigator.`internal`.toRoute
+            import com.freeletics.mad.navigator.`internal`.requireRoute
             import com.freeletics.mad.whetstone.NavEntry
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.DestinationComponent
@@ -116,7 +116,7 @@ internal class NavEntryFileGeneratorTest {
               @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
               public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
                 val entry = findEntry(TestRoute::class.destinationId())
-                val route: TestRoute = entry.arguments!!.toRoute()
+                val route: TestRoute = entry.arguments.requireRoute()
                 val viewModel = viewModel(entry, context, TestParentScope::class, TestDestinationScope::class,
                     route, findEntry, ::WhetstoneTestFlowScopeNavEntryViewModel)
                 return viewModel.component
