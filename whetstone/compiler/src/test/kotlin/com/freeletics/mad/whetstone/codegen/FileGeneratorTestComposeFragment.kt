@@ -26,6 +26,7 @@ internal class FileGeneratorTestComposeFragment {
         fragmentBaseClass = fragment,
         navigation = null,
         navEntryData = null,
+        composableParameter = listOf(ClassName("com.test", "TestClass"))
     )
 
     private val navEntryData = NavEntryData(

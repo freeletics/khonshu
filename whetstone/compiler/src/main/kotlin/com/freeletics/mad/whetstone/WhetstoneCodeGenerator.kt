@@ -25,6 +25,7 @@ import com.squareup.anvil.compiler.api.createGeneratedFile
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.classAndInnerClassReferences
+import com.squareup.kotlinpoet.ClassName
 import java.io.File
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.descriptors.containingPackage
@@ -101,7 +102,8 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             stateMachine = compose.requireClassArgument("stateMachine", 2),
             fragmentBaseClass = compose.optionalClassArgument("fragmentBaseClass", 3) ?: fragment,
             navigation = navigation,
-            navEntryData = navEntryData(declaration, declaration.packageName(), navigation)
+            navEntryData = navEntryData(declaration, declaration.packageName(), navigation),
+            composableParameter = emptyList()
         )
 
         val file = FileGenerator().generate(data)
@@ -151,6 +153,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             stateMachine = compose.requireClassArgument("stateMachine", 2),
             navigation = navigation,
             navEntryData = navEntryData(declaration, declaration.packageName(), navigation),
+            composableParameter = emptyList()
         )
 
         val file = FileGenerator().generate(data)

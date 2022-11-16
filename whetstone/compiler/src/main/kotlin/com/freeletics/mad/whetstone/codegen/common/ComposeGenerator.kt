@@ -21,6 +21,8 @@ internal class ComposeGenerator(
 ) : Generator<ComposeData>() {
 
     internal fun generate(): FunSpec {
+        val composableParameterProperties = data.composableParameter.map { it.propertyName }
+
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
             .addAnnotation(optInAnnotation())
@@ -28,12 +30,17 @@ internal class ComposeGenerator(
             .addParameter("component", retainedComponentClassName)
             .addStatement("val providedValues = component.%L", providedValueSetPropertyName)
             .beginControlFlow("%T(*providedValues.toTypedArray()) {", compositionLocalProvider)
+            .apply {
+                composableParameterProperties.forEach { propertyName ->
+                    addStatement("val %L = component.%L", propertyName, propertyName)
+                }
+            }
             .addStatement("val stateMachine = component.%L", data.stateMachine.propertyName)
             .addStatement("val state = stateMachine.%M()", asComposeState)
             .addStatement("val currentState = state.value")
             .beginControlFlow("if (currentState != null)")
             .addStatement("val scope = %M()", rememberCoroutineScope)
-            .beginControlFlow("%L(currentState) { action ->", data.baseName)
+            .beginControlFlow("%L(%L, currentState) { action ->", data.baseName, composableParameterProperties.joinToString(", "))
             // dispatch: external method
             .addStatement("scope.%M { stateMachine.dispatch(action) }", launch)
             .endControlFlow()

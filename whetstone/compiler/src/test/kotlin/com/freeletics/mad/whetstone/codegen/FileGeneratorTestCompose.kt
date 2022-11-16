@@ -23,6 +23,10 @@ internal class FileGeneratorTestCompose {
         stateMachine = ClassName("com.test", "TestStateMachine"),
         navigation = null,
         navEntryData = null,
+        composableParameter = listOf(
+            ClassName("com.test", "TestClass"),
+            ClassName("com.test", "TestClass2"),
+        )
     )
 
     private val navEntryData = NavEntryData(
@@ -75,6 +79,10 @@ internal class FileGeneratorTestCompose {
     
               public val closeables: Set<Closeable>
 
+              public val testClass: TestClass
+
+              public val testClass2: TestClass2
+
               public val providedValues: Set<ProvidedValue<*>>
 
               @ContributesSubcomponent.Factory
@@ -126,12 +134,14 @@ internal class FileGeneratorTestCompose {
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val testClass = component.testClass
+                val testClass2 = component.testClass2
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(currentState) { action ->
+                  Test(testClass, testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -191,6 +201,10 @@ internal class FileGeneratorTestCompose {
     
               public val closeables: Set<Closeable>
 
+              public val testClass: TestClass
+
+              public val testClass2: TestClass2
+
               public val providedValues: Set<ProvidedValue<*>>
 
               @ContributesSubcomponent.Factory
@@ -245,12 +259,14 @@ internal class FileGeneratorTestCompose {
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val testClass = component.testClass
+                val testClass2 = component.testClass2
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(currentState) { action ->
+                  Test(testClass, testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -314,6 +330,10 @@ internal class FileGeneratorTestCompose {
     
               public val closeables: Set<Closeable>
 
+              public val testClass: TestClass
+
+              public val testClass2: TestClass2
+
               public val providedValues: Set<ProvidedValue<*>>
 
               @ContributesSubcomponent.Factory
@@ -368,12 +388,14 @@ internal class FileGeneratorTestCompose {
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val testClass = component.testClass
+                val testClass2 = component.testClass2
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(currentState) { action ->
+                  Test(testClass, testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -464,6 +486,10 @@ internal class FileGeneratorTestCompose {
 
               public val closeables: Set<Closeable>
 
+              public val testClass: TestClass
+
+              public val testClass2: TestClass2
+
               public val providedValues: Set<ProvidedValue<*>>
 
               @ContributesSubcomponent.Factory
@@ -518,12 +544,14 @@ internal class FileGeneratorTestCompose {
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val testClass = component.testClass
+                val testClass2 = component.testClass2
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(currentState) { action ->
+                  Test(testClass, testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
