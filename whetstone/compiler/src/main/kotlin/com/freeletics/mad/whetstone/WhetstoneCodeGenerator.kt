@@ -103,7 +103,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             fragmentBaseClass = compose.optionalClassArgument("fragmentBaseClass", 3) ?: fragment,
             navigation = navigation,
             navEntryData = navEntryData(declaration, declaration.packageName(), navigation),
-            composableParameter = emptyList()
+            composableParameter = declaration.parameterTypes()
         )
 
         val file = FileGenerator().generate(data)
@@ -153,7 +153,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             stateMachine = compose.requireClassArgument("stateMachine", 2),
             navigation = navigation,
             navEntryData = navEntryData(declaration, declaration.packageName(), navigation),
-            composableParameter = emptyList()
+            composableParameter = declaration.parameterTypes()
         )
 
         val file = FileGenerator().generate(data)
@@ -216,5 +216,14 @@ public class WhetstoneCodeGenerator : CodeGenerator {
 
     private fun FqName.packageString(): String {
         return pathSegments().joinToString(separator = ".")
+    }
+
+    private fun TopLevelFunctionReference.parameterTypes(): List<ClassName> {
+        return parameters
+            .filter { it.name != "state" && it.name != "sendAction" }
+            .map {
+                val typeFqName = it.type().asClassReference().fqName
+                ClassName(typeFqName.packageString(), typeFqName.shortName().asString())
+            }
     }
 }

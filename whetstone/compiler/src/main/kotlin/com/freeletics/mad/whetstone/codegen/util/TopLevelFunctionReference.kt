@@ -6,6 +6,7 @@ import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.FunctionReference
+import com.squareup.anvil.compiler.internal.reference.ParameterReference
 import com.squareup.anvil.compiler.internal.reference.toAnnotationReference
 import com.squareup.anvil.compiler.internal.requireFqName
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
@@ -15,6 +16,8 @@ import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import kotlin.LazyThreadSafetyMode.NONE
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
+import org.jetbrains.kotlin.psi.KtParameter
+import org.jetbrains.kotlin.psi.psiUtil.getValueParameters
 
 /**
  * Simplified of [FunctionReference] from Anvil to support top level functions.
@@ -29,6 +32,8 @@ internal sealed class TopLevelFunctionReference : AnnotatedReference {
   val name: String get() = fqName.shortName().asString()
 
   abstract val module: ModuleDescriptor
+
+  abstract val parameters: List<ParameterReference>
 
   override fun toString(): String = "$fqName()"
 
@@ -56,6 +61,10 @@ internal sealed class TopLevelFunctionReference : AnnotatedReference {
         it.toAnnotationReference(declaringClass = null, module)
       }
     }
+
+    override val parameters: List<ParameterReference.Psi> by lazy(NONE) {
+      function.valueParameters.map { it.toParameterReference(this) }
+    }
   }
 
   class Descriptor internal constructor(
@@ -68,6 +77,10 @@ internal sealed class TopLevelFunctionReference : AnnotatedReference {
       function.annotations.map {
         it.toAnnotationReference(declaringClass = null, module)
       }
+    }
+
+    override val parameters: List<ParameterReference.Descriptor> by lazy(NONE) {
+      function.valueParameters.map { it.toParameterReference(this) }
     }
   }
 }
