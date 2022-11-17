@@ -220,10 +220,10 @@ public class WhetstoneCodeGenerator : CodeGenerator {
 
     private fun TopLevelFunctionReference.parameterTypes(): List<ClassName> {
         return parameters
-            .filter { it.name != "state" && it.name != "sendAction" }
+            .filter { it.fqName != null && it.name != "state" && it.name != "sendAction" }
             .map {
-                val typeFqName = it.type().asClassReference().fqName
-                ClassName(typeFqName.packageString(), typeFqName.shortName().asString())
+//                val typeFqName = it.type().asClassReference().fqName
+                ClassName(it.fqName!!.packageString(), it.fqName!!.shortName().asString())
             }
     }
 }

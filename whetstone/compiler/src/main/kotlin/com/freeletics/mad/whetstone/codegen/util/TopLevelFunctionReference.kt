@@ -8,6 +8,7 @@ import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.FunctionReference
 import com.squareup.anvil.compiler.internal.reference.ParameterReference
 import com.squareup.anvil.compiler.internal.reference.toAnnotationReference
+import com.squareup.anvil.compiler.internal.reference.toFunctionReference
 import com.squareup.anvil.compiler.internal.requireFqName
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.name.FqName
@@ -16,6 +17,7 @@ import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import kotlin.LazyThreadSafetyMode.NONE
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
+import org.jetbrains.kotlin.descriptors.ValueParameterDescriptor
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.psiUtil.getValueParameters
 
@@ -33,7 +35,7 @@ internal sealed class TopLevelFunctionReference : AnnotatedReference {
 
   abstract val module: ModuleDescriptor
 
-  abstract val parameters: List<ParameterReference>
+  abstract val parameters: List<KtParameter>
 
   override fun toString(): String = "$fqName()"
 
@@ -62,8 +64,13 @@ internal sealed class TopLevelFunctionReference : AnnotatedReference {
       }
     }
 
-    override val parameters: List<ParameterReference.Psi> by lazy(NONE) {
-      function.valueParameters.map { it.toParameterReference(this) }
+    //    override val parameters: List<ParameterReference.Psi> by lazy(NONE) {
+//      function.valueParameters.map { it.toParameterReference(this.) }
+//    }
+    override val parameters: List<KtParameter> by lazy(NONE) {
+      val kotlinList = mutableListOf<KtParameter>()
+      function.getValueParameters().forEach { kotlinList.add(it) }
+      kotlinList
     }
   }
 
@@ -79,8 +86,15 @@ internal sealed class TopLevelFunctionReference : AnnotatedReference {
       }
     }
 
-    override val parameters: List<ParameterReference.Descriptor> by lazy(NONE) {
-      function.valueParameters.map { it.toParameterReference(this) }
+//    override val parameters: List<ParameterReference.Descriptor> by lazy(NONE) {
+//      function.valueParameters.map { it.toParameterReference(this) }
+//    }
+
+    override val parameters: List<KtParameter> by lazy(NONE) {
+      emptyList<KtParameter>()
+//      function.getValueParameters().forEach {
+//        kotlinList.add(it)
+//      }
     }
   }
 }
@@ -99,6 +113,20 @@ internal fun FunctionDescriptor.toFunctionReference(
 ): TopLevelFunctionReference.Descriptor {
   return TopLevelFunctionReference.Descriptor(this, module)
 }
+
+//@ExperimentalAnvilApi
+//internal fun KtParameter.toParameterReference(
+//  declaringFunction: TopLevelFunctionReference.Psi
+//): ParameterReference.Psi {
+//  return ParameterReference.Psi(this, declaringFunction)
+//}
+//
+//@ExperimentalAnvilApi
+//internal fun ValueParameterDescriptor.toParameterReference(
+//  declaringFunction: FunctionReference.Descriptor
+//): ParameterReference.Descriptor {
+//  return ParameterReference.Descriptor(this, declaringFunction)
+//}
 
 @ExperimentalAnvilApi
 @Suppress("FunctionName")

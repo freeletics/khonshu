@@ -26,7 +26,10 @@ internal class FileGeneratorTestComposeFragment {
         fragmentBaseClass = fragment,
         navigation = null,
         navEntryData = null,
-        composableParameter = listOf(ClassName("com.test", "TestClass"))
+        composableParameter = listOf(
+            ClassName("com.test", "TestClass"),
+            ClassName("com.test", "TestClass2"),
+        )
     )
 
     private val navEntryData = NavEntryData(
@@ -84,6 +87,10 @@ internal class FileGeneratorTestComposeFragment {
               public val testStateMachine: TestStateMachine
 
               public val closeables: Set<Closeable>
+
+              public val testClass: TestClass
+
+              public val testClass2: TestClass2
 
               public val providedValues: Set<ProvidedValue<*>>
 
@@ -152,12 +159,14 @@ internal class FileGeneratorTestComposeFragment {
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val testClass = component.testClass
+                val testClass2 = component.testClass2
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(currentState) { action ->
+                  Test(testClass, testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -224,6 +233,10 @@ internal class FileGeneratorTestComposeFragment {
               public val navEventNavigator: NavEventNavigator
 
               public val closeables: Set<Closeable>
+
+              public val testClass: TestClass
+
+              public val testClass2: TestClass2
 
               public val providedValues: Set<ProvidedValue<*>>
 
@@ -295,12 +308,14 @@ internal class FileGeneratorTestComposeFragment {
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val testClass = component.testClass
+                val testClass2 = component.testClass2
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(currentState) { action ->
+                  Test(testClass, testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -372,6 +387,10 @@ internal class FileGeneratorTestComposeFragment {
 
               public val closeables: Set<Closeable>
 
+              public val testClass: TestClass
+
+              public val testClass2: TestClass2
+
               public val providedValues: Set<ProvidedValue<*>>
 
               @ContributesSubcomponent.Factory
@@ -442,12 +461,14 @@ internal class FileGeneratorTestComposeFragment {
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val testClass = component.testClass
+                val testClass2 = component.testClass2
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(currentState) { action ->
+                  Test(testClass, testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -545,6 +566,10 @@ internal class FileGeneratorTestComposeFragment {
 
               public val closeables: Set<Closeable>
 
+              public val testClass: TestClass
+
+              public val testClass2: TestClass2
+
               public val providedValues: Set<ProvidedValue<*>>
 
               @ContributesSubcomponent.Factory
@@ -615,12 +640,14 @@ internal class FileGeneratorTestComposeFragment {
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val testClass = component.testClass
+                val testClass2 = component.testClass2
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(currentState) { action ->
+                  Test(testClass, testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -760,6 +787,10 @@ internal class FileGeneratorTestComposeFragment {
 
               public val closeables: Set<Closeable>
 
+              public val testClass: TestClass
+
+              public val testClass2: TestClass2
+
               public val providedValues: Set<ProvidedValue<*>>
 
               @ContributesSubcomponent.Factory
@@ -827,12 +858,14 @@ internal class FileGeneratorTestComposeFragment {
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
               val providedValues = component.providedValues
               CompositionLocalProvider(*providedValues.toTypedArray()) {
+                val testClass = component.testClass
+                val testClass2 = component.testClass2
                 val stateMachine = component.testStateMachine
                 val state = stateMachine.asComposeState()
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(currentState) { action ->
+                  Test(testClass, testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
