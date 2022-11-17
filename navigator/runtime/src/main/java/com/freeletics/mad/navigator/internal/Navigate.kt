@@ -3,8 +3,6 @@ package com.freeletics.mad.navigator.internal
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
-import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
@@ -15,37 +13,28 @@ import kotlin.reflect.KClass
 @InternalNavigatorApi
 public fun navigate(
     event: NavEvent,
-    controller: NavController,
+    controller: NavigationExecutor,
     activityLaunchers: Map<ActivityResultRequest<*, *>, ActivityResultLauncher<*>>,
     permissionLaunchers: Map<PermissionsResultRequest, ActivityResultLauncher<List<String>>>
 ) {
     when (event) {
         is NavEvent.NavigateToEvent -> {
-            controller.navigate(event.route.destinationId(), event.route.getArguments())
+            controller.navigate(event.route)
         }
         is NavEvent.NavigateToRootEvent -> {
-            val options = NavOptions.Builder()
-                // save the state of the current root before leaving it
-                .setPopUpTo(controller.graph.startDestinationId, inclusive = false, saveState = true)
-                // restoring the state of the target root
-                .setRestoreState(event.restoreRootState)
-                // makes sure that if the destination is already on the backstack, it and
-                // everything above it gets removed
-                .setLaunchSingleTop(true)
-                .build()
-            controller.navigate(event.root.destinationId(), event.root.getArguments(), options)
+            controller.navigate(event.root, event.restoreRootState)
         }
         is NavEvent.NavigateToActivityEvent -> {
-            controller.navigate(event.route.destinationId(), event.route.getArguments())
+            controller.navigate(event.route)
         }
         is NavEvent.UpEvent -> {
             controller.navigateUp()
         }
         is NavEvent.BackEvent -> {
-            controller.popBackStack()
+            controller.navigateBack()
         }
         is NavEvent.BackToEvent -> {
-            controller.popBackStack(event.popUpTo.destinationId(), event.inclusive)
+            controller.navigateBackTo(event.popUpTo, event.inclusive)
         }
         is NavEvent.ActivityResultEvent<*> -> {
             val request = event.request
@@ -66,8 +55,7 @@ public fun navigate(
             (launcher as ActivityResultLauncher<Any?>).launch(event.permissions)
         }
         is NavEvent.DestinationResultEvent<*> -> {
-            val entry = controller.getBackStackEntry(event.key.destinationId)
-            entry.savedStateHandle.set(event.key.requestKey, event.result)
+            controller.deliverResult(event.key, event.result)
         }
     }
 }
