@@ -52,4 +52,5 @@ dependencies {
     implementation project(":navigator:navigator-runtime")
     implementation libs.androidx.navigation.common
     implementation libs.androidx.navigation.runtime
+    implementation libs.androidx.viewmodel.savedstate
 }
