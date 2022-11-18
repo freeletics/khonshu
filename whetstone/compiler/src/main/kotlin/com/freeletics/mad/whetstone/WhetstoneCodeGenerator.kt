@@ -1,6 +1,7 @@
 package com.freeletics.mad.whetstone
 
 import com.freeletics.mad.whetstone.codegen.FileGenerator
+import com.freeletics.mad.whetstone.codegen.util.AnvilCompilationExceptionTopLevelFunctionReference
 import com.freeletics.mad.whetstone.codegen.util.TopLevelFunctionReference
 import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
@@ -24,8 +25,11 @@ import com.squareup.anvil.compiler.api.GeneratedFile
 import com.squareup.anvil.compiler.api.createGeneratedFile
 import com.squareup.anvil.compiler.internal.fqNameOrNull
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
+import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionAnnotationReference
+import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionParameterReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.classAndInnerClassReferences
+import com.squareup.anvil.compiler.internal.requireFqName
 import com.squareup.kotlinpoet.ClassName
 import java.io.File
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
@@ -222,14 +226,19 @@ public class WhetstoneCodeGenerator : CodeGenerator {
 
     private fun TopLevelFunctionReference.parameterTypes(): List<ClassName> {
         return parameters
-//            .filter { it.name != "state" && it.name != "sendAction" }
+            .filter { it.name != "state" && it.name != "sendAction" }
             .map {
                 val fqName = it.typeReference?.fqNameOrNull(module)
-                val name = it.nameAsName?.asString()
-                val type = it.nameAsName?.identifier
-//                val typeFqName = it.type().asClassReference().fqName
-                ClassName(fqName?.packageString() ?: "FqNameIsNull", fqName?.shortName()?.asString() ?: "FqNameIsNull2")
-//                ClassName(name ?: "NameIsNull", type ?: "TypeIsNull")
+                val packageString = fqName?.packageString()?.substringBeforeLast(".")
+                val shortName = fqName?.shortName()?.asString()
+                if(packageString == null || shortName == null) {
+                    throw AnvilCompilationExceptionTopLevelFunctionReference(
+                        functionReference = this,
+                        message = "Could not find class for ${it.name}"
+                    )
+                }
+
+                ClassName(packageString, shortName)
             }
     }
 }
