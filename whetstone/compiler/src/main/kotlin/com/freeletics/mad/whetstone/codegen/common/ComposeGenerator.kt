@@ -22,6 +22,9 @@ internal class ComposeGenerator(
 
     internal fun generate(): FunSpec {
         val composableParameterProperties = data.composableParameter.map { it.propertyName }
+        val parameterString = composableParameterProperties.joinToString().apply {
+            if(isNotBlank()) plus(", ")
+        }
 
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
@@ -40,7 +43,7 @@ internal class ComposeGenerator(
             .addStatement("val currentState = state.value")
             .beginControlFlow("if (currentState != null)")
             .addStatement("val scope = %M()", rememberCoroutineScope)
-            .beginControlFlow("%L(%L, currentState) { action ->", data.baseName, composableParameterProperties.joinToString(", "))
+            .beginControlFlow("%L(%LcurrentState) { action ->", data.baseName, parameterString)
             // dispatch: external method
             .addStatement("scope.%M { stateMachine.dispatch(action) }", launch)
             .endControlFlow()
