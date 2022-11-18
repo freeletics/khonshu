@@ -32,6 +32,7 @@ import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.resolve.calls.util.getType
 
 @OptIn(ExperimentalAnvilApi::class)
 @AutoService(CodeGenerator::class)
@@ -222,8 +223,11 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         return parameters
 //            .filter { it.name != "state" && it.name != "sendAction" }
             .map {
+                val name = it.nameAsName?.asString()
+                val type = it.nameAsName?.identifier
 //                val typeFqName = it.type().asClassReference().fqName
-                ClassName(it.fqName?.packageString() ?: "FqNameIsNull", it.fqName?.shortName()?.asString() ?: "FqNameIsNull2")
+//                ClassName(it.fqName?.packageString() ?: "FqNameIsNull", it.fqName?.shortName()?.asString() ?: "FqNameIsNull2")
+                ClassName(name ?: "NameIsNull", type ?: "TypeIsNull")
             }
     }
 }

@@ -25,7 +25,7 @@ internal class FileGeneratorTestCompose {
         navEntryData = null,
         composableParameter = listOf(
             ClassName("com.test", "TestClass"),
-            ClassName("com.test", "TestClass2"),
+            ClassName("com.other", "TestClass2"),
         )
     )
 
@@ -55,6 +55,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModel
+            import com.other.TestClass2
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -174,6 +175,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModel
+            import com.other.TestClass2
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.destination.TestDestinationScope
@@ -301,6 +303,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModel
+            import com.other.TestClass2
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.destination.TestDestinationScope
@@ -453,6 +456,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.`internal`.viewModel
             import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModel
+            import com.other.TestClass2
             import com.squareup.anvil.annotations.ContributesMultibinding
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo

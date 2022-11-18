@@ -22,8 +22,8 @@ internal class ComposeGenerator(
 
     internal fun generate(): FunSpec {
         val composableParameterProperties = data.composableParameter.map { it.propertyName }
-        val parameterString = composableParameterProperties.joinToString().apply {
-            if(isNotBlank()) plus(", ")
+        val parameterString = composableParameterProperties.joinToString().let {
+            if(it.isNotBlank()) it.plus(", ") else it
         }
 
         return FunSpec.builder(composableName)
