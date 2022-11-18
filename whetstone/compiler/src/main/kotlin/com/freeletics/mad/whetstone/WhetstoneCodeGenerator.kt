@@ -22,6 +22,7 @@ import com.squareup.anvil.compiler.api.AnvilContext
 import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.api.GeneratedFile
 import com.squareup.anvil.compiler.api.createGeneratedFile
+import com.squareup.anvil.compiler.internal.fqNameOrNull
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.classAndInnerClassReferences
@@ -223,11 +224,12 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         return parameters
 //            .filter { it.name != "state" && it.name != "sendAction" }
             .map {
+                val fqName = it.typeReference?.fqNameOrNull(module)
                 val name = it.nameAsName?.asString()
                 val type = it.nameAsName?.identifier
 //                val typeFqName = it.type().asClassReference().fqName
-//                ClassName(it.fqName?.packageString() ?: "FqNameIsNull", it.fqName?.shortName()?.asString() ?: "FqNameIsNull2")
-                ClassName(name ?: "NameIsNull", type ?: "TypeIsNull")
+                ClassName(fqName?.packageString() ?: "FqNameIsNull", fqName?.shortName()?.asString() ?: "FqNameIsNull2")
+//                ClassName(name ?: "NameIsNull", type ?: "TypeIsNull")
             }
     }
 }
