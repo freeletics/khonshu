@@ -12,17 +12,10 @@ import kotlin.reflect.KClass
 public interface NavigationExecutor {
 
     public fun navigate(route: NavRoute)
-
-    public fun navigate(route: ActivityRoute)
-
     public fun navigate(root: NavRoot, restoreRootState: Boolean)
-
-    public fun navigateBack()
-
+    public fun navigate(route: ActivityRoute)
     public fun navigateUp()
-
-    public fun deliverResult(key: NavigationResultRequest.Key<*>, result: Parcelable)
-
+    public fun navigateBack()
     public fun navigateBackTo(route: KClass<out BaseRoute>, isInclusive: Boolean)
-
+    public fun deliverResult(key: NavigationResultRequest.Key<*>, result: Parcelable)
 }

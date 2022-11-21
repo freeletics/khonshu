@@ -52,5 +52,4 @@ public class AndroidXNavigationExecutor(
     override fun navigateBackTo(route: KClass<out BaseRoute>, isInclusive: Boolean) {
         controller.popBackStack(route.destinationId(), isInclusive)
     }
-
 }
