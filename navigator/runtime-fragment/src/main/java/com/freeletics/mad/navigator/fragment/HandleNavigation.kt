@@ -1,7 +1,6 @@
 package com.freeletics.mad.navigator.fragment
 
 import android.app.Activity
-import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
@@ -15,6 +14,7 @@ import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
+import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import com.freeletics.mad.navigator.internal.navigate
 import kotlinx.coroutines.launch
@@ -42,10 +42,12 @@ public fun handleNavigation(fragment: Fragment, navigator: NavEventNavigator) {
     val dispatcher = fragment.requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(fragment, navigator.onBackPressedCallback)
 
+    val navigationExecutor = AndroidXNavigationExecutor(controller)
+
     lifecycle.coroutineScope.launch {
         lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             navigator.navEvents.collect { event ->
-                navigate(event, fragment.findNavController(), activityLaunchers, permissionLaunchers)
+                navigate(event, navigationExecutor, activityLaunchers, permissionLaunchers)
             }
         }
     }

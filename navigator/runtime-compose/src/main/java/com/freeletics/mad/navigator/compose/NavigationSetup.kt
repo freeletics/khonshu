@@ -3,7 +3,6 @@ package com.freeletics.mad.navigator.compose
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -20,6 +19,7 @@ import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
+import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import com.freeletics.mad.navigator.internal.navigate
 import kotlinx.parcelize.Parcelize
@@ -54,10 +54,11 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
     }
 
     LaunchedEffect(lifecycleOwner, controller, navigator) {
+        val navigationExecutor = AndroidXNavigationExecutor(controller)
         navigator.navEvents
             .flowWithLifecycle(lifecycleOwner.lifecycle, minActiveState = RESUMED)
             .collect { event ->
-                navigate(event, controller, activityLaunchers, permissionLaunchers)
+                navigate(event, navigationExecutor, activityLaunchers, permissionLaunchers)
             }
     }
 }
