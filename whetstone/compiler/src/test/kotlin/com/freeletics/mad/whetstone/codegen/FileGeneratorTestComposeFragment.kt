@@ -154,7 +154,7 @@ internal class FileGeneratorTestComposeFragment {
                 val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
               }
             }
@@ -291,7 +291,7 @@ internal class FileGeneratorTestComposeFragment {
                 val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
               }
             }
@@ -432,7 +432,7 @@ internal class FileGeneratorTestComposeFragment {
                 val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
               }
             }
@@ -599,7 +599,7 @@ internal class FileGeneratorTestComposeFragment {
                 val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
               }
             }
@@ -805,7 +805,7 @@ internal class FileGeneratorTestComposeFragment {
                 val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
               }
             }
@@ -956,7 +956,7 @@ internal class FileGeneratorTestComposeFragment {
                   testClass = testClass,
                   test = testClass2,
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
               }
             }

@@ -129,7 +129,7 @@ internal class FileGeneratorTestCompose {
                 val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
               }
             }
@@ -242,7 +242,7 @@ internal class FileGeneratorTestCompose {
                 val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
               }
             }
@@ -359,7 +359,7 @@ internal class FileGeneratorTestCompose {
                 val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
               }
             }
@@ -503,7 +503,7 @@ internal class FileGeneratorTestCompose {
                 val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
               }
             }
@@ -711,7 +711,7 @@ internal class FileGeneratorTestCompose {
                   testClass = testClass,
                   test = testClass2,
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
               }
             }
