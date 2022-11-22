@@ -21,10 +21,10 @@ internal class ComposeGenerator(
 ) : Generator<ComposeData>() {
 
     internal fun generate(): FunSpec {
-        val composableParameterProperties = data.composableParameter.map { it.propertyName }
-        val parameterString = composableParameterProperties.joinToString().let {
-            if(it.isNotBlank()) it.plus(", ") else it
-        }
+//        val composableParameterProperties = data.composableParameter.map { it.className.propertyName }
+        val parameterString = data.composableParameter
+            .joinToString { "${it.name} = ${it.className.propertyName}" }
+            .let { if(it.isNotBlank()) it.plus(", ") else it }
 
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
@@ -34,8 +34,8 @@ internal class ComposeGenerator(
             .addStatement("val providedValues = component.%L", providedValueSetPropertyName)
             .beginControlFlow("%T(*providedValues.toTypedArray()) {", compositionLocalProvider)
             .apply {
-                composableParameterProperties.forEach { propertyName ->
-                    addStatement("val %L = component.%L", propertyName, propertyName)
+                data.composableParameter.forEach { parameter ->
+                    addStatement("val %L = component.%L", parameter.className.propertyName, parameter.className.propertyName)
                 }
             }
             .addStatement("val stateMachine = component.%L", data.stateMachine.propertyName)

@@ -92,11 +92,11 @@ internal class ComponentGenerator(
             .build()
         when (data) {
             is ComposeFragmentData -> {
-                properties += data.composableParameter.map { simplePropertySpec(it) }
+                properties += data.composableParameter.map { simplePropertySpec(it.className) }
                 properties += providedValueSetProperty()
             }
             is ComposeScreenData -> {
-                properties += data.composableParameter.map { simplePropertySpec(it) }
+                properties += data.composableParameter.map { simplePropertySpec(it.className) }
                 properties += providedValueSetProperty()
             }
             is RendererFragmentData -> properties += simplePropertySpec(data.factory)

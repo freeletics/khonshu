@@ -1,5 +1,6 @@
 package com.freeletics.mad.whetstone.codegen
 
+import com.freeletics.mad.whetstone.ComposableParameter
 import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.Navigation
@@ -24,8 +25,14 @@ internal class FileGeneratorTestCompose {
         navigation = null,
         navEntryData = null,
         composableParameter = listOf(
-            ClassName("com.test", "TestClass"),
-            ClassName("com.other", "TestClass2"),
+            ComposableParameter(
+                name = "testClass",
+                className = ClassName("com.test", "TestClass"),
+            ),
+            ComposableParameter(
+                name = "test",
+                className = ClassName("com.other", "TestClass2"),
+            )
         )
     )
 
@@ -142,7 +149,7 @@ internal class FileGeneratorTestCompose {
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(testClass, testClass2, currentState) { action ->
+                  Test(testClass = testClass, test = testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -268,7 +275,7 @@ internal class FileGeneratorTestCompose {
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(testClass, testClass2, currentState) { action ->
+                  Test(testClass = testClass, test = testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -398,7 +405,7 @@ internal class FileGeneratorTestCompose {
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(testClass, testClass2, currentState) { action ->
+                  Test(testClass = testClass, test = testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }
@@ -555,7 +562,7 @@ internal class FileGeneratorTestCompose {
                 val currentState = state.value
                 if (currentState != null) {
                   val scope = rememberCoroutineScope()
-                  Test(testClass, testClass2, currentState) { action ->
+                  Test(testClass = testClass, test = testClass2, currentState) { action ->
                     scope.launch { stateMachine.dispatch(action) }
                   }
                 }

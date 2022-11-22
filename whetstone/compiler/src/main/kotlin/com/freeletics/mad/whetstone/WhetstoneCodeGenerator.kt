@@ -224,9 +224,9 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         return pathSegments().joinToString(separator = ".")
     }
 
-    private fun TopLevelFunctionReference.parameterTypes(): List<ClassName> {
+    private fun TopLevelFunctionReference.parameterTypes(): List<ComposableParameter> {
         return parameters
-            .filter { it.name != "state" && it.name != "sendAction" }
+            .filter { it.name != null && it.name != "state" && it.name != "sendAction" }
             .map {
                 val fqName = it.typeReference?.fqNameOrNull(module)
                 val packageString = fqName?.packageString()?.substringBeforeLast(".")
@@ -234,11 +234,14 @@ public class WhetstoneCodeGenerator : CodeGenerator {
                 if(packageString == null || shortName == null) {
                     throw AnvilCompilationExceptionTopLevelFunctionReference(
                         functionReference = this,
-                        message = "Could not find class for ${it.name}"
+                        message = "Could not find class for ${it.name} in ${this.name}"
                     )
                 }
 
-                ClassName(packageString, shortName)
+                ComposableParameter(
+                    name = it.name!!,
+                    className = ClassName(packageString, shortName)
+                )
             }
     }
 }
