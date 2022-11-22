@@ -29,7 +29,7 @@ with views there is `@RendererFragment`.
 
 In a pure compose app the `@ComposeScreen` annotation is added to the
 top level composable that represents your screen. This function should have
-exactly 2 parameters: the state that should be rendered and a lambda that allows
+2 parameters: the state that should be rendered and a lambda that allows
 the composable to send actions for user interactions. This will then generate
 another Composable function called `ExampleUiScreen` and a Dagger component.
 
@@ -42,7 +42,7 @@ another Composable function called `ExampleUiScreen` and a Dagger component.
 @Composable
 internal fun ExampleUi(
   state: ExampleState,
-  actions: (ExampleAction) -> Unit
+  sendAction: (ExampleAction) -> Unit
 ) {
   // composable logic ...
 }
@@ -72,7 +72,7 @@ will then generate a `ExampleUiFragment` class and a Dagger component.
 @Composable
 internal fun ExampleUi(
   state: ExampleState,
-  actions: (ExampleAction) -> Unit
+  sendAction: (ExampleAction) -> Unit
 ) {
   // composable logic ...
 }
@@ -189,6 +189,27 @@ that uses `destinationScope` as its scope (usually an app wide or Activity
 level scope). With that it's not necessary to manually create a `Set`
 of all destinations anymore. It can simply be injected.
 
+## Dependencies in Compose
+
+The `@ComposeFragment` and `@ComposeScreen` annotations support passing dependencies
+into the annotated function. The dependency has to be available for injection in the previously
+mentioned generated component.
+
+```kotlin
+class ExampleClass @Inject constructor() {
+    // implementation ...
+}
+
+@ComposeScreen(...)
+@Composable
+internal fun ExampleUi(
+  exampleClass: ExampleClass,
+  state: ExampleState,
+  sendAction: (ExampleAction) -> Unit
+) {
+  // composable logic ...
+}
+```
 
 ## Example
 

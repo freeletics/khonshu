@@ -24,7 +24,13 @@ internal sealed interface BaseData {
 internal sealed interface ComposeData : BaseData {
     override val stateMachine: ClassName
     val navEntryData: NavEntryData?
+    val composableParameter: List<ComposableParameter>
 }
+
+internal data class ComposableParameter(
+    val name: String,
+    val className: ClassName
+)
 
 internal data class ComposeScreenData(
     override val baseName: String,
@@ -37,6 +43,7 @@ internal data class ComposeScreenData(
 
     override val navigation: Navigation.Compose?,
     override val navEntryData: NavEntryData?,
+    override val composableParameter: List<ComposableParameter>,
 ) :  ComposeData
 
 internal sealed interface FragmentData : BaseData {
@@ -57,6 +64,7 @@ internal data class ComposeFragmentData(
 
     override val navigation: Navigation.Fragment?,
     override val navEntryData: NavEntryData?,
+    override val composableParameter: List<ComposableParameter>,
 ) : ComposeData, FragmentData
 
 internal data class RendererFragmentData(

@@ -1,6 +1,7 @@
 package com.freeletics.mad.whetstone
 
 import com.freeletics.mad.whetstone.codegen.FileGenerator
+import com.freeletics.mad.whetstone.codegen.util.AnvilCompilationExceptionTopLevelFunctionReference
 import com.freeletics.mad.whetstone.codegen.util.TopLevelFunctionReference
 import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
@@ -22,15 +23,22 @@ import com.squareup.anvil.compiler.api.AnvilContext
 import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.api.GeneratedFile
 import com.squareup.anvil.compiler.api.createGeneratedFile
+import com.squareup.anvil.compiler.internal.asClassName
+import com.squareup.anvil.compiler.internal.fqNameOrNull
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
+import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionAnnotationReference
+import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionParameterReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.classAndInnerClassReferences
+import com.squareup.anvil.compiler.internal.requireFqName
+import com.squareup.kotlinpoet.ClassName
 import java.io.File
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.resolve.calls.util.getType
 
 @OptIn(ExperimentalAnvilApi::class)
 @AutoService(CodeGenerator::class)
@@ -101,7 +109,8 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             stateMachine = compose.requireClassArgument("stateMachine", 2),
             fragmentBaseClass = compose.optionalClassArgument("fragmentBaseClass", 3) ?: fragment,
             navigation = navigation,
-            navEntryData = navEntryData(declaration, declaration.packageName(), navigation)
+            navEntryData = navEntryData(declaration, declaration.packageName(), navigation),
+            composableParameter = declaration.parameterTypes()
         )
 
         val file = FileGenerator().generate(data)
@@ -151,6 +160,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             stateMachine = compose.requireClassArgument("stateMachine", 2),
             navigation = navigation,
             navEntryData = navEntryData(declaration, declaration.packageName(), navigation),
+            composableParameter = declaration.parameterTypes()
         )
 
         val file = FileGenerator().generate(data)
@@ -213,5 +223,25 @@ public class WhetstoneCodeGenerator : CodeGenerator {
 
     private fun FqName.packageString(): String {
         return pathSegments().joinToString(separator = ".")
+    }
+
+    private fun TopLevelFunctionReference.parameterTypes(): List<ComposableParameter> {
+        return parameters
+            .filter { it.name != null && it.name != "state" && it.name != "sendAction" }
+            .map {
+                val fqName = it.typeReference?.fqNameOrNull(module)
+                val className = fqName?.asClassName(module)
+                if(className == null) {
+                    throw AnvilCompilationExceptionTopLevelFunctionReference(
+                        functionReference = this,
+                        message = "Could not find class for parameter '${it.name}' in ${this.name}"
+                    )
+                }
+
+                ComposableParameter(
+                    name = it.name!!,
+                    className = className
+                )
+            }
     }
 }

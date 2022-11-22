@@ -41,7 +41,6 @@ internal const val retainedComponentFactoryCreateName = "create"
 internal val Generator<out BaseData>.retainedComponentFactoryClassName
     get() = retainedComponentClassName.nestedClass("Factory")
 
-internal const val providedValueSetPropertyName = "providedValues"
 internal const val closeableSetPropertyName = "closeables"
 
 internal val Generator<out BaseData>.retainedParentComponentClassName
@@ -91,17 +90,16 @@ internal class ComponentGenerator(
             }
             .build()
         when (data) {
-            is ComposeFragmentData -> properties += providedValueSetProperty()
-            is ComposeScreenData -> properties += providedValueSetProperty()
+            is ComposeFragmentData -> {
+                properties += data.composableParameter.map { simplePropertySpec(it.className) }
+            }
+            is ComposeScreenData -> {
+                properties += data.composableParameter.map { simplePropertySpec(it.className) }
+            }
             is RendererFragmentData -> properties += simplePropertySpec(data.factory)
             is NavEntryData -> {}
         }
         return properties
-    }
-
-    private fun providedValueSetProperty(): PropertySpec {
-        val type = SET.parameterizedBy(providedValue.parameterizedBy(STAR))
-        return PropertySpec.builder(providedValueSetPropertyName, type).build()
     }
 
     private fun retainedComponentFactory(): TypeSpec {
