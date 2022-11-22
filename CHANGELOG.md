@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+Version 0.9.0 *(2022-11-22)*
+----------------------------
+
+### Whetstone
+- Add support for injecting dependencies into Composable functions, which are annotated with
+`@ComposeScreen` or `@ComposeFragment`
+
+### Navigator
+- Refactor runtime module to remove androidx navigation
+
 Version 0.8.1 *(2022-11-08)*
 ----------------------------
 
