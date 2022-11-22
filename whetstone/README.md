@@ -192,7 +192,8 @@ of all destinations anymore. It can simply be injected.
 ## Dependencies in Compose
 
 The `@ComposeFragment` and `@ComposeScreen` annotations support passing dependencies
-into the annotated function. The dependency has to be available via Dagger.
+into the annotated function. The dependency has to be available for injection in the previously
+mentioned generated component.
 
 ```kotlin
 class ExampleClass @Inject constructor() {
