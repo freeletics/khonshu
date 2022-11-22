@@ -81,7 +81,6 @@ internal val navBackStackEntry = ClassName("androidx.navigation", "NavBackStackE
 internal val composable = ClassName("androidx.compose.runtime", "Composable")
 internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
-internal val compositionLocalProvider = ClassName("androidx.compose.runtime", "CompositionLocalProvider")
 internal val providedValue = ClassName("androidx.compose.runtime", "ProvidedValue")
 internal val composeView = ClassName("androidx.compose.ui.platform", "ComposeView")
 internal val viewCompositionStrategy = ClassName("androidx.compose.ui.platform", "ViewCompositionStrategy")

@@ -5,7 +5,6 @@ import com.freeletics.mad.whetstone.ComposeData
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.asComposeState
 import com.freeletics.mad.whetstone.codegen.util.composable
-import com.freeletics.mad.whetstone.codegen.util.compositionLocalProvider
 import com.freeletics.mad.whetstone.codegen.util.launch
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
@@ -21,7 +20,6 @@ internal class ComposeGenerator(
 ) : Generator<ComposeData>() {
 
     internal fun generate(): FunSpec {
-//        val composableParameterProperties = data.composableParameter.map { it.className.propertyName }
         val parameterString = data.composableParameter
             .joinToString { "${it.name} = ${it.className.propertyName}" }
             .let { if(it.isNotBlank()) it.plus(", ") else it }
@@ -31,8 +29,6 @@ internal class ComposeGenerator(
             .addAnnotation(optInAnnotation())
             .addModifiers(PRIVATE)
             .addParameter("component", retainedComponentClassName)
-            .addStatement("val providedValues = component.%L", providedValueSetPropertyName)
-            .beginControlFlow("%T(*providedValues.toTypedArray()) {", compositionLocalProvider)
             .apply {
                 data.composableParameter.forEach { parameter ->
                     addStatement("val %L = component.%L", parameter.className.propertyName, parameter.className.propertyName)
@@ -46,7 +42,6 @@ internal class ComposeGenerator(
             .beginControlFlow("%L(%LcurrentState) { action ->", data.baseName, parameterString)
             // dispatch: external method
             .addStatement("scope.%M { stateMachine.dispatch(action) }", launch)
-            .endControlFlow()
             .endControlFlow()
             .endControlFlow()
             .build()

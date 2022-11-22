@@ -52,8 +52,6 @@ internal class FileGeneratorTestCompose {
 
             import android.os.Bundle
             import androidx.compose.runtime.Composable
-            import androidx.compose.runtime.CompositionLocalProvider
-            import androidx.compose.runtime.ProvidedValue
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -90,8 +88,6 @@ internal class FileGeneratorTestCompose {
               public val testClass: TestClass
 
               public val testClass2: TestClass2
-
-              public val providedValues: Set<ProvidedValue<*>>
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -140,18 +136,15 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val providedValues = component.providedValues
-              CompositionLocalProvider(*providedValues.toTypedArray()) {
-                val testClass = component.testClass
-                val testClass2 = component.testClass2
-                val stateMachine = component.testStateMachine
-                val state = stateMachine.asComposeState()
-                val currentState = state.value
-                if (currentState != null) {
-                  val scope = rememberCoroutineScope()
-                  Test(testClass = testClass, test = testClass2, currentState) { action ->
-                    scope.launch { stateMachine.dispatch(action) }
-                  }
+              val testClass = component.testClass
+              val testClass2 = component.testClass2
+              val stateMachine = component.testStateMachine
+              val state = stateMachine.asComposeState()
+              val currentState = state.value
+              if (currentState != null) {
+                val scope = rememberCoroutineScope()
+                Test(testClass = testClass, test = testClass2, currentState) { action ->
+                  scope.launch { stateMachine.dispatch(action) }
                 }
               }
             }
@@ -170,8 +163,6 @@ internal class FileGeneratorTestCompose {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import androidx.compose.runtime.CompositionLocalProvider
-            import androidx.compose.runtime.ProvidedValue
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -213,8 +204,6 @@ internal class FileGeneratorTestCompose {
               public val testClass: TestClass
 
               public val testClass2: TestClass2
-
-              public val providedValues: Set<ProvidedValue<*>>
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -266,18 +255,15 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val providedValues = component.providedValues
-              CompositionLocalProvider(*providedValues.toTypedArray()) {
-                val testClass = component.testClass
-                val testClass2 = component.testClass2
-                val stateMachine = component.testStateMachine
-                val state = stateMachine.asComposeState()
-                val currentState = state.value
-                if (currentState != null) {
-                  val scope = rememberCoroutineScope()
-                  Test(testClass = testClass, test = testClass2, currentState) { action ->
-                    scope.launch { stateMachine.dispatch(action) }
-                  }
+              val testClass = component.testClass
+              val testClass2 = component.testClass2
+              val stateMachine = component.testStateMachine
+              val state = stateMachine.asComposeState()
+              val currentState = state.value
+              if (currentState != null) {
+                val scope = rememberCoroutineScope()
+                Test(testClass = testClass, test = testClass2, currentState) { action ->
+                  scope.launch { stateMachine.dispatch(action) }
                 }
               }
             }
@@ -296,8 +282,6 @@ internal class FileGeneratorTestCompose {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import androidx.compose.runtime.CompositionLocalProvider
-            import androidx.compose.runtime.ProvidedValue
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -344,8 +328,6 @@ internal class FileGeneratorTestCompose {
 
               public val testClass2: TestClass2
 
-              public val providedValues: Set<ProvidedValue<*>>
-
               @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
@@ -396,18 +378,15 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val providedValues = component.providedValues
-              CompositionLocalProvider(*providedValues.toTypedArray()) {
-                val testClass = component.testClass
-                val testClass2 = component.testClass2
-                val stateMachine = component.testStateMachine
-                val state = stateMachine.asComposeState()
-                val currentState = state.value
-                if (currentState != null) {
-                  val scope = rememberCoroutineScope()
-                  Test(testClass = testClass, test = testClass2, currentState) { action ->
-                    scope.launch { stateMachine.dispatch(action) }
-                  }
+              val testClass = component.testClass
+              val testClass2 = component.testClass2
+              val stateMachine = component.testStateMachine
+              val state = stateMachine.asComposeState()
+              val currentState = state.value
+              if (currentState != null) {
+                val scope = rememberCoroutineScope()
+                Test(testClass = testClass, test = testClass2, currentState) { action ->
+                  scope.launch { stateMachine.dispatch(action) }
                 }
               }
             }
@@ -440,8 +419,6 @@ internal class FileGeneratorTestCompose {
 
             import android.content.Context
             import androidx.compose.runtime.Composable
-            import androidx.compose.runtime.CompositionLocalProvider
-            import androidx.compose.runtime.ProvidedValue
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
@@ -501,8 +478,6 @@ internal class FileGeneratorTestCompose {
 
               public val testClass2: TestClass2
 
-              public val providedValues: Set<ProvidedValue<*>>
-
               @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
@@ -553,18 +528,15 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val providedValues = component.providedValues
-              CompositionLocalProvider(*providedValues.toTypedArray()) {
-                val testClass = component.testClass
-                val testClass2 = component.testClass2
-                val stateMachine = component.testStateMachine
-                val state = stateMachine.asComposeState()
-                val currentState = state.value
-                if (currentState != null) {
-                  val scope = rememberCoroutineScope()
-                  Test(testClass = testClass, test = testClass2, currentState) { action ->
-                    scope.launch { stateMachine.dispatch(action) }
-                  }
+              val testClass = component.testClass
+              val testClass2 = component.testClass2
+              val stateMachine = component.testStateMachine
+              val state = stateMachine.asComposeState()
+              val currentState = state.value
+              if (currentState != null) {
+                val scope = rememberCoroutineScope()
+                Test(testClass = testClass, test = testClass2, currentState) { action ->
+                  scope.launch { stateMachine.dispatch(action) }
                 }
               }
             }
