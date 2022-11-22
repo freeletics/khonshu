@@ -23,6 +23,7 @@ import com.squareup.anvil.compiler.api.AnvilContext
 import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.api.GeneratedFile
 import com.squareup.anvil.compiler.api.createGeneratedFile
+import com.squareup.anvil.compiler.internal.asClassName
 import com.squareup.anvil.compiler.internal.fqNameOrNull
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionAnnotationReference
@@ -229,18 +230,17 @@ public class WhetstoneCodeGenerator : CodeGenerator {
             .filter { it.name != null && it.name != "state" && it.name != "sendAction" }
             .map {
                 val fqName = it.typeReference?.fqNameOrNull(module)
-                val packageString = fqName?.packageString()?.substringBeforeLast(".")
-                val shortName = fqName?.shortName()?.asString()
-                if(packageString == null || shortName == null) {
+                val className = fqName?.asClassName(module)
+                if(className == null) {
                     throw AnvilCompilationExceptionTopLevelFunctionReference(
                         functionReference = this,
-                        message = "Could not find class for ${it.name} in ${this.name}"
+                        message = "Could not find class for parameter '${it.name}' in ${this.name}"
                     )
                 }
 
                 ComposableParameter(
                     name = it.name!!,
-                    className = ClassName(packageString, shortName)
+                    className = className
                 )
             }
     }

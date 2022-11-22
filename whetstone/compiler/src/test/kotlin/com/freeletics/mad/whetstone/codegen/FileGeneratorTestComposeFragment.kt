@@ -27,16 +27,7 @@ internal class FileGeneratorTestComposeFragment {
         fragmentBaseClass = fragment,
         navigation = null,
         navEntryData = null,
-        composableParameter = listOf(
-            ComposableParameter(
-                name = "testClass",
-                className = ClassName("com.test", "TestClass"),
-            ),
-            ComposableParameter(
-                name = "test",
-                className = ClassName("com.other", "TestClass2"),
-            )
-        )
+        composableParameter = emptyList()
     )
 
     private val navEntryData = NavEntryData(
@@ -69,7 +60,6 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
-            import com.other.TestClass2
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -93,10 +83,6 @@ internal class FileGeneratorTestComposeFragment {
               public val testStateMachine: TestStateMachine
 
               public val closeables: Set<Closeable>
-
-              public val testClass: TestClass
-
-              public val testClass2: TestClass2
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -161,16 +147,15 @@ internal class FileGeneratorTestComposeFragment {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val testClass = component.testClass
-              val testClass2 = component.testClass2
               val stateMachine = component.testStateMachine
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
                 val scope = rememberCoroutineScope()
-                Test(testClass = testClass, test = testClass2, currentState) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
-                }
+                Test(
+                  state = currentState,
+                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                )
               }
             }
             
@@ -206,7 +191,6 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
-            import com.other.TestClass2
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.destination.TestDestinationScope
@@ -233,10 +217,6 @@ internal class FileGeneratorTestComposeFragment {
               public val navEventNavigator: NavEventNavigator
 
               public val closeables: Set<Closeable>
-
-              public val testClass: TestClass
-
-              public val testClass2: TestClass2
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -304,16 +284,15 @@ internal class FileGeneratorTestComposeFragment {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val testClass = component.testClass
-              val testClass2 = component.testClass2
               val stateMachine = component.testStateMachine
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
                 val scope = rememberCoroutineScope()
-                Test(testClass = testClass, test = testClass2, currentState) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
-                }
+                Test(
+                  state = currentState,
+                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                )
               }
             }
             
@@ -351,7 +330,6 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
-            import com.other.TestClass2
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.destination.TestDestinationScope
@@ -380,10 +358,6 @@ internal class FileGeneratorTestComposeFragment {
               public val navEventNavigator: NavEventNavigator
 
               public val closeables: Set<Closeable>
-
-              public val testClass: TestClass
-
-              public val testClass2: TestClass2
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -451,16 +425,15 @@ internal class FileGeneratorTestComposeFragment {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val testClass = component.testClass
-              val testClass2 = component.testClass2
               val stateMachine = component.testStateMachine
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
                 val scope = rememberCoroutineScope()
-                Test(testClass = testClass, test = testClass2, currentState) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
-                }
+                Test(
+                  state = currentState,
+                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                )
               }
             }
             
@@ -519,7 +492,6 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
-            import com.other.TestClass2
             import com.squareup.anvil.annotations.ContributesMultibinding
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -553,10 +525,6 @@ internal class FileGeneratorTestComposeFragment {
               public val navEventNavigator: NavEventNavigator
 
               public val closeables: Set<Closeable>
-
-              public val testClass: TestClass
-
-              public val testClass2: TestClass2
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -624,16 +592,15 @@ internal class FileGeneratorTestComposeFragment {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val testClass = component.testClass
-              val testClass2 = component.testClass2
               val stateMachine = component.testStateMachine
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
                 val scope = rememberCoroutineScope()
-                Test(testClass = testClass, test = testClass2, currentState) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
-                }
+                Test(
+                  state = currentState,
+                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                )
               }
             }
 
@@ -744,6 +711,148 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.squareup.anvil.annotations.ContributesSubcomponent
+            import com.squareup.anvil.annotations.ContributesTo
+            import com.test.parent.TestParentScope
+            import dagger.BindsInstance
+            import dagger.Module
+            import dagger.multibindings.Multibinds
+            import java.io.Closeable
+            import kotlin.OptIn
+            import kotlin.Unit
+            import kotlin.collections.Set
+            import kotlinx.coroutines.launch
+
+            @OptIn(InternalWhetstoneApi::class)
+            @ScopeTo(TestScreen::class)
+            @ContributesSubcomponent(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              modules = [ComposeProviderValueModule::class],
+            )
+            public interface WhetstoneTestComponent {
+              public val testStateMachine: TestStateMachine
+
+              public val closeables: Set<Closeable>
+
+              @ContributesSubcomponent.Factory
+              public interface Factory {
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    arguments: Bundle): WhetstoneTestComponent
+              }
+
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                public fun whetstoneTestComponentFactory(): Factory
+              }
+            }
+
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface WhetstoneTestModule {
+              @Multibinds
+              public fun bindCloseables(): Set<Closeable>
+            }
+
+            @InternalWhetstoneApi
+            internal class WhetstoneTestViewModel(
+              parentComponent: WhetstoneTestComponent.ParentComponent,
+              savedStateHandle: SavedStateHandle,
+              arguments: Bundle,
+            ) : ViewModel() {
+              public val component: WhetstoneTestComponent =
+                  parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, arguments)
+
+              public override fun onCleared(): Unit {
+                component.closeables.forEach {
+                  it.close()
+                }
+              }
+            }
+            
+            @OptIn(InternalWhetstoneApi::class)
+            public class WhetstoneTestFragment : DialogFragment() {
+              private lateinit var whetstoneTestComponent: WhetstoneTestComponent
+            
+              public override fun onCreateView(
+                inflater: LayoutInflater,
+                container: ViewGroup?,
+                savedInstanceState: Bundle?,
+              ): View {
+                if (!::whetstoneTestComponent.isInitialized) {
+                  val arguments = requireArguments()
+                  val viewModel = viewModel(TestParentScope::class, arguments, ::WhetstoneTestViewModel)
+                  whetstoneTestComponent = viewModel.component
+                }
+
+                return ComposeView(requireContext()).apply {
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+
+                  setContent {
+                    WhetstoneTest(whetstoneTestComponent)
+                  }
+                }
+              }
+            }
+
+            @Composable
+            @OptIn(InternalWhetstoneApi::class)
+            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
+              val stateMachine = component.testStateMachine
+              val state = stateMachine.asComposeState()
+              val currentState = state.value
+              if (currentState != null) {
+                val scope = rememberCoroutineScope()
+                Test(
+                  state = currentState,
+                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                )
+              }
+            }
+
+        """.trimIndent()
+
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `generates code for ComposeFragmentData with Composable Depedencies`() {
+        val actual = FileGenerator()
+            .generate(
+                data.copy(
+                    composableParameter = listOf(
+                        ComposableParameter(
+                            name = "testClass",
+                            className = ClassName("com.test", "TestClass"),
+                        ),
+                        ComposableParameter(
+                            name = "test",
+                            className = ClassName("com.other", "TestClass2"),
+                        )
+                    )
+                )
+            )
+            .toString()
+
+        val expected = """
+            package com.test
+
+            import android.os.Bundle
+            import android.view.LayoutInflater
+            import android.view.View
+            import android.view.ViewGroup
+            import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.rememberCoroutineScope
+            import androidx.compose.ui.platform.ComposeView
+            import androidx.compose.ui.platform.ViewCompositionStrategy
+            import androidx.fragment.app.Fragment
+            import androidx.lifecycle.SavedStateHandle
+            import androidx.lifecycle.ViewModel
+            import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
+            import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
+            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
             import com.other.TestClass2
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -809,7 +918,7 @@ internal class FileGeneratorTestComposeFragment {
             }
             
             @OptIn(InternalWhetstoneApi::class)
-            public class WhetstoneTestFragment : DialogFragment() {
+            public class WhetstoneTestFragment : Fragment() {
               private lateinit var whetstoneTestComponent: WhetstoneTestComponent
             
               public override fun onCreateView(
@@ -843,12 +952,15 @@ internal class FileGeneratorTestComposeFragment {
               val currentState = state.value
               if (currentState != null) {
                 val scope = rememberCoroutineScope()
-                Test(testClass = testClass, test = testClass2, currentState) { action ->
-                  scope.launch { stateMachine.dispatch(action) }
-                }
+                Test(
+                  testClass = testClass,
+                  test = testClass2,
+                  state = currentState,
+                  sendAction = { scope.launch { stateMachine.dispatch(action) } },
+                )
               }
             }
-
+            
         """.trimIndent()
 
         assertThat(actual).isEqualTo(expected)

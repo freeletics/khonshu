@@ -9,6 +9,7 @@ import com.freeletics.mad.whetstone.codegen.util.launch
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.freeletics.mad.whetstone.codegen.util.rememberCoroutineScope
+import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.PRIVATE
 
@@ -20,15 +21,17 @@ internal class ComposeGenerator(
 ) : Generator<ComposeData>() {
 
     internal fun generate(): FunSpec {
-        val parameterString = data.composableParameter
-            .joinToString { "${it.name} = ${it.className.propertyName}" }
-            .let { if(it.isNotBlank()) it.plus(", ") else it }
-
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
             .addAnnotation(optInAnnotation())
             .addModifiers(PRIVATE)
             .addParameter("component", retainedComponentClassName)
+            .addCode(composableBlock())
+            .build()
+    }
+
+    private fun composableBlock(): CodeBlock {
+        return CodeBlock.builder()
             .apply {
                 data.composableParameter.forEach { parameter ->
                     addStatement("val %L = component.%L", parameter.className.propertyName, parameter.className.propertyName)
@@ -39,10 +42,16 @@ internal class ComposeGenerator(
             .addStatement("val currentState = state.value")
             .beginControlFlow("if (currentState != null)")
             .addStatement("val scope = %M()", rememberCoroutineScope)
-            .beginControlFlow("%L(%LcurrentState) { action ->", data.baseName, parameterString)
+            .addStatement("%L(", data.baseName)
+            .apply {
+                data.composableParameter.forEach { parameter ->
+                    addStatement("  %L = %L,", parameter.name, parameter.className.propertyName)
+                }
+            }
+            .addStatement("  state = currentState,")
             // dispatch: external method
-            .addStatement("scope.%M { stateMachine.dispatch(action) }", launch)
-            .endControlFlow()
+            .addStatement("  sendAction = { scope.%M { stateMachine.dispatch(action) } },", launch)
+            .addStatement(")")
             .endControlFlow()
             .build()
     }
