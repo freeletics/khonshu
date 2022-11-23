@@ -50,7 +50,7 @@ internal class ComposeGenerator(
             }
             .addStatement("  state = currentState,")
             // dispatch: external method
-            .addStatement("  sendAction = { scope.%M { stateMachine.dispatch(action) } },", launch)
+            .addStatement("  sendAction = { scope.%M { stateMachine.dispatch(it) } },", launch)
             .addStatement(")")
             .endControlFlow()
             .build()
