@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.1 *(2022-11-23)*
+----------------------------
+
+### Whetstone
+- Fix action lambda in Compose code generation
+
 Version 0.9.0 *(2022-11-22)*
 ----------------------------
 
