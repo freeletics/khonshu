@@ -53,6 +53,8 @@ dependencies {
     api libs.coroutines.core
 
     implementation libs.androidx.core
+    implementation libs.androidx.viewmodel
+    implementation libs.androidx.viewmodel.savedstate
 
     testImplementation libs.junit
     testImplementation libs.truth

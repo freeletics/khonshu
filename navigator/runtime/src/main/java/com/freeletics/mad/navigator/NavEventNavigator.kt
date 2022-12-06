@@ -14,7 +14,6 @@ import com.freeletics.mad.navigator.NavEvent.PermissionsResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
 import com.freeletics.mad.navigator.internal.DelegatingOnBackPressedCallback
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
-import com.freeletics.mad.navigator.internal.destinationId
 import kotlin.reflect.KClass
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
@@ -119,7 +118,7 @@ public open class NavEventNavigator {
     ): NavigationResultRequest<O> {
         checkAllowedToAddRequests()
         val requestKey = "${route.qualifiedName!!}-${result.qualifiedName!!}"
-        val key = NavigationResultRequest.Key<O>(route.destinationId(), requestKey)
+        val key = NavigationResultRequest.Key<O>(route, requestKey)
         val request = NavigationResultRequest(key)
         _navigationResultRequests.add(request)
         return request

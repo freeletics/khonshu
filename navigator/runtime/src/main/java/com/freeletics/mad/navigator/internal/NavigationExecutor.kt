@@ -1,6 +1,8 @@
 package com.freeletics.mad.navigator.internal
 
 import android.os.Parcelable
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModelStore
 import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoot
@@ -18,4 +20,7 @@ public interface NavigationExecutor {
     public fun navigateBack()
     public fun navigateBackTo(route: KClass<out BaseRoute>, isInclusive: Boolean)
     public fun deliverResult(key: NavigationResultRequest.Key<*>, result: Parcelable)
+    public fun <T : BaseRoute> routeFor(route: KClass<T>): T
+    public fun savedStateHandleFor(route: KClass<out BaseRoute>): SavedStateHandle
+    public fun viewModelStoreFor(route: KClass<out BaseRoute>): ViewModelStore
 }

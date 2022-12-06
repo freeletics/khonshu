@@ -1,4 +1,4 @@
-public final class com/freeletics/mad/navigator/fragment/FragmentRouteKt {
+public final class com/freeletics/mad/navigator/fragment/FragmentExtensionsKt {
 	public static final fun requireRoute (Landroidx/fragment/app/Fragment;)Lcom/freeletics/mad/navigator/BaseRoute;
 }
 

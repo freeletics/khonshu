@@ -8,7 +8,6 @@ import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.PermissionsResultRequest
-import kotlin.reflect.KClass
 
 @InternalNavigatorApi
 public fun navigate(
@@ -60,19 +59,6 @@ public fun navigate(
     }
 }
 
-@InternalNavigatorApi
-public fun BaseRoute.destinationId(): Int = this::class.destinationId()
-
-@InternalNavigatorApi
-public fun KClass<out BaseRoute>.destinationId(): Int = internalDestinationId()
-
-@InternalNavigatorApi
-public fun ActivityRoute.destinationId(): Int = this::class.activityDestinationId()
-
-@InternalNavigatorApi
-public fun KClass<out ActivityRoute>.activityDestinationId(): Int = internalDestinationId()
-
-private fun KClass<*>.internalDestinationId() = qualifiedName!!.hashCode()
 
 @InternalNavigatorApi
 public fun <T : BaseRoute> Bundle?.requireRoute(): T = requireNotNull(this) {
@@ -83,9 +69,6 @@ public fun <T : BaseRoute> Bundle?.requireRoute(): T = requireNotNull(this) {
             "Bundle doesn't contain Route data in \"$EXTRA_ROUTE\""
         }
     }
-
-@InternalNavigatorApi
-public fun <T : ActivityRoute> Bundle.toActivityRoute(): T? = getParcelable(EXTRA_ROUTE)
 
 @InternalNavigatorApi
 public fun BaseRoute.getArguments(): Bundle = Bundle().also {

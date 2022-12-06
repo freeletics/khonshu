@@ -14,12 +14,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.lifecycle.flowWithLifecycle
-import androidx.navigation.NavController
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
-import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
+import com.freeletics.mad.navigator.internal.NavigationExecutor
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import com.freeletics.mad.navigator.internal.navigate
 import kotlinx.parcelize.Parcelize
@@ -30,7 +29,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Composable
 public fun NavigationSetup(navigator: NavEventNavigator) {
-    val controller = LocalNavController.current
+    val executor = LocalNavigationExecutor.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
     val activityLaunchers = navigator.activityResultRequests.associateWith {
@@ -41,7 +40,7 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
     }
 
     navigator.navigationResultRequests.forEach {
-        ResultEffect(it, controller)
+        ResultEffect(it, executor)
     }
 
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
@@ -53,12 +52,11 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
         }
     }
 
-    LaunchedEffect(lifecycleOwner, controller, navigator) {
-        val navigationExecutor = AndroidXNavigationExecutor(controller)
+    LaunchedEffect(lifecycleOwner, executor, navigator) {
         navigator.navEvents
             .flowWithLifecycle(lifecycleOwner.lifecycle, minActiveState = RESUMED)
             .collect { event ->
-                navigate(event, navigationExecutor, activityLaunchers, permissionLaunchers)
+                navigate(event, executor, activityLaunchers, permissionLaunchers)
             }
     }
 }
@@ -92,19 +90,16 @@ private fun Context.findActivity(): Activity {
 @Composable
 private fun <O : Parcelable> ResultEffect(
     request: NavigationResultRequest<O>,
-    controller: NavController,
+    executor: NavigationExecutor,
 ) {
-    LaunchedEffect(request, controller) {
-        val backStackEntry = controller.getBackStackEntry(request.key.destinationId)
-
-        backStackEntry
-            .savedStateHandle
-            .getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
+    LaunchedEffect(request, executor) {
+        val savedStateHandle = executor.savedStateHandleFor(request.key.route)
+        savedStateHandle.getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
             .collect { result ->
                 if (result != InitialValue) {
                     @Suppress("UNCHECKED_CAST")
                     request.handleResult(result as O)
-                    backStackEntry.savedStateHandle[request.key.requestKey] = InitialValue
+                    savedStateHandle[request.key.requestKey] = InitialValue
                 }
             }
     }
