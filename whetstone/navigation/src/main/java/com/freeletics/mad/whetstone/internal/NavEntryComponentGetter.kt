@@ -1,7 +1,8 @@
 package com.freeletics.mad.whetstone.internal
 
 import android.content.Context
-import androidx.navigation.NavBackStackEntry
+import com.freeletics.mad.navigator.internal.InternalNavigatorApi
+import com.freeletics.mad.navigator.internal.NavigationExecutor
 import com.freeletics.mad.whetstone.NavEntryComponent
 import dagger.MapKey
 import kotlin.reflect.KClass
@@ -12,10 +13,10 @@ import kotlin.reflect.KClass
 @InternalWhetstoneApi
 public interface NavEntryComponentGetter {
     /**
-     * The given [findEntry] should look up a back strack entry for that id
-     * in the current `NavController`.
+     * The implementation should return an instance of the generated nav entry component.
      */
-    public fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any
+    @OptIn(InternalNavigatorApi::class)
+    public fun retrieve(executor: NavigationExecutor, context: Context): Any
 }
 
 /**

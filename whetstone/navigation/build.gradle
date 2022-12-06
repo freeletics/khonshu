@@ -36,6 +36,7 @@ kotlin {
 
     sourceSets.all {
         languageSettings {
+            optIn("com.freeletics.mad.navigator.internal.InternalNavigatorApi")
             optIn("com.freeletics.mad.whetstone.internal.InternalWhetstoneApi")
         }
     }
@@ -50,11 +51,10 @@ tasks.withType(JavaCompile).configureEach {
 
 dependencies {
     api project(":whetstone:runtime")
+    api project(":navigator:navigator-runtime")
     api libs.inject
     api libs.dagger
-    api libs.androidx.navigation.common
 
-    implementation project(":navigator:navigator-runtime")
     implementation libs.androidx.viewmodel
     implementation libs.androidx.viewmodel.savedstate
 }

@@ -1,7 +1,7 @@
 package com.freeletics.mad.whetstone.internal
 
 import android.content.Context
-import androidx.navigation.NavBackStackEntry
+import com.freeletics.mad.navigator.internal.NavigationExecutor
 import kotlin.reflect.KClass
 
 /**
@@ -12,14 +12,14 @@ import kotlin.reflect.KClass
 public fun <T : Any> Context.findComponentByScope(
     scope: KClass<*>,
     destinationScope: KClass<*>,
-    findEntry: (Int) -> NavBackStackEntry
+    executor: NavigationExecutor,
 ): T {
     if (scope != destinationScope) {
         val destinationComponent = find(destinationScope) as? DestinationComponent
         val getter = destinationComponent?.navEntryComponentGetters?.get(scope.java)
         if (getter != null) {
             @Suppress("UNCHECKED_CAST")
-            return getter.retrieve(findEntry, this) as T
+            return getter.retrieve(executor, this) as T
         }
     }
     val dependency = find(scope)

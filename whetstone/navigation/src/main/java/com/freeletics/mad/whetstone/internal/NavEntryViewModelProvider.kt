@@ -7,34 +7,35 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.navigation.NavBackStackEntry
 import com.freeletics.mad.navigator.BaseRoute
+import com.freeletics.mad.navigator.internal.NavigationExecutor
 import kotlin.reflect.KClass
 
 /**
- * Creates a [ViewModel] for the given [entry]. The `ViewModel.Factory` will use [scope] to lookup
- * a parent component instance. That component will then be passed to the given [factory] together
- * with a [SavedStateHandle] and the passed in [route].
+ * Creates a [ViewModel] for the given [destination]. The `ViewModel.Factory` will use [parentScope]
+ * to lookup a parent component instance. That component will then be passed to the given [factory]
+ * together with a [SavedStateHandle] and the passed in [destination].
  *
  * To be used in generated code.
  */
 @InternalWhetstoneApi
-public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> viewModel(
-    entry: NavBackStackEntry,
+public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> navEntryViewModel(
+    destination: KClass<R>,
+    executor: NavigationExecutor,
     context: Context,
-    scope: KClass<*>,
+    parentScope: KClass<*>,
     destinationScope: KClass<*>,
-    route: R,
-    noinline findEntry: (Int) -> NavBackStackEntry,
     crossinline factory: (D, SavedStateHandle, R) -> T
 ): T {
     val viewModelFactory = viewModelFactory {
         initializer {
-            val dependencies = context.findComponentByScope<D>(scope, destinationScope, findEntry)
+            val component = context.findComponentByScope<D>(parentScope, destinationScope, executor)
             val savedStateHandle = createSavedStateHandle()
-            factory(dependencies, savedStateHandle, route)
+            val route = executor.routeFor(destination)
+            factory(component, savedStateHandle, route)
         }
     }
-    val viewModelProvider = ViewModelProvider(entry, viewModelFactory)
+    val viewModelStore = executor.viewModelStoreFor(destination)
+    val viewModelProvider = ViewModelProvider(viewModelStore, viewModelFactory)
     return viewModelProvider[T::class.java]
 }

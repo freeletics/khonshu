@@ -27,7 +27,7 @@ internal val navEntryComponentFqName = FqName(navEntryComponent.canonicalName)
 // Whetstone Internal API
 internal val asComposeState = MemberName("com.freeletics.mad.whetstone.internal", "asComposeState")
 internal val internalWhetstoneApi = ClassName("com.freeletics.mad.whetstone.internal", "InternalWhetstoneApi")
-internal val navEntryViewModel = MemberName("com.freeletics.mad.whetstone.internal", "viewModel")
+internal val navEntryViewModel = MemberName("com.freeletics.mad.whetstone.internal", "navEntryViewModel")
 internal val fragmentViewModel = MemberName("com.freeletics.mad.whetstone.fragment.internal", "viewModel")
 internal val rememberViewModel = MemberName("com.freeletics.mad.whetstone.compose.internal", "rememberViewModel")
 internal val navEntryComponentGetter = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetter")
@@ -37,6 +37,7 @@ internal val destinationComponent = ClassName("com.freeletics.mad.whetstone.inte
 
 // Navigator
 internal val navEventNavigator = ClassName("com.freeletics.mad.navigator", "NavEventNavigator")
+internal val navigationExecutor = ClassName("com.freeletics.mad.navigator.internal", "NavigationExecutor")
 internal val composeNavigationHandler = MemberName("com.freeletics.mad.navigator.compose", "NavigationSetup")
 internal val composeDestination = ClassName("com.freeletics.mad.navigator.compose", "NavDestination")
 internal val composeScreenDestination = MemberName("com.freeletics.mad.navigator.compose", "ScreenDestination")
@@ -47,8 +48,6 @@ internal val fragmentDestination = ClassName("com.freeletics.mad.navigator.fragm
 internal val fragmentScreenDestination = MemberName("com.freeletics.mad.navigator.fragment", "ScreenDestination")
 internal val fragmentDialogDestination = MemberName("com.freeletics.mad.navigator.fragment", "DialogDestination")
 internal val fragmentRequireRoute = MemberName("com.freeletics.mad.navigator.fragment", "requireRoute")
-internal val destinationId = MemberName("com.freeletics.mad.navigator.internal", "destinationId")
-internal val bundleRequireRoute = MemberName("com.freeletics.mad.navigator.internal", "requireRoute")
 internal val internalNavigatorApi = ClassName("com.freeletics.mad.navigator.internal", "InternalNavigatorApi")
 
 // Renderer
@@ -72,7 +71,6 @@ internal val module = ClassName("dagger", "Module")
 internal val fragment = ClassName("androidx.fragment.app", "Fragment")
 internal val viewModel = ClassName("androidx.lifecycle", "ViewModel")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
-internal val navBackStackEntry = ClassName("androidx.navigation", "NavBackStackEntry")
 
 // Compose
 internal val composable = ClassName("androidx.compose.runtime", "Composable")

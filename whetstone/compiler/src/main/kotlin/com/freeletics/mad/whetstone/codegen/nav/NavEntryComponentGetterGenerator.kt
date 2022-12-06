@@ -4,24 +4,20 @@ import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
 import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
-import com.freeletics.mad.whetstone.codegen.util.bundleRequireRoute
 import com.freeletics.mad.whetstone.codegen.util.context
-import com.freeletics.mad.whetstone.codegen.util.destinationId
 import com.freeletics.mad.whetstone.codegen.util.inject
 import com.freeletics.mad.whetstone.codegen.util.internalNavigatorApi
 import com.freeletics.mad.whetstone.codegen.util.internalWhetstoneApi
-import com.freeletics.mad.whetstone.codegen.util.navBackStackEntry
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
 import com.freeletics.mad.whetstone.codegen.util.navEntryViewModel
+import com.freeletics.mad.whetstone.codegen.util.navigationExecutor
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.squareup.anvil.annotations.ContributesMultibinding
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
-import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.TypeSpec
 
 internal val Generator<NavEntryData>.componentGetterClassName
@@ -66,13 +62,11 @@ internal class NavEntryComponentGetterGenerator(
         return FunSpec.builder("retrieve")
             .addModifiers(OVERRIDE)
             .addAnnotation(optInAnnotation(internalWhetstoneApi, internalNavigatorApi))
-            .addParameter("findEntry", LambdaTypeName.get(parameters = arrayOf(INT), returnType = navBackStackEntry))
+            .addParameter("executor", navigationExecutor)
             .addParameter("context", context)
             .returns(ANY)
-            .addStatement("val entry = findEntry(%T::class.%M())", data.navigation.route, destinationId)
-            .addStatement("val route: %T = entry.arguments.%M()", data.navigation.route, bundleRequireRoute)
-            .addStatement("val viewModel = %M(entry, context, %T::class, %T::class, route, findEntry, ::%T)",
-                navEntryViewModel, data.parentScope, data.navigation.destinationScope, viewModelClassName)
+            .addStatement("val viewModel = %M(%T::class, executor, context, %T::class, %T::class, ::%T)",
+                navEntryViewModel, data.navigation.route, data.parentScope, data.navigation.destinationScope, viewModelClassName)
             .addStatement("return viewModel.%L", viewModelComponentName)
             .build()
     }
