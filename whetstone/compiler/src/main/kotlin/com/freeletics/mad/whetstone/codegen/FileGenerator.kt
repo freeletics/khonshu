@@ -6,16 +6,16 @@ import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.RendererFragmentData
-import com.freeletics.mad.whetstone.codegen.common.ComposeGenerator
-import com.freeletics.mad.whetstone.codegen.nav.DestinationComponentGenerator
-import com.freeletics.mad.whetstone.codegen.nav.NavDestinationModuleGenerator
 import com.freeletics.mad.whetstone.codegen.common.ComponentGenerator
+import com.freeletics.mad.whetstone.codegen.common.ComposeGenerator
 import com.freeletics.mad.whetstone.codegen.common.ModuleGenerator
 import com.freeletics.mad.whetstone.codegen.common.ViewModelGenerator
 import com.freeletics.mad.whetstone.codegen.compose.ComposeScreenGenerator
 import com.freeletics.mad.whetstone.codegen.fragment.ComposeFragmentGenerator
-import com.freeletics.mad.whetstone.codegen.nav.NavEntryComponentGetterGenerator
 import com.freeletics.mad.whetstone.codegen.fragment.RendererFragmentGenerator
+import com.freeletics.mad.whetstone.codegen.nav.DestinationComponentGenerator
+import com.freeletics.mad.whetstone.codegen.nav.NavDestinationModuleGenerator
+import com.freeletics.mad.whetstone.codegen.nav.NavEntryComponentGetterGenerator
 import com.freeletics.mad.whetstone.codegen.util.bundleRequireRoute
 import com.squareup.kotlinpoet.FileSpec
 

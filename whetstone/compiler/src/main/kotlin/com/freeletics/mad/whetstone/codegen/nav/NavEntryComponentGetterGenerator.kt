@@ -4,6 +4,7 @@ import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
 import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
+import com.freeletics.mad.whetstone.codegen.util.bundleRequireRoute
 import com.freeletics.mad.whetstone.codegen.util.context
 import com.freeletics.mad.whetstone.codegen.util.destinationId
 import com.freeletics.mad.whetstone.codegen.util.inject
@@ -14,7 +15,6 @@ import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
 import com.freeletics.mad.whetstone.codegen.util.navEntryViewModel
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
-import com.freeletics.mad.whetstone.codegen.util.bundleRequireRoute
 import com.squareup.anvil.annotations.ContributesMultibinding
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.AnnotationSpec

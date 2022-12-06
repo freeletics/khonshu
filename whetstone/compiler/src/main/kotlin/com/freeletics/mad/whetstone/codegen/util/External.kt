@@ -70,18 +70,14 @@ internal val module = ClassName("dagger", "Module")
 
 // AndroidX
 internal val fragment = ClassName("androidx.fragment.app", "Fragment")
-internal val dialogFragment = ClassName("androidx.fragment.app", "DialogFragment")
-
 internal val viewModel = ClassName("androidx.lifecycle", "ViewModel")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
-
 internal val navBackStackEntry = ClassName("androidx.navigation", "NavBackStackEntry")
 
 // Compose
 internal val composable = ClassName("androidx.compose.runtime", "Composable")
 internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
-internal val providedValue = ClassName("androidx.compose.runtime", "ProvidedValue")
 internal val composeView = ClassName("androidx.compose.ui.platform", "ComposeView")
 internal val viewCompositionStrategy = ClassName("androidx.compose.ui.platform", "ViewCompositionStrategy")
 internal val disposeOnLifecycleDestroyed = viewCompositionStrategy.nestedClass("DisposeOnLifecycleDestroyed")

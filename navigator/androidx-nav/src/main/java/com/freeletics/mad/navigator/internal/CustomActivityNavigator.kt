@@ -19,7 +19,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.navigation.NavController
@@ -27,7 +26,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import androidx.navigation.NavigatorProvider
-import com.freeletics.mad.navigator.ActivityRoute
 
 /**
  * ActivityNavigator implements cross-activity navigation.
