@@ -12,6 +12,7 @@ import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DE
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED_PERMANENTLY
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.GRANTED
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
+import kotlin.reflect.KClass
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.trySendBlocking
@@ -123,19 +124,20 @@ public class NavigationResultRequest<O : Parcelable> internal constructor(
     /**
      * Use to identify where the result should be delivered to.
      */
-    public data class Key<@Suppress("unused") O : Parcelable> @InternalNavigatorApi constructor(
+    public data class Key<@Suppress("unused") O : Parcelable> internal constructor(
         @property:InternalNavigatorApi
-        public val destinationId: Int,
+        public val route: KClass<out BaseRoute>,
         @property:InternalNavigatorApi
         public val requestKey: String
     ) : Parcelable {
+        @Suppress("UNCHECKED_CAST", "DEPRECATION")
         public constructor(parcel: Parcel) : this(
-            parcel.readInt(),
+            (parcel.readSerializable() as Class<out BaseRoute>).kotlin,
             parcel.readString()!!
         )
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeInt(destinationId)
+            parcel.writeSerializable(route.java)
             parcel.writeString(requestKey)
         }
 

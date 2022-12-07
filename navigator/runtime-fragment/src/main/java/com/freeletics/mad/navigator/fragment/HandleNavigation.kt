@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
+import com.freeletics.mad.navigator.internal.NavigationExecutor
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import com.freeletics.mad.navigator.internal.navigate
 import kotlinx.coroutines.launch
@@ -34,20 +34,18 @@ public fun handleNavigation(fragment: Fragment, navigator: NavEventNavigator) {
 
     val lifecycle = fragment.lifecycle
 
-    val controller = fragment.findNavController()
+    val executor = AndroidXNavigationExecutor(fragment.findNavController())
     navigator.navigationResultRequests.forEach {
-        it.registerIn(controller, lifecycle)
+        it.registerIn(executor, lifecycle)
     }
 
     val dispatcher = fragment.requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(fragment, navigator.onBackPressedCallback)
 
-    val navigationExecutor = AndroidXNavigationExecutor(controller)
-
     lifecycle.coroutineScope.launch {
         lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             navigator.navEvents.collect { event ->
-                navigate(event, navigationExecutor, activityLaunchers, permissionLaunchers)
+                navigate(event, executor, activityLaunchers, permissionLaunchers)
             }
         }
     }
@@ -69,20 +67,17 @@ private fun PermissionsResultRequest.registerIn(
 }
 
 private fun <O : Parcelable> NavigationResultRequest<O>.registerIn(
-    controller: NavController,
+    executor: NavigationExecutor,
     lifecycle: Lifecycle,
 ) {
-    val backStackEntry = controller.getBackStackEntry(key.destinationId)
-
     lifecycle.coroutineScope.launch {
-        backStackEntry
-            .savedStateHandle
-            .getStateFlow<Parcelable>(key.requestKey, InitialValue)
+        val savedStateHandle = executor.savedStateHandleFor(key.route)
+        savedStateHandle.getStateFlow<Parcelable>(key.requestKey, InitialValue)
             .collect { result ->
                 if (result != InitialValue) {
                     @Suppress("UNCHECKED_CAST")
                     handleResult(result as O)
-                    backStackEntry.savedStateHandle[key.requestKey] = InitialValue
+                    savedStateHandle[key.requestKey] = InitialValue
                 }
             }
     }

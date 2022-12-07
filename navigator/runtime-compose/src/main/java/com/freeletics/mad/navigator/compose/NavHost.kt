@@ -29,8 +29,10 @@ import com.freeletics.mad.navigator.compose.NavDestination.Activity
 import com.freeletics.mad.navigator.compose.NavDestination.BottomSheet
 import com.freeletics.mad.navigator.compose.NavDestination.Dialog
 import com.freeletics.mad.navigator.compose.NavDestination.Screen
+import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
 import com.freeletics.mad.navigator.internal.CustomActivityNavigator
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
+import com.freeletics.mad.navigator.internal.NavigationExecutor
 import com.freeletics.mad.navigator.internal.activityDestinationId
 import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.navigator.internal.getArguments
@@ -62,6 +64,7 @@ public fun NavHost(
 ) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
+    val executor = remember(navController) { AndroidXNavigationExecutor(navController) }
     val context = LocalContext.current
 
     if (destinationChangedCallback != null) {
@@ -88,7 +91,10 @@ public fun NavHost(
         }
     }
 
-    CompositionLocalProvider(LocalNavController provides navController) {
+    CompositionLocalProvider(
+        LocalNavigationExecutor provides executor,
+        LocalNavController provides navController,
+    ) {
         ModalBottomSheetLayout(
             bottomSheetNavigator = bottomSheetNavigator,
             sheetShape = bottomSheetShape,
@@ -168,6 +174,11 @@ private fun Activity.toDestination(
         it.id = route.activityDestinationId()
         it.intent = intent
     }
+}
+
+@InternalNavigatorApi
+public val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecutor> = staticCompositionLocalOf {
+    throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
 }
 
 @InternalNavigatorApi

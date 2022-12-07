@@ -1,6 +1,9 @@
 package com.freeletics.mad.navigator.internal
 
 import android.os.Parcelable
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModelStore
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.freeletics.mad.navigator.ActivityRoute
@@ -45,11 +48,26 @@ public class AndroidXNavigationExecutor(
     }
 
     override fun deliverResult(key: NavigationResultRequest.Key<*>, result: Parcelable) {
-        val entry = controller.getBackStackEntry(key.destinationId)
-        entry.savedStateHandle.set(key.requestKey, result)
+        savedStateHandleFor(key.route)[key.requestKey] = result
     }
 
     override fun navigateBackTo(route: KClass<out BaseRoute>, isInclusive: Boolean) {
         controller.popBackStack(route.destinationId(), isInclusive)
+    }
+
+    override fun savedStateHandleFor(route: KClass<out BaseRoute>): SavedStateHandle {
+        return entryFor(route).savedStateHandle
+    }
+
+    override fun <T : BaseRoute> routeFor(route: KClass<T>): T {
+        return entryFor(route).arguments.requireRoute()
+    }
+
+    override fun viewModelStoreFor(route: KClass<out BaseRoute>): ViewModelStore {
+        return entryFor(route).viewModelStore
+    }
+
+    private fun entryFor(route: KClass<out BaseRoute>): NavBackStackEntry {
+        return controller.getBackStackEntry(route.destinationId())
     }
 }
