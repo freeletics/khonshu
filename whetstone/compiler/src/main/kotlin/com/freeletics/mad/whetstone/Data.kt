@@ -10,29 +10,29 @@ import com.freeletics.mad.whetstone.codegen.util.fragmentScreenDestination
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.MemberName
 
-internal sealed interface BaseData {
-    val baseName: String
-    val packageName: String
+public sealed interface BaseData {
+    public val baseName: String
+    public val packageName: String
 
-    val scope: ClassName
-    val parentScope: ClassName
+    public val scope: ClassName
+    public val parentScope: ClassName
 
-    val stateMachine: ClassName?
-    val navigation: Navigation?
+    public val stateMachine: ClassName?
+    public val navigation: Navigation?
 }
 
-internal sealed interface ComposeData : BaseData {
+public sealed interface ComposeData : BaseData {
     override val stateMachine: ClassName
-    val navEntryData: NavEntryData?
-    val composableParameter: List<ComposableParameter>
+    public val navEntryData: NavEntryData?
+    public val composableParameter: List<ComposableParameter>
 }
 
-internal data class ComposableParameter(
-    val name: String,
-    val className: ClassName
+public data class ComposableParameter(
+    public val name: String,
+    public val className: ClassName
 )
 
-internal data class ComposeScreenData(
+public data class ComposeScreenData(
     override val baseName: String,
     override val packageName: String,
 
@@ -46,13 +46,13 @@ internal data class ComposeScreenData(
     override val composableParameter: List<ComposableParameter>,
 ) :  ComposeData
 
-internal sealed interface FragmentData : BaseData {
-    val fragmentBaseClass: ClassName
+public sealed interface FragmentData : BaseData {
+    public val fragmentBaseClass: ClassName
     override val navigation: Navigation.Fragment?
-    val navEntryData: NavEntryData?
+    public val navEntryData: NavEntryData?
 }
 
-internal data class ComposeFragmentData(
+public data class ComposeFragmentData(
     override val baseName: String,
     override val packageName: String,
 
@@ -67,7 +67,7 @@ internal data class ComposeFragmentData(
     override val composableParameter: List<ComposableParameter>,
 ) : ComposeData, FragmentData
 
-internal data class RendererFragmentData(
+public data class RendererFragmentData(
     override val baseName: String,
     override val packageName: String,
 
@@ -75,14 +75,14 @@ internal data class RendererFragmentData(
     override val parentScope: ClassName,
 
     override val stateMachine: ClassName,
-    val factory: ClassName,
+    public val factory: ClassName,
     override val fragmentBaseClass: ClassName,
 
     override val navigation: Navigation.Fragment?,
     override val navEntryData: NavEntryData?,
 ) : FragmentData
 
-internal data class NavEntryData(
+public data class NavEntryData(
     override val packageName: String,
 
     override val scope: ClassName,
@@ -95,20 +95,20 @@ internal data class NavEntryData(
     override val stateMachine: ClassName? = null
 }
 
-internal sealed interface Navigation {
-    val route: ClassName
-    val destinationClass: ClassName
-    val destinationScope: ClassName
-    val destinationMethod: MemberName?
+public sealed interface Navigation {
+    public val route: ClassName
+    public val destinationClass: ClassName
+    public val destinationScope: ClassName
+    public val destinationMethod: MemberName?
 
-    data class Compose(
+    public data class Compose(
         override val route: ClassName,
         private val destinationType: String,
         override val destinationScope: ClassName,
     ) : Navigation {
         override val destinationClass: ClassName = composeDestination
 
-        override val destinationMethod = when(destinationType) {
+        override val destinationMethod: MemberName? = when(destinationType) {
             "NONE" -> null
             "SCREEN" -> composeScreenDestination
             "DIALOG" -> composeDialogDestination
@@ -117,14 +117,14 @@ internal sealed interface Navigation {
         }
     }
 
-    data class Fragment(
+    public data class Fragment(
         override val route: ClassName,
         private val destinationType: String,
         override val destinationScope: ClassName,
     ) : Navigation {
         override val destinationClass: ClassName = fragmentDestination
 
-        override val destinationMethod = when(destinationType) {
+        override val destinationMethod: MemberName? = when(destinationType) {
             "NONE" -> null
             "SCREEN" -> fragmentScreenDestination
             "DIALOG" -> fragmentDialogDestination

@@ -70,6 +70,25 @@ dependencyAnalysis {
                 exclude(":whetstone:navigation", ":whetstone:runtime-fragment")
             }
         }
+
+        project(":whetstone:compiler-test") {
+            onUnusedDependencies {
+                // needed for compile testing
+                exclude(
+                    "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+                    "com.gabrielittner.renderer:connect",
+                    "org.jetbrains.kotlin:kotlin-compiler-embeddable",
+                    ":navigator:navigator-runtime-compose",
+                    ":navigator:navigator-runtime-fragment",
+                    ":whetstone:navigation",
+                    ":whetstone:navigation-compose",
+                    ":whetstone:navigation-fragment",
+                    ":whetstone:runtime",
+                    ":whetstone:runtime-compose",
+                    ":whetstone:runtime-fragment",
+                )
+            }
+        }
     }
 
     abi {

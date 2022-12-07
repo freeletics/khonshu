@@ -4,7 +4,6 @@ import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.RendererFragmentData
 import com.squareup.kotlinpoet.ClassName
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 internal class FileGeneratorTestRendererFragment {
@@ -21,7 +20,7 @@ internal class FileGeneratorTestRendererFragment {
         scope = ClassName("com.test", "TestScreen"),
         parentScope = ClassName("com.test.parent", "TestParentScope"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
-        factory = ClassName("com.test", "RendererFactory"),
+        factory = ClassName("com.test", "TestRenderer").nestedClass("Factory"),
         fragmentBaseClass = ClassName("androidx.fragment.app", "Fragment"),
         navigation = null,
         navEntryData = null,
@@ -36,8 +35,6 @@ internal class FileGeneratorTestRendererFragment {
 
     @Test
     fun `generates code for RendererFragmentData`() {
-        val actual = FileGenerator().generate(data).toString()
-
         val expected = """
             package com.test
 
@@ -74,7 +71,7 @@ internal class FileGeneratorTestRendererFragment {
             
               public val closeables: Set<Closeable>
 
-              public val rendererFactory: RendererFactory
+              public val testRendererFactory: TestRenderer.Factory
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -126,7 +123,7 @@ internal class FileGeneratorTestRendererFragment {
                   whetstoneTestComponent = viewModel.component
                 }
             
-                val renderer = whetstoneTestComponent.rendererFactory.inflate(inflater, container)
+                val renderer = whetstoneTestComponent.testRendererFactory.inflate(inflater, container)
                 connect(renderer, whetstoneTestComponent.testStateMachine)
                 return renderer.rootView
               }
@@ -134,13 +131,12 @@ internal class FileGeneratorTestRendererFragment {
             
         """.trimIndent()
 
-        assertThat(actual).isEqualTo(expected)
+        test(data, expected)
     }
 
     @Test
     fun `generates code for RendererFragmentData with navigation`() {
         val withNavigation = data.copy(navigation = navigation)
-        val actual = FileGenerator().generate(withNavigation).toString()
 
         val expected = """
             package com.test
@@ -184,7 +180,7 @@ internal class FileGeneratorTestRendererFragment {
             
               public val closeables: Set<Closeable>
 
-              public val rendererFactory: RendererFactory
+              public val testRendererFactory: TestRenderer.Factory
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -239,7 +235,7 @@ internal class FileGeneratorTestRendererFragment {
                   handleNavigation(this, whetstoneTestComponent.navEventNavigator)
                 }
             
-                val renderer = whetstoneTestComponent.rendererFactory.inflate(inflater, container)
+                val renderer = whetstoneTestComponent.testRendererFactory.inflate(inflater, container)
                 connect(renderer, whetstoneTestComponent.testStateMachine)
                 return renderer.rootView
               }
@@ -247,13 +243,12 @@ internal class FileGeneratorTestRendererFragment {
             
         """.trimIndent()
 
-        assertThat(actual).isEqualTo(expected)
+        test(withNavigation, expected)
     }
 
     @Test
     fun `generates code for RendererFragmentData with navigation and destination`() {
         val withDestination = data.copy(navigation = navigation.copy(destinationType = "SCREEN"))
-        val actual = FileGenerator().generate(withDestination).toString()
 
         val expected = """
             package com.test
@@ -301,7 +296,7 @@ internal class FileGeneratorTestRendererFragment {
             
               public val closeables: Set<Closeable>
 
-              public val rendererFactory: RendererFactory
+              public val testRendererFactory: TestRenderer.Factory
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -356,7 +351,7 @@ internal class FileGeneratorTestRendererFragment {
                   handleNavigation(this, whetstoneTestComponent.navEventNavigator)
                 }
             
-                val renderer = whetstoneTestComponent.rendererFactory.inflate(inflater, container)
+                val renderer = whetstoneTestComponent.testRendererFactory.inflate(inflater, container)
                 connect(renderer, whetstoneTestComponent.testStateMachine)
                 return renderer.rootView
               }
@@ -373,7 +368,7 @@ internal class FileGeneratorTestRendererFragment {
             
         """.trimIndent()
 
-        assertThat(actual).isEqualTo(expected)
+        test(withDestination, expected)
     }
 
     @Test
@@ -382,7 +377,6 @@ internal class FileGeneratorTestRendererFragment {
             navigation = navigation.copy(destinationType = "SCREEN"),
             navEntryData = navEntryData
         )
-        val actual = FileGenerator().generate(withDestination).toString()
 
         val expected = """
             package com.test
@@ -443,7 +437,7 @@ internal class FileGeneratorTestRendererFragment {
 
               public val closeables: Set<Closeable>
 
-              public val rendererFactory: RendererFactory
+              public val testRendererFactory: TestRenderer.Factory
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -498,7 +492,7 @@ internal class FileGeneratorTestRendererFragment {
                   handleNavigation(this, whetstoneTestComponent.navEventNavigator)
                 }
 
-                val renderer = whetstoneTestComponent.rendererFactory.inflate(inflater, container)
+                val renderer = whetstoneTestComponent.testRendererFactory.inflate(inflater, container)
                 connect(renderer, whetstoneTestComponent.testStateMachine)
                 return renderer.rootView
               }
@@ -584,7 +578,8 @@ internal class FileGeneratorTestRendererFragment {
             public interface WhetstoneTestScreenNavEntryDestinationComponent : DestinationComponent
             
         """.trimIndent()
-        assertThat(actual).isEqualTo(expected)
+
+        test(withDestination, expected)
     }
 
     @Test
@@ -592,7 +587,6 @@ internal class FileGeneratorTestRendererFragment {
         val dialogFragment = data.copy(
             fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment")
         )
-        val actual = FileGenerator().generate(dialogFragment).toString()
 
         val expected = """
             package com.test
@@ -630,7 +624,7 @@ internal class FileGeneratorTestRendererFragment {
             
               public val closeables: Set<Closeable>
 
-              public val rendererFactory: RendererFactory
+              public val testRendererFactory: TestRenderer.Factory
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -682,7 +676,7 @@ internal class FileGeneratorTestRendererFragment {
                   whetstoneTestComponent = viewModel.component
                 }
             
-                val renderer = whetstoneTestComponent.rendererFactory.inflate(inflater, container)
+                val renderer = whetstoneTestComponent.testRendererFactory.inflate(inflater, container)
                 connect(renderer, whetstoneTestComponent.testStateMachine)
                 return renderer.rootView
               }
@@ -690,6 +684,6 @@ internal class FileGeneratorTestRendererFragment {
 
         """.trimIndent()
 
-        assertThat(actual).isEqualTo(expected)
+        test(dialogFragment, expected)
     }
 }

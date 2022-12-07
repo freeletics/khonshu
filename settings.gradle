@@ -21,7 +21,7 @@ include ":navigator:androidx-nav"
 include ":navigator:runtime", ":navigator:runtime-compose", ":navigator:runtime-fragment"
 include ":state-machine"
 include ":text-resource"
-include ":whetstone:compiler"
+include ":whetstone:compiler", ":whetstone:compiler-test"
 include ":whetstone:runtime", ":whetstone:runtime-compose", ":whetstone:runtime-fragment"
 include ":whetstone:navigation", ":whetstone:navigation-compose", ":whetstone:navigation-fragment"
 

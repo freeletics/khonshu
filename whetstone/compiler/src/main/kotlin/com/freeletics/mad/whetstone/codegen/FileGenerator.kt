@@ -19,9 +19,9 @@ import com.freeletics.mad.whetstone.codegen.fragment.RendererFragmentGenerator
 import com.freeletics.mad.whetstone.codegen.util.bundleRequireRoute
 import com.squareup.kotlinpoet.FileSpec
 
-internal class FileGenerator{
+public class FileGenerator{
 
-    fun generate(data: ComposeScreenData): FileSpec {
+    public fun generate(data: ComposeScreenData): FileSpec {
         val componentGenerator = ComponentGenerator(data)
         val moduleGenerator = ModuleGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
@@ -39,7 +39,7 @@ internal class FileGenerator{
             .build()
     }
 
-    fun generate(data: ComposeFragmentData): FileSpec {
+    public fun generate(data: ComposeFragmentData): FileSpec {
         val componentGenerator = ComponentGenerator(data)
         val moduleGenerator = ModuleGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
@@ -57,7 +57,7 @@ internal class FileGenerator{
             .build()
     }
 
-    fun generate(data: RendererFragmentData): FileSpec {
+    public fun generate(data: RendererFragmentData): FileSpec {
         val componentGenerator = ComponentGenerator(data)
         val moduleGenerator = ModuleGenerator(data)
         val viewModelGenerator = ViewModelGenerator(data)
