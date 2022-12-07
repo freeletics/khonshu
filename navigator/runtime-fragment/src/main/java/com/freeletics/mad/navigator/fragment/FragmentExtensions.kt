@@ -11,6 +11,6 @@ import com.freeletics.mad.navigator.internal.requireRoute
 public fun <T : BaseRoute> Fragment.requireRoute(): T = requireArguments().requireRoute()
 
 @InternalNavigatorApi
-public fun Fragment.findNavigationExectuor(): NavigationExecutor {
+public fun Fragment.findNavigationExecutor(): NavigationExecutor {
     return AndroidXNavigationExecutor(findNavController())
 }
