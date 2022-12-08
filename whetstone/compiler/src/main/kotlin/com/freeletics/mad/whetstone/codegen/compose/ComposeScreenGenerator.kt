@@ -1,10 +1,10 @@
 package com.freeletics.mad.whetstone.codegen.compose
 
 import com.freeletics.mad.whetstone.ComposeScreenData
-import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
-import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.common.composableName
+import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
+import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.composable
 import com.freeletics.mad.whetstone.codegen.util.composeNavigationHandler

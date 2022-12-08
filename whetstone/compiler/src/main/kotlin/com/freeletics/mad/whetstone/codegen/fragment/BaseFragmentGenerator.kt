@@ -8,7 +8,6 @@ import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
 import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.bundle
-import com.freeletics.mad.whetstone.codegen.util.requireArguments
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavigationHandler
 import com.freeletics.mad.whetstone.codegen.util.fragmentViewModel
 import com.freeletics.mad.whetstone.codegen.util.lateinitPropertySpec
@@ -16,6 +15,7 @@ import com.freeletics.mad.whetstone.codegen.util.layoutInflater
 import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
+import com.freeletics.mad.whetstone.codegen.util.requireArguments
 import com.freeletics.mad.whetstone.codegen.util.view
 import com.freeletics.mad.whetstone.codegen.util.viewGroup
 import com.squareup.kotlinpoet.CodeBlock

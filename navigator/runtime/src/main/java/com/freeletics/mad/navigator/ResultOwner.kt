@@ -14,12 +14,9 @@ import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.GR
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import kotlin.reflect.KClass
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
  * A base class for anything that exposes a [Flow] of [results]. Results will only be delivered

@@ -58,7 +58,7 @@ dependencies {
     api project(":navigator:navigator-runtime")
     api libs.androidx.compose.runtime
     api libs.androidx.compose.ui
-    api libs.androidx.navigation.runtime
+    implementation libs.androidx.navigation.runtime
 
     implementation project(":navigator:androidx-nav")
     implementation libs.coroutines.core

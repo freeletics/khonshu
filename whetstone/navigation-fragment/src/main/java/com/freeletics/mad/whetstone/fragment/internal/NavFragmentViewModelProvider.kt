@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.navigation.fragment.findNavController
 import com.freeletics.mad.navigator.BaseRoute
+import com.freeletics.mad.navigator.fragment.findNavigationExecutor
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
 import com.freeletics.mad.whetstone.internal.findComponentByScope
 import kotlin.reflect.KClass
@@ -30,8 +30,8 @@ public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> Fragment.viewM
 ): T {
     val viewModelFactory = viewModelFactory {
         initializer {
-            val navController = findNavController()
-            val dependencies = requireContext().findComponentByScope<D>(scope, destinationScope, navController::getBackStackEntry)
+            val executor = findNavigationExecutor()
+            val dependencies = requireContext().findComponentByScope<D>(scope, destinationScope, executor)
             val savedStateHandle = createSavedStateHandle()
             factory(dependencies, savedStateHandle, route)
         }

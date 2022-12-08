@@ -1,6 +1,5 @@
 package com.freeletics.mad.navigator.fragment
 
-import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -12,8 +11,8 @@ import androidx.navigation.get
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.internal.CustomActivityNavigator
 import com.freeletics.mad.navigator.internal.activityDestinationId
-import com.freeletics.mad.navigator.internal.getArguments
 import com.freeletics.mad.navigator.internal.destinationId
+import com.freeletics.mad.navigator.internal.getArguments
 
 /**
  * Creates and sets a [androidx.navigation.NavGraph] containing all given [destinations].

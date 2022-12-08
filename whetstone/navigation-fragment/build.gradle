@@ -36,6 +36,7 @@ kotlin {
 
     sourceSets.all {
         languageSettings {
+            optIn("com.freeletics.mad.navigator.internal.InternalNavigatorApi")
             optIn("com.freeletics.mad.whetstone.internal.InternalWhetstoneApi")
         }
     }
@@ -54,11 +55,9 @@ dependencies {
     api project(":navigator:navigator-runtime")
 
     implementation project(":whetstone:runtime")
+    implementation project(":navigator:navigator-runtime-fragment")
     implementation libs.androidx.compose.runtime
     implementation libs.androidx.viewmodel
     implementation libs.androidx.viewmodel.savedstate
     implementation libs.androidx.fragment
-    implementation libs.androidx.navigation.common
-    implementation libs.androidx.navigation.runtime
-    implementation libs.androidx.navigation.fragment
 }

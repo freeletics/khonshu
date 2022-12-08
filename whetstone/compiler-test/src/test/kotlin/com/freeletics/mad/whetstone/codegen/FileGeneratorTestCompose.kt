@@ -389,11 +389,9 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
-            import androidx.navigation.NavBackStackEntry
             import com.freeletics.mad.navigator.NavEventNavigator
             import com.freeletics.mad.navigator.`internal`.InternalNavigatorApi
-            import com.freeletics.mad.navigator.`internal`.destinationId
-            import com.freeletics.mad.navigator.`internal`.requireRoute
+            import com.freeletics.mad.navigator.`internal`.NavigationExecutor
             import com.freeletics.mad.navigator.compose.NavDestination
             import com.freeletics.mad.navigator.compose.NavigationSetup
             import com.freeletics.mad.navigator.compose.ScreenDestination
@@ -405,7 +403,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.`internal`.viewModel
+            import com.freeletics.mad.whetstone.`internal`.navEntryViewModel
             import com.freeletics.mad.whetstone.compose.`internal`.rememberViewModel
             import com.squareup.anvil.annotations.ContributesMultibinding
             import com.squareup.anvil.annotations.ContributesSubcomponent
@@ -420,7 +418,6 @@ internal class FileGeneratorTestCompose {
             import java.io.Closeable
             import javax.inject.Inject
             import kotlin.Any
-            import kotlin.Int
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
@@ -568,11 +565,9 @@ internal class FileGeneratorTestCompose {
             )
             public class TestScreenNavEntryComponentGetter @Inject constructor() : NavEntryComponentGetter {
               @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
-              public override fun retrieve(findEntry: (Int) -> NavBackStackEntry, context: Context): Any {
-                val entry = findEntry(TestRoute::class.destinationId())
-                val route: TestRoute = entry.arguments.requireRoute()
-                val viewModel = viewModel(entry, context, TestParentScope::class, TestDestinationScope::class,
-                    route, findEntry, ::WhetstoneTestScreenNavEntryViewModel)
+              public override fun retrieve(executor: NavigationExecutor, context: Context): Any {
+                val viewModel = navEntryViewModel(TestRoute::class, executor, context, TestParentScope::class,
+                    TestDestinationScope::class, ::WhetstoneTestScreenNavEntryViewModel)
                 return viewModel.component
               }
             }

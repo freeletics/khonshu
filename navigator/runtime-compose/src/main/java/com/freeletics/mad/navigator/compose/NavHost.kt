@@ -91,10 +91,7 @@ public fun NavHost(
         }
     }
 
-    CompositionLocalProvider(
-        LocalNavigationExecutor provides executor,
-        LocalNavController provides navController,
-    ) {
+    CompositionLocalProvider(LocalNavigationExecutor provides executor) {
         ModalBottomSheetLayout(
             bottomSheetNavigator = bottomSheetNavigator,
             sheetShape = bottomSheetShape,
@@ -178,10 +175,5 @@ private fun Activity.toDestination(
 
 @InternalNavigatorApi
 public val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecutor> = staticCompositionLocalOf {
-    throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
-}
-
-@InternalNavigatorApi
-public val LocalNavController: ProvidableCompositionLocal<NavController> = staticCompositionLocalOf {
     throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
 }

@@ -1,7 +1,7 @@
 package com.freeletics.mad.whetstone.codegen.util
 
-import com.squareup.anvil.annotations.ContributesSubcomponent
 import com.freeletics.mad.whetstone.Navigation
+import com.squareup.anvil.annotations.ContributesSubcomponent
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget

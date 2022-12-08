@@ -12,7 +12,7 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.freeletics.mad.navigator.BaseRoute
-import com.freeletics.mad.navigator.compose.LocalNavController
+import com.freeletics.mad.navigator.compose.LocalNavigationExecutor
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
 import com.freeletics.mad.whetstone.internal.findComponentByScope
@@ -36,11 +36,11 @@ public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> rememberViewMo
 ): T {
     val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
     val context = LocalContext.current
-    val navController = LocalNavController.current
-    return remember(viewModelStoreOwner, context, navController, route) {
+    val executor = LocalNavigationExecutor.current
+    return remember(viewModelStoreOwner, context, executor, route) {
         val viewModelFactory = viewModelFactory {
             initializer {
-                val dependencies = context.findComponentByScope<D>(scope, destinationScope, navController::getBackStackEntry)
+                val dependencies = context.findComponentByScope<D>(scope, destinationScope, executor)
                 val savedStateHandle = createSavedStateHandle()
                 factory(dependencies, savedStateHandle, route)
             }

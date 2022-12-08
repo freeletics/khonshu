@@ -9,9 +9,7 @@ import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.argumentAt
 import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.kotlinpoet.ClassName
-import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.psi.KtConstantExpression
 
 internal fun AnnotatedReference.findAnnotation(fqName: FqName): AnnotationReference? {
     return annotations.find { it.fqName == fqName }
