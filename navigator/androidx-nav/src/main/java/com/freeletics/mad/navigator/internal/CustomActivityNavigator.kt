@@ -26,6 +26,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import androidx.navigation.NavigatorProvider
+import com.freeletics.mad.navigator.EXTRA_ROUTE
 
 /**
  * ActivityNavigator implements cross-activity navigation.
@@ -85,11 +86,13 @@ public open class CustomActivityNavigator(
         }
         val intent = Intent(destination.intent)
         if (args != null) {
+            @Suppress("DEPRECATION")
             val fillInIntent = args.getParcelable<Intent>(EXTRA_FILL_IN_INTENT)
             if (fillInIntent != null) {
                 intent.fillIn(fillInIntent, 0)
             }
 
+            @Suppress("DEPRECATION")
             val route = args.getParcelable<Parcelable>(EXTRA_ROUTE)
             if (route != null) {
                 intent.putExtra(EXTRA_ROUTE, route)
