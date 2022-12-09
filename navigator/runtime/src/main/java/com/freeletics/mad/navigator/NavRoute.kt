@@ -3,7 +3,7 @@ package com.freeletics.mad.navigator
 import android.app.Activity
 import android.content.Intent
 import android.os.Parcelable
-import com.freeletics.mad.navigator.internal.EXTRA_ROUTE
+import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 
 public sealed interface BaseRoute : Parcelable
 
@@ -54,5 +54,9 @@ public fun <T : ActivityRoute> Activity.requireRoute(): T {
  * Activity's Intent.
  */
 public fun <T : ActivityRoute> Activity.getRoute(): T? {
+    @Suppress("DEPRECATION")
     return intent.extras?.getParcelable(EXTRA_ROUTE)
 }
+
+@InternalNavigatorApi
+public const val EXTRA_ROUTE: String = "com.freeletics.mad.navigation.ROUTE"
