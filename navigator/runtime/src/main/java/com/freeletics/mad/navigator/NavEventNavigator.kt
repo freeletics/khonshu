@@ -82,9 +82,9 @@ public open class NavEventNavigator {
      * [NavEventNavigator.requestPermissions].
      *
      * Compared to using [registerForActivityResult] with
-     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this also
-     * gives you the information whether a permission was
-     * [permanently denied][PermissionsResultRequest.PermissionResult.DENIED_PERMANENTLY].
+     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
+     * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
+     * for more information.
      *
      * Note: This has to be called *before* this [NavEventNavigator] gets attached to a fragment.
      *   In practice, this means it should usually be called during initialisation of your subclass.
@@ -205,10 +205,10 @@ public open class NavEventNavigator {
     /**
      * Triggers a new [NavEvent] that requests the given [permissions].
      *
-     * Compared to using [navigateForResult] with
-     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this also
-     * gives you the information whether a permission was
-     * [permanently denied][PermissionsResultRequest.PermissionResult.DENIED_PERMANENTLY].
+     * Compared to using [registerForActivityResult] with
+     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
+     * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
+     * for more information.
      *
      * The [request] can be obtained by calling [registerForPermissionsResult].
      */
@@ -219,10 +219,10 @@ public open class NavEventNavigator {
     /**
      * Triggers a new [NavEvent] that requests the given [permissions].
      *
-     * Compared to using [navigateForResult] with
-     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this also
-     * gives you the information whether a permission was
-     * [permanently denied][PermissionsResultRequest.PermissionResult.DENIED_PERMANENTLY].
+     * Compared to using [registerForActivityResult] with
+     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
+     * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
+     * for more information.
      *
      * The [request] can be obtained by calling [registerForPermissionsResult].
      */

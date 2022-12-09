@@ -1,17 +1,14 @@
 package com.freeletics.mad.navigator
 
-import android.app.Activity
+import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
-import androidx.core.app.ActivityCompat
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult
-import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED
-import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.DENIED_PERMANENTLY
-import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult.GRANTED
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
+import com.freeletics.mad.navigator.internal.RequestPermissionsContract.Companion.enrichResult
 import kotlin.reflect.KClass
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
@@ -74,31 +71,51 @@ public class ActivityResultRequest<I, O> internal constructor(
  *
  *  This provides extra functionality over [ActivityResultRequest] by also checking
  *  [android.app.Activity.shouldShowRequestPermissionRationale] for each permission that was denied.
- *  It returns a [PermissionResult] instead of just a simple boolean. This allows to detect
- *  permanent denials.
+ *  It returns a [PermissionResult] instead of just a simple boolean to also provide information
+ *  about the whether a permission rationale should be shown.
  */
 public class PermissionsResultRequest internal constructor() :
     ResultOwner<Map<String, PermissionResult>>() {
 
     @InternalNavigatorApi
-    public fun handleResult(resultMap: Map<String, Boolean>, activity: Activity) {
-        val result = resultMap.mapValues { (permission, granted) ->
-            when {
-                granted -> GRANTED
-                ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) -> DENIED
-                else -> DENIED_PERMANENTLY
-            }
-        }
+    public fun handleResult(resultMap: Map<String, Boolean>, context: Context) {
+        val result = enrichResult(context, resultMap)
         onResult(result)
     }
 
     /**
      * The status of the requested permission.
      */
-    public enum class PermissionResult {
-        GRANTED,
-        DENIED,
-        DENIED_PERMANENTLY
+    public sealed interface PermissionResult {
+        /**
+         * The app has access to the requested permission.
+         */
+        public object Granted : PermissionResult
+
+        /**
+         * The app doesn't have access to the requested permission for one of the reasons requested
+         * below. The provided [shouldShowRationale] will be `true` if the system suggests showing
+         * the user an explanation of why the permission is requested before attempting to request
+         * again.
+         *
+         * **Reasons:**
+         * - the user denied the request
+         *     - `shouldShowRationale` is `true`
+         * - Android 10 and below: the user selected to not be asked again
+         *     - `shouldShowRationale` is `false`
+         * - Android 11+: the user denied the request twice already and the system won't ask again
+         *     - `shouldShowRationale` is `false`
+         * - Android 11+: the user dismissed the notification request without making a choice
+         *     - `shouldShowRationale` is `false` if the user dit not deny the permission before
+         *     - `shouldShowRationale` is `true` if the user denied the permission before
+         *
+         * Until Android 11 `shouldShowRationale` being `false` can be interpreted as the permission
+         * being denied forever. However on Android 11+ there is the edge case the user can dismiss
+         * the prompt without making a choice.
+         */
+        public class Denied(
+            public val shouldShowRationale: Boolean
+        ) : PermissionResult
     }
 }
 
