@@ -74,12 +74,16 @@ public final class com/freeletics/mad/navigator/NavigationResultRequest$Key$CREA
 public final class com/freeletics/mad/navigator/PermissionsResultRequest : com/freeletics/mad/navigator/ResultOwner {
 }
 
-public final class com/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult : java/lang/Enum {
-	public static final field DENIED Lcom/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult;
-	public static final field DENIED_PERMANENTLY Lcom/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult;
-	public static final field GRANTED Lcom/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult;
-	public static fun valueOf (Ljava/lang/String;)Lcom/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult;
-	public static fun values ()[Lcom/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult;
+public abstract interface class com/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult {
+}
+
+public final class com/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult$Denied : com/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult {
+	public fun <init> (Z)V
+	public final fun getShouldShowRationale ()Z
+}
+
+public final class com/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult$Granted : com/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult {
+	public static final field INSTANCE Lcom/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult$Granted;
 }
 
 public abstract class com/freeletics/mad/navigator/ResultOwner {

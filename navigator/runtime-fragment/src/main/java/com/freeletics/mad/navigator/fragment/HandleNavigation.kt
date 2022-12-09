@@ -1,6 +1,6 @@
 package com.freeletics.mad.navigator.fragment
 
-import android.app.Activity
+import android.content.Context
 import android.os.Parcelable
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
@@ -29,7 +29,7 @@ public fun handleNavigation(fragment: Fragment, navigator: NavEventNavigator) {
         it.registerIn(fragment)
     }
     val permissionLaunchers = navigator.permissionsResultRequests.associateWith {
-        it.registerIn(fragment, fragment.requireActivity())
+        it.registerIn(fragment, fragment.requireContext())
     }
 
     val lifecycle = fragment.lifecycle
@@ -59,10 +59,10 @@ private fun <I, O> ActivityResultRequest<I, O>.registerIn(
 
 private fun PermissionsResultRequest.registerIn(
     caller: ActivityResultCaller,
-    activity: Activity
+    context: Context
 ): ActivityResultLauncher<List<String>> {
     return caller.registerForActivityResult(RequestPermissionsContract()) { resultMap ->
-        handleResult(resultMap, activity)
+        handleResult(resultMap, context)
     }
 }
 

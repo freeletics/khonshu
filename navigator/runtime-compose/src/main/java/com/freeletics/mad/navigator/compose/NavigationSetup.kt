@@ -1,8 +1,5 @@
 package com.freeletics.mad.navigator.compose
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import android.os.Parcelable
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -74,17 +71,8 @@ private fun rememberResultLaunchers(
 ): ActivityResultLauncher<List<String>> {
     val context = LocalContext.current
     return rememberLauncherForActivityResult(RequestPermissionsContract()) { resultMap ->
-        request.handleResult(resultMap, context.findActivity())
+        request.handleResult(resultMap, context)
     }
-}
-
-private fun Context.findActivity(): Activity {
-    var context = this
-    while (context is ContextWrapper) {
-        if (context is Activity) return context
-        context = context.baseContext
-    }
-    throw IllegalStateException("Permissions should be called in the context of an Activity")
 }
 
 @Composable
