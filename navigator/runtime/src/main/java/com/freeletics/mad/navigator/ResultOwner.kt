@@ -106,7 +106,7 @@ public class PermissionsResultRequest internal constructor() :
          * - Android 11+: the user denied the request twice already and the system won't ask again
          *     - `shouldShowRationale` is `false`
          * - Android 11+: the user dismissed the notification request without making a choice
-         *     - `shouldShowRationale` is `false` if the user dit not deny the permission before
+         *     - `shouldShowRationale` is `false` if the user did not deny the permission before
          *     - `shouldShowRationale` is `true` if the user denied the permission before
          *
          * Until Android 11 `shouldShowRationale` being `false` can be interpreted as the permission
