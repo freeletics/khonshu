@@ -66,7 +66,7 @@ private fun NavigationExecutor.navigate(
             (launcher as ActivityResultLauncher<Any?>).launch(event.permissions)
         }
         is NavEvent.DestinationResultEvent<*> -> {
-            savedStateHandleFor(event.key.route)[event.key.requestKey] = event.result
+            deliverResult(event.key, event.result)
         }
     }
 }
