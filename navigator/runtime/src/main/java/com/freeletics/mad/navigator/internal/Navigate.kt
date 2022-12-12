@@ -1,35 +1,51 @@
 package com.freeletics.mad.navigator.internal
 
+import android.annotation.SuppressLint
 import androidx.activity.result.ActivityResultLauncher
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEvent
+import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.PermissionsResultRequest
 
+@SuppressLint("VisibleForTests") // VisibleForTests(otherwise = INTERNAL) does not exist
 @InternalNavigatorApi
-public fun navigate(
+public suspend fun NavEventNavigator.collectAndHandleNavEvents(
+    lifecycle: Lifecycle,
+    executor: NavigationExecutor,
+    activityLaunchers: Map<ActivityResultRequest<*, *>, ActivityResultLauncher<*>>,
+    permissionLaunchers: Map<PermissionsResultRequest, ActivityResultLauncher<List<String>>>
+) {
+    navEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
+        .collect { event ->
+            executor.navigate(event, activityLaunchers, permissionLaunchers)
+        }
+}
+
+private fun NavigationExecutor.navigate(
     event: NavEvent,
-    controller: NavigationExecutor,
     activityLaunchers: Map<ActivityResultRequest<*, *>, ActivityResultLauncher<*>>,
     permissionLaunchers: Map<PermissionsResultRequest, ActivityResultLauncher<List<String>>>
 ) {
     when (event) {
         is NavEvent.NavigateToEvent -> {
-            controller.navigate(event.route)
+            navigate(event.route)
         }
         is NavEvent.NavigateToRootEvent -> {
-            controller.navigate(event.root, event.restoreRootState)
+            navigate(event.root, event.restoreRootState)
         }
         is NavEvent.NavigateToActivityEvent -> {
-            controller.navigate(event.route)
+            navigate(event.route)
         }
         is NavEvent.UpEvent -> {
-            controller.navigateUp()
+            navigateUp()
         }
         is NavEvent.BackEvent -> {
-            controller.navigateBack()
+            navigateBack()
         }
         is NavEvent.BackToEvent -> {
-            controller.navigateBackTo(event.popUpTo, event.inclusive)
+            navigateBackTo(event.popUpTo, event.inclusive)
         }
         is NavEvent.ActivityResultEvent<*> -> {
             val request = event.request
@@ -50,7 +66,7 @@ public fun navigate(
             (launcher as ActivityResultLauncher<Any?>).launch(event.permissions)
         }
         is NavEvent.DestinationResultEvent<*> -> {
-            controller.deliverResult(event.key, event.result)
+            savedStateHandleFor(event.key.route)[event.key.requestKey] = event.result
         }
     }
 }
