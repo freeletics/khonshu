@@ -52,7 +52,6 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
@@ -73,7 +72,6 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
-              modules = [ComposeProviderValueModule::class],
             )
             public interface WhetstoneTestComponent {
               public val testStateMachine: TestStateMachine
@@ -182,7 +180,6 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
@@ -204,7 +201,6 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
-              modules = [ComposeProviderValueModule::class],
             )
             public interface WhetstoneTestComponent {
               public val testStateMachine: TestStateMachine
@@ -320,7 +316,6 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
@@ -344,7 +339,6 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
-              modules = [ComposeProviderValueModule::class],
             )
             public interface WhetstoneTestComponent {
               public val testStateMachine: TestStateMachine
@@ -476,7 +470,6 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.NavEntry
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.DestinationComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
@@ -507,7 +500,6 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
-              modules = [ComposeProviderValueModule::class],
             )
             public interface WhetstoneTestComponent {
               public val testStateMachine: TestStateMachine
@@ -696,7 +688,6 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
@@ -717,7 +708,6 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
-              modules = [ComposeProviderValueModule::class],
             )
             public interface WhetstoneTestComponent {
               public val testStateMachine: TestStateMachine
@@ -835,7 +825,6 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.ViewModel
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.ComposeProviderValueModule
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
@@ -857,7 +846,6 @@ internal class FileGeneratorTestComposeFragment {
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
-              modules = [ComposeProviderValueModule::class],
             )
             public interface WhetstoneTest2Component {
               public val testStateMachine: TestStateMachine

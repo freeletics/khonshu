@@ -8,7 +8,6 @@ import com.freeletics.mad.whetstone.RendererFragmentData
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.bindsInstanceParameter
-import com.freeletics.mad.whetstone.codegen.util.composeProviderValueModule
 import com.freeletics.mad.whetstone.codegen.util.contributesToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.navEntryAnnotation
 import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
@@ -56,20 +55,11 @@ internal class ComponentGenerator(
         return TypeSpec.interfaceBuilder(retainedComponentClassName)
             .addAnnotation(optInAnnotation())
             .addAnnotation(scopeToAnnotation(data.scope))
-            .addAnnotation(subcomponentAnnotation(data.scope, data.parentScope, moduleClassName()))
+            .addAnnotation(subcomponentAnnotation(data.scope, data.parentScope))
             .addProperties(componentProperties())
             .addType(retainedComponentFactory())
             .addType(retainedComponentFactoryParentComponent())
             .build()
-    }
-
-    private fun moduleClassName(): ClassName? {
-        return when (data) {
-            is ComposeFragmentData -> composeProviderValueModule
-            is ComposeScreenData -> composeProviderValueModule
-            is RendererFragmentData -> null
-            is NavEntryData -> null
-        }
     }
 
     private fun componentProperties(): List<PropertySpec> {
