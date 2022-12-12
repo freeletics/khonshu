@@ -55,7 +55,6 @@ tasks.withType(JavaCompile).configureEach {
 
 dependencies {
     api libs.inject
-    api libs.dagger
     api libs.androidx.compose.runtime
     api project(":state-machine")
 
