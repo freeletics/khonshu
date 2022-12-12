@@ -3,7 +3,8 @@ package com.freeletics.mad.navigator
 import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
-import kotlin.reflect.KClass
+import com.freeletics.mad.navigator.internal.DestinationId
+import dev.drewhamilton.poko.Poko
 
 /**
  * Represents a navigation event that is being sent by a [NavEventNavigator] and handled by
@@ -20,7 +21,8 @@ public sealed interface NavEvent {
      * Navigates to the given [route].
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class NavigateToEvent(
+    @Poko
+    public class NavigateToEvent(
         internal val route: NavRoute,
     ) : NavEvent
 
@@ -29,7 +31,8 @@ public sealed interface NavEvent {
      * Whether the backstack of the given route is restored depends on [restoreRootState].
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class NavigateToRootEvent(
+    @Poko
+    public class NavigateToRootEvent(
         internal val root: NavRoot,
         internal val restoreRootState: Boolean,
     ) : NavEvent
@@ -38,7 +41,8 @@ public sealed interface NavEvent {
      * Navigates to the given [route].
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class NavigateToActivityEvent(
+    @Poko
+    public class NavigateToActivityEvent(
         internal val route: ActivityRoute,
     ) : NavEvent
 
@@ -59,8 +63,9 @@ public sealed interface NavEvent {
      * will also be popped of the back stack.
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class BackToEvent(
-        internal val popUpTo: KClass<out BaseRoute>,
+    @Poko
+    public class BackToEvent(
+        internal val popUpTo: DestinationId<*>,
         internal val inclusive: Boolean,
     ) : NavEvent
 
@@ -68,7 +73,8 @@ public sealed interface NavEvent {
      * Launches the [request] to retrieve an event.
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class ActivityResultEvent<I>(
+    @Poko
+    public class ActivityResultEvent<I>(
         internal val request: ActivityResultRequest<I, *>,
         internal val input: I,
     ) : NavEvent
@@ -77,7 +83,8 @@ public sealed interface NavEvent {
      * Launches the [request] to retrieve an event.
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class PermissionsResultEvent(
+    @Poko
+    public class PermissionsResultEvent(
         internal val request: PermissionsResultRequest,
         internal val permissions: List<String>,
     ) : NavEvent
@@ -86,7 +93,8 @@ public sealed interface NavEvent {
      * Delivers the [result] to the destination that created [key].
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public data class DestinationResultEvent<O : Parcelable>(
+    @Poko
+    public class DestinationResultEvent<O : Parcelable>(
         internal val key: NavigationResultRequest.Key<O>,
         internal val result: O,
     ) : NavEvent

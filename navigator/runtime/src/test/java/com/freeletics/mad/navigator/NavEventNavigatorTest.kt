@@ -1,6 +1,5 @@
 package com.freeletics.mad.navigator
 
-import android.os.Parcel
 import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
@@ -8,8 +7,11 @@ import app.cash.turbine.test
 import com.freeletics.mad.navigator.NavEvent.NavigateToActivityEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToRootEvent
+import com.freeletics.mad.navigator.internal.DestinationId
 import com.google.common.truth.Truth.assertThat
+import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.runBlocking
+import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
@@ -29,28 +31,21 @@ public class NavEventNavigatorTest {
         }
     }
 
-    private data class SimpleRoute(val number: Int) : NavRoute {
-        override fun describeContents(): Int = 0
-        override fun writeToParcel(dest: Parcel, flags: Int) {}
-    }
-    private data class OtherRoute(val number: Int) : NavRoute {
-        override fun describeContents(): Int = 0
-        override fun writeToParcel(dest: Parcel, flags: Int) {}
-    }
-    private data class SimpleRoot(val number: Int) : NavRoot {
-        override fun describeContents(): Int = 0
-        override fun writeToParcel(dest: Parcel, flags: Int) {}
-    }
-    private data class SimpleActivity(val number: Int) : ActivityRoute
-
-    private data class TestParcelable(
-        val value: Int
-    ) : Parcelable {
-        override fun writeToParcel(dest: Parcel, flags: Int) {}
-        override fun describeContents() = 0
-
-
-    }
+    @Poko
+    @Parcelize
+    private class SimpleRoute(val number: Int) : NavRoute
+    @Poko
+    @Parcelize
+    private class OtherRoute(val number: Int) : NavRoute
+    @Poko
+    @Parcelize
+    private class SimpleRoot(val number: Int) : NavRoot
+    @Poko
+    @Parcelize
+    private class SimpleActivity(val number: Int) : ActivityRoute, Parcelable
+    @Poko
+    @Parcelize
+    private class TestParcelable(val value: Int) : Parcelable
 
     @Test
     public fun `navigateTo event is received`(): Unit = runBlocking {
@@ -141,7 +136,9 @@ public class NavEventNavigatorTest {
         navigator.navEvents.test {
             navigator.navigateBackTo<SimpleRoute>(true)
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.BackToEvent(SimpleRoute::class, true))
+            assertThat(awaitItem()).isEqualTo(
+                NavEvent.BackToEvent(DestinationId(SimpleRoute::class), true)
+            )
 
             cancel()
         }
@@ -232,7 +229,7 @@ public class NavEventNavigatorTest {
     public fun `registerForPermissionsResult after read is disallowed`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
-        navigator.permissionsResultRequests
+        navigator.activityResultRequests
 
         val exception = assertThrows(IllegalStateException::class.java) {
             navigator.testRegisterForPermissionResult()

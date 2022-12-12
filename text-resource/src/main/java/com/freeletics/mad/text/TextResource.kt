@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import dev.drewhamilton.poko.Poko
 import java.util.IllegalFormatException
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -104,8 +105,9 @@ public object LoadingTextResource : TextResource() {
     }
 }
 
+@Poko
 @Parcelize
-internal data class SimpleTextResource(val text: String) : TextResource() {
+internal class SimpleTextResource(val text: String) : TextResource() {
     override fun format(context: Context): String {
         return text
     }
@@ -117,8 +119,9 @@ internal data class SimpleTextResource(val text: String) : TextResource() {
     }
 }
 
+@Poko
 @Parcelize
-internal data class StringTextResource(
+internal class StringTextResource(
     @StringRes val id: Int,
     val args: @RawValue Array<out Any>
 ) : TextResource() {
@@ -152,8 +155,9 @@ internal data class StringTextResource(
     }
 }
 
+@Poko
 @Parcelize
-internal data class PluralTextResource(
+internal class PluralTextResource(
     @PluralsRes val id: Int,
     val quantity: Int,
     val args: @RawValue Array<out Any>
@@ -190,8 +194,9 @@ internal data class PluralTextResource(
     }
 }
 
+@Poko
 @Parcelize
-internal data class CompositeTextResource(
+internal class CompositeTextResource(
     val elements: List<TextResource>,
     val separator: String
 ) : TextResource() {

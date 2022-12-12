@@ -76,7 +76,7 @@ private fun <O : Parcelable> ResultEffect(
     executor: NavigationExecutor,
 ) {
     LaunchedEffect(request, executor) {
-        val savedStateHandle = executor.savedStateHandleFor(request.key.route)
+        val savedStateHandle = executor.savedStateHandleFor(request.key.destinationId)
         savedStateHandle.getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
             .collect { result ->
                 if (result != InitialValue) {

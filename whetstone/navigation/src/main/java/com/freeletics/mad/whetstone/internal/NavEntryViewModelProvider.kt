@@ -8,6 +8,7 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.freeletics.mad.navigator.BaseRoute
+import com.freeletics.mad.navigator.internal.DestinationId
 import com.freeletics.mad.navigator.internal.NavigationExecutor
 import kotlin.reflect.KClass
 
@@ -27,15 +28,16 @@ public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> navEntryViewMo
     destinationScope: KClass<*>,
     crossinline factory: (D, SavedStateHandle, R) -> T
 ): T {
+    val destinationId = DestinationId(destination)
     val viewModelFactory = viewModelFactory {
         initializer {
             val component = context.findComponentByScope<D>(parentScope, destinationScope, executor)
-            val savedStateHandle = createSavedStateHandle()
-            val route = executor.routeFor(destination)
+            val savedStateHandle = executor.savedStateHandleFor(destinationId)
+            val route = executor.routeFor(destinationId)
             factory(component, savedStateHandle, route)
         }
     }
-    val viewModelStore = executor.viewModelStoreFor(destination)
+    val viewModelStore = executor.viewModelStoreFor(destinationId)
     val viewModelProvider = ViewModelProvider(viewModelStore, viewModelFactory)
     return viewModelProvider[T::class.java]
 }

@@ -24,6 +24,10 @@ dependencyAnalysis {
             onAny {
                 severity('fail')
             }
+
+            onCompileOnly {
+                exclude("dev.drewhamilton.poko:poko-annotations")
+            }
         }
 
         project(":whetstone:runtime-compose") {

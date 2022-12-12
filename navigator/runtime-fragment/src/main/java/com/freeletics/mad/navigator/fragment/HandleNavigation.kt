@@ -13,6 +13,7 @@ import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
+import com.freeletics.mad.navigator.internal.DestinationId
 import com.freeletics.mad.navigator.internal.NavigationExecutor
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import com.freeletics.mad.navigator.internal.collectAndHandleNavEvents
@@ -67,7 +68,7 @@ private fun <O : Parcelable> NavigationResultRequest<O>.registerIn(
     lifecycle: Lifecycle,
 ) {
     lifecycle.coroutineScope.launch {
-        val savedStateHandle = executor.savedStateHandleFor(key.route)
+        val savedStateHandle = executor.savedStateHandleFor(key.destinationId)
         savedStateHandle.getStateFlow<Parcelable>(key.requestKey, InitialValue)
             .collect { result ->
                 if (result != InitialValue) {

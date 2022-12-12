@@ -1,3 +1,15 @@
+public final class com/freeletics/mad/navigator/compose/ActivityDestination : com/freeletics/mad/navigator/compose/NavDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Landroid/content/Intent;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class com/freeletics/mad/navigator/compose/BottomSheetDestination : com/freeletics/mad/navigator/compose/NavDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class com/freeletics/mad/navigator/compose/DialogDestination : com/freeletics/mad/navigator/compose/NavDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
 public final class com/freeletics/mad/navigator/compose/InitialValue$Creator : android/os/Parcelable$Creator {
 	public fun <init> ()V
 	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/navigator/compose/InitialValue;
@@ -9,31 +21,15 @@ public final class com/freeletics/mad/navigator/compose/InitialValue$Creator : a
 public abstract interface class com/freeletics/mad/navigator/compose/NavDestination {
 }
 
-public final class com/freeletics/mad/navigator/compose/NavDestination$Activity : com/freeletics/mad/navigator/compose/NavDestination {
-	public static final field $stable I
-	public fun <init> (Lkotlin/reflect/KClass;Landroid/content/Intent;)V
-}
-
-public final class com/freeletics/mad/navigator/compose/NavDestination$BottomSheet : com/freeletics/mad/navigator/compose/NavDestination {
-	public static final field $stable I
-	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;)V
-}
-
-public final class com/freeletics/mad/navigator/compose/NavDestination$Dialog : com/freeletics/mad/navigator/compose/NavDestination {
-	public static final field $stable I
-	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;)V
-}
-
-public final class com/freeletics/mad/navigator/compose/NavDestination$Screen : com/freeletics/mad/navigator/compose/NavDestination {
-	public static final field $stable I
-	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;)V
-}
-
 public final class com/freeletics/mad/navigator/compose/NavHostKt {
 	public static final fun NavHost-EqzgXzs (Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/graphics/Shape;FJJJLandroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/freeletics/mad/navigator/compose/NavigationSetupKt {
 	public static final fun NavigationSetup (Lcom/freeletics/mad/navigator/NavEventNavigator;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/freeletics/mad/navigator/compose/ScreenDestination : com/freeletics/mad/navigator/compose/NavDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 

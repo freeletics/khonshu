@@ -12,7 +12,13 @@ public fun BaseRoute.destinationId(): Int = this::class.destinationId()
 public fun KClass<out BaseRoute>.destinationId(): Int = internalDestinationId()
 
 @InternalNavigatorApi
+public fun DestinationId<*>.destinationId(): Int = route.internalDestinationId()
+
+@InternalNavigatorApi
 public fun ActivityRoute.destinationId(): Int = this::class.activityDestinationId()
+
+@InternalNavigatorApi
+public fun ActivityDestinationId<*>.destinationId(): Int = route.internalDestinationId()
 
 @InternalNavigatorApi
 public fun KClass<out ActivityRoute>.activityDestinationId(): Int = internalDestinationId()
