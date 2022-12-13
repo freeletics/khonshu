@@ -1,3 +1,11 @@
+public final class com/freeletics/mad/navigator/fragment/ActivityDestination : com/freeletics/mad/navigator/fragment/NavDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Landroid/content/Intent;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class com/freeletics/mad/navigator/fragment/DialogDestination : com/freeletics/mad/navigator/fragment/NavDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
 public final class com/freeletics/mad/navigator/fragment/FragmentExtensionsKt {
 	public static final fun requireRoute (Landroidx/fragment/app/Fragment;)Lcom/freeletics/mad/navigator/BaseRoute;
 }
@@ -17,19 +25,11 @@ public final class com/freeletics/mad/navigator/fragment/InitialValue$Creator : 
 public abstract interface class com/freeletics/mad/navigator/fragment/NavDestination {
 }
 
-public final class com/freeletics/mad/navigator/fragment/NavDestination$Activity : com/freeletics/mad/navigator/fragment/NavDestination {
-	public fun <init> (Lkotlin/reflect/KClass;Landroid/content/Intent;)V
-}
-
-public final class com/freeletics/mad/navigator/fragment/NavDestination$Dialog : com/freeletics/mad/navigator/fragment/NavDestination {
-	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)V
-}
-
-public final class com/freeletics/mad/navigator/fragment/NavDestination$Screen : com/freeletics/mad/navigator/fragment/NavDestination {
-	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)V
-}
-
 public final class com/freeletics/mad/navigator/fragment/NavHostFragmentKt {
 	public static final fun setGraph (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;)V
+}
+
+public final class com/freeletics/mad/navigator/fragment/ScreenDestination : com/freeletics/mad/navigator/fragment/NavDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 

@@ -10,6 +10,8 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.fragment.findNavigationExecutor
+import com.freeletics.mad.navigator.internal.DestinationId
+import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
 import com.freeletics.mad.whetstone.internal.findComponentByScope
 import kotlin.reflect.KClass
@@ -32,7 +34,7 @@ public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> Fragment.viewM
         initializer {
             val executor = findNavigationExecutor()
             val dependencies = requireContext().findComponentByScope<D>(scope, destinationScope, executor)
-            val savedStateHandle = createSavedStateHandle()
+            val savedStateHandle = executor.savedStateHandleFor(route.destinationId)
             factory(dependencies, savedStateHandle, route)
         }
     }

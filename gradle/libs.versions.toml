@@ -21,6 +21,7 @@ androidx-navigation = "2.5.3"
 androidx-savedstate = "1.2.0"
 
 accompanist = "0.28.0"
+
 inject = "1"
 dagger = "2.44.2"
 anvil = "2.4.2"
@@ -71,6 +72,7 @@ androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.re
 
 
 accompanist-navigation = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
+
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 anvil-compiler = { module = "com.squareup.anvil:compiler-api", version.ref = "anvil" }
@@ -98,3 +100,4 @@ publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binarycompatibility" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
+poko = { id = "dev.drewhamilton.poko", version = "0.11.0" }

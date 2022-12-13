@@ -13,8 +13,8 @@ import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
 import com.freeletics.mad.navigator.NavEvent.PermissionsResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
 import com.freeletics.mad.navigator.internal.DelegatingOnBackPressedCallback
+import com.freeletics.mad.navigator.internal.DestinationId
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
-import kotlin.reflect.KClass
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -108,17 +108,17 @@ public open class NavEventNavigator {
      */
     protected inline fun <reified T : BaseRoute, reified O : Parcelable> registerForNavigationResult():
         NavigationResultRequest<O> {
-        return registerForNavigationResult(T::class, O::class)
+        return registerForNavigationResult(DestinationId(T::class), O::class.qualifiedName!!)
     }
 
-    @InternalNavigatorApi
-    protected fun <O : Parcelable> registerForNavigationResult(
-        route: KClass<out BaseRoute>,
-        result: KClass<*>
+    @PublishedApi
+    internal fun <O : Parcelable> registerForNavigationResult(
+        id: DestinationId<*>,
+        resultType: String
     ): NavigationResultRequest<O> {
         checkAllowedToAddRequests()
-        val requestKey = "${route.qualifiedName!!}-${result.qualifiedName!!}"
-        val key = NavigationResultRequest.Key<O>(route, requestKey)
+        val requestKey = "${id.route.qualifiedName!!}-${resultType}"
+        val key = NavigationResultRequest.Key<O>(id, requestKey)
         val request = NavigationResultRequest(key)
         _navigationResultRequests.add(request)
         return request
@@ -174,11 +174,11 @@ public open class NavEventNavigator {
      * `true` [T] itself will also be popped.
      */
     public inline fun <reified T: BaseRoute> navigateBackTo(inclusive: Boolean = false) {
-        navigateBackTo(T::class, inclusive)
+        navigateBackTo(DestinationId(T::class), inclusive)
     }
 
-    @InternalNavigatorApi
-    public fun navigateBackTo(popUpTo: KClass<out BaseRoute>, inclusive: Boolean = false) {
+    @PublishedApi
+    internal fun navigateBackTo(popUpTo: DestinationId<*>, inclusive: Boolean = false) {
         val event = BackToEvent(popUpTo, inclusive)
         sendNavEvent(event)
     }

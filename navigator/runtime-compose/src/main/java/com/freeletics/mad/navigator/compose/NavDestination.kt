@@ -5,12 +5,14 @@ import androidx.compose.runtime.Composable
 import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoute
-import com.freeletics.mad.navigator.compose.NavDestination.Activity
-import com.freeletics.mad.navigator.compose.NavDestination.BottomSheet
-import com.freeletics.mad.navigator.compose.NavDestination.Dialog
-import com.freeletics.mad.navigator.compose.NavDestination.Screen
+import com.freeletics.mad.navigator.internal.ActivityDestinationId
+import com.freeletics.mad.navigator.internal.DestinationId
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import kotlin.reflect.KClass
+
+/**
+ * A destination that can be navigated to. See [NavHost] for how to configure a `NavGraph` with it.
+ */
+public sealed interface NavDestination
 
 /**
  * Creates a new [NavDestination] that represents a full screen. The class of [T] will be used
@@ -20,7 +22,13 @@ import kotlin.reflect.KClass
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute> ScreenDestination(
     noinline screenContent: @Composable (T) -> Unit,
-): NavDestination = Screen(T::class, screenContent)
+): NavDestination = ScreenDestination(DestinationId(T::class), screenContent)
+
+@PublishedApi
+internal class ScreenDestination<T : BaseRoute>(
+    internal val id: DestinationId<T>,
+    internal val screenContent: @Composable (T) -> Unit,
+) : NavDestination
 
 /**
  * Creates a new [NavDestination] that represents a dialog. The class of [T] will be used
@@ -30,7 +38,13 @@ public inline fun <reified T : BaseRoute> ScreenDestination(
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> DialogDestination(
     noinline dialogContent: @Composable (T) -> Unit,
-): NavDestination = Dialog(T::class, dialogContent)
+): NavDestination = DialogDestination(DestinationId(T::class), dialogContent)
+
+@PublishedApi
+internal class DialogDestination<T : NavRoute>(
+    internal val id: DestinationId<T>,
+    internal val dialogContent: @Composable (T) -> Unit,
+) : NavDestination
 
 /**
  * Creates a new [NavDestination] that represents a bottom sheet. The class of [T] will be used
@@ -41,7 +55,14 @@ public inline fun <reified T : NavRoute> DialogDestination(
 @ExperimentalMaterialNavigationApi
 public inline fun <reified T : NavRoute> BottomSheetDestination(
     noinline bottomSheetContent: @Composable (T) -> Unit,
-): NavDestination = BottomSheet(T::class, bottomSheetContent)
+): NavDestination = BottomSheetDestination(DestinationId(T::class), bottomSheetContent)
+
+@PublishedApi
+@ExperimentalMaterialNavigationApi
+internal class BottomSheetDestination<T : NavRoute>(
+    internal val id: DestinationId<T>,
+    internal val bottomSheetContent: @Composable (T) -> Unit,
+) : NavDestination
 
 /**
  * Creates a new [NavDestination] that represents an `Activity`. The class of [T] will be used
@@ -51,50 +72,10 @@ public inline fun <reified T : NavRoute> BottomSheetDestination(
 @Suppress("FunctionName")
 public inline fun <reified T : ActivityRoute> ActivityDestination(
     intent: Intent,
-): NavDestination = Activity(T::class, intent)
+): NavDestination = ActivityDestination(ActivityDestinationId(T::class), intent)
 
-/**
- * A destination that can be navigated to. See [NavHost] for how to configure a `NavGraph` with it.
- */
-public sealed interface NavDestination {
-    /**
-     * Represents a full screen. The [route] will be used as a unique identifier.
-     * The given [screenContent] will be shown when the screen is being
-     * navigated to using an instance of [route].
-     */
-    public class Screen<T : BaseRoute>(
-        internal val route: KClass<T>,
-        internal val screenContent: @Composable (T) -> Unit,
-    ) : NavDestination
-
-    /**
-     * Represents a dialog. The [route] will be used as a unique identifier together.
-     * The given [dialogContent] will be shown inside the dialog window
-     * when navigating to it by using an instance of [route].
-     */
-    public class Dialog<T : NavRoute>(
-        internal val route: KClass<T>,
-        internal val dialogContent: @Composable (T) -> Unit,
-    ) : NavDestination
-
-    /**
-     * Represents a bottom sheet. The [route] will be used as a unique identifier.
-     * The given [bottomSheetContent] will be shown inside the bottom sheet
-     * when navigating to it by using an instance of [route].
-     */
-    @ExperimentalMaterialNavigationApi
-    public class BottomSheet<T : NavRoute>(
-        internal val route: KClass<T>,
-        internal val bottomSheetContent: @Composable (T) -> Unit,
-    ) : NavDestination
-
-    /**
-     * Represents an `Activity`. The [route] will be used as a unique identifier.
-     * The given [intent] will be used to launch the `Activity` when using
-     * an instance of [route] for navigation.
-     */
-    public class Activity(
-        internal val route: KClass<out ActivityRoute>,
-        internal val intent: Intent,
-    ) : NavDestination
-}
+@PublishedApi
+internal class ActivityDestination(
+    internal val id: ActivityDestinationId<out ActivityRoute>,
+    internal val intent: Intent,
+) : NavDestination

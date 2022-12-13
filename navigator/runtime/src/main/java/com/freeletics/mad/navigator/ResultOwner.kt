@@ -7,26 +7,29 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult
+import com.freeletics.mad.navigator.internal.DestinationId
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract.Companion.enrichResult
-import kotlin.reflect.KClass
+import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.parcelize.Parceler
+import kotlinx.parcelize.Parcelize
 
 /**
  * A base class for anything that exposes a [Flow] of [results]. Results will only be delivered
  * to one collector at a time.
  */
-public sealed class ResultOwner<O> {
-    private val _results = Channel<O>(capacity = Channel.UNLIMITED)
+public sealed class ResultOwner<R> {
+    private val _results = Channel<R>(capacity = Channel.UNLIMITED)
 
     /**
      * Emits any result passed to [onResult]. Results will only be delivered
      * to one collector at a time.
      */
-    public val results: Flow<O> = flow {
+    public val results: Flow<R> = flow {
         for (result in _results) {
             emit(result)
         }
@@ -37,7 +40,7 @@ public sealed class ResultOwner<O> {
      * `NavEventNavigationHandler`.
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    public fun onResult(result: O) {
+    public fun onResult(result: R) {
         val channelResult = _results.trySendBlocking(result)
         check(channelResult.isSuccess)
     }
@@ -52,7 +55,7 @@ public sealed class ResultOwner<O> {
  *    request
  */
 public class ActivityResultRequest<I, O> internal constructor(
-    @property:InternalNavigatorApi public val contract: ActivityResultContract<I, O>
+    @property:InternalNavigatorApi public val contract: ActivityResultContract<I, O>,
 ) : ResultOwner<O>() {
 
     @InternalNavigatorApi
@@ -113,12 +116,12 @@ public class PermissionsResultRequest internal constructor() :
          * being denied forever. However on Android 11+ there is the edge case the user can dismiss
          * the prompt without making a choice.
          */
-        public class Denied(
-            public val shouldShowRationale: Boolean
+        @Poko
+        public class Denied @VisibleForTesting(otherwise = PACKAGE_PRIVATE) constructor(
+            public val shouldShowRationale: Boolean,
         ) : PermissionResult
     }
 }
-
 
 /**
  * Class that exposes a [results] [Flow] that can be used to observe results for
@@ -126,46 +129,35 @@ public class PermissionsResultRequest internal constructor() :
  *
  * See [ResultOwner] and [NavEventNavigator.registerForNavigationResult].
  */
-public class NavigationResultRequest<O : Parcelable> internal constructor(
-    public val key: Key<O>
-) : ResultOwner<O>() {
+public class NavigationResultRequest<R : Parcelable> internal constructor(
+    public val key: Key<R>,
+) : ResultOwner<R>() {
 
     @InternalNavigatorApi
-    public fun handleResult(result: O) {
+    public fun handleResult(result: R) {
         onResult(result)
     }
 
     /**
      * Use to identify where the result should be delivered to.
      */
-    public data class Key<@Suppress("unused") O : Parcelable> internal constructor(
+    @Poko
+    @Parcelize
+    public class Key<R : Parcelable> internal constructor(
         @property:InternalNavigatorApi
-        public val route: KClass<out BaseRoute>,
+        public val destinationId: DestinationId<*>,
         @property:InternalNavigatorApi
         public val requestKey: String
     ) : Parcelable {
-        @Suppress("UNCHECKED_CAST", "DEPRECATION")
-        public constructor(parcel: Parcel) : this(
-            (parcel.readSerializable() as Class<out BaseRoute>).kotlin,
-            parcel.readString()!!
-        )
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeSerializable(route.java)
-            parcel.writeString(requestKey)
-        }
-
-        override fun describeContents(): Int {
-            return 0
-        }
-
-        public companion object CREATOR : Parcelable.Creator<Key<*>> {
-            override fun createFromParcel(parcel: Parcel): Key<*> {
-                return Key<Parcelable>(parcel)
+        private companion object : Parceler<Key<*>> {
+            override fun Key<*>.write(parcel: Parcel, flags: Int) {
+                parcel.writeSerializable(destinationId.route.java)
             }
 
-            override fun newArray(size: Int): Array<Key<*>?> {
-                return arrayOfNulls(size)
+            override fun create(parcel: Parcel): Key<*> {
+                @Suppress("UNCHECKED_CAST", "DEPRECATION")
+                val cls = (parcel.readSerializable() as Class<out BaseRoute>).kotlin
+                return Key<Parcelable>(DestinationId(cls), parcel.readString()!!)
             }
         }
     }

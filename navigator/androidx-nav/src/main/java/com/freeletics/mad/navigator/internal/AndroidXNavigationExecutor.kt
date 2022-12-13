@@ -11,7 +11,6 @@ import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.NavigationResultRequest
-import kotlin.reflect.KClass
 
 @InternalNavigatorApi
 public class AndroidXNavigationExecutor(
@@ -48,26 +47,26 @@ public class AndroidXNavigationExecutor(
     }
 
     override fun deliverResult(key: NavigationResultRequest.Key<*>, result: Parcelable) {
-        savedStateHandleFor(key.route)[key.requestKey] = result
+        savedStateHandleFor(key.destinationId)[key.requestKey] = result
     }
 
-    override fun navigateBackTo(route: KClass<out BaseRoute>, isInclusive: Boolean) {
-        controller.popBackStack(route.destinationId(), isInclusive)
+    override fun navigateBackTo(destinationId: DestinationId<*>, isInclusive: Boolean) {
+        controller.popBackStack(destinationId.destinationId(), isInclusive)
     }
 
-    override fun savedStateHandleFor(route: KClass<out BaseRoute>): SavedStateHandle {
-        return entryFor(route).savedStateHandle
+    override fun savedStateHandleFor(destinationId: DestinationId<*>): SavedStateHandle {
+        return entryFor(destinationId).savedStateHandle
     }
 
-    override fun <T : BaseRoute> routeFor(route: KClass<T>): T {
-        return entryFor(route).arguments.requireRoute()
+    override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T {
+        return entryFor(destinationId).arguments.requireRoute()
     }
 
-    override fun viewModelStoreFor(route: KClass<out BaseRoute>): ViewModelStore {
-        return entryFor(route).viewModelStore
+    override fun viewModelStoreFor(destinationId: DestinationId<*>): ViewModelStore {
+        return entryFor(destinationId).viewModelStore
     }
 
-    private fun entryFor(route: KClass<out BaseRoute>): NavBackStackEntry {
-        return controller.getBackStackEntry(route.destinationId())
+    private fun entryFor(destinationId: DestinationId<*>): NavBackStackEntry {
+        return controller.getBackStackEntry(destinationId.destinationId())
     }
 }
