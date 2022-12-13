@@ -175,7 +175,7 @@ public class NavEventNavigatorTest {
             val permission = "android.permission.READ_CALENDAR"
             navigator.requestPermissions(launcher, permission)
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.PermissionsResultEvent(launcher, listOf(permission)))
+            assertThat(awaitItem()).isEqualTo(NavEvent.ActivityResultEvent(launcher, listOf(permission)))
 
             cancel()
         }
@@ -237,7 +237,7 @@ public class NavEventNavigatorTest {
     public fun `registerForPermissionsResult after read is disallowed`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
-        navigator. permissionsResultRequests
+        navigator.activityResultRequests
 
         val exception = assertThrows(IllegalStateException::class.java) {
             navigator.testRegisterForPermissionResult()
