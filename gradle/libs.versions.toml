@@ -21,6 +21,7 @@ androidx-navigation = "2.5.3"
 androidx-savedstate = "1.2.0"
 
 accompanist = "0.28.0"
+uri = "0.0.9"
 
 inject = "1"
 dagger = "2.44.2"
@@ -72,6 +73,7 @@ androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.re
 
 
 accompanist-navigation = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
+uri = { module = "com.eygraber:uri-kmp-android", version.ref = "uri" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }

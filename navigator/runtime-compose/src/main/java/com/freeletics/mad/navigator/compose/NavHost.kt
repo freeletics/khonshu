@@ -1,6 +1,7 @@
 package com.freeletics.mad.navigator.compose
 
 import androidx.navigation.compose.NavHost as AndroidXNavHost
+import android.content.Intent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetDefaults
 import androidx.compose.material.contentColorFor
@@ -25,12 +26,15 @@ import androidx.navigation.createGraph
 import androidx.navigation.get
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoute
+
+import com.freeletics.mad.navigator.DeepLinkHandler
 import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
 import com.freeletics.mad.navigator.internal.CustomActivityNavigator
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.NavigationExecutor
 import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.navigator.internal.getArguments
+import com.freeletics.mad.navigator.internal.handleDeepLink
 import com.freeletics.mad.navigator.internal.requireRoute
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
@@ -42,6 +46,12 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
  * containing all given [destinations]. [startRoute] will be used as the start destination
  * of the graph.
  *
+ * To support deep links a set of [DeepLinkHandlers][DeepLinkHandler] can be passed in optionally.
+ * These will be used to build the correct back stack when the current `Activity` was launched with
+ * an `ACTION_VIEW` `Intent` that contains an url in it's `data. [deepLinkPrefixes] can be used to
+ * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
+ * doesn't provide its own [DeepLinkHandler.prefixes].
+ *
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
@@ -50,6 +60,8 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 public fun NavHost(
     startRoute: BaseRoute,
     destinations: Set<NavDestination>,
+    deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
+    deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
     destinationChangedCallback: ((NavRoute) -> Unit)? = null,
     bottomSheetShape: Shape = MaterialTheme.shapes.large,
     bottomSheetElevation: Dp = ModalBottomSheetDefaults.Elevation,
@@ -77,6 +89,8 @@ public fun NavHost(
     }
 
     val graph = remember(navController, context, startRoute, destinations) {
+        context.findActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
+
         navController.navigatorProvider.addNavigator(CustomActivityNavigator(context))
         @Suppress("deprecation")
         navController.createGraph(startDestination = startRoute.destinationId()) {
