@@ -32,7 +32,6 @@ internal val fragmentViewModel = MemberName("com.freeletics.mad.whetstone.fragme
 internal val rememberViewModel = MemberName("com.freeletics.mad.whetstone.compose.internal", "rememberViewModel")
 internal val navEntryComponentGetter = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetter")
 internal val navEntryComponentGetterKey = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetterKey")
-internal val composeProviderValueModule = ClassName("com.freeletics.mad.whetstone.internal", "ComposeProviderValueModule")
 internal val destinationComponent = ClassName("com.freeletics.mad.whetstone.internal", "DestinationComponent")
 
 // Navigator
