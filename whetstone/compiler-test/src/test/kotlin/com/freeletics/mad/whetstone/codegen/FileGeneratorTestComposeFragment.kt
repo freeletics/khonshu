@@ -50,11 +50,11 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.compose.ui.platform.ViewCompositionStrategy
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
-            import androidx.lifecycle.ViewModel
             import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.CloseableComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.freeletics.mad.whetstone.fragment.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -73,10 +73,8 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent {
+            public interface WhetstoneTestComponent : CloseableComponent {
               public val testStateMachine: TestStateMachine
-
-              public val closeables: Set<Closeable>
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -96,22 +94,6 @@ internal class FileGeneratorTestComposeFragment {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
             }
-
-            @InternalWhetstoneApi
-            internal class WhetstoneTestViewModel(
-              parentComponent: WhetstoneTestComponent.ParentComponent,
-              savedStateHandle: SavedStateHandle,
-              arguments: Bundle,
-            ) : ViewModel() {
-              public val component: WhetstoneTestComponent =
-                  parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, arguments)
-
-              public override fun onCleared(): Unit {
-                component.closeables.forEach {
-                  it.close()
-                }
-              }
-            }
             
             @OptIn(InternalWhetstoneApi::class)
             public class WhetstoneTestFragment : Fragment() {
@@ -124,8 +106,10 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::whetstoneTestComponent.isInitialized) {
                   val arguments = requireArguments()
-                  val viewModel = viewModel(TestParentScope::class, arguments, ::WhetstoneTestViewModel)
-                  whetstoneTestComponent = viewModel.component
+                  whetstoneTestComponent = component(TestParentScope::class, arguments) { parentComponent:
+                      WhetstoneTestComponent.ParentComponent, savedStateHandle, arguments ->
+                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, arguments)
+                  }
                 }
 
                 return ComposeView(requireContext()).apply {
@@ -175,14 +159,14 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.compose.ui.platform.ViewCompositionStrategy
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
-            import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.NavEventNavigator
+            import com.freeletics.mad.navigator.`internal`.CloseableComponent
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.freeletics.mad.whetstone.fragment.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.destination.TestDestinationScope
@@ -202,12 +186,10 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent {
+            public interface WhetstoneTestComponent : CloseableComponent {
               public val testStateMachine: TestStateMachine
 
               public val navEventNavigator: NavEventNavigator
-
-              public val closeables: Set<Closeable>
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -227,22 +209,6 @@ internal class FileGeneratorTestComposeFragment {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
             }
-
-            @InternalWhetstoneApi
-            internal class WhetstoneTestViewModel(
-              parentComponent: WhetstoneTestComponent.ParentComponent,
-              savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute,
-            ) : ViewModel() {
-              public val component: WhetstoneTestComponent =
-                  parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
-
-              public override fun onCleared(): Unit {
-                component.closeables.forEach {
-                  it.close()
-                }
-              }
-            }
             
             @OptIn(InternalWhetstoneApi::class)
             public class WhetstoneTestFragment : Fragment() {
@@ -255,10 +221,12 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::whetstoneTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
-                  val viewModel = viewModel(TestParentScope::class, TestDestinationScope::class, testRoute,
-                      ::WhetstoneTestViewModel)
-                  whetstoneTestComponent = viewModel.component
-            
+                  whetstoneTestComponent = component(TestParentScope::class, TestDestinationScope::class,
+                      testRoute) { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle,
+                      testRoute ->
+                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
+                  }
+
                   handleNavigation(this, whetstoneTestComponent.navEventNavigator)
                 }
 
@@ -309,8 +277,8 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.compose.ui.platform.ViewCompositionStrategy
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
-            import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.NavEventNavigator
+            import com.freeletics.mad.navigator.`internal`.CloseableComponent
             import com.freeletics.mad.navigator.fragment.NavDestination
             import com.freeletics.mad.navigator.fragment.ScreenDestination
             import com.freeletics.mad.navigator.fragment.handleNavigation
@@ -318,7 +286,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.freeletics.mad.whetstone.fragment.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.destination.TestDestinationScope
@@ -340,12 +308,10 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent {
+            public interface WhetstoneTestComponent : CloseableComponent {
               public val testStateMachine: TestStateMachine
 
               public val navEventNavigator: NavEventNavigator
-
-              public val closeables: Set<Closeable>
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -365,22 +331,6 @@ internal class FileGeneratorTestComposeFragment {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
             }
-
-            @InternalWhetstoneApi
-            internal class WhetstoneTestViewModel(
-              parentComponent: WhetstoneTestComponent.ParentComponent,
-              savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute,
-            ) : ViewModel() {
-              public val component: WhetstoneTestComponent =
-                  parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
-
-              public override fun onCleared(): Unit {
-                component.closeables.forEach {
-                  it.close()
-                }
-              }
-            }
             
             @OptIn(InternalWhetstoneApi::class)
             public class WhetstoneTestFragment : Fragment() {
@@ -393,9 +343,11 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::whetstoneTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
-                  val viewModel = viewModel(TestParentScope::class, TestDestinationScope::class, testRoute,
-                      ::WhetstoneTestViewModel)
-                  whetstoneTestComponent = viewModel.component
+                  whetstoneTestComponent = component(TestParentScope::class, TestDestinationScope::class,
+                      testRoute) { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle,
+                      testRoute ->
+                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
+                  }
             
                   handleNavigation(this, whetstoneTestComponent.navEventNavigator)
                 }
@@ -460,8 +412,8 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.compose.ui.platform.ViewCompositionStrategy
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
-            import androidx.lifecycle.ViewModel
             import com.freeletics.mad.navigator.NavEventNavigator
+            import com.freeletics.mad.navigator.`internal`.CloseableComponent
             import com.freeletics.mad.navigator.`internal`.InternalNavigatorApi
             import com.freeletics.mad.navigator.`internal`.NavigationExecutor
             import com.freeletics.mad.navigator.fragment.NavDestination
@@ -475,8 +427,8 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.`internal`.navEntryViewModel
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.freeletics.mad.whetstone.`internal`.navEntryComponent
+            import com.freeletics.mad.whetstone.fragment.`internal`.component
             import com.squareup.anvil.annotations.ContributesMultibinding
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -501,12 +453,10 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent {
+            public interface WhetstoneTestComponent : CloseableComponent {
               public val testStateMachine: TestStateMachine
 
               public val navEventNavigator: NavEventNavigator
-
-              public val closeables: Set<Closeable>
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -527,22 +477,6 @@ internal class FileGeneratorTestComposeFragment {
               public fun bindCloseables(): Set<Closeable>
             }
 
-            @InternalWhetstoneApi
-            internal class WhetstoneTestViewModel(
-              parentComponent: WhetstoneTestComponent.ParentComponent,
-              savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute,
-            ) : ViewModel() {
-              public val component: WhetstoneTestComponent =
-                  parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
-
-              public override fun onCleared(): Unit {
-                component.closeables.forEach {
-                  it.close()
-                }
-              }
-            }
-
             @OptIn(InternalWhetstoneApi::class)
             public class WhetstoneTestFragment : Fragment() {
               private lateinit var whetstoneTestComponent: WhetstoneTestComponent
@@ -554,9 +488,11 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::whetstoneTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
-                  val viewModel = viewModel(TestParentScope::class, TestDestinationScope::class, testRoute,
-                      ::WhetstoneTestViewModel)
-                  whetstoneTestComponent = viewModel.component
+                  whetstoneTestComponent = component(TestParentScope::class, TestDestinationScope::class,
+                      testRoute) { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle,
+                      testRoute ->
+                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
+                  }
 
                   handleNavigation(this, whetstoneTestComponent.navEventNavigator)
                 }
@@ -601,9 +537,9 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestScreenNavEntryComponent {
+            public interface WhetstoneTestScreenNavEntryComponent : CloseableComponent {
               @get:NavEntry(TestScreen::class)
-              public val closeables: Set<Closeable>
+              public override val closeables: Set<Closeable>
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -626,23 +562,6 @@ internal class FileGeneratorTestComposeFragment {
               public fun bindCloseables(): Set<Closeable>
             }
 
-            @InternalWhetstoneApi
-            internal class WhetstoneTestScreenNavEntryViewModel(
-              parentComponent: WhetstoneTestScreenNavEntryComponent.ParentComponent,
-              savedStateHandle: SavedStateHandle,
-              testRoute: TestRoute,
-            ) : ViewModel() {
-              public val component: WhetstoneTestScreenNavEntryComponent =
-                  parentComponent.whetstoneTestScreenNavEntryComponentFactory().create(savedStateHandle,
-                  testRoute)
-
-              public override fun onCleared(): Unit {
-                component.closeables.forEach {
-                  it.close()
-                }
-              }
-            }
-
             @OptIn(InternalWhetstoneApi::class)
             @NavEntryComponentGetterKey(TestScreen::class)
             @ContributesMultibinding(
@@ -651,10 +570,12 @@ internal class FileGeneratorTestComposeFragment {
             )
             public class TestScreenNavEntryComponentGetter @Inject constructor() : NavEntryComponentGetter {
               @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
-              public override fun retrieve(executor: NavigationExecutor, context: Context): Any {
-                val viewModel = navEntryViewModel(TestRoute::class, executor, context, TestParentScope::class,
-                    TestDestinationScope::class, ::WhetstoneTestScreenNavEntryViewModel)
-                return viewModel.component
+              public override fun retrieve(executor: NavigationExecutor, context: Context): Any =
+                  navEntryComponent(TestRoute::class, executor, context, TestParentScope::class,
+                  TestDestinationScope::class) { parentComponent:
+                  WhetstoneTestScreenNavEntryComponent.ParentComponent, savedStateHandle, testRoute ->
+                parentComponent.whetstoneTestScreenNavEntryComponentFactory().create(savedStateHandle,
+                    testRoute)
               }
             }
 
@@ -686,11 +607,11 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.compose.ui.platform.ViewCompositionStrategy
             import androidx.fragment.app.DialogFragment
             import androidx.lifecycle.SavedStateHandle
-            import androidx.lifecycle.ViewModel
             import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.CloseableComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.freeletics.mad.whetstone.fragment.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -709,10 +630,8 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent {
+            public interface WhetstoneTestComponent : CloseableComponent {
               public val testStateMachine: TestStateMachine
-
-              public val closeables: Set<Closeable>
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -732,22 +651,6 @@ internal class FileGeneratorTestComposeFragment {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
             }
-
-            @InternalWhetstoneApi
-            internal class WhetstoneTestViewModel(
-              parentComponent: WhetstoneTestComponent.ParentComponent,
-              savedStateHandle: SavedStateHandle,
-              arguments: Bundle,
-            ) : ViewModel() {
-              public val component: WhetstoneTestComponent =
-                  parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, arguments)
-
-              public override fun onCleared(): Unit {
-                component.closeables.forEach {
-                  it.close()
-                }
-              }
-            }
             
             @OptIn(InternalWhetstoneApi::class)
             public class WhetstoneTestFragment : DialogFragment() {
@@ -760,8 +663,10 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::whetstoneTestComponent.isInitialized) {
                   val arguments = requireArguments()
-                  val viewModel = viewModel(TestParentScope::class, arguments, ::WhetstoneTestViewModel)
-                  whetstoneTestComponent = viewModel.component
+                  whetstoneTestComponent = component(TestParentScope::class, arguments) { parentComponent:
+                      WhetstoneTestComponent.ParentComponent, savedStateHandle, arguments ->
+                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, arguments)
+                  }
                 }
 
                 return ComposeView(requireContext()).apply {
@@ -823,11 +728,11 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.compose.ui.platform.ViewCompositionStrategy
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
-            import androidx.lifecycle.ViewModel
             import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.CloseableComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.fragment.`internal`.viewModel
+            import com.freeletics.mad.whetstone.fragment.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.other.TestClass2
@@ -847,10 +752,8 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTest2Component {
+            public interface WhetstoneTest2Component : CloseableComponent {
               public val testStateMachine: TestStateMachine
-
-              public val closeables: Set<Closeable>
 
               public val testClass: TestClass
 
@@ -874,22 +777,6 @@ internal class FileGeneratorTestComposeFragment {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
             }
-
-            @InternalWhetstoneApi
-            internal class WhetstoneTest2ViewModel(
-              parentComponent: WhetstoneTest2Component.ParentComponent,
-              savedStateHandle: SavedStateHandle,
-              arguments: Bundle,
-            ) : ViewModel() {
-              public val component: WhetstoneTest2Component =
-                  parentComponent.whetstoneTest2ComponentFactory().create(savedStateHandle, arguments)
-
-              public override fun onCleared(): Unit {
-                component.closeables.forEach {
-                  it.close()
-                }
-              }
-            }
             
             @OptIn(InternalWhetstoneApi::class)
             public class WhetstoneTest2Fragment : Fragment() {
@@ -902,8 +789,10 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::whetstoneTest2Component.isInitialized) {
                   val arguments = requireArguments()
-                  val viewModel = viewModel(TestParentScope::class, arguments, ::WhetstoneTest2ViewModel)
-                  whetstoneTest2Component = viewModel.component
+                  whetstoneTest2Component = component(TestParentScope::class, arguments) { parentComponent:
+                      WhetstoneTest2Component.ParentComponent, savedStateHandle, arguments ->
+                    parentComponent.whetstoneTest2ComponentFactory().create(savedStateHandle, arguments)
+                  }
                 }
 
                 return ComposeView(requireContext()).apply {

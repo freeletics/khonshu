@@ -27,12 +27,13 @@ internal val navEntryComponentFqName = FqName(navEntryComponent.canonicalName)
 // Whetstone Internal API
 internal val asComposeState = MemberName("com.freeletics.mad.whetstone.internal", "asComposeState")
 internal val internalWhetstoneApi = ClassName("com.freeletics.mad.whetstone.internal", "InternalWhetstoneApi")
-internal val navEntryViewModel = MemberName("com.freeletics.mad.whetstone.internal", "navEntryViewModel")
-internal val fragmentViewModel = MemberName("com.freeletics.mad.whetstone.fragment.internal", "viewModel")
-internal val rememberViewModel = MemberName("com.freeletics.mad.whetstone.compose.internal", "rememberViewModel")
+internal val getNavEntryComponent = MemberName("com.freeletics.mad.whetstone.internal", "navEntryComponent")
+internal val fragmentComponent = MemberName("com.freeletics.mad.whetstone.fragment.internal", "component")
+internal val rememberComponent = MemberName("com.freeletics.mad.whetstone.compose.internal", "rememberComponent")
 internal val navEntryComponentGetter = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetter")
 internal val navEntryComponentGetterKey = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetterKey")
 internal val destinationComponent = ClassName("com.freeletics.mad.whetstone.internal", "DestinationComponent")
+internal val whetstoneCloseableComponent = ClassName("com.freeletics.mad.whetstone.internal", "CloseableComponent")
 
 // Navigator
 internal val navEventNavigator = ClassName("com.freeletics.mad.navigator", "NavEventNavigator")
@@ -48,6 +49,7 @@ internal val fragmentScreenDestination = MemberName("com.freeletics.mad.navigato
 internal val fragmentDialogDestination = MemberName("com.freeletics.mad.navigator.fragment", "DialogDestination")
 internal val fragmentRequireRoute = MemberName("com.freeletics.mad.navigator.fragment", "requireRoute")
 internal val internalNavigatorApi = ClassName("com.freeletics.mad.navigator.internal", "InternalNavigatorApi")
+internal val navigatorCloseableComponent = ClassName("com.freeletics.mad.navigator.internal", "CloseableComponent")
 
 // Renderer
 internal val rendererConnect = MemberName("com.gabrielittner.renderer.connect", "connect")

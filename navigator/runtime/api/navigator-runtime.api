@@ -96,6 +96,10 @@ public abstract class com/freeletics/mad/navigator/ResultOwner {
 	public final fun getResults ()Lkotlinx/coroutines/flow/Flow;
 }
 
+public abstract interface class com/freeletics/mad/navigator/internal/CloseableComponent {
+	public abstract fun getCloseables ()Ljava/util/Set;
+}
+
 public final class com/freeletics/mad/navigator/internal/DestinationIdKt {
 }
 

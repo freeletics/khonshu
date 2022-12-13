@@ -56,6 +56,8 @@ tasks.withType(JavaCompile).configureEach {
 dependencies {
     api libs.inject
     api libs.androidx.compose.runtime
+    api libs.androidx.viewmodel
+    api libs.androidx.viewmodel.savedstate
     api project(":state-machine")
 
     implementation libs.coroutines.core

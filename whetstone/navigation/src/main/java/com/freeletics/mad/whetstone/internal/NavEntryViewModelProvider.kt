@@ -3,10 +3,6 @@ package com.freeletics.mad.whetstone.internal
 import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.createSavedStateHandle
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.internal.DestinationId
 import com.freeletics.mad.navigator.internal.NavigationExecutor
@@ -20,24 +16,19 @@ import kotlin.reflect.KClass
  * To be used in generated code.
  */
 @InternalWhetstoneApi
-public inline fun <reified T : ViewModel, D : Any, R : BaseRoute> navEntryViewModel(
+public inline fun <reified C : Any, P : Any, R : BaseRoute> navEntryComponent(
     destination: KClass<R>,
     executor: NavigationExecutor,
     context: Context,
     parentScope: KClass<*>,
     destinationScope: KClass<*>,
-    crossinline factory: (D, SavedStateHandle, R) -> T
-): T {
+    crossinline factory: (P, SavedStateHandle, R) -> C
+): C {
     val destinationId = DestinationId(destination)
-    val viewModelFactory = viewModelFactory {
-        initializer {
-            val component = context.findComponentByScope<D>(parentScope, destinationScope, executor)
-            val savedStateHandle = executor.savedStateHandleFor(destinationId)
-            val route = executor.routeFor(destinationId)
-            factory(component, savedStateHandle, route)
-        }
+    return executor.storeFor(destinationId).getOrCreate(C::class) {
+        val component = context.findComponentByScope<P>(parentScope, destinationScope, executor)
+        val savedStateHandle = executor.savedStateHandleFor(destinationId)
+        val route = executor.routeFor(destinationId)
+        factory(component, savedStateHandle, route)
     }
-    val viewModelStore = executor.viewModelStoreFor(destinationId)
-    val viewModelProvider = ViewModelProvider(viewModelStore, viewModelFactory)
-    return viewModelProvider[T::class.java]
 }
