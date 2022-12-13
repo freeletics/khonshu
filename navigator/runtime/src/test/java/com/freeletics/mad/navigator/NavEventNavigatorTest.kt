@@ -229,7 +229,7 @@ public class NavEventNavigatorTest {
     public fun `registerForPermissionsResult after read is disallowed`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
-        navigator.activityResultRequests
+        navigator. permissionsResultRequests
 
         val exception = assertThrows(IllegalStateException::class.java) {
             navigator.testRegisterForPermissionResult()
