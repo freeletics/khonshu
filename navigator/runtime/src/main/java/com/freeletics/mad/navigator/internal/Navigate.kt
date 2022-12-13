@@ -33,7 +33,7 @@ private fun NavigationExecutor.navigate(
             navigate(event.route)
         }
         is NavEvent.NavigateToRootEvent -> {
-            navigate(event.root, event.restoreRootState)
+            navigate(event.root, event.restoreRootState, event.saveCurrentRootState)
         }
         is NavEvent.NavigateToActivityEvent -> {
             navigate(event.route)

@@ -35,6 +35,7 @@ public sealed interface NavEvent {
     public class NavigateToRootEvent(
         internal val root: NavRoot,
         internal val restoreRootState: Boolean,
+        internal val saveCurrentRootState: Boolean,
     ) : NavEvent
 
     /**

@@ -25,10 +25,14 @@ public class AndroidXNavigationExecutor(
         controller.navigate(route.destinationId(), route.getArguments())
     }
 
-    override fun navigate(root: NavRoot, restoreRootState: Boolean) {
+    override fun navigate(root: NavRoot, restoreRootState: Boolean, saveCurrentRootState: Boolean) {
         val options = NavOptions.Builder()
             // save the state of the current root before leaving it
-            .setPopUpTo(controller.graph.startDestinationId, inclusive = false, saveState = true)
+            .setPopUpTo(
+                controller.graph.startDestinationId,
+                inclusive = false,
+                saveState = saveCurrentRootState
+            )
             // restoring the state of the target root
             .setRestoreState(restoreRootState)
             // makes sure that if the destination is already on the backstack, it and
