@@ -1,6 +1,5 @@
 package com.freeletics.mad.navigator.internal
 
-import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelStore
 import androidx.navigation.NavBackStackEntry
@@ -10,7 +9,6 @@ import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
-import com.freeletics.mad.navigator.NavigationResultRequest
 
 @InternalNavigatorApi
 public class AndroidXNavigationExecutor(
@@ -44,10 +42,6 @@ public class AndroidXNavigationExecutor(
 
     override fun navigateUp() {
         controller.navigateUp()
-    }
-
-    override fun deliverResult(key: NavigationResultRequest.Key<*>, result: Parcelable) {
-        savedStateHandleFor(key.destinationId)[key.requestKey] = result
     }
 
     override fun navigateBackTo(destinationId: DestinationId<*>, isInclusive: Boolean) {
