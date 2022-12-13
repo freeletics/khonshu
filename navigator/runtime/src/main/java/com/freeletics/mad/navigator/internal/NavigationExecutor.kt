@@ -12,7 +12,7 @@ import com.freeletics.mad.navigator.NavigationResultRequest
 @InternalNavigatorApi
 public interface NavigationExecutor {
     public fun navigate(route: NavRoute)
-    public fun navigate(root: NavRoot, restoreRootState: Boolean)
+    public fun navigate(root: NavRoot, restoreRootState: Boolean, saveCurrentRootState: Boolean)
     public fun navigate(route: ActivityRoute)
     public fun navigateUp()
     public fun navigateBack()

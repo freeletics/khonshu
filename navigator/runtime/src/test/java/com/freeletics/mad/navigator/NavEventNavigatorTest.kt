@@ -82,9 +82,17 @@ public class NavEventNavigatorTest {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
-            navigator.navigateToRoot(SimpleRoot(1), true)
+            navigator.navigateToRoot(
+                root = SimpleRoot(1),
+                restoreRootState = true,
+                saveCurrentRootState = false
+            )
 
-            assertThat(awaitItem()).isEqualTo(NavigateToRootEvent(SimpleRoot(1), true))
+            assertThat(awaitItem()).isEqualTo(NavigateToRootEvent(
+                root = SimpleRoot(1),
+                restoreRootState = true,
+                saveCurrentRootState = false
+            ))
 
             cancel()
         }
