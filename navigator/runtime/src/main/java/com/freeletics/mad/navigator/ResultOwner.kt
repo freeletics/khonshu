@@ -133,21 +133,14 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
     public val key: Key<R>,
 ) : ResultOwner<R>() {
 
-    @InternalNavigatorApi
-    public fun handleResult(result: R) {
-        onResult(result)
-    }
-
     /**
      * Use to identify where the result should be delivered to.
      */
     @Poko
     @Parcelize
     public class Key<R : Parcelable> internal constructor(
-        @property:InternalNavigatorApi
-        public val destinationId: DestinationId<*>,
-        @property:InternalNavigatorApi
-        public val requestKey: String
+        internal val destinationId: DestinationId<*>,
+        internal val requestKey: String
     ) : Parcelable {
         private companion object : Parceler<Key<*>> {
             override fun Key<*>.write(parcel: Parcel, flags: Int) {
