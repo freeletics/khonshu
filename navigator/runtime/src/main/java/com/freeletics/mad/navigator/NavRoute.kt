@@ -36,7 +36,7 @@ public sealed interface ActivityRoute : Parcelable{
 
 /**
  * Represents the route to an `Activity` within the current app. The instance of this route
- * will be added to th resulting `Intent` and can be accessed in the launched `Activity` by calling
+ * will be added to the resulting `Intent` and can be accessed in the launched `Activity` by calling
  * [getRoute] or [requireRoute].
  */
 public abstract class InternalActivityRoute : ActivityRoute {
