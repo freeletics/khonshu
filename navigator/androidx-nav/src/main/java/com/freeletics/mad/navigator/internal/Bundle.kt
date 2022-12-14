@@ -1,7 +1,6 @@
 package com.freeletics.mad.navigator.internal
 
 import android.os.Bundle
-import android.os.Parcelable
 import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.EXTRA_ROUTE
@@ -25,9 +24,6 @@ public fun BaseRoute.getArguments(): Bundle = Bundle().also {
 @InternalNavigatorApi
 public fun ActivityRoute.getArguments(): Bundle = Bundle().also {
     it.putParcelable(EXTRA_FILL_IN_INTENT, fillInIntent())
-    if (this is Parcelable) {
-        it.putParcelable(EXTRA_ROUTE, this)
-    }
 }
 
 internal const val EXTRA_FILL_IN_INTENT: String = "com.freeletics.mad.navigation.FILL_IN_INTENT"
