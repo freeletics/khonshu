@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.dokka)
     alias(libs.plugins.publish)
 }
@@ -67,9 +66,7 @@ dependencies {
     implementation libs.androidx.compose.foundation
     implementation libs.androidx.compose.material
     implementation libs.androidx.lifecycle.common
-    implementation libs.androidx.viewmodel.savedstate
     implementation libs.androidx.navigation.common
     implementation libs.androidx.navigation.compose
     implementation libs.accompanist.navigation
-    implementation libs.kotlin.parcelize
 }

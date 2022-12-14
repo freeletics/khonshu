@@ -99,9 +99,17 @@ public abstract class com/freeletics/mad/navigator/ResultOwner {
 public final class com/freeletics/mad/navigator/internal/DestinationIdKt {
 }
 
+public final class com/freeletics/mad/navigator/internal/InitialValue$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/navigator/internal/InitialValue;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/freeletics/mad/navigator/internal/InitialValue;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
 public abstract interface annotation class com/freeletics/mad/navigator/internal/InternalNavigatorApi : java/lang/annotation/Annotation {
 }
 
-public final class com/freeletics/mad/navigator/internal/NavigateKt {
+public final class com/freeletics/mad/navigator/internal/NavigationSetupKt {
 }
 
