@@ -40,7 +40,7 @@ public sealed interface ActivityRoute : Parcelable{
  * [getRoute] or [requireRoute].
  */
 public abstract class InternalActivityRoute : ActivityRoute {
-    override fun fillInIntent(): Intent {
+    final override fun fillInIntent(): Intent {
         return Intent().putExtra(EXTRA_ROUTE, this)
     }
 }
@@ -49,7 +49,11 @@ public abstract class InternalActivityRoute : ActivityRoute {
  * Represents the route to an `Activity` in another app. [fillInIntent] can be used to dynamically
  * add extras to the resulting `Intent`.
  */
-public interface ExternalActivityRoute : ActivityRoute
+public interface ExternalActivityRoute : ActivityRoute {
+    override fun fillInIntent(): Intent {
+        return Intent()
+    }
+}
 
 /**
  * Returns the [ActivityRoute] that was used to navigate to this [Activity].
