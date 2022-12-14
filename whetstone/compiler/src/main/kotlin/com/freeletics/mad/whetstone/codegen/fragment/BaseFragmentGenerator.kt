@@ -53,14 +53,18 @@ internal abstract class BaseFragmentGenerator<T : FragmentData> : Generator<T>()
             .also {
                 if (data.navigation != null) {
                     it.beginControlFlow("%L = %M(%T::class, %T::class, %N) { parentComponent: %T, savedStateHandle, %N ->",
-                        retainedComponentClassName.propertyName, fragmentComponent, data.parentScope, data.navigation!!.destinationScope, argumentsParameter, retainedParentComponentClassName, argumentsParameter)
+                        retainedComponentClassName.propertyName, fragmentComponent, data.parentScope,
+                        data.navigation!!.destinationScope, argumentsParameter,
+                        retainedParentComponentClassName, argumentsParameter)
                 } else {
                     it.beginControlFlow("%L = %M(%T::class, %N) { parentComponent: %T, savedStateHandle, %N ->",
-                        retainedComponentClassName.propertyName, fragmentComponent, data.parentScope, argumentsParameter, retainedParentComponentClassName, argumentsParameter)
+                        retainedComponentClassName.propertyName, fragmentComponent, data.parentScope,
+                        argumentsParameter, retainedParentComponentClassName, argumentsParameter)
                 }
             }
             .addStatement("parentComponent.%L().%L(savedStateHandle, %N)",
-                retainedParentComponentGetterName, retainedComponentFactoryCreateName, argumentsParameter)
+                retainedParentComponentGetterName, retainedComponentFactoryCreateName,
+                argumentsParameter)
             .endControlFlow()
             .addCode(navigationCode())
             .endControlFlow()

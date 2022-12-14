@@ -29,10 +29,13 @@ internal class ComposeScreenGenerator(
             .also {
                 if (data.navigation != null) {
                     it.beginControlFlow("val component = %M(%T::class, %T::class, %N) { parentComponent: %T, savedStateHandle, %N ->",
-                        rememberComponent, data.parentScope, data.navigation.destinationScope, parameter, retainedParentComponentClassName, parameter)
+                        rememberComponent, data.parentScope, data.navigation.destinationScope,
+                        parameter, retainedParentComponentClassName, parameter)
                 } else {
                     it.beginControlFlow("val component = %M(%T::class, %N) { parentComponent: %T, savedStateHandle, %N ->",
-                        rememberComponent, data.parentScope, parameter, retainedParentComponentClassName, parameter) }
+                        rememberComponent, data.parentScope, parameter,
+                        retainedParentComponentClassName, parameter)
+                }
             }
             .addStatement("parentComponent.%L().%L(savedStateHandle, %N)",
                 retainedParentComponentGetterName, retainedComponentFactoryCreateName, parameter)

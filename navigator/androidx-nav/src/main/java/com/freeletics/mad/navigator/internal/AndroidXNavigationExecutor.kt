@@ -63,7 +63,9 @@ public class AndroidXNavigationExecutor(
     }
 
     override fun storeFor(destinationId: DestinationId<*>): NavigationExecutor.Store {
-        return ViewModelProvider(entryFor(destinationId).viewModelStore, ViewModelProvider.NewInstanceFactory())[StoreViewModel::class.java]
+        val viewModelStore = entryFor(destinationId).viewModelStore
+        val factory = ViewModelProvider.NewInstanceFactory()
+        return ViewModelProvider(viewModelStore, factory)[StoreViewModel::class.java]
     }
 
     private fun entryFor(destinationId: DestinationId<*>): NavBackStackEntry {

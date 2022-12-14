@@ -68,9 +68,12 @@ internal class NavEntryComponentGetterGenerator(
             .addParameter("context", context)
             .returns(ANY)
             .beginControlFlow("return %M(%T::class, executor, context, %T::class, %T::class) { parentComponent: %T, savedStateHandle, %L ->",
-                getNavEntryComponent, data.navigation.route, data.parentScope, data.navigation.destinationScope, retainedParentComponentClassName, data.navigation.route.propertyName)
+                getNavEntryComponent, data.navigation.route, data.parentScope,
+                data.navigation.destinationScope, retainedParentComponentClassName,
+                data.navigation.route.propertyName)
             .addStatement("parentComponent.%L().%L(savedStateHandle, %L)",
-                retainedParentComponentGetterName, retainedComponentFactoryCreateName, data.navigation.route.propertyName)
+                retainedParentComponentGetterName, retainedComponentFactoryCreateName,
+                data.navigation.route.propertyName)
             .endControlFlow()
             .build()
     }
