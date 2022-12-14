@@ -25,9 +25,6 @@ public fun BaseRoute.getArguments(): Bundle = Bundle().also {
 @InternalNavigatorApi
 public fun ActivityRoute.getArguments(): Bundle = Bundle().also {
     it.putParcelable(EXTRA_FILL_IN_INTENT, fillInIntent())
-    if (this is Parcelable) {
-        it.putParcelable(EXTRA_ROUTE, this)
-    }
 }
 
 internal const val EXTRA_FILL_IN_INTENT: String = "com.freeletics.mad.navigation.FILL_IN_INTENT"
