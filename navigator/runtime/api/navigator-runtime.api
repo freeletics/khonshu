@@ -1,12 +1,8 @@
 public final class com/freeletics/mad/navigator/ActivityResultRequest : com/freeletics/mad/navigator/ResultOwner {
 }
 
-public abstract interface class com/freeletics/mad/navigator/ActivityRoute {
-	public static final field Companion Lcom/freeletics/mad/navigator/ActivityRoute$Companion;
+public abstract interface class com/freeletics/mad/navigator/ActivityRoute : android/os/Parcelable {
 	public abstract fun fillInIntent ()Landroid/content/Intent;
-}
-
-public final class com/freeletics/mad/navigator/ActivityRoute$Companion {
 }
 
 public final class com/freeletics/mad/navigator/ActivityRoute$DefaultImpls {
