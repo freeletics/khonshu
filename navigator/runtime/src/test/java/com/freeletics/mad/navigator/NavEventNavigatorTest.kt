@@ -42,7 +42,7 @@ public class NavEventNavigatorTest {
     private class SimpleRoot(val number: Int) : NavRoot
     @Poko
     @Parcelize
-    private class SimpleActivity(val number: Int) : ActivityRoute
+    private class SimpleActivity(val number: Int) : InternalActivityRoute()
     @Poko
     @Parcelize
     private class TestParcelable(val value: Int) : Parcelable

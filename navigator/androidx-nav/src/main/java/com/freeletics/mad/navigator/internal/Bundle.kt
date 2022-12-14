@@ -1,7 +1,6 @@
 package com.freeletics.mad.navigator.internal
 
 import android.os.Bundle
-import android.os.Parcelable
 import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.EXTRA_ROUTE

@@ -209,36 +209,33 @@ is disabled. This can be used to for example show a confirmation dialog before n
 ### Activity destinations
 
 It is also possible navigate to an `Activity` both inside and outside of the app. In both cases
-it's required to define an `ActivityRoute` and an `ActivityDestination` like for any other screen.
-The route can then simply be passed to `navigateTo` to start the associated `Activity`. The
-`ActivityDestination` is just another `NavDestination` than can be added to the `Set` with all
-other destinations.
+it's required to define an `InternalActivtyRoute` or `ExternalActivityRoute` as well as an 
+`ActivityDestination` like for any other screen. The route can then simply be passed to `navigateTo` 
+to start the associated `Activity`. The `ActivityDestination` is just another `NavDestination` 
+than can be added to the `Set` with all other destinations.
 
-For an `Activity` in the same app it's recommended to extend `Parcelable` with will allow the
-started `Activity` to obtain the route and use it to easily access any parameter.
+`InternalActivtyRoute` is meant for `Activity` instances in the current app and can be obtained
+in the launched activity by calling `getRoute` or `requireRoute` to read parameters passed to it.
+
 
 This is example shows the route and destination for a `SettingsActivity`:
 ```kotlin
 @Parcelize
 data class SettingsActivityRoute(
     val id: String,
-) : ActivityRoute, Parcelable
+) : InternalActivityRoute
 
 val extraActivityDestination: NavDestination = ActivityDestination<SettingsRoute>(
     intent = Intent(context, SettingsActivity::class)
 )
 ```
 
-The `SettingsActivity` could then access `SettingsActivityRoute` by using the `Activity.requireRoute()`
-extension function.
-
-In the case of external activities `Parcelable` can't be used because it would crash the other app.
-It is possible to add static extras to the destination or to dynamically add extras to the route
-by implementing `intentExtras`:
+Activities in other apps can be targeted with `ExternalActivityRoute` which allows enriching the
+resulting `Intent` with it's `fillInIntent` method.
 
 ```kotlin
 // minimal route
-object PlayStoreRoute : ActivityRoute
+object PlayStoreRoute : ExternalActivityRoute
 
 val playStoreDestination: NavDestination = ActivityDestination<PlayStoreRoute>(
     // full intent is statically defined
@@ -249,7 +246,7 @@ val playStoreDestination: NavDestination = ActivityDestination<PlayStoreRoute>(
 class ShareRoute(
     private val title: String,
     private val message: String
-) : ActivityRoute {
+) : ExternalActivityRoute {
     // the returned Intent is filled into the Intent of the destination by calling
     // destinationIntent.fillIn(fillInIntent())
     override fun fillInIntent() = Intent()
@@ -259,7 +256,6 @@ class ShareRoute(
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, message)
         })
-    }
 }
 
 val shareDestination: NavDestination = ActivityDestination<ShareRoute>(
