@@ -32,8 +32,6 @@ public sealed interface ActivityRoute : Parcelable{
     public fun fillInIntent(): Intent
 }
 
-
-
 /**
  * Represents the route to an `Activity` within the current app. The instance of this route
  * will be added to the resulting `Intent` and can be accessed in the launched `Activity` by calling

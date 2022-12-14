@@ -223,7 +223,7 @@ This is example shows the route and destination for a `SettingsActivity`:
 @Parcelize
 data class SettingsActivityRoute(
     val id: String,
-) : InternalActivityRoute
+) : InternalActivityRoute()
 
 val extraActivityDestination: NavDestination = ActivityDestination<SettingsRoute>(
     intent = Intent(context, SettingsActivity::class)
@@ -235,6 +235,7 @@ resulting `Intent` with it's `fillInIntent` method.
 
 ```kotlin
 // minimal route
+@Parcelize
 object PlayStoreRoute : ExternalActivityRoute
 
 val playStoreDestination: NavDestination = ActivityDestination<PlayStoreRoute>(
@@ -243,6 +244,7 @@ val playStoreDestination: NavDestination = ActivityDestination<PlayStoreRoute>(
 )
 
 // route with extra values
+@Parcelize
 class ShareRoute(
     private val title: String,
     private val message: String
@@ -264,9 +266,10 @@ val shareDestination: NavDestination = ActivityDestination<ShareRoute>(
 )
 
 // route with a data uri extra
+@Parcelize
 class BrowserRoute(
     uri: Uri,
-) : ActivityRoute {
+) : ExternalActivityRoute {
     // the returned Intent is filled into the Intent of the destination by calling
     // destinationIntent.fillIn(fillInIntent())
     override fun fillInIntent() = Intent().setData(uri)
