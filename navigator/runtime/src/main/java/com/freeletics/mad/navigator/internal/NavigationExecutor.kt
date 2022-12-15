@@ -16,10 +16,10 @@ public interface NavigationExecutor {
     public fun navigate(route: ActivityRoute)
     public fun navigateUp()
     public fun navigateBack()
-    public fun navigateBackTo(destinationId: DestinationId<*>, isInclusive: Boolean)
+    public fun <T : BaseRoute> navigateBackTo(destinationId: DestinationId<T>, isInclusive: Boolean)
     public fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T
-    public fun savedStateHandleFor(destinationId: DestinationId<*>): SavedStateHandle
-    public fun storeFor(destinationId: DestinationId<*>): Store
+    public fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle
+    public fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): Store
 
     @InternalNavigatorApi
     public interface Store {
