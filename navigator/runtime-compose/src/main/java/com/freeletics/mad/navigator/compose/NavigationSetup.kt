@@ -1,6 +1,5 @@
 package com.freeletics.mad.navigator.compose
 
-import android.os.Parcelable
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -11,12 +10,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEventNavigator
-import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
-import com.freeletics.mad.navigator.internal.NavigationExecutor
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import com.freeletics.mad.navigator.internal.collectAndHandleNavEvents
-import kotlinx.parcelize.Parcelize
+import com.freeletics.mad.navigator.internal.collectAndHandleNavigationResults
 
 /**
  * Sets up the [NavEventNavigator] inside the current composition so that it's events
@@ -35,7 +32,9 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
     }
 
     navigator.navigationResultRequests.forEach {
-        ResultEffect(it, executor)
+        LaunchedEffect(executor, it) {
+            executor.collectAndHandleNavigationResults(it)
+        }
     }
 
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
@@ -69,24 +68,3 @@ private fun rememberResultLaunchers(
         request.handleResult(resultMap, context)
     }
 }
-
-@Composable
-private fun <O : Parcelable> ResultEffect(
-    request: NavigationResultRequest<O>,
-    executor: NavigationExecutor,
-) {
-    LaunchedEffect(request, executor) {
-        val savedStateHandle = executor.savedStateHandleFor(request.key.destinationId)
-        savedStateHandle.getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
-            .collect { result ->
-                if (result != InitialValue) {
-                    @Suppress("UNCHECKED_CAST")
-                    request.handleResult(result as O)
-                    savedStateHandle[request.key.requestKey] = InitialValue
-                }
-            }
-    }
-}
-
-@Parcelize
-private object InitialValue : Parcelable

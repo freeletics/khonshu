@@ -134,14 +134,15 @@ public open class NavEventNavigator {
 
     /**
      * Triggers a new [NavEvent] to navigate to the given [root]. The current back stack will
-     * be popped and saved. Whether the backstack of the given root is restored depends
-     * on [restoreRootState].
+     * be popped and saved it [saveCurrentRootState] is `true`, otherwise it will be discarded.
+     * Whether the backstack of the given `root` is restored depends on [restoreRootState].
      */
     public fun navigateToRoot(
         root: NavRoot,
         restoreRootState: Boolean = false,
+        saveCurrentRootState: Boolean = true,
     ) {
-        val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
+        val event = NavEvent.NavigateToRootEvent(root, restoreRootState, saveCurrentRootState)
         sendNavEvent(event)
     }
 
@@ -173,7 +174,7 @@ public open class NavEventNavigator {
      * Triggers a new [NavEvent] that pops the back stack to [T]. If [inclusive] is
      * `true` [T] itself will also be popped.
      */
-    public inline fun <reified T: BaseRoute> navigateBackTo(inclusive: Boolean = false) {
+    public inline fun <reified T: NavRoute> navigateBackTo(inclusive: Boolean = false) {
         navigateBackTo(DestinationId(T::class), inclusive)
     }
 

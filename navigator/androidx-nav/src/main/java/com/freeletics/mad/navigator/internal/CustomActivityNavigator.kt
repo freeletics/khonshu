@@ -91,12 +91,6 @@ public open class CustomActivityNavigator(
             if (fillInIntent != null) {
                 intent.fillIn(fillInIntent, 0)
             }
-
-            @Suppress("DEPRECATION")
-            val route = args.getParcelable<Parcelable>(EXTRA_ROUTE)
-            if (route != null) {
-                intent.putExtra(EXTRA_ROUTE, route)
-            }
         }
         if (hostActivity == null) {
             // If we're not launching from an Activity context we have to launch in a new task.

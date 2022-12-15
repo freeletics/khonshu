@@ -26,17 +26,30 @@ public interface NavRoute : BaseRoute
 public interface NavRoot : BaseRoute
 
 /**
- * Represents the route to a destination.
- *
- * When the implementing class is [Parcelable], the instance of route will be put into the
- * navigation arguments and is then available to the target screens. Do not do this in case this
- * route leads to a different app.
+ * Represents the route to an `Activity`. Should be used through []
  */
-public interface ActivityRoute {
-    public fun fillInIntent(): Intent = EMPTY_INTENT
+public sealed interface ActivityRoute : Parcelable{
+    public fun fillInIntent(): Intent
+}
 
-    public companion object {
-        private val EMPTY_INTENT = Intent()
+/**
+ * Represents the route to an `Activity` within the current app. The instance of this route
+ * will be added to the resulting `Intent` and can be accessed in the launched `Activity` by calling
+ * [getRoute] or [requireRoute].
+ */
+public abstract class InternalActivityRoute : ActivityRoute {
+    final override fun fillInIntent(): Intent {
+        return Intent().putExtra(EXTRA_ROUTE, this)
+    }
+}
+
+/**
+ * Represents the route to an `Activity` in another app. [fillInIntent] can be used to dynamically
+ * add extras to the resulting `Intent`.
+ */
+public interface ExternalActivityRoute : ActivityRoute {
+    override fun fillInIntent(): Intent {
+        return Intent()
     }
 }
 

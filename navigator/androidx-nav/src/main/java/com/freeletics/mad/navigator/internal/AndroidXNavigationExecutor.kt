@@ -1,6 +1,5 @@
 package com.freeletics.mad.navigator.internal
 
-import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelStore
 import androidx.navigation.NavBackStackEntry
@@ -10,7 +9,6 @@ import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
-import com.freeletics.mad.navigator.NavigationResultRequest
 
 @InternalNavigatorApi
 public class AndroidXNavigationExecutor(
@@ -25,10 +23,14 @@ public class AndroidXNavigationExecutor(
         controller.navigate(route.destinationId(), route.getArguments())
     }
 
-    override fun navigate(root: NavRoot, restoreRootState: Boolean) {
+    override fun navigate(root: NavRoot, restoreRootState: Boolean, saveCurrentRootState: Boolean) {
         val options = NavOptions.Builder()
             // save the state of the current root before leaving it
-            .setPopUpTo(controller.graph.startDestinationId, inclusive = false, saveState = true)
+            .setPopUpTo(
+                controller.graph.startDestinationId,
+                inclusive = false,
+                saveState = saveCurrentRootState
+            )
             // restoring the state of the target root
             .setRestoreState(restoreRootState)
             // makes sure that if the destination is already on the backstack, it and
@@ -44,10 +46,6 @@ public class AndroidXNavigationExecutor(
 
     override fun navigateUp() {
         controller.navigateUp()
-    }
-
-    override fun deliverResult(key: NavigationResultRequest.Key<*>, result: Parcelable) {
-        savedStateHandleFor(key.destinationId)[key.requestKey] = result
     }
 
     override fun <T : BaseRoute> navigateBackTo(destinationId: DestinationId<T>, isInclusive: Boolean) {

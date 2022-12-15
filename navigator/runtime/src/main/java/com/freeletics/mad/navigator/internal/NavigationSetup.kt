@@ -1,13 +1,16 @@
 package com.freeletics.mad.navigator.internal
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
+import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
+import kotlinx.parcelize.Parcelize
 
 @SuppressLint("VisibleForTests") // VisibleForTests(otherwise = INTERNAL) does not exist
 @InternalNavigatorApi
@@ -33,7 +36,7 @@ private fun NavigationExecutor.navigate(
             navigate(event.route)
         }
         is NavEvent.NavigateToRootEvent -> {
-            navigate(event.root, event.restoreRootState)
+            navigate(event.root, event.restoreRootState, event.saveCurrentRootState)
         }
         is NavEvent.NavigateToActivityEvent -> {
             navigate(event.route)
@@ -66,7 +69,26 @@ private fun NavigationExecutor.navigate(
             (launcher as ActivityResultLauncher<Any?>).launch(event.permissions)
         }
         is NavEvent.DestinationResultEvent<*> -> {
-            deliverResult(event.key, event.result)
+            savedStateHandleFor(event.key.destinationId)[event.key.requestKey] = event.result
         }
     }
 }
+
+@SuppressLint("VisibleForTests") // VisibleForTests(otherwise = INTERNAL) does not exist
+@InternalNavigatorApi
+public suspend fun <R : Parcelable> NavigationExecutor.collectAndHandleNavigationResults(
+    request: NavigationResultRequest<R>,
+) {
+    val savedStateHandle = savedStateHandleFor(request.key.destinationId)
+    savedStateHandle.getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
+        .collect {
+            if (it != InitialValue) {
+                @Suppress("UNCHECKED_CAST")
+                request.onResult(it as R)
+                savedStateHandle[request.key.requestKey] = InitialValue
+            }
+        }
+}
+
+@Parcelize
+private object InitialValue : Parcelable
