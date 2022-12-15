@@ -112,8 +112,8 @@ public open class NavEventNavigator {
     }
 
     @PublishedApi
-    internal fun <O : Parcelable> registerForNavigationResult(
-        id: DestinationId<*>,
+    internal fun <T : BaseRoute, O : Parcelable> registerForNavigationResult(
+        id: DestinationId<T>,
         resultType: String
     ): NavigationResultRequest<O> {
         checkAllowedToAddRequests()
@@ -178,7 +178,7 @@ public open class NavEventNavigator {
     }
 
     @PublishedApi
-    internal fun navigateBackTo(popUpTo: DestinationId<*>, inclusive: Boolean = false) {
+    internal fun <T: BaseRoute> navigateBackTo(popUpTo: DestinationId<T>, inclusive: Boolean = false) {
         val event = BackToEvent(popUpTo, inclusive)
         sendNavEvent(event)
     }
