@@ -1,0 +1,34 @@
+public final class com/freeletics/mad/navigator/compose/ActivityDestination : com/freeletics/mad/navigator/compose/NavDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Landroid/content/Intent;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class com/freeletics/mad/navigator/compose/BottomSheetDestination : com/freeletics/mad/navigator/compose/NavDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class com/freeletics/mad/navigator/compose/ComposableSingletons$NavHostKt {
+	public static final field INSTANCE Lcom/freeletics/mad/navigator/compose/ComposableSingletons$NavHostKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$runtime_experimental_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/freeletics/mad/navigator/compose/DialogDestination : com/freeletics/mad/navigator/compose/NavDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public abstract interface class com/freeletics/mad/navigator/compose/NavDestination {
+}
+
+public final class com/freeletics/mad/navigator/compose/NavHostKt {
+	public static final fun NavHost-lSURzpk (Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/graphics/Shape;FJJJLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/freeletics/mad/navigator/compose/NavigationSetupKt {
+	public static final fun NavigationSetup (Lcom/freeletics/mad/navigator/NavEventNavigator;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/freeletics/mad/navigator/compose/ScreenDestination : com/freeletics/mad/navigator/compose/NavDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+

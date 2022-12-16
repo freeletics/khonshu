@@ -19,7 +19,7 @@ dependencyResolutionManagement {
 }
 
 include(":navigator:runtime", ":navigator:testing")
-include(":navigator:androidx-nav", ":navigator:runtime-compose", ":navigator:runtime-fragment")
+include(":navigator:androidx-nav", ":navigator:runtime-compose", ":navigator:runtime-experimental", ":navigator:runtime-fragment")
 include(":state-machine", ":state-machine:testing")
 include(":text-resource")
 include(":whetstone:compiler", ":whetstone:compiler-test")
