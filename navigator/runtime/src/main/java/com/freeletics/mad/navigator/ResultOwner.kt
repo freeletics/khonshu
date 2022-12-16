@@ -145,6 +145,7 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
         private companion object : Parceler<Key<*>> {
             override fun Key<*>.write(parcel: Parcel, flags: Int) {
                 parcel.writeSerializable(destinationId.route.java)
+                parcel.writeString(requestKey)
             }
 
             override fun create(parcel: Parcel): Key<*> {
