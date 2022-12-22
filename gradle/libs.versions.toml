@@ -37,7 +37,7 @@ kotlin-compile-testing = "0.1.0"
 publish = "0.22.0"
 dokka = "1.7.20"
 binarycompatibility = "0.12.1"
-dependency-analysis = "1.17.0"
+dependency-analysis = "1.18.0"
 
 [libraries]
 kotlin-parcelize = { module = "org.jetbrains.kotlin:kotlin-parcelize-runtime", version.ref = "kotlin" }
