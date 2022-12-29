@@ -68,7 +68,7 @@ dependencies {
 
 configurations.all {
     resolutionStrategy.dependencySubstitution {
-        substitute(module("com.freeletics.mad:state-machine").using(project(":state-machine"))
+        substitute module("com.freeletics.mad:state-machine") using project(":state-machine")
     }
 }
 
