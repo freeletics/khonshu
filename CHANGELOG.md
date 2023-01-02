@@ -1,14 +1,17 @@
 Change Log
 ==========
 
-Version 0.9.1 *(2022-11-23)*
-----------------------------
+## 0.10.0 **UNRELEASED**
+
+
+
+## 0.9.1 *(2022-11-23)*
 
 ### Whetstone
 - Fix action lambda in Compose code generation
 
-Version 0.9.0 *(2022-11-22)*
-----------------------------
+
+## 0.9.0 *(2022-11-22)*
 
 ### Whetstone
 - Add support for injecting dependencies into Composable functions, which are annotated with
@@ -17,8 +20,8 @@ Version 0.9.0 *(2022-11-22)*
 ### Navigator
 - Refactor runtime module to remove androidx navigation
 
-Version 0.8.1 *(2022-11-08)*
-----------------------------
+
+## 0.8.1 *(2022-11-08)*
 
 ### Whetstone
 - Update codegen to use new `Bundle.requireRoute` function
@@ -27,8 +30,8 @@ Version 0.8.1 *(2022-11-08)*
 - New module for shared androidx navigation
 - Deploy docs directly from Github Actions
 
-Version 0.8.0 *(2022-11-08)*
-----------------------------
+
+## 0.8.0 *(2022-11-08)*
 
 ### Navigator
 
@@ -73,10 +76,10 @@ to the annotation.
 
 ### Other
 
-- Migrate to Gradle version catalog
+- Migrate to Gradle ## catalog
 
-Version 0.7.2 *(2022-08-12)*
-----------------------------
+
+## 0.7.2 *(2022-08-12)*
 
 ### Navigator
 
@@ -84,8 +87,7 @@ Version 0.7.2 *(2022-08-12)*
 - Fix an issue that caused navigation results to be delivered multiple times
 
 
-Version 0.7.1 *(2022-07-12)*
-----------------------------
+## 0.7.1 *(2022-07-12)*
 
 - Sources are now visible in Android Studio again
 
@@ -94,8 +96,7 @@ Version 0.7.1 *(2022-07-12)*
 - Fix a crash in the navigation result APIs
 
 
-Version 0.7.0 *(2022-07-04)*
-----------------------------
+## 0.7.0 *(2022-07-04)*
 
 Updated to Kotlin 1.7.0 and Compose compiler 1.2.0.
 
@@ -118,8 +119,7 @@ Updated to Kotlin 1.7.0 and Compose compiler 1.2.0.
 - removed dependency on `LiveData`
 
 
-Version 0.6.0 *(2022-06-28)*
-----------------------------
+## 0.6.0 *(2022-06-28)*
 
 ### Whetstone
 
@@ -129,8 +129,7 @@ Version 0.6.0 *(2022-06-28)*
   qualifier
 
 
-Version 0.5.0 *(2022-06-21)*
-----------------------------
+## 0.5.0 *(2022-06-21)*
 
 ### Navigator
 
@@ -168,8 +167,7 @@ object {
   deprecated
 
 
-Version 0.4.0 *(2022-06-13)*
-----------------------------
+## 0.4.0 *(2022-06-13)*
 
 ### Navigator
 
@@ -189,8 +187,7 @@ Version 0.4.0 *(2022-06-13)*
 - Fix code generation in Kotlin 1.6.20
 
 
-Version 0.3.1 *(2022-04-20)*
-----------------------------
+## 0.3.1 *(2022-04-20)*
 
 ### Whetstone
 
@@ -198,8 +195,7 @@ Version 0.3.1 *(2022-04-20)*
 - fix a crash when using Whetstone with Compose navigation
 
 
-Version 0.3.0 *(2022-04-13)*
-----------------------------
+## 0.3.0 *(2022-04-13)*
 
 ### Navigator
 
@@ -223,20 +219,17 @@ functionality might change significantly and that the documentation is missing (
 comments on the code). It is already being used in production at Freeletics.
 
 
-Version 0.2.0 *(2021-06-18)*
-----------------------------
+## 0.2.0 *(2021-06-18)*
 
 - update `StateMachine.state` to return `StateFlow<State>` instead of `Flow<State>`
 
 
-Version 0.1.1 *(2021-06-16)*
-----------------------------
+## 0.1.1 *(2021-06-16)*
 
 - fix windows artifact of `state-machine` not being published
 
 
-Version 0.1.0 *(2021-06-16)*
-----------------------------
+## 0.1.0 *(2021-06-16)*
 
 - initial release of the `state-machine` artifact
 - initial release of the `text-resource` artifact
