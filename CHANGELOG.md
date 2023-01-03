@@ -3,7 +3,18 @@ Change Log
 
 ## 0.10.0 **UNRELEASED**
 
+### Navigator
+- `navigateToRoot` now has a `saveCurrentRootState` parameter which defaults to true (matches the previous implicit behavior). Can be set to false to clear the current back stack.
+- `navigateBackTo` now does not allow passing a `NavRoot` as target anymore. Use `navigateToRoot<...>(false, false)` instead
+- `ActivityRoute` is now  always `Parcelable` and has been split into 2 sub-classes/interfaces `InternalActivityRoute` for `Activity` classes inside the app and `ExternalActivityRoute` for Intents that leave the app
+- `PermissionResult` is now a sealed class instead of an enum class. The `DENIED` and `DENIED_FOREVER` values were merged into a single `Denied` subclass that has a `showRationale` boolean property. This being `false` would match the old denied forever value. The reason for this change is that `Denied` with `showRationale` being `false` does not necessarily mean denied forever on newer platform versions, it could also mean that the first ever permission prompt was dismissed without making a choice.
+- Make a few APIs that were not meant to be public internal or mark them as such
+- Internal: share more code between the compose and fragment implementations
+- Internal: unify handling of permission results and activity results
 
+### Whetstone
+- Remove dependency on AndroidX navigation. Whetstone’s navigation artifacts now only rely on our own navigator APIs
+- Internal: Stop generating view models for each annotated screen. Instead use a runtime class to hold on to components
 
 ## 0.9.1 *(2022-11-23)*
 
