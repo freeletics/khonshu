@@ -1,4 +1,4 @@
-public final class com/freeletics/mad/navigator/ActivityResultRequest : com/freeletics/mad/navigator/ResultOwner {
+public final class com/freeletics/mad/navigator/ActivityResultRequest : com/freeletics/mad/navigator/ContractResultOwner {
 }
 
 public abstract interface class com/freeletics/mad/navigator/ActivityRoute : android/os/Parcelable {
@@ -6,6 +6,9 @@ public abstract interface class com/freeletics/mad/navigator/ActivityRoute : and
 }
 
 public abstract interface class com/freeletics/mad/navigator/BaseRoute : android/os/Parcelable {
+}
+
+public abstract class com/freeletics/mad/navigator/ContractResultOwner : com/freeletics/mad/navigator/ResultOwner {
 }
 
 public abstract interface class com/freeletics/mad/navigator/ExternalActivityRoute : com/freeletics/mad/navigator/ActivityRoute {
@@ -75,7 +78,8 @@ public final class com/freeletics/mad/navigator/NavigationResultRequest$Key$Crea
 	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
-public final class com/freeletics/mad/navigator/PermissionsResultRequest : com/freeletics/mad/navigator/ResultOwner {
+public final class com/freeletics/mad/navigator/PermissionsResultRequest : com/freeletics/mad/navigator/ContractResultOwner {
+	public synthetic fun getContract ()Landroidx/activity/result/contract/ActivityResultContract;
 }
 
 public abstract interface class com/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult {

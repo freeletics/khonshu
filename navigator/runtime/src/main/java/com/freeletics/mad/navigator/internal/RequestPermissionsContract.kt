@@ -2,11 +2,11 @@ package com.freeletics.mad.navigator.internal
 
 import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale as shouldShowRationale
+import android.annotation.SuppressLint
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult
 
 /**
@@ -37,11 +37,11 @@ public class RequestPermissionsContract :
     }
 
     internal companion object {
+        @SuppressLint("VisibleForTests") // VisibleForTests(otherwise = INTERNAL) does not exist
         internal fun enrichResult(
-            context: Context,
+            activity: Activity,
             resultMap: Map<String, Boolean>
         ): Map<String, PermissionResult> {
-            val activity = context.findActivity()
             return resultMap.mapValues { (permission, granted) ->
                 if (granted) {
                     PermissionResult.Granted
@@ -49,15 +49,6 @@ public class RequestPermissionsContract :
                     PermissionResult.Denied(shouldShowRationale(activity, permission))
                 }
             }
-        }
-
-        private fun Context.findActivity(): Activity {
-            var context = this
-            while (context is ContextWrapper) {
-                if (context is Activity) return context
-                context = context.baseContext
-            }
-            throw IllegalStateException("Permissions should be requested in the context of an Activity")
         }
     }
 }
