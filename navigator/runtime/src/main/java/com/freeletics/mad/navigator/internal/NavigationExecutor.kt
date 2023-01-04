@@ -14,8 +14,8 @@ public interface NavigationExecutor {
     public fun navigate(route: ActivityRoute)
     public fun navigateUp()
     public fun navigateBack()
-    public fun navigateBackTo(destinationId: DestinationId<*>, isInclusive: Boolean)
+    public fun <T : BaseRoute> navigateBackTo(destinationId: DestinationId<T>, isInclusive: Boolean)
     public fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T
-    public fun savedStateHandleFor(destinationId: DestinationId<*>): SavedStateHandle
-    public fun viewModelStoreFor(destinationId: DestinationId<*>): ViewModelStore
+    public fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle
+    public fun <T : BaseRoute> viewModelStoreFor(destinationId: DestinationId<T>): ViewModelStore
 }

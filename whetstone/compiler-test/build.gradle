@@ -65,3 +65,10 @@ dependencies {
     testImplementation libs.androidx.compose.compiler
     testImplementation(libs.kotlin.compiler) { force = true }
 }
+
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute module("com.freeletics.mad:state-machine") using project(":state-machine")
+    }
+}
+

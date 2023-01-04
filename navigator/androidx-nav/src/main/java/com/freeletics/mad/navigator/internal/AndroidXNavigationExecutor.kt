@@ -48,11 +48,11 @@ public class AndroidXNavigationExecutor(
         controller.navigateUp()
     }
 
-    override fun navigateBackTo(destinationId: DestinationId<*>, isInclusive: Boolean) {
+    override fun <T : BaseRoute> navigateBackTo(destinationId: DestinationId<T>, isInclusive: Boolean) {
         controller.popBackStack(destinationId.destinationId(), isInclusive)
     }
 
-    override fun savedStateHandleFor(destinationId: DestinationId<*>): SavedStateHandle {
+    override fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle {
         return entryFor(destinationId).savedStateHandle
     }
 
@@ -60,7 +60,7 @@ public class AndroidXNavigationExecutor(
         return entryFor(destinationId).arguments.requireRoute()
     }
 
-    override fun viewModelStoreFor(destinationId: DestinationId<*>): ViewModelStore {
+    override fun <T : BaseRoute> viewModelStoreFor(destinationId: DestinationId<T>): ViewModelStore {
         return entryFor(destinationId).viewModelStore
     }
 
