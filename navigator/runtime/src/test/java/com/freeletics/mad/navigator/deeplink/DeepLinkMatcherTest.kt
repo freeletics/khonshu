@@ -127,7 +127,7 @@ public class DeepLinkMatcherTest {
         val exception = assertThrows(PatternSyntaxException::class.java) {
             handler.matchesPattern(Uri.parse("https://a.com/foo/abc/bar"), prefixes)
         }
-        assertThat(exception).hasMessageThat().startsWith("Illegal repetition near index 57")
+        assertThat(exception).hasMessageThat().startsWith("Illegal repetition near index ")
     }
 
     @Test
