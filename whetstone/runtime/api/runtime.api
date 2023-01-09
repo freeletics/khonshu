@@ -2,10 +2,6 @@ public abstract interface annotation class com/freeletics/mad/whetstone/ScopeTo 
 	public abstract fun marker ()Ljava/lang/Class;
 }
 
-public abstract interface class com/freeletics/mad/whetstone/internal/CloseableComponent {
-	public abstract fun getCloseables ()Ljava/util/Set;
-}
-
 public final class com/freeletics/mad/whetstone/internal/CollectAsStateKt {
 }
 
