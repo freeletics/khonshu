@@ -1,18 +1,17 @@
 package com.freeletics.mad.navigator.fragment
 
-import android.content.Context
+import android.app.Activity
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
-import com.freeletics.mad.navigator.ActivityResultRequest
+import com.freeletics.mad.navigator.ContractResultOwner
 import com.freeletics.mad.navigator.NavEventNavigator
-import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
-import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import com.freeletics.mad.navigator.internal.collectAndHandleNavEvents
 import com.freeletics.mad.navigator.internal.collectAndHandleNavigationResults
+import com.freeletics.mad.navigator.internal.deliverResult
 import kotlinx.coroutines.launch
 
 /**
@@ -21,10 +20,7 @@ import kotlinx.coroutines.launch
  */
 public fun handleNavigation(fragment: Fragment, navigator: NavEventNavigator) {
     val activityLaunchers = navigator.activityResultRequests.associateWith {
-        it.registerIn(fragment)
-    }
-    val permissionLaunchers = navigator.permissionsResultRequests.associateWith {
-        it.registerIn(fragment, fragment.requireContext())
+        it.registerIn(fragment, fragment.requireActivity())
     }
 
     val lifecycle = fragment.lifecycle
@@ -40,22 +36,15 @@ public fun handleNavigation(fragment: Fragment, navigator: NavEventNavigator) {
     dispatcher.addCallback(fragment, navigator.onBackPressedCallback)
 
     lifecycle.coroutineScope.launch {
-        navigator.collectAndHandleNavEvents(
-            lifecycle, executor, activityLaunchers, permissionLaunchers)
+        navigator.collectAndHandleNavEvents(lifecycle, executor, activityLaunchers)
     }
 }
 
-private fun <I, O> ActivityResultRequest<I, O>.registerIn(
-    caller: ActivityResultCaller
-): ActivityResultLauncher<*> {
-    return caller.registerForActivityResult(contract, ::handleResult)
-}
-
-private fun PermissionsResultRequest.registerIn(
+private fun <I, O, R> ContractResultOwner<I, O, R>.registerIn(
     caller: ActivityResultCaller,
-    context: Context
-): ActivityResultLauncher<List<String>> {
-    return caller.registerForActivityResult(RequestPermissionsContract()) { resultMap ->
-        handleResult(resultMap, context)
+    activity: Activity,
+): ActivityResultLauncher<*> {
+    return caller.registerForActivityResult(contract) {
+        deliverResult(activity, it)
     }
 }

@@ -76,18 +76,8 @@ public sealed interface NavEvent {
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
     @Poko
     public class ActivityResultEvent<I>(
-        internal val request: ActivityResultRequest<I, *>,
+        internal val request: ContractResultOwner<I, *, *>,
         internal val input: I,
-    ) : NavEvent
-
-    /**
-     * Launches the [request] to retrieve an event.
-     */
-    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    @Poko
-    public class PermissionsResultEvent(
-        internal val request: PermissionsResultRequest,
-        internal val permissions: List<String>,
     ) : NavEvent
 
     /**

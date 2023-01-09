@@ -1,6 +1,5 @@
 package com.freeletics.mad.navigator
 
-import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
@@ -9,7 +8,7 @@ import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult
 import com.freeletics.mad.navigator.internal.DestinationId
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
-import com.freeletics.mad.navigator.internal.RequestPermissionsContract.Companion.enrichResult
+import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
@@ -46,6 +45,11 @@ public sealed class ResultOwner<R> {
     }
 }
 
+public sealed class ContractResultOwner<I, O, R> : ResultOwner<R>() {
+    @InternalNavigatorApi
+    public abstract val contract: ActivityResultContract<I, O>
+}
+
 /**
  * Class returned from [NavEventNavigator.registerForActivityResult].
  *
@@ -55,20 +59,14 @@ public sealed class ResultOwner<R> {
  *    request
  */
 public class ActivityResultRequest<I, O> internal constructor(
-    @property:InternalNavigatorApi public val contract: ActivityResultContract<I, O>,
-) : ResultOwner<O>() {
-
-    @InternalNavigatorApi
-    public fun handleResult(result: O) {
-        onResult(result)
-    }
-}
+    @property:InternalNavigatorApi override val contract: ActivityResultContract<I, O>,
+) : ContractResultOwner<I, O, O>()
 
 /**
  * Class returned from [NavEventNavigator.registerForPermissionsResult].
  *
  * This class has two purposes:
- *  - It exposes a [results] `Flow` that can be used to observe incoming permission results
+ *  - It exposes a `results` `Flow` that can be used to observe incoming permission results
  *  - It can be passed to [NavEventNavigator.requestPermissions] to trigger the execution of a
  *    permissions request
  *
@@ -78,13 +76,10 @@ public class ActivityResultRequest<I, O> internal constructor(
  *  about the whether a permission rationale should be shown.
  */
 public class PermissionsResultRequest internal constructor() :
-    ResultOwner<Map<String, PermissionResult>>() {
+    ContractResultOwner<List<String>, Map<String, Boolean>, Map<String, PermissionResult>>() {
 
-    @InternalNavigatorApi
-    public fun handleResult(resultMap: Map<String, Boolean>, context: Context) {
-        val result = enrichResult(context, resultMap)
-        onResult(result)
-    }
+    @property:InternalNavigatorApi
+    override val contract: RequestPermissionsContract = RequestPermissionsContract()
 
     /**
      * The status of the requested permission.
@@ -145,6 +140,7 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
         private companion object : Parceler<Key<*>> {
             override fun Key<*>.write(parcel: Parcel, flags: Int) {
                 parcel.writeSerializable(destinationId.route.java)
+                parcel.writeString(requestKey)
             }
 
             override fun create(parcel: Parcel): Key<*> {
