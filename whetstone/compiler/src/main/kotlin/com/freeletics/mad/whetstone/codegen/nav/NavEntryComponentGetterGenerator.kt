@@ -2,17 +2,19 @@ package com.freeletics.mad.whetstone.codegen.nav
 
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.codegen.Generator
-import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
-import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
+import com.freeletics.mad.whetstone.codegen.common.retainedComponentFactoryCreateName
+import com.freeletics.mad.whetstone.codegen.common.retainedParentComponentClassName
+import com.freeletics.mad.whetstone.codegen.common.retainedParentComponentGetterName
 import com.freeletics.mad.whetstone.codegen.util.context
 import com.freeletics.mad.whetstone.codegen.util.inject
 import com.freeletics.mad.whetstone.codegen.util.internalNavigatorApi
 import com.freeletics.mad.whetstone.codegen.util.internalWhetstoneApi
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetter
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentGetterKey
-import com.freeletics.mad.whetstone.codegen.util.navEntryViewModel
+import com.freeletics.mad.whetstone.codegen.util.getNavEntryComponent
 import com.freeletics.mad.whetstone.codegen.util.navigationExecutor
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
+import com.freeletics.mad.whetstone.codegen.util.propertyName
 import com.squareup.anvil.annotations.ContributesMultibinding
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.AnnotationSpec
@@ -65,9 +67,14 @@ internal class NavEntryComponentGetterGenerator(
             .addParameter("executor", navigationExecutor)
             .addParameter("context", context)
             .returns(ANY)
-            .addStatement("val viewModel = %M(%T::class, executor, context, %T::class, %T::class, ::%T)",
-                navEntryViewModel, data.navigation.route, data.parentScope, data.navigation.destinationScope, viewModelClassName)
-            .addStatement("return viewModel.%L", viewModelComponentName)
+            .beginControlFlow("return %M(%T::class, executor, context, %T::class, %T::class) { parentComponent: %T, savedStateHandle, %L ->",
+                getNavEntryComponent, data.navigation.route, data.parentScope,
+                data.navigation.destinationScope, retainedParentComponentClassName,
+                data.navigation.route.propertyName)
+            .addStatement("parentComponent.%L().%L(savedStateHandle, %L)",
+                retainedParentComponentGetterName, retainedComponentFactoryCreateName,
+                data.navigation.route.propertyName)
+            .endControlFlow()
             .build()
     }
 }
