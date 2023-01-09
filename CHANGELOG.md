@@ -87,7 +87,7 @@ to the annotation.
 
 ### Other
 
-- Migrate to Gradle ## catalog
+- Migrate to Gradle version catalog
 
 
 ## 0.7.2 *(2022-08-12)*
