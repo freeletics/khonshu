@@ -48,7 +48,7 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
  *
  * To support deep links a set of [DeepLinkHandlers][DeepLinkHandler] can be passed in optionally.
  * These will be used to build the correct back stack when the current `Activity` was launched with
- * an `ACTION_VIEW` `Intent` that contains an url in it's `data. [deepLinkPrefixes] can be used to
+ * an `ACTION_VIEW` `Intent` that contains an url in it's data. [deepLinkPrefixes] can be used to
  * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
  * doesn't provide its own [DeepLinkHandler.prefixes].
  *

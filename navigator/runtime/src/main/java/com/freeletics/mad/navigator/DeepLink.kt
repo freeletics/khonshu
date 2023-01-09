@@ -25,7 +25,7 @@ public class DeepLink internal constructor(
      * screen.
      *
      * If an [action] is provided the [Intent] returned by [buildIntent] and the other builders
-     * will use it as it's [Intent.getAction]. If not `action` is provided the app's
+     * will use it as it's [Intent.getAction]. If no `action` is provided the app's
      * [android.content.pm.PackageManager.getLaunchIntentForPackage] will be used.
      */
     public constructor(
@@ -39,7 +39,7 @@ public class DeepLink internal constructor(
      * the given routes will be the visible screen, if none is provided `root` will be visible.
      *
      * If an [action] is provided the [Intent] returned by [buildIntent] and the other builders
-     * will use it as it's [Intent.getAction]. If not `action` is provided the app's
+     * will use it as it's [Intent.getAction]. If no `action` is provided the app's
      * [android.content.pm.PackageManager.getLaunchIntentForPackage] will be used.
      */
     public constructor(
@@ -53,7 +53,7 @@ public class DeepLink internal constructor(
      * [ActivityRoute] on top of it.
      *
      * If an [action] is provided the [Intent] returned by [buildIntent] and the other builders
-     * will use it as it's [Intent.getAction]. If not `action` is provided the app's
+     * will use it as it's [Intent.getAction]. If no `action` is provided the app's
      * [android.content.pm.PackageManager.getLaunchIntentForPackage] will be used.
      */
     public constructor(
@@ -66,7 +66,7 @@ public class DeepLink internal constructor(
      * stack on top of the start destination, [activityRoute] will then be launched on top of this.
      *
      * If an [action] is provided the [Intent] returned by [buildIntent] and the other builders
-     * will use it as it's [Intent.getAction]. If not `action` is provided the app's
+     * will use it as it's [Intent.getAction]. If no `action` is provided the app's
      * [android.content.pm.PackageManager.getLaunchIntentForPackage] will be used.
      */
     public constructor(
@@ -81,7 +81,7 @@ public class DeepLink internal constructor(
      * [activityRoute] will then be launched on top of this.
      *
      * If an [action] is provided the [Intent] returned by [buildIntent] and the other builders
-     * will use it as it's [Intent.getAction]. If not `action` is provided the app's
+     * will use it as it's [Intent.getAction]. If no `action` is provided the app's
      * [android.content.pm.PackageManager.getLaunchIntentForPackage] will be used.
      */
     public constructor(
@@ -92,7 +92,7 @@ public class DeepLink internal constructor(
     ) : this(action, listOf<BaseRoute>(root) + routes + activityRoute)
 
     /**
-     * Creates an [Intent] that that can be used to launch this deep link.
+     * Creates an [Intent] that can be used to launch this deep link.
      */
     public fun buildIntent(context: Context): Intent {
         val intent = if (action != null) {
@@ -108,14 +108,14 @@ public class DeepLink internal constructor(
     }
 
     /**
-     * Creates a [TaskStackBuilder] that that can be used to launch this deep link.
+     * Creates a [TaskStackBuilder] that can be used to launch this deep link.
      */
     public fun buildTaskStack(context: Context): TaskStackBuilder {
         return TaskStackBuilder.create(context).addNextIntent(buildIntent(context))
     }
 
     /**
-     * Creates a [PendingIntent] that that can be used to launch this deep link.
+     * Creates a [PendingIntent] that can be used to launch this deep link.
      */
     public fun buildPendingIntent(
         context: Context,

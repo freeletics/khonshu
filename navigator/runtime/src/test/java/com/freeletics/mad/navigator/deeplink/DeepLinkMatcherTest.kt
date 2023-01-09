@@ -17,6 +17,7 @@ public class DeepLinkMatcherTest {
         Prefix("https://a.com"),
         Prefix("https://b.de"),
         Prefix("app://b.de"),
+        Prefix("app://a.b.de"),
     )
 
     private class TestDeepLinkHandler(

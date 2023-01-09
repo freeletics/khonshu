@@ -18,8 +18,8 @@ public interface DeepLinkHandler {
 
     /**
      * Url patterns handled by this deep link. The pattern is not allowed to start with a `/`. It
-     * also can not contain any query parameters which are ignored for the purposed of matching
-     * (any query parameter in the actual url will still be passed to [deepLink]. Placeholders
+     * also can not contain any query parameters which are ignored for the purpose of matching
+     * (any query parameter in the actual url will still be passed to [deepLink]). Placeholders
      * can be added to the pattern with curly braces.
      *
      * For example:
