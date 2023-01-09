@@ -4,12 +4,13 @@ import com.freeletics.mad.whetstone.BaseData
 import com.freeletics.mad.whetstone.FragmentData
 import com.freeletics.mad.whetstone.codegen.Generator
 import com.freeletics.mad.whetstone.codegen.common.retainedComponentClassName
-import com.freeletics.mad.whetstone.codegen.common.viewModelClassName
-import com.freeletics.mad.whetstone.codegen.common.viewModelComponentName
+import com.freeletics.mad.whetstone.codegen.common.retainedComponentFactoryCreateName
+import com.freeletics.mad.whetstone.codegen.common.retainedParentComponentClassName
+import com.freeletics.mad.whetstone.codegen.common.retainedParentComponentGetterName
 import com.freeletics.mad.whetstone.codegen.util.asParameter
 import com.freeletics.mad.whetstone.codegen.util.bundle
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavigationHandler
-import com.freeletics.mad.whetstone.codegen.util.fragmentViewModel
+import com.freeletics.mad.whetstone.codegen.util.fragmentComponent
 import com.freeletics.mad.whetstone.codegen.util.lateinitPropertySpec
 import com.freeletics.mad.whetstone.codegen.util.layoutInflater
 import com.freeletics.mad.whetstone.codegen.util.navEventNavigator
@@ -51,14 +52,20 @@ internal abstract class BaseFragmentGenerator<T : FragmentData> : Generator<T>()
             .addCode("\n")
             .also {
                 if (data.navigation != null) {
-                    it.addStatement("val viewModel = %M(%T::class, %T::class, %N, ::%T)",
-                        fragmentViewModel, data.parentScope, data.navigation!!.destinationScope, argumentsParameter, viewModelClassName)
+                    it.beginControlFlow("%L = %M(%T::class, %T::class, %N) { parentComponent: %T, savedStateHandle, %N ->",
+                        retainedComponentClassName.propertyName, fragmentComponent, data.parentScope,
+                        data.navigation!!.destinationScope, argumentsParameter,
+                        retainedParentComponentClassName, argumentsParameter)
                 } else {
-                    it.addStatement("val viewModel = %M(%T::class, %N, ::%T)",
-                        fragmentViewModel, data.parentScope, argumentsParameter, viewModelClassName)
+                    it.beginControlFlow("%L = %M(%T::class, %N) { parentComponent: %T, savedStateHandle, %N ->",
+                        retainedComponentClassName.propertyName, fragmentComponent, data.parentScope,
+                        argumentsParameter, retainedParentComponentClassName, argumentsParameter)
                 }
             }
-            .addStatement("%L = viewModel.%L", retainedComponentClassName.propertyName, viewModelComponentName)
+            .addStatement("parentComponent.%L().%L(savedStateHandle, %N)",
+                retainedParentComponentGetterName, retainedComponentFactoryCreateName,
+                argumentsParameter)
+            .endControlFlow()
             .addCode(navigationCode())
             .endControlFlow()
             .addCode("\n")

@@ -1,6 +1,7 @@
 package com.freeletics.mad.navigator.internal
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -9,6 +10,7 @@ import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
+import kotlin.reflect.KClass
 
 @InternalNavigatorApi
 public class AndroidXNavigationExecutor(
@@ -60,8 +62,10 @@ public class AndroidXNavigationExecutor(
         return entryFor(destinationId).arguments.requireRoute()
     }
 
-    override fun <T : BaseRoute> viewModelStoreFor(destinationId: DestinationId<T>): ViewModelStore {
-        return entryFor(destinationId).viewModelStore
+    override fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): NavigationExecutor.Store {
+        val viewModelStore = entryFor(destinationId).viewModelStore
+        val factory = ViewModelProvider.NewInstanceFactory()
+        return ViewModelProvider(viewModelStore, factory)[StoreViewModel::class.java]
     }
 
     private fun entryFor(destinationId: DestinationId<*>): NavBackStackEntry {

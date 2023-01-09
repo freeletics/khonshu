@@ -20,9 +20,9 @@ import com.freeletics.mad.whetstone.codegen.util.subcomponentFactoryAnnotation
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.decapitalize
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget.GET
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
+import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.SET
@@ -56,7 +56,9 @@ internal class ComponentGenerator(
             .addAnnotation(optInAnnotation())
             .addAnnotation(scopeToAnnotation(data.scope))
             .addAnnotation(subcomponentAnnotation(data.scope, data.parentScope))
+            .addSuperinterface(Closeable::class)
             .addProperties(componentProperties())
+            .addFunction(closeFunction())
             .addType(retainedComponentFactory())
             .addType(retainedComponentFactoryParentComponent())
             .build()
@@ -70,13 +72,6 @@ internal class ComponentGenerator(
         if (data.navigation != null && data !is NavEntryData) {
             properties += simplePropertySpec(navEventNavigator)
         }
-        properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName()))
-            .apply {
-                if (data is NavEntryData) {
-                    addAnnotation(navEntryAnnotation(data.scope, GET))
-                }
-            }
-            .build()
         when (data) {
             is ComposeFragmentData -> {
                 properties += data.composableParameter.map { simplePropertySpec(it.className) }
@@ -87,7 +82,23 @@ internal class ComponentGenerator(
             is RendererFragmentData -> properties += simplePropertySpec(data.factory)
             is NavEntryData -> {}
         }
+        properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName()))
+            .apply {
+                if (data is NavEntryData) {
+                    addAnnotation(navEntryAnnotation(data.scope, GET))
+                }
+            }
+            .build()
         return properties
+    }
+
+    private fun closeFunction(): FunSpec {
+        return FunSpec.builder("close")
+            .addModifiers(OVERRIDE)
+            .beginControlFlow("%L.forEach {", closeableSetPropertyName)
+            .addStatement("it.close()")
+            .endControlFlow()
+            .build()
     }
 
     private fun retainedComponentFactory(): TypeSpec {
