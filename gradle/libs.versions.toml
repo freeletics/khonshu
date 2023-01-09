@@ -21,10 +21,11 @@ androidx-navigation = "2.5.3"
 androidx-savedstate = "1.2.0"
 
 accompanist = "0.28.0"
+uri = "0.0.9"
 
 inject = "1"
 dagger = "2.44.2"
-anvil = "2.4.2"
+anvil = "2.4.3"
 renderer = "0.12.0"
 kotlinpoet = "1.12.0"
 auto-service = "1.0.1"
@@ -34,10 +35,10 @@ truth = "1.1.3"
 turbine = "0.12.1"
 kotlin-compile-testing = "0.1.0"
 
-publish = "0.22.0"
+publish = "0.23.1"
 dokka = "1.7.20"
 binarycompatibility = "0.12.1"
-dependency-analysis = "1.17.0"
+dependency-analysis = "1.18.0"
 
 [libraries]
 kotlin-parcelize = { module = "org.jetbrains.kotlin:kotlin-parcelize-runtime", version.ref = "kotlin" }
@@ -72,6 +73,7 @@ androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.re
 
 
 accompanist-navigation = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
+uri = { module = "com.eygraber:uri-kmp-android", version.ref = "uri" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }

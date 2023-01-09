@@ -3,8 +3,10 @@ package com.freeletics.mad.navigator
 import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
+import androidx.annotation.VisibleForTesting.PRIVATE
 import com.freeletics.mad.navigator.internal.DestinationId
 import dev.drewhamilton.poko.Poko
+import kotlin.reflect.KClass
 
 /**
  * Represents a navigation event that is being sent by a [NavEventNavigator] and handled by
@@ -70,24 +72,23 @@ public sealed interface NavEvent {
         internal val inclusive: Boolean,
     ) : NavEvent
 
-    /**
-     * Launches the [request] to retrieve an event.
-     */
-    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
-    @Poko
-    public class ActivityResultEvent<I>(
-        internal val request: ActivityResultRequest<I, *>,
-        internal val input: I,
-    ) : NavEvent
+    // TODO: remove after introducing a testing artifact
+    @VisibleForTesting(otherwise = PRIVATE)
+    public companion object {
+        public fun BackToEvent(
+            popUpTo: KClass<out NavRoute>,
+            inclusive: Boolean,
+        ): BackToEvent = BackToEvent(DestinationId(popUpTo), inclusive)
+    }
 
     /**
      * Launches the [request] to retrieve an event.
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
     @Poko
-    public class PermissionsResultEvent(
-        internal val request: PermissionsResultRequest,
-        internal val permissions: List<String>,
+    public class ActivityResultEvent<I>(
+        internal val request: ContractResultOwner<I, *, *>,
+        internal val input: I,
     ) : NavEvent
 
     /**

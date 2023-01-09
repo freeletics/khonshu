@@ -54,4 +54,5 @@ dependencies {
     implementation libs.androidx.navigation.runtime
     implementation libs.androidx.viewmodel
     implementation libs.androidx.viewmodel.savedstate
+    implementation libs.uri
 }

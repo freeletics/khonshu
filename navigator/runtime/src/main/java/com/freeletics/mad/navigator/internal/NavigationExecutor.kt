@@ -1,11 +1,13 @@
 package com.freeletics.mad.navigator.internal
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
+import kotlin.reflect.KClass
 
 @InternalNavigatorApi
 public interface NavigationExecutor {
@@ -17,5 +19,10 @@ public interface NavigationExecutor {
     public fun <T : BaseRoute> navigateBackTo(destinationId: DestinationId<T>, isInclusive: Boolean)
     public fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T
     public fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle
-    public fun <T : BaseRoute> viewModelStoreFor(destinationId: DestinationId<T>): ViewModelStore
+    public fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): Store
+
+    @InternalNavigatorApi
+    public interface Store {
+        public fun <T : Any> getOrCreate(key: KClass<T>, factory: () -> T): T
+    }
 }

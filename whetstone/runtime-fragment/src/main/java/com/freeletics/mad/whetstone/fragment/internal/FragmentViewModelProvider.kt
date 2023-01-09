@@ -4,34 +4,32 @@ import android.os.Bundle
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.createSavedStateHandle
-import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.ViewModelProvider.NewInstanceFactory
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
+import com.freeletics.mad.whetstone.internal.StoreViewModel
 import com.freeletics.mad.whetstone.internal.findComponentByScope
 import kotlin.reflect.KClass
 
 /**
- * Creates a [ViewModel]. The `ViewModel.Factory` will use [scope] to lookup
+ * Creates a [ViewModel]. The `ViewModel.Factory` will use [parentScope] to lookup
  * a parent component instance. That component will then be passed to the given [factory] together
  * with a [SavedStateHandle] and the passed in [arguments].
  *
  * To be used in generated code.
  */
 @InternalWhetstoneApi
-public inline fun <reified T : ViewModel, D : Any> Fragment.viewModel(
-    scope: KClass<*>,
+public inline fun <reified C : Any, P : Any> Fragment.component(
+    parentScope: KClass<*>,
     arguments: Bundle,
-    crossinline factory: @DisallowComposableCalls (D, SavedStateHandle, Bundle) -> T
-): T {
-    val viewModelFactory = androidx.lifecycle.viewmodel.viewModelFactory {
-        initializer {
-            val dependencies = requireContext().findComponentByScope<D>(scope)
-            val savedStateHandle = createSavedStateHandle()
-            factory(dependencies, savedStateHandle, arguments)
-        }
+    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, Bundle) -> C
+): C {
+    val store = ViewModelProvider(this, SavedStateViewModelFactory())[StoreViewModel::class.java]
+    return store.getOrCreate(C::class) {
+        val parentComponent = requireContext().findComponentByScope<P>(parentScope)
+        val savedStateHandle = store.savedStateHandle
+        factory(parentComponent, savedStateHandle, arguments)
     }
-    val viewModelProvider = ViewModelProvider(this, viewModelFactory)
-    return viewModelProvider[T::class.java]
 }

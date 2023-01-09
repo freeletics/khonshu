@@ -10,7 +10,6 @@ import com.freeletics.mad.navigator.NavEvent.BackEvent
 import com.freeletics.mad.navigator.NavEvent.BackToEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToActivityEvent
 import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
-import com.freeletics.mad.navigator.NavEvent.PermissionsResultEvent
 import com.freeletics.mad.navigator.NavEvent.UpEvent
 import com.freeletics.mad.navigator.internal.DelegatingOnBackPressedCallback
 import com.freeletics.mad.navigator.internal.DestinationId
@@ -48,8 +47,7 @@ public open class NavEventNavigator {
         }
     }
 
-    private val _activityResultRequests = mutableListOf<ActivityResultRequest<*, *>>()
-    private val _permissionsResultRequests = mutableListOf<PermissionsResultRequest>()
+    private val _activityResultRequests = mutableListOf<ContractResultOwner<*, *, *>>()
     private val _navigationResultRequests = mutableListOf<NavigationResultRequest<*>>()
     private val _onBackPressedCallback = DelegatingOnBackPressedCallback()
 
@@ -92,7 +90,7 @@ public open class NavEventNavigator {
     protected fun registerForPermissionsResult(): PermissionsResultRequest {
         checkAllowedToAddRequests()
         val request = PermissionsResultRequest()
-        _permissionsResultRequests.add(request)
+        _activityResultRequests.add(request)
         return request
     }
 
@@ -228,7 +226,7 @@ public open class NavEventNavigator {
      * The [request] can be obtained by calling [registerForPermissionsResult].
      */
     public fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>) {
-        val event = PermissionsResultEvent(request, permissions)
+        val event = ActivityResultEvent(request, permissions)
         sendNavEvent(event)
     }
 
@@ -285,17 +283,10 @@ public open class NavEventNavigator {
     }
 
     @InternalNavigatorApi
-    public val activityResultRequests: List<ActivityResultRequest<*, *>>
+    public val activityResultRequests: List<ContractResultOwner<*, *, *>>
         get() {
             allowedToAddRequests = false
             return _activityResultRequests.toList()
-        }
-
-    @InternalNavigatorApi
-    public val permissionsResultRequests: List<PermissionsResultRequest>
-        get() {
-            allowedToAddRequests = false
-            return _permissionsResultRequests.toList()
         }
 
     @InternalNavigatorApi
