@@ -51,7 +51,6 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.CloseableComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.component
@@ -73,8 +72,16 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent : CloseableComponent {
+            public interface WhetstoneTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
+
+              public val closeables: Set<Closeable>
+    
+              public override fun close(): Unit {
+                closeables.forEach {
+                  it.close()
+                }
+              }
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -160,7 +167,6 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.navigator.NavEventNavigator
-            import com.freeletics.mad.navigator.`internal`.CloseableComponent
             import com.freeletics.mad.navigator.fragment.handleNavigation
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.ScopeTo
@@ -186,10 +192,18 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent : CloseableComponent {
+            public interface WhetstoneTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val navEventNavigator: NavEventNavigator
+
+              public val closeables: Set<Closeable>
+    
+              public override fun close(): Unit {
+                closeables.forEach {
+                  it.close()
+                }
+              }
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -278,7 +292,6 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.navigator.NavEventNavigator
-            import com.freeletics.mad.navigator.`internal`.CloseableComponent
             import com.freeletics.mad.navigator.fragment.NavDestination
             import com.freeletics.mad.navigator.fragment.ScreenDestination
             import com.freeletics.mad.navigator.fragment.handleNavigation
@@ -308,10 +321,18 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent : CloseableComponent {
+            public interface WhetstoneTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val navEventNavigator: NavEventNavigator
+
+              public val closeables: Set<Closeable>
+    
+              public override fun close(): Unit {
+                closeables.forEach {
+                  it.close()
+                }
+              }
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -413,7 +434,6 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.navigator.NavEventNavigator
-            import com.freeletics.mad.navigator.`internal`.CloseableComponent
             import com.freeletics.mad.navigator.`internal`.InternalNavigatorApi
             import com.freeletics.mad.navigator.`internal`.NavigationExecutor
             import com.freeletics.mad.navigator.fragment.NavDestination
@@ -453,10 +473,18 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent : CloseableComponent {
+            public interface WhetstoneTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val navEventNavigator: NavEventNavigator
+
+              public val closeables: Set<Closeable>
+    
+              public override fun close(): Unit {
+                closeables.forEach {
+                  it.close()
+                }
+              }
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -537,9 +565,15 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestScreenNavEntryComponent : CloseableComponent {
+            public interface WhetstoneTestScreenNavEntryComponent : Closeable {
               @get:NavEntry(TestScreen::class)
-              public override val closeables: Set<Closeable>
+              public val closeables: Set<Closeable>
+    
+              public override fun close(): Unit {
+                closeables.forEach {
+                  it.close()
+                }
+              }
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -608,7 +642,6 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.DialogFragment
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.CloseableComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.component
@@ -630,8 +663,16 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent : CloseableComponent {
+            public interface WhetstoneTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
+
+              public val closeables: Set<Closeable>
+    
+              public override fun close(): Unit {
+                closeables.forEach {
+                  it.close()
+                }
+              }
 
               @ContributesSubcomponent.Factory
               public interface Factory {
@@ -729,7 +770,6 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.CloseableComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
             import com.freeletics.mad.whetstone.`internal`.asComposeState
             import com.freeletics.mad.whetstone.fragment.`internal`.component
@@ -752,12 +792,20 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTest2Component : CloseableComponent {
+            public interface WhetstoneTest2Component : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val testClass: TestClass
 
               public val testClass2: TestClass2
+
+              public val closeables: Set<Closeable>
+    
+              public override fun close(): Unit {
+                closeables.forEach {
+                  it.close()
+                }
+              }
 
               @ContributesSubcomponent.Factory
               public interface Factory {
