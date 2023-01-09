@@ -24,6 +24,9 @@ public abstract class com/freeletics/mad/navigator/InternalActivityRoute : com/f
 	public final fun fillInIntent ()Landroid/content/Intent;
 }
 
+public final class com/freeletics/mad/navigator/NavEvent$Companion {
+}
+
 public class com/freeletics/mad/navigator/NavEventNavigator {
 	public fun <init> ()V
 	public final fun backPresses ()Lkotlinx/coroutines/flow/Flow;

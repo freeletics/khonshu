@@ -3,8 +3,10 @@ package com.freeletics.mad.navigator
 import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
+import androidx.annotation.VisibleForTesting.PRIVATE
 import com.freeletics.mad.navigator.internal.DestinationId
 import dev.drewhamilton.poko.Poko
+import kotlin.reflect.KClass
 
 /**
  * Represents a navigation event that is being sent by a [NavEventNavigator] and handled by
@@ -69,6 +71,15 @@ public sealed interface NavEvent {
         internal val popUpTo: DestinationId<*>,
         internal val inclusive: Boolean,
     ) : NavEvent
+
+    // TODO: remove after introducing a testing artifact
+    public companion object {
+        @VisibleForTesting(otherwise = PRIVATE)
+        public fun BackToEvent(
+            popUpTo: KClass<out NavRoute>,
+            inclusive: Boolean,
+        ): BackToEvent = BackToEvent(DestinationId(popUpTo), inclusive)
+    }
 
     /**
      * Launches the [request] to retrieve an event.
