@@ -1,5 +1,6 @@
 package com.freeletics.mad.navigator.fragment
 
+import android.content.Intent
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -9,18 +10,30 @@ import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.get
 import com.freeletics.mad.navigator.BaseRoute
+import com.freeletics.mad.navigator.DeepLinkHandler
 import com.freeletics.mad.navigator.internal.CustomActivityNavigator
 import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.navigator.internal.getArguments
+import com.freeletics.mad.navigator.internal.handleDeepLink
 
 /**
  * Creates and sets a [androidx.navigation.NavGraph] containing all given [destinations].
  * [startRoute] will be used as the start destination of the graph.
+ *
+ * To support deep links a set of [DeepLinkHandlers][DeepLinkHandler] can be passed in optionally.
+ * These will be used to build the correct back stack when the current `Activity` was launched with
+ * an `ACTION_VIEW` `Intent` that contains an url in it's `data. [deepLinkPrefixes] can be used to
+ * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
+ * doesn't provide its own [DeepLinkHandler.prefixes].
  */
 public fun NavHostFragment.setGraph(
     startRoute: BaseRoute,
     destinations: Set<NavDestination>,
+    deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
+    deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
 ) {
+    requireActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
+
     navController.navigatorProvider.addNavigator(CustomActivityNavigator(requireContext()))
     @Suppress("deprecation")
     val graph = navController.createGraph(startDestination = startRoute.destinationId()) {
