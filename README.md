@@ -16,12 +16,14 @@ modularized code base.
 
 For more information check out its [README][4].
 
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/freeletics/mad?logo=github&sort=semver)](https://github.com/freeletics/mad/releases)
+
 ```groovy
-implementation 'com.freeletics.mad:navigator:0.9.1'
+implementation 'com.freeletics.mad:navigator:<latest-version>'
 // when using composables for navigation
-implementation 'com.freeletics.mad:navigator-compose:0.9.1'
+implementation 'com.freeletics.mad:navigator-compose:<latest-version>'
 // when using fragments for navigation (even if these contain composables)
-implementation 'com.freeletics.mad:navigator-fragment:0.9.1'
+implementation 'com.freeletics.mad:navigator-fragment:<latest-version>'
 ```
 
 
@@ -32,21 +34,23 @@ generating dependency injection related code and common boilerplate for feature 
 
 For more information check out its [README][6].
 
-```groovy
-anvil  'com.freeletics.mad:whetstone-compiler:0.9.1'
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/freeletics/mad?logo=github&sort=semver)](https://github.com/freeletics/mad/releases)
 
-implementation 'com.freeletics.mad:whetstone-runtime:0.9.1'
+```groovy
+anvil  'com.freeletics.mad:whetstone-compiler:<latest-version>'
+
+implementation 'com.freeletics.mad:whetstone-runtime:<latest-version>'
 // when using Compose UI
-implementation 'com.freeletics.mad:whetstone-runtime-compose:0.9.1'
+implementation 'com.freeletics.mad:whetstone-runtime-compose:<latest-version>'
 // when using fragments (even if these contain Compose UI)
-implementation 'com.freeletics.mad:whetstone-runtime-fragment:0.9.1'
+implementation 'com.freeletics.mad:whetstone-runtime-fragment:<latest-version>'
 
 // for the integration with Navigator
-implementation 'com.freeletics.mad:whetstone-navigation:0.9.1'
+implementation 'com.freeletics.mad:whetstone-navigation:<latest-version>'
 // for the integration with Navigator - when using Compose UI
-implementation 'com.freeletics.mad:whetstone-navigation-compose:0.9.1'
+implementation 'com.freeletics.mad:whetstone-navigation-compose:<latest-version>'
 // for the integration with Navigator - when using fragments (even if these contain Compose UI)
-implementation 'com.freeletics.mad:whetstone-navigation-fragment:0.9.1'
+implementation 'com.freeletics.mad:whetstone-navigation-fragment:<latest-version>'
 ```
 
 
@@ -60,8 +64,10 @@ For an example on how to build such a state machine check out [FlowRedux][2]. To
 When using Compose UI the `StateMachine` can be observed with `produceState()` and actions can be dispatched
 to it by simply launching them from a `CoroutineScope` created with `rememberCoroutineScope()`.
 
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/freeletics/mad?logo=github&sort=semver)](https://github.com/freeletics/mad/releases)
+
 ```groovy
-implementation 'com.freeletics.mad:state-machine:0.9.1'
+implementation 'com.freeletics.mad:state-machine:<latest-version>'
 ```
 
 
@@ -76,8 +82,10 @@ This way business logic with text can be easily tested without requiring
 For more information about the motivation for this abstraction check out this
 [blog post][1].
 
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/freeletics/mad?logo=github&sort=semver)](https://github.com/freeletics/mad/releases)
+
 ```groovy
-implementation 'com.freeletics.mad:text-resource:0.9.1'
+implementation 'com.freeletics.mad:text-resource:<latest-version>'
 ```
 
 
