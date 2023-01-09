@@ -73,8 +73,8 @@ public sealed interface NavEvent {
     ) : NavEvent
 
     // TODO: remove after introducing a testing artifact
+    @VisibleForTesting(otherwise = PRIVATE)
     public companion object {
-        @VisibleForTesting(otherwise = PRIVATE)
         public fun BackToEvent(
             popUpTo: KClass<out NavRoute>,
             inclusive: Boolean,

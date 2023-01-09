@@ -24,9 +24,6 @@ public abstract class com/freeletics/mad/navigator/InternalActivityRoute : com/f
 	public final fun fillInIntent ()Landroid/content/Intent;
 }
 
-public final class com/freeletics/mad/navigator/NavEvent$Companion {
-}
-
 public class com/freeletics/mad/navigator/NavEventNavigator {
 	public fun <init> ()V
 	public final fun backPresses ()Lkotlinx/coroutines/flow/Flow;
@@ -61,6 +58,7 @@ public final class com/freeletics/mad/navigator/NavRouteKt {
 }
 
 public final class com/freeletics/mad/navigator/NavigationResultRequest : com/freeletics/mad/navigator/ResultOwner {
+	public static final field Companion Lcom/freeletics/mad/navigator/NavigationResultRequest$Companion;
 	public final fun getKey ()Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;
 }
 
