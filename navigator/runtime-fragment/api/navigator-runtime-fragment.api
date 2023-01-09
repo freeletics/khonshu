@@ -18,7 +18,8 @@ public abstract interface class com/freeletics/mad/navigator/fragment/NavDestina
 }
 
 public final class com/freeletics/mad/navigator/fragment/NavHostFragmentKt {
-	public static final fun setGraph (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;)V
+	public static final fun setGraph (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;)V
+	public static synthetic fun setGraph$default (Landroidx/navigation/fragment/NavHostFragment;Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;ILjava/lang/Object;)V
 }
 
 public final class com/freeletics/mad/navigator/fragment/ScreenDestination : com/freeletics/mad/navigator/fragment/NavDestination {
