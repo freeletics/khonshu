@@ -116,6 +116,7 @@ public final class com/freeletics/mad/navigator/NavRouteKt {
 }
 
 public final class com/freeletics/mad/navigator/NavigationResultRequest : com/freeletics/mad/navigator/ResultOwner {
+	public static final field Companion Lcom/freeletics/mad/navigator/NavigationResultRequest$Companion;
 	public final fun getKey ()Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;
 }
 
