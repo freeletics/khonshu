@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-## 0.10.0 **UNRELEASED**
+## 0.10.0 *(2022-01-10)*
 
 ### Navigator
 - `navigateToRoot` now has a `saveCurrentRootState` parameter which defaults to true (matches the previous implicit behavior). Can be set to false to clear the current back stack.
