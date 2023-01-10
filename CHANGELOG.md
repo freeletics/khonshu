@@ -4,6 +4,7 @@ Change Log
 ## 0.10.0 *(2022-01-10)*
 
 ### Navigator
+- added support for handling deep links, see `DeepLink` and `DeepLinkHandler` (more docs coming soon)
 - `navigateToRoot` now has a `saveCurrentRootState` parameter which defaults to true (matches the previous implicit behavior). Can be set to false to clear the current back stack.
 - `navigateBackTo` now does not allow passing a `NavRoot` as target anymore. Use `navigateToRoot<...>(false, false)` instead
 - `ActivityRoute` is now  always `Parcelable` and has been split into 2 sub-classes/interfaces `InternalActivityRoute` for `Activity` classes inside the app and `ExternalActivityRoute` for Intents that leave the app
