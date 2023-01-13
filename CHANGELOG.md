@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## 0.10.1 *(2022-01-13)*
+
+### Navigator
+
+- fix crash when `DeepLink` contains an `ActivityRoute`
+
+
 ## 0.10.0 *(2022-01-10)*
 
 ### Navigator
