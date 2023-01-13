@@ -14,10 +14,10 @@ kotlin {
 
 dependencies {
     api libs.kotlin.compiler
-    api libs.anvil.compiler
+    api libs.anvil.compiler.api
     api libs.kotlinpoet
     implementation libs.anvil.annotations
-    implementation libs.anvil.utils
+    implementation libs.anvil.compiler.utils
 
     compileOnly libs.auto.service.annotations
     kapt libs.auto.service.compiler
