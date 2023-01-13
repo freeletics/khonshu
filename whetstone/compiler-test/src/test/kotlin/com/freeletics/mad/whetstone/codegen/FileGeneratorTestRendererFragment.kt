@@ -10,7 +10,7 @@ internal class FileGeneratorTestRendererFragment {
 
     private val navigation = Navigation.Fragment(
         route = ClassName("com.test", "TestRoute"),
-        destinationType = "NONE",
+        destinationType = "SCREEN",
         destinationScope = ClassName("com.test.destination", "TestDestinationScope"),
     )
 
@@ -139,109 +139,6 @@ internal class FileGeneratorTestRendererFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.navigator.NavEventNavigator
-            import com.freeletics.mad.navigator.fragment.handleNavigation
-            import com.freeletics.mad.navigator.fragment.requireRoute
-            import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.fragment.`internal`.component
-            import com.gabrielittner.renderer.connect.connect
-            import com.squareup.anvil.annotations.ContributesSubcomponent
-            import com.squareup.anvil.annotations.ContributesTo
-            import com.test.destination.TestDestinationScope
-            import com.test.parent.TestParentScope
-            import dagger.BindsInstance
-            import dagger.Module
-            import dagger.multibindings.Multibinds
-            import java.io.Closeable
-            import kotlin.OptIn
-            import kotlin.Unit
-            import kotlin.collections.Set
-
-            @OptIn(InternalWhetstoneApi::class)
-            @ScopeTo(TestScreen::class)
-            @ContributesSubcomponent(
-              scope = TestScreen::class,
-              parentScope = TestParentScope::class,
-            )
-            public interface WhetstoneTestComponent : Closeable {
-              public val testStateMachine: TestStateMachine
-
-              public val navEventNavigator: NavEventNavigator
-
-              public val testRendererFactory: TestRenderer.Factory
-
-              public val closeables: Set<Closeable>
-    
-              public override fun close(): Unit {
-                closeables.forEach {
-                  it.close()
-                }
-              }
-
-              @ContributesSubcomponent.Factory
-              public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
-                    testRoute: TestRoute): WhetstoneTestComponent
-              }
-
-              @ContributesTo(TestParentScope::class)
-              public interface ParentComponent {
-                public fun whetstoneTestComponentFactory(): Factory
-              }
-            }
-
-            @Module
-            @ContributesTo(TestScreen::class)
-            public interface WhetstoneTestModule {
-              @Multibinds
-              public fun bindCloseables(): Set<Closeable>
-            }
-            
-            @OptIn(InternalWhetstoneApi::class)
-            public class WhetstoneTestFragment : Fragment() {
-              private lateinit var whetstoneTestComponent: WhetstoneTestComponent
-
-              public override fun onCreateView(
-                inflater: LayoutInflater,
-                container: ViewGroup?,
-                savedInstanceState: Bundle?,
-              ): View {
-                if (!::whetstoneTestComponent.isInitialized) {
-                  val testRoute = requireRoute<TestRoute>()
-                  whetstoneTestComponent = component(TestParentScope::class, TestDestinationScope::class,
-                      testRoute) { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle,
-                      testRoute ->
-                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
-                  }
-            
-                  handleNavigation(this, whetstoneTestComponent.navEventNavigator)
-                }
-            
-                val renderer = whetstoneTestComponent.testRendererFactory.inflate(inflater, container)
-                connect(renderer, whetstoneTestComponent.testStateMachine)
-                return renderer.rootView
-              }
-            }
-            
-        """.trimIndent()
-
-        test(withNavigation, expected)
-    }
-
-    @Test
-    fun `generates code for RendererFragmentData with navigation and destination`() {
-        val withDestination = data.copy(navigation = navigation.copy(destinationType = "SCREEN"))
-
-        val expected = """
-            package com.test
-
-            import android.os.Bundle
-            import android.view.LayoutInflater
-            import android.view.View
-            import android.view.ViewGroup
-            import androidx.fragment.app.Fragment
-            import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.mad.navigator.NavEventNavigator
             import com.freeletics.mad.navigator.fragment.NavDestination
             import com.freeletics.mad.navigator.fragment.ScreenDestination
             import com.freeletics.mad.navigator.fragment.handleNavigation
@@ -341,13 +238,13 @@ internal class FileGeneratorTestRendererFragment {
             
         """.trimIndent()
 
-        test(withDestination, expected)
+        test(withNavigation, expected)
     }
 
     @Test
-    fun `generates code for RendererFragmentData with navigation, destination and navEntry`() {
+    fun `generates code for RendererFragmentData with navigation and navEntry`() {
         val withDestination = data.copy(
-            navigation = navigation.copy(destinationType = "SCREEN"),
+            navigation = navigation,
             navEntryData = navEntryData
         )
 
