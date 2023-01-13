@@ -7,7 +7,6 @@ import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.internal.ActivityDestinationId
 import com.freeletics.mad.navigator.internal.DestinationId
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 
 /**
  * A destination that can be navigated to. See [NavHost] for how to configure a `NavGraph` with it.
@@ -52,13 +51,11 @@ internal class DialogDestination<T : NavRoute>(
  * when navigating to it by using an instance of [T].
  */
 @Suppress("FunctionName")
-@ExperimentalMaterialNavigationApi
 public inline fun <reified T : NavRoute> BottomSheetDestination(
     noinline bottomSheetContent: @Composable (T) -> Unit,
 ): NavDestination = BottomSheetDestination(DestinationId(T::class), bottomSheetContent)
 
 @PublishedApi
-@ExperimentalMaterialNavigationApi
 internal class BottomSheetDestination<T : NavRoute>(
     internal val id: DestinationId<T>,
     internal val bottomSheetContent: @Composable (T) -> Unit,
