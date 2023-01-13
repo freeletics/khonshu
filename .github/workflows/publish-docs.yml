@@ -53,33 +53,39 @@ jobs:
 
       - name: Copy docs
         run: |
+          # copy shared filed
           cp README.md docs/index.md
-          sed -i '/^\[\!\[GitHub release/d' docs/index.md
-          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/index.md
-          cp navigator/README.md docs/navigator.md
-          mkdir -p docs/API/navigator
-          cp -R navigator/runtime/build/dokka/html/. docs/API/navigator/
-          mkdir -p docs/API/navigator-compose
-          cp -R navigator/runtime-compose/build/dokka/html/. docs/API/navigator-compose/
-          mkdir -p docs/API/navigator-fragment
-          cp -R navigator/runtime-fragment/build/dokka/html/. docs/API/navigator-fragment/
-          mkdir -p docs/API/state-machine
-          cp -R state-machine/build/dokka/html/. docs/API/state-machine/
-          mkdir -p docs/API/text-resource
-          cp -R text-resource/build/dokka/html/. docs/API/text-resource/
-          cp whetstone/README.md docs/whetstone.md
-          mkdir -p docs/API/whetstone
-          cp -R whetstone/runtime/build/dokka/html/. docs/API/whetstone/
-          mkdir -p docs/API/whetstone-compose
-          cp -R whetstone/runtime-compose/build/dokka/html/. docs/API/whetstone-compose/
-          mkdir -p docs/API/whetstone-fragment
-          cp -R whetstone/runtime-fragment/build/dokka/html/. docs/API/whetstone-fragment/
-          mkdir -p docs/API/whetstone-navigation
-          cp -R whetstone/navigation/build/dokka/html/. docs/API/whetstone-navigation/
-          mkdir -p docs/API/whetstone-navigation-compose
-          cp -R whetstone/navigation-compose/build/dokka/html/. docs/API/whetstone-navigation-compose/
-          mkdir -p docs/API/whetstone-navigation-fragment
-          cp -R whetstone/navigation-fragment/build/dokka/html/. docs/API/whetstone-navigation-fragment/
+          cp CHANGELOG.md docs/changelog.md
+          # Update page title
+          sed -i 's/# Modern Android Development - The Freeletics Way/# Overview/' docs/index.md
+          # Set current version in docs
+          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/navigator/get-started.md
+          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/whetstone/get-started.md
+          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/whetstone/navigation.md
+          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/helpers.md
+          # Copy Dokka files
+          mkdir -p docs/navigator/API/runtime
+          cp -R navigator/runtime/build/dokka/html/. docs/navigator/API/runtime
+          mkdir -p docs/navigator/API/runtime-compose
+          cp -R navigator/runtime-compose/build/dokka/html/. docs/navigator/API/runtime-compose/
+          mkdir -p docs/navigator/API/runtime-fragment
+          cp -R navigator/runtime-fragment/build/dokka/html/. docs/navigator/API/runtime-fragment/
+          mkdir -p docs/helpers/API/state-machine
+          cp -R state-machine/build/dokka/html/. docs/helpers/API/state-machine/
+          mkdir -p docs/helpers/API/text-resource
+          cp -R text-resource/build/dokka/html/. docs/helpers/API/text-resource/
+          mkdir -p docs/whetstone/API/runtime
+          cp -R whetstone/runtime/build/dokka/html/. docs/whetstone/API/runtime/
+          mkdir -p docs/whetstone/API/runtime-compose
+          cp -R whetstone/runtime-compose/build/dokka/html/. docs/whetstone/API/runtime-compose/
+          mkdir -p docs/whetstone/API/runtime-fragment
+          cp -R whetstone/runtime-fragment/build/dokka/html/. docs/whetstone/API/runtime-fragment/
+          mkdir -p docs/whetstone/API/navigation
+          cp -R whetstone/navigation/build/dokka/html/. docs/whetstone/API/navigation/
+          mkdir -p docs/whetstone/API/navigation-compose
+          cp -R whetstone/navigation-compose/build/dokka/html/. docs/whetstone/API/navigation-compose/
+          mkdir -p docs/whetstone/API/navigation-fragment
+          cp -R whetstone/navigation-fragment/build/dokka/html/. docs/whetstone/API/navigation-fragment/
 
       - name: Build MkDocs
         run: mkdocs build

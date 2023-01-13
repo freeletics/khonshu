@@ -1,20 +1,52 @@
 site_name: MAD at Freeletics
-site_url: https://freeletics.github.io/freeletics-mad/
+site_url: https://freeletics.github.io/mad/
 repo_name: MAD Freeletics
-repo_url: https://github.com/freeletics/freeletics-mad
+repo_url: https://github.com/freeletics/mad
 site_description: "Modern Android Development the Freeletics way"
 site_author: Freeletics
-remote_branch: gh-pages
 
 copyright: 'Copyright &copy; 2021 Freeletics.'
 
 theme:
   name: 'material'
-  favicon: images/icon-freeletics.png
-  logo: images/icon-freeletics.png
-  palette:
-    primary: 'black'
-    accent: 'white'
+  favicon: images/icon-freeletics.svg
+  logo: images/logo-freeletics.svg
+  features:
+    - navigation.sections
+    - navigation.tracking
+    - navigation.tabs
+    - content.tabs.link
+    - toc.integrate
+
+nav:
+  - index.md
+  - 'Navigator':
+      - navigator/get-started.md
+      - navigator/activities.md
+      - navigator/results.md
+      - navigator/back-stacks.md
+      - navigator/testing.md
+      - 'API':
+          - 'Runtime': navigator/API/runtime/index.html
+          - 'Runtime Compose': navigator/API/runtime-compose/index.html
+          - 'Runtime Fragment': navigator/API/runtime-fragment/index.html
+  - 'Whetstone':
+      - whetstone/get-started.md
+      - whetstone/navigation.md
+      - whetstone/compose-injection.md
+      - 'API':
+          - 'Runtime': whetstone/API/runtime/index.html
+          - 'Runtime Compose': whetstone/API/runtime-compose/index.html
+          - 'Runtime Fragment': whetstone/API/runtime-fragment/index.html
+          - 'Navigation': whetstone/API/navigation/index.html
+          - 'Navigation Compose': whetstone/API/navigation-compose/index.html
+          - 'Navigation Fragment': whetstone/API/navigation-fragment/index.html
+  - 'Helpers':
+      - helpers.md
+      - 'API':
+          - 'StateMachine': helpers/API/state-machine/index.html
+          - 'TextResource': helpers/API/text-resource/index.html
+  - changelog.md
 
 extra_css:
   - 'css/app.css'
@@ -35,4 +67,7 @@ markdown_extensions:
   - pymdownx.smartsymbols
   - pymdownx.superfences
   - pymdownx.tilde
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - tables

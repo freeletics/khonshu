@@ -3,3 +3,10 @@
 local.properties
 .DS_Store
 build/
+
+
+docs/index.md
+docs/changelog.md
+docs/navigator/API
+docs/whetstone/API
+docs/helpers/API
