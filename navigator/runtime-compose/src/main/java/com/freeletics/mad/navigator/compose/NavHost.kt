@@ -55,7 +55,7 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
-@ExperimentalMaterialNavigationApi
+@OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
 public fun NavHost(
     startRoute: BaseRoute,
