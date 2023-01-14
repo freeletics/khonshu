@@ -11,7 +11,7 @@ internal class FileGeneratorTestComposeFragment {
 
     private val navigation = Navigation.Fragment(
         route = ClassName("com.test", "TestRoute"),
-        destinationType = "NONE",
+        destinationType = "SCREEN",
         destinationScope = ClassName("com.test.destination", "TestDestinationScope"),
     )
 
@@ -167,131 +167,6 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.navigator.NavEventNavigator
-            import com.freeletics.mad.navigator.fragment.handleNavigation
-            import com.freeletics.mad.navigator.fragment.requireRoute
-            import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
-            import com.freeletics.mad.whetstone.`internal`.asComposeState
-            import com.freeletics.mad.whetstone.fragment.`internal`.component
-            import com.squareup.anvil.annotations.ContributesSubcomponent
-            import com.squareup.anvil.annotations.ContributesTo
-            import com.test.destination.TestDestinationScope
-            import com.test.parent.TestParentScope
-            import dagger.BindsInstance
-            import dagger.Module
-            import dagger.multibindings.Multibinds
-            import java.io.Closeable
-            import kotlin.OptIn
-            import kotlin.Unit
-            import kotlin.collections.Set
-            import kotlinx.coroutines.launch
-
-            @OptIn(InternalWhetstoneApi::class)
-            @ScopeTo(TestScreen::class)
-            @ContributesSubcomponent(
-              scope = TestScreen::class,
-              parentScope = TestParentScope::class,
-            )
-            public interface WhetstoneTestComponent : Closeable {
-              public val testStateMachine: TestStateMachine
-
-              public val navEventNavigator: NavEventNavigator
-
-              public val closeables: Set<Closeable>
-    
-              public override fun close(): Unit {
-                closeables.forEach {
-                  it.close()
-                }
-              }
-
-              @ContributesSubcomponent.Factory
-              public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
-                    testRoute: TestRoute): WhetstoneTestComponent
-              }
-
-              @ContributesTo(TestParentScope::class)
-              public interface ParentComponent {
-                public fun whetstoneTestComponentFactory(): Factory
-              }
-            }
-
-            @Module
-            @ContributesTo(TestScreen::class)
-            public interface WhetstoneTestModule {
-              @Multibinds
-              public fun bindCloseables(): Set<Closeable>
-            }
-            
-            @OptIn(InternalWhetstoneApi::class)
-            public class WhetstoneTestFragment : Fragment() {
-              private lateinit var whetstoneTestComponent: WhetstoneTestComponent
-            
-              public override fun onCreateView(
-                inflater: LayoutInflater,
-                container: ViewGroup?,
-                savedInstanceState: Bundle?,
-              ): View {
-                if (!::whetstoneTestComponent.isInitialized) {
-                  val testRoute = requireRoute<TestRoute>()
-                  whetstoneTestComponent = component(TestParentScope::class, TestDestinationScope::class,
-                      testRoute) { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle,
-                      testRoute ->
-                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
-                  }
-
-                  handleNavigation(this, whetstoneTestComponent.navEventNavigator)
-                }
-
-                return ComposeView(requireContext()).apply {
-                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
-
-                  setContent {
-                    WhetstoneTest(whetstoneTestComponent)
-                  }
-                }
-              }
-            }
-
-            @Composable
-            @OptIn(InternalWhetstoneApi::class)
-            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val stateMachine = component.testStateMachine
-              val state = stateMachine.asComposeState()
-              val currentState = state.value
-              if (currentState != null) {
-                val scope = rememberCoroutineScope()
-                Test(
-                  state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
-                )
-              }
-            }
-            
-        """.trimIndent()
-
-        test(withNavigation, expected)
-    }
-
-    @Test
-    fun `generates code for ComposeFragmentData with navigation and destination`() {
-        val withDestination = data.copy(navigation = navigation.copy(destinationType = "SCREEN"))
-
-        val expected = """
-            package com.test
-
-            import android.os.Bundle
-            import android.view.LayoutInflater
-            import android.view.View
-            import android.view.ViewGroup
-            import androidx.compose.runtime.Composable
-            import androidx.compose.runtime.rememberCoroutineScope
-            import androidx.compose.ui.platform.ComposeView
-            import androidx.compose.ui.platform.ViewCompositionStrategy
-            import androidx.fragment.app.Fragment
-            import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.mad.navigator.NavEventNavigator
             import com.freeletics.mad.navigator.fragment.NavDestination
             import com.freeletics.mad.navigator.fragment.ScreenDestination
             import com.freeletics.mad.navigator.fragment.handleNavigation
@@ -409,13 +284,13 @@ internal class FileGeneratorTestComposeFragment {
             
         """.trimIndent()
 
-        test(withDestination, expected)
+        test(withNavigation, expected)
     }
 
     @Test
-    fun `generates code for ComposeFragmentData, with navigation, destination and navEntry`() {
-        val withDestinationAndNavEntry = data.copy(
-            navigation = navigation.copy(destinationType = "SCREEN"),
+    fun `generates code for ComposeFragmentData, with navigation and navEntry`() {
+        val withNavEntry = data.copy(
+            navigation = navigation,
             navEntryData = navEntryData
         )
 
@@ -619,7 +494,7 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(withDestinationAndNavEntry, expected)
+        test(withNavEntry, expected)
     }
 
     @Test

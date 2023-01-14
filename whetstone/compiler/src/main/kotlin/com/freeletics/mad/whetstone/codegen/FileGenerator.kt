@@ -65,7 +65,7 @@ public class FileGenerator{
     }
 
     private fun FileSpec.Builder.addNavDestinationTypes(data: BaseData) = apply {
-        if (data.navigation?.destinationMethod != null) {
+        if (data.navigation != null) {
             val navDestinationGenerator = NavDestinationModuleGenerator(data)
             addType(navDestinationGenerator.generate())
         }

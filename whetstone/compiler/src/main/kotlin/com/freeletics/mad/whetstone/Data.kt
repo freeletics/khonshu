@@ -108,8 +108,7 @@ public sealed interface Navigation {
     ) : Navigation {
         override val destinationClass: ClassName = composeDestination
 
-        override val destinationMethod: MemberName? = when(destinationType) {
-            "NONE" -> null
+        override val destinationMethod: MemberName = when(destinationType) {
             "SCREEN" -> composeScreenDestination
             "DIALOG" -> composeDialogDestination
             "BOTTOM_SHEET" -> composeBottomSheetDestination
@@ -125,7 +124,6 @@ public sealed interface Navigation {
         override val destinationClass: ClassName = fragmentDestination
 
         override val destinationMethod: MemberName? = when(destinationType) {
-            "NONE" -> null
             "SCREEN" -> fragmentScreenDestination
             "DIALOG" -> fragmentDialogDestination
             else -> throw IllegalArgumentException("Unknown destinationType $destinationType")
