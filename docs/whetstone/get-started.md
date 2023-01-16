@@ -7,7 +7,7 @@ generating dependency injection related code and common boilerplate for screens.
 
 - eliminate boilerplate that usually needs to be repeated on each screen
 - optional integration with Navigator to simplify its setup 
-- easily let objects survive orientation changes 
+- easily let objects survive configuration changes 
 
 One other general advantage is around Fragments. If an app uses them or has to use them for legacy 
 reasons, Whetstone will mostly hide them from the developers because it generates the Fragment

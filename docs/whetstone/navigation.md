@@ -96,10 +96,6 @@ of all destinations anymore. It can simply be injected.
 This is a minimal example of how using Whetstone for a screen with the Navigator integration 
 would look like.
 
-
-
-This is a minimal example of how using Whetstone for a screen would look like.
-
 ```kotlin
 // marker class for the scope
 sealed interface ExampleScope
