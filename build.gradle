@@ -79,8 +79,10 @@ dependencyAnalysis {
             onUnusedDependencies {
                 // needed for compile testing
                 exclude(
-                    "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+                    "androidx.compose.runtime:runtime",
+                    "com.gabrielittner.renderer:renderer",
                     "com.gabrielittner.renderer:connect",
+                    "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
                     "org.jetbrains.kotlin:kotlin-compiler-embeddable",
                     ":navigator:navigator-runtime-compose",
                     ":navigator:navigator-runtime-fragment",

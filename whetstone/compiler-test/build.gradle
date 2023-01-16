@@ -63,6 +63,7 @@ dependencies {
     testImplementation libs.truth
     testImplementation libs.kotlin.compile.testing
     testImplementation libs.androidx.compose.compiler
+    testImplementation libs.anvil.compiler
     testImplementation(libs.kotlin.compiler) { force = true }
 }
 
@@ -71,4 +72,3 @@ configurations.all {
         substitute module("com.freeletics.mad:state-machine") using project(":state-machine")
     }
 }
-

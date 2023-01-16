@@ -15,7 +15,7 @@ internal class FileGeneratorTestRendererFragment {
     )
 
     private val data = RendererFragmentData(
-        baseName = "Test",
+        baseName = "TestRenderer",
         packageName = "com.test",
         scope = ClassName("com.test", "TestScreen"),
         parentScope = ClassName("com.test.parent", "TestParentScope"),
@@ -35,6 +35,28 @@ internal class FileGeneratorTestRendererFragment {
 
     @Test
     fun `generates code for RendererFragmentData`() {
+        val source = """
+            package com.test
+            
+            import android.view.View
+            import com.freeletics.mad.whetstone.fragment.RendererFragment
+            import com.gabrielittner.renderer.ViewRenderer
+            import com.test.destination.TestDestinationScope
+            import com.test.parent.TestParentScope
+            
+            @RendererFragment(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+              rendererFactory = TestRenderer.Factory::class,
+            )
+            public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
+              override fun renderToView(state: TestState) {}
+            
+              public abstract class Factory : ViewRenderer.Factory<TestBinding, TestRenderer>({ _, _, _ -> TestBinding() })
+            }
+        """.trimIndent()
+
         val expected = """
             package com.test
 
@@ -65,7 +87,7 @@ internal class FileGeneratorTestRendererFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent : Closeable {
+            public interface WhetstoneTestRendererComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val testRendererFactory: TestRenderer.Factory
@@ -81,53 +103,83 @@ internal class FileGeneratorTestRendererFragment {
               @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
-                    arguments: Bundle): WhetstoneTestComponent
+                    arguments: Bundle): WhetstoneTestRendererComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                public fun whetstoneTestComponentFactory(): Factory
+                public fun whetstoneTestRendererComponentFactory(): Factory
               }
             }
 
             @Module
             @ContributesTo(TestScreen::class)
-            public interface WhetstoneTestModule {
+            public interface WhetstoneTestRendererModule {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
             }
             
             @OptIn(InternalWhetstoneApi::class)
-            public class WhetstoneTestFragment : Fragment() {
-              private lateinit var whetstoneTestComponent: WhetstoneTestComponent
+            public class WhetstoneTestRendererFragment : Fragment() {
+              private lateinit var whetstoneTestRendererComponent: WhetstoneTestRendererComponent
 
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
               ): View {
-                if (!::whetstoneTestComponent.isInitialized) {
+                if (!::whetstoneTestRendererComponent.isInitialized) {
                   val arguments = requireArguments()
-                  whetstoneTestComponent = component(TestParentScope::class, arguments) { parentComponent:
-                      WhetstoneTestComponent.ParentComponent, savedStateHandle, arguments ->
-                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, arguments)
+                  whetstoneTestRendererComponent = component(TestParentScope::class, arguments) {
+                      parentComponent: WhetstoneTestRendererComponent.ParentComponent, savedStateHandle,
+                      arguments ->
+                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle, arguments)
                   }
                 }
             
-                val renderer = whetstoneTestComponent.testRendererFactory.inflate(inflater, container)
-                connect(renderer, whetstoneTestComponent.testStateMachine)
+                val renderer = whetstoneTestRendererComponent.testRendererFactory.inflate(inflater, container)
+                connect(renderer, whetstoneTestRendererComponent.testStateMachine)
                 return renderer.rootView
               }
             }
             
         """.trimIndent()
 
-        test(data, expected)
+        test(data, "com/test/TestRenderer.kt", source, expected)
     }
 
     @Test
     fun `generates code for RendererFragmentData with navigation`() {
         val withNavigation = data.copy(navigation = navigation)
+
+        val source = """
+            package com.test
+            
+            import android.view.View
+            import com.freeletics.mad.whetstone.fragment.RendererFragment
+            import com.freeletics.mad.whetstone.fragment.DestinationType
+            import com.freeletics.mad.whetstone.fragment.NavDestination
+            import com.gabrielittner.renderer.ViewRenderer
+            import com.test.destination.TestDestinationScope
+            import com.test.parent.TestParentScope
+            
+            @RendererFragment(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+              rendererFactory = TestRenderer.Factory::class,
+            )
+            @NavDestination(            
+              route = TestRoute::class,
+              type = DestinationType.SCREEN,
+              destinationScope = TestDestinationScope::class,
+            )
+            public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
+              override fun renderToView(state: TestState) {}
+            
+              public abstract class Factory : ViewRenderer.Factory<TestBinding, TestRenderer>({ _, _, _ -> TestBinding() })
+            }
+        """.trimIndent()
 
         val expected = """
             package com.test
@@ -167,7 +219,7 @@ internal class FileGeneratorTestRendererFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent : Closeable {
+            public interface WhetstoneTestRendererComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val navEventNavigator: NavEventNavigator
@@ -185,60 +237,60 @@ internal class FileGeneratorTestRendererFragment {
               @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
-                    testRoute: TestRoute): WhetstoneTestComponent
+                    testRoute: TestRoute): WhetstoneTestRendererComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                public fun whetstoneTestComponentFactory(): Factory
+                public fun whetstoneTestRendererComponentFactory(): Factory
               }
             }
 
             @Module
             @ContributesTo(TestScreen::class)
-            public interface WhetstoneTestModule {
+            public interface WhetstoneTestRendererModule {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
             }
             
             @OptIn(InternalWhetstoneApi::class)
-            public class WhetstoneTestFragment : Fragment() {
-              private lateinit var whetstoneTestComponent: WhetstoneTestComponent
+            public class WhetstoneTestRendererFragment : Fragment() {
+              private lateinit var whetstoneTestRendererComponent: WhetstoneTestRendererComponent
 
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
               ): View {
-                if (!::whetstoneTestComponent.isInitialized) {
+                if (!::whetstoneTestRendererComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
-                  whetstoneTestComponent = component(TestParentScope::class, TestDestinationScope::class,
-                      testRoute) { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle,
-                      testRoute ->
-                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
+                  whetstoneTestRendererComponent = component(TestParentScope::class,
+                      TestDestinationScope::class, testRoute) { parentComponent:
+                      WhetstoneTestRendererComponent.ParentComponent, savedStateHandle, testRoute ->
+                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle, testRoute)
                   }
             
-                  handleNavigation(this, whetstoneTestComponent.navEventNavigator)
+                  handleNavigation(this, whetstoneTestRendererComponent.navEventNavigator)
                 }
             
-                val renderer = whetstoneTestComponent.testRendererFactory.inflate(inflater, container)
-                connect(renderer, whetstoneTestComponent.testStateMachine)
+                val renderer = whetstoneTestRendererComponent.testRendererFactory.inflate(inflater, container)
+                connect(renderer, whetstoneTestRendererComponent.testStateMachine)
                 return renderer.rootView
               }
             }
             
             @Module
             @ContributesTo(TestDestinationScope::class)
-            public object WhetstoneTestNavDestinationModule {
+            public object WhetstoneTestRendererNavDestinationModule {
               @Provides
               @IntoSet
               public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute,
-                  WhetstoneTestFragment>()
+                  WhetstoneTestRendererFragment>()
             }
             
         """.trimIndent()
 
-        test(withNavigation, expected)
+        test(withNavigation, "com/test/TestRenderer.kt", source, expected)
     }
 
     @Test
@@ -247,6 +299,40 @@ internal class FileGeneratorTestRendererFragment {
             navigation = navigation,
             navEntryData = navEntryData
         )
+
+        val source = """
+            package com.test
+            
+            import android.view.View
+            import com.freeletics.mad.whetstone.fragment.RendererFragment
+            import com.freeletics.mad.whetstone.fragment.DestinationType
+            import com.freeletics.mad.whetstone.fragment.NavDestination
+            import com.freeletics.mad.whetstone.NavEntryComponent
+            import com.gabrielittner.renderer.ViewRenderer
+            import com.test.destination.TestDestinationScope
+            import com.test.parent.TestParentScope
+            
+            @RendererFragment(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+              rendererFactory = TestRenderer.Factory::class,
+            )
+            @NavDestination(            
+              route = TestRoute::class,
+              type = DestinationType.SCREEN,
+              destinationScope = TestDestinationScope::class,
+            )
+            @NavEntryComponent(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+            )
+            public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
+              override fun renderToView(state: TestState) {}
+            
+              public abstract class Factory : ViewRenderer.Factory<TestBinding, TestRenderer>({ _, _, _ -> TestBinding() })
+            }
+        """.trimIndent()
 
         val expected = """
             package com.test
@@ -297,7 +383,7 @@ internal class FileGeneratorTestRendererFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent : Closeable {
+            public interface WhetstoneTestRendererComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val navEventNavigator: NavEventNavigator
@@ -315,55 +401,55 @@ internal class FileGeneratorTestRendererFragment {
               @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
-                    testRoute: TestRoute): WhetstoneTestComponent
+                    testRoute: TestRoute): WhetstoneTestRendererComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                public fun whetstoneTestComponentFactory(): Factory
+                public fun whetstoneTestRendererComponentFactory(): Factory
               }
             }
 
             @Module
             @ContributesTo(TestScreen::class)
-            public interface WhetstoneTestModule {
+            public interface WhetstoneTestRendererModule {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
             }
 
             @OptIn(InternalWhetstoneApi::class)
-            public class WhetstoneTestFragment : Fragment() {
-              private lateinit var whetstoneTestComponent: WhetstoneTestComponent
+            public class WhetstoneTestRendererFragment : Fragment() {
+              private lateinit var whetstoneTestRendererComponent: WhetstoneTestRendererComponent
 
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
               ): View {
-                if (!::whetstoneTestComponent.isInitialized) {
+                if (!::whetstoneTestRendererComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
-                  whetstoneTestComponent = component(TestParentScope::class, TestDestinationScope::class,
-                      testRoute) { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle,
-                      testRoute ->
-                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
+                  whetstoneTestRendererComponent = component(TestParentScope::class,
+                      TestDestinationScope::class, testRoute) { parentComponent:
+                      WhetstoneTestRendererComponent.ParentComponent, savedStateHandle, testRoute ->
+                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle, testRoute)
                   }
 
-                  handleNavigation(this, whetstoneTestComponent.navEventNavigator)
+                  handleNavigation(this, whetstoneTestRendererComponent.navEventNavigator)
                 }
 
-                val renderer = whetstoneTestComponent.testRendererFactory.inflate(inflater, container)
-                connect(renderer, whetstoneTestComponent.testStateMachine)
+                val renderer = whetstoneTestRendererComponent.testRendererFactory.inflate(inflater, container)
+                connect(renderer, whetstoneTestRendererComponent.testStateMachine)
                 return renderer.rootView
               }
             }
 
             @Module
             @ContributesTo(TestDestinationScope::class)
-            public object WhetstoneTestNavDestinationModule {
+            public object WhetstoneTestRendererNavDestinationModule {
               @Provides
               @IntoSet
               public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute,
-                  WhetstoneTestFragment>()
+                  WhetstoneTestRendererFragment>()
             }
 
             @OptIn(InternalWhetstoneApi::class)
@@ -426,7 +512,7 @@ internal class FileGeneratorTestRendererFragment {
             
         """.trimIndent()
 
-        test(withDestination, expected)
+        test(withDestination, "com/test/TestRenderer.kt", source, expected)
     }
 
     @Test
@@ -434,6 +520,32 @@ internal class FileGeneratorTestRendererFragment {
         val dialogFragment = data.copy(
             fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment")
         )
+        val source = """
+            package com.test
+            
+            import android.view.View
+            import androidx.fragment.app.DialogFragment
+            import com.freeletics.mad.whetstone.fragment.RendererFragment
+            import com.freeletics.mad.whetstone.fragment.DestinationType
+            import com.freeletics.mad.whetstone.fragment.NavDestination
+            import com.freeletics.mad.whetstone.NavEntryComponent
+            import com.gabrielittner.renderer.ViewRenderer
+            import com.test.destination.TestDestinationScope
+            import com.test.parent.TestParentScope
+            
+            @RendererFragment(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+              rendererFactory = TestRenderer.Factory::class,
+              fragmentBaseClass = DialogFragment::class,
+            )
+            public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
+              override fun renderToView(state: TestState) {}
+            
+              public abstract class Factory : ViewRenderer.Factory<TestBinding, TestRenderer>({ _, _, _ -> TestBinding() })
+            }
+        """.trimIndent()
 
         val expected = """
             package com.test
@@ -465,7 +577,7 @@ internal class FileGeneratorTestRendererFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface WhetstoneTestComponent : Closeable {
+            public interface WhetstoneTestRendererComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val testRendererFactory: TestRenderer.Factory
@@ -481,47 +593,48 @@ internal class FileGeneratorTestRendererFragment {
               @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
-                    arguments: Bundle): WhetstoneTestComponent
+                    arguments: Bundle): WhetstoneTestRendererComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                public fun whetstoneTestComponentFactory(): Factory
+                public fun whetstoneTestRendererComponentFactory(): Factory
               }
             }
 
             @Module
             @ContributesTo(TestScreen::class)
-            public interface WhetstoneTestModule {
+            public interface WhetstoneTestRendererModule {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
             }
             
             @OptIn(InternalWhetstoneApi::class)
-            public class WhetstoneTestFragment : DialogFragment() {
-              private lateinit var whetstoneTestComponent: WhetstoneTestComponent
+            public class WhetstoneTestRendererFragment : DialogFragment() {
+              private lateinit var whetstoneTestRendererComponent: WhetstoneTestRendererComponent
 
               public override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
               ): View {
-                if (!::whetstoneTestComponent.isInitialized) {
+                if (!::whetstoneTestRendererComponent.isInitialized) {
                   val arguments = requireArguments()
-                  whetstoneTestComponent = component(TestParentScope::class, arguments) { parentComponent:
-                      WhetstoneTestComponent.ParentComponent, savedStateHandle, arguments ->
-                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, arguments)
+                  whetstoneTestRendererComponent = component(TestParentScope::class, arguments) {
+                      parentComponent: WhetstoneTestRendererComponent.ParentComponent, savedStateHandle,
+                      arguments ->
+                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle, arguments)
                   }
                 }
             
-                val renderer = whetstoneTestComponent.testRendererFactory.inflate(inflater, container)
-                connect(renderer, whetstoneTestComponent.testStateMachine)
+                val renderer = whetstoneTestRendererComponent.testRendererFactory.inflate(inflater, container)
+                connect(renderer, whetstoneTestRendererComponent.testStateMachine)
                 return renderer.rootView
               }
             }
 
         """.trimIndent()
 
-        test(dialogFragment, expected)
+        test(dialogFragment, "com/test/TestRenderer.kt", source, expected)
     }
 }

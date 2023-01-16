@@ -36,6 +36,24 @@ internal class FileGeneratorTestComposeFragment {
 
     @Test
     fun `generates code for ComposeFragmentData`() {
+        val source = """
+            package com.test
+            
+            import androidx.compose.runtime.Composable
+            import com.freeletics.mad.whetstone.fragment.ComposeFragment
+            import com.test.parent.TestParentScope
+            
+            @ComposeFragment(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+            )
+            @Composable
+            public fun Test(
+              state: TestState,
+              sendAction: (TestAction) -> Unit
+            ) {}
+        """.trimIndent()
 
         val expected = """
             package com.test
@@ -146,12 +164,39 @@ internal class FileGeneratorTestComposeFragment {
             
         """.trimIndent()
 
-        test(data, expected)
+        test(data, "com/test/Test.kt", source, expected)
     }
 
     @Test
     fun `generates code for ComposeFragmentData with navigation`() {
         val withNavigation = data.copy(navigation = navigation)
+
+        val source = """
+            package com.test
+            
+            import androidx.compose.runtime.Composable
+            import com.freeletics.mad.whetstone.fragment.ComposeFragment
+            import com.freeletics.mad.whetstone.fragment.DestinationType
+            import com.freeletics.mad.whetstone.fragment.NavDestination
+            import com.test.destination.TestDestinationScope
+            import com.test.parent.TestParentScope
+            
+            @ComposeFragment(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+            )
+            @NavDestination(            
+              route = TestRoute::class,
+              type = DestinationType.SCREEN,
+              destinationScope = TestDestinationScope::class,
+            )
+            @Composable
+            public fun Test(
+              state: TestState,
+              sendAction: (TestAction) -> Unit
+            ) {}
+        """.trimIndent()
 
         val expected = """
             package com.test
@@ -284,7 +329,7 @@ internal class FileGeneratorTestComposeFragment {
             
         """.trimIndent()
 
-        test(withNavigation, expected)
+        test(withNavigation, "com/test/Test.kt", source, expected)
     }
 
     @Test
@@ -293,6 +338,38 @@ internal class FileGeneratorTestComposeFragment {
             navigation = navigation,
             navEntryData = navEntryData
         )
+
+        val source = """
+            package com.test
+            
+            import androidx.compose.runtime.Composable
+            import com.freeletics.mad.whetstone.fragment.ComposeFragment
+            import com.freeletics.mad.whetstone.fragment.DestinationType
+            import com.freeletics.mad.whetstone.fragment.NavDestination
+            import com.freeletics.mad.whetstone.NavEntryComponent
+            import com.test.destination.TestDestinationScope
+            import com.test.parent.TestParentScope
+            
+            @ComposeFragment(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+            )
+            @NavDestination(            
+              route = TestRoute::class,
+              type = DestinationType.SCREEN,
+              destinationScope = TestDestinationScope::class,
+            )
+            @NavEntryComponent(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+            )
+            @Composable
+            public fun Test(
+              state: TestState,
+              sendAction: (TestAction) -> Unit
+            ) {}
+        """.trimIndent()
 
         val expected = """
             package com.test
@@ -494,7 +571,7 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(withNavEntry, expected)
+        test(withNavEntry, "com/test/Test.kt", source, expected)
     }
 
     @Test
@@ -502,6 +579,27 @@ internal class FileGeneratorTestComposeFragment {
         val dialogFragment = data.copy(
             fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment")
         )
+
+        val source = """
+            package com.test
+            
+            import androidx.compose.runtime.Composable
+            import androidx.fragment.app.DialogFragment
+            import com.freeletics.mad.whetstone.fragment.ComposeFragment
+            import com.test.parent.TestParentScope
+            
+            @ComposeFragment(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+              fragmentBaseClass = DialogFragment::class,
+            )
+            @Composable
+            public fun Test(
+              state: TestState,
+              sendAction: (TestAction) -> Unit
+            ) {}
+        """.trimIndent()
 
         val expected = """
             package com.test
@@ -612,7 +710,7 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(dialogFragment, expected)
+        test(dialogFragment, "com/test/Test.kt", source, expected)
     }
 
     @Test
@@ -630,6 +728,28 @@ internal class FileGeneratorTestComposeFragment {
                 )
             )
         )
+
+        val source = """
+            package com.test
+            
+            import androidx.compose.runtime.Composable
+            import com.freeletics.mad.whetstone.fragment.ComposeFragment
+            import com.test.other.TestClass2
+            import com.test.parent.TestParentScope
+            
+            @ComposeFragment(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+            )
+            @Composable
+            public fun Test2(
+              state: TestState,
+              sendAction: (TestAction) -> Unit,
+                testClass: TestClass,
+                test: TestClass2,
+            ) {}
+        """.trimIndent()
 
         val expected = """
             package com.test
@@ -749,6 +869,6 @@ internal class FileGeneratorTestComposeFragment {
             
         """.trimIndent()
 
-        test(withInjectedParameters, expected)
+        test(withInjectedParameters, "com/test/Test2.kt", source, expected)
     }
 }
