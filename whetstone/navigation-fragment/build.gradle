@@ -53,11 +53,14 @@ dependencies {
     api project(":whetstone:navigation")
     api project(":whetstone:runtime-fragment")
     api project(":navigator:navigator-runtime")
+    api libs.androidx.fragment
 
+    implementation project(":state-machine")
     implementation project(":whetstone:runtime")
     implementation project(":navigator:navigator-runtime-fragment")
     implementation libs.androidx.compose.runtime
     implementation libs.androidx.viewmodel
     implementation libs.androidx.viewmodel.savedstate
-    implementation libs.androidx.fragment
+
+    compileOnly libs.renderer
 }

@@ -59,6 +59,7 @@ dependencies {
     api project(":whetstone:runtime-compose")
     api project(":navigator:navigator-runtime")
 
+    implementation project(":state-machine")
     implementation project(":whetstone:runtime")
     implementation project(":navigator:navigator-runtime-compose")
     implementation libs.androidx.compose.runtime

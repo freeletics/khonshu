@@ -3,19 +3,17 @@ package com.freeletics.mad.whetstone.parser
 import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.RendererFragmentData
+import com.freeletics.mad.whetstone.codegen.util.composeFragmentDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.fragment
-import com.freeletics.mad.whetstone.codegen.util.fragmentNavDestinationFqName
-import com.freeletics.mad.whetstone.codegen.util.fragmentRootNavDestinationFqName
+import com.freeletics.mad.whetstone.codegen.util.rendererFragmentDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
-import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.toRendererFragmentData(): RendererFragmentData? {
     val annotation = findAnnotation(rendererFragmentFqName) ?: return null
-    val navigation = fragmentNavigation()
 
     return RendererFragmentData(
         baseName = shortName,
@@ -23,17 +21,39 @@ internal fun ClassReference.toRendererFragmentData(): RendererFragmentData? {
         scope = annotation.scope,
         parentScope = annotation.parentScope,
         stateMachine = annotation.stateMachine,
-        factory = annotation.requireClassArgument("rendererFactory", 3),
-        fragmentBaseClass = annotation.optionalClassArgument("fragmentBaseClass", 4) ?: fragment,
+        fragmentBaseClass = annotation.optionalClassArgument("fragmentBaseClass", 3) ?: fragment,
+        factory = annotation.requireClassArgument("rendererFactory", 4),
+        navigation = null,
+        navEntryData = null,
+    )
+}
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun ClassReference.toRendererFragmentDestinationData(): RendererFragmentData? {
+    val annotation = findAnnotation(rendererFragmentDestinationFqName) ?: return null
+
+    val navigation = Navigation.Fragment(
+        route = annotation.route,
+        destinationType = annotation.destinationType,
+        destinationScope = annotation.destinationScope,
+    )
+
+    return RendererFragmentData(
+        baseName = shortName,
+        packageName = packageName,
+        scope = annotation.route,
+        parentScope = annotation.parentScope,
+        stateMachine = annotation.stateMachine,
+        fragmentBaseClass = annotation.optionalClassArgument("fragmentBaseClass", 5) ?: fragment,
+        factory = annotation.requireClassArgument("rendererFactory", 6),
         navigation = navigation,
-        navEntryData = navEntryData(navigation)
+        navEntryData = navEntryData(navigation),
     )
 }
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun TopLevelFunctionReference.toComposeFragmentData(): ComposeFragmentData? {
     val annotation = findAnnotation(composeFragmentFqName) ?: return null
-    val navigation = fragmentNavigation()
 
     return ComposeFragmentData(
         baseName = name,
@@ -42,35 +62,31 @@ internal fun TopLevelFunctionReference.toComposeFragmentData(): ComposeFragmentD
         parentScope = annotation.parentScope,
         stateMachine = annotation.stateMachine,
         fragmentBaseClass = annotation.optionalClassArgument("fragmentBaseClass", 3) ?: fragment,
-        navigation = navigation,
-        navEntryData = navEntryData(navigation),
+        navigation = null,
+        navEntryData = null,
         composableParameter = composeParameters
     )
 }
 
 @OptIn(ExperimentalAnvilApi::class)
-private fun AnnotatedReference.fragmentNavigation(): Navigation.Fragment? {
-    val navigation = findAnnotation(fragmentNavDestinationFqName)
-    if (navigation != null) {
-        val route = navigation.requireClassArgument("route", 0)
-        val destinationScope = navigation.requireClassArgument("destinationScope", 2)
-        return Navigation.Fragment(
-            route = route,
-            destinationType = navigation.requireEnumArgument("type", 1),
-            destinationScope = destinationScope,
-        )
-    }
+internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): ComposeFragmentData? {
+    val annotation = findAnnotation(composeFragmentDestinationFqName) ?: return null
 
-    val rootNavigation = findAnnotation(fragmentRootNavDestinationFqName)
-    if (rootNavigation != null) {
-        val route = rootNavigation.requireClassArgument("root", 0)
-        val destinationScope = rootNavigation.requireClassArgument("destinationScope", 1)
-        return Navigation.Fragment(
-            route = route,
-            destinationType = "SCREEN",
-            destinationScope = destinationScope,
-        )
-    }
+    val navigation = Navigation.Fragment(
+        route = annotation.route,
+        destinationType = annotation.destinationType,
+        destinationScope = annotation.destinationScope,
+    )
 
-    return null
+    return ComposeFragmentData(
+        baseName = name,
+        packageName = packageName,
+        scope = annotation.route,
+        parentScope = annotation.parentScope,
+        stateMachine = annotation.stateMachine,
+        fragmentBaseClass = annotation.optionalClassArgument("fragmentBaseClass", 5) ?: fragment,
+        navigation = navigation,
+        navEntryData = navEntryData(navigation),
+        composableParameter = composeParameters
+    )
 }

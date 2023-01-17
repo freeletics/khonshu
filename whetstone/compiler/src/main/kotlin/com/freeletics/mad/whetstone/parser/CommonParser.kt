@@ -17,6 +17,10 @@ internal val AnnotationReference.scope: ClassName
     get() = requireClassArgument("scope", 0)
 
 @OptIn(ExperimentalAnvilApi::class)
+internal val AnnotationReference.route: ClassName
+    get() = requireClassArgument("route", 0)
+
+@OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.parentScope: ClassName
     get() = requireClassArgument("parentScope", 1)
 
@@ -25,15 +29,18 @@ internal val AnnotationReference.stateMachine: ClassName
     get() = requireClassArgument("stateMachine", 2)
 
 @OptIn(ExperimentalAnvilApi::class)
+internal val AnnotationReference.destinationType: String
+    get() = optionalEnumArgument("destinationType", 3) ?: "SCREEN"
+
+@OptIn(ExperimentalAnvilApi::class)
+internal val AnnotationReference.destinationScope: ClassName
+    get() = requireClassArgument("destinationScope", 4)
+
+@OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotatedReference.navEntryData(
-    navigation: Navigation?
+    navigation: Navigation
 ): NavEntryData? {
     val annotation = findAnnotation(navEntryComponentFqName) ?: return null
-
-    if (navigation == null) {
-        throw AnvilCompilationExceptionAnnotationReference(annotation,
-            "@NavEntryComponent can only be used in combination with @NavDestination")
-    }
 
     return NavEntryData(
         packageName = packageName,
