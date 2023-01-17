@@ -9,6 +9,7 @@ Change Log
 
 ### Whetstone
 
+- support for Anvil 2.4.4
 - Internal: clean up and streamline code in the code generator
 
 

@@ -720,11 +720,11 @@ internal class FileGeneratorTestComposeFragment {
             composableParameter = listOf(
                 ComposableParameter(
                     name = "testClass",
-                    className = ClassName("com.test", "TestClass"),
+                    typeName = ClassName("com.test", "TestClass"),
                 ),
                 ComposableParameter(
                     name = "test",
-                    className = ClassName("com.test.other", "TestClass2"),
+                    typeName = ClassName("com.test.other", "TestClass2"),
                 )
             )
         )
@@ -792,7 +792,7 @@ internal class FileGeneratorTestComposeFragment {
 
               public val testClass: TestClass
 
-              public val testClass2: TestClass2
+              public val test: TestClass2
 
               public val closeables: Set<Closeable>
     
@@ -852,7 +852,7 @@ internal class FileGeneratorTestComposeFragment {
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest2(component: WhetstoneTest2Component): Unit {
               val testClass = component.testClass
-              val testClass2 = component.testClass2
+              val test = component.test
               val stateMachine = component.testStateMachine
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -860,7 +860,7 @@ internal class FileGeneratorTestComposeFragment {
                 val scope = rememberCoroutineScope()
                 Test2(
                   testClass = testClass,
-                  test = testClass2,
+                  test = test,
                   state = currentState,
                   sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
