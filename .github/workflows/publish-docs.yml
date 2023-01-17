@@ -60,6 +60,7 @@ jobs:
           sed -i 's/# Modern Android Development - The Freeletics Way/# Overview/' docs/index.md
           # Set current version in docs
           sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/navigator/get-started.md
+          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/navigator/testing.md
           sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/whetstone/get-started.md
           sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/whetstone/navigation.md
           sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/helpers.md
@@ -70,8 +71,12 @@ jobs:
           cp -R navigator/runtime-compose/build/dokka/html/. docs/navigator/API/runtime-compose/
           mkdir -p docs/navigator/API/runtime-fragment
           cp -R navigator/runtime-fragment/build/dokka/html/. docs/navigator/API/runtime-fragment/
+          mkdir -p docs/navigator/API/testing
+          cp -R navigator/testing/build/dokka/html/. docs/navigator/API/testing/
           mkdir -p docs/helpers/API/state-machine
           cp -R state-machine/build/dokka/html/. docs/helpers/API/state-machine/
+          mkdir -p docs/helpers/API/state-machine-testing
+          cp -R state-machine/testing/build/dokka/html/. docs/helpers/API/state-machine-testing/
           mkdir -p docs/helpers/API/text-resource
           cp -R text-resource/build/dokka/html/. docs/helpers/API/text-resource/
           mkdir -p docs/whetstone/API/runtime

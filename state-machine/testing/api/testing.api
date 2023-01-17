@@ -1,0 +1,14 @@
+public abstract interface class com/freeletics/mad/statemachine/StateMachineTurbine {
+	public abstract fun awaitState (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun cancel (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun cancelAndIgnoreRemainingStates (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun dispatch (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/freeletics/mad/statemachine/StateMachineTurbineKt {
+	public static final fun test-C2H2yOE (Lcom/freeletics/mad/statemachine/StateMachine;Lkotlin/time/Duration;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun test-C2H2yOE$default (Lcom/freeletics/mad/statemachine/StateMachine;Lkotlin/time/Duration;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun testIn-5_5nbZA (Lcom/freeletics/mad/statemachine/StateMachine;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;)Lcom/freeletics/mad/statemachine/StateMachineTurbine;
+	public static synthetic fun testIn-5_5nbZA$default (Lcom/freeletics/mad/statemachine/StateMachine;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/mad/statemachine/StateMachineTurbine;
+}
+

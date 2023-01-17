@@ -3,8 +3,6 @@ package com.freeletics.mad.navigator
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.annotation.VisibleForTesting
-import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult
 import com.freeletics.mad.navigator.internal.DestinationId
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
@@ -39,7 +37,7 @@ public sealed class ResultOwner<R> {
      * Deliver a new [result] to [results]. This method should be called by a
      * `NavEventNavigationHandler`.
      */
-    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
+    @InternalNavigatorApi
     public fun onResult(result: R) {
         val channelResult = _results.trySendBlocking(result)
         check(channelResult.isSuccess)
@@ -113,7 +111,7 @@ public class PermissionsResultRequest internal constructor() :
          * the prompt without making a choice.
          */
         @Poko
-        public class Denied @VisibleForTesting(otherwise = PACKAGE_PRIVATE) constructor(
+        public class Denied(
             public val shouldShowRationale: Boolean,
         ) : PermissionResult
     }
@@ -134,7 +132,7 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
      */
     @Poko
     @Parcelize
-    public class Key<R : Parcelable> internal constructor(
+    public class Key<R : Parcelable> @InternalNavigatorApi constructor(
         internal val destinationId: DestinationId<*>,
         internal val requestKey: String
     ) : Parcelable {
@@ -153,10 +151,10 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
     }
 
     // TODO: remove after introducing a testing artifact
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    public companion object {
-        public fun <R : Parcelable> Key(cls: KClass<out BaseRoute>, requestKey: String): Key<R> {
-            return Key(DestinationId(cls), requestKey)
-        }
-    }
+//    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+//    public companion object {
+//        public fun <R : Parcelable> Key(cls: KClass<out BaseRoute>, requestKey: String): Key<R> {
+//            return Key(DestinationId(cls), requestKey)
+//        }
+//    }
 }

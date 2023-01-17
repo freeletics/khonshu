@@ -116,7 +116,6 @@ public final class com/freeletics/mad/navigator/NavRouteKt {
 }
 
 public final class com/freeletics/mad/navigator/NavigationResultRequest : com/freeletics/mad/navigator/ResultOwner {
-	public static final field Companion Lcom/freeletics/mad/navigator/NavigationResultRequest$Companion;
 	public final fun getKey ()Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;
 }
 
@@ -145,6 +144,7 @@ public abstract interface class com/freeletics/mad/navigator/PermissionsResultRe
 }
 
 public final class com/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult$Denied : com/freeletics/mad/navigator/PermissionsResultRequest$PermissionResult {
+	public fun <init> (Z)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getShouldShowRationale ()Z
 	public fun hashCode ()I

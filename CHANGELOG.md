@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+## 0.11.0 **UNRELEASED**
+
+### Navigator
+
+- new `navigator-testing` artifact to test `NavEventNavigator`, [see docs](https://freeletics.github.io/mad/navigator/testing/)
+- `NavEvent` and other APIs that were marked as visible for testing are now marked as internal
+- compose navigation APIs are not annotated with `ExperimentalMaterialNavigationApi` anymore
+
+### StateMachine
+
+- new `state-machine-testing` artifact, [see docs](https://freeletics.github.io/mad/helpers/#statemachine)
+
+
 ## 0.10.1 *(2022-01-13)*
 
 ### Navigator
