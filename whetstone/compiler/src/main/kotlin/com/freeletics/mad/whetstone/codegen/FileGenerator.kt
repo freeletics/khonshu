@@ -18,6 +18,15 @@ import com.squareup.kotlinpoet.FileSpec
 
 public class FileGenerator{
 
+    public fun generate(data: BaseData): FileSpec {
+        return when(data) {
+            is ComposeFragmentData -> generate(data)
+            is ComposeScreenData -> generate(data)
+            is RendererFragmentData -> generate(data)
+            is NavEntryData -> throw IllegalArgumentException("Can't generate file for NavEntryData")
+        }
+    }
+
     public fun generate(data: ComposeScreenData): FileSpec {
         val componentGenerator = ComponentGenerator(data)
         val moduleGenerator = ModuleGenerator(data)

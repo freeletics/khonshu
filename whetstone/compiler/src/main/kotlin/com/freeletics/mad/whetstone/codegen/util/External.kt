@@ -68,7 +68,6 @@ internal val module = ClassName("dagger", "Module")
 
 // AndroidX
 internal val fragment = ClassName("androidx.fragment.app", "Fragment")
-internal val viewModel = ClassName("androidx.lifecycle", "ViewModel")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
 
 // Compose

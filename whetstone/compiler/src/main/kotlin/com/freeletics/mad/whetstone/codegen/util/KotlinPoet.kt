@@ -88,10 +88,6 @@ internal fun navEntryAnnotation(scope: ClassName, target: UseSiteTarget? = null)
         .build()
 }
 
-internal fun internalApiAnnotation(): AnnotationSpec {
-    return AnnotationSpec.builder(internalWhetstoneApi).build()
-}
-
 internal fun optInAnnotation(): AnnotationSpec {
     return optInAnnotation(internalWhetstoneApi)
 }

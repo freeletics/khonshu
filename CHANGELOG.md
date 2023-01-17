@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+## 0.11.0 **UNRELEASED**
+
+### Navigator
+
+- compose navigation APIs are not annotated with `ExperimentalMaterialNavigationApi` anymore
+
+### Whetstone
+
+- Internal: clean up and streamline code in the code generator
+
+
 ## 0.10.1 *(2022-01-13)*
 
 ### Navigator
