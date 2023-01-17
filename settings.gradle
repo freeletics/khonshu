@@ -10,9 +10,6 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
         google()
-        maven {
-            url "https://androidx.dev/storage/compose-compiler/repository/"
-        }
     }
 
     // https://youtrack.jetbrains.com/issue/KT-51379

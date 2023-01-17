@@ -5,6 +5,11 @@ import com.freeletics.mad.whetstone.ComposeScreenData
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.Navigation
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.INT
+import com.squareup.kotlinpoet.MAP
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.SET
+import com.squareup.kotlinpoet.STRING
 import org.junit.Test
 
 internal class FileGeneratorTestCompose {
@@ -515,7 +520,15 @@ internal class FileGeneratorTestCompose {
                 ComposableParameter(
                     name = "test",
                     typeName = ClassName("com.test.other", "TestClass2"),
-                )
+                ),
+                ComposableParameter(
+                    name = "testSet",
+                    typeName = SET.parameterizedBy(STRING)
+                ),
+                ComposableParameter(
+                    name = "testMap",
+                    typeName = MAP.parameterizedBy(STRING, INT)
+                ),
             )
         )
 
@@ -538,6 +551,8 @@ internal class FileGeneratorTestCompose {
                 sendAction: (TestAction) -> Unit,
                 testClass: TestClass,
                 test: TestClass2,
+                testSet: Set<String>,
+                testMap: Map<String, Int>,
             ) {}
         """.trimIndent()
 
@@ -560,8 +575,11 @@ internal class FileGeneratorTestCompose {
             import dagger.Module
             import dagger.multibindings.Multibinds
             import java.io.Closeable
+            import kotlin.Int
             import kotlin.OptIn
+            import kotlin.String
             import kotlin.Unit
+            import kotlin.collections.Map
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -577,6 +595,10 @@ internal class FileGeneratorTestCompose {
               public val testClass: TestClass
 
               public val test: TestClass2
+            
+              public val testSet: Set<String>
+
+              public val testMap: Map<String, Int>
 
               public val closeables: Set<Closeable>
     
@@ -621,6 +643,8 @@ internal class FileGeneratorTestCompose {
             private fun WhetstoneTest2(component: WhetstoneTest2Component): Unit {
               val testClass = component.testClass
               val test = component.test
+              val testSet = component.testSet
+              val testMap = component.testMap
               val stateMachine = component.testStateMachine
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -629,6 +653,8 @@ internal class FileGeneratorTestCompose {
                 Test2(
                   testClass = testClass,
                   test = test,
+                  testSet = testSet,
+                  testMap = testMap,
                   state = currentState,
                   sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )
