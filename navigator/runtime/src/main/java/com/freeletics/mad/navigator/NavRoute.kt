@@ -25,6 +25,10 @@ public interface NavRoute : BaseRoute
  */
 public interface NavRoot : BaseRoute
 
+// todo add docs
+// todo is this needed? would base route be a better fit?
+public interface StartDestination : BaseRoute
+
 /**
  * Represents the route to an `Activity`. Should be used through []
  */

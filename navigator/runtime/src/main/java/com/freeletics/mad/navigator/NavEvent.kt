@@ -41,6 +41,15 @@ public sealed interface NavEvent {
     ) : NavEvent
 
     /**
+     * Navigates to the given [startDestination].
+     */
+    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
+    @Poko
+    public class NavigateToStartDestinationEvent(
+        internal val startDestination: StartDestination,
+    ) : NavEvent
+
+    /**
      * Navigates to the given [route].
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)

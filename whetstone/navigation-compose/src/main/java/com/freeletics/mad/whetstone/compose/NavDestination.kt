@@ -40,3 +40,13 @@ public annotation class RootNavDestination(
     val root: KClass<out NavRoot>,
     val destinationScope: KClass<*>,
 )
+
+/**
+ * Like [NavDestination] but for a screen represented by a [StartNavDestination].
+ */
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+public annotation class StartNavDestination(
+    val startDestination: KClass<out StartNavDestination>,
+    val destinationScope: KClass<*>,
+)

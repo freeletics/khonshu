@@ -2,7 +2,6 @@ package com.freeletics.mad.navigator.internal
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -10,11 +9,12 @@ import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
-import kotlin.reflect.KClass
+import com.freeletics.mad.navigator.StartDestination
 
 @InternalNavigatorApi
 public class AndroidXNavigationExecutor(
-    private val controller: NavController
+    private val controller: NavController,
+    private val onStartDestinationChanged: (StartDestination) -> Unit
 ) : NavigationExecutor {
 
     override fun navigate(route: NavRoute) {
@@ -40,6 +40,10 @@ public class AndroidXNavigationExecutor(
             .setLaunchSingleTop(true)
             .build()
         controller.navigate(root.destinationId(), root.getArguments(), options)
+    }
+
+    override fun navigate(route: StartDestination) {
+        onStartDestinationChanged.invoke(route)
     }
 
     override fun navigateBack() {

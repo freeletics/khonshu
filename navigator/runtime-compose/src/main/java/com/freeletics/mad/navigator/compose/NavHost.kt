@@ -1,7 +1,6 @@
 package com.freeletics.mad.navigator.compose
 
 import androidx.navigation.compose.NavHost as AndroidXNavHost
-import android.content.Intent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetDefaults
 import androidx.compose.material.contentColorFor
@@ -9,7 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -69,9 +71,17 @@ public fun NavHost(
     bottomSheetContentColor: Color = contentColorFor(bottomSheetBackgroundColor),
     bottomSheetScrimColor: Color = ModalBottomSheetDefaults.scrimColor,
 ) {
+    var startDestination by remember {
+        mutableStateOf(startRoute)
+    }
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
-    val executor = remember(navController) { AndroidXNavigationExecutor(navController) }
+    val executor = remember(navController) {
+        AndroidXNavigationExecutor(
+            navController,
+            onStartDestinationChanged = { startDestination = it }
+        )
+    }
     val context = LocalContext.current
 
     if (destinationChangedCallback != null) {
@@ -88,14 +98,14 @@ public fun NavHost(
         }
     }
 
-    val graph = remember(navController, context, startRoute, destinations) {
+    val graph = remember(navController, context, startDestination, destinations, deepLinkHandlers) {
         context.findActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
 
         navController.navigatorProvider.addNavigator(CustomActivityNavigator(context))
         @Suppress("deprecation")
-        navController.createGraph(startDestination = startRoute.destinationId()) {
+        navController.createGraph(startDestination = startDestination.destinationId()) {
             destinations.forEach { destination ->
-                addDestination(navController, destination, startRoute)
+                addDestination(navController, destination, startDestination)
             }
         }
     }
