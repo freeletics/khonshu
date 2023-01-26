@@ -159,6 +159,9 @@ public abstract class com/freeletics/mad/navigator/ResultOwner {
 	public final fun getResults ()Lkotlinx/coroutines/flow/Flow;
 }
 
+public abstract interface class com/freeletics/mad/navigator/StartDestination : com/freeletics/mad/navigator/BaseRoute {
+}
+
 public final class com/freeletics/mad/navigator/internal/DeepLinkMatcherKt {
 }
 
