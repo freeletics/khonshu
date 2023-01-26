@@ -14,7 +14,7 @@ import com.freeletics.mad.navigator.StartDestination
 @InternalNavigatorApi
 public class AndroidXNavigationExecutor(
     private val controller: NavController,
-    private val onStartDestinationChanged: (StartDestination) -> Unit
+    private val onStartDestinationChanged: ((StartDestination) -> Unit)? = null,
 ) : NavigationExecutor {
 
     override fun navigate(route: NavRoute) {
@@ -43,7 +43,7 @@ public class AndroidXNavigationExecutor(
     }
 
     override fun navigate(route: StartDestination) {
-        onStartDestinationChanged.invoke(route)
+        onStartDestinationChanged?.invoke(route)
     }
 
     override fun navigateBack() {
