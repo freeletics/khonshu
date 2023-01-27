@@ -152,6 +152,12 @@ public open class NavEventNavigator {
         sendNavEvent(event)
     }
 
+    // todo add docs
+    public fun navigateToStartDestination(startDestination: StartDestination) {
+        val event = NavEvent.NavigateToStartDestinationEvent(startDestination)
+        sendNavEvent(event)
+    }
+
     /**
      * Triggers a new [NavEvent] that causes up navigation.
      */
