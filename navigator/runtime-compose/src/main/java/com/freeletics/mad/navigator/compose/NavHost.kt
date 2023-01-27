@@ -1,16 +1,16 @@
 package com.freeletics.mad.navigator.compose
 
-import androidx.navigation.compose.NavHost as AndroidXNavHost
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetDefaults
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
@@ -27,9 +27,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.get
 import com.freeletics.mad.navigator.BaseRoute
-import com.freeletics.mad.navigator.NavRoute
-
 import com.freeletics.mad.navigator.DeepLinkHandler
+import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
 import com.freeletics.mad.navigator.internal.CustomActivityNavigator
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
@@ -42,6 +41,7 @@ import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
+import androidx.navigation.compose.NavHost as AndroidXNavHost
 
 /**
  * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
@@ -98,10 +98,13 @@ public fun NavHost(
         }
     }
 
-    val graph = remember(navController, context, startDestination, destinations, deepLinkHandlers) {
-        context.findActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
+    navController.navigatorProvider.addNavigator(CustomActivityNavigator(context))
 
-        navController.navigatorProvider.addNavigator(CustomActivityNavigator(context))
+    LaunchedEffect(deepLinkHandlers, deepLinkPrefixes) {
+        context.findActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
+    }
+
+    val graph = remember(navController, context, startDestination, destinations, deepLinkHandlers) {
         @Suppress("deprecation")
         navController.createGraph(startDestination = startDestination.destinationId()) {
             destinations.forEach { destination ->
