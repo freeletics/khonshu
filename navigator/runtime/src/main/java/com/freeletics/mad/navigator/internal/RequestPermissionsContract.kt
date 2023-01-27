@@ -37,7 +37,6 @@ public class RequestPermissionsContract :
     }
 
     internal companion object {
-        @SuppressLint("VisibleForTests") // VisibleForTests(otherwise = INTERNAL) does not exist
         internal fun enrichResult(
             activity: Activity,
             resultMap: Map<String, Boolean>

@@ -30,6 +30,7 @@ nav:
           - 'Runtime': navigator/API/runtime/index.html
           - 'Runtime Compose': navigator/API/runtime-compose/index.html
           - 'Runtime Fragment': navigator/API/runtime-fragment/index.html
+          - 'Testing': navigator/API/testing/index.html
   - 'Whetstone':
       - whetstone/get-started.md
       - whetstone/navigation.md
@@ -45,6 +46,7 @@ nav:
       - helpers.md
       - 'API':
           - 'StateMachine': helpers/API/state-machine/index.html
+          - 'StateMachineTesting': helpers/API/state-machine-testing/index.html
           - 'TextResource': helpers/API/text-resource/index.html
   - changelog.md
 

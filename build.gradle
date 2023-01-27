@@ -120,7 +120,6 @@ apiValidation {
     ignoredProjects += ["compiler"]
 
     nonPublicMarkers += [
-        "androidx.annotation.VisibleForTesting",
         "com.freeletics.mad.navigator.internal.InternalNavigatorApi",
         "com.freeletics.mad.whetstone.internal.InternalWhetstoneApi",
     ]

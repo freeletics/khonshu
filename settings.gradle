@@ -16,10 +16,9 @@ dependencyResolutionManagement {
     // repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 }
 
-
-include ":navigator:androidx-nav"
-include ":navigator:runtime", ":navigator:runtime-compose", ":navigator:runtime-fragment"
-include ":state-machine"
+include ":navigator:runtime", ":navigator:testing"
+include ":navigator:androidx-nav", ":navigator:runtime-compose", ":navigator:runtime-fragment"
+include ":state-machine", ":state-machine:testing"
 include ":text-resource"
 include ":whetstone:compiler", ":whetstone:compiler-test"
 include ":whetstone:runtime", ":whetstone:runtime-compose", ":whetstone:runtime-fragment"
