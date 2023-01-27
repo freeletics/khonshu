@@ -96,8 +96,7 @@ public interface NavigatorTurbine {
      * Assert that the next event received was an "up" navigation event. This function
      * will suspend if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitNavigateUp()
 
