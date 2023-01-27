@@ -12,7 +12,6 @@ Change Log
 ### StateMachine
 
 - new `state-machine-testing` artifact, [see docs](https://freeletics.github.io/mad/helpers/#statemachine)
-- compose navigation APIs are not annotated with `ExperimentalMaterialNavigationApi` anymore
 
 ### Whetstone
 
