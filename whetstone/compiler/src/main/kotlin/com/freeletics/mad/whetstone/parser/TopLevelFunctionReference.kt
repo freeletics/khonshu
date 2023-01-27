@@ -1,4 +1,4 @@
-package com.freeletics.mad.whetstone.codegen.util
+package com.freeletics.mad.whetstone.parser
 
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.api.AnvilCompilationException
