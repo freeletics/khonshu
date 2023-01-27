@@ -96,6 +96,7 @@ public class com/freeletics/mad/navigator/NavEventNavigator {
 	public final fun navigateTo (Lcom/freeletics/mad/navigator/NavRoute;)V
 	public final fun navigateToRoot (Lcom/freeletics/mad/navigator/NavRoot;ZZ)V
 	public static synthetic fun navigateToRoot$default (Lcom/freeletics/mad/navigator/NavEventNavigator;Lcom/freeletics/mad/navigator/NavRoot;ZZILjava/lang/Object;)V
+	public final fun navigateToStartDestination (Lcom/freeletics/mad/navigator/StartDestination;)V
 	public final fun navigateUp ()V
 	protected final fun registerForActivityResult (Landroidx/activity/result/contract/ActivityResultContract;)Lcom/freeletics/mad/navigator/ActivityResultRequest;
 	public final fun registerForNavigationResult-Enyiqp0 (Lkotlin/reflect/KClass;Ljava/lang/String;)Lcom/freeletics/mad/navigator/NavigationResultRequest;
