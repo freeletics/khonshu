@@ -2,6 +2,7 @@ package com.freeletics.mad.whetstone.compose
 
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
+import com.freeletics.mad.navigator.StartDestination
 import kotlin.reflect.KClass
 
 /**
@@ -47,6 +48,6 @@ public annotation class RootNavDestination(
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class StartNavDestination(
-    val startDestination: KClass<out StartNavDestination>,
+    val startDestination: KClass<out StartDestination>,
     val destinationScope: KClass<*>,
 )
