@@ -5,6 +5,11 @@ import com.freeletics.mad.whetstone.ComposeFragmentData
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.Navigation
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.INT
+import com.squareup.kotlinpoet.MAP
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.SET
+import com.squareup.kotlinpoet.STRING
 import org.junit.Test
 
 internal class FileGeneratorTestComposeFragment {
@@ -720,12 +725,20 @@ internal class FileGeneratorTestComposeFragment {
             composableParameter = listOf(
                 ComposableParameter(
                     name = "testClass",
-                    className = ClassName("com.test", "TestClass"),
+                    typeName = ClassName("com.test", "TestClass"),
                 ),
                 ComposableParameter(
                     name = "test",
-                    className = ClassName("com.test.other", "TestClass2"),
-                )
+                    typeName = ClassName("com.test.other", "TestClass2"),
+                ),
+                ComposableParameter(
+                    name = "testSet",
+                    typeName = SET.parameterizedBy(STRING)
+                ),
+                ComposableParameter(
+                    name = "testMap",
+                    typeName = MAP.parameterizedBy(STRING, INT)
+                ),
             )
         )
 
@@ -748,6 +761,8 @@ internal class FileGeneratorTestComposeFragment {
               sendAction: (TestAction) -> Unit,
                 testClass: TestClass,
                 test: TestClass2,
+                testSet: Set<String>,
+                testMap: Map<String, Int>,
             ) {}
         """.trimIndent()
 
@@ -776,8 +791,11 @@ internal class FileGeneratorTestComposeFragment {
             import dagger.Module
             import dagger.multibindings.Multibinds
             import java.io.Closeable
+            import kotlin.Int
             import kotlin.OptIn
+            import kotlin.String
             import kotlin.Unit
+            import kotlin.collections.Map
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -792,7 +810,11 @@ internal class FileGeneratorTestComposeFragment {
 
               public val testClass: TestClass
 
-              public val testClass2: TestClass2
+              public val test: TestClass2
+            
+              public val testSet: Set<String>
+
+              public val testMap: Map<String, Int>
 
               public val closeables: Set<Closeable>
     
@@ -852,7 +874,9 @@ internal class FileGeneratorTestComposeFragment {
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest2(component: WhetstoneTest2Component): Unit {
               val testClass = component.testClass
-              val testClass2 = component.testClass2
+              val test = component.test
+              val testSet = component.testSet
+              val testMap = component.testMap
               val stateMachine = component.testStateMachine
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -860,7 +884,9 @@ internal class FileGeneratorTestComposeFragment {
                 val scope = rememberCoroutineScope()
                 Test2(
                   testClass = testClass,
-                  test = testClass2,
+                  test = test,
+                  testSet = testSet,
+                  testMap = testMap,
                   state = currentState,
                   sendAction = { scope.launch { stateMachine.dispatch(it) } },
                 )

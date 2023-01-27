@@ -6,7 +6,10 @@ import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionAnnotationReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.FunctionReference
+import com.squareup.anvil.compiler.internal.reference.MemberFunctionReference
+import com.squareup.anvil.compiler.internal.reference.MemberPropertyReference
 import com.squareup.anvil.compiler.internal.reference.PropertyReference
+import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.argumentAt
 import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.kotlinpoet.ClassName
@@ -40,8 +43,8 @@ internal val AnnotatedReference.packageName: String
     get() = when (this) {
         is ClassReference -> packageName
         is TopLevelFunctionReference -> packageName
-        is PropertyReference -> declaringClass.packageName
-        is FunctionReference -> declaringClass.packageName
+        is MemberPropertyReference -> declaringClass.packageName
+        is MemberFunctionReference -> declaringClass.packageName
         else -> throw UnsupportedOperationException("Can't retrieve packageName for $this")
     }
 

@@ -7,6 +7,7 @@ import com.freeletics.mad.whetstone.codegen.util.composeNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.composeRootNavDestinationFqName
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
+import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun TopLevelFunctionReference.toComposeScreenData(): ComposeScreenData? {
