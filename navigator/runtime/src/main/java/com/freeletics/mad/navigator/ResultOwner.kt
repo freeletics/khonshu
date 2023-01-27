@@ -151,10 +151,4 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
     }
 
     // TODO: remove after introducing a testing artifact
-//    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-//    public companion object {
-//        public fun <R : Parcelable> Key(cls: KClass<out BaseRoute>, requestKey: String): Key<R> {
-//            return Key(DestinationId(cls), requestKey)
-//        }
-//    }
 }

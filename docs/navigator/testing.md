@@ -3,7 +3,7 @@
 The library has an optional test artifact that provides an additional test artifact that makes
 it possible to test navigation logic through `NavEventNavigator` without running on an Android 
 device or emulator. The test artifact is heavily inspired by the 
-[Turbine library](https://github.com/cashapp/turbine) and also used it internally.
+[Turbine library](https://github.com/cashapp/turbine) and is also using it internally.
 
 
 ## Dependency
@@ -97,5 +97,5 @@ the request succeeding.
 
 ## Navigation result senders
 
-When testing a component that delivers navigation results a `NavigationResultRequest.Key` is usally
+When testing a component that delivers navigation results a `NavigationResultRequest.Key` is usually
 required. Tests can obtain such a key with the `fakeNavigationResultKey` helper method.

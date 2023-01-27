@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 
 /**
- * A navigator TODO
  * This allows to trigger navigation actions from outside the view layer
  * without keeping references to Android framework classes that might leak. It also improves
  * the testability of your navigation logic since it is possible to just write test that

@@ -55,16 +55,14 @@ public interface StateMachineTurbine<State : Any, Action : Any> {
      * Assert that the next event received was a new state. This function will suspend
      * if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitState(): State
 
     /**
      * Cancel this [StateMachineTurbine].
      *
-     * Throws:
-     * AssertionError - if there are any unconsumed events.
+     * @throws AssertionError - if there are any unconsumed events.
      */
     public suspend fun cancel()
 

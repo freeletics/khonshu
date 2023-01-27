@@ -68,8 +68,7 @@ public interface NavigatorTurbine {
      * Assert that the next event received was a navigation event to the given [route]. This function
      * will suspend if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitNavigateTo(route: NavRoute)
 
@@ -77,8 +76,7 @@ public interface NavigatorTurbine {
      * Assert that the next event received was a navigation event to the given [root]. This function
      * will suspend if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitNavigateToRoot(
         root: NavRoot,
@@ -90,8 +88,7 @@ public interface NavigatorTurbine {
      * Assert that the next event received was a navigation event to the given [route]. This function
      * will suspend if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitNavigateTo(route: ActivityRoute)
 
@@ -108,8 +105,7 @@ public interface NavigatorTurbine {
      * Assert that the next event received was a back navigation event. This function
      * will suspend if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitNavigateBack()
 
@@ -117,8 +113,7 @@ public interface NavigatorTurbine {
      * Assert that the next event received was a "back to" navigation event with matching parameters.
      * This function will suspend if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun <T: BaseRoute> awaitNavigateBackTo(
         popUpTo: KClass<T>,
@@ -129,8 +124,7 @@ public interface NavigatorTurbine {
      * Assert that the next event received was a navigate for result event to [request].
      * This function will suspend if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitNavigateForResult(request: ActivityResultRequest<Void?, *>)
 
@@ -138,8 +132,7 @@ public interface NavigatorTurbine {
      * Assert that the next event received was a navigate for result event to [request].
      * This function will suspend if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun <I> awaitNavigateForResult(request: ActivityResultRequest<I, *>, input: I)
 
@@ -147,8 +140,7 @@ public interface NavigatorTurbine {
      * Assert that the next event received was a permission request. This function will suspend
      * if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitRequestPermissions(
         request: PermissionsResultRequest,
@@ -159,8 +151,7 @@ public interface NavigatorTurbine {
      * Assert that the next event received was a permission request. This function will suspend
      * if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitRequestPermissions(
         request: PermissionsResultRequest,
@@ -171,8 +162,7 @@ public interface NavigatorTurbine {
      * Assert that the next event received was a navigation result. This function will suspend
      * if no events have been received.
      *
-     * Throws:
-     * AssertionError - if the next event was not a matching event.
+     * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun <O : Parcelable> awaitNavigationResult(
         key: NavigationResultRequest.Key<O>,
@@ -182,8 +172,7 @@ public interface NavigatorTurbine {
     /**
      * Cancel this [NavigatorTurbine].
      *
-     * Throws:
-     * AssertionError - if there are any unconsumed events.
+     * @throws AssertionError - if there are any unconsumed events.
      */
     public suspend fun cancel()
 
