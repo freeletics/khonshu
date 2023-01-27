@@ -5,7 +5,13 @@ Change Log
 
 ### Navigator
 
+- new `navigator-testing` artifact to test `NavEventNavigator`, [see docs](https://freeletics.github.io/mad/navigator/testing/)
+- `NavEvent` and other APIs that were marked as visible for testing are now marked as internal
 - compose navigation APIs are not annotated with `ExperimentalMaterialNavigationApi` anymore
+
+### StateMachine
+
+- new `state-machine-testing` artifact, [see docs](https://freeletics.github.io/mad/helpers/#statemachine)
 
 ### Whetstone
 
@@ -18,6 +24,8 @@ Change Log
     classes, the `NavRoute` or `NavRoot` serves both purposes
   - the previous point means that the same `route` will also need to be used in any place that that
     requires scope markers like `@ScopeTo`, `@ContributesTo` or `@ContributesBinding`  
+- support for Anvil 2.4.4
+- injecting into `Composable` functions now supports generic types
 - Internal: clean up and streamline code in the code generator
 
 

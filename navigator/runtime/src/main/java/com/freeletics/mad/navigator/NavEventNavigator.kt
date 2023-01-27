@@ -3,8 +3,6 @@ package com.freeletics.mad.navigator
 import android.os.Parcelable
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.annotation.VisibleForTesting
-import androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE
 import com.freeletics.mad.navigator.NavEvent.ActivityResultEvent
 import com.freeletics.mad.navigator.NavEvent.BackEvent
 import com.freeletics.mad.navigator.NavEvent.BackToEvent
@@ -22,9 +20,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 
 /**
- * A navigator that allows to fire [events][NavEvent] through it's methods. These
- * events are publicly exposed through the [navEvents] [Flow] that can be collected and acted upon
- * by a `NavigationHandler`. This allows to trigger navigation actions from outside the view layer
+ * This allows to trigger navigation actions from outside the view layer
  * without keeping references to Android framework classes that might leak. It also improves
  * the testability of your navigation logic since it is possible to just write test that
  * the correct events were emitted.
@@ -37,10 +33,7 @@ public open class NavEventNavigator {
 
     private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
 
-    /**
-     * A [Flow] to collect [NavEvents][NavEvent] produced by this navigator.
-     */
-    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
+    @InternalNavigatorApi
     public val navEvents: Flow<NavEvent> = flow {
         for (result in _navEvents) {
             emit(result)
@@ -183,21 +176,21 @@ public open class NavEventNavigator {
     }
 
     /**
-     * Triggers a new [NavEvent] that launches the given [launcher].
+     * Triggers a new [NavEvent] that launches the given [request].
      *
-     * The [launcher] can be obtained by calling [registerForActivityResult].
+     * The [request] can be obtained by calling [registerForActivityResult].
      */
-    public fun navigateForResult(launcher: ActivityResultRequest<Void?, *>) {
-        navigateForResult(launcher, null)
+    public fun navigateForResult(request: ActivityResultRequest<Void?, *>) {
+        navigateForResult(request, null)
     }
 
     /**
-     * Triggers a new [NavEvent] that launches the given [launcher] with the given [input].
+     * Triggers a new [NavEvent] that launches the given [request] with the given [input].
      *
-     * The [launcher] can be obtained by calling [registerForActivityResult].
+     * The [request] can be obtained by calling [registerForActivityResult].
      */
-    public fun <I> navigateForResult(launcher: ActivityResultRequest<I, *>, input: I) {
-        val event = ActivityResultEvent(launcher, input)
+    public fun <I> navigateForResult(request: ActivityResultRequest<I, *>, input: I) {
+        val event = ActivityResultEvent(request, input)
         sendNavEvent(event)
     }
 
@@ -296,6 +289,6 @@ public open class NavEventNavigator {
             return _navigationResultRequests.toList()
         }
 
-    @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
+    @InternalNavigatorApi
     public val onBackPressedCallback: OnBackPressedCallback get() = _onBackPressedCallback
 }

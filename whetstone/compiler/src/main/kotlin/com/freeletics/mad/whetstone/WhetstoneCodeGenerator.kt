@@ -5,7 +5,6 @@ import com.freeletics.mad.whetstone.parser.toComposeFragmentData
 import com.freeletics.mad.whetstone.parser.toComposeFragmentDestinationData
 import com.freeletics.mad.whetstone.parser.toComposeScreenData
 import com.freeletics.mad.whetstone.parser.toComposeScreenDestinationData
-import com.freeletics.mad.whetstone.parser.toFunctionReference
 import com.freeletics.mad.whetstone.parser.toRendererFragmentData
 import com.freeletics.mad.whetstone.parser.toRendererFragmentDestinationData
 import com.google.auto.service.AutoService
@@ -15,10 +14,10 @@ import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.api.GeneratedFile
 import com.squareup.anvil.compiler.api.createGeneratedFile
 import com.squareup.anvil.compiler.internal.reference.classAndInnerClassReferences
+import com.squareup.anvil.compiler.internal.reference.topLevelFunctionReferences
 import java.io.File
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.psi.KtNamedFunction
 
 @OptIn(ExperimentalAnvilApi::class)
 @AutoService(CodeGenerator::class)
@@ -32,8 +31,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         projectFiles: Collection<KtFile>
     ): Collection<GeneratedFile> {
         val compose = projectFiles
-            .flatMap { it.declarations.filterIsInstance<KtNamedFunction>() }
-            .map { it.toFunctionReference(module) }
+            .topLevelFunctionReferences(module)
             .mapNotNull {
                 it.toComposeScreenDestinationData() ?:
                     it.toComposeScreenData() ?:

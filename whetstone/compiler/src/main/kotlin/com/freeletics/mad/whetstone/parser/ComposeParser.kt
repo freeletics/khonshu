@@ -11,6 +11,7 @@ import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.api.GeneratedFile
 import com.squareup.anvil.compiler.api.createGeneratedFile
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
+import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun TopLevelFunctionReference.toComposeScreenData(): ComposeScreenData? {

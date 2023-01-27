@@ -15,6 +15,12 @@ to it by simply launching them from a `CoroutineScope` created with `rememberCor
 implementation("com.freeletics.mad:state-machine:<latest-version>")
 ```
 
+Additionally there is a test artifact that provides `StateMachine.test` and `StateMachine.testIn`
+extension functions.
+
+```groovy
+testImplementation("com.freeletics.mad:state-machine-testing:<latest-version>")
+```
 
 ## TextResource
 

@@ -9,6 +9,7 @@ import com.freeletics.mad.whetstone.codegen.util.fragmentDialogDestination
 import com.freeletics.mad.whetstone.codegen.util.fragmentScreenDestination
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.MemberName
+import com.squareup.kotlinpoet.TypeName
 
 public sealed interface BaseData {
     public val baseName: String
@@ -29,7 +30,7 @@ public sealed interface ComposeData : BaseData {
 
 public data class ComposableParameter(
     public val name: String,
-    public val className: ClassName
+    public val typeName: TypeName
 )
 
 public data class ComposeScreenData(
@@ -123,7 +124,7 @@ public sealed interface Navigation {
     ) : Navigation {
         override val destinationClass: ClassName = fragmentDestination
 
-        override val destinationMethod: MemberName? = when(destinationType) {
+        override val destinationMethod: MemberName = when(destinationType) {
             "SCREEN" -> fragmentScreenDestination
             "DIALOG" -> fragmentDialogDestination
             else -> throw IllegalArgumentException("Unknown destinationType $destinationType")

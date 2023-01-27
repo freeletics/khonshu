@@ -34,7 +34,7 @@ internal class ComposeGenerator(
         return CodeBlock.builder()
             .apply {
                 data.composableParameter.forEach { parameter ->
-                    addStatement("val %L = component.%L", parameter.className.propertyName, parameter.className.propertyName)
+                    addStatement("val %L = component.%L", parameter.name, parameter.name)
                 }
             }
             .addStatement("val stateMachine = component.%L", data.stateMachine.propertyName)
@@ -45,7 +45,7 @@ internal class ComposeGenerator(
             .addStatement("%L(", data.baseName)
             .apply {
                 data.composableParameter.forEach { parameter ->
-                    addStatement("  %L = %L,", parameter.name, parameter.className.propertyName)
+                    addStatement("  %L = %L,", parameter.name, parameter.name)
                 }
             }
             .addStatement("  state = currentState,")

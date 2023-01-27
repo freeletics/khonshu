@@ -15,7 +15,6 @@ import com.freeletics.mad.navigator.PermissionsResultRequest
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract.Companion.enrichResult
 import kotlinx.parcelize.Parcelize
 
-@SuppressLint("VisibleForTests") // VisibleForTests(otherwise = INTERNAL) does not exist
 @InternalNavigatorApi
 public suspend fun NavEventNavigator.collectAndHandleNavEvents(
     lifecycle: Lifecycle,
@@ -67,7 +66,6 @@ private fun NavigationExecutor.navigate(
 }
 
 @InternalNavigatorApi
-@SuppressLint("VisibleForTests") // VisibleForTests(otherwise = INTERNAL) does not exist
 @Suppress("UNCHECKED_CAST")
 public fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(activity: Activity, result: O) {
     when(this) {
@@ -76,7 +74,6 @@ public fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(activity: Activi
     }
 }
 
-@SuppressLint("VisibleForTests") // VisibleForTests(otherwise = INTERNAL) does not exist
 @InternalNavigatorApi
 public suspend fun <R : Parcelable> NavigationExecutor.collectAndHandleNavigationResults(
     request: NavigationResultRequest<R>,

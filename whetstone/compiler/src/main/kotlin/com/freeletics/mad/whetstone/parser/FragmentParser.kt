@@ -10,6 +10,7 @@ import com.freeletics.mad.whetstone.codegen.util.rendererFragmentDestinationFqNa
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.ClassReference
+import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.toRendererFragmentData(): RendererFragmentData? {
