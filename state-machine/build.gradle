@@ -8,6 +8,7 @@ kotlin {
     explicitApi()
 
     jvm()
+    js { nodeJs() }
     iosArm32()
     iosArm64()
     iosSimulatorArm64()
