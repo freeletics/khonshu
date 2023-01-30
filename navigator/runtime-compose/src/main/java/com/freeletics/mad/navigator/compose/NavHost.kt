@@ -69,20 +69,21 @@ public fun NavHost(
     bottomSheetElevation: Dp = ModalBottomSheetDefaults.Elevation,
     bottomSheetBackgroundColor: Color = MaterialTheme.colors.surface,
     bottomSheetContentColor: Color = contentColorFor(bottomSheetBackgroundColor),
-    bottomSheetScrimColor: Color = ModalBottomSheetDefaults.scrimColor,
+    bottomSheetScrimColor: Color = ModalBottomSheetDefaults.scrimColor
 ) {
+    val context = LocalContext.current
     var startDestination by remember {
         mutableStateOf(startRoute)
     }
     val bottomSheetNavigator = rememberBottomSheetNavigator()
-    val navController = rememberNavController(bottomSheetNavigator)
+    val customActivityNavigator = remember(context) { CustomActivityNavigator(context) }
+    val navController = rememberNavController(bottomSheetNavigator, customActivityNavigator)
     val executor = remember(navController) {
         AndroidXNavigationExecutor(
             navController,
             onStartDestinationChanged = { startDestination = it }
         )
     }
-    val context = LocalContext.current
 
     if (destinationChangedCallback != null) {
         DisposableEffect(key1 = destinationChangedCallback) {
@@ -98,13 +99,11 @@ public fun NavHost(
         }
     }
 
-    navController.navigatorProvider.addNavigator(CustomActivityNavigator(context))
-
-    LaunchedEffect(deepLinkHandlers, deepLinkPrefixes) {
+    LaunchedEffect(deepLinkHandlers, deepLinkPrefixes, context) {
         context.findActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
     }
 
-    val graph = remember(navController, context, startDestination, destinations, deepLinkHandlers) {
+    val graph = remember(navController, startDestination, destinations) {
         @Suppress("deprecation")
         navController.createGraph(startDestination = startDestination.destinationId()) {
             destinations.forEach { destination ->
@@ -120,7 +119,7 @@ public fun NavHost(
             sheetElevation = bottomSheetElevation,
             sheetBackgroundColor = bottomSheetBackgroundColor,
             sheetContentColor = bottomSheetContentColor,
-            scrimColor = bottomSheetScrimColor,
+            scrimColor = bottomSheetScrimColor
         ) {
             AndroidXNavHost(navController, graph)
         }
@@ -133,7 +132,7 @@ public fun NavHost(
 private fun NavGraphBuilder.addDestination(
     controller: NavController,
     destination: NavDestination,
-    startRoute: BaseRoute,
+    startRoute: BaseRoute
 ) {
     val newDestination = when (destination) {
         is ScreenDestination<*> -> destination.toDestination(controller, startRoute)
@@ -146,7 +145,7 @@ private fun NavGraphBuilder.addDestination(
 
 private fun <T : BaseRoute> ScreenDestination<T>.toDestination(
     controller: NavController,
-    startRoute: BaseRoute,
+    startRoute: BaseRoute
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
     return ComposeNavigator.Destination(navigator) { screenContent(it.arguments.requireRoute()) }.also {
@@ -166,7 +165,7 @@ private fun <T : BaseRoute> ScreenDestination<T>.toDestination(
 }
 
 private fun <T : NavRoute> DialogDestination<T>.toDestination(
-    controller: NavController,
+    controller: NavController
 ): DialogNavigator.Destination {
     val navigator = controller.navigatorProvider[DialogNavigator::class]
     return DialogNavigator.Destination(navigator) { dialogContent(it.arguments.requireRoute()) }.also {
@@ -178,7 +177,7 @@ private fun <T : NavRoute> DialogDestination<T>.toDestination(
 // if those stay unused this method is never called, so we swallow the warning here
 @OptIn(ExperimentalMaterialNavigationApi::class)
 private fun <T : NavRoute> BottomSheetDestination<T>.toDestination(
-    controller: NavController,
+    controller: NavController
 ): BottomSheetNavigator.Destination {
     val navigator = controller.navigatorProvider[BottomSheetNavigator::class]
     return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(it.arguments.requireRoute()) }.also {
@@ -187,7 +186,7 @@ private fun <T : NavRoute> BottomSheetDestination<T>.toDestination(
 }
 
 private fun ActivityDestination.toDestination(
-    controller: NavController,
+    controller: NavController
 ): CustomActivityNavigator.Destination {
     val navigator = controller.navigatorProvider[CustomActivityNavigator::class]
     return CustomActivityNavigator.Destination(navigator).also {
