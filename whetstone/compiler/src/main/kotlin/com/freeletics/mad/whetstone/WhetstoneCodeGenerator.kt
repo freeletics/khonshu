@@ -7,6 +7,7 @@ import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.composeNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.composeRootNavDestinationFqName
+import com.freeletics.mad.whetstone.codegen.util.composeStartNavDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.findAnnotation
 import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.fragmentNavDestinationFqName
@@ -182,6 +183,16 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         if (rootNavigation != null) {
             val route = rootNavigation.requireClassArgument("root", 0)
             val destinationScope = rootNavigation.requireClassArgument("destinationScope", 1)
+            return Navigation.Compose(
+                route = route,
+                destinationType = "SCREEN",
+                destinationScope = destinationScope,
+            )
+        }
+        val startNavigation = declaration.findAnnotation(composeStartNavDestinationFqName)
+        if (startNavigation != null) {
+            val route = startNavigation.requireClassArgument("startDestination", 0)
+            val destinationScope = startNavigation.requireClassArgument("destinationScope", 1)
             return Navigation.Compose(
                 route = route,
                 destinationType = "SCREEN",
