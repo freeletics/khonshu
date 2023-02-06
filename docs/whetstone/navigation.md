@@ -30,16 +30,23 @@ on the appropriate `whetstone-navigation` artifact needs to be added:
 
 ## Basic usage
 
-Add the additional `@NavDestination` annotation next to the general Whetstone annotation
-to activate the navigator integration.
-
 === "Compose"
 
+    Instead of adding the `@ComposeScreen` annotation use `@ComposeDestination`. The `scope`
+    parameter is replaced by a `route` parameter. The given `route` will be used both as a 
+    scope marker and to generate a `NavDestination` for this screen.
+
+    Additionally there is a `destinationType` parameter to determine whether the 
+    annotated composable is a screen or the content of a dialog or bottom sheet and a 
+    `destinationScope` parameter that determines to which component the `NavDestination` is 
+    contributed to.
+
     ```kotlin
-    @ComposeScreen(...) // same as in general guide
-    @NavDestination(
+    @ComposeDestination(
         route = ExampleRoute::class,
-        type = DestinationType.SCREEN,
+        parentScope = AppScope::class,
+        stateMachine = ExampleStateMachine::class,
+        destinationType = DestintionType.SCREEN,
         destinationScope = AppScope::class,
     )
     @Composable
@@ -48,11 +55,21 @@ to activate the navigator integration.
 
 === "Compose with Fragments"
 
+    Instead of adding the `@ComposeFragment` annotation use `@ComposeDestination`. The `scope`
+    parameter is replaced by a `route` parameter. The given `route` will be used both as a 
+    scope marker and to generate a `NavDestination` for this screen.
+
+    Additionally there is a `destinationType` parameter to determine whether the 
+    annotated composable is a screen or the content of a dialog or bottom sheet and a 
+    `destinationScope` parameter that determines to which component the `NavDestination` is 
+    contributed to.
+
     ```kotlin
-    @ComposeFragment(...) // same as in general guide
-    @NavDestination(
+    @ComposeDestination(
         route = ExampleRoute::class,
-        type = DestinationType.SCREEN,
+        parentScope = AppScope::class,
+        stateMachine = ExampleStateMachine::class,
+        destinationType = DestintionType.SCREEN,
         destinationScope = AppScope::class,
     )
     @Composable
@@ -60,35 +77,42 @@ to activate the navigator integration.
     ```
 === "Views with Fragments"
 
+    Instead of adding the `@RendererFragment` annotation use `@RendererDestination`. The `scope`
+    parameter is replaced by a `route` parameter. The given `route` will be used both as a 
+    scope marker and to generate a `NavDestination` for this screen.
+
+    Additionally there is a `destinationType` parameter to determine whether the 
+    annotated composable is a screen or the content of a dialog or bottom sheet and a 
+    `destinationScope` parameter that determines to which component the `NavDestination` is 
+    contributed to.
+
     ```kotlin
-    @RendererFragment(...)  // same as in general guide
-    @NavDestination(
+    @RendererDestination(
         route = ExampleRoute::class,
-        type = DestinationType.SCREEN,
+        parentScope = AppScope::class,
+        stateMachine = ExampleStateMachine::class,
+        destinationType = DestintionType.SCREEN,
         destinationScope = AppScope::class,
+        rendererFactory = ExampleRenderer.Factory::class,
     )
     internal class ExampleRenderer ... // same as in general guide
     ```
 
-The `route` parameter needs to reference the `NavRoute` class that is used
-to navigate to the screen with the annotated UI. The instance of `NavRoute`
-that was passed to the screen when navigating to it will be automatically
-available in the generated component, so it can be injected into the state
-machine or other classes to read given parameters.
+The instance of `NavRoute` that was passed to the screen when navigating to 
+it will be automatically available in the generated component, so it can be 
+injected into the state machine or other classes to read given parameters.
 
-When the `NavDestination` is added Whetstone also expects a `NavEventNavigator`
+The generated `NavDestination` for the screen that uses `route` and `destinationType`
+will be provided in to a `Set` in the component that uses `destinationScope` as its
+scope (usually an app wide or an Activity level scope). With that it's not necessary
+to manually create a `Set` of all destinations anymore. It can simply be injected.
+
+The Whetstone navigation integration also expects a `NavEventNavigator`
 to be injectable. This can be easily achieved by adding
 `@ScopeTo(ExampleScope::class) @ContributesBinding(ExampleScope::class, NavEventNavigator::class)`
 to a subclass of it. Whetstone will automatically take care of setting up
 the navigator by calling `NavigationSetup` for compose and `handleNavigation`
 for Fragments inside the generated code.
-
-The last part of the integration is that Whetstone will automatically generate
-a `NavDestination` for the screen by using the `route` and `type`. This
-generated destination is automatically provided into a `Set` in the component
-that uses `destinationScope` as its scope (usually an app wide or Activity
-level scope). With that it's not necessary to manually create a `Set`
-of all destinations anymore. It can simply be injected.
 
 
 ## Example
@@ -97,11 +121,8 @@ This is a minimal example of how using Whetstone for a screen with the Navigator
 would look like.
 
 ```kotlin
-// marker class for the scope
-sealed interface ExampleScope
-
 // state machine survives orientation changes
-@ScopeTo(ExampleScope::class)
+@ScopeTo(ExampleRoute::class)
 internal class ExampleStateMachine @Inject constructor(
     val route: ExampleRoute, // inject the navigator route that was used to get to this screen
     val repository: ExampleRepository, // a repository that pas provided somewhere in the app
@@ -110,10 +131,10 @@ internal class ExampleStateMachine @Inject constructor(
 }
 
 // scope the navigator so that everything interacts with the same instance
-@ScopeTo(ExampleScope::class)
+@ScopeTo(ExampleRoute::class)
 // make ExampleNavigator available as NavEventNavigator so that the generated code can automatically
 // set up the navigation handling
-@ContributesBinding(ExampleScope::class, NavEventNavigator::class)
+@ContributesBinding(ExampleRoute::class, NavEventNavigator::class)
 class ExampleNavigator @Inject constructor() : NavEventNavigator() {
     // ... 
 }
@@ -122,14 +143,11 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
 === "Compose"
 
     ```kotlin
-    @ComposeScreen(
-        scope = ExampleScope::class, // uses our marker class
+    @ComposeDestination(
+        route = ExampleRoute::class, // the route used to navigate to ExampleUi
         parentScope = AppScope::class, // the scope of the app level component
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
-    )
-    @NavDestination(
-        route = ExampleRoute::class, // the route used to navigate to ExampleUi
-        type = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet
+        destinationType = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet
         destinationScope = AppScope::class, // contribute the generated destination to AppScope
     )
     @Composable
@@ -144,14 +162,11 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
 === "Compose with Fragments"
 
     ```kotlin
-    @ComposeFragment(
-        scope = ExampleScope::class, // uses our marker class
+    @ComposeDestination(
+        route = ExampleRoute::class, // the route used to navigate to ExampleUi
         parentScope = AppScope::class, // the scope of the app level component
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
-    )
-    @NavDestination(
-        route = ExampleRoute::class, // the route used to navigate to ExampleUi
-        type = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet
+        destinationType = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet
         destinationScope = AppScope::class, // contribute the generated destination to AppScope
     )
     @Composable
@@ -166,15 +181,12 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
 === "Views with Fragments"
 
     ```kotlin
-    @RendererFragment(
-        scope = ExampleScope::class, // uses our marker class
+    @RendererDestination(
+        route = ExampleRoute::class, // the route used to navigate to ExampleRenderer
         parentScope = AppScope::class, // the scope of the app level component
         rendererFactory = ExampleRenderer.Factory::class, // references the factory below
-        stateMachine = ExampleStateMachine::class, // the state machine used for this ui
-    )
-    @NavDestination(
-        route = ExampleRoute::class, // the route used to navigate to ExampleUi
-        type = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet
+        stateMachine = ExampleStateMachine::class, // the state machine used fo
+        destinationType = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet
         destinationScope = AppScope::class, // contribute the generated destination to AppScope
     )
     internal class ExampleRenderer @AssistedInject constructor(

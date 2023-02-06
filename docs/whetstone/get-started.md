@@ -128,8 +128,8 @@ it falls into the `Fragment` category.
     @RendererFragment(
         scope = ExampleScope::class,
         parentScope = AppScope::class,
-        rendererFactory = ExampleRenderer.Factory::class, // references the factory below
         stateMachine = ExampleStateMachine::class,
+        rendererFactory = ExampleRenderer.Factory::class, // references the factory below
     )
     internal class ExampleRenderer @AssistedInject constructor(
         @Assisted private val binding: ExampleViewBinding,

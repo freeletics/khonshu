@@ -150,28 +150,27 @@ internal class FileGeneratorTestRendererFragment {
 
     @Test
     fun `generates code for RendererFragmentData with navigation`() {
-        val withNavigation = data.copy(navigation = navigation)
+        val withNavigation = data.copy(
+            scope = navigation.route,
+            navigation = navigation,
+        )
 
         val source = """
             package com.test
             
             import android.view.View
-            import com.freeletics.mad.whetstone.fragment.RendererFragment
+            import com.freeletics.mad.whetstone.fragment.RendererDestination
             import com.freeletics.mad.whetstone.fragment.DestinationType
-            import com.freeletics.mad.whetstone.fragment.NavDestination
             import com.gabrielittner.renderer.ViewRenderer
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentScope
             
-            @RendererFragment(
-              scope = TestScreen::class,
+            @RendererDestination(
+              route = TestRoute::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
               rendererFactory = TestRenderer.Factory::class,
-            )
-            @NavDestination(            
-              route = TestRoute::class,
-              type = DestinationType.SCREEN,
+              destinationType = DestinationType.SCREEN,
               destinationScope = TestDestinationScope::class,
             )
             public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
@@ -214,9 +213,9 @@ internal class FileGeneratorTestRendererFragment {
             import kotlin.collections.Set
 
             @OptIn(InternalWhetstoneApi::class)
-            @ScopeTo(TestScreen::class)
+            @ScopeTo(TestRoute::class)
             @ContributesSubcomponent(
-              scope = TestScreen::class,
+              scope = TestRoute::class,
               parentScope = TestParentScope::class,
             )
             public interface WhetstoneTestRendererComponent : Closeable {
@@ -247,7 +246,7 @@ internal class FileGeneratorTestRendererFragment {
             }
 
             @Module
-            @ContributesTo(TestScreen::class)
+            @ContributesTo(TestRoute::class)
             public interface WhetstoneTestRendererModule {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
@@ -296,31 +295,28 @@ internal class FileGeneratorTestRendererFragment {
     @Test
     fun `generates code for RendererFragmentData with navigation and navEntry`() {
         val withDestination = data.copy(
+            scope = navigation.route,
             navigation = navigation,
-            navEntryData = navEntryData
+            navEntryData = navEntryData,
         )
 
         val source = """
             package com.test
             
             import android.view.View
-            import com.freeletics.mad.whetstone.fragment.RendererFragment
+            import com.freeletics.mad.whetstone.fragment.RendererDestination
             import com.freeletics.mad.whetstone.fragment.DestinationType
-            import com.freeletics.mad.whetstone.fragment.NavDestination
             import com.freeletics.mad.whetstone.NavEntryComponent
             import com.gabrielittner.renderer.ViewRenderer
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentScope
             
-            @RendererFragment(
-              scope = TestScreen::class,
+            @RendererDestination(
+              route = TestRoute::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
               rendererFactory = TestRenderer.Factory::class,
-            )
-            @NavDestination(            
-              route = TestRoute::class,
-              type = DestinationType.SCREEN,
+              destinationType = DestinationType.SCREEN,
               destinationScope = TestDestinationScope::class,
             )
             @NavEntryComponent(
@@ -378,9 +374,9 @@ internal class FileGeneratorTestRendererFragment {
             import kotlin.collections.Set
 
             @OptIn(InternalWhetstoneApi::class)
-            @ScopeTo(TestScreen::class)
+            @ScopeTo(TestRoute::class)
             @ContributesSubcomponent(
-              scope = TestScreen::class,
+              scope = TestRoute::class,
               parentScope = TestParentScope::class,
             )
             public interface WhetstoneTestRendererComponent : Closeable {
@@ -411,7 +407,7 @@ internal class FileGeneratorTestRendererFragment {
             }
 
             @Module
-            @ContributesTo(TestScreen::class)
+            @ContributesTo(TestRoute::class)
             public interface WhetstoneTestRendererModule {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
@@ -527,10 +523,7 @@ internal class FileGeneratorTestRendererFragment {
             import androidx.fragment.app.DialogFragment
             import com.freeletics.mad.whetstone.fragment.RendererFragment
             import com.freeletics.mad.whetstone.fragment.DestinationType
-            import com.freeletics.mad.whetstone.fragment.NavDestination
-            import com.freeletics.mad.whetstone.NavEntryComponent
             import com.gabrielittner.renderer.ViewRenderer
-            import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentScope
             
             @RendererFragment(

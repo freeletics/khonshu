@@ -1,6 +1,7 @@
 package com.freeletics.mad.whetstone.fragment
 
 import androidx.fragment.app.Fragment
+import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.statemachine.StateMachine
 import kotlin.reflect.KClass
 
@@ -11,13 +12,17 @@ import kotlin.reflect.KClass
  *
  * This will trigger the generation of
  * - a Fragment that sets up the annotated Composable with the given [stateMachine]
- * - a Dagger subcomponent that uses [scope] as scope marker and [parentScope] as `parentScope`
+ * - a Dagger subcomponent that uses [route] as scope marker and [parentScope] as `parentScope`
+ * - a `NavDestination` for [route] based on the given [destinationType] that is contributed
+ *   to the Dagger component that uses [destinationScope]
  */
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
-public annotation class ComposeFragment(
-    val scope: KClass<*>,
+public annotation class ComposeDestination(
+    val route: KClass<out BaseRoute>,
     val parentScope: KClass<*>,
     val stateMachine: KClass<out StateMachine<*, *>>,
+    val destinationType: DestinationType = DestinationType.SCREEN,
+    val destinationScope: KClass<*>,
     val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
 )

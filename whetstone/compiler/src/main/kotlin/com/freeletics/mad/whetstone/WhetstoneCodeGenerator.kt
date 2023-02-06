@@ -2,8 +2,11 @@ package com.freeletics.mad.whetstone
 
 import com.freeletics.mad.whetstone.codegen.FileGenerator
 import com.freeletics.mad.whetstone.parser.toComposeFragmentData
+import com.freeletics.mad.whetstone.parser.toComposeFragmentDestinationData
 import com.freeletics.mad.whetstone.parser.toComposeScreenData
+import com.freeletics.mad.whetstone.parser.toComposeScreenDestinationData
 import com.freeletics.mad.whetstone.parser.toRendererFragmentData
+import com.freeletics.mad.whetstone.parser.toRendererFragmentDestinationData
 import com.google.auto.service.AutoService
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.api.AnvilContext
@@ -27,19 +30,23 @@ public class WhetstoneCodeGenerator : CodeGenerator {
         module: ModuleDescriptor,
         projectFiles: Collection<KtFile>
     ): Collection<GeneratedFile> {
-        val composeScreen = projectFiles
+        val compose = projectFiles
             .topLevelFunctionReferences(module)
-            .mapNotNull { it.toComposeScreenData() }
+            .mapNotNull {
+                it.toComposeScreenDestinationData() ?:
+                    it.toComposeScreenData() ?:
+                    it.toComposeFragmentDestinationData() ?:
+                    it.toComposeFragmentData()
+            }
 
-        val composeFragment = projectFiles
-            .topLevelFunctionReferences(module)
-            .mapNotNull { it.toComposeFragmentData() }
-
-        val rendererFragment = projectFiles
+        val renderer = projectFiles
             .classAndInnerClassReferences(module)
-            .mapNotNull { it.toRendererFragmentData() }
+            .mapNotNull {
+                it.toRendererFragmentDestinationData() ?:
+                    it.toRendererFragmentData()
+            }
 
-        val data = composeScreen.toList() + composeFragment + rendererFragment
+        val data = compose.toList() + renderer
 
         return data.map {
             val file = FileGenerator().generate(it)

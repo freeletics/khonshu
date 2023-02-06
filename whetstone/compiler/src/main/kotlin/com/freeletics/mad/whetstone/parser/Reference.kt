@@ -34,8 +34,13 @@ internal fun AnnotationReference.optionalClassArgument(name: String, index: Int)
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotationReference.requireEnumArgument(name: String, index: Int): String {
-    return argumentAt(name, index)?.value<FqName>()?.shortName()?.asString() ?:
+    return optionalEnumArgument(name, index) ?:
         throw AnvilCompilationExceptionAnnotationReference(this, "Couldn't find $name for $fqName")
+}
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun AnnotationReference.optionalEnumArgument(name: String, index: Int): String? {
+    return argumentAt(name, index)?.value<FqName>()?.shortName()?.asString()
 }
 
 @OptIn(ExperimentalAnvilApi::class)

@@ -151,26 +151,25 @@ internal class FileGeneratorTestCompose {
 
     @Test
     fun `generates code for ComposeScreenData with navigation`() {
-        val withNavigation = data.copy(navigation = navigation)
+        val withNavigation = data.copy(
+            scope = navigation.route,
+            navigation = navigation,
+        )
 
         val source = """
             package com.test
             
             import androidx.compose.runtime.Composable
-            import com.freeletics.mad.whetstone.compose.ComposeScreen
+            import com.freeletics.mad.whetstone.compose.ComposeDestination
             import com.freeletics.mad.whetstone.compose.DestinationType
-            import com.freeletics.mad.whetstone.compose.NavDestination
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentScope
             
-            @ComposeScreen(
-              scope = TestScreen::class,
+            @ComposeDestination(
+              route = TestRoute::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
-            )
-            @NavDestination(            
-              route = TestRoute::class,
-              type = DestinationType.SCREEN,
+              destinationType = DestinationType.SCREEN,
               destinationScope = TestDestinationScope::class,
             )
             @Composable
@@ -210,9 +209,9 @@ internal class FileGeneratorTestCompose {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalWhetstoneApi::class)
-            @ScopeTo(TestScreen::class)
+            @ScopeTo(TestRoute::class)
             @ContributesSubcomponent(
-              scope = TestScreen::class,
+              scope = TestRoute::class,
               parentScope = TestParentScope::class,
             )
             public interface WhetstoneTestComponent : Closeable {
@@ -241,7 +240,7 @@ internal class FileGeneratorTestCompose {
             }
 
             @Module
-            @ContributesTo(TestScreen::class)
+            @ContributesTo(TestRoute::class)
             public interface WhetstoneTestModule {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
@@ -293,29 +292,26 @@ internal class FileGeneratorTestCompose {
     @Test
     fun `generates code for ComposeScreenData with navigation, destination and navEntry`() {
         val withNavEntry = data.copy(
+            scope = navigation.route,
             navigation = navigation,
-            navEntryData = navEntryData
+            navEntryData = navEntryData,
         )
 
         val source = """
             package com.test
             
             import androidx.compose.runtime.Composable
-            import com.freeletics.mad.whetstone.compose.ComposeScreen
+            import com.freeletics.mad.whetstone.compose.ComposeDestination
             import com.freeletics.mad.whetstone.compose.DestinationType
-            import com.freeletics.mad.whetstone.compose.NavDestination
             import com.freeletics.mad.whetstone.NavEntryComponent
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentScope
             
-            @ComposeScreen(
-              scope = TestScreen::class,
+            @ComposeDestination(
+              route = TestRoute::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
-            )
-            @NavDestination(            
-              route = TestRoute::class,
-              type = DestinationType.SCREEN,
+              destinationType = DestinationType.SCREEN,
               destinationScope = TestDestinationScope::class,
             )
             @NavEntryComponent(
@@ -370,9 +366,9 @@ internal class FileGeneratorTestCompose {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalWhetstoneApi::class)
-            @ScopeTo(TestScreen::class)
+            @ScopeTo(TestRoute::class)
             @ContributesSubcomponent(
-              scope = TestScreen::class,
+              scope = TestRoute::class,
               parentScope = TestParentScope::class,
             )
             public interface WhetstoneTestComponent : Closeable {
@@ -401,7 +397,7 @@ internal class FileGeneratorTestCompose {
             }
 
             @Module
-            @ContributesTo(TestScreen::class)
+            @ContributesTo(TestRoute::class)
             public interface WhetstoneTestModule {
               @Multibinds
               public fun bindCloseables(): Set<Closeable>
