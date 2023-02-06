@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-## 0.11.0 **UNRELEASED**
+## 0.11.0 *(2023-02-06)*
 
 ### Navigator
 
@@ -17,17 +17,18 @@ Change Log
 
 - support for Anvil 2.4.4
 - injecting into `Composable` functions now supports generic types
+- added [docs](https://freeletics.github.io/mad/whetstone/closeable-support/) for `Closeable` support which allows cleaning up resources
 - Internal: clean up and streamline code in the code generator
 
 
-## 0.10.1 *(2022-01-13)*
+## 0.10.1 *(2023-01-13)*
 
 ### Navigator
 
 - fix crash when `DeepLink` contains an `ActivityRoute`
 
 
-## 0.10.0 *(2022-01-10)*
+## 0.10.0 *(2023-01-10)*
 
 ### Navigator
 - added support for handling deep links, see `DeepLink` and `DeepLinkHandler` (more docs coming soon)
