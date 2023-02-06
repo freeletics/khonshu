@@ -4,10 +4,11 @@ import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
-import com.freeletics.mad.navigator.NavEvent.NavigateToActivityEvent
-import com.freeletics.mad.navigator.NavEvent.NavigateToEvent
-import com.freeletics.mad.navigator.NavEvent.NavigateToRootEvent
+import com.freeletics.mad.navigator.internal.NavEvent.NavigateToActivityEvent
+import com.freeletics.mad.navigator.internal.NavEvent.NavigateToEvent
+import com.freeletics.mad.navigator.internal.NavEvent.NavigateToRootEvent
 import com.freeletics.mad.navigator.internal.DestinationId
+import com.freeletics.mad.navigator.internal.NavEvent
 import com.google.common.truth.Truth.assertThat
 import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.runBlocking
