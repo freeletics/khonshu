@@ -29,7 +29,7 @@ Change Log
 - new `state-machine-testing` artifact, [see docs](https://freeletics.github.io/mad/helpers/#statemachine)
 
 ### Whetstone
- 
+
 - support for Anvil 2.4.4
 - injecting into `Composable` functions now supports generic types
 - added [docs](https://freeletics.github.io/mad/whetstone/closeable-support/) for `Closeable` support which allows cleaning up resources
