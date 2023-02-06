@@ -102,8 +102,8 @@ The instance of `NavRoute` that was passed to the screen when navigating to
 it will be automatically available in the generated component, so it can be 
 injected into the state machine or other classes to read given parameters.
 
-The generated `NavDestination` for the screen that uses `route` and `destinationType`.
-Will be provided in to a `Set` in the component that uses `destinationScope` as its
+The generated `NavDestination` for the screen that uses `route` and `destinationType`
+will be provided in to a `Set` in the component that uses `destinationScope` as its
 scope (usually an app wide or an Activity level scope). With that it's not necessary
 to manually create a `Set` of all destinations anymore. It can simply be injected.
 
