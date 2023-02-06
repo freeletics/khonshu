@@ -5,6 +5,7 @@ import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import app.cash.turbine.testIn
 import com.freeletics.mad.navigator.internal.DestinationId
+import com.freeletics.mad.navigator.internal.NavEvent
 import com.google.common.truth.Truth
 import kotlin.reflect.KClass
 import kotlin.time.Duration

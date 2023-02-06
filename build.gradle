@@ -12,10 +12,6 @@ plugins {
     alias(libs.plugins.publish) apply false
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
 dependencyAnalysis {
     issues {
         all {
