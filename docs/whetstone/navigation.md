@@ -143,7 +143,7 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
 === "Compose"
 
     ```kotlin
-    @ComposeScreen(
+    @ComposeDestination(
         route = ExampleRoute::class, // the route used to navigate to ExampleUi
         parentScope = AppScope::class, // the scope of the app level component
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
@@ -162,7 +162,7 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
 === "Compose with Fragments"
 
     ```kotlin
-    @ComposeFragment(
+    @ComposeDestination(
         route = ExampleRoute::class, // the route used to navigate to ExampleUi
         parentScope = AppScope::class, // the scope of the app level component
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
@@ -181,7 +181,7 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
 === "Views with Fragments"
 
     ```kotlin
-    @RendererFragment(
+    @RendererDestination(
         route = ExampleRoute::class, // the route used to navigate to ExampleRenderer
         parentScope = AppScope::class, // the scope of the app level component
         rendererFactory = ExampleRenderer.Factory::class, // references the factory below
