@@ -1,9 +1,9 @@
 # Support for Closeables
 
 Whetstone supports `java.io.Closeable`s by propagating each `Closeable` contributed
-to scoped Component to be bound to its internal `androidx.lifecycle.ViewModel`. When
+to a scoped Component to be bound to its internal `androidx.lifecycle.ViewModel`. When the
 corresponding NavDestination is cleared from the back stack and hence `ViewModel.onCleared()`
-is called, then all bound `Closeable`s will be automatically closed.
+is called, all bound `Closeable`s will be automatically closed.
 
 This can be used to run any kind of cleanup you normally do in `ViewModel.onCleared()`.
 
