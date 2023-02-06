@@ -29,16 +29,7 @@ Change Log
 - new `state-machine-testing` artifact, [see docs](https://freeletics.github.io/mad/helpers/#statemachine)
 
 ### Whetstone
-
-- **BREAKING** simplified integration with the navigator library
-  - removed the `@NavDestination` annotation
-  - added `@ComposeDestination` and `@RendererDestination` as replacements
-  - these new annotations also replace `@ComposeScreen`/`@ComposeFragment`/`@RendererFragment` so
-    that always just one Whetstone annotation is needed per screen
-  - `route` and `scope` are combined into a `route` parameter which removes the need to define scope
-    classes, the `NavRoute` or `NavRoot` serves both purposes
-  - the previous point means that the same `route` will also need to be used in any place that that
-    requires scope markers like `@ScopeTo`, `@ContributesTo` or `@ContributesBinding`  
+ 
 - support for Anvil 2.4.4
 - injecting into `Composable` functions now supports generic types
 - added [docs](https://freeletics.github.io/mad/whetstone/closeable-support/) for `Closeable` support which allows cleaning up resources
