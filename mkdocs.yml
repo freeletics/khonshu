@@ -35,6 +35,7 @@ nav:
       - whetstone/get-started.md
       - whetstone/navigation.md
       - whetstone/compose-injection.md
+      - whetstone/closeable-support.md
       - 'API':
           - 'Runtime': whetstone/API/runtime/index.html
           - 'Runtime Compose': whetstone/API/runtime-compose/index.html
