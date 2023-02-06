@@ -6,7 +6,6 @@ import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale as shouldShowRationale
-import android.annotation.SuppressLint
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult
 
 /**

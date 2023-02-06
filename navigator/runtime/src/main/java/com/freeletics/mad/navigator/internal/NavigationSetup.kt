@@ -1,6 +1,5 @@
 package com.freeletics.mad.navigator.internal
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
@@ -8,7 +7,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.ContractResultOwner
-import com.freeletics.mad.navigator.NavEvent
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest

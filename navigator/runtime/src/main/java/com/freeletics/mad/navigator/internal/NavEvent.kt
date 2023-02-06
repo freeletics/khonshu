@@ -1,8 +1,11 @@
-package com.freeletics.mad.navigator
+package com.freeletics.mad.navigator.internal
 
 import android.os.Parcelable
-import com.freeletics.mad.navigator.internal.DestinationId
-import com.freeletics.mad.navigator.internal.InternalNavigatorApi
+import com.freeletics.mad.navigator.ActivityRoute
+import com.freeletics.mad.navigator.ContractResultOwner
+import com.freeletics.mad.navigator.NavRoot
+import com.freeletics.mad.navigator.NavRoute
+import com.freeletics.mad.navigator.NavigationResultRequest
 import dev.drewhamilton.poko.Poko
 
 /**
