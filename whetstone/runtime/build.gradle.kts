@@ -7,10 +7,10 @@ plugins {
 
 android {
     namespace = "com.freeletics.mad.whetstone"
-    compileSdkVersion libs.versions.android.compile.get().toInteger()
+    compileSdk = libs.versions.android.compile.get().toInt()
 
     defaultConfig {
-        minSdkVersion libs.versions.android.min.get().toInteger()
+        minSdk = libs.versions.android.min.get().toInt()
     }
 
     buildFeatures {
@@ -36,7 +36,7 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
     }
 
     sourceSets.all {
@@ -46,19 +46,12 @@ kotlin {
     }
 }
 
-// workaround for https://issuetracker.google.com/issues/194113162
-tasks.withType(JavaCompile).configureEach {
-    javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
-    }
-}
-
 dependencies {
-    api libs.inject
-    api libs.androidx.compose.runtime
-    api libs.androidx.viewmodel
-    api libs.androidx.viewmodel.savedstate
-    api project(":state-machine")
+    api(libs.inject)
+    api(libs.androidx.compose.runtime)
+    api(libs.androidx.viewmodel)
+    api(libs.androidx.viewmodel.savedstate)
+    api(project(":state-machine"))
 
-    implementation libs.coroutines.core
+    implementation(libs.coroutines.core)
 }
