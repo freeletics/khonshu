@@ -49,7 +49,7 @@ kotlin {
 
 dependencies {
     api(projects.whetstone.navigation)
-    api(projects.whetstone.runtimeFragment)
+    api(projects.whetstone.runtimeCompose)
     api(projects.navigator.navigatorRuntime)
 
     implementation(projects.stateMachine)
