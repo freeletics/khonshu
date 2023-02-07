@@ -51,7 +51,7 @@ dependencies {
     api(libs.androidx.compose.runtime)
     api(libs.androidx.viewmodel)
     api(libs.androidx.viewmodel.savedstate)
-    api(project(":state-machine"))
+    api(projects.stateMachine)
 
     implementation(libs.coroutines.core)
 }

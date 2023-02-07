@@ -42,7 +42,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":navigator:navigator-runtime"))
+    implementation(projects.navigator.navigatorRuntime)
     implementation(libs.androidx.navigation.common)
     implementation(libs.androidx.navigation.runtime)
     implementation(libs.androidx.viewmodel)

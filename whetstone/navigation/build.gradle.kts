@@ -43,8 +43,8 @@ kotlin {
 }
 
 dependencies {
-    api(project(":whetstone:runtime"))
-    api(project(":navigator:navigator-runtime"))
+    api(projects.whetstone.runtime)
+    api(projects.navigator.navigatorRuntime)
     api(libs.inject)
     api(libs.dagger)
 

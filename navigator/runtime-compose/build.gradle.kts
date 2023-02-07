@@ -47,12 +47,12 @@ kotlin {
 }
 
 dependencies {
-    api(project(":navigator:navigator-runtime"))
+    api(projects.navigator.navigatorRuntime)
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.ui)
     implementation(libs.androidx.navigation.runtime)
 
-    implementation(project(":navigator:androidx-nav"))
+    implementation(projects.navigator.androidxNav)
     implementation(libs.coroutines.core)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.activity.compose)

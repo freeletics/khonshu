@@ -42,10 +42,10 @@ kotlin {
 }
 
 dependencies {
-    api(project(":whetstone:runtime"))
+    api(projects.whetstone.runtime)
     api(libs.androidx.fragment)
 
-    implementation(project(":state-machine"))
+    implementation(projects.stateMachine)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.viewmodel)
     implementation(libs.androidx.viewmodel.savedstate)

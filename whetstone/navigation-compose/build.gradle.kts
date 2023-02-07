@@ -48,13 +48,13 @@ kotlin {
 }
 
 dependencies {
-    api(project(":whetstone:navigation"))
-    api(project(":whetstone:runtime-compose"))
-    api(project(":navigator:navigator-runtime"))
+    api(projects.whetstone.navigation)
+    api(projects.whetstone.runtimeFragment)
+    api(projects.navigator.navigatorRuntime)
 
-    implementation(project(":state-machine"))
-    implementation(project(":whetstone:runtime"))
-    implementation(project(":navigator:navigator-runtime-compose"))
+    implementation(projects.stateMachine)
+    implementation(projects.whetstone.runtime)
+    implementation(projects.navigator.navigatorRuntimeCompose)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.viewmodel)
