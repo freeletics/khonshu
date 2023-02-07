@@ -27,14 +27,14 @@ kotlin {
 
     sourceSets.all {
         jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
+            languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
         }
     }
 
     sourceSets {
         commonMain {
             dependencies {
-                api libs.coroutines.core
+                api(libs.coroutines.core)
             }
         }
     }
