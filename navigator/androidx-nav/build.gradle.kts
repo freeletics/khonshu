@@ -7,10 +7,10 @@ plugins {
 
 android {
     namespace = "com.freeletics.mad.navigator.base.androidx"
-    compileSdkVersion libs.versions.android.compile.get().toInteger()
+    compileSdk = libs.versions.android.compile.get().toInt()
 
     defaultConfig {
-        minSdkVersion libs.versions.android.min.get().toInteger()
+        minSdk = libs.versions.android.min.get().toInt()
     }
 
     buildFeatures {
@@ -31,7 +31,7 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
     }
 
     sourceSets.all {
@@ -41,18 +41,11 @@ kotlin {
     }
 }
 
-// workaround for https://issuetracker.google.com/issues/194113162
-tasks.withType(JavaCompile).configureEach {
-    javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
-    }
-}
-
 dependencies {
-    implementation project(":navigator:navigator-runtime")
-    implementation libs.androidx.navigation.common
-    implementation libs.androidx.navigation.runtime
-    implementation libs.androidx.viewmodel
-    implementation libs.androidx.viewmodel.savedstate
-    implementation libs.uri
+    implementation(project(":navigator:navigator-runtime"))
+    implementation(libs.androidx.navigation.common)
+    implementation(libs.androidx.navigation.runtime)
+    implementation(libs.androidx.viewmodel)
+    implementation(libs.androidx.viewmodel.savedstate)
+    implementation(libs.uri)
 }
