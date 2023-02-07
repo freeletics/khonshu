@@ -36,7 +36,7 @@ kotlin {
 }
 
 dependencies {
-    api(project(":state-machine"))
+    api(projects.stateMachine)
     api(libs.coroutines.core)
     api(libs.turbine)
 }
