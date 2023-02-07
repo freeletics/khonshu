@@ -9,10 +9,10 @@ plugins {
 
 android {
     namespace = "com.freeletics.mad.text"
-    compileSdkVersion libs.versions.android.compile.get().toInteger()
+    compileSdk = libs.versions.android.compile.get().toInt()
 
     defaultConfig {
-        minSdkVersion libs.versions.android.min.get().toInteger()
+        minSdk = libs.versions.android.min.get().toInt()
     }
 
     buildFeatures {
@@ -38,22 +38,15 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
-    }
-}
-
-// workaround for https://issuetracker.google.com/issues/194113162
-tasks.withType(JavaCompile).configureEach {
-    javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
     }
 }
 
 dependencies {
-    api libs.androidx.compose.runtime
+    api(libs.androidx.compose.runtime)
 
-    implementation libs.androidx.compose.ui
-    implementation libs.kotlin.parcelize
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.kotlin.parcelize)
 
-    compileOnly "androidx.annotation:annotation:1.5.0"
+    compileOnly(libs.androidx.annotations)
 }
