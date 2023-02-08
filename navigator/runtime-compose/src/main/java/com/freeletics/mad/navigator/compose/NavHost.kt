@@ -6,12 +6,8 @@ import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -64,7 +60,7 @@ public fun NavHost(
     destinations: Set<NavDestination>,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
-    destinationChangedCallback: ((NavRoute) -> Unit)? = null,
+    destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
     bottomSheetShape: Shape = MaterialTheme.shapes.large,
     bottomSheetElevation: Dp = ModalBottomSheetDefaults.Elevation,
     bottomSheetBackgroundColor: Color = MaterialTheme.colors.surface,
@@ -72,23 +68,15 @@ public fun NavHost(
     bottomSheetScrimColor: Color = ModalBottomSheetDefaults.scrimColor
 ) {
     val context = LocalContext.current
-    var startDestination by remember {
-        mutableStateOf(startRoute)
-    }
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val customActivityNavigator = remember(context) { CustomActivityNavigator(context) }
     val navController = rememberNavController(bottomSheetNavigator, customActivityNavigator)
-    val executor = remember(navController) {
-        AndroidXNavigationExecutor(
-            navController,
-            onStartDestinationChanged = { startDestination = it }
-        )
-    }
+    val executor = remember(navController) { AndroidXNavigationExecutor(navController) }
 
     if (destinationChangedCallback != null) {
         DisposableEffect(key1 = destinationChangedCallback) {
             val listener = OnDestinationChangedListener { _, _, arguments ->
-                val route = arguments.requireRoute<NavRoute>()
+                val route = arguments.requireRoute<BaseRoute>()
                 destinationChangedCallback.invoke(route)
             }
             navController.addOnDestinationChangedListener(listener)
@@ -99,15 +87,12 @@ public fun NavHost(
         }
     }
 
-    LaunchedEffect(deepLinkHandlers, deepLinkPrefixes, context) {
+    val graph = remember(navController, destinations, deepLinkHandlers, deepLinkPrefixes) {
         context.findActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
-    }
-
-    val graph = remember(navController, startDestination, destinations) {
         @Suppress("deprecation")
-        navController.createGraph(startDestination = startDestination.destinationId()) {
+        navController.createGraph(startDestination = startRoute.destinationId()) {
             destinations.forEach { destination ->
-                addDestination(navController, destination, startDestination)
+                addDestination(navController, destination, startRoute)
             }
         }
     }

@@ -9,12 +9,10 @@ import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
-import com.freeletics.mad.navigator.StartDestination
 
 @InternalNavigatorApi
 public class AndroidXNavigationExecutor(
-    private val controller: NavController,
-    private val onStartDestinationChanged: ((StartDestination) -> Unit)? = null,
+    private val controller: NavController
 ) : NavigationExecutor {
 
     override fun navigate(route: NavRoute) {
@@ -42,8 +40,19 @@ public class AndroidXNavigationExecutor(
         controller.navigate(root.destinationId(), root.getArguments(), options)
     }
 
-    override fun navigate(route: StartDestination) {
-        onStartDestinationChanged?.invoke(route)
+    override fun navigateToStartDestination(startDestination: NavRoot) {
+        val options = NavOptions.Builder()
+            .setPopUpTo(
+                controller.graph.startDestinationId,
+                inclusive = true,
+                saveState = false
+            )
+            // makes sure that if the destination is already on the backstack, it and
+            // everything above it gets removed
+            .setLaunchSingleTop(true)
+            .build()
+        controller.navigate(startDestination.destinationId(), startDestination.getArguments(), options)
+        controller.graph.setStartDestination(startDestination.destinationId())
     }
 
     override fun navigateBack() {

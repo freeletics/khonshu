@@ -2,7 +2,6 @@ package com.freeletics.mad.whetstone.compose
 
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
-import com.freeletics.mad.navigator.StartDestination
 import kotlin.reflect.KClass
 
 /**
@@ -39,15 +38,5 @@ public enum class DestinationType {
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class RootNavDestination(
     val root: KClass<out NavRoot>,
-    val destinationScope: KClass<*>,
-)
-
-/**
- * Like [NavDestination] but for a screen represented by a [StartNavDestination].
- */
-@Target(AnnotationTarget.FUNCTION)
-@Retention(AnnotationRetention.RUNTIME)
-public annotation class StartNavDestination(
-    val startDestination: KClass<out StartDestination>,
     val destinationScope: KClass<*>,
 )

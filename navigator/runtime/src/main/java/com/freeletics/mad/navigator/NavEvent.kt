@@ -41,12 +41,12 @@ public sealed interface NavEvent {
     ) : NavEvent
 
     /**
-     * Navigates to the given [startDestination].
+     * Navigates to the given [root] and sets it as the start destination of the NavHost.
      */
     @VisibleForTesting(otherwise = PACKAGE_PRIVATE)
     @Poko
     public class NavigateToStartDestinationEvent(
-        internal val startDestination: StartDestination,
+        internal val startDestination: NavRoot,
     ) : NavEvent
 
     /**

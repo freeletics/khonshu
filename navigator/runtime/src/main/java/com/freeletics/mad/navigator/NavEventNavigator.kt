@@ -152,8 +152,11 @@ public open class NavEventNavigator {
         sendNavEvent(event)
     }
 
-    // todo add docs
-    public fun navigateToStartDestination(startDestination: StartDestination) {
+    /**
+     * Triggers a new [NavEvent] to navigate to the given [startDestination] and update the
+     * start destination of the NavHost.
+     */
+    public fun navigateToStartDestination(startDestination: NavRoot) {
         val event = NavEvent.NavigateToStartDestinationEvent(startDestination)
         sendNavEvent(event)
     }
