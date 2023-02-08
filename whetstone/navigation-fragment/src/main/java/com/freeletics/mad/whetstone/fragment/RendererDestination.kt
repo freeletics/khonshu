@@ -3,6 +3,7 @@ package com.freeletics.mad.whetstone.fragment
 import androidx.fragment.app.Fragment
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.statemachine.StateMachine
+import com.freeletics.mad.whetstone.AppScope
 import com.gabrielittner.renderer.ViewRenderer
 import kotlin.reflect.KClass
 
@@ -20,10 +21,10 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class RendererDestination(
     val route: KClass<out BaseRoute>,
-    val parentScope: KClass<*>,
+    val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,
     val destinationType: DestinationType = DestinationType.SCREEN,
-    val destinationScope: KClass<*>,
+    val destinationScope: KClass<*> = AppScope::class,
     val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
     val rendererFactory: KClass<out ViewRenderer.Factory<*, *>>,
 )

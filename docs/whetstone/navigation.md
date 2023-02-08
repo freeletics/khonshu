@@ -44,10 +44,10 @@ on the appropriate `whetstone-navigation` artifact needs to be added:
     ```kotlin
     @ComposeDestination(
         route = ExampleRoute::class,
-        parentScope = AppScope::class,
+        parentScope = AppScope::class, // AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class,
         destinationType = DestintionType.SCREEN,
-        destinationScope = AppScope::class,
+        destinationScope = AppScope::class, // AppScope is the default value and can be omitted
     )
     @Composable
     fun ExampleUi(...) {...} // same as in general guide
@@ -67,10 +67,10 @@ on the appropriate `whetstone-navigation` artifact needs to be added:
     ```kotlin
     @ComposeDestination(
         route = ExampleRoute::class,
-        parentScope = AppScope::class,
+        parentScope = AppScope::class, // AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class,
         destinationType = DestintionType.SCREEN,
-        destinationScope = AppScope::class,
+        destinationScope = AppScope::class, // AppScope is the default value and can be omitted
     )
     @Composable
     fun ExampleUi(...) {...} // same as in general guide
@@ -89,10 +89,10 @@ on the appropriate `whetstone-navigation` artifact needs to be added:
     ```kotlin
     @RendererDestination(
         route = ExampleRoute::class,
-        parentScope = AppScope::class,
+        parentScope = AppScope::class, // AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class,
         destinationType = DestintionType.SCREEN,
-        destinationScope = AppScope::class,
+        destinationScope = AppScope::class, // AppScope is the default value and can be omitted
         rendererFactory = ExampleRenderer.Factory::class,
     )
     internal class ExampleRenderer ... // same as in general guide
@@ -145,10 +145,10 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
     ```kotlin
     @ComposeDestination(
         route = ExampleRoute::class, // the route used to navigate to ExampleUi
-        parentScope = AppScope::class, // the scope of the app level component
+        parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
         destinationType = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet
-        destinationScope = AppScope::class, // contribute the generated destination to AppScope
+        destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted
     )
     @Composable
     internal fun ExampleUi(
@@ -164,10 +164,10 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
     ```kotlin
     @ComposeDestination(
         route = ExampleRoute::class, // the route used to navigate to ExampleUi
-        parentScope = AppScope::class, // the scope of the app level component
+        parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
         destinationType = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet
-        destinationScope = AppScope::class, // contribute the generated destination to AppScope
+        destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted
     )
     @Composable
     internal fun ExampleUi(
@@ -183,11 +183,11 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
     ```kotlin
     @RendererDestination(
         route = ExampleRoute::class, // the route used to navigate to ExampleRenderer
-        parentScope = AppScope::class, // the scope of the app level component
+        parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
         rendererFactory = ExampleRenderer.Factory::class, // references the factory below
         stateMachine = ExampleStateMachine::class, // the state machine used fo
         destinationType = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet
-        destinationScope = AppScope::class, // contribute the generated destination to AppScope
+        destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted
     )
     internal class ExampleRenderer @AssistedInject constructor(
         @Assisted private val binding: ExampleViewBinding,

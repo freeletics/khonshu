@@ -2,6 +2,7 @@ package com.freeletics.mad.whetstone.fragment
 
 import androidx.fragment.app.Fragment
 import com.freeletics.mad.statemachine.StateMachine
+import com.freeletics.mad.whetstone.AppScope
 import kotlin.reflect.KClass
 
 /**
@@ -17,7 +18,7 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class ComposeFragment(
     val scope: KClass<*>,
-    val parentScope: KClass<*>,
+    val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,
     val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
 )
