@@ -46,5 +46,5 @@ import kotlin.reflect.KClass
 @Retention(RUNTIME)
 public annotation class NavEntryComponent(
     val scope: KClass<*>,
-    val parentScope: KClass<*>,
+    val parentScope: KClass<*> = AppScope::class,
 )

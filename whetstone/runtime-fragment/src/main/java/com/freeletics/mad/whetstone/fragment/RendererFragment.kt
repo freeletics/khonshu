@@ -2,6 +2,7 @@ package com.freeletics.mad.whetstone.fragment
 
 import androidx.fragment.app.Fragment
 import com.freeletics.mad.statemachine.StateMachine
+import com.freeletics.mad.whetstone.AppScope
 import com.gabrielittner.renderer.ViewRenderer
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.CLASS
@@ -19,7 +20,7 @@ import kotlin.reflect.KClass
 @Retention(RUNTIME)
 public annotation class RendererFragment(
     val scope: KClass<*>,
-    val parentScope: KClass<*>,
+    val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,
     val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
     val rendererFactory: KClass<out ViewRenderer.Factory<*, *>>,

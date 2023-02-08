@@ -2,6 +2,7 @@ package com.freeletics.mad.whetstone.compose
 
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.statemachine.StateMachine
+import com.freeletics.mad.whetstone.AppScope
 import kotlin.reflect.KClass
 
 /**
@@ -19,8 +20,8 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class ComposeDestination(
     val route: KClass<out BaseRoute>,
-    val parentScope: KClass<*>,
+    val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,
     val destinationType: DestinationType = DestinationType.SCREEN,
-    val destinationScope: KClass<*>,
+    val destinationScope: KClass<*> = AppScope::class,
 )

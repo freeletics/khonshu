@@ -1,6 +1,7 @@
 package com.freeletics.mad.whetstone.compose
 
 import com.freeletics.mad.statemachine.StateMachine
+import com.freeletics.mad.whetstone.AppScope
 import kotlin.reflect.KClass
 
 /**
@@ -19,6 +20,6 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class ComposeScreen(
     val scope: KClass<*>,
-    val parentScope: KClass<*>,
+    val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,
 )

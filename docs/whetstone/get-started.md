@@ -58,7 +58,7 @@ it falls into the `Fragment` category.
     ```kotlin
     @ComposeScreen(
         scope = ExampleScope::class,
-        parentScope = AppScope::class,
+        parentScope = AppScope::class, // AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class,
     )
     @Composable
@@ -89,7 +89,7 @@ it falls into the `Fragment` category.
     ```kotlin
     @ComposeFragment(
         scope = ExampleScope::class,
-        parentScope = AppScope::class,
+        parentScope = AppScope::class, // AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class,
     )
     @Composable
@@ -127,7 +127,7 @@ it falls into the `Fragment` category.
     ```kotlin
     @RendererFragment(
         scope = ExampleScope::class,
-        parentScope = AppScope::class,
+        parentScope = AppScope::class, // AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class,
         rendererFactory = ExampleRenderer.Factory::class, // references the factory below
     )
@@ -208,7 +208,7 @@ internal class ExampleStateMachine @Inject constructor(
     ```kotlin
     @ComposeScreen(
         scope = ExampleScope::class, // uses our marker class
-        parentScope = AppScope::class, // the scope of the app level component
+        parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
     )
     @Composable
@@ -225,7 +225,7 @@ internal class ExampleStateMachine @Inject constructor(
     ```kotlin
     @ComposeFragment(
         scope = ExampleScope::class, // uses our marker class
-        parentScope = AppScope::class, // the scope of the app level component
+        parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
     )
     @Composable
@@ -242,7 +242,7 @@ internal class ExampleStateMachine @Inject constructor(
     ```kotlin
     @RendererFragment(
         scope = ExampleScope::class, // uses our marker class
-        parentScope = AppScope::class, // the scope of the app level component
+        parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
         rendererFactory = ExampleRenderer.Factory::class, // references the factory below
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
     )
@@ -263,7 +263,7 @@ Using this would require a one time setup in the app so that the screens can loo
 component through `getSystemService` to retrieve the parent component:
 
 ```kotlin
-@Singleton
+@AppScope
 @MergeComponent(scope = AppScope::class)
 interface AppComponent {
     // allows an Activity to get all generated NavDestinations to set up the NavHost
@@ -279,7 +279,7 @@ class App : Application() {
 
     private val component: AppComponent = DaggerAppComponent.factory().create(this)
     
-    override fun getSystemService(name: String): Any? {
+    override fun getSystemService(name: String): Any {
         if (name == AppScope::class.qualifiedName) {
             return component
         }

@@ -3,6 +3,7 @@ package com.freeletics.mad.whetstone.parser
 import com.freeletics.mad.whetstone.ComposableParameter
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.Navigation
+import com.freeletics.mad.whetstone.codegen.util.appScope
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
@@ -21,7 +22,7 @@ internal val AnnotationReference.route: ClassName
 
 @OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.parentScope: ClassName
-    get() = requireClassArgument("parentScope", 1)
+    get() = optionalClassArgument("parentScope", 1)?: appScope
 
 @OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.stateMachine: ClassName
@@ -33,7 +34,7 @@ internal val AnnotationReference.destinationType: String
 
 @OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.destinationScope: ClassName
-    get() = requireClassArgument("destinationScope", 4)
+    get() = optionalClassArgument("destinationScope", 4) ?: appScope
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotatedReference.navEntryData(
