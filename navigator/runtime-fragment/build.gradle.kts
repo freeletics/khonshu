@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.freeletics.mad.navigator.base.androidx"
-    compileSdkVersion libs.versions.android.compile.get().toInteger()
+    namespace = "com.freeletics.mad.navigator.runtime.fragment"
+    compileSdk = libs.versions.android.compile.get().toInt()
 
     defaultConfig {
-        minSdkVersion libs.versions.android.min.get().toInteger()
+        minSdk = libs.versions.android.min.get().toInt()
     }
 
     buildFeatures {
@@ -31,7 +31,7 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
     }
 
     sourceSets.all {
@@ -41,18 +41,16 @@ kotlin {
     }
 }
 
-// workaround for https://issuetracker.google.com/issues/194113162
-tasks.withType(JavaCompile).configureEach {
-    javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
-    }
-}
-
 dependencies {
-    implementation project(":navigator:navigator-runtime")
-    implementation libs.androidx.navigation.common
-    implementation libs.androidx.navigation.runtime
-    implementation libs.androidx.viewmodel
-    implementation libs.androidx.viewmodel.savedstate
-    implementation libs.uri
+    api(projects.navigator.navigatorRuntime)
+    api(libs.androidx.fragment)
+    api(libs.androidx.navigation.fragment)
+
+    implementation(projects.navigator.androidxNav)
+    implementation(libs.coroutines.core)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.navigation.common)
+    implementation(libs.androidx.navigation.runtime)
 }

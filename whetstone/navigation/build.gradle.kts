@@ -7,10 +7,10 @@ plugins {
 
 android {
     namespace = "com.freeletics.mad.whetstone.navigation"
-    compileSdkVersion libs.versions.android.compile.get().toInteger()
+    compileSdk = libs.versions.android.compile.get().toInt()
 
     defaultConfig {
-        minSdkVersion libs.versions.android.min.get().toInteger()
+        minSdk = libs.versions.android.min.get().toInt()
     }
 
     buildFeatures {
@@ -31,7 +31,7 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
     }
 
     sourceSets.all {
@@ -42,19 +42,12 @@ kotlin {
     }
 }
 
-// workaround for https://issuetracker.google.com/issues/194113162
-tasks.withType(JavaCompile).configureEach {
-    javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
-    }
-}
-
 dependencies {
-    api project(":whetstone:runtime")
-    api project(":navigator:navigator-runtime")
-    api libs.inject
-    api libs.dagger
+    api(projects.whetstone.runtime)
+    api(projects.navigator.navigatorRuntime)
+    api(libs.inject)
+    api(libs.dagger)
 
-    implementation libs.androidx.viewmodel
-    implementation libs.androidx.viewmodel.savedstate
+    implementation(libs.androidx.viewmodel)
+    implementation(libs.androidx.viewmodel.savedstate)
 }

@@ -1,19 +1,22 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.poko)
     alias(libs.plugins.dokka)
     alias(libs.plugins.publish)
 }
 
 android {
-    namespace = "com.freeletics.mad.statemachine.testing"
-    compileSdkVersion libs.versions.android.compile.get().toInteger()
+    namespace = "com.freeletics.mad.text"
+    compileSdk = libs.versions.android.compile.get().toInt()
 
     defaultConfig {
-        minSdkVersion libs.versions.android.min.get().toInteger()
+        minSdk = libs.versions.android.min.get().toInt()
     }
 
     buildFeatures {
+        compose = true
         buildConfig = false
     }
 
@@ -21,6 +24,10 @@ android {
     compileOptions {
         sourceCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
         targetCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 }
 
@@ -31,19 +38,15 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
-    }
-}
-
-// workaround for https://issuetracker.google.com/issues/194113162
-tasks.withType(JavaCompile).configureEach {
-    javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
     }
 }
 
 dependencies {
-    api project(":state-machine")
-    api libs.coroutines.core
-    api libs.turbine
+    api(libs.androidx.compose.runtime)
+
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.kotlin.parcelize)
+
+    compileOnly(libs.androidx.annotations)
 }

@@ -2,14 +2,14 @@ plugins {
     alias(libs.plugins.binarycompatibility)
     alias(libs.plugins.dependency.analysis)
 
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.jvm) apply false
-    alias(libs.plugins.kotlin.kapt) apply false
-    alias(libs.plugins.kotlin.parcelize) apply false
-    alias(libs.plugins.kotlin.multiplatform) apply false
-    alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.dokka) apply false
-    alias(libs.plugins.publish) apply false
+    alias(libs.plugins.kotlin.android).apply(false)
+    alias(libs.plugins.kotlin.jvm).apply(false)
+    alias(libs.plugins.kotlin.kapt).apply(false)
+    alias(libs.plugins.kotlin.parcelize).apply(false)
+    alias(libs.plugins.kotlin.multiplatform).apply(false)
+    alias(libs.plugins.android.library).apply(false)
+    alias(libs.plugins.dokka).apply(false)
+    alias(libs.plugins.publish).apply(false)
 }
 
 dependencyAnalysis {
@@ -18,7 +18,7 @@ dependencyAnalysis {
             ignoreKtx(true)
 
             onAny {
-                severity('fail')
+                severity("fail")
             }
 
             onCompileOnly {
@@ -113,10 +113,10 @@ dependencyAnalysis {
 }
 
 apiValidation {
-    ignoredProjects += ["compiler"]
+    ignoredProjects += arrayOf("compiler")
 
-    nonPublicMarkers += [
+    nonPublicMarkers += arrayOf(
         "com.freeletics.mad.navigator.internal.InternalNavigatorApi",
         "com.freeletics.mad.whetstone.internal.InternalWhetstoneApi",
-    ]
+    )
 }

@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         mavenCentral()
@@ -16,13 +18,13 @@ dependencyResolutionManagement {
     // repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 }
 
-include ":navigator:runtime", ":navigator:testing"
-include ":navigator:androidx-nav", ":navigator:runtime-compose", ":navigator:runtime-fragment"
-include ":state-machine", ":state-machine:testing"
-include ":text-resource"
-include ":whetstone:compiler", ":whetstone:compiler-test"
-include ":whetstone:runtime", ":whetstone:runtime-compose", ":whetstone:runtime-fragment"
-include ":whetstone:navigation", ":whetstone:navigation-compose", ":whetstone:navigation-fragment"
+include(":navigator:runtime", ":navigator:testing")
+include(":navigator:androidx-nav", ":navigator:runtime-compose", ":navigator:runtime-fragment")
+include(":state-machine", ":state-machine:testing")
+include(":text-resource")
+include(":whetstone:compiler", ":whetstone:compiler-test")
+include(":whetstone:runtime", ":whetstone:runtime-compose", ":whetstone:runtime-fragment")
+include(":whetstone:navigation", ":whetstone:navigation-compose", ":whetstone:navigation-fragment")
 
 project(":navigator:runtime").setName("navigator-runtime")
 project(":navigator:runtime-compose").setName("navigator-runtime-compose")

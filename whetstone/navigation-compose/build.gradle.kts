@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.freeletics.mad.whetstone.compose"
-    compileSdkVersion libs.versions.android.compile.get().toInteger()
+    namespace = "com.freeletics.mad.whetstone.navigation.compose"
+    compileSdk = libs.versions.android.compile.get().toInt()
 
     defaultConfig {
-        minSdkVersion libs.versions.android.min.get().toInteger()
+        minSdk = libs.versions.android.min.get().toInt()
     }
 
     buildFeatures {
@@ -36,30 +36,27 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
     }
 
     sourceSets.all {
         languageSettings {
+            optIn("com.freeletics.mad.navigator.internal.InternalNavigatorApi")
             optIn("com.freeletics.mad.whetstone.internal.InternalWhetstoneApi")
         }
     }
 }
 
-// workaround for https://issuetracker.google.com/issues/194113162
-tasks.withType(JavaCompile).configureEach {
-    javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
-    }
-}
-
 dependencies {
-    api project(":whetstone:runtime")
+    api(projects.whetstone.navigation)
+    api(projects.whetstone.runtimeCompose)
+    api(projects.navigator.navigatorRuntime)
 
-    implementation project(":state-machine")
-    implementation libs.androidx.compose.runtime
-    implementation libs.androidx.compose.ui
-    implementation libs.androidx.viewmodel
-    implementation libs.androidx.viewmodel.savedstate
-    implementation libs.androidx.viewmodel.compose
+    implementation(projects.stateMachine)
+    implementation(projects.whetstone.runtime)
+    implementation(projects.navigator.navigatorRuntimeCompose)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.viewmodel)
+    implementation(libs.androidx.viewmodel.savedstate)
 }

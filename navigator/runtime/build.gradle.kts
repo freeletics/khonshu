@@ -9,10 +9,10 @@ plugins {
 
 android {
     namespace = "com.freeletics.mad.navigator.runtime"
-    compileSdkVersion libs.versions.android.compile.get().toInteger()
+    compileSdk = libs.versions.android.compile.get().toInt()
 
     defaultConfig {
-        minSdkVersion libs.versions.android.min.get().toInteger()
+        minSdk = libs.versions.android.min.get().toInt()
     }
 
     buildFeatures {
@@ -33,7 +33,7 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
     }
 
     sourceSets.all {
@@ -43,26 +43,19 @@ kotlin {
     }
 }
 
-// workaround for https://issuetracker.google.com/issues/194113162
-tasks.withType(JavaCompile).configureEach {
-    javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
-    }
-}
-
 dependencies {
-    api libs.androidx.activity
-    api libs.coroutines.core
-    api libs.androidx.core
+    api(libs.androidx.activity)
+    api(libs.coroutines.core)
+    api(libs.androidx.core)
 
-    implementation libs.androidx.lifecycle.common
-    implementation libs.androidx.lifecycle.runtime
-    implementation libs.androidx.viewmodel
-    implementation libs.androidx.viewmodel.savedstate
-    implementation libs.kotlin.parcelize
-    implementation libs.uri
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.viewmodel)
+    implementation(libs.androidx.viewmodel.savedstate)
+    implementation(libs.kotlin.parcelize)
+    implementation(libs.uri)
 
-    testImplementation libs.junit
-    testImplementation libs.truth
-    testImplementation libs.turbine
+    testImplementation(libs.junit)
+    testImplementation(libs.truth)
+    testImplementation(libs.turbine)
 }
