@@ -134,8 +134,9 @@ internal class FileGeneratorTestRendererFragment {
                   val arguments = requireArguments()
                   whetstoneTestRendererComponent = component(TestParentScope::class, arguments) {
                       parentComponent: WhetstoneTestRendererComponent.ParentComponent, savedStateHandle,
-                      arguments ->
-                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle, arguments)
+                      argumentsForComponent ->
+                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle,
+                        argumentsForComponent)
                   }
                 }
             
@@ -267,8 +268,9 @@ internal class FileGeneratorTestRendererFragment {
                   val testRoute = requireRoute<TestRoute>()
                   whetstoneTestRendererComponent = component(TestParentScope::class,
                       TestDestinationScope::class, testRoute) { parentComponent:
-                      WhetstoneTestRendererComponent.ParentComponent, savedStateHandle, testRoute ->
-                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle, testRoute)
+                      WhetstoneTestRendererComponent.ParentComponent, savedStateHandle, testRouteForComponent ->
+                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle,
+                        testRouteForComponent)
                   }
             
                   handleNavigation(this, whetstoneTestRendererComponent.navEventNavigator)
@@ -428,8 +430,9 @@ internal class FileGeneratorTestRendererFragment {
                   val testRoute = requireRoute<TestRoute>()
                   whetstoneTestRendererComponent = component(TestParentScope::class,
                       TestDestinationScope::class, testRoute) { parentComponent:
-                      WhetstoneTestRendererComponent.ParentComponent, savedStateHandle, testRoute ->
-                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle, testRoute)
+                      WhetstoneTestRendererComponent.ParentComponent, savedStateHandle, testRouteForComponent ->
+                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle,
+                        testRouteForComponent)
                   }
 
                   handleNavigation(this, whetstoneTestRendererComponent.navEventNavigator)
@@ -646,8 +649,9 @@ internal class FileGeneratorTestRendererFragment {
                   val testRoute = requireRoute<TestRoute>()
                   whetstoneTestRendererComponent = component(AppScope::class, AppScope::class, testRoute) {
                       parentComponent: WhetstoneTestRendererComponent.ParentComponent, savedStateHandle,
-                      testRoute ->
-                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle, testRoute)
+                      testRouteForComponent ->
+                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle,
+                        testRouteForComponent)
                   }
 
                   handleNavigation(this, whetstoneTestRendererComponent.navEventNavigator)
@@ -835,8 +839,9 @@ internal class FileGeneratorTestRendererFragment {
                   val arguments = requireArguments()
                   whetstoneTestRendererComponent = component(TestParentScope::class, arguments) {
                       parentComponent: WhetstoneTestRendererComponent.ParentComponent, savedStateHandle,
-                      arguments ->
-                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle, arguments)
+                      argumentsForComponent ->
+                    parentComponent.whetstoneTestRendererComponentFactory().create(savedStateHandle,
+                        argumentsForComponent)
                   }
                 }
             

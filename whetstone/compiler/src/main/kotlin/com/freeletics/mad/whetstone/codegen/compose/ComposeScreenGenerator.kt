@@ -22,23 +22,24 @@ internal class ComposeScreenGenerator(
 
     internal fun generate(): FunSpec {
         val parameter = data.navigation.asParameter()
+        val innerParameterName = "${parameter.name}ForComponent"
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
             .addAnnotation(optInAnnotation())
             .addParameter(parameter)
             .also {
                 if (data.navigation != null) {
-                    it.beginControlFlow("val component = %M(%T::class, %T::class, %N) { parentComponent: %T, savedStateHandle, %N ->",
+                    it.beginControlFlow("val component = %M(%T::class, %T::class, %N) { parentComponent: %T, savedStateHandle, %L ->",
                         rememberComponent, data.parentScope, data.navigation.destinationScope,
-                        parameter, retainedParentComponentClassName, parameter)
+                        parameter, retainedParentComponentClassName, innerParameterName)
                 } else {
-                    it.beginControlFlow("val component = %M(%T::class, %N) { parentComponent: %T, savedStateHandle, %N ->",
+                    it.beginControlFlow("val component = %M(%T::class, %N) { parentComponent: %T, savedStateHandle, %L ->",
                         rememberComponent, data.parentScope, parameter,
-                        retainedParentComponentClassName, parameter)
+                        retainedParentComponentClassName, innerParameterName)
                 }
             }
-            .addStatement("parentComponent.%L().%L(savedStateHandle, %N)",
-                retainedParentComponentGetterName, retainedComponentFactoryCreateName, parameter)
+            .addStatement("parentComponent.%L().%L(savedStateHandle, %L)",
+                retainedParentComponentGetterName, retainedComponentFactoryCreateName, innerParameterName)
             .endControlFlow()
             .addCode("\n")
             .addCode(composableNavigationSetup())
