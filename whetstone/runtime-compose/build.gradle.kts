@@ -50,6 +50,7 @@ dependencies {
     api(projects.whetstone.runtime)
 
     implementation(projects.stateMachine)
+    implementation(projects.whetstone.scope)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.viewmodel)

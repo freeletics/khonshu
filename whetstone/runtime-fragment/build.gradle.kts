@@ -46,6 +46,7 @@ dependencies {
     api(libs.androidx.fragment)
 
     implementation(projects.stateMachine)
+    implementation(projects.whetstone.scope)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.viewmodel)
     implementation(libs.androidx.viewmodel.savedstate)

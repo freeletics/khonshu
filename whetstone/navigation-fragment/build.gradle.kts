@@ -49,6 +49,7 @@ dependencies {
     api(libs.androidx.fragment)
 
     implementation(projects.stateMachine)
+    implementation(projects.whetstone.scope)
     implementation(projects.whetstone.runtime)
     implementation(projects.navigator.navigatorRuntimeFragment)
     implementation(libs.androidx.compose.runtime)

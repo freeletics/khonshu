@@ -23,7 +23,7 @@ include(":navigator:androidx-nav", ":navigator:runtime-compose", ":navigator:run
 include(":state-machine", ":state-machine:testing")
 include(":text-resource")
 include(":whetstone:compiler", ":whetstone:compiler-test")
-include(":whetstone:runtime", ":whetstone:runtime-compose", ":whetstone:runtime-fragment")
+include(":whetstone:scope", ":whetstone:runtime", ":whetstone:runtime-compose", ":whetstone:runtime-fragment")
 include(":whetstone:navigation", ":whetstone:navigation-compose", ":whetstone:navigation-fragment")
 
 project(":navigator:runtime").setName("navigator-runtime")
