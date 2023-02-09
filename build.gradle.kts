@@ -26,6 +26,15 @@ dependencyAnalysis {
             }
         }
 
+        project(":whetstone:runtime") {
+            onUnusedDependencies {
+                exclude(":whetstone:scope")
+            }
+            onIncorrectConfiguration {
+                exclude(":whetstone:scope")
+            }
+        }
+
         project(":whetstone:runtime-compose") {
             onUnusedDependencies {
                 exclude(":whetstone:runtime")

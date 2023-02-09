@@ -35,6 +35,7 @@ kotlin {
 
 dependencies {
     testImplementation(projects.whetstone.compiler)
+    testImplementation(projects.whetstone.scope)
     testImplementation(projects.whetstone.runtime)
     testImplementation(projects.whetstone.runtimeCompose)
     testImplementation(projects.whetstone.runtimeFragment)

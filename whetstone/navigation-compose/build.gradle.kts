@@ -53,6 +53,7 @@ dependencies {
     api(projects.navigator.navigatorRuntime)
 
     implementation(projects.stateMachine)
+    implementation(projects.whetstone.scope)
     implementation(projects.whetstone.runtime)
     implementation(projects.navigator.navigatorRuntimeCompose)
     implementation(libs.androidx.compose.runtime)

@@ -37,6 +37,7 @@ nav:
       - whetstone/compose-injection.md
       - whetstone/closeable-support.md
       - 'API':
+          - 'Scope': whetstone/API/scope/index.html
           - 'Runtime': whetstone/API/runtime/index.html
           - 'Runtime Compose': whetstone/API/runtime-compose/index.html
           - 'Runtime Fragment': whetstone/API/runtime-fragment/index.html

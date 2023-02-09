@@ -91,6 +91,8 @@ jobs:
           cp -R whetstone/navigation-compose/build/dokka/html/. docs/whetstone/API/navigation-compose/
           mkdir -p docs/whetstone/API/navigation-fragment
           cp -R whetstone/navigation-fragment/build/dokka/html/. docs/whetstone/API/navigation-fragment/
+          mkdir -p docs/whetstone/API/scope
+          cp -R whetstone/scope/build/dokka/html/. docs/whetstone/API/scope/
 
       - name: Build MkDocs
         run: mkdocs build
