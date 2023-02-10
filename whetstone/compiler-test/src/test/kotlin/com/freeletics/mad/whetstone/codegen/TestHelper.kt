@@ -95,4 +95,5 @@ private fun KotlinCompilation.configure() {
     jvmTarget = "11"
     inheritClassPath = true
     messageOutputStream = System.out // see diagnostics in real time
+    allWarningsAsErrors = true
 }

@@ -55,6 +55,7 @@ internal class FileGeneratorTestCompose {
               stateMachine = TestStateMachine::class,
             )
             @Composable
+            @Suppress("unused_parameter")
             public fun Test(
               state: TestState,
               sendAction: (TestAction) -> Unit
@@ -124,8 +125,8 @@ internal class FileGeneratorTestCompose {
             @OptIn(InternalWhetstoneApi::class)
             public fun WhetstoneTest(arguments: Bundle): Unit {
               val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
-                  WhetstoneTestComponent.ParentComponent, savedStateHandle, arguments ->
-                parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, arguments)
+                  WhetstoneTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, argumentsForComponent)
               }
 
               WhetstoneTest(component)
@@ -175,6 +176,7 @@ internal class FileGeneratorTestCompose {
               destinationScope = TestDestinationScope::class,
             )
             @Composable
+            @Suppress("unused_parameter")
             public fun Test(
               state: TestState,
               sendAction: (TestAction) -> Unit
@@ -252,8 +254,9 @@ internal class FileGeneratorTestCompose {
             @OptIn(InternalWhetstoneApi::class)
             public fun WhetstoneTest(testRoute: TestRoute): Unit {
               val component = rememberComponent(TestParentScope::class, TestDestinationScope::class, testRoute)
-                  { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle, testRoute ->
-                parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
+                  { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle,
+                  testRouteForComponent ->
+                parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRouteForComponent)
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -321,6 +324,7 @@ internal class FileGeneratorTestCompose {
               parentScope = TestParentScope::class,
             )
             @Composable
+            @Suppress("unused_parameter")
             public fun Test(
               state: TestState,
               sendAction: (TestAction) -> Unit
@@ -409,8 +413,9 @@ internal class FileGeneratorTestCompose {
             @OptIn(InternalWhetstoneApi::class)
             public fun WhetstoneTest(testRoute: TestRoute): Unit {
               val component = rememberComponent(TestParentScope::class, TestDestinationScope::class, testRoute)
-                  { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle, testRoute ->
-                parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
+                  { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle,
+                  testRouteForComponent ->
+                parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRouteForComponent)
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -536,6 +541,7 @@ internal class FileGeneratorTestCompose {
               scope = TestScreen::class,
             )
             @Composable
+            @Suppress("unused_parameter")
             public fun Test(
               state: TestState,
               sendAction: (TestAction) -> Unit
@@ -623,8 +629,8 @@ internal class FileGeneratorTestCompose {
             @OptIn(InternalWhetstoneApi::class)
             public fun WhetstoneTest(testRoute: TestRoute): Unit {
               val component = rememberComponent(AppScope::class, AppScope::class, testRoute) { parentComponent:
-                  WhetstoneTestComponent.ParentComponent, savedStateHandle, testRoute ->
-                parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRoute)
+                  WhetstoneTestComponent.ParentComponent, savedStateHandle, testRouteForComponent ->
+                parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRouteForComponent)
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -758,6 +764,7 @@ internal class FileGeneratorTestCompose {
               stateMachine = TestStateMachine::class,
             )
             @Composable
+            @Suppress("unused_parameter")
             public fun Test2(
                 state: TestState,
                 sendAction: (TestAction) -> Unit,
@@ -843,8 +850,8 @@ internal class FileGeneratorTestCompose {
             @OptIn(InternalWhetstoneApi::class)
             public fun WhetstoneTest2(arguments: Bundle): Unit {
               val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
-                  WhetstoneTest2Component.ParentComponent, savedStateHandle, arguments ->
-                parentComponent.whetstoneTest2ComponentFactory().create(savedStateHandle, arguments)
+                  WhetstoneTest2Component.ParentComponent, savedStateHandle, argumentsForComponent ->
+                parentComponent.whetstoneTest2ComponentFactory().create(savedStateHandle, argumentsForComponent)
               }
 
               WhetstoneTest2(component)
