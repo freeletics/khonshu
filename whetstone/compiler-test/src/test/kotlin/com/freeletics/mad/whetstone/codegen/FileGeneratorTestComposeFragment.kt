@@ -147,7 +147,7 @@ internal class FileGeneratorTestComposeFragment {
                 }
 
                 return ComposeView(requireContext()).apply {
-                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
                     WhetstoneTest(whetstoneTestComponent)
@@ -304,7 +304,7 @@ internal class FileGeneratorTestComposeFragment {
                 }
             
                 return ComposeView(requireContext()).apply {
-                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
                     WhetstoneTest(whetstoneTestComponent)
@@ -487,7 +487,7 @@ internal class FileGeneratorTestComposeFragment {
                 }
 
                 return ComposeView(requireContext()).apply {
-                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
                     WhetstoneTest(whetstoneTestComponent)
@@ -727,7 +727,7 @@ internal class FileGeneratorTestComposeFragment {
                 }
 
                 return ComposeView(requireContext()).apply {
-                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
                     WhetstoneTest(whetstoneTestComponent)
@@ -935,7 +935,7 @@ internal class FileGeneratorTestComposeFragment {
                 }
 
                 return ComposeView(requireContext()).apply {
-                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
                     WhetstoneTest(whetstoneTestComponent)
@@ -1109,7 +1109,7 @@ internal class FileGeneratorTestComposeFragment {
                 }
 
                 return ComposeView(requireContext()).apply {
-                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner))
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
                     WhetstoneTest2(whetstoneTest2Component)
