@@ -149,6 +149,4 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
             }
         }
     }
-
-    // TODO: remove after introducing a testing artifact
 }
