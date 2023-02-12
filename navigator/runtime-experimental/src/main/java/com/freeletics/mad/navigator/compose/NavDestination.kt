@@ -13,53 +13,58 @@ import com.freeletics.mad.navigator.internal.DestinationId
  */
 public sealed interface NavDestination
 
+internal sealed interface ContentDestination<T : BaseRoute> : NavDestination {
+    val id: DestinationId<T>
+    val content: @Composable (T) -> Unit
+}
+
 /**
  * Creates a new [NavDestination] that represents a full screen. The class of [T] will be used
- * as a unique identifier. The given [screenContent] will be shown when the screen is being
+ * as a unique identifier. The given [content] will be shown when the screen is being
  * navigated to using an instance of [T].
  */
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute> ScreenDestination(
-    noinline screenContent: @Composable (T) -> Unit,
-): NavDestination = ScreenDestination(DestinationId(T::class), screenContent)
+    noinline content: @Composable (T) -> Unit,
+): NavDestination = ScreenDestination(DestinationId(T::class), content)
 
 @PublishedApi
 internal class ScreenDestination<T : BaseRoute>(
-    internal val id: DestinationId<T>,
-    internal val screenContent: @Composable (T) -> Unit,
-) : NavDestination
+    override val id: DestinationId<T>,
+    override val content: @Composable (T) -> Unit,
+) : ContentDestination<T>
 
 /**
  * Creates a new [NavDestination] that represents a dialog. The class of [T] will be used
- * as a unique identifier. The given [dialogContent] will be shown inside the dialog window when
+ * as a unique identifier. The given [content] will be shown inside the dialog window when
  * navigating to it by using an instance of [T].
  */
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> DialogDestination(
-    noinline dialogContent: @Composable (T) -> Unit,
-): NavDestination = DialogDestination(DestinationId(T::class), dialogContent)
+    noinline content: @Composable (T) -> Unit,
+): NavDestination = DialogDestination(DestinationId(T::class), content)
 
 @PublishedApi
 internal class DialogDestination<T : NavRoute>(
-    internal val id: DestinationId<T>,
-    internal val dialogContent: @Composable (T) -> Unit,
-) : NavDestination
+    override val id: DestinationId<T>,
+    override val content: @Composable (T) -> Unit,
+) : ContentDestination<T>
 
 /**
  * Creates a new [NavDestination] that represents a bottom sheet. The class of [T] will be used
- * as a unique identifier. The given [bottomSheetContent] will be shown inside the bottom sheet
+ * as a unique identifier. The given [content] will be shown inside the bottom sheet
  * when navigating to it by using an instance of [T].
  */
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> BottomSheetDestination(
-    noinline bottomSheetContent: @Composable (T) -> Unit,
-): NavDestination = BottomSheetDestination(DestinationId(T::class), bottomSheetContent)
+    noinline content: @Composable (T) -> Unit,
+): NavDestination = BottomSheetDestination(DestinationId(T::class), content)
 
 @PublishedApi
 internal class BottomSheetDestination<T : NavRoute>(
-    internal val id: DestinationId<T>,
-    internal val bottomSheetContent: @Composable (T) -> Unit,
-) : NavDestination
+    override val id: DestinationId<T>,
+    override val content: @Composable (T) -> Unit,
+) : ContentDestination<T>
 
 /**
  * Creates a new [NavDestination] that represents an `Activity`. The class of [T] will be used
