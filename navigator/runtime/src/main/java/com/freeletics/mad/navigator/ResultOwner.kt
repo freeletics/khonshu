@@ -8,7 +8,6 @@ import com.freeletics.mad.navigator.internal.DestinationId
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.RequestPermissionsContract
 import dev.drewhamilton.poko.Poko
-import kotlin.reflect.KClass
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow

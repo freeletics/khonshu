@@ -50,7 +50,6 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.androidx.viewmodel)
     implementation(libs.androidx.viewmodel.savedstate)
     implementation(libs.kotlin.parcelize)
     implementation(libs.uri)
