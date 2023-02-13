@@ -5,6 +5,7 @@ Change Log
 
 ### Navigator
 
+- Added [docs](https://freeletics.github.io/mad/navigator/deeplinks/) for deep link support.
 - Internal changes and refactorings.
 
 ### Whetstone
@@ -22,7 +23,7 @@ Change Log
   All whetstone annotations use it as default value for `parentScope` and `destinationScope`, so those
   two don't need to be explicitly specified anymore after adopint `AppScope`.
 - Fixed compiler warning produced by generated code.
-- Generated Fragments for compose now use `DisposeOnViewTreeLifecycleDestroyed` 
+- Generated Fragments for compose now use `DisposeOnViewTreeLifecycleDestroyed`.
 
 ### StateMachine
 
