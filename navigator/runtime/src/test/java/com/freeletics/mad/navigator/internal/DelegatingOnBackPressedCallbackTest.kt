@@ -86,7 +86,7 @@ internal class DelegatingOnBackPressedCallbackTest {
     }
 
     @Test
-    fun `noting happens if there is no callback when handleOnBackPressedIsCalled`() {
+    fun `nothing happens if there is no callback when handleOnBackPressedIsCalled`() {
         var invoked = 0
         val callback: () -> Unit = { invoked++ }
         underTest.addCallback(callback)
