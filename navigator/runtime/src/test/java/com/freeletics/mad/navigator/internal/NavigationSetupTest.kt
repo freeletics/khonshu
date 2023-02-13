@@ -4,6 +4,9 @@ import android.net.Uri
 import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.State.RESUMED
+import androidx.lifecycle.testing.TestLifecycleOwner
 import app.cash.turbine.test
 import com.freeletics.mad.navigator.ContractResultOwner
 import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult
@@ -18,8 +21,10 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -39,9 +44,12 @@ internal class NavigationSetupTest {
         permissionRequest to permissionLauncher,
     )
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val lifecyle = TestLifecycleOwner(RESUMED, UnconfinedTestDispatcher()).lifecycle
+
     private fun setup() {
         CoroutineScope(Dispatchers.Default).launch {
-            navigator.collectAndHandleNavEvents(executor, launchers)
+            navigator.collectAndHandleNavEvents(lifecyle, executor, launchers)
         }
     }
 
@@ -150,7 +158,7 @@ internal class NavigationSetupTest {
                 val launchers = mapOf<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>(
                     permissionRequest to permissionLauncher
                 )
-                navigator.collectAndHandleNavEvents(executor, launchers)
+                navigator.collectAndHandleNavEvents(lifecyle, executor, launchers)
             }
         }
         assertThat(exception).hasMessageThat().isEqualTo(
