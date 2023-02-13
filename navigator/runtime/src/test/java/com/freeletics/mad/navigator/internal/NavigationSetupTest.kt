@@ -25,6 +25,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -45,19 +47,28 @@ internal class NavigationSetupTest {
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val lifecyle = TestLifecycleOwner(RESUMED, UnconfinedTestDispatcher()).lifecycle
+    private val dispatcher = UnconfinedTestDispatcher()
+    private val lifecyle = TestLifecycleOwner(RESUMED, dispatcher).lifecycle
+
+    @Before
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun prepare() {
+        Dispatchers.setMain(dispatcher)
+    }
 
     private fun setup() {
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(dispatcher).launch {
             navigator.collectAndHandleNavEvents(lifecyle, executor, launchers)
         }
     }
 
     @After
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun tearDown() = runBlocking {
         executor.received.cancel()
         activityLauncher.launched.cancel()
         permissionLauncher.launched.cancel()
+        Dispatchers.resetMain()
     }
 
     @Test
@@ -214,7 +225,7 @@ internal class NavigationSetupTest {
 
     @Test
     fun `collectAndHandleNavigationResults forwards results`() = runBlocking {
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(dispatcher).launch {
             executor.collectAndHandleNavigationResults(resultRequest)
         }
 
@@ -226,7 +237,7 @@ internal class NavigationSetupTest {
 
     @Test
     fun `collectAndHandleNavigationResults forwards initial value if set`() = runBlocking {
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(dispatcher).launch {
             executor.collectAndHandleNavigationResults(resultRequest)
         }
 
@@ -238,7 +249,7 @@ internal class NavigationSetupTest {
 
     @Test
     fun `collectAndHandleNavigationResults dows not forward same result twice`() = runBlocking {
-        val job = CoroutineScope(Dispatchers.Default).launch {
+        val job = CoroutineScope(dispatcher).launch {
             executor.collectAndHandleNavigationResults(resultRequest)
         }
 
@@ -248,7 +259,7 @@ internal class NavigationSetupTest {
 
             // restart the collection of navigation results
             job.cancel()
-            CoroutineScope(Dispatchers.Default).launch {
+            CoroutineScope(dispatcher).launch {
                 executor.collectAndHandleNavigationResults(resultRequest)
             }
 
