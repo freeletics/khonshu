@@ -79,7 +79,7 @@ internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 internal val composeView = ClassName("androidx.compose.ui.platform", "ComposeView")
 internal val viewCompositionStrategy = ClassName("androidx.compose.ui.platform", "ViewCompositionStrategy")
-internal val disposeOnLifecycleDestroyed = viewCompositionStrategy.nestedClass("DisposeOnLifecycleDestroyed")
+internal val disposeOnLifecycleDestroyed = viewCompositionStrategy.nestedClass("DisposeOnViewTreeLifecycleDestroyed")
 
 // Android
 internal val layoutInflater = ClassName("android.view", "LayoutInflater")
