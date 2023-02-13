@@ -4,9 +4,7 @@ import android.app.Activity
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.freeletics.mad.navigator.ContractResultOwner
 import com.freeletics.mad.navigator.NavEventNavigator
@@ -38,9 +36,7 @@ public fun handleNavigation(fragment: Fragment, navigator: NavEventNavigator) {
     dispatcher.addCallback(fragment, navigator.onBackPressedCallback)
 
     lifecycle.coroutineScope.launch {
-        lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            navigator.collectAndHandleNavEvents(executor, activityLaunchers)
-        }
+        navigator.collectAndHandleNavEvents(lifecycle, executor, activityLaunchers)
     }
 }
 

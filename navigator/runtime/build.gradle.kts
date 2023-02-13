@@ -45,9 +45,11 @@ kotlin {
 
 dependencies {
     api(libs.androidx.activity)
-    api(libs.androidx.core)
     api(libs.coroutines.core)
+    api(libs.androidx.core)
 
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.viewmodel)
     implementation(libs.androidx.viewmodel.savedstate)
     implementation(libs.kotlin.parcelize)
