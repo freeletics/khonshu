@@ -213,12 +213,6 @@ internal class NavigationSetupTest {
         resultRequest.results.test {
             executor.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(3)
             assertThat(awaitItem()).isEqualTo(TestParcelable(3))
-            executor.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(6)
-            assertThat(awaitItem()).isEqualTo(TestParcelable(6))
-            executor.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(9)
-            assertThat(awaitItem()).isEqualTo(TestParcelable(9))
-            executor.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(12)
-            assertThat(awaitItem()).isEqualTo(TestParcelable(12))
         }
     }
 

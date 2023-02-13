@@ -3,8 +3,6 @@ package com.freeletics.mad.navigator.internal
 import android.app.Activity
 import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.core.app.ActivityCompat
 import com.freeletics.mad.navigator.ActivityResultRequest
 import com.freeletics.mad.navigator.ContractResultOwner
@@ -16,12 +14,10 @@ import kotlinx.parcelize.Parcelize
 
 @InternalNavigatorApi
 public suspend fun NavEventNavigator.collectAndHandleNavEvents(
-    lifecycle: Lifecycle,
     executor: NavigationExecutor,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
 ) {
-    navEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
-        .collect { event ->
+    navEvents.collect { event ->
             executor.navigate(event, activityLaunchers)
         }
 }
