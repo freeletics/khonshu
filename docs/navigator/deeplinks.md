@@ -4,7 +4,7 @@ The core class for deep links is `DeepLink`. It accepts various combinations of 
 to build a custom back stack on top of the app's default destination. After constructing a deep link
 call `buildIntent`, `buildTaskStack` or `buildPendingIntent` to obtain something that can be 
 launched. By default the resulting `Intent` will target the app's launcher `Activity`. To 
-open other's pass an `action` to `DeepLink`. The `Intent` for deep links with a custom 
+open other Activities pass an `action` to `DeepLink`. The `Intent` for deep links with a custom 
 action will still be limited to the current app's packageName so that deep links can't be
 hijacked by other apps.
 
