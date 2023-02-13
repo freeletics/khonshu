@@ -6,10 +6,10 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
-public class ResulterOwnerTest {
+internal class ResulterOwnerTest {
 
     @Test
-    public fun `ResultOwner emits events`(): Unit = runBlocking {
+    fun `ResultOwner emits events`(): Unit = runBlocking {
         val owner = PermissionsResultRequest()
 
         owner.results.test {
@@ -25,7 +25,7 @@ public class ResulterOwnerTest {
     }
 
     @Test
-    public fun `ResultOwner emits results that were delivered before collection`(): Unit = runBlocking {
+    fun `ResultOwner emits results that were delivered before collection`(): Unit = runBlocking {
         val owner = PermissionsResultRequest()
 
         owner.onResult(mapOf("a" to PermissionResult.Granted))
@@ -40,7 +40,7 @@ public class ResulterOwnerTest {
     }
 
     @Test
-    public fun `ResultOwner emits results were delivered before and during collection`(): Unit = runBlocking {
+    fun `ResultOwner emits results were delivered before and during collection`(): Unit = runBlocking {
         val owner = PermissionsResultRequest()
 
         owner.onResult(mapOf("a" to PermissionResult.Granted))

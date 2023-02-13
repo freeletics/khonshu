@@ -9,31 +9,31 @@ import com.google.common.truth.FailureMetadata
 import com.google.common.truth.Subject
 import com.google.common.truth.Truth.assertAbout
 
-public class DeepLinkHandlerSubject private constructor(
+internal class DeepLinkHandlerSubject private constructor(
     failureMetadata: FailureMetadata,
     private val handler: DeepLinkHandler,
 ) : Subject(failureMetadata, handler) {
 
-    public companion object {
+    companion object {
         private val SUBJECT_FACTORY: Factory<DeepLinkHandlerSubject, DeepLinkHandler> =
             Factory { metadata, actual -> DeepLinkHandlerSubject(metadata, actual) }
 
         @JvmStatic
-        public fun deepLinkHandler(): Factory<DeepLinkHandlerSubject, DeepLinkHandler> {
+        fun deepLinkHandler(): Factory<DeepLinkHandlerSubject, DeepLinkHandler> {
             return SUBJECT_FACTORY
         }
 
         @JvmStatic
-        public fun assertThat(actual: DeepLinkHandler): DeepLinkHandlerSubject {
+        fun assertThat(actual: DeepLinkHandler): DeepLinkHandlerSubject {
             return assertAbout(deepLinkHandler()).that(actual)
         }
     }
 
-    public fun matchesPattern(string: String, prefixes: Set<Prefix> = emptySet()): BooleanSubject {
+    fun matchesPattern(string: String, prefixes: Set<Prefix> = emptySet()): BooleanSubject {
         return matchesPattern(Uri.parse(string), prefixes)
     }
 
-    public fun matchesPattern(uri: Uri, prefixes: Set<Prefix> = emptySet()): BooleanSubject {
+    fun matchesPattern(uri: Uri, prefixes: Set<Prefix> = emptySet()): BooleanSubject {
         return check("matchesPattern()").that(handler.matchesPattern(uri, prefixes))
     }
 }

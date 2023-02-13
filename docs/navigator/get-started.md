@@ -303,4 +303,6 @@ tasks:
   a previous destination
 - [Multiple back stack support](back-stacks.md) for supporting something like
   bottom navigation where each tab has its own separate back stack
+- [Deep links](deeplinks.md) for sending deep links within the app and for handling deep links
+  coming from the outside.
 - [Test helpers](testing.md) to make testing navigation logic easier

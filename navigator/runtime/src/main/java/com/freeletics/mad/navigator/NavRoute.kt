@@ -56,7 +56,7 @@ public interface ExternalActivityRoute : ActivityRoute {
 /**
  * Returns the [ActivityRoute] that was used to navigate to this [Activity].
  */
-public fun <T : ActivityRoute> Activity.requireRoute(): T {
+public fun <T : InternalActivityRoute> Activity.requireRoute(): T {
     return requireNotNull(getRoute()) {
         "Error extracting ActivityRoute from Activity's Intent"
     }
@@ -66,7 +66,7 @@ public fun <T : ActivityRoute> Activity.requireRoute(): T {
  * Returns the [ActivityRoute] that was used to navigate to this [Activity] if it's present in
  * Activity's Intent.
  */
-public fun <T : ActivityRoute> Activity.getRoute(): T? {
+public fun <T : InternalActivityRoute> Activity.getRoute(): T? {
     @Suppress("DEPRECATION")
     return intent.extras?.getParcelable(EXTRA_ROUTE)
 }
