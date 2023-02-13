@@ -58,7 +58,6 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material)
-    implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.navigation.common)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.accompanist.navigation)
