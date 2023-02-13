@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.freeletics.mad.navigator.ContractResultOwner
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.internal.collectAndHandleNavEvents
@@ -23,6 +24,7 @@ import com.freeletics.mad.navigator.internal.deliverResult
 @Composable
 public fun NavigationSetup(navigator: NavEventNavigator) {
     val executor = LocalNavigationExecutor.current
+    val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
     val activityLaunchers = navigator.activityResultRequests.associateWith {
@@ -44,8 +46,8 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
         }
     }
 
-    LaunchedEffect(executor, navigator) {
-        navigator.collectAndHandleNavEvents(executor, activityLaunchers)
+    LaunchedEffect(lifecycleOwner, executor, navigator) {
+        navigator.collectAndHandleNavEvents(lifecycleOwner.lifecycle, executor, activityLaunchers)
     }
 }
 
