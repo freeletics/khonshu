@@ -1,18 +1,17 @@
-package com.freeletics.mad.navigator.deeplink
+package com.freeletics.mad.navigator.internal
 
 import com.eygraber.uri.Uri
 import com.freeletics.mad.navigator.DeepLink
-import com.freeletics.mad.navigator.DeepLinkHandler
 import com.freeletics.mad.navigator.DeepLinkHandler.Pattern
 import com.freeletics.mad.navigator.DeepLinkHandler.Prefix
-import com.freeletics.mad.navigator.internal.matchesPattern
 import com.freeletics.mad.navigator.test.DeepLinkHandlerSubject.Companion.assertThat
+import com.freeletics.mad.navigator.test.TestDeepLinkHandler
 import com.google.common.truth.Truth.assertThat
 import java.util.regex.PatternSyntaxException
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
-public class DeepLinkMatcherTest {
+internal class DeepLinkMatcherTest {
     private val prefixes: Set<Prefix> = setOf(
         Prefix("https://a.com"),
         Prefix("https://b.de"),
@@ -20,22 +19,8 @@ public class DeepLinkMatcherTest {
         Prefix("app://a.b.de"),
     )
 
-    private class TestDeepLinkHandler(
-        override val patterns: Set<Pattern>,
-        override val prefixes: Set<Prefix> = emptySet(),
-    ) : DeepLinkHandler {
-        constructor(vararg patterns: String) : this(patterns.map { Pattern(it) }.toSet())
-
-        override fun deepLink(
-            pathParameters: Map<String, String>,
-            queryParameters: Map<String, String>,
-        ): DeepLink {
-            throw NotImplementedError()
-        }
-    }
-
     @Test
-    public fun `when the pattern is home`() {
+    fun `when the pattern is home`() {
         val handler = TestDeepLinkHandler("home")
 
         assertThat(handler).matchesPattern("https://a.com/home", prefixes).isTrue() // first prefix
@@ -53,7 +38,7 @@ public class DeepLinkMatcherTest {
     }
 
     @Test
-    public fun `when the pattern is empty`() {
+    fun `when the pattern is empty`() {
         val handler = TestDeepLinkHandler("")
 
         assertThat(handler).matchesPattern("https://a.com/", prefixes).isTrue() // first prefix
@@ -69,7 +54,7 @@ public class DeepLinkMatcherTest {
     }
 
     @Test
-    public fun `when the pattern is foo_bar_placeholder`() {
+    fun `when the pattern is foo_bar_placeholder`() {
         val handler = TestDeepLinkHandler("foo/bar/{placeholder}")
 
         assertThat(handler).matchesPattern("https://a.com/foo/bar/abc", prefixes).isTrue() // lower case chars
@@ -84,7 +69,7 @@ public class DeepLinkMatcherTest {
     }
 
     @Test
-    public fun `when the pattern is placeholder_foo_bar`() {
+    fun `when the pattern is placeholder_foo_bar`() {
         val handler = TestDeepLinkHandler("{placeholder}/foo/bar")
 
         assertThat(handler).matchesPattern("https://a.com/abc/foo/bar", prefixes).isTrue() // lower case chars
@@ -99,7 +84,7 @@ public class DeepLinkMatcherTest {
     }
 
     @Test
-    public fun `when the pattern is foo_placeholder_bar`() {
+    fun `when the pattern is foo_placeholder_bar`() {
         val handler = TestDeepLinkHandler("foo/{placeholder}/bar")
 
         assertThat(handler).matchesPattern("https://a.com/foo/abc/bar", prefixes).isTrue() // lower case chars
@@ -114,14 +99,14 @@ public class DeepLinkMatcherTest {
     }
 
     @Test
-    public fun `when the pattern is foo_placeholder1_bar_placeholder2`() {
+    fun `when the pattern is foo_placeholder1_bar_placeholder2`() {
         val handler = TestDeepLinkHandler("foo/{placeholder1}/bar/{placeholder2}")
 
         assertThat(handler).matchesPattern("https://a.com/foo/abc/bar/aBC123_=", prefixes).isTrue()
     }
 
     @Test
-    public fun `when the pattern has an invalid placeholder`() {
+    fun `when the pattern has an invalid placeholder`() {
         val handler = TestDeepLinkHandler("foo/a{placeholder}/bar")
 
         val exception = assertThrows(PatternSyntaxException::class.java) {
@@ -131,7 +116,7 @@ public class DeepLinkMatcherTest {
     }
 
     @Test
-    public fun `when the prefix is https_test_com`() {
+    fun `when the prefix is https_test_com`() {
         val handler = TestDeepLinkHandler(
             patterns = setOf(Pattern("home")),
             prefixes = setOf(Prefix("https://test.com"))
@@ -143,5 +128,32 @@ public class DeepLinkMatcherTest {
         assertThat(handler).matchesPattern("https://a.com/home", prefixes).isFalse() // first default prefix
         assertThat(handler).matchesPattern("https://b.de/home", prefixes).isFalse() // second default prefix
         assertThat(handler).matchesPattern("app://b.de/home", prefixes).isFalse() // third default prefix
+    }
+
+    @Test
+    fun `for a set of deep links, returns true if one matches`() {
+        val handlers = setOf(
+            TestDeepLinkHandler(
+                patterns = setOf(Pattern("home")),
+                deepLinkFactory = { _, _ -> DeepLink("test", listOf()) },
+            ),
+            TestDeepLinkHandler("")
+        )
+
+        val uri = Uri.parse("https://a.com/home")
+        assertThat(handlers.matchesPattern(uri, prefixes)).isTrue()
+    }
+
+    @Test
+    fun `for a set of deep links, returns false if none matches`() {
+        val handlers = setOf(
+            TestDeepLinkHandler(
+                patterns = setOf(Pattern("home")),
+            ),
+            TestDeepLinkHandler("")
+        )
+
+        val uri = Uri.parse("https://a.com/foo")
+        assertThat(handlers.matchesPattern(uri, prefixes)).isFalse()
     }
 }

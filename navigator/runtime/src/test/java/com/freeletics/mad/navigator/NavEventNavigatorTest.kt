@@ -1,55 +1,27 @@
 package com.freeletics.mad.navigator
 
-import android.os.Parcelable
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
+import com.freeletics.mad.navigator.internal.DestinationId
+import com.freeletics.mad.navigator.internal.NavEvent
 import com.freeletics.mad.navigator.internal.NavEvent.NavigateToActivityEvent
 import com.freeletics.mad.navigator.internal.NavEvent.NavigateToEvent
 import com.freeletics.mad.navigator.internal.NavEvent.NavigateToRootEvent
-import com.freeletics.mad.navigator.internal.DestinationId
-import com.freeletics.mad.navigator.internal.NavEvent
+import com.freeletics.mad.navigator.test.OtherRoute
+import com.freeletics.mad.navigator.test.SimpleActivity
+import com.freeletics.mad.navigator.test.SimpleRoot
+import com.freeletics.mad.navigator.test.SimpleRoute
+import com.freeletics.mad.navigator.test.TestNavigator
+import com.freeletics.mad.navigator.test.TestParcelable
 import com.google.common.truth.Truth.assertThat
-import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.runBlocking
-import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
-public class NavEventNavigatorTest {
-
-    private class TestNavigator : NavEventNavigator() {
-        fun <I, O> testRegisterForActivityResult(contract: ActivityResultContract<I, O>): ActivityResultRequest<I, O> {
-            return registerForActivityResult(contract)
-        }
-
-        fun testRegisterForPermissionResult(): PermissionsResultRequest {
-            return registerForPermissionsResult()
-        }
-
-        inline fun <reified I : BaseRoute, reified O : Parcelable> testRegisterForNavigationResult(): NavigationResultRequest<O> {
-            return registerForNavigationResult<I, O>()
-        }
-    }
-
-    @Poko
-    @Parcelize
-    private class SimpleRoute(val number: Int) : NavRoute
-    @Poko
-    @Parcelize
-    private class OtherRoute(val number: Int) : NavRoute
-    @Poko
-    @Parcelize
-    private class SimpleRoot(val number: Int) : NavRoot
-    @Poko
-    @Parcelize
-    private class SimpleActivity(val number: Int) : InternalActivityRoute()
-    @Poko
-    @Parcelize
-    private class TestParcelable(val value: Int) : Parcelable
+internal class NavEventNavigatorTest {
 
     @Test
-    public fun `navigateTo event is received`(): Unit = runBlocking {
+    fun `navigateTo event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
@@ -62,7 +34,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `multiple navigateTo event are received`(): Unit = runBlocking {
+    fun `multiple navigateTo event are received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
@@ -79,7 +51,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `navigateToRoot event is received`(): Unit = runBlocking {
+    fun `navigateToRoot event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
@@ -100,7 +72,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `navigateTo Activity event is received`(): Unit = runBlocking {
+    fun `navigateTo Activity event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
@@ -113,7 +85,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `navigateUp event is received`(): Unit = runBlocking {
+    fun `navigateUp event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
@@ -126,7 +98,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `navigateBack event is received`(): Unit = runBlocking {
+    fun `navigateBack event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
@@ -139,7 +111,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `navigateBackTo event is received`(): Unit = runBlocking {
+    fun `navigateBackTo event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
@@ -154,7 +126,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `navigateForResult event is received`(): Unit = runBlocking {
+    fun `navigateForResult event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
@@ -168,7 +140,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `requestPermissions event is received`(): Unit = runBlocking {
+    fun `requestPermissions event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
@@ -183,7 +155,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `deliverResult event is received`(): Unit = runBlocking {
+    fun `deliverResult event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navEvents.test {
@@ -198,7 +170,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `backPresses sends out events`(): Unit = runBlocking {
+    fun `backPresses sends out events`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         assertThat(navigator.onBackPressedCallback.isEnabled).isFalse()
@@ -221,7 +193,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `registerForActivityResult after read is disallowed`(): Unit = runBlocking {
+    fun `registerForActivityResult after read is disallowed`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.activityResultRequests
@@ -235,7 +207,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `registerForPermissionsResult after read is disallowed`(): Unit = runBlocking {
+    fun `registerForPermissionsResult after read is disallowed`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.activityResultRequests
@@ -249,7 +221,7 @@ public class NavEventNavigatorTest {
     }
 
     @Test
-    public fun `registerForNavigationResult after read is disallowed`(): Unit = runBlocking {
+    fun `registerForNavigationResult after read is disallowed`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
         navigator.navigationResultRequests
