@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.freeletics.mad.navigator.runtime.compose.experimental"
-    compileSdkVersion libs.versions.android.compile.get().toInteger()
+    namespace = "com.freeletics.mad.navigator.runtime.compose"
+    compileSdk = libs.versions.android.compile.get().toInt()
 
     defaultConfig {
-        minSdkVersion libs.versions.android.min.get().toInteger()
+        minSdk = libs.versions.android.min.get().toInt()
     }
 
     buildFeatures {
@@ -36,7 +36,7 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInteger()))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
     }
 
     sourceSets.all {
@@ -46,22 +46,16 @@ kotlin {
     }
 }
 
-// workaround for https://issuetracker.google.com/issues/194113162
-tasks.withType(JavaCompile).configureEach {
-    javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(libs.versions.java.get().toInteger())
-    }
-}
-
 dependencies {
-    api project(":navigator:navigator-runtime")
-    api libs.androidx.compose.runtime
-    api libs.androidx.compose.ui
+    api(projects.navigator.navigatorRuntime)
+    api(libs.androidx.compose.runtime)
+    api(libs.androidx.compose.ui)
 
-    implementation libs.coroutines.core
-    implementation libs.androidx.activity
-    implementation libs.androidx.activity.compose
-    implementation libs.androidx.compose.foundation
-    implementation libs.androidx.compose.material
-    implementation libs.androidx.viewmodel.savedstate
+    implementation(libs.coroutines.core)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.androidx.viewmodel.savedstate)
 }
