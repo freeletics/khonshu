@@ -248,7 +248,7 @@ internal class NavigationSetupTest {
     }
 
     @Test
-    fun `collectAndHandleNavigationResults dows not forward same result twice`() = runBlocking {
+    fun `collectAndHandleNavigationResults does not forward same result twice`() = runBlocking {
         val job = CoroutineScope(dispatcher).launch {
             executor.collectAndHandleNavigationResults(resultRequest)
         }
