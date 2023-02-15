@@ -60,7 +60,7 @@ dependencies {
     testImplementation(libs.anvil.annotations)
     testImplementation(libs.anvil.compiler.utils)
     testImplementation(testFixtures(libs.anvil.compiler.utils))
-    testImplementation(libs.kotlin.compiler) { setForce(true) }
+    testImplementation(libs.kotlin.compiler) { strictly(libs.versions.kotlin.get()) }
 }
 
 configurations.all {
