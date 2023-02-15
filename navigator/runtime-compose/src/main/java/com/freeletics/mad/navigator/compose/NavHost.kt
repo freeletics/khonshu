@@ -136,7 +136,7 @@ private fun <T : BaseRoute> ScreenDestination<T>.toDestination(
     startRoute: BaseRoute,
 ): ComposeNavigator.Destination {
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
-    return ComposeNavigator.Destination(navigator) { screenContent(it.arguments.requireRoute()) }.also {
+    return ComposeNavigator.Destination(navigator) { content(it.arguments.requireRoute()) }.also {
         it.id = id.destinationId()
         if (startRoute::class == id.route) {
             val arguments = startRoute.getArguments()
@@ -156,7 +156,7 @@ private fun <T : NavRoute> DialogDestination<T>.toDestination(
     controller: NavController,
 ): DialogNavigator.Destination {
     val navigator = controller.navigatorProvider[DialogNavigator::class]
-    return DialogNavigator.Destination(navigator) { dialogContent(it.arguments.requireRoute()) }.also {
+    return DialogNavigator.Destination(navigator) { content(it.arguments.requireRoute()) }.also {
         it.id = id.destinationId()
     }
 }
@@ -168,7 +168,7 @@ private fun <T : NavRoute> BottomSheetDestination<T>.toDestination(
     controller: NavController,
 ): BottomSheetNavigator.Destination {
     val navigator = controller.navigatorProvider[BottomSheetNavigator::class]
-    return BottomSheetNavigator.Destination(navigator) { bottomSheetContent(it.arguments.requireRoute()) }.also {
+    return BottomSheetNavigator.Destination(navigator) { content(it.arguments.requireRoute()) }.also {
         it.id = id.destinationId()
     }
 }
