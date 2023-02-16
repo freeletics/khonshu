@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.DeepLinkHandler
-import com.freeletics.mad.navigator.NavRoute
+import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.compose.internal.rememberNavigationExecutor
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.NavigationExecutor
@@ -24,16 +24,16 @@ import com.freeletics.mad.navigator.internal.NavigationExecutor
  * [NavigationSetup] to chage what is shown in [NavHost]
  *
  * The [destinationChangedCallback] can be used to be notified when the current destination
- * changes. Note that this will not be invoked when navigating to a [NavDestination.Activity].
+ * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
 @Composable
 @Suppress("unused_parameter") //TODO
 public fun NavHost(
-    startRoute: BaseRoute,
+    startRoute: NavRoot,
     destinations: Set<NavDestination>,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
-    destinationChangedCallback: ((NavRoute) -> Unit)? = null,
+    destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
     bottomSheetShape: Shape = MaterialTheme.shapes.large,
     bottomSheetElevation: Dp = ModalBottomSheetDefaults.Elevation,
     bottomSheetBackgroundColor: Color = MaterialTheme.colors.surface,
