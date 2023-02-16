@@ -60,10 +60,14 @@ dependencies {
     testImplementation(libs.anvil.annotations)
     testImplementation(libs.anvil.compiler.utils)
     testImplementation(testFixtures(libs.anvil.compiler.utils))
-    testImplementation(libs.kotlin.compiler) { strictly(libs.versions.kotlin.get()) }
+    testImplementation(libs.kotlin.compiler) {
+        version {
+            strictly(libs.versions.kotlin.asProvider().get())
+        }
+    }
 }
 
-configurations.all {
+configurations.configureEach {
     resolutionStrategy.dependencySubstitution.run {
         substitute(module("com.freeletics.mad:state-machine")).using(project(":state-machine"))
     }
