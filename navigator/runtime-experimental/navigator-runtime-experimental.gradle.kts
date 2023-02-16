@@ -25,8 +25,10 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.viewmodel)
+    implementation(libs.androidx.viewmodel.compose)
     implementation(libs.androidx.viewmodel.savedstate)
     implementation(libs.androidx.savedstate)
+    implementation(libs.uri)
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)
