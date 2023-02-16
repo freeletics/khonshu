@@ -1,10 +1,8 @@
 package com.freeletics.mad.navigator.internal
 
-import android.net.Uri
 import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.lifecycle.testing.TestLifecycleOwner
 import app.cash.turbine.test
@@ -18,6 +16,8 @@ import com.freeletics.mad.navigator.test.TestNavigationExecutor
 import com.freeletics.mad.navigator.test.TestNavigator
 import com.freeletics.mad.navigator.test.TestParcelable
 import com.google.common.truth.Truth.assertThat
+import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.CoroutineDispatcher
 import org.junit.Assert.assertThrows
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +47,7 @@ internal class NavigationSetupTest {
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val dispatcher = UnconfinedTestDispatcher()
+    private val dispatcher: CoroutineDispatcher = UnconfinedTestDispatcher()
     private val lifecyle = TestLifecycleOwner(RESUMED, dispatcher).lifecycle
 
     @Before

@@ -27,6 +27,7 @@ import com.freeletics.mad.navigator.internal.NavigationExecutor
  * changes. Note that this will not be invoked when navigating to a [NavDestination.Activity].
  */
 @Composable
+@Suppress("unused_parameter") //TODO
 public fun NavHost(
     startRoute: BaseRoute,
     destinations: Set<NavDestination>,

@@ -1,38 +1,22 @@
 package com.freeletics.mad.navigator.compose.internal
 
-import android.content.Context
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.SavedStateHandle
 import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
-import com.freeletics.mad.navigator.DeepLinkHandler
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
-import com.freeletics.mad.navigator.compose.NavDestination
+import com.freeletics.mad.navigator.compose.ActivityDestination
+import com.freeletics.mad.navigator.compose.ContentDestination
 import com.freeletics.mad.navigator.internal.DestinationId
 import com.freeletics.mad.navigator.internal.NavigationExecutor
 
-@Composable
-internal fun rememberNavigationExecutor(
-    startRoot: BaseRoute,
-    destinations: Set<NavDestination>,
-    deepLinkHandlers: Set<DeepLinkHandler>,
-    deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
-) : RealNavigationExecutor {
-    val context = LocalContext.current
-    return remember {
-        RealNavigationExecutor(context, startRoot, destinations, deepLinkHandlers ,deepLinkPrefixes)
-    }
-}
-
-internal class RealNavigationExecutor(
-    private val context: Context,
-    startRoot: BaseRoute,
-    destinations: Set<NavDestination>,
-    deepLinkHandlers: Set<DeepLinkHandler>,
-    deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
+internal class MultiStackNavigationExecutor(
+    @Suppress("unused") //TODO
+    private val activityStarter: (ActivityRoute, ActivityDestination) -> Unit,
+    @Suppress("unused") //TODO
+    private val contentDestinations: List<ContentDestination<*>>,
+    @Suppress("unused") //TODO
+    private val activityDestinations: List<ActivityDestination>,
 ) : NavigationExecutor {
 
     override fun navigate(route: NavRoute) {
