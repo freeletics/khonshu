@@ -1,7 +1,12 @@
 Change Log
 ==========
 
-## 0.12.0 **UNRELEASED**
+## 0.12.0 *(2023-02-13)*
+
+### Navigator
+
+- Added [docs](https://freeletics.github.io/mad/navigator/deeplinks/) for deep link support.
+- Internal changes and refactorings.
 
 ### Whetstone
 
@@ -14,6 +19,15 @@ Change Log
     classes, the `NavRoute` or `NavRoot` serves both purposes
   - the previous point means that the same `route` will also need to be used in any place that that
     requires scope markers like `@ScopeTo`, `@ContributesTo` or `@ContributesBinding`  
+- New `AppScope` scope marker class. This can be used as the scope marker for an app level component.
+  All whetstone annotations use it as default value for `parentScope` and `destinationScope`, so those
+  two don't need to be explicitly specified anymore after adopint `AppScope`.
+- Fixed compiler warning produced by generated code.
+- Generated Fragments for compose now use `DisposeOnViewTreeLifecycleDestroyed`.
+
+### StateMachine
+
+- added Kotlin/JS as target
 
 
 ## 0.11.0 *(2023-02-06)*

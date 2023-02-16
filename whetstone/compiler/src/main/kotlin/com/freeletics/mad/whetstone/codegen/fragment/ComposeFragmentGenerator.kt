@@ -17,8 +17,7 @@ internal class ComposeFragmentGenerator(
             // requireContext: external method
             .beginControlFlow("return %T(requireContext()).apply {", composeView)
             // setViewCompositionStrategy: external method
-            // viewLifecycleOwner: external method
-            .addStatement("setViewCompositionStrategy(%T(viewLifecycleOwner))", disposeOnLifecycleDestroyed)
+            .addStatement("setViewCompositionStrategy(%T)", disposeOnLifecycleDestroyed)
             .add("\n")
             // setContent: external method
             .beginControlFlow("setContent {")

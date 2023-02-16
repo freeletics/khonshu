@@ -3,7 +3,7 @@
 local.properties
 .DS_Store
 build/
-
+kotlin-js-store/
 
 docs/index.md
 docs/changelog.md

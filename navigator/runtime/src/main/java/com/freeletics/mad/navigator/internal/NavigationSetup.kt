@@ -3,6 +3,7 @@ package com.freeletics.mad.navigator.internal
 import android.app.Activity
 import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.freeletics.mad.navigator.ActivityResultRequest
@@ -10,7 +11,7 @@ import com.freeletics.mad.navigator.ContractResultOwner
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.navigator.NavigationResultRequest
 import com.freeletics.mad.navigator.PermissionsResultRequest
-import com.freeletics.mad.navigator.internal.RequestPermissionsContract.Companion.enrichResult
+import com.freeletics.mad.navigator.PermissionsResultRequest.PermissionResult
 import kotlinx.parcelize.Parcelize
 
 @InternalNavigatorApi
@@ -51,8 +52,8 @@ private fun NavigationExecutor.navigate(
         is NavEvent.ActivityResultEvent<*> -> {
             val request = event.request
             val launcher = activityLaunchers[request] ?: throw IllegalStateException(
-                "No launcher registered for $request!\nMake sure you called the appropriate " +
-                    "NavEventNavigator.registerFor... method"
+                "No launcher registered for request with contract ${request.contract}!" +
+                    "\nMake sure you called the appropriate NavEventNavigator.registerFor... method"
             )
             @Suppress("UNCHECKED_CAST")
             (launcher as ActivityResultLauncher<Any?>).launch(event.input)
@@ -64,11 +65,28 @@ private fun NavigationExecutor.navigate(
 }
 
 @InternalNavigatorApi
-@Suppress("UNCHECKED_CAST")
 public fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(activity: Activity, result: O) {
+    deliverResult(result) {
+        ActivityCompat.shouldShowRequestPermissionRationale(activity, it)
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+internal inline fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(
+    result: O,
+    shouldShowPermissionRationale: (String) -> Boolean,
+) {
     when(this) {
         is ActivityResultRequest<*, *> -> onResult(result as R)
-        is PermissionsResultRequest -> onResult(enrichResult(activity, result as Map<String, Boolean>))
+        is PermissionsResultRequest -> onResult(
+            (result as Map<String, Boolean>).mapValues { (permission, granted) ->
+                if (granted) {
+                    PermissionResult.Granted
+                } else {
+                    PermissionResult.Denied(shouldShowPermissionRationale(permission))
+                }
+            }
+        )
     }
 }
 

@@ -8,6 +8,13 @@ public final class com/freeletics/mad/navigator/compose/BottomSheetDestination :
 	public fun getId-fAlktE8 ()Lkotlin/reflect/KClass;
 }
 
+public final class com/freeletics/mad/navigator/compose/ComposableSingletons$NavHostKt {
+	public static final field INSTANCE Lcom/freeletics/mad/navigator/compose/ComposableSingletons$NavHostKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$runtime_experimental_release ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/freeletics/mad/navigator/compose/DialogDestination : com/freeletics/mad/navigator/compose/ContentDestination {
 	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getContent ()Lkotlin/jvm/functions/Function3;

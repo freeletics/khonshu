@@ -25,6 +25,7 @@ nav:
       - navigator/activities.md
       - navigator/results.md
       - navigator/back-stacks.md
+      - navigator/deeplinks.md
       - navigator/testing.md
       - 'API':
           - 'Runtime': navigator/API/runtime/index.html

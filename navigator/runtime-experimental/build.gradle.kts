@@ -1,14 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.poko)
     alias(libs.plugins.dokka)
     alias(libs.plugins.publish)
 }
 
 android {
-    namespace = "com.freeletics.mad.navigator.runtime"
+    namespace = "com.freeletics.mad.navigator.runtime.compose"
     compileSdk = libs.versions.android.compile.get().toInt()
 
     defaultConfig {
@@ -16,6 +14,7 @@ android {
     }
 
     buildFeatures {
+        compose = true
         buildConfig = false
     }
 
@@ -23,6 +22,10 @@ android {
     compileOptions {
         sourceCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
         targetCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 }
 
@@ -44,19 +47,15 @@ kotlin {
 }
 
 dependencies {
-    api(libs.androidx.activity)
-    api(libs.coroutines.core)
-    api(libs.androidx.core)
+    api(projects.navigator.navigatorRuntime)
+    api(libs.androidx.compose.runtime)
+    api(libs.androidx.compose.ui)
 
+    implementation(libs.coroutines.core)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material)
     implementation(libs.androidx.lifecycle.common)
-    implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.viewmodel.savedstate)
-    implementation(libs.kotlin.parcelize)
-    implementation(libs.uri)
-
-    testImplementation(libs.junit)
-    testImplementation(libs.truth)
-    testImplementation(libs.turbine)
-    testImplementation(libs.androidx.lifecycle.testing)
-    testImplementation(libs.coroutines.test)
 }
