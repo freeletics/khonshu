@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## 0.12.1 **UNRELEASED**
+
+### Navigator
+
+- Added proguard rules to not obfuscate the names of `NavRoute`, `NavRoot` and `ActivityRoute 
+  subclasses.
+
+
 ## 0.12.0 *(2023-02-13)*
 
 ### Navigator
