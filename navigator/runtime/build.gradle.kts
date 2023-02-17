@@ -13,6 +13,7 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.android.min.get().toInt()
+        consumerProguardFile(project.file("navigator.pro"))
     }
 
     buildFeatures {
