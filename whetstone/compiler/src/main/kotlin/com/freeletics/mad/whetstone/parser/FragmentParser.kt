@@ -22,7 +22,7 @@ internal fun ClassReference.toRendererFragmentData(): RendererFragmentData? {
         parentScope = annotation.parentScope,
         stateMachine = annotation.stateMachine,
         fragmentBaseClass = annotation.fragmentBaseClass(3),
-        factory = annotation.requireClassArgument("rendererFactory", 4),
+        factory = findRendererFactory(),
         navigation = null,
         navEntryData = null,
     )
@@ -45,7 +45,7 @@ internal fun ClassReference.toRendererFragmentDestinationData(): RendererFragmen
         parentScope = annotation.parentScope,
         stateMachine = annotation.stateMachine,
         fragmentBaseClass = annotation.fragmentBaseClass(5),
-        factory = annotation.requireClassArgument("rendererFactory", 6),
+        factory = findRendererFactory(),
         navigation = navigation,
         navEntryData = navEntryData(navigation),
     )

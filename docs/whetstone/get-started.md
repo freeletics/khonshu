@@ -129,7 +129,6 @@ it falls into the `Fragment` category.
         scope = ExampleScope::class,
         parentScope = AppScope::class, // AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class,
-        rendererFactory = ExampleRenderer.Factory::class, // references the factory below
     )
     internal class ExampleRenderer @AssistedInject constructor(
         @Assisted private val binding: ExampleViewBinding,
@@ -145,8 +144,8 @@ it falls into the `Fragment` category.
     ```
     
     The generated `WhetstoneExampleRendererFragment` will use the generated component, the
-    annotated composable as well as the `stateMachine` and `rendererFactory` parameters from the
-    annotation. It will use factory to create a `Renderer` and use it as its view. It will then
+    annotated composable as well as the `stateMachine`. It will use the `ViewRenderer.Factory`
+    to create an istance of the `Renderer` and use it as its view. It will then
     automatically hook up the state machine with the renderer so that the state from the state machine
     is passed to the composable and actions from the latter are sent back to the
     state machine. The generated fragment will use the generated component
@@ -243,7 +242,6 @@ internal class ExampleStateMachine @Inject constructor(
     @RendererFragment(
         scope = ExampleScope::class, // uses our marker class
         parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
-        rendererFactory = ExampleRenderer.Factory::class, // references the factory below
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
     )
     internal class ExampleRenderer @AssistedInject constructor(

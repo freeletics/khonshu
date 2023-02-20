@@ -93,7 +93,6 @@ on the appropriate `whetstone-navigation` artifact needs to be added:
         stateMachine = ExampleStateMachine::class,
         destinationType = DestintionType.SCREEN,
         destinationScope = AppScope::class, // AppScope is the default value and can be omitted
-        rendererFactory = ExampleRenderer.Factory::class,
     )
     internal class ExampleRenderer ... // same as in general guide
     ```
@@ -184,7 +183,6 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
     @RendererDestination(
         route = ExampleRoute::class, // the route used to navigate to ExampleRenderer
         parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
-        rendererFactory = ExampleRenderer.Factory::class, // references the factory below
         stateMachine = ExampleStateMachine::class, // the state machine used fo
         destinationType = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet
         destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted

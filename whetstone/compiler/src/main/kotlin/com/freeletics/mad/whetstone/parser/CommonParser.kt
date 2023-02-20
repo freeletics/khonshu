@@ -6,10 +6,15 @@ import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.codegen.util.appScope
 import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
+import com.freeletics.mad.whetstone.codegen.util.viewRendererFactoryFqName
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
+import com.squareup.anvil.compiler.internal.reference.ClassReference
+import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionClassReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
+import com.squareup.anvil.compiler.internal.reference.allSuperTypeClassReferences
+import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.kotlinpoet.ClassName
 
 @OptIn(ExperimentalAnvilApi::class)
@@ -65,3 +70,16 @@ internal val TopLevelFunctionReference.composeParameters: List<ComposableParamet
                 typeName = it.type().asTypeName()
             )
         }
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun ClassReference.findRendererFactory(): ClassName {
+    val factoryClass = innerClasses().find { innerClass ->
+        innerClass.allSuperTypeClassReferences(false).any { superType ->
+            superType.fqName == viewRendererFactoryFqName
+        }
+    }
+    return factoryClass?.asClassName() ?:
+    throw AnvilCompilationExceptionClassReference(this,
+        "Couldn't find a ViewRender.Factory subclass nested inside $fqName"
+    )
+}

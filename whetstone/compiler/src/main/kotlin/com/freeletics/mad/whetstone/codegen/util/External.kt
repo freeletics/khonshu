@@ -49,6 +49,9 @@ internal val fragmentRequireRoute = MemberName("com.freeletics.mad.navigator.fra
 internal val internalNavigatorApi = ClassName("com.freeletics.mad.navigator.internal", "InternalNavigatorApi")
 
 // Renderer
+internal val viewRenderer = ClassName("com.gabrielittner.renderer", "ViewRenderer")
+internal val viewRendererFactory = viewRenderer.nestedClass("Factory")
+internal val viewRendererFactoryFqName = FqName(viewRendererFactory.canonicalName)
 internal val rendererConnect = MemberName("com.gabrielittner.renderer.connect", "connect")
 
 // Kotlin

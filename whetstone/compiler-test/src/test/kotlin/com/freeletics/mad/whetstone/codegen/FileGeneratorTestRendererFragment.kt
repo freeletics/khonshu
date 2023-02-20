@@ -50,7 +50,6 @@ internal class FileGeneratorTestRendererFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
-              rendererFactory = TestRenderer.Factory::class,
             )
             public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
               override fun renderToView(state: TestState) {}
@@ -172,7 +171,6 @@ internal class FileGeneratorTestRendererFragment {
               route = TestRoute::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
-              rendererFactory = TestRenderer.Factory::class,
               destinationType = DestinationType.SCREEN,
               destinationScope = TestDestinationScope::class,
             )
@@ -319,7 +317,6 @@ internal class FileGeneratorTestRendererFragment {
               route = TestRoute::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
-              rendererFactory = TestRenderer.Factory::class,
               destinationType = DestinationType.SCREEN,
               destinationScope = TestDestinationScope::class,
             )
@@ -541,7 +538,6 @@ internal class FileGeneratorTestRendererFragment {
             @RendererDestination(
               route = TestRoute::class,
               stateMachine = TestStateMachine::class,
-              rendererFactory = TestRenderer.Factory::class,
               destinationType = DestinationType.SCREEN,
             )
             @NavEntryComponent(
@@ -754,7 +750,6 @@ internal class FileGeneratorTestRendererFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
-              rendererFactory = TestRenderer.Factory::class,
               fragmentBaseClass = DialogFragment::class,
             )
             public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {

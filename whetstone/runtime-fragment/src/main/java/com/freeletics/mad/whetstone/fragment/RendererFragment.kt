@@ -23,5 +23,4 @@ public annotation class RendererFragment(
     val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,
     val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
-    val rendererFactory: KClass<out ViewRenderer.Factory<*, *>>,
 )
