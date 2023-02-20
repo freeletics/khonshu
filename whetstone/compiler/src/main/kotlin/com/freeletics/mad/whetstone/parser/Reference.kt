@@ -1,5 +1,6 @@
 package com.freeletics.mad.whetstone.parser
 
+import com.freeletics.mad.whetstone.ComposableParameter
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
@@ -7,7 +8,7 @@ import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionA
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.MemberFunctionReference
 import com.squareup.anvil.compiler.internal.reference.MemberPropertyReference
-import com.squareup.anvil.compiler.internal.reference.PropertyReference
+import com.squareup.anvil.compiler.internal.reference.ParameterReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.argumentAt
 import com.squareup.anvil.compiler.internal.reference.asClassName
@@ -40,6 +41,14 @@ internal fun AnnotationReference.requireEnumArgument(name: String, index: Int): 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotationReference.optionalEnumArgument(name: String, index: Int): String? {
     return argumentAt(name, index)?.value<FqName>()?.shortName()?.asString()
+}
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun ParameterReference.toComposableParameter(): ComposableParameter {
+    return ComposableParameter(
+        name = name,
+        typeName = type().asTypeName()
+    )
 }
 
 @OptIn(ExperimentalAnvilApi::class)

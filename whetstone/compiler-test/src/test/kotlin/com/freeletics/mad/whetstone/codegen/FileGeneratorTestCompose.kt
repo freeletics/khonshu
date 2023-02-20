@@ -8,9 +8,11 @@ import com.freeletics.mad.whetstone.Navigation
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.MAP
+import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.STRING
+import com.squareup.kotlinpoet.UNIT
 import com.squareup.kotlinpoet.asClassName
 import org.junit.Test
 
@@ -30,7 +32,15 @@ internal class FileGeneratorTestCompose {
         stateMachine = ClassName("com.test", "TestStateMachine"),
         navigation = null,
         navEntryData = null,
-        composableParameter = emptyList()
+        composableParameter = emptyList(),
+        stateParameter = ComposableParameter("state", ClassName("com.test", "TestState")),
+        sendActionParameter = ComposableParameter(
+            "sendAction",
+            Function1::class.asClassName().parameterizedBy(
+                ClassName("com.test", "TestAction"),
+                UNIT,
+            ),
+        ),
     )
 
     private val navEntryData = NavEntryData(
@@ -883,5 +893,230 @@ internal class FileGeneratorTestCompose {
         """.trimIndent()
 
         test(withInjectedParameters, "com/test/Test2.kt", source, expected)
+    }
+
+    @Test
+    fun `generates code for ComposeScreenData without sendAction`() {
+        val withoutSendAction = data.copy(
+            sendActionParameter = null
+        )
+
+        val source = """
+            package com.test
+            
+            import androidx.compose.runtime.Composable
+            import com.freeletics.mad.whetstone.compose.ComposeScreen
+            import com.test.parent.TestParentScope
+            
+            @ComposeScreen(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+            )
+            @Composable
+            @Suppress("unused_parameter")
+            public fun Test(
+              state: TestState,
+            ) {}
+        """.trimIndent()
+
+        val expected = """
+            package com.test
+
+            import android.os.Bundle
+            import androidx.compose.runtime.Composable
+            import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberComponent
+            import com.squareup.anvil.annotations.ContributesSubcomponent
+            import com.squareup.anvil.annotations.ContributesTo
+            import com.test.parent.TestParentScope
+            import dagger.BindsInstance
+            import dagger.Module
+            import dagger.multibindings.Multibinds
+            import java.io.Closeable
+            import kotlin.OptIn
+            import kotlin.Unit
+            import kotlin.collections.Set
+
+            @OptIn(InternalWhetstoneApi::class)
+            @ScopeTo(TestScreen::class)
+            @ContributesSubcomponent(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+            )
+            public interface WhetstoneTestComponent : Closeable {
+              public val testStateMachine: TestStateMachine
+
+              public val closeables: Set<Closeable>
+    
+              public override fun close(): Unit {
+                closeables.forEach {
+                  it.close()
+                }
+              }
+
+              @ContributesSubcomponent.Factory
+              public interface Factory {
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    arguments: Bundle): WhetstoneTestComponent
+              }
+
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                public fun whetstoneTestComponentFactory(): Factory
+              }
+            }
+
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface WhetstoneTestModule {
+              @Multibinds
+              public fun bindCloseables(): Set<Closeable>
+            }
+
+            @Composable
+            @OptIn(InternalWhetstoneApi::class)
+            public fun WhetstoneTest(arguments: Bundle): Unit {
+              val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
+                  WhetstoneTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, argumentsForComponent)
+              }
+
+              WhetstoneTest(component)
+            }
+            
+            @Composable
+            @OptIn(InternalWhetstoneApi::class)
+            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
+              val stateMachine = component.testStateMachine
+              val state = stateMachine.asComposeState()
+              val currentState = state.value
+              if (currentState != null) {
+                Test(
+                  state = currentState,
+                )
+              }
+            }
+            
+        """.trimIndent()
+
+        test(withoutSendAction, "com/test/Test.kt", source, expected)
+    }
+
+    @Test
+    fun `generates code for ComposeScreenData without state`() {
+        val withoutSendAction = data.copy(
+            stateParameter = null
+        )
+
+        val source = """
+            package com.test
+            
+            import androidx.compose.runtime.Composable
+            import com.freeletics.mad.whetstone.compose.ComposeScreen
+            import com.test.parent.TestParentScope
+            
+            @ComposeScreen(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+            )
+            @Composable
+            @Suppress("unused_parameter")
+            public fun Test(
+              sendAction: (TestAction) -> Unit
+            ) {}
+        """.trimIndent()
+
+        val expected = """
+            package com.test
+
+            import android.os.Bundle
+            import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.rememberCoroutineScope
+            import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
+            import com.freeletics.mad.whetstone.compose.`internal`.rememberComponent
+            import com.squareup.anvil.annotations.ContributesSubcomponent
+            import com.squareup.anvil.annotations.ContributesTo
+            import com.test.parent.TestParentScope
+            import dagger.BindsInstance
+            import dagger.Module
+            import dagger.multibindings.Multibinds
+            import java.io.Closeable
+            import kotlin.OptIn
+            import kotlin.Unit
+            import kotlin.collections.Set
+            import kotlinx.coroutines.launch
+
+            @OptIn(InternalWhetstoneApi::class)
+            @ScopeTo(TestScreen::class)
+            @ContributesSubcomponent(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+            )
+            public interface WhetstoneTestComponent : Closeable {
+              public val testStateMachine: TestStateMachine
+
+              public val closeables: Set<Closeable>
+    
+              public override fun close(): Unit {
+                closeables.forEach {
+                  it.close()
+                }
+              }
+
+              @ContributesSubcomponent.Factory
+              public interface Factory {
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    arguments: Bundle): WhetstoneTestComponent
+              }
+
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                public fun whetstoneTestComponentFactory(): Factory
+              }
+            }
+
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface WhetstoneTestModule {
+              @Multibinds
+              public fun bindCloseables(): Set<Closeable>
+            }
+
+            @Composable
+            @OptIn(InternalWhetstoneApi::class)
+            public fun WhetstoneTest(arguments: Bundle): Unit {
+              val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
+                  WhetstoneTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, argumentsForComponent)
+              }
+
+              WhetstoneTest(component)
+            }
+            
+            @Composable
+            @OptIn(InternalWhetstoneApi::class)
+            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
+              val stateMachine = component.testStateMachine
+              val state = stateMachine.asComposeState()
+              val currentState = state.value
+              if (currentState != null) {
+                val scope = rememberCoroutineScope()
+                Test(
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                )
+              }
+            }
+            
+        """.trimIndent()
+
+        test(withoutSendAction, "com/test/Test.kt", source, expected)
     }
 }

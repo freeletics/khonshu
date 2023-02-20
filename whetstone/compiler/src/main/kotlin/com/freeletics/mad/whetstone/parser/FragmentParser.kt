@@ -64,7 +64,9 @@ internal fun TopLevelFunctionReference.toComposeFragmentData(): ComposeFragmentD
         fragmentBaseClass = annotation.fragmentBaseClass(3),
         navigation = null,
         navEntryData = null,
-        composableParameter = composeParameters
+        composableParameter = composeParameters,
+        stateParameter = stateParameter,
+        sendActionParameter = sendActionParameter,
     )
 }
 
@@ -87,6 +89,8 @@ internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): Compo
         fragmentBaseClass = annotation.fragmentBaseClass(5),
         navigation = navigation,
         navEntryData = navEntryData(navigation),
-        composableParameter = composeParameters
+        composableParameter = composeParameters,
+        stateParameter = stateParameter,
+        sendActionParameter = sendActionParameter,
     )
 }
