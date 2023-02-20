@@ -4,11 +4,11 @@ import com.freeletics.mad.whetstone.ComposableParameter
 import com.freeletics.mad.whetstone.NavEntryData
 import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.codegen.util.appScope
+import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
-import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionAnnotationReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.kotlinpoet.ClassName
 
@@ -35,6 +35,11 @@ internal val AnnotationReference.destinationType: String
 @OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.destinationScope: ClassName
     get() = optionalClassArgument("destinationScope", 4) ?: appScope
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun AnnotationReference.fragmentBaseClass(index: Int): ClassName {
+    return optionalClassArgument("fragmentBaseClass", index) ?: fragment
+}
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotatedReference.navEntryData(

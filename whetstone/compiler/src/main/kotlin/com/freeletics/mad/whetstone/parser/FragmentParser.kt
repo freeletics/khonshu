@@ -5,7 +5,6 @@ import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.RendererFragmentData
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
-import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
@@ -22,7 +21,7 @@ internal fun ClassReference.toRendererFragmentData(): RendererFragmentData? {
         scope = annotation.scope,
         parentScope = annotation.parentScope,
         stateMachine = annotation.stateMachine,
-        fragmentBaseClass = annotation.optionalClassArgument("fragmentBaseClass", 3) ?: fragment,
+        fragmentBaseClass = annotation.fragmentBaseClass(3),
         factory = annotation.requireClassArgument("rendererFactory", 4),
         navigation = null,
         navEntryData = null,
@@ -45,7 +44,7 @@ internal fun ClassReference.toRendererFragmentDestinationData(): RendererFragmen
         scope = annotation.route,
         parentScope = annotation.parentScope,
         stateMachine = annotation.stateMachine,
-        fragmentBaseClass = annotation.optionalClassArgument("fragmentBaseClass", 5) ?: fragment,
+        fragmentBaseClass = annotation.fragmentBaseClass(5),
         factory = annotation.requireClassArgument("rendererFactory", 6),
         navigation = navigation,
         navEntryData = navEntryData(navigation),
@@ -62,7 +61,7 @@ internal fun TopLevelFunctionReference.toComposeFragmentData(): ComposeFragmentD
         scope = annotation.scope,
         parentScope = annotation.parentScope,
         stateMachine = annotation.stateMachine,
-        fragmentBaseClass = annotation.optionalClassArgument("fragmentBaseClass", 3) ?: fragment,
+        fragmentBaseClass = annotation.fragmentBaseClass(3),
         navigation = null,
         navEntryData = null,
         composableParameter = composeParameters
@@ -85,7 +84,7 @@ internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): Compo
         scope = annotation.route,
         parentScope = annotation.parentScope,
         stateMachine = annotation.stateMachine,
-        fragmentBaseClass = annotation.optionalClassArgument("fragmentBaseClass", 5) ?: fragment,
+        fragmentBaseClass = annotation.fragmentBaseClass(5),
         navigation = navigation,
         navEntryData = navEntryData(navigation),
         composableParameter = composeParameters
