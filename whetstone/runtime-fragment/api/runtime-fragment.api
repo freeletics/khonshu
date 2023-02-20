@@ -8,7 +8,6 @@ public abstract interface annotation class com/freeletics/mad/whetstone/fragment
 public abstract interface annotation class com/freeletics/mad/whetstone/fragment/RendererFragment : java/lang/annotation/Annotation {
 	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
 	public abstract fun parentScope ()Ljava/lang/Class;
-	public abstract fun rendererFactory ()Ljava/lang/Class;
 	public abstract fun scope ()Ljava/lang/Class;
 	public abstract fun stateMachine ()Ljava/lang/Class;
 }

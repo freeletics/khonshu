@@ -26,5 +26,4 @@ public annotation class RendererDestination(
     val destinationType: DestinationType = DestinationType.SCREEN,
     val destinationScope: KClass<*> = AppScope::class,
     val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
-    val rendererFactory: KClass<out ViewRenderer.Factory<*, *>>,
 )
