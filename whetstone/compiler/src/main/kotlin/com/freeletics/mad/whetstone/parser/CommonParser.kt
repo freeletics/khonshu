@@ -13,9 +13,11 @@ import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionClassReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
+import com.squareup.anvil.compiler.internal.reference.TypeReference
 import com.squareup.anvil.compiler.internal.reference.allSuperTypeClassReferences
 import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.TypeName
 
 @OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.scope: ClassName
@@ -31,7 +33,11 @@ internal val AnnotationReference.parentScope: ClassName
 
 @OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.stateMachine: ClassName
-    get() = requireClassArgument("stateMachine", 2)
+    get() = stateMachineReference.asClassName()
+
+@OptIn(ExperimentalAnvilApi::class)
+internal val AnnotationReference.stateMachineReference: ClassReference
+    get() = requireClassReferenceArgument("stateMachine", 2)
 
 @OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.destinationType: String
@@ -60,31 +66,49 @@ internal fun AnnotatedReference.navEntryData(
     )
 }
 
-private const val STATE_PARAMETER = "state"
-private const val SEND_ACTION_PARAMETER = "sendAction"
-
 @OptIn(ExperimentalAnvilApi::class)
-internal val TopLevelFunctionReference.stateParameter: ComposableParameter?
-    get() = parameters
-        .find { it.name == STATE_PARAMETER }
+internal fun TopLevelFunctionReference.getStateParameter(stateParameter: TypeName): ComposableParameter? {
+    return parameters
+        .find { it.type().asTypeName() == stateParameter }
         ?.toComposableParameter()
+}
 
 @OptIn(ExperimentalAnvilApi::class)
-internal val TopLevelFunctionReference.sendActionParameter: ComposableParameter?
-    get() = parameters
-        .find { it.name == SEND_ACTION_PARAMETER }
+internal fun TopLevelFunctionReference.getSendActionParameter(actionParameter: TypeName): ComposableParameter? {
+    return parameters
+        .find { it.type().asTypeName() == actionParameter }
         ?.toComposableParameter()
+}
 
 @OptIn(ExperimentalAnvilApi::class)
-internal val TopLevelFunctionReference.composeParameters: List<ComposableParameter>
-    get() = parameters
-        .filter { it.name != STATE_PARAMETER && it.name != SEND_ACTION_PARAMETER }
+internal fun TopLevelFunctionReference.getComposeParameters(stateParameter: TypeName, actionParameter: TypeName): List<ComposableParameter> {
+    return parameters
+        .filter {
+            val type = it.type().asTypeName()
+            type != stateParameter && type != actionParameter
+        }
         .map { it.toComposableParameter() }
+}
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun ClassReference.stateMachineStateParameter(stateMachineSuperType: TypeReference): TypeName {
+    return resolveTypeParameter("State", stateMachineSuperType)
+}
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun ClassReference.stateMachineActionParameter(stateMachineSuperType: TypeReference): TypeName {
+    return resolveTypeParameter("Action", stateMachineSuperType)
+}
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun ClassReference.stateMachineActionFunctionParameter(stateMachineSuperType: TypeReference): TypeName {
+    return stateMachineActionParameter(stateMachineSuperType).asFunction1Parameter()
+}
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.findRendererFactory(): ClassName {
     val factoryClass = innerClasses().find { innerClass ->
-        innerClass.allSuperTypeClassReferences(false).any { superType ->
+        innerClass.allSuperTypeClassReferences().any { superType ->
             superType.fqName == viewRendererFactoryFqName
         }
     }

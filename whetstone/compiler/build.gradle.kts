@@ -21,4 +21,9 @@ dependencies {
 
     compileOnly(libs.auto.service.annotations)
     kapt(libs.auto.service.compiler)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.truth)
+    testImplementation(libs.kotlin.compile.testing)
+    testImplementation(testFixtures(libs.anvil.compiler.utils))
 }

@@ -19,7 +19,7 @@ public class TestBinding : ViewBinding {
     override fun getRoot(): View = throw UnsupportedOperationException("Not implemented")
 }
 
-public class TestStateMachine : StateMachine<TestState, TestAction> {
+public class TestStateMachine : FooStateMachine<TestAction, TestState, >() {
     override val state: Flow<TestState>
         get() = throw UnsupportedOperationException("Not implemented")
 
@@ -27,6 +27,8 @@ public class TestStateMachine : StateMachine<TestState, TestAction> {
         throw UnsupportedOperationException("Not implemented")
     }
 }
+
+public abstract class FooStateMachine<A: Any, S : Any, > : StateMachine<S, A>
 
 public object TestAction
 public object TestState

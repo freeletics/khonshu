@@ -7,9 +7,11 @@ import com.freeletics.mad.whetstone.codegen.util.composeFragmentDestinationFqNam
 import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
+import com.freeletics.mad.whetstone.codegen.util.stateMachineFqName
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
+import com.squareup.anvil.compiler.internal.reference.asClassName
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.toRendererFragmentData(): RendererFragmentData? {
@@ -55,24 +57,34 @@ internal fun ClassReference.toRendererFragmentDestinationData(): RendererFragmen
 internal fun TopLevelFunctionReference.toComposeFragmentData(): ComposeFragmentData? {
     val annotation = findAnnotation(composeFragmentFqName) ?: return null
 
+    val stateMachine = annotation.stateMachineReference
+    val stateMachineSuperType = stateMachine.superTypeReference(stateMachineFqName)
+    val stateParameter = stateMachine.stateMachineStateParameter(stateMachineSuperType)
+    val actionParameter = stateMachine.stateMachineActionFunctionParameter(stateMachineSuperType)
+
     return ComposeFragmentData(
         baseName = name,
         packageName = packageName,
         scope = annotation.scope,
         parentScope = annotation.parentScope,
-        stateMachine = annotation.stateMachine,
+        stateMachine = stateMachine.asClassName(),
         fragmentBaseClass = annotation.fragmentBaseClass(3),
         navigation = null,
         navEntryData = null,
-        composableParameter = composeParameters,
-        stateParameter = stateParameter,
-        sendActionParameter = sendActionParameter,
+        composableParameter = getComposeParameters(stateParameter, actionParameter),
+        stateParameter = getStateParameter(stateParameter),
+        sendActionParameter = getSendActionParameter(actionParameter),
     )
 }
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): ComposeFragmentData? {
     val annotation = findAnnotation(composeFragmentDestinationFqName) ?: return null
+
+    val stateMachine = annotation.stateMachineReference
+    val stateMachineSuperType = stateMachine.superTypeReference(stateMachineFqName)
+    val stateParameter = stateMachine.stateMachineStateParameter(stateMachineSuperType)
+    val actionParameter = stateMachine.stateMachineActionFunctionParameter(stateMachineSuperType)
 
     val navigation = Navigation.Fragment(
         route = annotation.route,
@@ -85,12 +97,12 @@ internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): Compo
         packageName = packageName,
         scope = annotation.route,
         parentScope = annotation.parentScope,
-        stateMachine = annotation.stateMachine,
+        stateMachine = stateMachine.asClassName(),
         fragmentBaseClass = annotation.fragmentBaseClass(5),
         navigation = navigation,
         navEntryData = navEntryData(navigation),
-        composableParameter = composeParameters,
-        stateParameter = stateParameter,
-        sendActionParameter = sendActionParameter,
+        composableParameter = getComposeParameters(stateParameter, actionParameter),
+        stateParameter = getStateParameter(stateParameter),
+        sendActionParameter = getSendActionParameter(actionParameter),
     )
 }
