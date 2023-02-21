@@ -19,7 +19,9 @@ internal fun TopLevelFunctionReference.toComposeScreenData(): ComposeScreenData?
         stateMachine = annotation.stateMachine,
         navigation = null,
         navEntryData = null,
-        composableParameter = composeParameters
+        composableParameter = composeParameters,
+        stateParameter = stateParameter,
+        sendActionParameter = sendActionParameter,
     )
 }
 
@@ -41,6 +43,8 @@ internal fun TopLevelFunctionReference.toComposeScreenDestinationData(): Compose
         stateMachine = annotation.stateMachine,
         navigation = navigation,
         navEntryData = navEntryData(navigation),
-        composableParameter = composeParameters
+        composableParameter = composeParameters,
+        stateParameter = stateParameter,
+        sendActionParameter = sendActionParameter,
     )
 }

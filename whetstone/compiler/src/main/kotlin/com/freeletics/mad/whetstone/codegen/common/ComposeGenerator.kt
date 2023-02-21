@@ -41,18 +41,28 @@ internal class ComposeGenerator(
             .addStatement("val state = stateMachine.%M()", asComposeState)
             .addStatement("val currentState = state.value")
             .beginControlFlow("if (currentState != null)")
-            .addStatement("val scope = %M()", rememberCoroutineScope)
+            .apply {
+                if (data.sendActionParameter != null) {
+                    addStatement("val scope = %M()", rememberCoroutineScope)
+                }
+            }
             .addStatement("%L(", data.baseName)
             .apply {
                 data.composableParameter.forEach { parameter ->
                     addStatement("  %L = %L,", parameter.name, parameter.name)
                 }
+                if (data.stateParameter != null) {
+                    addStatement("  %L = currentState,", data.stateParameter!!.name)
+                }
+                if (data.sendActionParameter != null) {
+                    // dispatch: external method
+                    addStatement("  %L = { scope.%M { stateMachine.dispatch(it) } },", data.sendActionParameter!!.name, launch)
+                }
             }
-            .addStatement("  state = currentState,")
-            // dispatch: external method
-            .addStatement("  sendAction = { scope.%M { stateMachine.dispatch(it) } },", launch)
             .addStatement(")")
             .endControlFlow()
             .build()
     }
+
+
 }

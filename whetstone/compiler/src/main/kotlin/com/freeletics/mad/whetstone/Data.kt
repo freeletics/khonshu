@@ -25,6 +25,8 @@ public sealed interface BaseData {
 public sealed interface ComposeData : BaseData {
     override val stateMachine: ClassName
     public val navEntryData: NavEntryData?
+    public val stateParameter: ComposableParameter?
+    public val sendActionParameter: ComposableParameter?
     public val composableParameter: List<ComposableParameter>
 }
 
@@ -44,6 +46,9 @@ public data class ComposeScreenData(
 
     override val navigation: Navigation.Compose?,
     override val navEntryData: NavEntryData?,
+
+    override val stateParameter: ComposableParameter?,
+    override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
 ) :  ComposeData
 
@@ -65,6 +70,9 @@ public data class ComposeFragmentData(
 
     override val navigation: Navigation.Fragment?,
     override val navEntryData: NavEntryData?,
+
+    override val stateParameter: ComposableParameter?,
+    override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
 ) : ComposeData, FragmentData
 

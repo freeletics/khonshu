@@ -11,6 +11,7 @@ import com.squareup.kotlinpoet.MAP
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.STRING
+import com.squareup.kotlinpoet.UNIT
 import com.squareup.kotlinpoet.asClassName
 import org.junit.Test
 
@@ -31,7 +32,15 @@ internal class FileGeneratorTestComposeFragment {
         fragmentBaseClass = ClassName("androidx.fragment.app", "Fragment"),
         navigation = null,
         navEntryData = null,
-        composableParameter = emptyList()
+        composableParameter = emptyList(),
+        stateParameter = ComposableParameter("state", ClassName("com.test", "TestState")),
+        sendActionParameter = ComposableParameter(
+            "sendAction",
+            Function1::class.asClassName().parameterizedBy(
+                ClassName("com.test", "TestAction"),
+                UNIT,
+            ),
+        ),
     )
 
     private val navEntryData = NavEntryData(
@@ -1006,10 +1015,10 @@ internal class FileGeneratorTestComposeFragment {
             public fun Test2(
               state: TestState,
               sendAction: (TestAction) -> Unit,
-                testClass: TestClass,
-                test: TestClass2,
-                testSet: Set<String>,
-                testMap: Map<String, Int>,
+              testClass: TestClass,
+              test: TestClass2,
+              testSet: Set<String>,
+              testMap: Map<String, Int>,
             ) {}
         """.trimIndent()
 
@@ -1144,5 +1153,276 @@ internal class FileGeneratorTestComposeFragment {
         """.trimIndent()
 
         test(withInjectedParameters, "com/test/Test2.kt", source, expected)
+    }
+
+    @Test
+    fun `generates code for ComposeFragmentData without sendAction`() {
+        val withoutSendAction = data.copy(
+            sendActionParameter = null
+        )
+
+        val source = """
+            package com.test
+            
+            import androidx.compose.runtime.Composable
+            import com.freeletics.mad.whetstone.fragment.ComposeFragment
+            import com.test.parent.TestParentScope
+            
+            @ComposeFragment(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+            )
+            @Composable
+            @Suppress("unused_parameter")
+            public fun Test(
+              state: TestState,
+            ) {}
+        """.trimIndent()
+
+        val expected = """
+            package com.test
+
+            import android.os.Bundle
+            import android.view.LayoutInflater
+            import android.view.View
+            import android.view.ViewGroup
+            import androidx.compose.runtime.Composable
+            import androidx.compose.ui.platform.ComposeView
+            import androidx.compose.ui.platform.ViewCompositionStrategy
+            import androidx.fragment.app.Fragment
+            import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
+            import com.freeletics.mad.whetstone.fragment.`internal`.component
+            import com.squareup.anvil.annotations.ContributesSubcomponent
+            import com.squareup.anvil.annotations.ContributesTo
+            import com.test.parent.TestParentScope
+            import dagger.BindsInstance
+            import dagger.Module
+            import dagger.multibindings.Multibinds
+            import java.io.Closeable
+            import kotlin.OptIn
+            import kotlin.Unit
+            import kotlin.collections.Set
+
+            @OptIn(InternalWhetstoneApi::class)
+            @ScopeTo(TestScreen::class)
+            @ContributesSubcomponent(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+            )
+            public interface WhetstoneTestComponent : Closeable {
+              public val testStateMachine: TestStateMachine
+
+              public val closeables: Set<Closeable>
+    
+              public override fun close(): Unit {
+                closeables.forEach {
+                  it.close()
+                }
+              }
+
+              @ContributesSubcomponent.Factory
+              public interface Factory {
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    arguments: Bundle): WhetstoneTestComponent
+              }
+
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                public fun whetstoneTestComponentFactory(): Factory
+              }
+            }
+
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface WhetstoneTestModule {
+              @Multibinds
+              public fun bindCloseables(): Set<Closeable>
+            }
+            
+            @OptIn(InternalWhetstoneApi::class)
+            public class WhetstoneTestFragment : Fragment() {
+              private lateinit var whetstoneTestComponent: WhetstoneTestComponent
+            
+              public override fun onCreateView(
+                inflater: LayoutInflater,
+                container: ViewGroup?,
+                savedInstanceState: Bundle?,
+              ): View {
+                if (!::whetstoneTestComponent.isInitialized) {
+                  val arguments = requireArguments()
+                  whetstoneTestComponent = component(TestParentScope::class, arguments) { parentComponent:
+                      WhetstoneTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle,
+                        argumentsForComponent)
+                  }
+                }
+
+                return ComposeView(requireContext()).apply {
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+
+                  setContent {
+                    WhetstoneTest(whetstoneTestComponent)
+                  }
+                }
+              }
+            }
+
+            @Composable
+            @OptIn(InternalWhetstoneApi::class)
+            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
+              val stateMachine = component.testStateMachine
+              val state = stateMachine.asComposeState()
+              val currentState = state.value
+              if (currentState != null) {
+                Test(
+                  state = currentState,
+                )
+              }
+            }
+            
+        """.trimIndent()
+
+        test(withoutSendAction, "com/test/Test.kt", source, expected)
+    }
+
+    @Test
+    fun `generates code for ComposeFragmentData without state`() {
+        val withoutSendAction = data.copy(
+            stateParameter = null
+        )
+
+        val source = """
+            package com.test
+            
+            import androidx.compose.runtime.Composable
+            import com.freeletics.mad.whetstone.fragment.ComposeFragment
+            import com.test.parent.TestParentScope
+            
+            @ComposeFragment(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+              stateMachine = TestStateMachine::class,
+            )
+            @Composable
+            @Suppress("unused_parameter")
+            public fun Test(
+              sendAction: (TestAction) -> Unit
+            ) {}
+        """.trimIndent()
+
+        val expected = """
+            package com.test
+
+            import android.os.Bundle
+            import android.view.LayoutInflater
+            import android.view.View
+            import android.view.ViewGroup
+            import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.rememberCoroutineScope
+            import androidx.compose.ui.platform.ComposeView
+            import androidx.compose.ui.platform.ViewCompositionStrategy
+            import androidx.fragment.app.Fragment
+            import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.mad.whetstone.ScopeTo
+            import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.asComposeState
+            import com.freeletics.mad.whetstone.fragment.`internal`.component
+            import com.squareup.anvil.annotations.ContributesSubcomponent
+            import com.squareup.anvil.annotations.ContributesTo
+            import com.test.parent.TestParentScope
+            import dagger.BindsInstance
+            import dagger.Module
+            import dagger.multibindings.Multibinds
+            import java.io.Closeable
+            import kotlin.OptIn
+            import kotlin.Unit
+            import kotlin.collections.Set
+            import kotlinx.coroutines.launch
+
+            @OptIn(InternalWhetstoneApi::class)
+            @ScopeTo(TestScreen::class)
+            @ContributesSubcomponent(
+              scope = TestScreen::class,
+              parentScope = TestParentScope::class,
+            )
+            public interface WhetstoneTestComponent : Closeable {
+              public val testStateMachine: TestStateMachine
+
+              public val closeables: Set<Closeable>
+    
+              public override fun close(): Unit {
+                closeables.forEach {
+                  it.close()
+                }
+              }
+
+              @ContributesSubcomponent.Factory
+              public interface Factory {
+                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                    arguments: Bundle): WhetstoneTestComponent
+              }
+
+              @ContributesTo(TestParentScope::class)
+              public interface ParentComponent {
+                public fun whetstoneTestComponentFactory(): Factory
+              }
+            }
+
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface WhetstoneTestModule {
+              @Multibinds
+              public fun bindCloseables(): Set<Closeable>
+            }
+            
+            @OptIn(InternalWhetstoneApi::class)
+            public class WhetstoneTestFragment : Fragment() {
+              private lateinit var whetstoneTestComponent: WhetstoneTestComponent
+            
+              public override fun onCreateView(
+                inflater: LayoutInflater,
+                container: ViewGroup?,
+                savedInstanceState: Bundle?,
+              ): View {
+                if (!::whetstoneTestComponent.isInitialized) {
+                  val arguments = requireArguments()
+                  whetstoneTestComponent = component(TestParentScope::class, arguments) { parentComponent:
+                      WhetstoneTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                    parentComponent.whetstoneTestComponentFactory().create(savedStateHandle,
+                        argumentsForComponent)
+                  }
+                }
+
+                return ComposeView(requireContext()).apply {
+                  setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+
+                  setContent {
+                    WhetstoneTest(whetstoneTestComponent)
+                  }
+                }
+              }
+            }
+
+            @Composable
+            @OptIn(InternalWhetstoneApi::class)
+            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
+              val stateMachine = component.testStateMachine
+              val state = stateMachine.asComposeState()
+              val currentState = state.value
+              if (currentState != null) {
+                val scope = rememberCoroutineScope()
+                Test(
+                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                )
+              }
+            }
+            
+        """.trimIndent()
+
+        test(withoutSendAction, "com/test/Test.kt", source, expected)
     }
 }

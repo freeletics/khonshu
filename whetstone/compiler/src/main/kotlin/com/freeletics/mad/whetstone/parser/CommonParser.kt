@@ -60,16 +60,26 @@ internal fun AnnotatedReference.navEntryData(
     )
 }
 
+private const val STATE_PARAMETER = "state"
+private const val SEND_ACTION_PARAMETER = "sendAction"
+
+@OptIn(ExperimentalAnvilApi::class)
+internal val TopLevelFunctionReference.stateParameter: ComposableParameter?
+    get() = parameters
+        .find { it.name == STATE_PARAMETER }
+        ?.toComposableParameter()
+
+@OptIn(ExperimentalAnvilApi::class)
+internal val TopLevelFunctionReference.sendActionParameter: ComposableParameter?
+    get() = parameters
+        .find { it.name == SEND_ACTION_PARAMETER }
+        ?.toComposableParameter()
+
 @OptIn(ExperimentalAnvilApi::class)
 internal val TopLevelFunctionReference.composeParameters: List<ComposableParameter>
     get() = parameters
-        .filter { it.name != "state" && it.name != "sendAction" }
-        .map {
-            ComposableParameter(
-                name = it.name,
-                typeName = it.type().asTypeName()
-            )
-        }
+        .filter { it.name != STATE_PARAMETER && it.name != SEND_ACTION_PARAMETER }
+        .map { it.toComposableParameter() }
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.findRendererFactory(): ClassName {
