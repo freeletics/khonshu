@@ -18,7 +18,7 @@ public abstract interface class com/freeletics/mad/navigator/compose/NavDestinat
 }
 
 public final class com/freeletics/mad/navigator/compose/NavHostKt {
-	public static final fun NavHost-lSURzpk (Lcom/freeletics/mad/navigator/BaseRoute;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/graphics/Shape;FJJJLandroidx/compose/runtime/Composer;II)V
+	public static final fun NavHost-lSURzpk (Lcom/freeletics/mad/navigator/NavRoot;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/graphics/Shape;FJJJLandroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/freeletics/mad/navigator/compose/NavigationSetupKt {
