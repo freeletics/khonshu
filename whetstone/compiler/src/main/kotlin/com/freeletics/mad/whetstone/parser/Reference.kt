@@ -5,14 +5,20 @@ import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionAnnotationReference
+import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionClassReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.MemberFunctionReference
 import com.squareup.anvil.compiler.internal.reference.MemberPropertyReference
 import com.squareup.anvil.compiler.internal.reference.ParameterReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
+import com.squareup.anvil.compiler.internal.reference.TypeReference
 import com.squareup.anvil.compiler.internal.reference.argumentAt
 import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.TypeName
+import com.squareup.kotlinpoet.UNIT
+import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.name.FqName
 
@@ -23,13 +29,23 @@ internal fun AnnotatedReference.findAnnotation(fqName: FqName): AnnotationRefere
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotationReference.requireClassArgument(name: String, index: Int): ClassName {
-    return optionalClassArgument(name, index) ?:
-        throw AnvilCompilationExceptionAnnotationReference(this, "Couldn't find $name for $fqName")
+    return requireClassReferenceArgument(name, index).asClassName()
 }
 
 @OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotationReference.optionalClassArgument(name: String, index: Int): ClassName? {
-    return argumentAt(name, index)?.value<ClassReference>()?.asClassName()
+    return optionalClassReferenceArgument(name, index)?.asClassName()
+}
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun AnnotationReference.requireClassReferenceArgument(name: String, index: Int): ClassReference {
+    return optionalClassReferenceArgument(name, index) ?:
+        throw AnvilCompilationExceptionAnnotationReference(this, "Couldn't find $name for $fqName")
+}
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun AnnotationReference.optionalClassReferenceArgument(name: String, index: Int): ClassReference? {
+    return argumentAt(name, index)?.value()
 }
 
 @OptIn(ExperimentalAnvilApi::class)
@@ -74,4 +90,51 @@ internal val ClassReference.packageName: String
 
 private fun FqName.packageString(): String {
     return pathSegments().joinToString(separator = ".")
+}
+
+internal fun TypeName.asFunction1Parameter(): TypeName {
+    return Function1::class.asClassName().parameterizedBy(this, UNIT)
+}
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun ClassReference.resolveTypeParameter(
+    parameter: String,
+    superType: TypeReference,
+): TypeName {
+    // find the index of the type parameters that the current class has
+    // e.g. for a StateMachine and State this would return 0
+    val index = superType.asClassReference().typeParameters.indexOfFirst { it.name == parameter }
+    // this is the type that is used in the implementation
+    // e.g. for ... : StateMachine<S, A> this would be S
+    val unwrappedType = superType.unwrappedTypes[index]
+    // resolve the type using the implementation class
+    val resolved = unwrappedType.resolveGenericTypeOrNull(this)
+    if (resolved != null) {
+        return resolved.asTypeName()
+    }
+    throw AnvilCompilationExceptionClassReference(this, "Error resolving type parameters of $fqName")
+}
+
+@OptIn(ExperimentalAnvilApi::class)
+internal fun ClassReference.superTypeReference(superClass: FqName): TypeReference {
+    fun ClassReference.depthFirstSearch(superClass: FqName): TypeReference? {
+        directSuperTypeReferences().forEach {
+            val classReference = it.asClassReferenceOrNull()
+            if (classReference != null) {
+                if (classReference.fqName == superClass) {
+                    return it
+                }
+
+                val fromSuperClasses = classReference.depthFirstSearch(superClass)
+                if (fromSuperClasses != null) {
+                    return fromSuperClasses
+                }
+            }
+        }
+        return null
+    }
+
+    return depthFirstSearch(superClass) ?: throw AnvilCompilationExceptionClassReference(this,
+        "$fqName does not extend $superClass"
+    )
 }

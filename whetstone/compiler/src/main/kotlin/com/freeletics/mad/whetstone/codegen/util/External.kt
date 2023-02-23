@@ -48,6 +48,10 @@ internal val fragmentDialogDestination = MemberName("com.freeletics.mad.navigato
 internal val fragmentRequireRoute = MemberName("com.freeletics.mad.navigator.fragment", "requireRoute")
 internal val internalNavigatorApi = ClassName("com.freeletics.mad.navigator.internal", "InternalNavigatorApi")
 
+// StateMachine
+internal val stateMachine = ClassName("com.freeletics.mad.statemachine", "StateMachine")
+internal val stateMachineFqName = FqName(stateMachine.canonicalName)
+
 // Renderer
 internal val viewRenderer = ClassName("com.gabrielittner.renderer", "ViewRenderer")
 internal val viewRendererFactory = viewRenderer.nestedClass("Factory")
