@@ -6,6 +6,7 @@ import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.internal.testing.compileAnvil
 import com.squareup.anvil.compiler.internal.testing.simpleCodeGenerator
 import com.squareup.kotlinpoet.BOOLEAN
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.LONG
 import com.squareup.kotlinpoet.SHORT
@@ -21,7 +22,7 @@ import org.junit.Test
 class ReferenceTest {
 
     @Test
-    fun `inner classes are parsed`() {
+    fun `type parameters are resolved`() {
         compile(
             """
             package com.freeletics.test
@@ -78,6 +79,48 @@ class ReferenceTest {
                             assertThat(psiRef.resolveTypeParameter("State", superType)).isEqualTo(SHORT)
                             assertThat(psiRef.resolveTypeParameter("Action", superType)).isEqualTo(STRING)
                         }
+                        else -> throw NotImplementedError(psiRef.shortName)
+                    }
+
+                    null
+                }
+            )
+        ) {
+            assertThat(exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        }
+    }
+
+    @Test
+    fun `type parameters are resolved for external classes`() {
+        compile(
+            """
+                package com.freeletics.test
+
+                import com.freeletics.mad.whetstone.parser.TestStateMachine
+                                
+                class CreateCustomActivityStateMachine : 
+                    TestStateMachine<CreateCustomActivityState, CreateCustomActivityAction>(
+                        DefaultCreateCustomActivityLoadingState,
+                    )
+                
+                sealed interface CreateCustomActivityState
+                object DefaultCreateCustomActivityLoadingState : CreateCustomActivityState
+                sealed interface CreateCustomActivityAction
+            """.trimIndent(),
+            allWarningsAsErrors = false,
+            codeGenerators = listOf(
+                simpleCodeGenerator { psiRef ->
+                    when (psiRef.shortName) {
+                        "CreateCustomActivityStateMachine" -> {
+                            val superType = psiRef.superTypeReference(FqName("com.freeletics.mad.statemachine.StateMachine"))
+                            assertThat(psiRef.resolveTypeParameter("State", superType))
+                                .isEqualTo(ClassName("com.freeletics.test", "CreateCustomActivityState"))
+                            assertThat(psiRef.resolveTypeParameter("Action", superType))
+                                .isEqualTo(ClassName("com.freeletics.test", "CreateCustomActivityAction"))
+                        }
+                        "CreateCustomActivityState",
+                        "DefaultCreateCustomActivityLoadingState",
+                        "CreateCustomActivityAction" -> {}
                         else -> throw NotImplementedError(psiRef.shortName)
                     }
 
