@@ -50,7 +50,6 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.lifecycle.common)
-    implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.navigation.common)
     implementation(libs.androidx.navigation.runtime)
 }
