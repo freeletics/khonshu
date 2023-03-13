@@ -97,7 +97,7 @@ internal fun TypeName.asFunction1Parameter(): TypeName {
 }
 
 @OptIn(ExperimentalAnvilApi::class)
-public fun ClassReference.resolveTypeParameter(
+internal fun ClassReference.resolveTypeParameter(
     parameter: String,
     superTypes: List<TypeReference>,
 ): TypeName {
@@ -120,7 +120,7 @@ public fun ClassReference.resolveTypeParameter(
 }
 
 @OptIn(ExperimentalAnvilApi::class)
-public fun ClassReference.superTypeReference(superClass: FqName): List<TypeReference> {
+internal fun ClassReference.superTypeReference(superClass: FqName): List<TypeReference> {
     fun ClassReference.depthFirstSearch(superClass: FqName): List<TypeReference>? {
         directSuperTypeReferences().forEach {
             val classReference = it.asClassReferenceOrNull()
