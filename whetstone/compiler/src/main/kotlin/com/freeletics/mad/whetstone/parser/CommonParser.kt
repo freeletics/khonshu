@@ -91,17 +91,17 @@ internal fun TopLevelFunctionReference.getComposeParameters(stateParameter: Type
 }
 
 @OptIn(ExperimentalAnvilApi::class)
-internal fun ClassReference.stateMachineStateParameter(stateMachineSuperType: TypeReference): TypeName {
+internal fun ClassReference.stateMachineStateParameter(stateMachineSuperType: List<TypeReference>): TypeName {
     return resolveTypeParameter("State", stateMachineSuperType)
 }
 
 @OptIn(ExperimentalAnvilApi::class)
-internal fun ClassReference.stateMachineActionParameter(stateMachineSuperType: TypeReference): TypeName {
+internal fun ClassReference.stateMachineActionParameter(stateMachineSuperType: List<TypeReference>): TypeName {
     return resolveTypeParameter("Action", stateMachineSuperType)
 }
 
 @OptIn(ExperimentalAnvilApi::class)
-internal fun ClassReference.stateMachineActionFunctionParameter(stateMachineSuperType: TypeReference): TypeName {
+internal fun ClassReference.stateMachineActionFunctionParameter(stateMachineSuperType: List<TypeReference>): TypeName {
     return stateMachineActionParameter(stateMachineSuperType).asFunction1Parameter()
 }
 

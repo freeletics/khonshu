@@ -99,35 +99,39 @@ internal fun TypeName.asFunction1Parameter(): TypeName {
 @OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.resolveTypeParameter(
     parameter: String,
-    superType: TypeReference,
+    superTypes: List<TypeReference>,
 ): TypeName {
-    // find the index of the type parameters that the current class has
-    // e.g. for a StateMachine and State this would return 0
-    val index = superType.asClassReference().typeParameters.indexOfFirst { it.name == parameter }
-    // this is the type that is used in the implementation
-    // e.g. for ... : StateMachine<S, A> this would be S
-    val unwrappedType = superType.unwrappedTypes[index]
-    // resolve the type using the implementation class
-    val resolved = unwrappedType.resolveGenericTypeOrNull(this)
-    if (resolved != null) {
-        return resolved.asTypeName()
+    var currentName = parameter
+    superTypes.forEach { superType ->
+        // find the index of the type parameters that the current class has
+        // e.g. for a StateMachine and State this would return 0
+        val index = superType.asClassReference().typeParameters.indexOfFirst { it.name == currentName }
+        // this is the type that is used in the implementation
+        // e.g. for ... : StateMachine<S, A> this would be S
+        val unwrappedType = superType.unwrappedTypes[index]
+        // resolve the type using the implementation class
+        val resolved = unwrappedType.resolveGenericTypeOrNull(this)
+        if (resolved != null) {
+            return resolved.asTypeName()
+        }
+        currentName = unwrappedType.asTypeName().toString()
     }
     throw AnvilCompilationExceptionClassReference(this, "Error resolving type parameters of $fqName")
 }
 
 @OptIn(ExperimentalAnvilApi::class)
-internal fun ClassReference.superTypeReference(superClass: FqName): TypeReference {
-    fun ClassReference.depthFirstSearch(superClass: FqName): TypeReference? {
+internal fun ClassReference.superTypeReference(superClass: FqName): List<TypeReference> {
+    fun ClassReference.depthFirstSearch(superClass: FqName): List<TypeReference>? {
         directSuperTypeReferences().forEach {
             val classReference = it.asClassReferenceOrNull()
             if (classReference != null) {
                 if (classReference.fqName == superClass) {
-                    return it
+                    return listOf(it)
                 }
 
                 val fromSuperClasses = classReference.depthFirstSearch(superClass)
                 if (fromSuperClasses != null) {
-                    return fromSuperClasses
+                    return fromSuperClasses + it
                 }
             }
         }

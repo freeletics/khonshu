@@ -25,5 +25,6 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.truth)
     testImplementation(libs.kotlin.compile.testing)
+    testImplementation(libs.flowredux)
     testImplementation(testFixtures(libs.anvil.compiler.utils))
 }
