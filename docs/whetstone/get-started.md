@@ -51,7 +51,7 @@ it falls into the `Fragment` category.
 === "Compose"
 
     The `@ComposeScreen` annotation is added to the top level composable of a screen. This function 
-    needs to have 2 parameters: the state that should be rendered and a lambda that allows
+    can have 2 parameters: the state that should be rendered and a lambda that allows
     the composable to send actions for user interactions. This will then generate
     another Composable function called `WhetstoneExampleUi` and a Dagger component.
     
@@ -82,7 +82,7 @@ it falls into the `Fragment` category.
 === "Compose with Fragments"
 
     The `@ComposeFragment` annotation is added to the top level composable of a screen. This function 
-    needs to have 2 parameters: the state that should be rendered and a lambda that allows
+    can have 2 parameters: the state that should be rendered and a lambda that allows
     the composable to send actions for user interactions. This will then generate
     a `Fragment` called `WhetstoneExampleUiFragment` and a Dagger component.
     

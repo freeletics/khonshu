@@ -1,12 +1,20 @@
 Change Log
 ==========
 
-## 0.12.1 **UNRELEASED**
+## 0.13.0 *(2023-03-14)*
 
 ### Navigator
 
-- Added proguard rules to not obfuscate the names of `NavRoute`, `NavRoot` and `ActivityRoute 
+- Added proguard rules to not obfuscate the names of `NavRoute`, `NavRoot` and `ActivityRoute`
   subclasses.
+
+### Whetstone
+
+- The `state` and `sendAction` parameters in annotated composables are now optional and only need 
+  to be specified if they are needed
+- The `state` and `sendAction` parameters of annotated composables can now have different names
+- Automatically discover `ViewRenderer.Factory` subclass nested inside the annotated `ViewRenderer`
+  and removed the now obsolete `rendererFactory` parameter
 
 
 ## 0.12.0 *(2023-02-13)*
@@ -26,7 +34,7 @@ Change Log
   - `route` and `scope` are combined into a `route` parameter which removes the need to define scope
     classes, the `NavRoute` or `NavRoot` serves both purposes
   - the previous point means that the same `route` will also need to be used in any place that that
-    requires scope markers like `@ScopeTo`, `@ContributesTo` or `@ContributesBinding`  
+    requires scope markers like `@ScopeTo`, `@ContributesTo` or `@ContributesBinding`
 - New `AppScope` scope marker class. This can be used as the scope marker for an app level component.
   All whetstone annotations use it as default value for `parentScope` and `destinationScope`, so those
   two don't need to be explicitly specified anymore after adopint `AppScope`.
@@ -91,7 +99,7 @@ Change Log
 
 ### Whetstone
 - Add support for injecting dependencies into Composable functions, which are annotated with
-`@ComposeScreen` or `@ComposeFragment`
+  `@ComposeScreen` or `@ComposeFragment`
 
 ### Navigator
 - Refactor runtime module to remove androidx navigation
@@ -115,18 +123,18 @@ Change Log
 - Use `requireNotNull` contracts for `requireRoute` functions
 - Check for route to be not null before adding it to `Intent` in `CustomActivityNavigator`
 - Move generated `DestinationComponent` to the nav entry generator. This reduces how often
-we generate the contributed `DestinationComponent` by generating it only together with the
-`NavEntryComponent` that needs it.
+  we generate the contributed `DestinationComponent` by generating it only together with the
+  `NavEntryComponent` that needs it.
 
 ### Whetstone
 
 - Rename `findDependencies` to `findComponentByScope`. After getting rid of component
-dependencies in favor of subcomponents our find methods were not named correctly anymore.
+  dependencies in favor of subcomponents our find methods were not named correctly anymore.
 - Fix `Closeable` typo
 - Remove unused `SavedStateRegistryOwner`
 - Explicitly require a renderer factory to extend `ViewRenderer.Factory`. We relied on some
-custom factories internally. Those are not necessary anymore and we can add the constraint
-to the annotation.
+  custom factories internally. Those are not necessary anymore and we can add the constraint
+  to the annotation.
 
 ### Dependencies
 
