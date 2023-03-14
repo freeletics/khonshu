@@ -5,7 +5,7 @@
     ":disableRateLimiting",
     ":semanticCommitsDisabled"
   ],
-  automerge: false,
+  automerge: true,
   platformAutomerge: true,
   platformCommit: true,
   assignAutomerge: true,
