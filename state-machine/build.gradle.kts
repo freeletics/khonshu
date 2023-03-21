@@ -27,7 +27,7 @@ kotlin {
 
     sourceSets.all {
         jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
+            languageVersion.set(JavaLanguageVersion.of(libs.versions.java.target.get().toInt()))
         }
     }
 

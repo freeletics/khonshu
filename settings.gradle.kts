@@ -25,6 +25,7 @@ include(":text-resource")
 include(":whetstone:compiler", ":whetstone:compiler-test")
 include(":whetstone:scope", ":whetstone:runtime", ":whetstone:runtime-compose", ":whetstone:runtime-fragment")
 include(":whetstone:navigation", ":whetstone:navigation-compose", ":whetstone:navigation-fragment")
+include(":deeplinks-plugin")
 
 project(":navigator:runtime").setName("navigator-runtime")
 project(":navigator:runtime-compose").setName("navigator-runtime-compose")
