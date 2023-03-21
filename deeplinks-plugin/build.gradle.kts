@@ -11,10 +11,10 @@ dependencies {
 }
 
 gradlePlugin {
-//    plugins {
-//        plugin {
-//            id = "com.freeletics.gradle.deeplinks"
-//            implementationClass = "com.freeletics.gradle.plugin.DeeplinksPlugin"
-//        }
-//    }
+    plugins {
+        create("plugin") {
+            id = "com.freeletics.gradle.deeplinks"
+            implementationClass = "com.freeletics.gradle.plugin.DeeplinksPlugin"
+        }
+    }
 }
