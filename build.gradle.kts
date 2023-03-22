@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.android.library).apply(false)
     alias(libs.plugins.dokka).apply(false)
     alias(libs.plugins.publish).apply(false)
-    alias(libs.plugins.gr8) apply(false)
+    alias(libs.plugins.gr8) apply (false)
     alias(libs.plugins.bestpractices).apply(false)
 }
 
@@ -100,6 +100,13 @@ dependencyAnalysis {
                     ":whetstone:runtime-compose",
                     ":whetstone:runtime-fragment",
                 )
+            }
+        }
+
+        project(":deeplinks-plugin") {
+            onIncorrectConfiguration {
+                // suggests junit to be api instead of testImplementation
+                exclude("junit:junit")
             }
         }
     }
