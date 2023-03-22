@@ -17,8 +17,8 @@ android {
 
     // still needed for Android projects despite toolchain
     compileOptions {
-        sourceCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
-        targetCompatibility(JavaVersion.toVersion(libs.versions.java.get()))
+        sourceCompatibility(JavaVersion.toVersion(libs.versions.java.target.get()))
+        targetCompatibility(JavaVersion.toVersion(libs.versions.java.target.get()))
     }
 }
 
@@ -29,7 +29,7 @@ kotlin {
     explicitApi()
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get().toInt()))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.target.get().toInt()))
     }
 }
 

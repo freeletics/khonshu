@@ -1,0 +1,18 @@
+public abstract class com/freeletics/mad/deeplinks/plugin/DeeplinksManifestConfiguratorTask : org/gradle/api/DefaultTask {
+	public fun <init> ()V
+	public abstract fun getDeeplinksConfigurationFile ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getMergedManifest ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getUpdatedManifest ()Lorg/gradle/api/file/RegularFileProperty;
+	public final fun taskAction ()V
+}
+
+public abstract class com/freeletics/mad/deeplinks/plugin/DeeplinksPlugin : org/gradle/api/Plugin {
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+
+public final class com/freeletics/mad/deeplinksplugin/VersionKt {
+	public static final field VERSION Ljava/lang/String;
+}
+

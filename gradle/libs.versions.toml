@@ -2,7 +2,12 @@
 kotlin = "1.8.10"
 coroutines = "1.6.4"
 
-java = "11"
+java-target= "11"
+java-toolchain = "11"
+java-gradle = "11"
+
+fl-gradle = "0.2.0"
+gradle-api = "8.0.2"
 
 android-gradle = "7.4.2"
 android-min = "21"
@@ -38,10 +43,16 @@ kotlin-compile-testing = "0.2.1"
 
 publish = "0.24.0"
 dokka = "1.8.10"
+bestpractices = "0.9"
 binarycompatibility = "0.13.0"
 dependency-analysis = "1.19.0"
+gr8 = "0.7"
 
 [libraries]
+gradle-api = { module = "dev.gradleplugins:gradle-api", version.ref = "gradle-api" }
+android-gradle-api = { module = "com.android.tools.build:gradle-api", version.ref = "android-gradle" }
+
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-parcelize = { module = "org.jetbrains.kotlin:kotlin-parcelize-runtime", version.ref = "kotlin" }
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -95,9 +106,11 @@ junit = { module = "junit:junit", version.ref = "junit" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 kotlin-compile-testing = { module = "dev.zacsweers.kctfork:core", version.ref = "kotlin-compile-testing" }
+gr8 = { module = "com.gradleup:gr8-plugin", version.ref = "gr8" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "android-gradle" }
+fl-gradle = { id = "com.freeletics.gradle.common.gradle", version.ref = "fl-gradle" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -106,5 +119,7 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binarycompatibility" }
+bestpractices = { id = "com.autonomousapps.plugin-best-practices-plugin", version.ref = "bestpractices" }
+gr8 = { id = "com.gradleup.gr8", version.ref = "gr8" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 poko = { id = "dev.drewhamilton.poko", version = "0.12.0" }
