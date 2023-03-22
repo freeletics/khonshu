@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.fl.gradle)
-    alias(libs.plugins.publish)
+//    alias(libs.plugins.publish)
 }
 
 dependencies {
