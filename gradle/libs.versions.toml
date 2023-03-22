@@ -6,7 +6,7 @@ java-target= "11"
 java-toolchain = "11"
 java-gradle = "11"
 
-fl-gradle = "0.2.0"
+fl-gradle = "0.2.2"
 gradle-api = "8.0.2"
 
 android-gradle = "7.4.2"
