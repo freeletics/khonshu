@@ -22,3 +22,5 @@
 
 # No need to obfuscate class names
 -dontobfuscate
+
+-repackageclasses com.freeletics.mad.deeplinks.plugin.relocated
