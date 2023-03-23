@@ -3,7 +3,7 @@ kotlin = "1.8.10"
 coroutines = "1.6.4"
 
 java-target= "11"
-java-toolchain = "11"
+java-toolchain = "19"
 
 fgp = "0.2.2"
 gradle-api = "8.0.2"
