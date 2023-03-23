@@ -8,7 +8,3 @@ import dagger.Module
 @Module
 @ContributesTo(FeatureARoute::class)
 object FeatureARetainedModule
-
-@Module
-@ContributesTo(AppScope::class)
-object FeatureASingletonModule
