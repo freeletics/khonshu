@@ -1,0 +1,51 @@
+[versions]
+
+android-compile = "33"
+android-desugarjdklibs = "2.0.2"
+android-gradle = "7.4.2"
+android-min = "26"
+android-target = "33"
+androidx-activity = "1.6.1"
+androidx-annotations = "1.6.0"
+androidx-compose-compiler = "1.4.3"
+androidx-compose-foundation = "1.3.1"
+androidx-core = "1.9.0"
+anvil = "2.4.4"
+dagger = "2.45"
+dependency-analysis-gradle = "1.19.0"
+fl-gradle = "0.2.0"
+fl-mad = "0.13.0"
+inject = "1"
+java-target = "11"
+java-toolchain = "17"
+kotlin = "1.8.10"
+timber = "5.0.1"
+
+[libraries]
+android-desugarjdklibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugarjdklibs" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidx-annotations" }
+androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "androidx-compose-compiler" }
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose-foundation" }
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+fl-navigator-runtime = { module = "com.freeletics.mad:navigator", version.ref = "fl-mad" }
+fl-navigator-runtime-compose = { module = "com.freeletics.mad:navigator-compose", version.ref = "fl-mad" }
+fl-whetstone-compiler = { module = "com.freeletics.mad:whetstone-compiler", version.ref = "fl-mad" }
+fl-whetstone-runtime = { module = "com.freeletics.mad:whetstone-navigation", version.ref = "fl-mad" }
+fl-whetstone-runtime-compose = { module = "com.freeletics.mad:whetstone-navigation-compose", version.ref = "fl-mad" }
+fl-whetstone-scope = { module = "com.freeletics.mad:whetstone-scope", version.ref = "fl-mad" }
+inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-gradle" }
+anvil = { id = "com.squareup.anvil", version.ref = "anvil" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis-gradle" }
+fl-app = { id = "com.freeletics.gradle.app", version.ref = "fl-gradle" }
+fl-feature = { id = "com.freeletics.gradle.feature", version.ref = "fl-gradle" }
+fl-nav = { id = "com.freeletics.gradle.nav", version.ref = "fl-gradle" }
+fl-root = { id = "com.freeletics.gradle.root", version.ref = "fl-gradle" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
