@@ -36,11 +36,7 @@ public final class com/freeletics/mad/navigator/DeepLink {
 public abstract interface class com/freeletics/mad/navigator/DeepLinkHandler {
 	public abstract fun deepLink (Ljava/util/Map;Ljava/util/Map;)Lcom/freeletics/mad/navigator/DeepLink;
 	public abstract fun getPatterns ()Ljava/util/Set;
-	public abstract fun getPrefixes ()Ljava/util/Set;
-}
-
-public final class com/freeletics/mad/navigator/DeepLinkHandler$DefaultImpls {
-	public static fun getPrefixes (Lcom/freeletics/mad/navigator/DeepLinkHandler;)Ljava/util/Set;
+	public fun getPrefixes ()Ljava/util/Set;
 }
 
 public final class com/freeletics/mad/navigator/DeepLinkHandler$Pattern {
@@ -70,11 +66,7 @@ public final class com/freeletics/mad/navigator/DeepLinkHandler$Prefix {
 }
 
 public abstract interface class com/freeletics/mad/navigator/ExternalActivityRoute : com/freeletics/mad/navigator/ActivityRoute {
-	public abstract fun fillInIntent ()Landroid/content/Intent;
-}
-
-public final class com/freeletics/mad/navigator/ExternalActivityRoute$DefaultImpls {
-	public static fun fillInIntent (Lcom/freeletics/mad/navigator/ExternalActivityRoute;)Landroid/content/Intent;
+	public fun fillInIntent ()Landroid/content/Intent;
 }
 
 public abstract class com/freeletics/mad/navigator/InternalActivityRoute : com/freeletics/mad/navigator/ActivityRoute {

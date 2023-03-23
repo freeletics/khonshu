@@ -1,7 +1,4 @@
 plugins {
-    alias(libs.plugins.binarycompatibility)
-    alias(libs.plugins.dependency.analysis)
-
     alias(libs.plugins.kotlin.android).apply(false)
     alias(libs.plugins.kotlin.jvm).apply(false)
     alias(libs.plugins.kotlin.kapt).apply(false)
@@ -11,18 +8,16 @@ plugins {
     alias(libs.plugins.dokka).apply(false)
     alias(libs.plugins.publish).apply(false)
     alias(libs.plugins.gr8) apply (false)
+    alias(libs.plugins.dependency.analysis).apply(false)
     alias(libs.plugins.bestpractices).apply(false)
+
+    alias(libs.plugins.fgp.root)
+    alias(libs.plugins.binarycompatibility)
 }
 
 dependencyAnalysis {
     issues {
         all {
-            ignoreKtx(true)
-
-            onAny {
-                severity("fail")
-            }
-
             onCompileOnly {
                 exclude("dev.drewhamilton.poko:poko-annotations")
             }
@@ -114,18 +109,6 @@ dependencyAnalysis {
     abi {
         exclusions {
             excludeClasses(".*\\.navigator\\.internal\\..*")
-        }
-    }
-
-    dependencies {
-        bundle("androidx-compose-ui") {
-            primary("androidx.compose.ui:ui")
-            includeGroup("androidx.compose.ui")
-        }
-        bundle("androidx-compose-foundation") {
-            primary("androidx.compose.foundation:foundation")
-            includeGroup("androidx.compose.animation")
-            includeGroup("androidx.compose.foundation")
         }
     }
 }
