@@ -6,7 +6,7 @@ java-target= "11"
 java-toolchain = "11"
 java-gradle = "11"
 
-fl-gradle = "0.2.0"
+fgp = "0.2.0"
 gradle-api = "8.0.2"
 
 android-gradle = "7.4.2"
@@ -110,7 +110,7 @@ gr8 = { module = "com.gradleup:gr8-plugin", version.ref = "gr8" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "android-gradle" }
-fl-gradle = { id = "com.freeletics.gradle.common.gradle", version.ref = "fl-gradle" }
+fgp-gradle = { id = "com.freeletics.gradle.common.gradle", version.ref = "fgp" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

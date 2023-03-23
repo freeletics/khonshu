@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.fl.gradle)
+    alias(libs.plugins.fgp.gradle)
 //    alias(libs.plugins.publish)
 }
 
