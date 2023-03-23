@@ -74,7 +74,7 @@ jobs:
           mkdir -p docs/navigator/API/testing
           cp -R navigator/testing/build/dokka/html/. docs/navigator/API/testing/
           mkdir -p docs/helpers/API/state-machine
-          cp -R state-machine/build/dokka/html/. docs/helpers/API/state-machine/
+          cp -R state-machine/runtime/build/dokka/html/. docs/helpers/API/state-machine/
           mkdir -p docs/helpers/API/state-machine-testing
           cp -R state-machine/testing/build/dokka/html/. docs/helpers/API/state-machine-testing/
           mkdir -p docs/helpers/API/text-resource
