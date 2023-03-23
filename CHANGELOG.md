@@ -1,11 +1,13 @@
 Change Log
 ==========
 
-## 0.13.1 **UNRELEASED**
+## 0.13.1 *(2023-03-23)*
+
+- Updated to Compose 1.4.0 and Accompanist 0.30.0.
 
 ### StateMachine
 
-- added `tvosSimulatorArm64` and `watchosX64` targets
+- Added `tvosSimulatorArm64` and `watchosX64` targets.
 
 
 ## 0.13.0 *(2023-03-14)*
