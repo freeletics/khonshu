@@ -18,8 +18,8 @@
   ],
   packageRules: [
     {
-      "matchDatasources": ["gradle"],
-      "registryUrls": ["https://repo.maven.apache.org/maven2", "https://dl.google.com/android/maven2"]
+      matchDatasources: ["gradle"],
+      registryUrls: ["https://repo.maven.apache.org/maven2", "https://dl.google.com/android/maven2"]
     },
     {
       matchPackageNames: [
