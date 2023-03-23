@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## 0.13.2 *(2023-03-23)*
+
+### Whetstone
+
+- Fix `whetstone-scope` artifact being published as `aar` instead of as `jar`. 
+
+
 ## 0.13.1 *(2023-03-23)*
 
 - Updated to Compose 1.4.0 and Accompanist 0.30.0.
