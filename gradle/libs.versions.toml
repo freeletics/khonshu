@@ -4,7 +4,6 @@ coroutines = "1.6.4"
 
 java-target= "11"
 java-toolchain = "11"
-java-gradle = "11"
 
 fgp = "0.2.2"
 gradle-api = "8.0.2"
@@ -109,8 +108,15 @@ kotlin-compile-testing = { module = "dev.zacsweers.kctfork:core", version.ref = 
 gr8 = { module = "com.gradleup:gr8-plugin", version.ref = "gr8" }
 
 [plugins]
-android-library = { id = "com.android.library", version.ref = "android-gradle" }
+fgp-android = { id = "com.freeletics.gradle.common.android", version.ref = "fgp" }
+fgp-jvm = { id = "com.freeletics.gradle.common.jvm", version.ref = "fgp" }
+fgp-multiplatform = { id = "com.freeletics.gradle.common.multiplatform", version.ref = "fgp" }
 fgp-gradle = { id = "com.freeletics.gradle.common.gradle", version.ref = "fgp" }
+fgp-publish = { id = "com.freeletics.gradle.common.publish.oss", version.ref = "fgp" }
+fgp-root = { id = "com.freeletics.gradle.root", version.ref = "fgp" }
+fgp-settings = { id = "com.freeletics.gradle.settings", version.ref = "fgp" }
+
+android-library = { id = "com.android.library", version.ref = "android-gradle" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

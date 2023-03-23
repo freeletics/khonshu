@@ -1,36 +1,9 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.fgp.android)
 }
 
-android {
-    namespace = "com.freeletics.mad.whetstone.test"
-    compileSdk = libs.versions.android.compile.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.android.min.get().toInt()
-    }
-
-    buildFeatures {
-        buildConfig = false
-    }
-
-    // still needed for Android projects despite toolchain
-    compileOptions {
-        sourceCompatibility(JavaVersion.toVersion(libs.versions.java.target.get()))
-        targetCompatibility(JavaVersion.toVersion(libs.versions.java.target.get()))
-    }
-}
-
-// workaround for https://youtrack.jetbrains.com/issue/KT-37652
-android.kotlinOptions.freeCompilerArgs += "-Xexplicit-api=strict"
-
-kotlin {
+freeletics {
     explicitApi()
-
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.target.get().toInt()))
-    }
 }
 
 dependencies {
@@ -45,7 +18,7 @@ dependencies {
     testImplementation(projects.navigator.navigatorRuntime)
     testImplementation(projects.navigator.navigatorRuntimeFragment)
     testImplementation(projects.navigator.navigatorRuntimeCompose)
-    testImplementation(projects.stateMachine)
+    testImplementation(projects.stateMachine.runtime)
     testImplementation(libs.androidx.compose.runtime)
     testImplementation(libs.androidx.viewbinding)
     testImplementation(libs.renderer)
@@ -67,8 +40,9 @@ dependencies {
     }
 }
 
+// exclude dependency from renderer connect, we include the local module instead
 configurations.configureEach {
     resolutionStrategy.dependencySubstitution.run {
-        substitute(module("com.freeletics.mad:state-machine")).using(project(":state-machine"))
+        exclude("com.freeletics.mad", "state-machine")
     }
 }

@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## 0.13.1 **UNRELEASED**
+
+### StateMachine
+
+- added `tvosSimulatorArm64` and `watchosX64` targets
+
+
 ## 0.13.0 *(2023-03-14)*
 
 ### Navigator

@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.name.FqName
 import org.junit.Test
 
 @OptIn(ExperimentalAnvilApi::class, ExperimentalCompilerApi::class)
-class ReferenceTest {
+internal class ReferenceTest {
 
     @Test
     fun `type parameters are resolved`() {

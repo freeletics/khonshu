@@ -1,15 +1,12 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.fgp.jvm)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.publish)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.fgp.publish)
 }
 
-kotlin {
+freeletics {
     explicitApi()
-
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.target.get().toInt()))
-    }
 }
 
 dependencies {
@@ -25,6 +22,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.truth)
     testImplementation(libs.kotlin.compile.testing)
+    testImplementation(libs.coroutines.core)
     testImplementation(libs.flowredux)
     testImplementation(testFixtures(libs.anvil.compiler.utils))
 }
