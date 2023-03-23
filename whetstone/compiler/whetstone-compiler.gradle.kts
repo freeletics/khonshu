@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.internal.KaptGenerateStubsTask
+
 plugins {
     alias(libs.plugins.fgp.jvm)
     alias(libs.plugins.kotlin.kapt)
@@ -25,4 +28,11 @@ dependencies {
     testImplementation(libs.coroutines.core)
     testImplementation(libs.flowredux)
     testImplementation(testFixtures(libs.anvil.compiler.utils))
+}
+
+//TODO remove when Kotlin 1.8.20 is out and FGP was updated
+tasks.withType(KaptGenerateStubsTask::class.java).configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.target.get()))
+    }
 }
