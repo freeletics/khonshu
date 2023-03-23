@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.fl.feature)
+    alias(libs.plugins.fgp.feature)
 }
 
 freeletics {

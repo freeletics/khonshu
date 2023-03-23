@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.fl.nav)
+    alias(libs.plugins.fgp.nav)
 }
 
 dependencies {

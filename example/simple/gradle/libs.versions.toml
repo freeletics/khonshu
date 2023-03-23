@@ -13,7 +13,7 @@ androidx-core = "1.9.0"
 anvil = "2.4.4"
 dagger = "2.45"
 dependency-analysis-gradle = "1.19.0"
-fl-gradle = "0.2.0"
+fgp = "0.2.0"
 fl-mad = "0.13.0"
 inject = "1"
 java-target = "11"
@@ -44,8 +44,8 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
 anvil = { id = "com.squareup.anvil", version.ref = "anvil" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis-gradle" }
-fl-app = { id = "com.freeletics.gradle.app", version.ref = "fl-gradle" }
-fl-feature = { id = "com.freeletics.gradle.feature", version.ref = "fl-gradle" }
-fl-nav = { id = "com.freeletics.gradle.nav", version.ref = "fl-gradle" }
-fl-root = { id = "com.freeletics.gradle.root", version.ref = "fl-gradle" }
+fgp-app = { id = "com.freeletics.gradle.app", version.ref = "fgp" }
+fgp-feature = { id = "com.freeletics.gradle.feature", version.ref = "fgp" }
+fgp-nav = { id = "com.freeletics.gradle.nav", version.ref = "fgp" }
+fgp-root = { id = "com.freeletics.gradle.root", version.ref = "fgp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
