@@ -6,7 +6,7 @@ import com.freeletics.mad.navigator.compose.NavHost
 import com.freeletics.mad.whetstone.compose.ComposeScreen
 
 @ComposeScreen(
-    scope = Main::class,
+    scope = MainActivity::class,
     stateMachine = MainStateMachine::class,
 )
 @Composable

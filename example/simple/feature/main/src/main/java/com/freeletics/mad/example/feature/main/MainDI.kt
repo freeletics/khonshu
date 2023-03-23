@@ -6,10 +6,8 @@ import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
 
-class Main
-
 @Module
-@ContributesTo(Main::class)
+@ContributesTo(MainActivity::class)
 object MainRetainedModule {
     @Provides
     fun provideNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): DestinationsHolder {
@@ -21,7 +19,3 @@ object MainRetainedModule {
 data class DestinationsHolder(
     val destinations: Set<NavDestination>,
 )
-
-@Module
-@ContributesTo(AppScope::class)
-object MainSingletonModule
