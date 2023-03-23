@@ -2,6 +2,7 @@ package com.freeletics.mad.example.feature.main
 
 import androidx.compose.runtime.Composable
 import com.freeletics.mad.example.feature.a.nav.FeatureARoute
+import com.freeletics.mad.navigator.compose.NavDestination
 import com.freeletics.mad.navigator.compose.NavHost
 import com.freeletics.mad.whetstone.compose.ComposeScreen
 
@@ -11,10 +12,10 @@ import com.freeletics.mad.whetstone.compose.ComposeScreen
 )
 @Composable
 internal fun MainScreen(
-    destinationsHolder: DestinationsHolder,
+    destinations: Set<NavDestination>,
 ) {
     NavHost(
         startRoute = FeatureARoute,
-        destinations = destinationsHolder.destinations,
+        destinations = destinations,
     )
 }

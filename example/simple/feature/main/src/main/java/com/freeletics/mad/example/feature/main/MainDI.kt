@@ -8,14 +8,4 @@ import dagger.Provides
 
 @Module
 @ContributesTo(MainActivity::class)
-object MainRetainedModule {
-    @Provides
-    fun provideNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): DestinationsHolder {
-        return DestinationsHolder(destinations)
-    }
-}
-
-// Helper class to inject a Set into MainUi
-data class DestinationsHolder(
-    val destinations: Set<NavDestination>,
-)
+object MainRetainedModule
