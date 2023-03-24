@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## 0.13.3 *(2023-03-24)*
+
+### Whetstone
+
+- Fix calls `asComposeState()` leading to a crash.
+
+
 ## 0.13.2 *(2023-03-23)*
 
 ### Whetstone
