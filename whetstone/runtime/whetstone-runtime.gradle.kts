@@ -7,6 +7,7 @@ plugins {
 freeletics {
     explicitApi()
     optIn("com.freeletics.mad.whetstone.internal.InternalWhetstoneApi")
+    enableCompose()
 }
 
 
