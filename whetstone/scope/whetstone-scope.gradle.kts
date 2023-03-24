@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.fgp.jvm)
-    alias(libs.plugins.dokka)
     alias(libs.plugins.fgp.publish)
 }
 

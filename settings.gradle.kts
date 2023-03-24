@@ -5,12 +5,15 @@ pluginManagement {
         mavenCentral()
         google()
         gradlePluginPortal()
+        maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots/") }
     }
 }
 
 plugins {
     id("com.freeletics.gradle.settings").version("0.2.2")
 }
+
+rootProject.name = "mad"
 
 // TODO find a better workaround
 project(":navigator:runtime").name = "navigator-runtime"

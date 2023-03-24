@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.internal.KaptGenerateStubsTask
 plugins {
     alias(libs.plugins.fgp.jvm)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.dokka)
     alias(libs.plugins.fgp.publish)
 }
 
