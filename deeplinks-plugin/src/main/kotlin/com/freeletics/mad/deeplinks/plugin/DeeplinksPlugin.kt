@@ -18,28 +18,31 @@ abstract class DeeplinksPlugin : Plugin<Project> {
             // configuration file doesn't exist -> skipping
             return
         }
-        val androidComponents = try {
-            project.extensions.getByType(AndroidComponentsExtension::class.java)
-        } catch (e: UnknownDomainObjectException) {
-            // can't find android extension -> probably project doesn't have Android plugin applied
-            return
+
+        project.plugins.withId("com.android.library") {
+            setupDeeplinksManifestConfigurator(project, configurationFile)
         }
+
+        project.plugins.withId("com.android.application") {
+            setupDeeplinksManifestConfigurator(project, configurationFile)
+        }
+    }
+
+    private fun setupDeeplinksManifestConfigurator(project: Project, configurationFile: File) {
+        val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
         androidComponents.onVariants { variant ->
-            val manifestUpdater =
-                project.tasks.register(
-                    variant.name + "DeeplinksManifestConfigurator",
-                    DeeplinksManifestConfiguratorTask::class.java
-                ) {
-                    it.deeplinksConfigurationFile.set(
-                        configurationFile
-                    )
-                }
-            variant.artifacts.use(manifestUpdater)
-                .wiredWithFiles(
-                    DeeplinksManifestConfiguratorTask::mergedManifest,
-                    DeeplinksManifestConfiguratorTask::updatedManifest
+            val manifestUpdater = project.tasks.register(
+                variant.name + "DeeplinksManifestConfigurator",
+                DeeplinksManifestConfiguratorTask::class.java,
+            ) {
+                it.deeplinksConfigurationFile.set(
+                    configurationFile
                 )
-                .toTransform(SingleArtifact.MERGED_MANIFEST)
+            }
+            variant.artifacts.use(manifestUpdater).wiredWithFiles(
+                DeeplinksManifestConfiguratorTask::mergedManifest,
+                DeeplinksManifestConfiguratorTask::updatedManifest,
+            ).toTransform(SingleArtifact.MERGED_MANIFEST)
         }
     }
 }

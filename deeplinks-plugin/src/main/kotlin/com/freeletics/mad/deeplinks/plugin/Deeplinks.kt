@@ -5,6 +5,7 @@ internal data class DeepLinks(
     val placeholders: List<Placeholder>,
     val deepLinks: Map<String, DeepLink>,
 )
+
 internal data class DeepLink(
     val patterns: List<String>,
     val prefixes: List<Prefix>?, // use global if null
