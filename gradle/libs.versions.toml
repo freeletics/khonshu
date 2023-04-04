@@ -128,4 +128,4 @@ binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validat
 bestpractices = { id = "com.autonomousapps.plugin-best-practices-plugin", version.ref = "bestpractices" }
 gr8 = { id = "com.gradleup.gr8", version.ref = "gr8" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
-poko = { id = "dev.drewhamilton.poko", version = "0.12.0" }
+poko = { id = "dev.drewhamilton.poko", version = "0.13.0" }
