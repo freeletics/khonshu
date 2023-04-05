@@ -37,11 +37,6 @@ dependencies {
     testImplementation(libs.anvil.annotations)
     testImplementation(libs.anvil.compiler.utils)
     testImplementation(testFixtures(libs.anvil.compiler.utils))
-    testImplementation(libs.kotlin.compiler) {
-        version {
-            strictly(libs.versions.kotlin.asProvider().get())
-        }
-    }
 }
 
 // exclude dependency from renderer connect, we include the local module instead
