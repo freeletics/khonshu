@@ -269,7 +269,7 @@ internal class NavigationSetupTest {
                 // should never be reached
                 assertThat(false).isTrue()
             } catch (e: AssertionError) {
-                assertThat(e).hasMessageThat().isEqualTo("No value produced in 1s")
+                assertThat(e).hasMessageThat().isEqualTo("No value produced in 3s")
             }
 
             // new value
