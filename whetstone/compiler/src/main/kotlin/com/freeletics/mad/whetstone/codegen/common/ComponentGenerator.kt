@@ -17,7 +17,6 @@ import com.freeletics.mad.whetstone.codegen.util.scopeToAnnotation
 import com.freeletics.mad.whetstone.codegen.util.simplePropertySpec
 import com.freeletics.mad.whetstone.codegen.util.subcomponentAnnotation
 import com.freeletics.mad.whetstone.codegen.util.subcomponentFactoryAnnotation
-import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.decapitalize
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget.GET
 import com.squareup.kotlinpoet.FunSpec
@@ -43,7 +42,6 @@ internal const val closeableSetPropertyName = "closeables"
 internal val Generator<out BaseData>.retainedParentComponentClassName
     get() = retainedComponentClassName.nestedClass("ParentComponent")
 
-@OptIn(ExperimentalAnvilApi::class)
 internal val Generator<out BaseData>.retainedParentComponentGetterName
     get() = "${retainedComponentClassName.simpleName.decapitalize()}Factory"
 

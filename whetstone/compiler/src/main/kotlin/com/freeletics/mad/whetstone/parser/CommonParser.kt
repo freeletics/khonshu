@@ -7,7 +7,6 @@ import com.freeletics.mad.whetstone.codegen.util.appScope
 import com.freeletics.mad.whetstone.codegen.util.fragment
 import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
 import com.freeletics.mad.whetstone.codegen.util.viewRendererFactoryFqName
-import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
@@ -19,40 +18,31 @@ import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.TypeName
 
-@OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.scope: ClassName
     get() = requireClassArgument("scope", 0)
 
-@OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.route: ClassName
     get() = requireClassArgument("route", 0)
 
-@OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.parentScope: ClassName
     get() = optionalClassArgument("parentScope", 1)?: appScope
 
-@OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.stateMachine: ClassName
     get() = stateMachineReference.asClassName()
 
-@OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.stateMachineReference: ClassReference
     get() = requireClassReferenceArgument("stateMachine", 2)
 
-@OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.destinationType: String
     get() = optionalEnumArgument("destinationType", 3) ?: "SCREEN"
 
-@OptIn(ExperimentalAnvilApi::class)
 internal val AnnotationReference.destinationScope: ClassName
     get() = optionalClassArgument("destinationScope", 4) ?: appScope
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotationReference.fragmentBaseClass(index: Int): ClassName {
     return optionalClassArgument("fragmentBaseClass", index) ?: fragment
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotatedReference.navEntryData(
     navigation: Navigation
 ): NavEntryData? {
@@ -66,21 +56,18 @@ internal fun AnnotatedReference.navEntryData(
     )
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun TopLevelFunctionReference.getStateParameter(stateParameter: TypeName): ComposableParameter? {
     return parameters
         .find { it.type().asTypeName() == stateParameter }
         ?.toComposableParameter()
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun TopLevelFunctionReference.getSendActionParameter(actionParameter: TypeName): ComposableParameter? {
     return parameters
         .find { it.type().asTypeName() == actionParameter }
         ?.toComposableParameter()
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun TopLevelFunctionReference.getComposeParameters(stateParameter: TypeName, actionParameter: TypeName): List<ComposableParameter> {
     return parameters
         .filter {
@@ -90,22 +77,18 @@ internal fun TopLevelFunctionReference.getComposeParameters(stateParameter: Type
         .map { it.toComposableParameter() }
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.stateMachineStateParameter(stateMachineSuperType: List<TypeReference>): TypeName {
     return resolveTypeParameter("State", stateMachineSuperType)
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.stateMachineActionParameter(stateMachineSuperType: List<TypeReference>): TypeName {
     return resolveTypeParameter("Action", stateMachineSuperType)
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.stateMachineActionFunctionParameter(stateMachineSuperType: List<TypeReference>): TypeName {
     return stateMachineActionParameter(stateMachineSuperType).asFunction1Parameter()
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.findRendererFactory(): ClassName {
     val factoryClass = innerClasses().find { innerClass ->
         innerClass.allSuperTypeClassReferences().any { superType ->

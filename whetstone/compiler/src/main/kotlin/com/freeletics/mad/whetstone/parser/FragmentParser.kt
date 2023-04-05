@@ -8,12 +8,10 @@ import com.freeletics.mad.whetstone.codegen.util.composeFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentDestinationFqName
 import com.freeletics.mad.whetstone.codegen.util.rendererFragmentFqName
 import com.freeletics.mad.whetstone.codegen.util.stateMachineFqName
-import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.asClassName
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.toRendererFragmentData(): RendererFragmentData? {
     val annotation = findAnnotation(rendererFragmentFqName) ?: return null
 
@@ -30,7 +28,6 @@ internal fun ClassReference.toRendererFragmentData(): RendererFragmentData? {
     )
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.toRendererFragmentDestinationData(): RendererFragmentData? {
     val annotation = findAnnotation(rendererFragmentDestinationFqName) ?: return null
 
@@ -53,7 +50,6 @@ internal fun ClassReference.toRendererFragmentDestinationData(): RendererFragmen
     )
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun TopLevelFunctionReference.toComposeFragmentData(): ComposeFragmentData? {
     val annotation = findAnnotation(composeFragmentFqName) ?: return null
 
@@ -77,7 +73,6 @@ internal fun TopLevelFunctionReference.toComposeFragmentData(): ComposeFragmentD
     )
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): ComposeFragmentData? {
     val annotation = findAnnotation(composeFragmentDestinationFqName) ?: return null
 

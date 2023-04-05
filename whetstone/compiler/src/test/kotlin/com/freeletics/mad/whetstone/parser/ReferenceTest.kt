@@ -1,7 +1,6 @@
 package com.freeletics.mad.whetstone.parser
 
 import com.google.common.truth.Truth.assertThat
-import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.internal.testing.compileAnvil
 import com.squareup.anvil.compiler.internal.testing.simpleCodeGenerator
@@ -14,11 +13,9 @@ import com.squareup.kotlinpoet.STRING
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.KotlinCompilation.Result
 import org.intellij.lang.annotations.Language
-import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.name.FqName
 import org.junit.Test
 
-@OptIn(ExperimentalAnvilApi::class, ExperimentalCompilerApi::class)
 internal class ReferenceTest {
 
     @Test
