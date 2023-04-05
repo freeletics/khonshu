@@ -1,7 +1,6 @@
 package com.freeletics.mad.whetstone.parser
 
 import com.freeletics.mad.whetstone.ComposableParameter
-import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionAnnotationReference
@@ -22,44 +21,36 @@ import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.name.FqName
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotatedReference.findAnnotation(fqName: FqName): AnnotationReference? {
     return annotations.find { it.fqName == fqName }
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotationReference.requireClassArgument(name: String, index: Int): ClassName {
     return requireClassReferenceArgument(name, index).asClassName()
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotationReference.optionalClassArgument(name: String, index: Int): ClassName? {
     return optionalClassReferenceArgument(name, index)?.asClassName()
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotationReference.requireClassReferenceArgument(name: String, index: Int): ClassReference {
     return optionalClassReferenceArgument(name, index) ?:
         throw AnvilCompilationExceptionAnnotationReference(this, "Couldn't find $name for $fqName")
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotationReference.optionalClassReferenceArgument(name: String, index: Int): ClassReference? {
     return argumentAt(name, index)?.value()
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotationReference.requireEnumArgument(name: String, index: Int): String {
     return optionalEnumArgument(name, index) ?:
         throw AnvilCompilationExceptionAnnotationReference(this, "Couldn't find $name for $fqName")
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun AnnotationReference.optionalEnumArgument(name: String, index: Int): String? {
     return argumentAt(name, index)?.value<FqName>()?.shortName()?.asString()
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun ParameterReference.toComposableParameter(): ComposableParameter {
     return ComposableParameter(
         name = name,
@@ -67,7 +58,6 @@ internal fun ParameterReference.toComposableParameter(): ComposableParameter {
     )
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal val AnnotatedReference.packageName: String
     get() = when (this) {
         is ClassReference -> packageName
@@ -77,14 +67,12 @@ internal val AnnotatedReference.packageName: String
         else -> throw UnsupportedOperationException("Can't retrieve packageName for $this")
     }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal val TopLevelFunctionReference.packageName: String
     get() = when (this) {
         is TopLevelFunctionReference.Psi -> function.containingKtFile.packageFqName
         is TopLevelFunctionReference.Descriptor -> function.containingPackage()!!
     }.packageString()
 
-@OptIn(ExperimentalAnvilApi::class)
 internal val ClassReference.packageName: String
     get() = packageFqName.packageString()
 
@@ -96,7 +84,6 @@ internal fun TypeName.asFunction1Parameter(): TypeName {
     return Function1::class.asClassName().parameterizedBy(this, UNIT)
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.resolveTypeParameter(
     parameter: String,
     superTypes: List<TypeReference>,
@@ -119,7 +106,6 @@ internal fun ClassReference.resolveTypeParameter(
     throw AnvilCompilationExceptionClassReference(this, "Error resolving type parameters of $fqName")
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun ClassReference.superTypeReference(superClass: FqName): List<TypeReference> {
     fun ClassReference.depthFirstSearch(superClass: FqName): List<TypeReference>? {
         directSuperTypeReferences().forEach {

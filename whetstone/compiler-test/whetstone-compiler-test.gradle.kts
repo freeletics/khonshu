@@ -4,6 +4,10 @@ plugins {
 
 freeletics {
     explicitApi()
+    optIn(
+        "com.squareup.anvil.annotations.ExperimentalAnvilApi",
+        "org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi",
+    )
 }
 
 dependencies {

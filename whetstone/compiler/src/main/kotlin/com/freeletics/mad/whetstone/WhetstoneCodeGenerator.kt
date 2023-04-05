@@ -8,7 +8,6 @@ import com.freeletics.mad.whetstone.parser.toComposeScreenDestinationData
 import com.freeletics.mad.whetstone.parser.toRendererFragmentData
 import com.freeletics.mad.whetstone.parser.toRendererFragmentDestinationData
 import com.google.auto.service.AutoService
-import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.api.AnvilContext
 import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.api.GeneratedFile
@@ -19,7 +18,6 @@ import java.io.File
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.psi.KtFile
 
-@OptIn(ExperimentalAnvilApi::class)
 @AutoService(CodeGenerator::class)
 public class WhetstoneCodeGenerator : CodeGenerator {
 

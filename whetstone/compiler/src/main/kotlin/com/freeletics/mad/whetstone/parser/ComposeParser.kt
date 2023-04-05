@@ -5,11 +5,9 @@ import com.freeletics.mad.whetstone.Navigation
 import com.freeletics.mad.whetstone.codegen.util.composeFqName
 import com.freeletics.mad.whetstone.codegen.util.stateMachineFqName
 import com.freeletics.mad.whetstone.codegen.util.whetstoneComposeScreenDestinationFqName
-import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.asClassName
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun TopLevelFunctionReference.toComposeScreenData(): ComposeScreenData? {
     val annotation = findAnnotation(composeFqName) ?: return null
 
@@ -32,7 +30,6 @@ internal fun TopLevelFunctionReference.toComposeScreenData(): ComposeScreenData?
     )
 }
 
-@OptIn(ExperimentalAnvilApi::class)
 internal fun TopLevelFunctionReference.toComposeScreenDestinationData(): ComposeScreenData? {
     val annotation = findAnnotation(whetstoneComposeScreenDestinationFqName) ?: return null
 
