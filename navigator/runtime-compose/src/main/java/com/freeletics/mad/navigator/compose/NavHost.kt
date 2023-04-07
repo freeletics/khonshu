@@ -82,6 +82,7 @@ public fun NavHost(
     val executor = remember(navController) { AndroidXNavigationExecutor(navController) }
     val context = LocalContext.current
 
+    // Pops the bottom sheet from backstack if we close it by swiping down or clicking on the scrim area
     LaunchedEffect(Unit) {
         var previous: ModalBottomSheetValue? = null
         snapshotFlow { bottomSheetNavigator.navigatorSheetState.currentValue }
