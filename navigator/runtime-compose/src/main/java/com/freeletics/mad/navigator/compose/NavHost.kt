@@ -1,25 +1,49 @@
 package com.freeletics.mad.navigator.compose
 
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.navigation.compose.NavHost as AndroidXNavHost
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetDefaults
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.SwipeableDefaults
+import androidx.compose.material.contentColorFor
+import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
-import androidx.navigation.*
+import androidx.navigation.NavArgument
+import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.DialogNavigator
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.createGraph
+import androidx.navigation.get
 import com.freeletics.mad.navigator.BaseRoute
+import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.DeepLinkHandler
 import com.freeletics.mad.navigator.NavRoot
-import com.freeletics.mad.navigator.NavRoute
-import com.freeletics.mad.navigator.internal.*
+import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
+import com.freeletics.mad.navigator.internal.CustomActivityNavigator
+import com.freeletics.mad.navigator.internal.InternalNavigatorApi
+import com.freeletics.mad.navigator.internal.NavigationExecutor
+import com.freeletics.mad.navigator.internal.destinationId
+import com.freeletics.mad.navigator.internal.getArguments
+import com.freeletics.mad.navigator.internal.handleDeepLink
+import com.freeletics.mad.navigator.internal.requireRoute
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
-import androidx.navigation.compose.NavHost as AndroidXNavHost
 
 /**
  * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
