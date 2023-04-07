@@ -29,7 +29,7 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(libs.kotlin.compile.testing)
     testImplementation(libs.coroutines.core)
-    testImplementation(libs.flowredux)
+//    testImplementation(libs.flowredux)
     testImplementation(testFixtures(libs.anvil.compiler.utils))
 }
 

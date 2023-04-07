@@ -11,3 +11,7 @@ plugins {
 }
 
 rootProject.name = "simple-sample"
+
+freeletics {
+    includeMad("../../")
+}
