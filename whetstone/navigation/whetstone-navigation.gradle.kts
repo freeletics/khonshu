@@ -11,7 +11,7 @@ freeletics {
 
 dependencies {
     api(projects.whetstone.runtime)
-    api(projects.navigator.navigatorRuntime)
+    api(projects.navigator.runtime)
     api(libs.inject)
     api(libs.dagger)
 

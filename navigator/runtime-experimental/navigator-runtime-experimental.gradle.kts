@@ -10,7 +10,7 @@ freeletics {
 }
 
 dependencies {
-    api(projects.navigator.navigatorRuntime)
+    api(projects.navigator.runtime)
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.ui)
 

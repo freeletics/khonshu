@@ -13,8 +13,3 @@ plugins {
 }
 
 rootProject.name = "mad"
-
-// TODO find a better workaround
-project(":navigator:runtime").name = "navigator-runtime"
-project(":navigator:runtime-compose").name = "navigator-runtime-compose"
-project(":navigator:runtime-fragment").name = "navigator-runtime-fragment"

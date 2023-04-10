@@ -9,7 +9,7 @@ freeletics {
 }
 
 dependencies {
-    implementation(projects.navigator.navigatorRuntime)
+    implementation(projects.navigator.runtime)
     implementation(libs.androidx.navigation.common)
     implementation(libs.androidx.navigation.runtime)
     implementation(libs.androidx.viewmodel)

@@ -13,12 +13,12 @@ freeletics {
 dependencies {
     api(projects.whetstone.navigation)
     api(projects.whetstone.runtimeCompose)
-    api(projects.navigator.navigatorRuntime)
+    api(projects.navigator.runtime)
 
     implementation(projects.stateMachine.runtime)
     implementation(projects.whetstone.scope)
     implementation(projects.whetstone.runtime)
-    implementation(projects.navigator.navigatorRuntimeCompose)
+    implementation(projects.navigator.runtimeCompose)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.viewmodel)

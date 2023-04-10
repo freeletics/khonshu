@@ -9,7 +9,7 @@ freeletics {
 }
 
 dependencies {
-    api(projects.navigator.navigatorRuntime)
+    api(projects.navigator.runtime)
     api(libs.coroutines.core)
     api(libs.turbine)
     implementation(libs.androidx.activity)
