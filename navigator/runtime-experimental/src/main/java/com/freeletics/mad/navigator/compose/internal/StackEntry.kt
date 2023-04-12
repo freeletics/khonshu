@@ -2,6 +2,7 @@ package com.freeletics.mad.navigator.compose.internal
 
 import androidx.compose.runtime.Immutable
 import com.freeletics.mad.navigator.BaseRoute
+import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.compose.ContentDestination
 import com.freeletics.mad.navigator.internal.destinationId
@@ -18,7 +19,12 @@ internal class StackEntry<T : BaseRoute>(
         get() = route.destinationId
 
     val removable
-        get() = route is NavRoute
+        // cast is needed for the compiler to recognize that the when is exhaustive
+        @Suppress("USELESS_CAST")
+        get() = when(route as BaseRoute) {
+            is NavRoute -> true
+            is NavRoot -> false
+        }
 
     @JvmInline
     value class Id(val value: String)
