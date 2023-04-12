@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.8.10"
+kotlin = "1.8.20"
 coroutines = "1.6.4"
 
 java-target= "11"
@@ -14,7 +14,7 @@ android-target = "33"
 android-compile = "33"
 androidx-activity = "1.7.0"
 androidx-annotations = "1.5.0"
-androidx-compose-compiler = "1.4.4"
+androidx-compose-compiler = "1.4.5"
 androidx-compose-runtime = "1.4.1"
 androidx-compose-ui = "1.4.1"
 androidx-compose-foundation = "1.4.1"
@@ -30,7 +30,7 @@ uri = "0.0.11"
 
 inject = "1"
 dagger = "2.45"
-anvil = "2.4.4"
+anvil = "2.4.5"
 renderer = "0.12.0"
 kotlinpoet = "1.12.0"
 auto-service = "1.0.1"
@@ -128,4 +128,4 @@ binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validat
 bestpractices = { id = "com.autonomousapps.plugin-best-practices-plugin", version.ref = "bestpractices" }
 gr8 = { id = "com.gradleup.gr8", version.ref = "gr8" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
-poko = { id = "dev.drewhamilton.poko", version = "0.12.0" }
+poko = { id = "dev.drewhamilton.poko", version = "0.13.0" }

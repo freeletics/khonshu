@@ -139,7 +139,6 @@ internal class ReferenceTest {
     ): Result {
         return compileAnvil(
             sources = sources,
-            useIR = true,
             allWarningsAsErrors = allWarningsAsErrors,
             previousCompilationResult = previousCompilationResult,
             enableDaggerAnnotationProcessor = enableDaggerAnnotationProcessor,
