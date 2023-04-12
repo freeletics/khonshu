@@ -49,7 +49,7 @@ internal class Stack private constructor(
             }
         }
 
-        throw IllegalStateException("Stack did not contain a ScreenDestination $stack")
+        error("Stack did not contain a ScreenDestination $stack")
     }
 
     fun push(route: NavRoute) {
