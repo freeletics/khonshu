@@ -50,8 +50,6 @@ private fun compileWithAnvil(fileName: String, source: String, output: String) {
     val compilation = AnvilCompilation().apply {
         configureAnvil()
         kotlinCompilation.configure()
-        useIR(true)
-
         kotlinCompilation.sources = listOf(
             kotlinCompilation.sourceFile(fileName, source),
         )
