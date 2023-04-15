@@ -163,8 +163,8 @@ internal class MultiStack(
             val allStacks = allStackBundles.mapTo(ArrayList(allStackBundles.size)) {
                 Stack.fromState(it, destinations, onStackEntryRemoved, idGenerator)
             }
-            val startStack = allStacks.find { it.id == root.destinationId }!!
-            val currentStack = allStacks.find { it.id.route.java == currentStackId }!!
+            val startStack = allStacks.first { it.id == root.destinationId }
+            val currentStack = allStacks.first { it.id.route.java == currentStackId }
             return MultiStack(
                 allStacks = allStacks,
                 startStack = startStack,
