@@ -12,7 +12,3 @@ public abstract class com/freeletics/mad/deeplinks/plugin/DeeplinksPlugin : org/
 	public fun apply (Lorg/gradle/api/Project;)V
 }
 
-public final class com/freeletics/mad/deeplinksplugin/VersionKt {
-	public static final field VERSION Ljava/lang/String;
-}
-

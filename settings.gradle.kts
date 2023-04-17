@@ -9,7 +9,7 @@ pluginManagement {
 }
 
 plugins {
-    id("com.freeletics.gradle.settings").version("0.2.3")
+    id("com.freeletics.gradle.settings").version("0.3.1")
 }
 
 rootProject.name = "mad"
