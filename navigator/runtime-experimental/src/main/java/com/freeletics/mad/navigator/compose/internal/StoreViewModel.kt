@@ -16,24 +16,17 @@ internal class StoreViewModel(
     private val savedStateHandles = mutableMapOf<StackEntry.Id, SavedStateHandle>()
 
     fun provideStore(id: StackEntry.Id): NavigationExecutor.Store {
-        var store = stores[id]
-        if (store == null) {
-            store = NavigationExecutorStore()
-            stores[id] = store
-        }
-        return store
+        return stores.getOrPut(id) { NavigationExecutorStore() }
     }
 
     @SuppressLint("RestrictedApi")
     fun provideSavedStateHandle(id: StackEntry.Id): SavedStateHandle {
-        var savedStateHandle = savedStateHandles[id]
-        if (savedStateHandle == null) {
+        return savedStateHandles.getOrPut(id) {
             val restoredBundle = globalSavedStateHandle.get<Bundle>(id.value)
-            savedStateHandle = SavedStateHandle.createHandle(restoredBundle, null)
-            globalSavedStateHandle.setSavedStateProvider(id.value, savedStateHandle.savedStateProvider())
-            savedStateHandles[id] = savedStateHandle
+            SavedStateHandle.createHandle(restoredBundle, null).also {
+                globalSavedStateHandle.setSavedStateProvider(id.value, it.savedStateProvider())
+            }
         }
-        return savedStateHandle
     }
 
     fun removeEntry(id: StackEntry.Id) {
