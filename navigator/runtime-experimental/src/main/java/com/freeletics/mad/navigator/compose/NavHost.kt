@@ -70,7 +70,10 @@ public fun NavHost(
 
 @Composable
 private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
-    val backPressedDispatcher = LocalOnBackPressedDispatcherOwner.current
+    val backPressedDispatcher = requireNotNull(LocalOnBackPressedDispatcherOwner.current) {
+        "No OnBackPressedDispatcher available"
+    }
+
     val callback = remember(executor) {
         object : OnBackPressedCallback(executor.canNavigateBack.value) {
             override fun handleOnBackPressed() {
@@ -79,13 +82,15 @@ private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
 
         }
     }
+
     LaunchedEffect(executor, callback) {
         snapshotFlow { executor.canNavigateBack.value }
             .distinctUntilChanged()
             .collect { callback.isEnabled = it }
     }
+
     DisposableEffect(backPressedDispatcher, callback) {
-        backPressedDispatcher!!.onBackPressedDispatcher.addCallback(callback)
+        backPressedDispatcher.onBackPressedDispatcher.addCallback(callback)
 
         onDispose {
             callback.remove()
