@@ -45,28 +45,28 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `startRoot matches given NavRoot`() {
+    fun startRoot() {
         val stack = underTest()
 
         assertThat(stack.startRoot).isEqualTo(SimpleRoot(1))
     }
 
     @Test
-    fun `removed is empty at the beginning`() {
+    fun `removed after construction`() {
         underTest()
 
         assertThat(removed).isEmpty()
     }
 
     @Test
-    fun `canNavigateBack is false at the beginning`() {
+    fun `canNavigateBack after construction`() {
         val stack = underTest()
 
         assertThat(stack.canNavigateBack.value).isFalse()
     }
 
     @Test
-    fun `visibleEntries is entry for given root at the beginning`() {
+    fun `visibleEntries after construction`() {
         val stack = underTest()
 
         assertThat(stack.visibleEntries.value)
@@ -78,7 +78,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is new entry after navigating to screen destination`() {
+    fun `push with a screen destination`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
 
@@ -93,7 +93,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is original and new entry after navigating to dialog destination`() {
+    fun `push with a dialog destination`() {
         val stack = underTest()
         stack.push(OtherRoute(3))
 
@@ -109,7 +109,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is original and new entry after navigating to bottom sheet destination`() {
+    fun `push with a bottom sheet destination`() {
         val stack = underTest()
         stack.push(ThirdRoute(4))
 
@@ -125,7 +125,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is all entries starting from last screen`() {
+    fun `visibleEntries with multiple screens, dialogs and bottom sheets`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
@@ -153,7 +153,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is all entries starting from last screen 2`() {
+    fun `visibleEntries with multiple screens, dialogs and bottom sheets 2`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
@@ -179,7 +179,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is new entry after navigating to root`() {
+    fun `push with root and without clearing the target stack`() {
         val stack = underTest()
         stack.push(OtherRoot(1), clearTargetStack = false)
 
@@ -194,7 +194,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `navigating to same root twice fails`() {
+    fun `push with same root twice`() {
         val stack = underTest()
         stack.push(OtherRoot(1), clearTargetStack = false)
         val exception = assertThrows(IllegalStateException::class.java) {
@@ -206,7 +206,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is new entry after navigating between roots`() {
+    fun `push with root multiple times without clearing the target stack`() {
         val stack = underTest()
         stack.push(OtherRoot(1), clearTargetStack = false)
 
@@ -239,7 +239,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is new entry after navigating to root with clear target true`() {
+    fun `push with root multiple times with clearing the target stack`() {
         val stack = underTest()
         stack.push(OtherRoot(1), clearTargetStack = true)
 
@@ -254,7 +254,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is new entry after navigating between roots with clear target true`() {
+    fun `push with root and clearing the target stack`() {
         val stack = underTest()
         stack.push(OtherRoot(1), clearTargetStack = true)
 
@@ -287,7 +287,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is new entry after navigating to root from other screen`() {
+    fun `push with root and without clearing the target stack from within back stack`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
         stack.push(OtherRoot(1), clearTargetStack = false)
@@ -303,7 +303,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is new entry after navigating to root from other screen, restores current state`() {
+    fun `push with root multiple times and without clearing the target stack from within back stack`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
         stack.push(OtherRoot(1), clearTargetStack = false)
@@ -320,7 +320,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is new entry after reset to root from start stack`() {
+    fun `resetToRoot with start root from start stack`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
         stack.resetToRoot(SimpleRoot(2))
@@ -336,7 +336,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is new entry after reset to root from other stack`() {
+    fun `resetToRoot with start root from other stack`() {
         val stack = underTest()
         stack.push(OtherRoot(1), clearTargetStack = false)
         stack.resetToRoot(SimpleRoot(2))
@@ -352,7 +352,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `reset to root fails throws exception when root not on back stack`() {
+    fun `resetToRoot fails throws exception when root not on back stack`() {
         val stack = underTest()
 
         val exception = assertThrows(IllegalStateException::class.java) {
@@ -363,7 +363,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `navigateUp throws exception when start stack is at root`() {
+    fun `popCurrentStack throws exception when start stack is at root`() {
         val stack = underTest()
         val exception = assertThrows(IllegalStateException::class.java) {
             stack.popCurrentStack()
@@ -375,17 +375,9 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is root entry after navigateUp`() {
+    fun `popCurrentStack from a screen`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
-
-        assertThat(stack.visibleEntries.value)
-            .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
-            )
-            .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
-
         stack.popCurrentStack()
 
         assertThat(stack.visibleEntries.value)
@@ -399,17 +391,9 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `navigating the same route again after navigateUp will result in different stack entries`() {
+    fun `popCurrentStack from a screen and then opening that screen again`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
-
-        assertThat(stack.visibleEntries.value)
-            .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
-            )
-            .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
-
         stack.popCurrentStack()
         stack.push(SimpleRoute(2))
 
@@ -424,7 +408,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `navigateUp from the root of a second stack`() {
+    fun `popCurrentStack from the root of a second stack`() {
         val stack = underTest()
         stack.push(OtherRoot(2), clearTargetStack = false)
 
@@ -436,18 +420,10 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `navigateUp in a second stack`() {
+    fun `popCurrentStack in a second stack`() {
         val stack = underTest()
         stack.push(OtherRoot(2), clearTargetStack = false)
         stack.push(SimpleRoute(3))
-
-        assertThat(stack.visibleEntries.value)
-            .containsExactly(
-                StackEntry(StackEntry.Id("102"), SimpleRoute(3), simpleRouteDestination),
-            )
-            .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
-
         stack.popCurrentStack()
 
         assertThat(stack.visibleEntries.value)
@@ -456,10 +432,30 @@ internal class MultiStackTest {
             )
             .inOrder()
         assertThat(stack.canNavigateBack.value).isTrue()
+
+        assertThat(removed).containsExactly(StackEntry.Id("102"))
     }
 
     @Test
-    fun `pop throws exception when the current stack only contains the root`() {
+    fun `popCurrentStack in a second stack and then opening that screen again`() {
+        val stack = underTest()
+        stack.push(OtherRoot(2), clearTargetStack = false)
+        stack.push(SimpleRoute(3))
+        stack.popCurrentStack()
+        stack.push(SimpleRoute(3))
+
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("103"), SimpleRoute(3), simpleRouteDestination),
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isTrue()
+
+        assertThat(removed).containsExactly(StackEntry.Id("102"))
+    }
+
+    @Test
+    fun `pop from the start stack at its root`() {
         val stack = underTest()
         val exception = assertThrows(IllegalStateException::class.java) {
             stack.pop()
@@ -471,17 +467,9 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is root entry after pop`() {
+    fun `pop from a screen`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
-
-        assertThat(stack.visibleEntries.value)
-            .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
-            )
-            .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
-
         stack.pop()
 
         assertThat(stack.visibleEntries.value)
@@ -495,17 +483,9 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `navigating the same route again after pop will result in different stack entries`() {
+    fun `pop from a screen and then opening that screen again`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
-
-        assertThat(stack.visibleEntries.value)
-            .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
-            )
-            .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
-
         stack.pop()
         stack.push(SimpleRoute(2))
 
@@ -520,17 +500,9 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `navigateBack from a second root`() {
+    fun `pop from the root of a second stack`() {
         val stack = underTest()
         stack.push(OtherRoot(2), clearTargetStack = false)
-
-        assertThat(stack.visibleEntries.value)
-            .containsExactly(
-                StackEntry(StackEntry.Id("101"), OtherRoot(2), otherRootDestination),
-            )
-            .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
-
         stack.pop()
 
         assertThat(stack.visibleEntries.value)
@@ -544,17 +516,9 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `navigateBack from a second root and navigating there again`() {
+    fun `pop from the root of a second stack and then opening that stack again`() {
         val stack = underTest()
         stack.push(OtherRoot(2), clearTargetStack = false)
-
-        assertThat(stack.visibleEntries.value)
-            .containsExactly(
-                StackEntry(StackEntry.Id("101"), OtherRoot(2), otherRootDestination),
-            )
-            .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
-
         stack.pop()
         stack.push(OtherRoot(2), clearTargetStack = false)
 
@@ -569,18 +533,10 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `navigateBack in a second root`() {
+    fun `pop in a second stack`() {
         val stack = underTest()
         stack.push(OtherRoot(2), clearTargetStack = false)
         stack.push(SimpleRoute(3))
-
-        assertThat(stack.visibleEntries.value)
-            .containsExactly(
-                StackEntry(StackEntry.Id("102"), SimpleRoute(3), simpleRouteDestination),
-            )
-            .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
-
         stack.pop()
 
         assertThat(stack.visibleEntries.value)
@@ -594,7 +550,25 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `popUpTo removes all destinations until first matching entry, inclusive false`() {
+    fun `pop in a second stack and then opening that screen again`() {
+        val stack = underTest()
+        stack.push(OtherRoot(2), clearTargetStack = false)
+        stack.push(SimpleRoute(3))
+        stack.pop()
+        stack.push(SimpleRoute(3))
+
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("103"), SimpleRoute(3), simpleRouteDestination),
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isTrue()
+
+        assertThat(removed).containsExactly(StackEntry.Id("102"))
+    }
+
+    @Test
+    fun `popUpTo with inclusive false`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
@@ -627,7 +601,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `popUpTo removes all destinations until first matching entry, inclusive true`() {
+    fun `popUpTo with inclusive true`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
@@ -661,7 +635,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `popUpTo with root and inclusive false removes all destinations`() {
+    fun `popUpTo with root and inclusive`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
@@ -698,7 +672,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `popUpTo with root and inclusive true throws exception`() {
+    fun `popUpTo with root and inclusive true`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
@@ -731,7 +705,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `popUpTo with route not present on the stack throws exception`() {
+    fun `popUpTo with route not present on the stack`() {
         val stack = underTest()
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
