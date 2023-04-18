@@ -17,12 +17,15 @@ dependencies {
     api(libs.androidx.compose.ui)
 
     implementation(libs.coroutines.core)
+    implementation(libs.androidx.annotations)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.lifecycle.common)
+    implementation(libs.androidx.viewmodel)
     implementation(libs.androidx.viewmodel.savedstate)
+    implementation(libs.androidx.savedstate)
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)
