@@ -32,7 +32,7 @@ internal class MultiStackNavigationExecutor(
         TODO("Not yet implemented")
     }
 
-    override fun navigate(root: NavRoot, restoreRootState: Boolean, saveCurrentRootState: Boolean) {
+    override fun navigate(root: NavRoot, restoreRootState: Boolean) {
         TODO("Not yet implemented")
     }
 
@@ -52,6 +52,10 @@ internal class MultiStackNavigationExecutor(
         destinationId: DestinationId<T>,
         isInclusive: Boolean,
     ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun resetToRoot(root: NavRoot) {
         TODO("Not yet implemented")
     }
 
