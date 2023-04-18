@@ -1,5 +1,6 @@
 package com.freeletics.mad.navigator.compose.internal
 
+import androidx.compose.runtime.State
 import androidx.lifecycle.SavedStateHandle
 import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
@@ -19,11 +20,19 @@ internal class MultiStackNavigationExecutor(
     private val activityDestinations: List<ActivityDestination>,
 ) : NavigationExecutor {
 
+    @Suppress("unused") //TODO
+    val visibleEntries: State<List<StackEntry<*>>>
+        get() = TODO("Not yet implemented")
+
+    @Suppress("unused") //TODO
+    val canNavigateBack: State<Boolean>
+        get() = TODO("Not yet implemented")
+
     override fun navigate(route: NavRoute) {
         TODO("Not yet implemented")
     }
 
-    override fun navigate(root: NavRoot, restoreRootState: Boolean, saveCurrentRootState: Boolean) {
+    override fun navigate(root: NavRoot, restoreRootState: Boolean) {
         TODO("Not yet implemented")
     }
 
@@ -46,6 +55,10 @@ internal class MultiStackNavigationExecutor(
         TODO("Not yet implemented")
     }
 
+    override fun resetToRoot(root: NavRoot) {
+        TODO("Not yet implemented")
+    }
+
     override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T {
         TODO("Not yet implemented")
     }
@@ -55,6 +68,11 @@ internal class MultiStackNavigationExecutor(
     }
 
     override fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): NavigationExecutor.Store {
+        TODO("Not yet implemented")
+    }
+
+    @Suppress("unused", "unused_parameter") //TODO
+    fun storeFor(entryId: StackEntry.Id): NavigationExecutor.Store {
         TODO("Not yet implemented")
     }
 }

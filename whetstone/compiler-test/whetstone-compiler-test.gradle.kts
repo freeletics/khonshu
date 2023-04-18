@@ -35,7 +35,6 @@ dependencies {
     testImplementation(libs.kotlin.compile.testing)
     testImplementation(libs.androidx.compose.compiler)
     testImplementation(libs.anvil.annotations)
-    testImplementation(libs.anvil.compiler.utils)
     testImplementation(testFixtures(libs.anvil.compiler.utils))
 }
 

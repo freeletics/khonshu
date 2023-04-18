@@ -58,13 +58,11 @@ internal class NavEventNavigatorTest {
             navigator.navigateToRoot(
                 root = SimpleRoot(1),
                 restoreRootState = true,
-                saveCurrentRootState = false
             )
 
             assertThat(awaitItem()).isEqualTo(NavigateToRootEvent(
                 root = SimpleRoot(1),
                 restoreRootState = true,
-                saveCurrentRootState = false
             ))
 
             cancel()
@@ -124,6 +122,24 @@ internal class NavEventNavigatorTest {
             cancel()
         }
     }
+
+    @Test
+    fun `resetToRoot event is received`(): Unit = runBlocking {
+        val navigator = TestNavigator()
+
+        navigator.navEvents.test {
+            navigator.resetToRoot(
+                root = SimpleRoot(1),
+            )
+
+            assertThat(awaitItem()).isEqualTo(NavEvent.ResetToRoot(
+                root = SimpleRoot(1),
+            ))
+
+            cancel()
+        }
+    }
+
 
     @Test
     fun `navigateForResult event is received`(): Unit = runBlocking {

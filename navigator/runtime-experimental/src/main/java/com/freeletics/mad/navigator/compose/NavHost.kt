@@ -1,12 +1,17 @@
 package com.freeletics.mad.navigator.compose
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetDefaults
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -14,9 +19,12 @@ import androidx.compose.ui.unit.Dp
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.DeepLinkHandler
 import com.freeletics.mad.navigator.NavRoot
+import com.freeletics.mad.navigator.compose.internal.MultiStackNavigationExecutor
+import com.freeletics.mad.navigator.compose.internal.StackEntry
 import com.freeletics.mad.navigator.compose.internal.rememberNavigationExecutor
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.NavigationExecutor
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 /**
  * Create a new `NavHost containing all given [destinations]. [startRoute] will be used as the
@@ -42,6 +50,8 @@ public fun NavHost(
 ) {
     val executor = rememberNavigationExecutor(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
 
+    SystemBackHandling(executor)
+
     if (destinationChangedCallback != null) {
         DisposableEffect(key1 = destinationChangedCallback) {
             // TODO start listening to backstack changes and send them to destinationChangedCallback
@@ -53,9 +63,55 @@ public fun NavHost(
     }
 
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
-        // TODO show currently visible screen
-        // TODO show dialog if needed
-        // TODO show bottom sheet if needed
+        val entries = executor.visibleEntries.value
+
+        Show(entries)
+    }
+}
+
+@Composable
+private fun Show(
+    entries: List<StackEntry<*>>,
+) {
+    // TODO show all entries and differentiate between destination types
+    val entry = entries.last()
+    Show(entry)
+}
+
+@Composable
+private fun <T : BaseRoute> Show(
+    entry: StackEntry<T>,
+) {
+    entry.destination.content(entry.route)
+}
+
+@Composable
+private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
+    val backPressedDispatcher = requireNotNull(LocalOnBackPressedDispatcherOwner.current) {
+        "No OnBackPressedDispatcher available"
+    }
+
+    val callback = remember(executor) {
+        object : OnBackPressedCallback(executor.canNavigateBack.value) {
+            override fun handleOnBackPressed() {
+                executor.navigateBack()
+            }
+
+        }
+    }
+
+    LaunchedEffect(executor, callback) {
+        snapshotFlow { executor.canNavigateBack.value }
+            .distinctUntilChanged()
+            .collect { callback.isEnabled = it }
+    }
+
+    DisposableEffect(backPressedDispatcher, callback) {
+        backPressedDispatcher.onBackPressedDispatcher.addCallback(callback)
+
+        onDispose {
+            callback.remove()
+        }
     }
 }
 
