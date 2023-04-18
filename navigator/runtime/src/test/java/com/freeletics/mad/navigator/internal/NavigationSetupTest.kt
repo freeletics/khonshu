@@ -87,13 +87,11 @@ internal class NavigationSetupTest {
         navigator.navigateToRoot(
             root = SimpleRoot(2),
             restoreRootState = false,
-            saveCurrentRootState = true
         )
         assertThat(executor.received.awaitItem())
             .isEqualTo(NavEvent.NavigateToRootEvent(
                 root = SimpleRoot(2),
                 restoreRootState = false,
-                saveCurrentRootState = true
             ))
     }
 
@@ -131,6 +129,15 @@ internal class NavigationSetupTest {
         navigator.navigateBackTo<SimpleRoute>(inclusive = true)
         assertThat(executor.received.awaitItem())
             .isEqualTo(NavEvent.BackToEvent(DestinationId(SimpleRoute::class), inclusive = true))
+    }
+
+    @Test
+    fun `ResetToRoot is forwarded to executor`() = runBlocking {
+        setup()
+
+        navigator.resetToRoot(SimpleRoot(2))
+        assertThat(executor.received.awaitItem())
+            .isEqualTo(NavEvent.ResetToRoot(SimpleRoot(2)))
     }
 
     @Test

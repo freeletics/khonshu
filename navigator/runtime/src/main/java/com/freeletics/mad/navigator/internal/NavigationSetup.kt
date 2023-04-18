@@ -35,7 +35,7 @@ private fun NavigationExecutor.navigate(
             navigate(event.route)
         }
         is NavEvent.NavigateToRootEvent -> {
-            navigate(event.root, event.restoreRootState, event.saveCurrentRootState)
+            navigate(event.root, event.restoreRootState)
         }
         is NavEvent.NavigateToActivityEvent -> {
             navigate(event.route)
@@ -48,6 +48,9 @@ private fun NavigationExecutor.navigate(
         }
         is NavEvent.BackToEvent -> {
             navigateBackTo(event.popUpTo, event.inclusive)
+        }
+        is NavEvent.ResetToRoot -> {
+            resetToRoot(event.root)
         }
         is NavEvent.ActivityResultEvent<*> -> {
             val request = event.request
