@@ -583,7 +583,7 @@ internal class MultiStackTest {
 
         assertThat(stack.visibleEntries.value).hasSize(6)
 
-        stack.popBackTo(simpleRouteDestination.id, isInclusive = false)
+        stack.popUpTo(simpleRouteDestination.id, isInclusive = false)
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
@@ -616,7 +616,7 @@ internal class MultiStackTest {
 
         assertThat(stack.visibleEntries.value).hasSize(6)
 
-        stack.popBackTo(simpleRouteDestination.id, isInclusive = true)
+        stack.popUpTo(simpleRouteDestination.id, isInclusive = true)
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
@@ -650,7 +650,7 @@ internal class MultiStackTest {
 
         assertThat(stack.visibleEntries.value).hasSize(6)
 
-        stack.popBackTo(simpleRootDestination.id, isInclusive = false)
+        stack.popUpTo(simpleRootDestination.id, isInclusive = false)
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
@@ -688,7 +688,7 @@ internal class MultiStackTest {
         assertThat(stack.visibleEntries.value).hasSize(6)
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            stack.popBackTo(simpleRootDestination.id, isInclusive = true)
+            stack.popUpTo(simpleRootDestination.id, isInclusive = true)
         }
         assertThat(exception).hasMessageThat().isEqualTo("Can't pop the root of the back stack")
 
@@ -718,7 +718,7 @@ internal class MultiStackTest {
         assertThat(stack.visibleEntries.value).hasSize(3)
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            stack.popBackTo(otherRouteDestination.id, isInclusive = false)
+            stack.popUpTo(otherRouteDestination.id, isInclusive = false)
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo("Route class com.freeletics.mad.navigator.compose.test.OtherRoute (Kotlin " +

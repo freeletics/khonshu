@@ -117,7 +117,7 @@ internal class MultiStack(
         updateVisibleDestinations()
     }
 
-    fun <T : BaseRoute> popBackTo(
+    fun <T : BaseRoute> popUpTo(
         destinationId: DestinationId<T>,
         isInclusive: Boolean
     ) {
