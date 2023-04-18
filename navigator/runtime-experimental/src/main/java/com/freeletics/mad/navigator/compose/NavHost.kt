@@ -20,6 +20,7 @@ import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.DeepLinkHandler
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.compose.internal.MultiStackNavigationExecutor
+import com.freeletics.mad.navigator.compose.internal.StackEntry
 import com.freeletics.mad.navigator.compose.internal.rememberNavigationExecutor
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.NavigationExecutor
@@ -62,10 +63,26 @@ public fun NavHost(
     }
 
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
-        // TODO show currently visible screen
-        // TODO show dialog if needed
-        // TODO show bottom sheet if needed
+        val entries = executor.visibleEntries.value
+
+        Show(entries)
     }
+}
+
+@Composable
+private fun Show(
+    entries: List<StackEntry<*>>,
+) {
+    // TODO show all entries and differentiate between destination types
+    val entry = entries.last()
+    Show(entry)
+}
+
+@Composable
+private fun <T : BaseRoute> Show(
+    entry: StackEntry<T>,
+) {
+    entry.destination.content(entry.route)
 }
 
 @Composable
