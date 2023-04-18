@@ -181,7 +181,7 @@ internal class MultiStackTest {
     @Test
     fun `visibleEntries is new entry after navigating to root`() {
         val stack = underTest()
-        stack.push(OtherRoot(1), restoreRootState = false, saveCurrentRootState = false)
+        stack.push(OtherRoot(1), clearTargetStack = false)
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
@@ -194,43 +194,103 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is new entry after navigating to root twice`() {
+    fun `navigating to same root twice fails`() {
         val stack = underTest()
-        stack.push(OtherRoot(1), restoreRootState = true, saveCurrentRootState = true)
-        stack.push(SimpleRoot(1), restoreRootState = false, saveCurrentRootState = false)
-        stack.push(OtherRoot(1), restoreRootState = true, saveCurrentRootState = true)
+        stack.push(OtherRoot(1), clearTargetStack = false)
+        val exception = assertThrows(IllegalStateException::class.java) {
+            stack.push(OtherRoot(1), clearTargetStack = false)
+        }
+
+        assertThat(exception).hasMessageThat()
+            .isEqualTo("OtherRoot(number=1) is already the current stack")
+    }
+
+    @Test
+    fun `visibleEntries is new entry after navigating between roots`() {
+        val stack = underTest()
+        stack.push(OtherRoot(1), clearTargetStack = false)
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("102"), OtherRoot(1), otherRootDestination)
+                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination)
             )
             .inOrder()
         assertThat(stack.canNavigateBack.value).isTrue()
 
-        assertThat(removed).containsExactly(StackEntry.Id("101"))
+        stack.push(SimpleRoot(1), clearTargetStack = false)
+
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination)
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isFalse()
+
+        stack.push(OtherRoot(1), clearTargetStack = false)
+
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination)
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isTrue()
+
+        assertThat(removed).isEmpty()
+    }
+
+    @Test
+    fun `visibleEntries is new entry after navigating to root with clear target true`() {
+        val stack = underTest()
+        stack.push(OtherRoot(1), clearTargetStack = true)
+
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination)
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isTrue()
+
+        assertThat(removed).isEmpty()
+    }
+
+    @Test
+    fun `visibleEntries is new entry after navigating between roots with clear target true`() {
+        val stack = underTest()
+        stack.push(OtherRoot(1), clearTargetStack = true)
+
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination)
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isTrue()
+
+        stack.push(SimpleRoot(1), clearTargetStack = true)
+
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("102"), SimpleRoot(1), simpleRootDestination)
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isFalse()
+
+        stack.push(OtherRoot(1), clearTargetStack = true)
+
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("103"), OtherRoot(1), otherRootDestination)
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isTrue()
+
+        assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
 
     @Test
     fun `visibleEntries is new entry after navigating to root from other screen`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
-        stack.push(OtherRoot(1), restoreRootState = false, saveCurrentRootState = false)
-
-        assertThat(stack.visibleEntries.value)
-            .containsExactly(
-                StackEntry(StackEntry.Id("102"), OtherRoot(1), otherRootDestination)
-            )
-            .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
-
-        assertThat(removed).containsExactly(StackEntry.Id("101"))
-    }
-
-    @Test
-    fun `visibleEntries is new entry after navigating to root from other screen, saves current state`() {
-        val stack = underTest()
-        stack.push(SimpleRoute(1))
-        stack.push(OtherRoot(1), restoreRootState = false, saveCurrentRootState = true)
+        stack.push(OtherRoot(1), clearTargetStack = false)
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
@@ -246,25 +306,8 @@ internal class MultiStackTest {
     fun `visibleEntries is new entry after navigating to root from other screen, restores current state`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
-        stack.push(OtherRoot(1), restoreRootState = false, saveCurrentRootState = true)
-        stack.push(SimpleRoot(1), restoreRootState = true, saveCurrentRootState = false)
-
-        assertThat(stack.visibleEntries.value)
-            .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(1), simpleRouteDestination)
-            )
-            .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
-
-        assertThat(removed).containsExactly(StackEntry.Id("102"))
-    }
-
-    @Test
-    fun `visibleEntries is new entry after navigating to root from other screen, restores2 current state`() {
-        val stack = underTest()
-        stack.push(SimpleRoute(1))
-        stack.push(OtherRoot(1), restoreRootState = false, saveCurrentRootState = true)
-        stack.push(SimpleRoot(1), restoreRootState = true, saveCurrentRootState = true)
+        stack.push(OtherRoot(1), clearTargetStack = false)
+        stack.push(SimpleRoot(1), clearTargetStack = false)
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
@@ -277,65 +320,47 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `visibleEntries is new entry after navigating to root from other screen, restores4 current state`() {
+    fun `visibleEntries is new entry after reset to root from start stack`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
-        stack.push(OtherRoot(1), restoreRootState = false, saveCurrentRootState = true)
-        stack.push(OtherRoute(1))
-        stack.push(SimpleRoot(1), restoreRootState = true, saveCurrentRootState = true)
+        stack.resetToRoot(SimpleRoot(2))
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(1), simpleRouteDestination)
+                StackEntry(StackEntry.Id("102"), SimpleRoot(2), simpleRootDestination)
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.canNavigateBack.value).isFalse()
 
-        assertThat(removed).isEmpty()
+        assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
 
     @Test
-    fun `visibleEntries is new entry after navigating to root from other screen, restores5 current state`() {
+    fun `visibleEntries is new entry after reset to root from other stack`() {
         val stack = underTest()
-        stack.push(SimpleRoute(1))
-        stack.push(OtherRoot(1), restoreRootState = false, saveCurrentRootState = true)
-        stack.push(OtherRoute(1))
-        stack.push(SimpleRoot(1), restoreRootState = true, saveCurrentRootState = true)
-        stack.push(OtherRoot(1), restoreRootState = true, saveCurrentRootState = true)
+        stack.push(OtherRoot(1), clearTargetStack = false)
+        stack.resetToRoot(SimpleRoot(2))
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("102"), OtherRoot(1), otherRootDestination),
-                StackEntry(StackEntry.Id("103"), OtherRoute(1), otherRouteDestination),
+                StackEntry(StackEntry.Id("102"), SimpleRoot(2), simpleRootDestination)
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.canNavigateBack.value).isFalse()
 
-        assertThat(removed).isEmpty()
+        assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
 
-//    @Test
-//    fun `visibleEntries does not change when navigating to activity`() {
-//        val stack = underTest()
-//
-//        stack.push(SimpleActivity(1))
-//        stack.push(SimpleActivity(2))
-//        stack.push(OtherActivity(3))
-//
-//        assertThat(stack.visibleEntries.value)
-//            .containsExactly(
-//                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination)
-//            )
-//            .inOrder()
-//        assertThat(stack.canNavigateBack.value).isFalse()
-//
-//        assertThat(started)
-//            .containsExactly(
-//                SimpleActivity(1) to simpleActivityDestination,
-//                SimpleActivity(2) to simpleActivityDestination,
-//                OtherActivity(3) to otherActivityDestination,
-//            )
-//    }
+    @Test
+    fun `reset to root fails throws exception when root not on back stack`() {
+        val stack = underTest()
+
+        val exception = assertThrows(IllegalStateException::class.java) {
+            stack.resetToRoot(OtherRoot(1))
+        }
+        assertThat(exception).hasMessageThat()
+            .isEqualTo("OtherRoot(number=1) is not on the current back stack")
+    }
 
     @Test
     fun `navigateUp throws exception when start stack is at root`() {
@@ -401,7 +426,7 @@ internal class MultiStackTest {
     @Test
     fun `navigateUp from the root of a second stack`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), restoreRootState = false, saveCurrentRootState = false)
+        stack.push(OtherRoot(2), clearTargetStack = false)
 
         val exception = assertThrows(IllegalStateException::class.java) {
             stack.popCurrentStack()
@@ -413,7 +438,7 @@ internal class MultiStackTest {
     @Test
     fun `navigateUp in a second stack`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), restoreRootState = false, saveCurrentRootState = false)
+        stack.push(OtherRoot(2), clearTargetStack = false)
         stack.push(SimpleRoute(3))
 
         assertThat(stack.visibleEntries.value)
@@ -497,7 +522,7 @@ internal class MultiStackTest {
     @Test
     fun `navigateBack from a second root`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), restoreRootState = false, saveCurrentRootState = false)
+        stack.push(OtherRoot(2), clearTargetStack = false)
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
@@ -521,7 +546,7 @@ internal class MultiStackTest {
     @Test
     fun `navigateBack from a second root and navigating there again`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), restoreRootState = false, saveCurrentRootState = false)
+        stack.push(OtherRoot(2), clearTargetStack = false)
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
@@ -531,7 +556,7 @@ internal class MultiStackTest {
         assertThat(stack.canNavigateBack.value).isTrue()
 
         stack.pop()
-        stack.push(OtherRoot(2), restoreRootState = false, saveCurrentRootState = false)
+        stack.push(OtherRoot(2), clearTargetStack = false)
 
         assertThat(stack.visibleEntries.value)
             .containsExactly(
@@ -546,7 +571,7 @@ internal class MultiStackTest {
     @Test
     fun `navigateBack in a second root`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), restoreRootState = false, saveCurrentRootState = false)
+        stack.push(OtherRoot(2), clearTargetStack = false)
         stack.push(SimpleRoute(3))
 
         assertThat(stack.visibleEntries.value)

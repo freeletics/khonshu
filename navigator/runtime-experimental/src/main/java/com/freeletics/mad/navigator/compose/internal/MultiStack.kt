@@ -15,7 +15,7 @@ import java.util.UUID
 
 internal class MultiStack(
     private val allStacks: MutableList<Stack>,
-    private val startStack: Stack,
+    private var startStack: Stack,
     private var currentStack: Stack,
     private val destinations: List<ContentDestination<*>>,
     private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
@@ -49,35 +49,20 @@ internal class MultiStack(
         return null
     }
 
-    private fun getOrCreateBackStack(root: NavRoot): Stack {
-        val existingStack = allStacks.find { it.id == root.destinationId }
-        if (existingStack != null) {
-            return existingStack
-        }
+    private fun getBackStack(root: NavRoot): Stack? {
+        return allStacks.find { it.id == root.destinationId }
+    }
 
+    private fun createBackStack(root: NavRoot): Stack {
         val newStack = Stack.createWith(root, destinations, onStackEntryRemoved, idGenerator)
         allStacks.add(newStack)
         return newStack
     }
 
-    private fun switchToBackStack(
-        stack: Stack,
-        restoreRootState: Boolean,
-        saveCurrentRootState: Boolean
-    ) {
-        if (!saveCurrentRootState) {
-            currentStack.clear()
-            // if the current stack is not the start stack, completely remove it so that the root
-            // gets cleared and that navigating to this stack will create a new instance of root
-            if (currentStack != startStack) {
-                allStacks.remove(currentStack)
-                onStackEntryRemoved(currentStack.rootEntry.id)
-            }
-        }
-        if (!restoreRootState) {
-            stack.clear()
-        }
-        currentStack = stack
+    private fun removeBackStack(stack: Stack) {
+        stack.clear()
+        allStacks.remove(stack)
+        onStackEntryRemoved(stack.rootEntry.id)
     }
 
     private fun updateVisibleDestinations() {
@@ -94,12 +79,6 @@ internal class MultiStack(
         updateVisibleDestinations()
     }
 
-    fun push(root: NavRoot, restoreRootState: Boolean, saveCurrentRootState: Boolean) {
-        val stack = getOrCreateBackStack(root)
-        switchToBackStack(stack, restoreRootState, saveCurrentRootState)
-        updateVisibleDestinations()
-    }
-
     fun popCurrentStack() {
         currentStack.pop()
         updateVisibleDestinations()
@@ -110,7 +89,11 @@ internal class MultiStack(
             check(currentStack.id != startStack.id) {
                 "Can't navigate back from the root of the start back stack"
             }
-            switchToBackStack(startStack, restoreRootState = false, saveCurrentRootState = false)
+            removeBackStack(currentStack)
+            currentStack = startStack
+            // remove anything that the start stack could have shown before
+            // can't use resetToRoot because that will also recreate the root
+            currentStack.clear()
         } else {
             currentStack.pop()
         }
@@ -122,6 +105,46 @@ internal class MultiStack(
         isInclusive: Boolean
     ) {
         currentStack.popUpTo(destinationId, isInclusive)
+        updateVisibleDestinations()
+    }
+
+    fun push(root: NavRoot, clearTargetStack: Boolean) {
+        val stack = getBackStack(root)
+        currentStack = if (stack != null) {
+            check(currentStack.id != stack.id) {
+                "$root is already the current stack"
+            }
+            if (clearTargetStack) {
+                removeBackStack(stack)
+                createBackStack(root)
+            } else {
+                stack
+            }
+        } else {
+            createBackStack(root)
+        }
+        if (stack?.id == startStack.id) {
+            startStack = currentStack
+        }
+        updateVisibleDestinations()
+    }
+
+    fun resetToRoot(root: NavRoot) {
+        if (root.destinationId == startStack.id) {
+            if (currentStack.id != startStack.id) {
+                removeBackStack(currentStack)
+            }
+            removeBackStack(startStack)
+            val newStack = createBackStack(root)
+            startStack = newStack
+            currentStack = newStack
+        } else if (root.destinationId == currentStack.id) {
+            removeBackStack(currentStack)
+            val newStack = createBackStack(root)
+            currentStack = newStack
+        } else {
+            error("$root is not on the current back stack")
+        }
         updateVisibleDestinations()
     }
 
