@@ -22,7 +22,6 @@ public sealed interface NavEvent {
     public class NavigateToRootEvent(
         internal val root: NavRoot,
         internal val restoreRootState: Boolean,
-        internal val saveCurrentRootState: Boolean,
     ) : NavEvent
 
     @InternalNavigatorApi
@@ -42,6 +41,12 @@ public sealed interface NavEvent {
     public class BackToEvent(
         internal val popUpTo: DestinationId<*>,
         internal val inclusive: Boolean,
+    ) : NavEvent
+
+    @InternalNavigatorApi
+    @Poko
+    public class ResetToRoot(
+        internal val root: NavRoot,
     ) : NavEvent
 
     @InternalNavigatorApi

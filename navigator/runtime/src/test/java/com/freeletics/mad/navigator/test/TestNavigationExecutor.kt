@@ -19,8 +19,8 @@ internal class TestNavigationExecutor : NavigationExecutor {
         received.add(NavEvent.NavigateToEvent(route))
     }
 
-    override fun navigate(root: NavRoot, restoreRootState: Boolean, saveCurrentRootState: Boolean) {
-        received.add(NavEvent.NavigateToRootEvent(root, restoreRootState, saveCurrentRootState))
+    override fun navigate(root: NavRoot, restoreRootState: Boolean) {
+        received.add(NavEvent.NavigateToRootEvent(root, restoreRootState))
     }
 
     override fun navigate(route: ActivityRoute) {
@@ -40,6 +40,10 @@ internal class TestNavigationExecutor : NavigationExecutor {
         isInclusive: Boolean,
     ) {
         received.add(NavEvent.BackToEvent(destinationId, isInclusive))
+    }
+
+    override fun resetToRoot(root: NavRoot) {
+        received.add(NavEvent.ResetToRoot(root))
     }
 
     override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T {
