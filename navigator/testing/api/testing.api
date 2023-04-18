@@ -5,11 +5,12 @@ public abstract interface class com/freeletics/mad/navigator/NavigatorTurbine {
 	public abstract fun awaitNavigateForResult (Lcom/freeletics/mad/navigator/ActivityResultRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateTo (Lcom/freeletics/mad/navigator/ActivityRoute;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateTo (Lcom/freeletics/mad/navigator/NavRoute;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitNavigateToRoot (Lcom/freeletics/mad/navigator/NavRoot;ZZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitNavigateToRoot (Lcom/freeletics/mad/navigator/NavRoot;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateUp (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigationResult (Lcom/freeletics/mad/navigator/NavigationResultRequest$Key;Landroid/os/Parcelable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitRequestPermissions (Lcom/freeletics/mad/navigator/PermissionsResultRequest;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitRequestPermissions (Lcom/freeletics/mad/navigator/PermissionsResultRequest;[Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitResetToRoot (Lcom/freeletics/mad/navigator/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun cancel (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun cancelAndIgnoreRemainingNavEvents (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun dispatchBackPress ()V
