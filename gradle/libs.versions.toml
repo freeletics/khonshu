@@ -6,7 +6,7 @@ java-target= "11"
 java-toolchain = "19"
 
 fgp = "0.3.1"
-gradle-api = "8.0.2"
+gradle-api = "8.1"
 
 android-gradle = "8.0.0"
 android-min = "21"
@@ -43,7 +43,7 @@ kotlin-compile-testing = "0.2.1"
 publish = "0.25.2"
 dokka = "1.8.10"
 bestpractices = "0.9"
-binarycompatibility = "0.13.0"
+binarycompatibility = "0.13.1"
 dependency-analysis = "1.19.0"
 gr8 = "0.9"
 
@@ -66,6 +66,7 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidx-annotations" }
 androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "androidx-compose-compiler" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "androidx-compose-runtime" }
+androidx-compose-runtime-saveable = { module = "androidx.compose.runtime:runtime-saveable", version.ref = "androidx-compose-runtime" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose-ui" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose-foundation" }
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidx-compose-material" }

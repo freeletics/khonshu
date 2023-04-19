@@ -16,6 +16,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.SaveableStateHolder
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
@@ -30,7 +32,10 @@ import com.freeletics.mad.navigator.compose.internal.StackEntry
 import com.freeletics.mad.navigator.compose.internal.rememberNavigationExecutor
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.NavigationExecutor
+import java.io.Closeable
+import java.lang.ref.WeakReference
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 /**
  * Create a new `NavHost` containing all given [destinations]. [startRoute] will be used as the
@@ -63,17 +68,9 @@ public fun NavHost(
     val executor = rememberNavigationExecutor(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
 
     SystemBackHandling(executor)
+    DestinationChangedCallback(executor, destinationChangedCallback)
 
-    if (destinationChangedCallback != null) {
-        DisposableEffect(key1 = destinationChangedCallback) {
-            // TODO start listening to backstack changes and send them to destinationChangedCallback
-
-            onDispose {
-                // TODO stop listening
-            }
-        }
-    }
-
+    val saveableStateHolder = rememberSaveableStateHolder()
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
         val entries = executor.visibleEntries.value
 
@@ -83,7 +80,7 @@ public fun NavHost(
         ModalBottomSheetLayout(
             sheetContent = {
                 if (bottomSheetEntry != null) {
-                    Show(bottomSheetEntry)
+                    Show(bottomSheetEntry, executor, saveableStateHolder)
                 }
             },
             sheetState = modalBottomSheetState,
@@ -93,7 +90,7 @@ public fun NavHost(
             sheetContentColor = bottomSheetContentColor,
             scrimColor = bottomSheetScrimColor,
         ) {
-            Show(entries, executor)
+            Show(entries, executor, saveableStateHolder)
         }
     }
 }
@@ -132,15 +129,16 @@ private fun rememberBottomSheetState(
 private fun Show(
     entries: List<StackEntry<*>>,
     executor: MultiStackNavigationExecutor,
+    saveableStateHolder: SaveableStateHolder,
 ) {
     entries.forEach { entry ->
         when(entry.destination) {
             is ScreenDestination -> {
-                Show(entry)
+                Show(entry, executor, saveableStateHolder)
             }
             is DialogDestination<*> -> {
                 Dialog(onDismissRequest = { executor.navigateBack() }) {
-                    Show(entry)
+                    Show(entry, executor, saveableStateHolder)
                 }
             }
             // handled already in the layout
@@ -152,8 +150,33 @@ private fun Show(
 @Composable
 private fun <T : BaseRoute> Show(
     entry: StackEntry<T>,
+    executor: MultiStackNavigationExecutor,
+    saveableStateHolder: SaveableStateHolder,
 ) {
-    entry.destination.content(entry.route)
+    // From AndroidX Navigation:
+    //   Stash a reference to the SaveableStateHolder in the Store so that
+    //   it is available when the destination is cleared. Which, because of animations,
+    //   only happens after this leaves composition. Which means we can't rely on
+    //   DisposableEffect to clean up this reference (as it'll be cleaned up too early)
+    remember(entry, executor, saveableStateHolder) {
+        executor.storeFor(entry.id).getOrCreate(SaveableCloseable::class) {
+            SaveableCloseable(entry.id.value, WeakReference(saveableStateHolder))
+        }
+    }
+
+    saveableStateHolder.SaveableStateProvider(entry.id.value) {
+        entry.destination.content(entry.route)
+    }
+}
+
+internal class SaveableCloseable(
+    private val id: String,
+    private val saveableStateHolderRef: WeakReference<SaveableStateHolder>
+) : Closeable {
+    override fun close() {
+        saveableStateHolderRef.get()?.removeState(id)
+        saveableStateHolderRef.clear()
+    }
 }
 
 @Composable
@@ -182,6 +205,21 @@ private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
 
         onDispose {
             callback.remove()
+        }
+    }
+}
+
+@Composable
+private fun DestinationChangedCallback(
+    executor: MultiStackNavigationExecutor,
+    destinationChangedCallback: ((BaseRoute) -> Unit)?
+) {
+    if (destinationChangedCallback != null) {
+        LaunchedEffect(executor, destinationChangedCallback) {
+            snapshotFlow { executor.visibleEntries.value }
+                .map { it.last().route }
+                .distinctUntilChanged()
+                .collect { destinationChangedCallback(it) }
         }
     }
 }
