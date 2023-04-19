@@ -11,6 +11,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.SaveableStateHolder
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
@@ -24,6 +26,8 @@ import com.freeletics.mad.navigator.compose.internal.StackEntry
 import com.freeletics.mad.navigator.compose.internal.rememberNavigationExecutor
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.NavigationExecutor
+import java.io.Closeable
+import java.lang.ref.WeakReference
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -54,27 +58,55 @@ public fun NavHost(
     SystemBackHandling(executor)
     DestinationChangedCallback(executor, destinationChangedCallback)
 
+    val saveableStateHolder = rememberSaveableStateHolder()
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
         val entries = executor.visibleEntries.value
 
-        Show(entries)
+        Show(entries, executor, saveableStateHolder)
     }
 }
 
 @Composable
 private fun Show(
     entries: List<StackEntry<*>>,
+    executor: MultiStackNavigationExecutor,
+    saveableStateHolder: SaveableStateHolder,
 ) {
     // TODO show all entries and differentiate between destination types
     val entry = entries.last()
-    Show(entry)
+    Show(entry, executor, saveableStateHolder)
 }
 
 @Composable
 private fun <T : BaseRoute> Show(
     entry: StackEntry<T>,
+    executor: MultiStackNavigationExecutor,
+    saveableStateHolder: SaveableStateHolder,
 ) {
-    entry.destination.content(entry.route)
+    // From AndroidX Navigation:
+    //   Stash a reference to the SaveableStateHolder in the Store so that
+    //   it is available when the destination is cleared. Which, because of animations,
+    //   only happens after this leaves composition. Which means we can't rely on
+    //   DisposableEffect to clean up this reference (as it'll be cleaned up too early)
+    remember(entry, executor, saveableStateHolder) {
+        executor.storeFor(entry.id).getOrCreate(SaveableCloseable::class) {
+            SaveableCloseable(entry.id.value, WeakReference(saveableStateHolder))
+        }
+    }
+
+    saveableStateHolder.SaveableStateProvider(entry.id.value) {
+        entry.destination.content(entry.route)
+    }
+}
+
+internal class SaveableCloseable(
+    private val id: String,
+    private val saveableStateHolderRef: WeakReference<SaveableStateHolder>
+) : Closeable {
+    override fun close() {
+        saveableStateHolderRef.get()?.removeState(id)
+        saveableStateHolderRef.clear()
+    }
 }
 
 @Composable
