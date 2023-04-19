@@ -25,6 +25,7 @@ import com.freeletics.mad.navigator.compose.internal.rememberNavigationExecutor
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
 import com.freeletics.mad.navigator.internal.NavigationExecutor
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 /**
  * Create a new `NavHost containing all given [destinations]. [startRoute] will be used as the
@@ -51,16 +52,7 @@ public fun NavHost(
     val executor = rememberNavigationExecutor(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
 
     SystemBackHandling(executor)
-
-    if (destinationChangedCallback != null) {
-        DisposableEffect(key1 = destinationChangedCallback) {
-            // TODO start listening to backstack changes and send them to destinationChangedCallback
-
-            onDispose {
-                // TODO stop listening
-            }
-        }
-    }
+    DestinationChangedCallback(executor, destinationChangedCallback)
 
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
         val entries = executor.visibleEntries.value
@@ -111,6 +103,21 @@ private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
 
         onDispose {
             callback.remove()
+        }
+    }
+}
+
+@Composable
+private fun DestinationChangedCallback(
+    executor: MultiStackNavigationExecutor,
+    destinationChangedCallback: ((BaseRoute) -> Unit)?
+) {
+    if (destinationChangedCallback != null) {
+        LaunchedEffect(executor, destinationChangedCallback) {
+            snapshotFlow { executor.visibleEntries.value }
+                .map { it.last().route }
+                .distinctUntilChanged()
+                .collect { destinationChangedCallback(it) }
         }
     }
 }
