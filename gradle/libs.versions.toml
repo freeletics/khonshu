@@ -44,7 +44,7 @@ publish = "0.25.2"
 dokka = "1.8.10"
 bestpractices = "0.9"
 binarycompatibility = "0.13.1"
-dependency-analysis = "1.19.0"
+dependency-analysis = "1.20.0"
 gr8 = "0.9"
 
 [libraries]
