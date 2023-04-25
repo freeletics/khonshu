@@ -20,3 +20,7 @@ internal class ThirdRoute(val number: Int) : NavRoute
 @Poko
 @Parcelize
 internal class SimpleRoot(val number: Int) : NavRoot
+
+@Poko
+@Parcelize
+internal class OtherRoot(val number: Int) : NavRoot
