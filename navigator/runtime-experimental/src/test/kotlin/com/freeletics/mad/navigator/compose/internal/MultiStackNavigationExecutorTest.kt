@@ -46,7 +46,7 @@ internal class MultiStackNavigationExecutorTest {
         return MultiStackNavigationExecutor(
             activityStarter = starter,
             viewModel = viewModel,
-            executor = MultiStack.createWith(SimpleRoot(1), destinations, removedCallback, idGenerator),
+            stack = MultiStack.createWith(SimpleRoot(1), destinations, removedCallback, idGenerator),
             deepLinkRoutes = deepLinkRoutes,
         )
     }
@@ -75,7 +75,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(exception).hasMessageThat().isEqualTo("SimpleRoot(number=3) is the start root" +
                 " which is not allowed to be part of a deep link because it will always be on the" +
-                " back executor")
+                " back stack")
     }
 
     @Test
@@ -354,7 +354,7 @@ internal class MultiStackNavigationExecutorTest {
         }
 
         assertThat(exception).hasMessageThat()
-            .isEqualTo("OtherRoot(number=1) is already the current executor")
+            .isEqualTo("OtherRoot(number=1) is already the current stack")
     }
 
     @Test
@@ -511,7 +511,7 @@ internal class MultiStackNavigationExecutorTest {
             executor.resetToRoot(OtherRoot(1))
         }
         assertThat(exception).hasMessageThat()
-            .isEqualTo("OtherRoot(number=1) is not on the current back executor")
+            .isEqualTo("OtherRoot(number=1) is not on the current back stack")
     }
 
     @Test
@@ -521,7 +521,7 @@ internal class MultiStackNavigationExecutorTest {
             executor.navigateUp()
         }
         assertThat(exception).hasMessageThat()
-            .isEqualTo("Can't pop the root of the back executor")
+            .isEqualTo("Can't pop the root of the back stack")
 
         assertThat(removed).isEmpty()
     }
@@ -584,7 +584,7 @@ internal class MultiStackNavigationExecutorTest {
             executor.navigateUp()
         }
         assertThat(exception).hasMessageThat()
-            .isEqualTo("Can't pop the root of the back executor")
+            .isEqualTo("Can't pop the root of the back stack")
     }
 
     @Test
@@ -617,7 +617,7 @@ internal class MultiStackNavigationExecutorTest {
             executor.navigateBack()
         }
         assertThat(exception).hasMessageThat()
-            .isEqualTo("Can't navigate back from the root of the start back executor")
+            .isEqualTo("Can't navigate back from the root of the start back stack")
 
         assertThat(removed).isEmpty()
     }
@@ -867,7 +867,7 @@ internal class MultiStackNavigationExecutorTest {
         val exception = assertThrows(IllegalStateException::class.java) {
             executor.navigateBackTo(simpleRootDestination.id, isInclusive = true)
         }
-        assertThat(exception).hasMessageThat().isEqualTo("Can't pop the root of the back executor")
+        assertThat(exception).hasMessageThat().isEqualTo("Can't pop the root of the back stack")
 
         assertThat(removed).containsExactly(
             StackEntry.Id("109"),
@@ -899,7 +899,7 @@ internal class MultiStackNavigationExecutorTest {
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo("Route class com.freeletics.mad.navigator.compose.test.OtherRoute (Kotlin " +
-                    "reflection is not available) not found on back executor")
+                    "reflection is not available) not found on back stack")
 
         assertThat(removed).containsExactly(
             StackEntry.Id("106"),
