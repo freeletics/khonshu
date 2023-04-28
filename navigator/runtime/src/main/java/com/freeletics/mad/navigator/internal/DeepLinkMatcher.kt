@@ -14,7 +14,7 @@ import com.freeletics.mad.navigator.DeepLinkHandler.Prefix
 @InternalNavigatorApi
 public fun Set<DeepLinkHandler>.matchesPattern(
     uri: Uri,
-    defaultPrefixes: Set<Prefix>
+    defaultPrefixes: Set<Prefix>,
 ): Boolean {
     return any { it.matchesPattern(uri, defaultPrefixes) }
 }
@@ -28,14 +28,14 @@ public fun Set<DeepLinkHandler>.matchesPattern(
 @InternalNavigatorApi
 public fun DeepLinkHandler.matchesPattern(
     uri: Uri,
-    defaultPrefixes: Set<Prefix>
+    defaultPrefixes: Set<Prefix>,
 ): Boolean {
     return findMatchingPattern(uri.toString(), defaultPrefixes) != null
 }
 
 internal fun DeepLinkHandler.findMatchingPattern(
     uriString: String,
-    defaultPrefixes: Set<Prefix>
+    defaultPrefixes: Set<Prefix>,
 ): Pattern? {
     // if DeepLinkHandler does not define any custom prefix use the default ones
     val prefixes = prefixes.ifEmpty { defaultPrefixes }

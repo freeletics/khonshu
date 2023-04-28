@@ -38,18 +38,25 @@ internal class NavDestinationModuleGenerator(
 
     private fun providesCode(): CodeBlock {
         val navigation = data.navigation!!
-        return when(data.navigation!!) {
-             is Navigation.Compose -> {
+        return when (data.navigation!!) {
+            is Navigation.Compose -> {
                 CodeBlock.builder()
-                    .beginControlFlow("return %M<%T>",
-                        navigation.destinationMethod, navigation.route)
+                    .beginControlFlow(
+                        "return %M<%T>",
+                        navigation.destinationMethod,
+                        navigation.route,
+                    )
                     .addStatement("%L(it)", composableName)
                     .endControlFlow()
                     .build()
             }
             is Navigation.Fragment -> {
-                CodeBlock.of("return %M<%T, %T>()",
-                    navigation.destinationMethod, navigation.route, ClassName(fragmentName))
+                CodeBlock.of(
+                    "return %M<%T, %T>()",
+                    navigation.destinationMethod,
+                    navigation.route,
+                    ClassName(fragmentName),
+                )
             }
         }
     }

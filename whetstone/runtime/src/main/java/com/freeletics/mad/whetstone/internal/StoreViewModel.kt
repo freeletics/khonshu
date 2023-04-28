@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
 
 @InternalWhetstoneApi
 public class StoreViewModel(
-    public val savedStateHandle: SavedStateHandle
+    public val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val storedObjects = mutableMapOf<KClass<*>, Any>()
 

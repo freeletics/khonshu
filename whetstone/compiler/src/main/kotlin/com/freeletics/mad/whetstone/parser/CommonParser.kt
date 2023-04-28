@@ -9,8 +9,8 @@ import com.freeletics.mad.whetstone.codegen.util.navEntryComponentFqName
 import com.freeletics.mad.whetstone.codegen.util.viewRendererFactoryFqName
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
-import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionClassReference
+import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.TypeReference
 import com.squareup.anvil.compiler.internal.reference.allSuperTypeClassReferences
@@ -25,7 +25,7 @@ internal val AnnotationReference.route: ClassName
     get() = requireClassArgument("route", 0)
 
 internal val AnnotationReference.parentScope: ClassName
-    get() = optionalClassArgument("parentScope", 1)?: appScope
+    get() = optionalClassArgument("parentScope", 1) ?: appScope
 
 internal val AnnotationReference.stateMachine: ClassName
     get() = stateMachineReference.asClassName()
@@ -44,7 +44,7 @@ internal fun AnnotationReference.fragmentBaseClass(index: Int): ClassName {
 }
 
 internal fun AnnotatedReference.navEntryData(
-    navigation: Navigation
+    navigation: Navigation,
 ): NavEntryData? {
     val annotation = findAnnotation(navEntryComponentFqName) ?: return null
 
@@ -68,7 +68,10 @@ internal fun TopLevelFunctionReference.getSendActionParameter(actionParameter: T
         ?.toComposableParameter()
 }
 
-internal fun TopLevelFunctionReference.getComposeParameters(stateParameter: TypeName, actionParameter: TypeName): List<ComposableParameter> {
+internal fun TopLevelFunctionReference.getComposeParameters(
+    stateParameter: TypeName,
+    actionParameter: TypeName,
+): List<ComposableParameter> {
     return parameters
         .filter {
             val type = it.type().asTypeName()
@@ -95,8 +98,9 @@ internal fun ClassReference.findRendererFactory(): ClassName {
             superType.fqName == viewRendererFactoryFqName
         }
     }
-    return factoryClass?.asClassName() ?:
-    throw AnvilCompilationExceptionClassReference(this,
-        "Couldn't find a ViewRender.Factory subclass nested inside $fqName"
-    )
+    return factoryClass?.asClassName()
+        ?: throw AnvilCompilationExceptionClassReference(
+            this,
+            "Couldn't find a ViewRender.Factory subclass nested inside $fqName",
+        )
 }

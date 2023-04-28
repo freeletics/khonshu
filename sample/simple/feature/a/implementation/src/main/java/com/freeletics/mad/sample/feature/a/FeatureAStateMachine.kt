@@ -1,10 +1,10 @@
 package com.freeletics.mad.sample.feature.a
 
 import com.freeletics.mad.statemachine.StateMachine
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
 sealed interface FeatureAState
 

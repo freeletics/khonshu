@@ -28,7 +28,7 @@ public interface NavRoot : BaseRoute
 /**
  * Represents the route to an `Activity`. Should be used through []
  */
-public sealed interface ActivityRoute : Parcelable{
+public sealed interface ActivityRoute : Parcelable {
     public fun fillInIntent(): Intent
 }
 

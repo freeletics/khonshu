@@ -601,7 +601,7 @@ internal class FileGeneratorTestComposeFragment {
             navigation = navigation,
             navEntryData = navEntryData.copy(
                 parentScope = AppScope::class.asClassName(),
-                navigation = navigation
+                navigation = navigation,
             ),
         )
 
@@ -835,7 +835,7 @@ internal class FileGeneratorTestComposeFragment {
     @Test
     fun `generates code for ComposeFragmentData, dialog fragment`() {
         val dialogFragment = data.copy(
-            fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment")
+            fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment"),
         )
 
         val source = """
@@ -988,13 +988,13 @@ internal class FileGeneratorTestComposeFragment {
                 ),
                 ComposableParameter(
                     name = "testSet",
-                    typeName = SET.parameterizedBy(STRING)
+                    typeName = SET.parameterizedBy(STRING),
                 ),
                 ComposableParameter(
                     name = "testMap",
-                    typeName = MAP.parameterizedBy(STRING, INT)
+                    typeName = MAP.parameterizedBy(STRING, INT),
                 ),
-            )
+            ),
         )
 
         val source = """
@@ -1158,7 +1158,7 @@ internal class FileGeneratorTestComposeFragment {
     @Test
     fun `generates code for ComposeFragmentData without sendAction`() {
         val withoutSendAction = data.copy(
-            sendActionParameter = null
+            sendActionParameter = null,
         )
 
         val source = """
@@ -1292,7 +1292,7 @@ internal class FileGeneratorTestComposeFragment {
     @Test
     fun `generates code for ComposeFragmentData without state`() {
         val withoutSendAction = data.copy(
-            stateParameter = null
+            stateParameter = null,
         )
 
         val source = """

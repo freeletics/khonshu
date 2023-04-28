@@ -1,6 +1,5 @@
 package com.freeletics.mad.navigator.fragment
 
-import android.content.Intent
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

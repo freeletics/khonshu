@@ -7,7 +7,6 @@ import com.freeletics.mad.navigator.NavRoute
 import dev.drewhamilton.poko.Poko
 import kotlinx.parcelize.Parcelize
 
-
 @Poko
 @Parcelize
 internal class SimpleRoute(val number: Int) : NavRoute

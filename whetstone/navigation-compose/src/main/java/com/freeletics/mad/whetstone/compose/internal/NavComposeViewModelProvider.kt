@@ -28,7 +28,7 @@ public inline fun <reified C : Any, P : Any, R : BaseRoute> rememberComponent(
     parentScope: KClass<*>,
     destinationScope: KClass<*>,
     route: R,
-    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, R) -> C
+    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, R) -> C,
 ): C {
     val context = LocalContext.current
     val executor = LocalNavigationExecutor.current

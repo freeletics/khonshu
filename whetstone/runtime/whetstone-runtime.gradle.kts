@@ -9,7 +9,6 @@ freeletics {
     enableCompose()
 }
 
-
 dependencies {
     api(libs.androidx.compose.runtime)
     api(libs.androidx.viewmodel)

@@ -522,7 +522,7 @@ internal class FileGeneratorTestRendererFragment {
             navigation = navigation,
             navEntryData = navEntryData.copy(
                 parentScope = AppScope::class.asClassName(),
-                navigation = navigation
+                navigation = navigation,
             ),
         )
 
@@ -734,7 +734,7 @@ internal class FileGeneratorTestRendererFragment {
     @Test
     fun `generates code for RendererFragmentData, dialog fragment`() {
         val dialogFragment = data.copy(
-            fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment")
+            fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment"),
         )
         val source = """
             package com.test

@@ -8,7 +8,6 @@ import com.freeletics.mad.whetstone.Navigation
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.MAP
-import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.STRING
@@ -530,7 +529,7 @@ internal class FileGeneratorTestCompose {
             navigation = navigation,
             navEntryData = navEntryData.copy(
                 parentScope = AppScope::class.asClassName(),
-                navigation = navigation
+                navigation = navigation,
             ),
         )
 
@@ -751,13 +750,13 @@ internal class FileGeneratorTestCompose {
                 ),
                 ComposableParameter(
                     name = "testSet",
-                    typeName = SET.parameterizedBy(STRING)
+                    typeName = SET.parameterizedBy(STRING),
                 ),
                 ComposableParameter(
                     name = "testMap",
-                    typeName = MAP.parameterizedBy(STRING, INT)
+                    typeName = MAP.parameterizedBy(STRING, INT),
                 ),
-            )
+            ),
         )
 
         val source = """
@@ -898,7 +897,7 @@ internal class FileGeneratorTestCompose {
     @Test
     fun `generates code for ComposeScreenData without sendAction`() {
         val withoutSendAction = data.copy(
-            sendActionParameter = null
+            sendActionParameter = null,
         )
 
         val source = """
@@ -1009,7 +1008,7 @@ internal class FileGeneratorTestCompose {
     @Test
     fun `generates code for ComposeScreenData without state`() {
         val withoutSendAction = data.copy(
-            stateParameter = null
+            stateParameter = null,
         )
 
         val source = """

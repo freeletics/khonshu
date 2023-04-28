@@ -4,7 +4,6 @@ import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import kotlin.reflect.KClass
 
-
 @InternalNavigatorApi
 public fun BaseRoute.destinationId(): Int = this::class.destinationId()
 

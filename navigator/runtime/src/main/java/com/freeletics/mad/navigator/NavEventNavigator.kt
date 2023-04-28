@@ -58,7 +58,7 @@ public open class NavEventNavigator {
      *   In practice, this means it should usually be called during initialisation of your subclass.
      */
     protected fun <I, O> registerForActivityResult(
-        contract: ActivityResultContract<I, O>
+        contract: ActivityResultContract<I, O>,
     ): ActivityResultRequest<I, O> {
         checkAllowedToAddRequests()
         val request = ActivityResultRequest(contract)
@@ -106,10 +106,10 @@ public open class NavEventNavigator {
     @PublishedApi
     internal fun <T : BaseRoute, O : Parcelable> registerForNavigationResult(
         id: DestinationId<T>,
-        resultType: String
+        resultType: String,
     ): NavigationResultRequest<O> {
         checkAllowedToAddRequests()
-        val requestKey = "${id.route.qualifiedName!!}-${resultType}"
+        val requestKey = "${id.route.qualifiedName!!}-$resultType"
         val key = NavigationResultRequest.Key<O>(id, requestKey)
         val request = NavigationResultRequest(key)
         _navigationResultRequests.add(request)
@@ -165,12 +165,12 @@ public open class NavEventNavigator {
      * Triggers a new [NavEvent] that pops the back stack to [T]. If [inclusive] is
      * `true` [T] itself will also be popped.
      */
-    public inline fun <reified T: NavRoute> navigateBackTo(inclusive: Boolean = false) {
+    public inline fun <reified T : NavRoute> navigateBackTo(inclusive: Boolean = false) {
         navigateBackTo(DestinationId(T::class), inclusive)
     }
 
     @PublishedApi
-    internal fun <T: BaseRoute> navigateBackTo(popUpTo: DestinationId<T>, inclusive: Boolean = false) {
+    internal fun <T : BaseRoute> navigateBackTo(popUpTo: DestinationId<T>, inclusive: Boolean = false) {
         val event = BackToEvent(popUpTo, inclusive)
         sendNavEvent(event)
     }

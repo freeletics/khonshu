@@ -34,8 +34,8 @@ internal fun AnnotationReference.optionalClassArgument(name: String, index: Int)
 }
 
 internal fun AnnotationReference.requireClassReferenceArgument(name: String, index: Int): ClassReference {
-    return optionalClassReferenceArgument(name, index) ?:
-        throw AnvilCompilationExceptionAnnotationReference(this, "Couldn't find $name for $fqName")
+    return optionalClassReferenceArgument(name, index)
+        ?: throw AnvilCompilationExceptionAnnotationReference(this, "Couldn't find $name for $fqName")
 }
 
 internal fun AnnotationReference.optionalClassReferenceArgument(name: String, index: Int): ClassReference? {
@@ -43,8 +43,8 @@ internal fun AnnotationReference.optionalClassReferenceArgument(name: String, in
 }
 
 internal fun AnnotationReference.requireEnumArgument(name: String, index: Int): String {
-    return optionalEnumArgument(name, index) ?:
-        throw AnvilCompilationExceptionAnnotationReference(this, "Couldn't find $name for $fqName")
+    return optionalEnumArgument(name, index)
+        ?: throw AnvilCompilationExceptionAnnotationReference(this, "Couldn't find $name for $fqName")
 }
 
 internal fun AnnotationReference.optionalEnumArgument(name: String, index: Int): String? {
@@ -54,7 +54,7 @@ internal fun AnnotationReference.optionalEnumArgument(name: String, index: Int):
 internal fun ParameterReference.toComposableParameter(): ComposableParameter {
     return ComposableParameter(
         name = name,
-        typeName = type().asTypeName()
+        typeName = type().asTypeName(),
     )
 }
 
@@ -124,7 +124,8 @@ internal fun ClassReference.superTypeReference(superClass: FqName): List<TypeRef
         return null
     }
 
-    return depthFirstSearch(superClass) ?: throw AnvilCompilationExceptionClassReference(this,
-        "$fqName does not extend $superClass"
+    return depthFirstSearch(superClass) ?: throw AnvilCompilationExceptionClassReference(
+        this,
+        "$fqName does not extend $superClass",
     )
 }

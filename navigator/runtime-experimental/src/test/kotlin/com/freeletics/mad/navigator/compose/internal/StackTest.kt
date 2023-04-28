@@ -56,7 +56,7 @@ internal class StackTest {
 
         assertThat(stack.computeVisibleEntries())
             .containsExactly(
-                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination)
+                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
     }
@@ -68,7 +68,7 @@ internal class StackTest {
 
         assertThat(stack.computeVisibleEntries())
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination)
+                StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
 
@@ -362,8 +362,10 @@ internal class StackTest {
             stack.popUpTo(otherRouteDestination.id, isInclusive = false)
         }
         assertThat(exception).hasMessageThat()
-            .isEqualTo("Route class com.freeletics.mad.navigator.compose.test.OtherRoute (Kotlin " +
-                    "reflection is not available) not found on back stack")
+            .isEqualTo(
+                "Route class com.freeletics.mad.navigator.compose.test.OtherRoute (Kotlin " +
+                    "reflection is not available) not found on back stack",
+            )
 
         assertThat(removed).containsExactly(
             StackEntry.Id("106"),
@@ -388,7 +390,6 @@ internal class StackTest {
         assertThat(stack.computeVisibleEntries()).hasSize(3)
 
         stack.clear()
-
 
         assertThat(stack.computeVisibleEntries())
             .containsExactly(

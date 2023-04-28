@@ -26,22 +26,22 @@ public class WhetstoneCodeGenerator : CodeGenerator {
     override fun generateCode(
         codeGenDir: File,
         module: ModuleDescriptor,
-        projectFiles: Collection<KtFile>
+        projectFiles: Collection<KtFile>,
     ): Collection<GeneratedFile> {
         val compose = projectFiles
             .topLevelFunctionReferences(module)
             .mapNotNull {
-                it.toComposeScreenDestinationData() ?:
-                    it.toComposeScreenData() ?:
-                    it.toComposeFragmentDestinationData() ?:
-                    it.toComposeFragmentData()
+                it.toComposeScreenDestinationData()
+                    ?: it.toComposeScreenData()
+                    ?: it.toComposeFragmentDestinationData()
+                    ?: it.toComposeFragmentData()
             }
 
         val renderer = projectFiles
             .classAndInnerClassReferences(module)
             .mapNotNull {
-                it.toRendererFragmentDestinationData() ?:
-                    it.toRendererFragmentData()
+                it.toRendererFragmentDestinationData()
+                    ?: it.toRendererFragmentData()
             }
 
         val data = compose.toList() + renderer
@@ -52,7 +52,7 @@ public class WhetstoneCodeGenerator : CodeGenerator {
                 codeGenDir = codeGenDir,
                 packageName = file.packageName,
                 fileName = file.name,
-                content = file.toString()
+                content = file.toString(),
             )
         }
     }

@@ -30,7 +30,10 @@ internal val getNavEntryComponent = MemberName("com.freeletics.mad.whetstone.int
 internal val fragmentComponent = MemberName("com.freeletics.mad.whetstone.fragment.internal", "component")
 internal val rememberComponent = MemberName("com.freeletics.mad.whetstone.compose.internal", "rememberComponent")
 internal val navEntryComponentGetter = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetter")
-internal val navEntryComponentGetterKey = ClassName("com.freeletics.mad.whetstone.internal", "NavEntryComponentGetterKey")
+internal val navEntryComponentGetterKey = ClassName(
+    "com.freeletics.mad.whetstone.internal",
+    "NavEntryComponentGetterKey",
+)
 internal val destinationComponent = ClassName("com.freeletics.mad.whetstone.internal", "DestinationComponent")
 
 // Navigator
@@ -40,7 +43,10 @@ internal val composeNavigationHandler = MemberName("com.freeletics.mad.navigator
 internal val composeDestination = ClassName("com.freeletics.mad.navigator.compose", "NavDestination")
 internal val composeScreenDestination = MemberName("com.freeletics.mad.navigator.compose", "ScreenDestination")
 internal val composeDialogDestination = MemberName("com.freeletics.mad.navigator.compose", "DialogDestination")
-internal val composeBottomSheetDestination = MemberName("com.freeletics.mad.navigator.compose", "BottomSheetDestination")
+internal val composeBottomSheetDestination = MemberName(
+    "com.freeletics.mad.navigator.compose",
+    "BottomSheetDestination",
+)
 internal val fragmentNavigationHandler = MemberName("com.freeletics.mad.navigator.fragment", "handleNavigation")
 internal val fragmentDestination = ClassName("com.freeletics.mad.navigator.fragment", "NavDestination")
 internal val fragmentScreenDestination = MemberName("com.freeletics.mad.navigator.fragment", "ScreenDestination")

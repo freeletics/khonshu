@@ -14,7 +14,7 @@ import com.freeletics.mad.navigator.DeepLinkHandler.Prefix
 @InternalNavigatorApi
 public fun Set<DeepLinkHandler>.createDeepLinkIfMatching(
     uri: Uri,
-    defaultPrefixes: Set<Prefix>
+    defaultPrefixes: Set<Prefix>,
 ): DeepLink? {
     forEach {
         val result = it.createDeepLinkIfMatching(uri, defaultPrefixes)
@@ -35,7 +35,7 @@ public fun Set<DeepLinkHandler>.createDeepLinkIfMatching(
 @InternalNavigatorApi
 public fun DeepLinkHandler.createDeepLinkIfMatching(
     uri: Uri,
-    defaultPrefixes: Set<Prefix>
+    defaultPrefixes: Set<Prefix>,
 ): DeepLink? {
     val matchingPattern = findMatchingPattern(uri.toString(), defaultPrefixes) ?: return null
     return deepLink(matchingPattern.extractPathParameters(uri), uri.queryParameters)

@@ -38,9 +38,8 @@ public interface DeepLinkHandler {
      */
     public fun deepLink(
         pathParameters: Map<String, String>,
-        queryParameters: Map<String, String>
+        queryParameters: Map<String, String>,
     ): DeepLink
-
 
     /**
      * A url prefix consisting of scheme and host. This is not allowed to have a trailing / or other

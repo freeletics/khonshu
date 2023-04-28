@@ -1,6 +1,5 @@
 package com.freeletics.mad.navigator.compose
 
-import androidx.navigation.compose.NavHost as AndroidXNavHost
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetDefaults
 import androidx.compose.material.contentColorFor
@@ -20,13 +19,14 @@ import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.DialogNavigator
+import androidx.navigation.compose.NavHost as AndroidXNavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.get
 import com.freeletics.mad.navigator.BaseRoute
-import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.DeepLinkHandler
 import com.freeletics.mad.navigator.NavRoot
+import com.freeletics.mad.navigator.NavRoute
 import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
 import com.freeletics.mad.navigator.internal.CustomActivityNavigator
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi

@@ -22,7 +22,7 @@ public inline fun <reified C : Any, P : Any, R : BaseRoute> navEntryComponent(
     context: Context,
     parentScope: KClass<*>,
     destinationScope: KClass<*>,
-    crossinline factory: (P, SavedStateHandle, R) -> C
+    crossinline factory: (P, SavedStateHandle, R) -> C,
 ): C {
     val destinationId = DestinationId(destination)
     return executor.storeFor(destinationId).getOrCreate(C::class) {

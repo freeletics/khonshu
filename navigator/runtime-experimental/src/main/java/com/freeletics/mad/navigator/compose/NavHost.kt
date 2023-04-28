@@ -99,7 +99,7 @@ public fun NavHost(
 @ExperimentalMaterialApi
 private fun rememberBottomSheetState(
     bottomSheetEntry: StackEntry<*>?,
-    executor: MultiStackNavigationExecutor
+    executor: MultiStackNavigationExecutor,
 ): ModalBottomSheetState {
     val modalBottomSheetState = rememberModalBottomSheetState(
         ModalBottomSheetValue.Hidden,
@@ -132,7 +132,7 @@ private fun Show(
     saveableStateHolder: SaveableStateHolder,
 ) {
     entries.forEach { entry ->
-        when(entry.destination) {
+        when (entry.destination) {
             is ScreenDestination -> {
                 Show(entry, executor, saveableStateHolder)
             }
@@ -171,7 +171,7 @@ private fun <T : BaseRoute> Show(
 
 internal class SaveableCloseable(
     private val id: String,
-    private val saveableStateHolderRef: WeakReference<SaveableStateHolder>
+    private val saveableStateHolderRef: WeakReference<SaveableStateHolder>,
 ) : Closeable {
     override fun close() {
         saveableStateHolderRef.get()?.removeState(id)
@@ -190,7 +190,6 @@ private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
             override fun handleOnBackPressed() {
                 executor.navigateBack()
             }
-
         }
     }
 
@@ -212,7 +211,7 @@ private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
 @Composable
 private fun DestinationChangedCallback(
     executor: MultiStackNavigationExecutor,
-    destinationChangedCallback: ((BaseRoute) -> Unit)?
+    destinationChangedCallback: ((BaseRoute) -> Unit)?,
 ) {
     if (destinationChangedCallback != null) {
         LaunchedEffect(executor, destinationChangedCallback) {

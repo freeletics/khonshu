@@ -16,10 +16,10 @@ import com.freeletics.mad.whetstone.codegen.nav.NavDestinationModuleGenerator
 import com.freeletics.mad.whetstone.codegen.nav.NavEntryComponentGetterGenerator
 import com.squareup.kotlinpoet.FileSpec
 
-public class FileGenerator{
+public class FileGenerator {
 
     public fun generate(data: BaseData): FileSpec {
-        return when(data) {
+        return when (data) {
             is ComposeFragmentData -> generate(data)
             is ComposeScreenData -> generate(data)
             is RendererFragmentData -> generate(data)

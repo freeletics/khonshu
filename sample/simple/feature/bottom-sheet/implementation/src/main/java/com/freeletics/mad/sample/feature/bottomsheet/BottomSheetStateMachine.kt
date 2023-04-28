@@ -1,9 +1,9 @@
 package com.freeletics.mad.sample.feature.bottomsheet
 
 import com.freeletics.mad.statemachine.StateMachine
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import javax.inject.Inject
 
 sealed interface BottomSheetState
 

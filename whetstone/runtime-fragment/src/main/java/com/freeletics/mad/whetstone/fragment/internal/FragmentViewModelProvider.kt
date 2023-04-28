@@ -7,7 +7,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.NewInstanceFactory
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
 import com.freeletics.mad.whetstone.internal.StoreViewModel
 import com.freeletics.mad.whetstone.internal.findComponentByScope
@@ -24,7 +23,7 @@ import kotlin.reflect.KClass
 public inline fun <reified C : Any, P : Any> Fragment.component(
     parentScope: KClass<*>,
     arguments: Bundle,
-    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, Bundle) -> C
+    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, Bundle) -> C,
 ): C {
     val store = ViewModelProvider(this, SavedStateViewModelFactory())[StoreViewModel::class.java]
     return store.getOrCreate(C::class) {

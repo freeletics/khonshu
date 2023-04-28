@@ -7,7 +7,6 @@ import com.freeletics.mad.whetstone.codegen.util.destinationComponent
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.squareup.kotlinpoet.TypeSpec
 
-
 internal class DestinationComponentGenerator(
     override val data: BaseData,
 ) : Generator<BaseData>() {

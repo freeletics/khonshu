@@ -81,7 +81,7 @@ private fun KotlinCompilation.configure() {
     componentRegistrars = componentRegistrars + listOf(ComposeComponentRegistrar())
     kotlincArguments = kotlincArguments + listOf(
         "-P",
-        "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=1.7.22"
+        "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=1.7.22",
     )
     jvmTarget = "11"
     inheritClassPath = true

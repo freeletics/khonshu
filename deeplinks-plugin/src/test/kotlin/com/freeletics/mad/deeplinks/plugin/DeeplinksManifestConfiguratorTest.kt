@@ -18,14 +18,14 @@ class DeeplinksManifestConfiguratorTest {
                 pre content
                 deeplinks go here
                 post content
-            """.trimIndent()
+            """.trimIndent(),
         )
     }
 
     private fun test(
         configurationContent: String = SAMPLE_CONFIG,
         inputManifestContent: String = INPUT_MANIFEST_CONTENT.trimIndent(),
-        testBlock: TestScope.() -> Unit
+        testBlock: TestScope.() -> Unit,
     ) {
         val testScope = TestScope(tmpFolder, configurationContent, inputManifestContent)
         testBlock.invoke(testScope)
@@ -60,7 +60,9 @@ private class TestScope(
 
         outputManifestFile = temporaryFolder.newFile("outputManifest")
         configurator = DeeplinksManifestConfigurator(
-            configFile, inputManifestFile, outputManifestFile
+            configFile,
+            inputManifestFile,
+            outputManifestFile,
         )
     }
 

@@ -13,7 +13,6 @@ internal class NavgationExecutorStoreTest {
         var counter = 0
         val value = underTest.getOrCreate(Int::class) { ++counter }
         assertThat(value).isEqualTo(1)
-
     }
 
     @Test
@@ -59,7 +58,7 @@ internal class NavgationExecutorStoreTest {
 
     @Test
     fun `store always returns the same object for key`() {
-        val closeable = Closeable {  }
+        val closeable = Closeable { }
         val value1 = underTest.getOrCreate(Closeable::class) { closeable }
         assertThat(value1).isEqualTo(closeable)
         val value2 = underTest.getOrCreate(Closeable::class) { closeable }

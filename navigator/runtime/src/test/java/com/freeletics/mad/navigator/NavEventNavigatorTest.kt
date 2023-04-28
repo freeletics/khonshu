@@ -60,10 +60,12 @@ internal class NavEventNavigatorTest {
                 restoreRootState = true,
             )
 
-            assertThat(awaitItem()).isEqualTo(NavigateToRootEvent(
-                root = SimpleRoot(1),
-                restoreRootState = true,
-            ))
+            assertThat(awaitItem()).isEqualTo(
+                NavigateToRootEvent(
+                    root = SimpleRoot(1),
+                    restoreRootState = true,
+                ),
+            )
 
             cancel()
         }
@@ -116,7 +118,7 @@ internal class NavEventNavigatorTest {
             navigator.navigateBackTo<SimpleRoute>(true)
 
             assertThat(awaitItem()).isEqualTo(
-                NavEvent.BackToEvent(DestinationId(SimpleRoute::class), true)
+                NavEvent.BackToEvent(DestinationId(SimpleRoute::class), true),
             )
 
             cancel()
@@ -132,14 +134,15 @@ internal class NavEventNavigatorTest {
                 root = SimpleRoot(1),
             )
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.ResetToRoot(
-                root = SimpleRoot(1),
-            ))
+            assertThat(awaitItem()).isEqualTo(
+                NavEvent.ResetToRoot(
+                    root = SimpleRoot(1),
+                ),
+            )
 
             cancel()
         }
     }
-
 
     @Test
     fun `navigateForResult event is received`(): Unit = runBlocking {
@@ -179,7 +182,8 @@ internal class NavEventNavigatorTest {
             navigator.deliverNavigationResult(launcher.key, TestParcelable(1))
 
             assertThat(awaitItem()).isEqualTo(
-                NavEvent.DestinationResultEvent(launcher.key, TestParcelable(1)))
+                NavEvent.DestinationResultEvent(launcher.key, TestParcelable(1)),
+            )
 
             cancel()
         }
@@ -217,9 +221,11 @@ internal class NavEventNavigatorTest {
         val exception = assertThrows(IllegalStateException::class.java) {
             navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
         }
-        assertThat(exception).hasMessageThat().isEqualTo("Failed to register for " +
-            "result! You must call this before this navigator gets attached to a " +
-            "fragment, e.g. during initialisation of your navigator subclass.")
+        assertThat(exception).hasMessageThat().isEqualTo(
+            "Failed to register for " +
+                "result! You must call this before this navigator gets attached to a " +
+                "fragment, e.g. during initialisation of your navigator subclass.",
+        )
     }
 
     @Test
@@ -231,9 +237,11 @@ internal class NavEventNavigatorTest {
         val exception = assertThrows(IllegalStateException::class.java) {
             navigator.testRegisterForPermissionResult()
         }
-        assertThat(exception).hasMessageThat().isEqualTo("Failed to register for " +
-            "result! You must call this before this navigator gets attached to a " +
-            "fragment, e.g. during initialisation of your navigator subclass.")
+        assertThat(exception).hasMessageThat().isEqualTo(
+            "Failed to register for " +
+                "result! You must call this before this navigator gets attached to a " +
+                "fragment, e.g. during initialisation of your navigator subclass.",
+        )
     }
 
     @Test
@@ -245,8 +253,10 @@ internal class NavEventNavigatorTest {
         val exception = assertThrows(IllegalStateException::class.java) {
             navigator.testRegisterForNavigationResult<SimpleRoute, TestParcelable>()
         }
-        assertThat(exception).hasMessageThat().isEqualTo("Failed to register for " +
-            "result! You must call this before this navigator gets attached to a " +
-            "fragment, e.g. during initialisation of your navigator subclass.")
+        assertThat(exception).hasMessageThat().isEqualTo(
+            "Failed to register for " +
+                "result! You must call this before this navigator gets attached to a " +
+                "fragment, e.g. during initialisation of your navigator subclass.",
+        )
     }
 }

@@ -133,7 +133,7 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
     @Parcelize
     public class Key<R : Parcelable> @InternalNavigatorApi constructor(
         internal val destinationId: DestinationId<*>,
-        internal val requestKey: String
+        internal val requestKey: String,
     ) : Parcelable {
         private companion object : Parceler<Key<*>> {
             override fun Key<*>.write(parcel: Parcel, flags: Int) {

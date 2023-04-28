@@ -31,7 +31,7 @@ public class DeepLink internal constructor(
      */
     public constructor(
         routes: List<NavRoute>,
-        action: String? = null
+        action: String? = null,
     ) : this(action, routes)
 
     /**
@@ -59,7 +59,7 @@ public class DeepLink internal constructor(
      */
     public constructor(
         activityRoute: ActivityRoute,
-        action: String? = null
+        action: String? = null,
     ) : this(action, listOf(activityRoute))
 
     /**
@@ -73,7 +73,7 @@ public class DeepLink internal constructor(
     public constructor(
         routes: List<NavRoute>,
         activityRoute: ActivityRoute,
-        action: String? = null
+        action: String? = null,
     ) : this(action, routes + activityRoute)
 
     /**

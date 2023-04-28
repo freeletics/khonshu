@@ -56,13 +56,15 @@ internal class ComposeGenerator(
                 }
                 if (data.sendActionParameter != null) {
                     // dispatch: external method
-                    addStatement("  %L = { scope.%M { stateMachine.dispatch(it) } },", data.sendActionParameter!!.name, launch)
+                    addStatement(
+                        "  %L = { scope.%M { stateMachine.dispatch(it) } },",
+                        data.sendActionParameter!!.name,
+                        launch,
+                    )
                 }
             }
             .addStatement(")")
             .endControlFlow()
             .build()
     }
-
-
 }

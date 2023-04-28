@@ -14,14 +14,14 @@ internal class StackEntry<T : BaseRoute>(
     val id: Id,
     val route: T,
     val destination: ContentDestination<T>,
-){
+) {
     val destinationId
         get() = route.destinationId
 
     val removable
         // cast is needed for the compiler to recognize that the when is exhaustive
         @Suppress("USELESS_CAST")
-        get() = when(route as BaseRoute) {
+        get() = when (route as BaseRoute) {
             is NavRoute -> true
             is NavRoot -> false
         }

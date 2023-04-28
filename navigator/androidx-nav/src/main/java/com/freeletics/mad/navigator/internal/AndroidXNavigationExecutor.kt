@@ -2,7 +2,6 @@ package com.freeletics.mad.navigator.internal
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -10,11 +9,10 @@ import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
-import kotlin.reflect.KClass
 
 @InternalNavigatorApi
 public class AndroidXNavigationExecutor(
-    private val controller: NavController
+    private val controller: NavController,
 ) : NavigationExecutor {
 
     override fun navigate(route: NavRoute) {
@@ -31,7 +29,7 @@ public class AndroidXNavigationExecutor(
             .setPopUpTo(
                 controller.graph.startDestinationId,
                 inclusive = false,
-                saveState = true
+                saveState = true,
             )
             // restoring the state of the target root
             .setRestoreState(restoreRootState)

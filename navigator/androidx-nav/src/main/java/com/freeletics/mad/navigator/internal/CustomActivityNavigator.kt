@@ -32,7 +32,7 @@ import androidx.navigation.NavigatorProvider
 @Navigator.Name("activity")
 @InternalNavigatorApi
 public open class CustomActivityNavigator(
-    private val context: Context
+    private val context: Context,
 ) : Navigator<CustomActivityNavigator.Destination>() {
     private val hostActivity: Activity? = generateSequence(context) {
         if (it is ContextWrapper) {
@@ -77,7 +77,7 @@ public open class CustomActivityNavigator(
         destination: Destination,
         args: Bundle?,
         navOptions: NavOptions?,
-        navigatorExtras: Extras?
+        navigatorExtras: Extras?,
     ): NavDestination? {
         checkNotNull(destination.intent) {
             ("Destination ${destination.id} does not have an Intent set.")
@@ -130,7 +130,7 @@ public open class CustomActivityNavigator(
     @NavDestination.ClassType(Activity::class)
     @InternalNavigatorApi
     public open class Destination(
-        activityNavigator: Navigator<out Destination>
+        activityNavigator: Navigator<out Destination>,
     ) : NavDestination(activityNavigator) {
         /**
          * The Intent associated with this destination.
@@ -146,7 +146,7 @@ public open class CustomActivityNavigator(
          * will be associated with.
          */
         public constructor(
-            navigatorProvider: NavigatorProvider
+            navigatorProvider: NavigatorProvider,
         ) : this(navigatorProvider.getNavigator(CustomActivityNavigator::class.java))
 
         override fun equals(other: Any?): Boolean {
