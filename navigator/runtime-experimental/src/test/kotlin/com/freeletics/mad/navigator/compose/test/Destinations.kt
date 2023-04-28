@@ -1,8 +1,11 @@
 package com.freeletics.mad.navigator.compose.test
 
+import android.content.Intent
+import com.freeletics.mad.navigator.compose.ActivityDestination
 import com.freeletics.mad.navigator.compose.BottomSheetDestination
 import com.freeletics.mad.navigator.compose.DialogDestination
 import com.freeletics.mad.navigator.compose.ScreenDestination
+import com.freeletics.mad.navigator.internal.ActivityDestinationId
 import com.freeletics.mad.navigator.internal.DestinationId
 
 internal val simpleRootDestination = ScreenDestination(DestinationId(SimpleRoot::class)) {}
@@ -17,4 +20,12 @@ internal val destinations = listOf(
     simpleRouteDestination,
     otherRouteDestination,
     thirdRouteDestination,
+)
+
+internal val simpleActivityDestination = ActivityDestination(ActivityDestinationId(SimpleActivity::class), Intent())
+internal val otherActivityDestination = ActivityDestination(ActivityDestinationId(OtherActivity::class), Intent())
+
+internal val activityDestinations = listOf(
+    simpleActivityDestination,
+    otherActivityDestination,
 )
