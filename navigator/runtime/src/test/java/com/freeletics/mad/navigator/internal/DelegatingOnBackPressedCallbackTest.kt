@@ -14,16 +14,16 @@ internal class DelegatingOnBackPressedCallbackTest {
 
     @Test
     fun `test callback is enabled after adding a callback`() {
-        underTest.addCallback {  }
+        underTest.addCallback { }
         assertThat(underTest.isEnabled).isTrue()
     }
 
     @Test
     fun `test callback is enabled after adding multiple callbacks`() {
-        underTest.addCallback {  }
-        underTest.addCallback {  }
-        underTest.addCallback {  }
-        underTest.addCallback {  }
+        underTest.addCallback { }
+        underTest.addCallback { }
+        underTest.addCallback { }
+        underTest.addCallback { }
         assertThat(underTest.isEnabled).isTrue()
     }
 

@@ -17,7 +17,8 @@ internal class TestNavigator : NavEventNavigator() {
         return registerForPermissionsResult()
     }
 
-    inline fun <reified I : BaseRoute, reified O : Parcelable> testRegisterForNavigationResult(): NavigationResultRequest<O> {
+    inline fun <reified I : BaseRoute, reified O : Parcelable>
+    testRegisterForNavigationResult(): NavigationResultRequest<O> {
         return registerForNavigationResult<I, O>()
     }
 }

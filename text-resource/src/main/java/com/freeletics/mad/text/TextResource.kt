@@ -59,7 +59,7 @@ public sealed class TextResource : Parcelable {
         @JvmName("fromStringResource")
         public operator fun invoke(
             @StringRes id: Int,
-            vararg args: Any
+            vararg args: Any,
         ): TextResource {
             return StringTextResource(id, args)
         }
@@ -71,7 +71,7 @@ public sealed class TextResource : Parcelable {
         public fun createWithQuantity(
             @PluralsRes id: Int,
             quantity: Int,
-            vararg args: Any
+            vararg args: Any,
         ): TextResource {
             return PluralTextResource(id, quantity, args)
         }
@@ -123,7 +123,7 @@ internal class SimpleTextResource(val text: String) : TextResource() {
 @Parcelize
 internal class StringTextResource(
     @StringRes val id: Int,
-    val args: @RawValue Array<out Any>
+    val args: @RawValue Array<out Any>,
 ) : TextResource() {
 
     override fun format(context: Context): String = tryFormat(context) {
@@ -160,7 +160,7 @@ internal class StringTextResource(
 internal class PluralTextResource(
     @PluralsRes val id: Int,
     val quantity: Int,
-    val args: @RawValue Array<out Any>
+    val args: @RawValue Array<out Any>,
 ) : TextResource() {
 
     override fun format(context: Context): String = tryFormat(context) {
@@ -198,7 +198,7 @@ internal class PluralTextResource(
 @Parcelize
 internal class CompositeTextResource(
     val elements: List<TextResource>,
-    val separator: String
+    val separator: String,
 ) : TextResource() {
 
     override fun format(context: Context): String {

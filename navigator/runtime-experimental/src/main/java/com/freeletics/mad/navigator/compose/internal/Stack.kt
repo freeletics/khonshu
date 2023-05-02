@@ -115,6 +115,7 @@ internal class Stack private constructor(
             idGenerator: () -> String = { UUID.randomUUID().toString() },
         ): Stack {
             val ids = bundle.getStringArrayList(SAVED_STATE_IDS)!!
+
             @Suppress("DEPRECATION")
             val routes = bundle.getParcelableArrayList<BaseRoute>(SAVED_STATE_ROUTES)!!
             val entries = ids.mapIndexed { index, id ->

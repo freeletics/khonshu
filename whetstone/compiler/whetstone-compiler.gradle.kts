@@ -33,7 +33,7 @@ dependencies {
     testImplementation(testFixtures(libs.anvil.compiler.utils))
 }
 
-//TODO remove when Kotlin 1.8.20 is out and FGP was updated
+// TODO remove when Kotlin 1.8.20 is out and FGP was updated
 tasks.withType(KaptGenerateStubsTask::class.java).configureEach {
     compilerOptions {
         jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.target.get()))

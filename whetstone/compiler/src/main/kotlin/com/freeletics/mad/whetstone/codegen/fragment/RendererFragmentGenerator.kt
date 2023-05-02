@@ -13,8 +13,17 @@ internal class RendererFragmentGenerator(
     override fun createViewCode(): CodeBlock {
         return CodeBlock.Builder()
             // inflate: external method
-            .addStatement("val renderer = %L.%L.inflate(inflater, container)", retainedComponentClassName.propertyName, data.factory.propertyName)
-            .addStatement("%M(renderer, %L.%L)", rendererConnect, retainedComponentClassName.propertyName, data.stateMachine.propertyName)
+            .addStatement(
+                "val renderer = %L.%L.inflate(inflater, container)",
+                retainedComponentClassName.propertyName,
+                data.factory.propertyName,
+            )
+            .addStatement(
+                "%M(renderer, %L.%L)",
+                rendererConnect,
+                retainedComponentClassName.propertyName,
+                data.stateMachine.propertyName,
+            )
             .addStatement("return renderer.rootView")
             .build()
     }

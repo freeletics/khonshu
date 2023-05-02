@@ -22,7 +22,7 @@ public class RequestPermissionsContract :
 
     override fun getSynchronousResult(
         context: Context,
-        input: List<String>
+        input: List<String>,
     ): SynchronousResult<Map<String, Boolean>>? {
         return contract.getSynchronousResult(context, input.toTypedArray())
     }

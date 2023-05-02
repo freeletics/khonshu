@@ -3,7 +3,6 @@ package com.freeletics.mad.navigator.compose.internal
 import androidx.lifecycle.SavedStateHandle
 import com.freeletics.mad.navigator.compose.test.FakeCloseable
 import com.google.common.truth.Truth.assertThat
-import java.io.Closeable
 import org.junit.Test
 
 internal class StoreViewModelTest {

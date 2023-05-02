@@ -8,7 +8,7 @@ import android.widget.TextView
  */
 public fun <T> Iterable<T>.joinToTextResource(
     separator: String = ", ",
-    transform: ((T) -> TextResource)
+    transform: ((T) -> TextResource),
 ): TextResource {
     val textResources = map(transform)
     return TextResource.join(textResources, separator)

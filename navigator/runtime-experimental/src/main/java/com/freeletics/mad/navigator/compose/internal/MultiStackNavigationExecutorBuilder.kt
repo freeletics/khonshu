@@ -1,17 +1,14 @@
 package com.freeletics.mad.navigator.compose.internal
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.SAVED_STATE_REGISTRY_OWNER_KEY
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.eygraber.uri.Uri
-import com.freeletics.mad.navigator.ActivityRoute
 import com.freeletics.mad.navigator.DeepLink.Companion.EXTRA_DEEPLINK_ROUTES
 import com.freeletics.mad.navigator.DeepLinkHandler
 import com.freeletics.mad.navigator.NavRoot
@@ -28,7 +25,7 @@ internal fun rememberNavigationExecutor(
     destinations: Set<NavDestination>,
     deepLinkHandlers: Set<DeepLinkHandler>,
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
-) : MultiStackNavigationExecutor {
+): MultiStackNavigationExecutor {
     val context = LocalContext.current
     val viewModel = viewModel<StoreViewModel>(factory = SavedStateViewModelFactory())
     return remember(context, viewModel) {
@@ -62,7 +59,7 @@ internal fun rememberNavigationExecutor(
 private fun deepLinkRoutes(
     context: Context,
     deepLinkHandlers: Set<DeepLinkHandler>,
-    deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
+    deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
 ): List<Parcelable> {
     var intent = context.findActivity().intent
     val uri = intent.dataString

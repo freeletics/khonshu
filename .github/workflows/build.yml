@@ -31,3 +31,6 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build buildHealth --stacktrace
+
+      - name: Check code style
+        run: ./kotlinw .kts/ktlint.main.kts --fail-on-changes

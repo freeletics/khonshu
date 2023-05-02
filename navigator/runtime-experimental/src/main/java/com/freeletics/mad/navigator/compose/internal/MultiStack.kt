@@ -102,7 +102,7 @@ internal class MultiStack(
 
     fun <T : BaseRoute> popUpTo(
         destinationId: DestinationId<T>,
-        isInclusive: Boolean
+        isInclusive: Boolean,
     ) {
         currentStack.popUpTo(destinationId, isInclusive)
         updateVisibleDestinations()

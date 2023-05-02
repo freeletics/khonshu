@@ -80,8 +80,8 @@ internal class ReferenceTest {
                     }
 
                     null
-                }
-            )
+                },
+            ),
         ) {
             assertThat(exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
         }
@@ -109,7 +109,9 @@ internal class ReferenceTest {
                 simpleCodeGenerator { psiRef ->
                     when (psiRef.shortName) {
                         "CreateCustomActivityStateMachine" -> {
-                            val superType = psiRef.superTypeReference(FqName("com.freeletics.mad.statemachine.StateMachine"))
+                            val superType = psiRef.superTypeReference(
+                                FqName("com.freeletics.mad.statemachine.StateMachine"),
+                            )
                             assertThat(psiRef.resolveTypeParameter("State", superType))
                                 .isEqualTo(ClassName("com.freeletics.test", "CreateCustomActivityState"))
                             assertThat(psiRef.resolveTypeParameter("Action", superType))
@@ -117,13 +119,14 @@ internal class ReferenceTest {
                         }
                         "CreateCustomActivityState",
                         "DefaultCreateCustomActivityLoadingState",
-                        "CreateCustomActivityAction" -> {}
+                        "CreateCustomActivityAction",
+                        -> {}
                         else -> throw NotImplementedError(psiRef.shortName)
                     }
 
                     null
-                }
-            )
+                },
+            ),
         ) {
             assertThat(exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
         }
@@ -135,7 +138,7 @@ internal class ReferenceTest {
         enableDaggerAnnotationProcessor: Boolean = false,
         codeGenerators: List<CodeGenerator> = emptyList(),
         allWarningsAsErrors: Boolean = true,
-        block: Result.() -> Unit = { }
+        block: Result.() -> Unit = { },
     ): Result {
         return compileAnvil(
             sources = sources,
@@ -143,7 +146,7 @@ internal class ReferenceTest {
             previousCompilationResult = previousCompilationResult,
             enableDaggerAnnotationProcessor = enableDaggerAnnotationProcessor,
             codeGenerators = codeGenerators,
-            block = block
+            block = block,
         )
     }
 }

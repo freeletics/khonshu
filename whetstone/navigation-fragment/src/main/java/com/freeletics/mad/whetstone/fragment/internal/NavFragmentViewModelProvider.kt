@@ -23,7 +23,7 @@ public inline fun <reified C : Any, P : Any, R : BaseRoute> Fragment.component(
     parentScope: KClass<*>,
     destinationScope: KClass<*>,
     route: R,
-    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, R) -> C
+    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, R) -> C,
 ): C {
     val executor = findNavigationExecutor()
     return executor.storeFor(route.destinationId).getOrCreate(C::class) {

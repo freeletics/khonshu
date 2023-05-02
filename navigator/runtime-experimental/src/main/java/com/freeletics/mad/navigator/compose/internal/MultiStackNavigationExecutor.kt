@@ -18,11 +18,11 @@ internal class MultiStackNavigationExecutor(
     deepLinkRoutes: List<Parcelable>,
 ) : NavigationExecutor {
 
-    @Suppress("unused") //TODO
+    @Suppress("unused") // TODO
     val visibleEntries: State<List<StackEntry<*>>>
         get() = stack.visibleEntries
 
-    @Suppress("unused") //TODO
+    @Suppress("unused") // TODO
     val canNavigateBack: State<Boolean>
         get() = stack.canNavigateBack
 
@@ -35,7 +35,7 @@ internal class MultiStackNavigationExecutor(
                         require(index == 0) { "NavRoot can only be the first element of a deep link" }
                         require(route.destinationId != stack.startRoot.destinationId) {
                             "$route is the start root which is not allowed to be part of a deep " +
-                                    "link because it will always be on the back stack"
+                                "link because it will always be on the back stack"
                         }
                         stack.push(route, clearTargetStack = true)
                     }
@@ -75,7 +75,7 @@ internal class MultiStackNavigationExecutor(
 
     override fun <T : BaseRoute> navigateBackTo(
         destinationId: DestinationId<T>,
-        isInclusive: Boolean
+        isInclusive: Boolean,
     ) {
         stack.popUpTo(destinationId, isInclusive)
     }
@@ -98,14 +98,14 @@ internal class MultiStackNavigationExecutor(
         return storeFor(entry.id)
     }
 
-    @Suppress("unused", "unused_parameter") //TODO
+    @Suppress("unused", "unused_parameter") // TODO
     fun storeFor(entryId: StackEntry.Id): NavigationExecutor.Store {
         return viewModel.provideStore(entryId)
     }
 
     private fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T> {
-        return stack.entryFor(destinationId) ?:
-            throw IllegalStateException("Route $destinationId not found on back stack")
+        return stack.entryFor(destinationId)
+            ?: throw IllegalStateException("Route $destinationId not found on back stack")
     }
 
     internal companion object {

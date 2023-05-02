@@ -16,9 +16,7 @@ import com.freeletics.mad.navigator.test.TestNavigationExecutor
 import com.freeletics.mad.navigator.test.TestNavigator
 import com.freeletics.mad.navigator.test.TestParcelable
 import com.google.common.truth.Truth.assertThat
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
-import org.junit.Assert.assertThrows
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,6 +26,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 
@@ -41,7 +40,7 @@ internal class NavigationSetupTest {
     private val activityLauncher = TestActivityResultLauncher()
     private val permissionRequest = navigator.testRegisterForPermissionResult()
     private val permissionLauncher = TestActivityResultLauncher()
-    private val launchers = mapOf< ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>(
+    private val launchers = mapOf<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>(
         activityRequest to activityLauncher,
         permissionRequest to permissionLauncher,
     )
@@ -89,10 +88,12 @@ internal class NavigationSetupTest {
             restoreRootState = false,
         )
         assertThat(executor.received.awaitItem())
-            .isEqualTo(NavEvent.NavigateToRootEvent(
-                root = SimpleRoot(2),
-                restoreRootState = false,
-            ))
+            .isEqualTo(
+                NavEvent.NavigateToRootEvent(
+                    root = SimpleRoot(2),
+                    restoreRootState = false,
+                ),
+            )
     }
 
     @Test
@@ -174,14 +175,15 @@ internal class NavigationSetupTest {
         val exception = assertThrows(IllegalStateException::class.java) {
             runBlocking {
                 val launchers = mapOf<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>(
-                    permissionRequest to permissionLauncher
+                    permissionRequest to permissionLauncher,
                 )
                 navigator.collectAndHandleNavEvents(lifecyle, executor, launchers)
             }
         }
         assertThat(exception).hasMessageThat().isEqualTo(
             "No launcher registered for request with contract ${activityRequest.contract}!\n" +
-                "Make sure you called the appropriate NavEventNavigator.registerFor... method")
+                "Make sure you called the appropriate NavEventNavigator.registerFor... method",
+        )
     }
 
     @Test
@@ -210,23 +212,27 @@ internal class NavigationSetupTest {
             permissionRequest.deliverResult(mapOf("a" to true, "b" to true)) {
                 throw AssertionError("Should not be called")
             }
-            assertThat(awaitItem()).isEqualTo(mapOf(
-                "a" to PermissionResult.Granted,
-                "b" to PermissionResult.Granted,
-            ))
+            assertThat(awaitItem()).isEqualTo(
+                mapOf(
+                    "a" to PermissionResult.Granted,
+                    "b" to PermissionResult.Granted,
+                ),
+            )
 
             permissionRequest.deliverResult(mapOf("a" to false, "b" to false, "c" to true)) {
-                when(it) {
+                when (it) {
                     "a" -> true
                     "b" -> false
                     else -> throw AssertionError("Not allowed permission $it")
                 }
             }
-            assertThat(awaitItem()).isEqualTo(mapOf(
-                "a" to PermissionResult.Denied(true),
-                "b" to PermissionResult.Denied(false),
-                "c" to PermissionResult.Granted,
-            ))
+            assertThat(awaitItem()).isEqualTo(
+                mapOf(
+                    "a" to PermissionResult.Denied(true),
+                    "b" to PermissionResult.Denied(false),
+                    "c" to PermissionResult.Granted,
+                ),
+            )
         }
     }
 

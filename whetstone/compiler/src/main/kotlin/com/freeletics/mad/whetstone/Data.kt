@@ -32,7 +32,7 @@ public sealed interface ComposeData : BaseData {
 
 public data class ComposableParameter(
     public val name: String,
-    public val typeName: TypeName
+    public val typeName: TypeName,
 )
 
 public data class ComposeScreenData(
@@ -50,7 +50,7 @@ public data class ComposeScreenData(
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
-) :  ComposeData
+) : ComposeData
 
 public sealed interface FragmentData : BaseData {
     public val fragmentBaseClass: ClassName
@@ -97,8 +97,8 @@ public data class NavEntryData(
     override val scope: ClassName,
     override val parentScope: ClassName,
 
-    override val navigation: Navigation
-): BaseData {
+    override val navigation: Navigation,
+) : BaseData {
     override val baseName: String = "${scope.simpleName}NavEntry"
 
     override val stateMachine: ClassName? = null
@@ -117,7 +117,7 @@ public sealed interface Navigation {
     ) : Navigation {
         override val destinationClass: ClassName = composeDestination
 
-        override val destinationMethod: MemberName = when(destinationType) {
+        override val destinationMethod: MemberName = when (destinationType) {
             "SCREEN" -> composeScreenDestination
             "DIALOG" -> composeDialogDestination
             "BOTTOM_SHEET" -> composeBottomSheetDestination
@@ -132,7 +132,7 @@ public sealed interface Navigation {
     ) : Navigation {
         override val destinationClass: ClassName = fragmentDestination
 
-        override val destinationMethod: MemberName = when(destinationType) {
+        override val destinationMethod: MemberName = when (destinationType) {
             "SCREEN" -> fragmentScreenDestination
             "DIALOG" -> fragmentDialogDestination
             else -> throw IllegalArgumentException("Unknown destinationType $destinationType")

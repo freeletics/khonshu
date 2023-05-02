@@ -105,12 +105,12 @@ internal class DeepLinkParserTest {
                 prefixes = setOf(Prefix("https://a.com")),
                 deepLinkFactory = { _, _ -> DeepLink("test", listOf()) },
             ),
-            TestDeepLinkHandler("")
+            TestDeepLinkHandler(""),
         )
 
         val uri = Uri.parse("https://a.com/home")
         assertThat(handlers.createDeepLinkIfMatching(uri, emptySet())).isEqualTo(
-            DeepLink("test", listOf())
+            DeepLink("test", listOf()),
         )
     }
 
@@ -124,15 +124,20 @@ internal class DeepLinkParserTest {
                     DeepLink("test", listOf(DeepLinkRoute(path, query)))
                 },
             ),
-            TestDeepLinkHandler("")
+            TestDeepLinkHandler(""),
         )
 
         val uri = Uri.parse("https://a.com/home?query=value&other=true")
         assertThat(handlers.createDeepLinkIfMatching(uri, emptySet())).isEqualTo(
-            DeepLink("test", listOf(DeepLinkRoute(
-                mapOf("path" to "home"),
-                mapOf("query" to "value", "other" to "true"),
-            )))
+            DeepLink(
+                "test",
+                listOf(
+                    DeepLinkRoute(
+                        mapOf("path" to "home"),
+                        mapOf("query" to "value", "other" to "true"),
+                    ),
+                ),
+            ),
         )
     }
 
@@ -143,7 +148,7 @@ internal class DeepLinkParserTest {
                 patterns = setOf(Pattern("home")),
                 prefixes = setOf(Prefix("https://a.com")),
             ),
-            TestDeepLinkHandler("")
+            TestDeepLinkHandler(""),
         )
 
         val uri = Uri.parse("https://a.com/foo")

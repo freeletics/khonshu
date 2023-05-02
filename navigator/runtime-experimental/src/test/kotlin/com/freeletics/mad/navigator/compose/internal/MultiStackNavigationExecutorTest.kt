@@ -3,21 +3,15 @@ package com.freeletics.mad.navigator.compose.internal
 import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import com.freeletics.mad.navigator.ActivityRoute
-import com.freeletics.mad.navigator.NavRoot
-import com.freeletics.mad.navigator.compose.ActivityDestination
-import com.freeletics.mad.navigator.compose.test.OtherActivity
 import com.freeletics.mad.navigator.compose.test.OtherRoot
 import com.freeletics.mad.navigator.compose.test.OtherRoute
 import com.freeletics.mad.navigator.compose.test.SimpleActivity
 import com.freeletics.mad.navigator.compose.test.SimpleRoot
 import com.freeletics.mad.navigator.compose.test.SimpleRoute
 import com.freeletics.mad.navigator.compose.test.ThirdRoute
-import com.freeletics.mad.navigator.compose.test.activityDestinations
 import com.freeletics.mad.navigator.compose.test.destinations
-import com.freeletics.mad.navigator.compose.test.otherActivityDestination
 import com.freeletics.mad.navigator.compose.test.otherRootDestination
 import com.freeletics.mad.navigator.compose.test.otherRouteDestination
-import com.freeletics.mad.navigator.compose.test.simpleActivityDestination
 import com.freeletics.mad.navigator.compose.test.simpleRootDestination
 import com.freeletics.mad.navigator.compose.test.simpleRouteDestination
 import com.freeletics.mad.navigator.compose.test.thirdRouteDestination
@@ -42,7 +36,7 @@ internal class MultiStackNavigationExecutorTest {
 
     private fun underTest(
         deepLinkRoutes: List<Parcelable> = emptyList(),
-    ) : MultiStackNavigationExecutor {
+    ): MultiStackNavigationExecutor {
         return MultiStackNavigationExecutor(
             activityStarter = starter,
             viewModel = viewModel,
@@ -69,20 +63,22 @@ internal class MultiStackNavigationExecutorTest {
     fun `deep link with start root`() {
         val exception = assertThrows(IllegalArgumentException::class.java) {
             underTest(
-                listOf(SimpleRoot(3))
+                listOf(SimpleRoot(3)),
             )
         }
 
-        assertThat(exception).hasMessageThat().isEqualTo("SimpleRoot(number=3) is the start root" +
+        assertThat(exception).hasMessageThat().isEqualTo(
+            "SimpleRoot(number=3) is the start root" +
                 " which is not allowed to be part of a deep link because it will always be on the" +
-                " back stack")
+                " back stack",
+        )
     }
 
     @Test
     fun `deep links passed with a root at an index other than the first`() {
         val exception = assertThrows(IllegalArgumentException::class.java) {
             underTest(
-                listOf(SimpleRoute(1), SimpleRoot(3))
+                listOf(SimpleRoute(1), SimpleRoot(3)),
             )
         }
 
@@ -93,12 +89,12 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `deep links passed with a NavRoute`() {
         val executor = underTest(
-            listOf(SimpleRoute(2))
+            listOf(SimpleRoute(2)),
         )
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("102"), SimpleRoute(2), simpleRouteDestination)
+                StackEntry(StackEntry.Id("102"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -107,7 +103,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoot(1), simpleRootDestination)
+                StackEntry(StackEntry.Id("101"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isFalse()
@@ -116,12 +112,12 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `deep links passed with a NavRoot`() {
         val executor = underTest(
-            listOf(OtherRoot(2))
+            listOf(OtherRoot(2)),
         )
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("102"), OtherRoot(2), otherRootDestination)
+                StackEntry(StackEntry.Id("102"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -130,7 +126,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoot(1), simpleRootDestination)
+                StackEntry(StackEntry.Id("101"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isFalse()
@@ -139,12 +135,12 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `deep links passed with NavRoot and NavRoute`() {
         val executor = underTest(
-            listOf(OtherRoot(2), SimpleRoute(3))
+            listOf(OtherRoot(2), SimpleRoute(3)),
         )
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("103"), SimpleRoute(3), simpleRouteDestination)
+                StackEntry(StackEntry.Id("103"), SimpleRoute(3), simpleRouteDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -153,7 +149,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("102"), OtherRoot(2), otherRootDestination)
+                StackEntry(StackEntry.Id("102"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -162,7 +158,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoot(1), simpleRootDestination)
+                StackEntry(StackEntry.Id("101"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isFalse()
@@ -171,7 +167,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `deep links passed with multiple NavRoutes`() {
         val executor = underTest(
-            listOf(SimpleRoute(2), SimpleRoute(3), OtherRoute(4), ThirdRoute(5))
+            listOf(SimpleRoute(2), SimpleRoute(3), OtherRoute(4), ThirdRoute(5)),
         )
 
         assertThat(executor.visibleEntries.value)
@@ -187,7 +183,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `deep links passed with an ActivityRoute`() {
         val executor = underTest(
-            listOf(SimpleActivity(2))
+            listOf(SimpleActivity(2)),
         )
 
         assertThat(executor.visibleEntries.value)
@@ -203,7 +199,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `deep links passed with a NavRoute and an ActivityRoute`() {
         val executor = underTest(
-            listOf(SimpleRoute(2), SimpleActivity(3))
+            listOf(SimpleRoute(2), SimpleActivity(3)),
         )
 
         assertThat(executor.visibleEntries.value)
@@ -222,7 +218,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination)
+                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isFalse()
@@ -235,7 +231,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination)
+                StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -329,7 +325,6 @@ internal class MultiStackNavigationExecutorTest {
         assertThat(removed).isEmpty()
     }
 
-
     @Test
     fun `navigate with root and without clearing the target executor`() {
         val executor = underTest()
@@ -337,7 +332,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination)
+                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -364,7 +359,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination)
+                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -373,7 +368,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination)
+                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isFalse()
@@ -382,7 +377,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination)
+                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -397,7 +392,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination)
+                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -412,7 +407,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination)
+                StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -421,7 +416,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("102"), SimpleRoot(1), simpleRootDestination)
+                StackEntry(StackEntry.Id("102"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isFalse()
@@ -430,7 +425,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("103"), OtherRoot(1), otherRootDestination)
+                StackEntry(StackEntry.Id("103"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -446,7 +441,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("102"), OtherRoot(1), otherRootDestination)
+                StackEntry(StackEntry.Id("102"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -463,7 +458,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(1), simpleRouteDestination)
+                StackEntry(StackEntry.Id("101"), SimpleRoute(1), simpleRouteDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
@@ -479,7 +474,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("102"), SimpleRoot(2), simpleRootDestination)
+                StackEntry(StackEntry.Id("102"), SimpleRoot(2), simpleRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isFalse()
@@ -495,7 +490,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
-                StackEntry(StackEntry.Id("102"), SimpleRoot(2), simpleRootDestination)
+                StackEntry(StackEntry.Id("102"), SimpleRoot(2), simpleRootDestination),
             )
             .inOrder()
         assertThat(executor.canNavigateBack.value).isFalse()
@@ -898,8 +893,10 @@ internal class MultiStackNavigationExecutorTest {
             executor.navigateBackTo(otherRouteDestination.id, isInclusive = false)
         }
         assertThat(exception).hasMessageThat()
-            .isEqualTo("Route class com.freeletics.mad.navigator.compose.test.OtherRoute (Kotlin " +
-                    "reflection is not available) not found on back stack")
+            .isEqualTo(
+                "Route class com.freeletics.mad.navigator.compose.test.OtherRoute (Kotlin " +
+                    "reflection is not available) not found on back stack",
+            )
 
         assertThat(removed).containsExactly(
             StackEntry.Id("106"),

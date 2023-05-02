@@ -5,7 +5,6 @@ import com.android.build.api.variant.AndroidComponentsExtension
 import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.UnknownDomainObjectException
 
 /**
  * Plugin for deeplinks integration:
@@ -36,7 +35,7 @@ abstract class DeeplinksPlugin : Plugin<Project> {
                 DeeplinksManifestConfiguratorTask::class.java,
             ) {
                 it.deeplinksConfigurationFile.set(
-                    configurationFile
+                    configurationFile,
                 )
             }
             variant.artifacts.use(manifestUpdater).wiredWithFiles(

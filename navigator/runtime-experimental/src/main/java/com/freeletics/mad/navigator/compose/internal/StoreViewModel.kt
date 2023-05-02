@@ -9,7 +9,7 @@ import com.freeletics.mad.navigator.internal.NavigationExecutor
 import com.freeletics.mad.navigator.internal.NavigationExecutorStore
 
 internal class StoreViewModel(
-    internal val globalSavedStateHandle: SavedStateHandle
+    internal val globalSavedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val stores = mutableMapOf<StackEntry.Id, NavigationExecutorStore>()

@@ -56,7 +56,7 @@ private fun NavigationExecutor.navigate(
             val request = event.request
             val launcher = activityLaunchers[request] ?: throw IllegalStateException(
                 "No launcher registered for request with contract ${request.contract}!" +
-                    "\nMake sure you called the appropriate NavEventNavigator.registerFor... method"
+                    "\nMake sure you called the appropriate NavEventNavigator.registerFor... method",
             )
             @Suppress("UNCHECKED_CAST")
             (launcher as ActivityResultLauncher<Any?>).launch(event.input)
@@ -79,7 +79,7 @@ internal inline fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(
     result: O,
     shouldShowPermissionRationale: (String) -> Boolean,
 ) {
-    when(this) {
+    when (this) {
         is ActivityResultRequest<*, *> -> onResult(result as R)
         is PermissionsResultRequest -> onResult(
             (result as Map<String, Boolean>).mapValues { (permission, granted) ->
@@ -88,7 +88,7 @@ internal inline fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(
                 } else {
                     PermissionResult.Denied(shouldShowPermissionRationale(permission))
                 }
-            }
+            },
         )
     }
 }

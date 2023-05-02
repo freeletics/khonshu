@@ -14,13 +14,13 @@ import com.squareup.kotlinpoet.PropertySpec
 
 internal val ClassName.propertyName: String get() {
     return simpleNames.first().replaceFirstChar(Char::lowercaseChar) +
-            simpleNames.drop(1).joinToString { it.replaceFirstChar(Char::uppercaseChar) }
+        simpleNames.drop(1).joinToString { it.replaceFirstChar(Char::uppercaseChar) }
 }
 
 internal fun bindsInstanceParameter(
     name: String,
     className: ClassName,
-    annotation: AnnotationSpec? = null
+    annotation: AnnotationSpec? = null,
 ): ParameterSpec {
     return ParameterSpec.builder(name, className)
         .addAnnotation(bindsInstance)
@@ -30,7 +30,7 @@ internal fun bindsInstanceParameter(
 
 internal fun bindsInstanceParameter(
     spec: ParameterSpec,
-    annotation: AnnotationSpec? = null
+    annotation: AnnotationSpec? = null,
 ): ParameterSpec {
     return spec.toBuilder()
         .addAnnotation(bindsInstance)

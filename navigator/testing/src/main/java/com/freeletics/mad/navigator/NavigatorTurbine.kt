@@ -114,9 +114,9 @@ public interface NavigatorTurbine {
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun <T: BaseRoute> awaitNavigateBackTo(
+    public suspend fun <T : BaseRoute> awaitNavigateBackTo(
         popUpTo: KClass<T>,
-        inclusive: Boolean
+        inclusive: Boolean,
     )
 
     /**
@@ -126,7 +126,7 @@ public interface NavigatorTurbine {
      * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitResetToRoot(
-        root: NavRoot
+        root: NavRoot,
     )
 
     /**
@@ -153,7 +153,7 @@ public interface NavigatorTurbine {
      */
     public suspend fun awaitRequestPermissions(
         request: PermissionsResultRequest,
-        vararg permissions: String
+        vararg permissions: String,
     )
 
     /**
@@ -164,7 +164,7 @@ public interface NavigatorTurbine {
      */
     public suspend fun awaitRequestPermissions(
         request: PermissionsResultRequest,
-        permissions: List<String>
+        permissions: List<String>,
     )
 
     /**
@@ -175,7 +175,7 @@ public interface NavigatorTurbine {
      */
     public suspend fun <O : Parcelable> awaitNavigationResult(
         key: NavigationResultRequest.Key<O>,
-        result: O
+        result: O,
     )
 
     /**
@@ -229,9 +229,9 @@ internal class DefaultNavigatorTurbine(
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun <T: BaseRoute> awaitNavigateBackTo(
+    override suspend fun <T : BaseRoute> awaitNavigateBackTo(
         popUpTo: KClass<T>,
-        inclusive: Boolean
+        inclusive: Boolean,
     ) {
         val event = NavEvent.BackToEvent(DestinationId(popUpTo), inclusive)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
@@ -250,7 +250,7 @@ internal class DefaultNavigatorTurbine(
 
     override suspend fun <I> awaitNavigateForResult(
         request: ActivityResultRequest<I, *>,
-        input: I
+        input: I,
     ) {
         val event = NavEvent.ActivityResultEvent(request, input)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
@@ -258,14 +258,14 @@ internal class DefaultNavigatorTurbine(
 
     override suspend fun awaitRequestPermissions(
         request: PermissionsResultRequest,
-        vararg permissions: String
+        vararg permissions: String,
     ) {
         awaitRequestPermissions(request, permissions.toList())
     }
 
     override suspend fun awaitRequestPermissions(
         request: PermissionsResultRequest,
-        permissions: List<String>
+        permissions: List<String>,
     ) {
         val event = NavEvent.ActivityResultEvent(request, permissions)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
@@ -273,7 +273,7 @@ internal class DefaultNavigatorTurbine(
 
     override suspend fun <O : Parcelable> awaitNavigationResult(
         key: NavigationResultRequest.Key<O>,
-        result: O
+        result: O,
     ) {
         val event = NavEvent.DestinationResultEvent(key, result)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)

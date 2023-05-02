@@ -29,23 +29,37 @@ internal class ComposeScreenGenerator(
             .addParameter(parameter)
             .also {
                 if (data.navigation != null) {
-                    it.beginControlFlow("val component = %M(%T::class, %T::class, %N) { parentComponent: %T, savedStateHandle, %L ->",
-                        rememberComponent, data.parentScope, data.navigation.destinationScope,
-                        parameter, retainedParentComponentClassName, innerParameterName)
+                    it.beginControlFlow(
+                        "val component = %M(%T::class, %T::class, %N) { parentComponent: %T, savedStateHandle, %L ->",
+                        rememberComponent,
+                        data.parentScope,
+                        data.navigation.destinationScope,
+                        parameter,
+                        retainedParentComponentClassName,
+                        innerParameterName,
+                    )
                 } else {
-                    it.beginControlFlow("val component = %M(%T::class, %N) { parentComponent: %T, savedStateHandle, %L ->",
-                        rememberComponent, data.parentScope, parameter,
-                        retainedParentComponentClassName, innerParameterName)
+                    it.beginControlFlow(
+                        "val component = %M(%T::class, %N) { parentComponent: %T, savedStateHandle, %L ->",
+                        rememberComponent,
+                        data.parentScope,
+                        parameter,
+                        retainedParentComponentClassName,
+                        innerParameterName,
+                    )
                 }
             }
-            .addStatement("parentComponent.%L().%L(savedStateHandle, %L)",
-                retainedParentComponentGetterName, retainedComponentFactoryCreateName, innerParameterName)
+            .addStatement(
+                "parentComponent.%L().%L(savedStateHandle, %L)",
+                retainedParentComponentGetterName,
+                retainedComponentFactoryCreateName,
+                innerParameterName,
+            )
             .endControlFlow()
             .addCode("\n")
             .addCode(composableNavigationSetup())
             .addStatement("%L(component)", composableName)
             .build()
-
     }
 
     private fun composableNavigationSetup(): CodeBlock {

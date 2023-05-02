@@ -5,15 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.freeletics.mad.whetstone.internal.InternalWhetstoneApi
 import com.freeletics.mad.whetstone.internal.StoreViewModel
 import com.freeletics.mad.whetstone.internal.findComponentByScope
@@ -31,7 +27,7 @@ import kotlin.reflect.KClass
 public inline fun <reified C : Any, P : Any> rememberComponent(
     parentScope: KClass<*>,
     arguments: Bundle,
-    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, Bundle) -> C
+    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, Bundle) -> C,
 ): C {
     val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
     val context = LocalContext.current
@@ -43,7 +39,4 @@ public inline fun <reified C : Any, P : Any> rememberComponent(
             factory(parentComponent, savedStateHandle, arguments)
         }
     }
-
-
-
 }
