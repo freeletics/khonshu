@@ -18,9 +18,6 @@ plugins {
 dependencyAnalysis {
     issues {
         all {
-            onUnusedDependencies {
-                exclude("() -> java.io.File?")
-            }
             onCompileOnly {
                 exclude("dev.drewhamilton.poko:poko-annotations")
             }
