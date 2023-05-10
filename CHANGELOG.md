@@ -1,6 +1,37 @@
 Change Log
 ==========
 
+## 0.14.1 **UNRELEASED**
+​
+-
+​
+​
+## 0.14.0 *(2023-05-10)*
+​
+### Navigator
+​
+- Removed `saveCurrentRootState` from `navigate(NavRoot, ...)` method.
+- Added `resetToRoot(NavRoot)` as a replacement.
+- Added `com.freeletics.mad:navigator-experimental` which is an experimental alternative implementation of `navigator-compose`
+  without a dependency on AndroidX navigation. The artifact is source and binary compatible with `navigator-compose` so it can
+  be easily tested by added the following to `settings.gradle`:
+```
+gradle.beforeProject {
+    configurations.configureEach {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "com.freeletics.mad" && requested.name == "navigator-compose") {
+                useTarget("com.freeletics.mad:navigator-experimental:${requested.version}")
+            }
+        }
+    }
+}
+```
+​
+### StateMachine
+​
+- Added support for all [tier 1, 2 and 3 Kotlin/Native targets](https://kotlinlang.org/docs/native-target-support.html)
+
+
 ## 0.13.3 *(2023-03-24)*
 
 ### Whetstone
