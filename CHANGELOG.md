@@ -2,14 +2,14 @@ Change Log
 ==========
 
 ## 0.14.1 **UNRELEASED**
-​
+
 -
-​
-​
+
+
 ## 0.14.0 *(2023-05-10)*
-​
+
 ### Navigator
-​
+
 - Removed `saveCurrentRootState` from `navigate(NavRoot, ...)` method.
 - Added `resetToRoot(NavRoot)` as a replacement.
 - Added `com.freeletics.mad:navigator-experimental` which is an experimental alternative implementation of `navigator-compose`
@@ -26,9 +26,9 @@ gradle.beforeProject {
     }
 }
 ```
-​
+
 ### StateMachine
-​
+
 - Added support for all [tier 1, 2 and 3 Kotlin/Native targets](https://kotlinlang.org/docs/native-target-support.html)
 
 
