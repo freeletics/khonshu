@@ -100,7 +100,7 @@ renderer-connect = { module = "com.gabrielittner.renderer:connect", version.ref 
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service" }
 auto-service-compiler = { module = "com.google.auto.service:auto-service", version.ref = "auto-service" }
-flowredux = { module = "com.freeletics.flowredux:flowredux", version = "1.0.2" }
+flowredux = { module = "com.freeletics.flowredux:flowredux", version = "1.1.0" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
