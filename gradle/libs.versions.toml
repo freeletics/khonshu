@@ -29,7 +29,7 @@ accompanist = "0.30.1"
 uri = "0.0.11"
 
 inject = "1"
-dagger = "2.46"
+dagger = "2.46.1"
 anvil = "2.4.5"
 renderer = "0.12.0"
 kotlinpoet = "1.12.0"
