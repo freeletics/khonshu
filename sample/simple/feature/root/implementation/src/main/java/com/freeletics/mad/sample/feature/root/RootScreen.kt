@@ -1,4 +1,4 @@
-package com.freeletics.mad.sample.feature.a
+package com.freeletics.mad.sample.feature.root
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,28 +11,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.freeletics.mad.sample.feature.a.nav.FeatureARoute
+import com.freeletics.mad.sample.feature.root.nav.RootRoute
 import com.freeletics.mad.whetstone.compose.ComposeDestination
 
 @ComposeDestination(
-    route = FeatureARoute::class,
-    stateMachine = FeatureAStateMachine::class,
+    route = RootRoute::class,
+    stateMachine = RootStateMachine::class,
 )
 @Composable
-fun FeatureAScreen(
-    sendAction: (FeatureAAction) -> Unit,
+fun RootScreen(
+    sendAction: (RootAction) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        BasicText("Feature A")
+        BasicText("Feature Root")
 
         Spacer(Modifier.height(12.dp))
 
         BasicText(
-            modifier = Modifier.clickable { sendAction(FeatureAAction.ButtonClicked) },
+            modifier = Modifier.clickable { sendAction(RootAction.BottomSheetButtonClicked) },
             text = "Open Bottom Sheet",
         )
     }

@@ -23,5 +23,5 @@ dependencies {
     implementation(libs.mad.whetstone.runtime)
     implementation(libs.mad.whetstone.runtime.compose)
     implementation(libs.mad.whetstone.scope)
-    implementation(projects.feature.a.nav)
+    implementation(projects.feature.root.nav)
 }
