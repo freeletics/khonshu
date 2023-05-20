@@ -1,4 +1,4 @@
-package com.freeletics.mad.sample.feature.root
+package com.freeletics.mad.sample.feature.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,35 +11,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.freeletics.mad.sample.feature.root.nav.RootRoute
+import com.freeletics.mad.sample.feature.screen.nav.ScreenRoute
 import com.freeletics.mad.whetstone.compose.ComposeDestination
 
 @ComposeDestination(
-    route = RootRoute::class,
-    stateMachine = RootStateMachine::class,
+    route = ScreenRoute::class,
+    stateMachine = ScreenStateMachine::class,
 )
 @Composable
-fun RootScreen(
-    sendAction: (RootAction) -> Unit,
+fun ScreenScreen(
+    sendAction: (ScreenAction) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        BasicText("Feature Root")
+        BasicText("Feature Screen")
 
         Spacer(Modifier.height(12.dp))
 
         BasicText(
-            modifier = Modifier.clickable { sendAction(RootAction.ScreenButtonClicked) },
-            text = "Open Screen",
-        )
-
-        Spacer(Modifier.height(12.dp))
-
-        BasicText(
-            modifier = Modifier.clickable { sendAction(RootAction.BottomSheetButtonClicked) },
+            modifier = Modifier.clickable { sendAction(ScreenAction.BottomSheetButtonClicked) },
             text = "Open Bottom Sheet",
         )
     }
