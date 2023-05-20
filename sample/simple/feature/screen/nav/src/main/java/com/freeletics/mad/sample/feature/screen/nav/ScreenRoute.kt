@@ -4,4 +4,4 @@ import com.freeletics.mad.navigator.NavRoute
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-object ScreenRoute : NavRoute
+data class ScreenRoute(val number: Int) : NavRoute

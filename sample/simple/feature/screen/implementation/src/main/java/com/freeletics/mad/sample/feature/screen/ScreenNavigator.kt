@@ -9,7 +9,14 @@ import javax.inject.Inject
 
 @ScopeTo(ScreenRoute::class)
 @ContributesBinding(ScreenRoute::class, NavEventNavigator::class)
-class ScreenNavigator @Inject constructor() : NavEventNavigator() {
+class ScreenNavigator @Inject constructor(
+    private val route: ScreenRoute,
+) : NavEventNavigator() {
+
+    fun navigateToScreen() {
+        navigateTo(ScreenRoute(route.number + 1))
+    }
+
     fun navigateToBottomSheet() {
         navigateTo(BottomSheetRoute)
     }

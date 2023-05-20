@@ -12,7 +12,7 @@ import javax.inject.Inject
 @ContributesBinding(RootRoute::class, NavEventNavigator::class)
 class RootNavigator @Inject constructor() : NavEventNavigator() {
     fun navigateToScreen() {
-        navigateTo(ScreenRoute)
+        navigateTo(ScreenRoute(1))
     }
 
     fun navigateToBottomSheet() {

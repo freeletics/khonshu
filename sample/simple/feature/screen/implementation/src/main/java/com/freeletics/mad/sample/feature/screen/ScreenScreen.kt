@@ -20,6 +20,7 @@ import com.freeletics.mad.whetstone.compose.ComposeDestination
 )
 @Composable
 fun ScreenScreen(
+    state: ScreenState,
     sendAction: (ScreenAction) -> Unit,
 ) {
     Column(
@@ -27,7 +28,14 @@ fun ScreenScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        BasicText("Feature Screen")
+        BasicText("Feature Screen ${state.number}")
+
+        Spacer(Modifier.height(12.dp))
+
+        BasicText(
+            modifier = Modifier.clickable { sendAction(ScreenAction.ScreenButtonClicked) },
+            text = "Open Screen",
+        )
 
         Spacer(Modifier.height(12.dp))
 

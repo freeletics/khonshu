@@ -5,9 +5,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-sealed interface RootState
-
-object Init : RootState
+object RootState
 
 sealed interface RootAction {
     object ScreenButtonClicked : RootAction
@@ -17,7 +15,7 @@ sealed interface RootAction {
 class RootStateMachine @Inject constructor(
     private val navigator: RootNavigator,
 ) : StateMachine<RootState, RootAction> {
-    private val _state = MutableStateFlow(Init)
+    private val _state = MutableStateFlow(RootState)
     override val state: Flow<RootState> = _state
 
     override suspend fun dispatch(action: RootAction) {
