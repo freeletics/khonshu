@@ -85,6 +85,7 @@ internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandl
 // Compose
 internal val composable = ClassName("androidx.compose.runtime", "Composable")
 internal val getValue = MemberName("androidx.compose.runtime", "getValue")
+internal val remember = MemberName("androidx.compose.runtime", "remember")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 internal val composeView = ClassName("androidx.compose.ui.platform", "ComposeView")
 internal val viewCompositionStrategy = ClassName("androidx.compose.ui.platform", "ViewCompositionStrategy")
