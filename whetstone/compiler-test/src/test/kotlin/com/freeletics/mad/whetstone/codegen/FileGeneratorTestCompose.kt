@@ -76,6 +76,7 @@ internal class FileGeneratorTestCompose {
 
             import android.os.Bundle
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.whetstone.ScopeTo
@@ -144,7 +145,7 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val stateMachine = component.testStateMachine
+              val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
@@ -196,6 +197,7 @@ internal class FileGeneratorTestCompose {
             package com.test
 
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.navigator.NavEventNavigator
@@ -276,7 +278,7 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val stateMachine = component.testStateMachine
+              val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
@@ -345,6 +347,7 @@ internal class FileGeneratorTestCompose {
 
             import android.content.Context
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.navigator.NavEventNavigator
@@ -435,7 +438,7 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val stateMachine = component.testStateMachine
+              val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
@@ -562,6 +565,7 @@ internal class FileGeneratorTestCompose {
 
             import android.content.Context
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.navigator.NavEventNavigator
@@ -650,7 +654,7 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val stateMachine = component.testStateMachine
+              val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
@@ -789,6 +793,7 @@ internal class FileGeneratorTestCompose {
 
             import android.os.Bundle
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.whetstone.ScopeTo
@@ -869,11 +874,11 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest2(component: WhetstoneTest2Component): Unit {
-              val testClass = component.testClass
-              val test = component.test
-              val testSet = component.testSet
-              val testMap = component.testMap
-              val stateMachine = component.testStateMachine
+              val testClass = remember { component.testClass }
+              val test = remember { component.test }
+              val testSet = remember { component.testSet }
+              val testMap = remember { component.testMap }
+              val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
@@ -924,6 +929,7 @@ internal class FileGeneratorTestCompose {
 
             import android.os.Bundle
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.remember
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.whetstone.ScopeTo
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
@@ -990,7 +996,7 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val stateMachine = component.testStateMachine
+              val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
@@ -1035,6 +1041,7 @@ internal class FileGeneratorTestCompose {
 
             import android.os.Bundle
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.mad.whetstone.ScopeTo
@@ -1103,7 +1110,7 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalWhetstoneApi::class)
             private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
-              val stateMachine = component.testStateMachine
+              val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {

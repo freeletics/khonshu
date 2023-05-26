@@ -8,6 +8,7 @@ import com.freeletics.mad.whetstone.codegen.util.composable
 import com.freeletics.mad.whetstone.codegen.util.launch
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.freeletics.mad.whetstone.codegen.util.propertyName
+import com.freeletics.mad.whetstone.codegen.util.remember
 import com.freeletics.mad.whetstone.codegen.util.rememberCoroutineScope
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
@@ -34,10 +35,10 @@ internal class ComposeGenerator(
         return CodeBlock.builder()
             .apply {
                 data.composableParameter.forEach { parameter ->
-                    addStatement("val %L = component.%L", parameter.name, parameter.name)
+                    addStatement("val %L = %M { component.%L }", parameter.name, remember, parameter.name)
                 }
             }
-            .addStatement("val stateMachine = component.%L", data.stateMachine.propertyName)
+            .addStatement("val stateMachine = %M { component.%L }", remember, data.stateMachine.propertyName)
             .addStatement("val state = stateMachine.%M()", asComposeState)
             .addStatement("val currentState = state.value")
             .beginControlFlow("if (currentState != null)")
