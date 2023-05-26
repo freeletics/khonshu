@@ -1,9 +1,17 @@
 Change Log
 ==========
 
-## 0.14.1 **UNRELEASED**
+## 0.14.2 **UNRELEASED**
 
 -
+
+
+## 0.14.1 *(2023-05-26)*
+
+### Whetstone
+
+- Generated composables now you remember when retrieving objects from a component
+  to avoid creating new instances on each recomposition.
 
 
 ## 0.14.0 *(2023-05-10)*
