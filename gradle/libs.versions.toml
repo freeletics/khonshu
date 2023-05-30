@@ -36,7 +36,7 @@ kotlinpoet = "1.13.2"
 auto-service = "1.1.0"
 
 junit = "4.13.2"
-truth = "1.1.3"
+truth = "1.1.4"
 turbine = "0.13.0"
 kotlin-compile-testing = "0.2.1"
 
