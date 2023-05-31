@@ -15,7 +15,7 @@ internal class DeepLinkHandlerPatternSubject private constructor(
 
     companion object {
         private val SUBJECT_FACTORY: Factory<DeepLinkHandlerPatternSubject, DeepLinkHandler.Pattern> =
-            Factory { metadata, actual -> DeepLinkHandlerPatternSubject(metadata, actual) }
+            Factory { metadata, actual -> DeepLinkHandlerPatternSubject(metadata, actual!!) }
 
         @JvmStatic
         fun deepLinkHandlerPattern(): Factory<DeepLinkHandlerPatternSubject, DeepLinkHandler.Pattern> {

@@ -98,6 +98,15 @@ dependencyAnalysis {
             }
         }
 
+        project(":navigator:runtime") {
+            onUsedTransitiveDependencies {
+                exclude(
+                    // false positive
+                    "org.checkerframework:checker-qual",
+                )
+            }
+        }
+
         project(":deeplinks-plugin") {
             onIncorrectConfiguration {
                 // suggests junit to be api instead of testImplementation
