@@ -79,7 +79,6 @@ internal class FileGeneratorTestRendererFragment {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
 
             @OptIn(InternalWhetstoneApi::class)
@@ -95,7 +94,7 @@ internal class FileGeneratorTestRendererFragment {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -124,7 +123,7 @@ internal class FileGeneratorTestRendererFragment {
             public class WhetstoneTestRendererFragment : Fragment() {
               private lateinit var whetstoneTestRendererComponent: WhetstoneTestRendererComponent
 
-              public override fun onCreateView(
+              override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
@@ -210,7 +209,6 @@ internal class FileGeneratorTestRendererFragment {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
 
             @OptIn(InternalWhetstoneApi::class)
@@ -228,7 +226,7 @@ internal class FileGeneratorTestRendererFragment {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -257,7 +255,7 @@ internal class FileGeneratorTestRendererFragment {
             public class WhetstoneTestRendererFragment : Fragment() {
               private lateinit var whetstoneTestRendererComponent: WhetstoneTestRendererComponent
 
-              public override fun onCreateView(
+              override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
@@ -371,7 +369,6 @@ internal class FileGeneratorTestRendererFragment {
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
 
             @OptIn(InternalWhetstoneApi::class)
@@ -389,7 +386,7 @@ internal class FileGeneratorTestRendererFragment {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -418,7 +415,7 @@ internal class FileGeneratorTestRendererFragment {
             public class WhetstoneTestRendererFragment : Fragment() {
               private lateinit var whetstoneTestRendererComponent: WhetstoneTestRendererComponent
 
-              public override fun onCreateView(
+              override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
@@ -460,7 +457,7 @@ internal class FileGeneratorTestRendererFragment {
               @get:NavEntry(TestScreen::class)
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -495,7 +492,7 @@ internal class FileGeneratorTestRendererFragment {
             )
             public class TestScreenNavEntryComponentGetter @Inject constructor() : NavEntryComponentGetter {
               @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
-              public override fun retrieve(executor: NavigationExecutor, context: Context): Any =
+              override fun retrieve(executor: NavigationExecutor, context: Context): Any =
                   navEntryComponent(TestRoute::class, executor, context, TestParentScope::class,
                   TestDestinationScope::class) { parentComponent:
                   WhetstoneTestScreenNavEntryComponent.ParentComponent, savedStateHandle, testRoute ->
@@ -589,7 +586,6 @@ internal class FileGeneratorTestRendererFragment {
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
 
             @OptIn(InternalWhetstoneApi::class)
@@ -607,7 +603,7 @@ internal class FileGeneratorTestRendererFragment {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -636,7 +632,7 @@ internal class FileGeneratorTestRendererFragment {
             public class WhetstoneTestRendererFragment : Fragment() {
               private lateinit var whetstoneTestRendererComponent: WhetstoneTestRendererComponent
 
-              public override fun onCreateView(
+              override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
@@ -678,7 +674,7 @@ internal class FileGeneratorTestRendererFragment {
               @get:NavEntry(TestScreen::class)
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -713,7 +709,7 @@ internal class FileGeneratorTestRendererFragment {
             )
             public class TestScreenNavEntryComponentGetter @Inject constructor() : NavEntryComponentGetter {
               @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
-              public override fun retrieve(executor: NavigationExecutor, context: Context): Any =
+              override fun retrieve(executor: NavigationExecutor, context: Context): Any =
                   navEntryComponent(TestRoute::class, executor, context, AppScope::class, AppScope::class) {
                   parentComponent: WhetstoneTestScreenNavEntryComponent.ParentComponent, savedStateHandle,
                   testRoute ->
@@ -780,7 +776,6 @@ internal class FileGeneratorTestRendererFragment {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
 
             @OptIn(InternalWhetstoneApi::class)
@@ -796,7 +791,7 @@ internal class FileGeneratorTestRendererFragment {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -825,7 +820,7 @@ internal class FileGeneratorTestRendererFragment {
             public class WhetstoneTestRendererFragment : DialogFragment() {
               private lateinit var whetstoneTestRendererComponent: WhetstoneTestRendererComponent
 
-              public override fun onCreateView(
+              override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
