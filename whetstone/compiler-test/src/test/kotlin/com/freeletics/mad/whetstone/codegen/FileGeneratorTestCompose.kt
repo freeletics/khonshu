@@ -91,7 +91,6 @@ internal class FileGeneratorTestCompose {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -106,7 +105,7 @@ internal class FileGeneratorTestCompose {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -133,7 +132,7 @@ internal class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun WhetstoneTest(arguments: Bundle): Unit {
+            public fun WhetstoneTest(arguments: Bundle) {
               val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
                   WhetstoneTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
                 parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, argumentsForComponent)
@@ -144,7 +143,7 @@ internal class FileGeneratorTestCompose {
             
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
+            private fun WhetstoneTest(component: WhetstoneTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -219,7 +218,6 @@ internal class FileGeneratorTestCompose {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -236,7 +234,7 @@ internal class FileGeneratorTestCompose {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -263,7 +261,7 @@ internal class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun WhetstoneTest(testRoute: TestRoute): Unit {
+            public fun WhetstoneTest(testRoute: TestRoute) {
               val component = rememberComponent(TestParentScope::class, TestDestinationScope::class, testRoute)
                   { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle,
                   testRouteForComponent ->
@@ -277,7 +275,7 @@ internal class FileGeneratorTestCompose {
             
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
+            private fun WhetstoneTest(component: WhetstoneTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -379,7 +377,6 @@ internal class FileGeneratorTestCompose {
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -396,7 +393,7 @@ internal class FileGeneratorTestCompose {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -423,7 +420,7 @@ internal class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun WhetstoneTest(testRoute: TestRoute): Unit {
+            public fun WhetstoneTest(testRoute: TestRoute) {
               val component = rememberComponent(TestParentScope::class, TestDestinationScope::class, testRoute)
                   { parentComponent: WhetstoneTestComponent.ParentComponent, savedStateHandle,
                   testRouteForComponent ->
@@ -437,7 +434,7 @@ internal class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
+            private fun WhetstoneTest(component: WhetstoneTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -470,7 +467,7 @@ internal class FileGeneratorTestCompose {
               @get:NavEntry(TestScreen::class)
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -505,7 +502,7 @@ internal class FileGeneratorTestCompose {
             )
             public class TestScreenNavEntryComponentGetter @Inject constructor() : NavEntryComponentGetter {
               @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
-              public override fun retrieve(executor: NavigationExecutor, context: Context): Any =
+              override fun retrieve(executor: NavigationExecutor, context: Context): Any =
                   navEntryComponent(TestRoute::class, executor, context, TestParentScope::class,
                   TestDestinationScope::class) { parentComponent:
                   WhetstoneTestScreenNavEntryComponent.ParentComponent, savedStateHandle, testRoute ->
@@ -596,7 +593,6 @@ internal class FileGeneratorTestCompose {
             import javax.inject.Inject
             import kotlin.Any
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -613,7 +609,7 @@ internal class FileGeneratorTestCompose {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -640,7 +636,7 @@ internal class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun WhetstoneTest(testRoute: TestRoute): Unit {
+            public fun WhetstoneTest(testRoute: TestRoute) {
               val component = rememberComponent(AppScope::class, AppScope::class, testRoute) { parentComponent:
                   WhetstoneTestComponent.ParentComponent, savedStateHandle, testRouteForComponent ->
                 parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, testRouteForComponent)
@@ -653,7 +649,7 @@ internal class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
+            private fun WhetstoneTest(component: WhetstoneTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -686,7 +682,7 @@ internal class FileGeneratorTestCompose {
               @get:NavEntry(TestScreen::class)
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -721,7 +717,7 @@ internal class FileGeneratorTestCompose {
             )
             public class TestScreenNavEntryComponentGetter @Inject constructor() : NavEntryComponentGetter {
               @OptIn(InternalWhetstoneApi::class, InternalNavigatorApi::class)
-              public override fun retrieve(executor: NavigationExecutor, context: Context): Any =
+              override fun retrieve(executor: NavigationExecutor, context: Context): Any =
                   navEntryComponent(TestRoute::class, executor, context, AppScope::class, AppScope::class) {
                   parentComponent: WhetstoneTestScreenNavEntryComponent.ParentComponent, savedStateHandle,
                   testRoute ->
@@ -811,7 +807,6 @@ internal class FileGeneratorTestCompose {
             import kotlin.Int
             import kotlin.OptIn
             import kotlin.String
-            import kotlin.Unit
             import kotlin.collections.Map
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
@@ -835,7 +830,7 @@ internal class FileGeneratorTestCompose {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -862,7 +857,7 @@ internal class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun WhetstoneTest2(arguments: Bundle): Unit {
+            public fun WhetstoneTest2(arguments: Bundle) {
               val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
                   WhetstoneTest2Component.ParentComponent, savedStateHandle, argumentsForComponent ->
                 parentComponent.whetstoneTest2ComponentFactory().create(savedStateHandle, argumentsForComponent)
@@ -873,7 +868,7 @@ internal class FileGeneratorTestCompose {
             
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            private fun WhetstoneTest2(component: WhetstoneTest2Component): Unit {
+            private fun WhetstoneTest2(component: WhetstoneTest2Component) {
               val testClass = remember { component.testClass }
               val test = remember { component.test }
               val testSet = remember { component.testSet }
@@ -943,7 +938,6 @@ internal class FileGeneratorTestCompose {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
 
             @OptIn(InternalWhetstoneApi::class)
@@ -957,7 +951,7 @@ internal class FileGeneratorTestCompose {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -984,7 +978,7 @@ internal class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun WhetstoneTest(arguments: Bundle): Unit {
+            public fun WhetstoneTest(arguments: Bundle) {
               val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
                   WhetstoneTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
                 parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, argumentsForComponent)
@@ -995,7 +989,7 @@ internal class FileGeneratorTestCompose {
             
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
+            private fun WhetstoneTest(component: WhetstoneTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -1056,7 +1050,6 @@ internal class FileGeneratorTestCompose {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -1071,7 +1064,7 @@ internal class FileGeneratorTestCompose {
 
               public val closeables: Set<Closeable>
     
-              public override fun close(): Unit {
+              override fun close() {
                 closeables.forEach {
                   it.close()
                 }
@@ -1098,7 +1091,7 @@ internal class FileGeneratorTestCompose {
 
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            public fun WhetstoneTest(arguments: Bundle): Unit {
+            public fun WhetstoneTest(arguments: Bundle) {
               val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
                   WhetstoneTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
                 parentComponent.whetstoneTestComponentFactory().create(savedStateHandle, argumentsForComponent)
@@ -1109,7 +1102,7 @@ internal class FileGeneratorTestCompose {
             
             @Composable
             @OptIn(InternalWhetstoneApi::class)
-            private fun WhetstoneTest(component: WhetstoneTestComponent): Unit {
+            private fun WhetstoneTest(component: WhetstoneTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
