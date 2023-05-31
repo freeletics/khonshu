@@ -16,7 +16,7 @@ internal class DeepLinkHandlerSubject private constructor(
 
     companion object {
         private val SUBJECT_FACTORY: Factory<DeepLinkHandlerSubject, DeepLinkHandler> =
-            Factory { metadata, actual -> DeepLinkHandlerSubject(metadata, actual) }
+            Factory { metadata, actual -> DeepLinkHandlerSubject(metadata, actual!!) }
 
         @JvmStatic
         fun deepLinkHandler(): Factory<DeepLinkHandlerSubject, DeepLinkHandler> {
