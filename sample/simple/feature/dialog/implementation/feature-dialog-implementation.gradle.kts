@@ -21,4 +21,6 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.khonshu.codegen)
     implementation(libs.khonshu.codegen.scope)
+    implementation(projects.feature.bottomSheet.nav)
+    implementation(projects.feature.screen.nav)
 }

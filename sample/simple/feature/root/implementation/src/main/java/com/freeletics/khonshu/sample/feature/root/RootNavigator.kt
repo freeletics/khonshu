@@ -17,10 +17,10 @@ class RootNavigator @Inject constructor() : NavEventNavigator() {
     }
 
     fun navigateToDialog() {
-        navigateTo(DialogRoute)
+        navigateTo(DialogRoute(1))
     }
 
     fun navigateToBottomSheet() {
-        navigateTo(BottomSheetRoute)
+        navigateTo(BottomSheetRoute(1))
     }
 }

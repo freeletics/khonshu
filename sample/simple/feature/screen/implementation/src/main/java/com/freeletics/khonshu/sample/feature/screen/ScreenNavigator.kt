@@ -19,10 +19,10 @@ class ScreenNavigator @Inject constructor(
     }
 
     fun navigateToDialog() {
-        navigateTo(DialogRoute)
+        navigateTo(DialogRoute(route.number + 1))
     }
 
     fun navigateToBottomSheet() {
-        navigateTo(BottomSheetRoute)
+        navigateTo(BottomSheetRoute(route.number + 1))
     }
 }

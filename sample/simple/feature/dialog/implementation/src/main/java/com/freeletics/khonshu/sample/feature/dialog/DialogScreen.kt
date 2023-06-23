@@ -1,8 +1,11 @@
 package com.freeletics.khonshu.sample.feature.dialog
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
@@ -22,6 +25,7 @@ import com.freeletics.khonshu.sample.feature.dialog.nav.DialogRoute
 )
 @Composable
 fun DialogScreen(
+    state: DialogState,
     sendAction: (DialogAction) -> Unit,
 ) {
     Dialog(onDismissRequest = { sendAction(DialogAction.DismissRequested) }) {
@@ -32,7 +36,28 @@ fun DialogScreen(
                 .padding(vertical = 48.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            BasicText("Feature Dialog")
+            BasicText("Feature Dialog ${state.number}")
+
+            Spacer(Modifier.height(12.dp))
+
+            BasicText(
+                modifier = Modifier.clickable { sendAction(DialogAction.ScreenButtonClicked) },
+                text = "Open Screen",
+            )
+
+            Spacer(Modifier.height(12.dp))
+
+            BasicText(
+                modifier = Modifier.clickable { sendAction(DialogAction.DialogButtonClicked) },
+                text = "Open Dialog",
+            )
+
+            Spacer(Modifier.height(12.dp))
+
+            BasicText(
+                modifier = Modifier.clickable { sendAction(DialogAction.BottomSheetButtonClicked) },
+                text = "Open Bottom Sheet",
+            )
         }
     }
 }

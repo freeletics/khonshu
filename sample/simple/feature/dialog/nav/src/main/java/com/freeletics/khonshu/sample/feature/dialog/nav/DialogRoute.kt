@@ -4,4 +4,4 @@ import com.freeletics.khonshu.navigation.NavRoute
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-object DialogRoute : NavRoute
+data class DialogRoute(val number: Int) : NavRoute
