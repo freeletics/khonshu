@@ -19,6 +19,7 @@ dependencies {
 
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material)
     implementation(libs.mad.whetstone)
     implementation(libs.mad.whetstone.runtime)
     implementation(libs.mad.whetstone.scope)
