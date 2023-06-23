@@ -86,17 +86,20 @@ like this:
     that was passed as the generic type parameter. The lambda function then gets an instance of that
     `NavRoute` and calls the `@Composable` function that should be shown.
 
-    The other 2 functions to create destinations are `DialogDestination` and `BottomSheetDestination` -
-    they declare destinations that use a dialog or bottom sheet as a container instead of being shown
-    full screen.
+    There is also an `OverlayDestination` function to declare destinations that use a dialog or bottom 
+    sheet as a container instead of being shown full screen. 
 
     ```kotlin
-    val infoSheetDestination: NavDestination = BottomSheetDestination { route: InfoSheetRoute ->
-        InfoSheetContent(route)
+    val infoSheetDestination: NavDestination = OverlayDestination { route: InfoSheetRoute ->
+        ModalBottomSheet(onDismissRequest = { /* TODO */ }) {
+            InfoSheetContent(route)
+        }
     }
 
-    val confirmationDialogDestination: NavDestination = DialogDestination { route: ConfirmationDialogRoute ->
-        ConfirmationDialogContent(route)
+    val confirmationDialogDestination: NavDestination = OverlayDestination { route: ConfirmationDialogRoute ->
+        Dialog(onDismissRequest = { /* TODO */ }) {
+            ConfirmationDialogContent(route)
+        }
     }
     ```
 
@@ -116,7 +119,7 @@ like this:
     should extend `DialogFragment`.
 
     ```kotlin
-    val infoSheetDestination: NavDestination = BottomSheetDestination<InfoSheetRoute, InfoBottomSheetFragment>()
+    val infoSheetDestination: NavDestination = DialogDestination<InfoSheetRoute, InfoBottomSheetFragment>()
 
     val confirmationDialogDestination: NavDestination = DialogDestination<ConfirmationDialogRoute, ConfirmationDialogFragment>()
     ```

@@ -2,14 +2,6 @@ package com.freeletics.mad.navigator.compose
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ModalBottomSheetDefaults
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.contentColorFor
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -20,10 +12,6 @@ import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.window.Dialog
 import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.DeepLinkHandler
 import com.freeletics.mad.navigator.NavRoot
@@ -51,7 +39,6 @@ import kotlinx.coroutines.flow.map
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 public fun NavHost(
     startRoute: NavRoot,
@@ -59,11 +46,6 @@ public fun NavHost(
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
-    bottomSheetShape: Shape = MaterialTheme.shapes.large,
-    bottomSheetElevation: Dp = ModalBottomSheetDefaults.Elevation,
-    bottomSheetBackgroundColor: Color = MaterialTheme.colors.surface,
-    bottomSheetContentColor: Color = contentColorFor(bottomSheetBackgroundColor),
-    bottomSheetScrimColor: Color = ModalBottomSheetDefaults.scrimColor,
 ) {
     val executor = rememberNavigationExecutor(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
 
@@ -73,56 +55,8 @@ public fun NavHost(
     val saveableStateHolder = rememberSaveableStateHolder()
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
         val entries = executor.visibleEntries.value
-
-        val bottomSheetEntry = entries.lastOrNull { it.destination is BottomSheetDestination<*> }
-        val modalBottomSheetState = rememberBottomSheetState(bottomSheetEntry, executor)
-
-        ModalBottomSheetLayout(
-            sheetContent = {
-                if (bottomSheetEntry != null) {
-                    Show(bottomSheetEntry, executor, saveableStateHolder)
-                }
-            },
-            sheetState = modalBottomSheetState,
-            sheetShape = bottomSheetShape,
-            sheetElevation = bottomSheetElevation,
-            sheetBackgroundColor = bottomSheetBackgroundColor,
-            sheetContentColor = bottomSheetContentColor,
-            scrimColor = bottomSheetScrimColor,
-        ) {
-            Show(entries, executor, saveableStateHolder)
-        }
+        Show(entries, executor, saveableStateHolder)
     }
-}
-
-@Composable
-@ExperimentalMaterialApi
-private fun rememberBottomSheetState(
-    bottomSheetEntry: StackEntry<*>?,
-    executor: MultiStackNavigationExecutor,
-): ModalBottomSheetState {
-    val modalBottomSheetState = rememberModalBottomSheetState(
-        ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = true,
-    )
-
-    LaunchedEffect(modalBottomSheetState, bottomSheetEntry) {
-        if (bottomSheetEntry != null) {
-            modalBottomSheetState.show()
-
-            snapshotFlow { modalBottomSheetState.isVisible }
-                .distinctUntilChanged()
-                .collect {
-                    if (!it) {
-                        executor.navigateBack()
-                    }
-                }
-        } else {
-            modalBottomSheetState.hide()
-        }
-    }
-
-    return modalBottomSheetState
 }
 
 @Composable
@@ -132,18 +66,7 @@ private fun Show(
     saveableStateHolder: SaveableStateHolder,
 ) {
     entries.forEach { entry ->
-        when (entry.destination) {
-            is ScreenDestination -> {
-                Show(entry, executor, saveableStateHolder)
-            }
-            is DialogDestination<*> -> {
-                Dialog(onDismissRequest = { executor.navigateBack() }) {
-                    Show(entry, executor, saveableStateHolder)
-                }
-            }
-            // handled already in the layout
-            is BottomSheetDestination<*> -> {}
-        }
+        Show(entry, executor, saveableStateHolder)
     }
 }
 

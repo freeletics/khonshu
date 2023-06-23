@@ -2,32 +2,33 @@ public final class com/freeletics/mad/navigator/compose/ActivityDestination : co
 	public synthetic fun <init> (Lkotlin/reflect/KClass;Landroid/content/Intent;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
-public final class com/freeletics/mad/navigator/compose/BottomSheetDestination : com/freeletics/mad/navigator/compose/ContentDestination {
-	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun getContent ()Lkotlin/jvm/functions/Function3;
-	public fun getId-fAlktE8 ()Lkotlin/reflect/KClass;
-}
-
-public final class com/freeletics/mad/navigator/compose/DialogDestination : com/freeletics/mad/navigator/compose/ContentDestination {
-	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun getContent ()Lkotlin/jvm/functions/Function3;
-	public fun getId-fAlktE8 ()Lkotlin/reflect/KClass;
-}
-
 public abstract interface class com/freeletics/mad/navigator/compose/NavDestination {
 }
 
 public final class com/freeletics/mad/navigator/compose/NavHostKt {
-	public static final fun NavHost-lSURzpk (Lcom/freeletics/mad/navigator/NavRoot;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/graphics/Shape;FJJJLandroidx/compose/runtime/Composer;II)V
+	public static final fun NavHost (Lcom/freeletics/mad/navigator/NavRoot;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/freeletics/mad/navigator/compose/NavigationSetupKt {
 	public static final fun NavigationSetup (Lcom/freeletics/mad/navigator/NavEventNavigator;Landroidx/compose/runtime/Composer;I)V
 }
 
+public final class com/freeletics/mad/navigator/compose/OverlayDestination : com/freeletics/mad/navigator/compose/ContentDestination {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getContent ()Lkotlin/jvm/functions/Function3;
+	public fun getId-fAlktE8 ()Lkotlin/reflect/KClass;
+}
+
 public final class com/freeletics/mad/navigator/compose/ScreenDestination : com/freeletics/mad/navigator/compose/ContentDestination {
 	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getContent ()Lkotlin/jvm/functions/Function3;
 	public fun getId-fAlktE8 ()Lkotlin/reflect/KClass;
+}
+
+public final class com/freeletics/mad/navigator/compose/internal/ComposableSingletons$OverlayNavigatorKt {
+	public static final field INSTANCE Lcom/freeletics/mad/navigator/compose/internal/ComposableSingletons$OverlayNavigatorKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$runtime_compose_release ()Lkotlin/jvm/functions/Function3;
 }
 

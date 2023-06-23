@@ -17,15 +17,12 @@ androidx-annotations = "1.5.0"
 androidx-compose-compiler = "1.4.7"
 androidx-compose-runtime = "1.4.3"
 androidx-compose-ui = "1.4.3"
-androidx-compose-foundation = "1.4.3"
-androidx-compose-material = "1.4.3"
 androidx-core = "1.10.1"
 androidx-lifecycle = "2.6.1"
 androidx-fragment = "1.6.0"
 androidx-navigation = "2.6.0"
 androidx-savedstate = "1.2.1"
 
-accompanist = "0.30.1"
 uri = "0.0.12"
 
 inject = "1"
@@ -68,8 +65,6 @@ androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", ver
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "androidx-compose-runtime" }
 androidx-compose-runtime-saveable = { module = "androidx.compose.runtime:runtime-saveable", version.ref = "androidx-compose-runtime" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose-ui" }
-androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose-foundation" }
-androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidx-compose-material" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
@@ -85,8 +80,6 @@ androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "andr
 androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
 androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "android-gradle" }
 
-
-accompanist-navigation = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
 uri = { module = "com.eygraber:uri-kmp-android", version.ref = "uri" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }

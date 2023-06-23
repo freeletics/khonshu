@@ -5,6 +5,5 @@ package com.freeletics.mad.whetstone.compose
  */
 public enum class DestinationType {
     SCREEN,
-    DIALOG,
-    BOTTOM_SHEET,
+    OVERLAY,
 }
