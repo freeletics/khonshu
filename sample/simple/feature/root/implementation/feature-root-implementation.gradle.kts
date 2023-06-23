@@ -23,5 +23,6 @@ dependencies {
     implementation(libs.mad.whetstone.runtime)
     implementation(libs.mad.whetstone.scope)
     implementation(projects.feature.bottomSheet.nav)
+    implementation(projects.feature.dialog.nav)
     implementation(projects.feature.screen.nav)
 }

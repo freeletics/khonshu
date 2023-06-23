@@ -39,6 +39,13 @@ fun RootScreen(
         Spacer(Modifier.height(12.dp))
 
         BasicText(
+            modifier = Modifier.clickable { sendAction(RootAction.DialogButtonClicked) },
+            text = "Open Dialog",
+        )
+
+        Spacer(Modifier.height(12.dp))
+
+        BasicText(
             modifier = Modifier.clickable { sendAction(RootAction.BottomSheetButtonClicked) },
             text = "Open Bottom Sheet",
         )

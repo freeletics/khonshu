@@ -9,6 +9,7 @@ object RootState
 
 sealed interface RootAction {
     object ScreenButtonClicked : RootAction
+    object DialogButtonClicked : RootAction
     object BottomSheetButtonClicked : RootAction
 }
 
@@ -21,6 +22,7 @@ class RootStateMachine @Inject constructor(
     override suspend fun dispatch(action: RootAction) {
         when (action) {
             RootAction.ScreenButtonClicked -> navigator.navigateToScreen()
+            RootAction.DialogButtonClicked -> navigator.navigateToDialog()
             RootAction.BottomSheetButtonClicked -> navigator.navigateToBottomSheet()
         }
     }

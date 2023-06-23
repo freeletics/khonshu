@@ -10,6 +10,7 @@ data class ScreenState(val number: Int)
 
 sealed interface ScreenAction {
     object ScreenButtonClicked : ScreenAction
+    object DialogButtonClicked : ScreenAction
     object BottomSheetButtonClicked : ScreenAction
 }
 
@@ -23,6 +24,7 @@ class ScreenStateMachine @Inject constructor(
     override suspend fun dispatch(action: ScreenAction) {
         when (action) {
             ScreenAction.ScreenButtonClicked -> navigator.navigateToScreen()
+            ScreenAction.DialogButtonClicked -> navigator.navigateToDialog()
             ScreenAction.BottomSheetButtonClicked -> navigator.navigateToBottomSheet()
         }
     }
