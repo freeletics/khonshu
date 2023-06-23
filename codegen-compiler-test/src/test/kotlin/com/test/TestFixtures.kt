@@ -3,7 +3,7 @@ package com.test
 import android.os.Parcel
 import android.view.View
 import androidx.viewbinding.ViewBinding
-import com.freeletics.mad.navigation.NavRoute
+import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.mad.statemachine.StateMachine
 import kotlinx.coroutines.flow.Flow
 

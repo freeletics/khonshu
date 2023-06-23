@@ -9,7 +9,7 @@ device or emulator. The test artifact is heavily inspired by the
 ## Dependency
 
 ```groovy
-testImplementation("com.freeletics.mad:navigation-testing:<latest-version>")
+testImplementation("com.freeletics.khonshu:navigation-testing:<latest-version>")
 ```
 
 

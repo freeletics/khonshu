@@ -1,4 +1,4 @@
-public abstract class com/freeletics/mad/deeplinks/plugin/DeeplinksManifestConfiguratorTask : org/gradle/api/DefaultTask {
+public abstract class com/freeletics/khonshu/deeplinks/plugin/DeeplinksManifestConfiguratorTask : org/gradle/api/DefaultTask {
 	public fun <init> ()V
 	public abstract fun getDeeplinksConfigurationFile ()Lorg/gradle/api/file/RegularFileProperty;
 	public abstract fun getMergedManifest ()Lorg/gradle/api/file/RegularFileProperty;
@@ -6,7 +6,7 @@ public abstract class com/freeletics/mad/deeplinks/plugin/DeeplinksManifestConfi
 	public final fun taskAction ()V
 }
 
-public abstract class com/freeletics/mad/deeplinks/plugin/DeeplinksPlugin : org/gradle/api/Plugin {
+public abstract class com/freeletics/khonshu/deeplinks/plugin/DeeplinksPlugin : org/gradle/api/Plugin {
 	public fun <init> ()V
 	public synthetic fun apply (Ljava/lang/Object;)V
 	public fun apply (Lorg/gradle/api/Project;)V

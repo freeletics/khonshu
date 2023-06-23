@@ -14,7 +14,7 @@ jobs:
   publish:
 
     runs-on: ubuntu-latest
-    if: github.repository == 'freeletics/mad'
+    if: github.repository == 'freeletics/khonshu'
 
     permissions:
       contents: read
@@ -59,7 +59,7 @@ jobs:
           cp README.md docs/index.md
           cp CHANGELOG.md docs/changelog.md
           # Update page title
-          sed -i 's/# MAD/# Overview/' docs/index.md
+          sed -i 's/# Khonshu/# Overview/' docs/index.md
           # Set current version in docs
           sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/navigation/get-started.md
           sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/navigation/testing.md

@@ -19,7 +19,7 @@ coroutines = "1.7.2"
 dagger = "2.46.1"
 dependency-analysis-gradle = "1.20.0"
 fgp = "0.3.7"
-mad = "0.14.1"
+khonshu = "0.14.1"
 inject = "1"
 java-target = "11"
 java-toolchain = "17"
@@ -45,18 +45,18 @@ coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
-mad-navigator = { module = "com.freeletics.mad:navigation", version.ref = "mad" }
-mad-navigator-compose = { module = "com.freeletics.mad:navigation-compose", version.ref = "mad" }
-mad-codegen-compiler = { module = "com.freeletics.mad:codegen-compiler", version.ref = "mad" }
-mad-codegen = { module = "com.freeletics.mad:codegen", version.ref = "mad" }
-mad-codegen-compose = { module = "com.freeletics.mad:codegen-compose", version.ref = "mad" }
-mad-codegen-scope = { module = "com.freeletics.mad:codegen-scope", version.ref = "mad" }
-mad-statemachine = { module = "com.freeletics.mad:state-machine", version.ref = "mad" }
+khonshu-navigator = { module = "com.freeletics.khonshu:navigation", version.ref = "khonshu" }
+khonshu-navigator-compose = { module = "com.freeletics.khonshu:navigation-compose", version.ref = "khonshu" }
+khonshu-codegen-compiler = { module = "com.freeletics.khonshu:codegen-compiler", version.ref = "khonshu" }
+khonshu-codegen = { module = "com.freeletics.khonshu:codegen", version.ref = "khonshu" }
+khonshu-codegen-compose = { module = "com.freeletics.khonshu:codegen-compose", version.ref = "khonshu" }
+khonshu-codegen-scope = { module = "com.freeletics.khonshu:codegen-scope", version.ref = "khonshu" }
+khonshu-statemachine = { module = "com.freeletics.khonshu:state-machine", version.ref = "khonshu" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 # TODO: remove when updated naming is reflected in FGP
-mad-whetstone-compiler = { module = "com.freeletics.mad:codegen-compiler", version.ref = "mad" }
-mad-whetstone-scope = { module = "com.freeletics.mad:codegen-scope", version.ref = "mad" }
+mad-whetstone-compiler = { module = "com.freeletics.khonshu:codegen-compiler", version.ref = "khonshu" }
+mad-whetstone-scope = { module = "com.freeletics.khonshu:codegen-scope", version.ref = "khonshu" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }

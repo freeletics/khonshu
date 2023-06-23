@@ -19,7 +19,7 @@ dependencies {
     testImplementation(projects.navigation)
     testImplementation(projects.navigationFragment)
     testImplementation(projects.navigationCompose)
-    testImplementation(projects.stateMachine)
+    testImplementation(projects.stateMachineLegacy)
     testImplementation(libs.androidx.compose.runtime)
     testImplementation(libs.androidx.viewbinding)
     testImplementation(libs.renderer)
@@ -38,7 +38,9 @@ dependencies {
 // exclude external dependency on state machine connect, we include the local module instead
 configurations.configureEach {
     resolutionStrategy.dependencySubstitution.run {
-        substitute(module("com.freeletics.mad:state-machine"))
+        substitute(module("com.freeletics.khonshu:state-machine"))
             .using(project(projects.stateMachine.dependencyProject.path))
+        substitute(module("com.freeletics.mad:state-machine"))
+            .using(project(projects.stateMachineLegacy.dependencyProject.path))
     }
 }

@@ -12,4 +12,4 @@ plugins {
     id("com.freeletics.gradle.settings").version("0.3.7")
 }
 
-rootProject.name = "mad"
+rootProject.name = "khonshu"

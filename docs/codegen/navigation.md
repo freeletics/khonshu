@@ -1,6 +1,6 @@
 # Navigation integration
 
-The codegen also simplifies the usage of the [MAD Navigation library](../navigation/get-started.md).
+The codegen also simplifies the usage of the [Khonshu Navigation library](../navigation/get-started.md).
 
 ## Basic usage
 
@@ -80,7 +80,7 @@ will be provided in to a `Set` in the component that uses `destinationScope` as 
 scope (usually an app wide or an Activity level scope). With that it's not necessary
 to manually create a `Set` of all destinations anymore. It can simply be injected.
 
-The integration of MAD's Codegen and Navigation libraries also expects a `NavEventNavigator`
+The integration of Khonshu's Codegen and Navigation libraries also expects a `NavEventNavigator`
 to be injectable. This can be easily achieved by adding
 `@ScopeTo(ExampleScope::class) @ContributesBinding(ExampleScope::class, NavEventNavigator::class)`
 to a subclass of it. The generated code will automatically take care of setting up

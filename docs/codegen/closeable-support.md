@@ -1,6 +1,6 @@
 # Support for Closeables
 
-MAD's Codegen supports `java.io.Closeable`s by propagating each `Closeable` contributed
+Khonshu's Codegen supports `java.io.Closeable`s by propagating each `Closeable` contributed
 to a scoped Component to be bound to its internal `androidx.lifecycle.ViewModel`. When the
 corresponding NavDestination is cleared from the back stack and hence `ViewModel.onCleared()`
 is called, all bound `Closeable`s will be automatically closed.
