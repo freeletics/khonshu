@@ -8,7 +8,9 @@ freeletics {
 }
 
 dependencies {
-    implementation(libs.fl.navigator.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
+    implementation(libs.mad.navigator)
+    implementation(libs.mad.navigator.compose)
     implementation(projects.feature.a.implementation)
     implementation(projects.feature.a.nav)
     implementation(projects.feature.bottomSheet.implementation)

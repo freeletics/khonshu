@@ -3,6 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(libs.fl.navigator.runtime)
-    implementation(libs.androidx.annotations)
+    api(libs.mad.navigator)
 }

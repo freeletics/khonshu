@@ -3,7 +3,6 @@
     <application>
         <activity
             android:name="com.freeletics.mad.sample.feature.main.MainActivity"
-            android:screenOrientation="portrait"
             android:taskAffinity=".MainActivity"
             android:configChanges="mcc|mnc|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:windowSoftInputMode="adjustResize"
