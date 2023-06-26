@@ -348,8 +348,8 @@ internal class FileGeneratorTestRendererFragment {
             import com.freeletics.mad.navigator.fragment.requireRoute
             import com.freeletics.mad.whetstone.NavEntry
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.DestinationComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.NavDestinationComponent
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.navEntryComponent
@@ -503,7 +503,7 @@ internal class FileGeneratorTestRendererFragment {
 
             @ContributesTo(TestDestinationScope::class)
             @OptIn(InternalWhetstoneApi::class)
-            public interface WhetstoneTestScreenNavEntryDestinationComponent : DestinationComponent
+            public interface WhetstoneTestScreenNavEntryNavDestinationComponent : NavDestinationComponent
             
         """.trimIndent()
 
@@ -567,8 +567,8 @@ internal class FileGeneratorTestRendererFragment {
             import com.freeletics.mad.whetstone.AppScope
             import com.freeletics.mad.whetstone.NavEntry
             import com.freeletics.mad.whetstone.ScopeTo
-            import com.freeletics.mad.whetstone.`internal`.DestinationComponent
             import com.freeletics.mad.whetstone.`internal`.InternalWhetstoneApi
+            import com.freeletics.mad.whetstone.`internal`.NavDestinationComponent
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetter
             import com.freeletics.mad.whetstone.`internal`.NavEntryComponentGetterKey
             import com.freeletics.mad.whetstone.`internal`.navEntryComponent
@@ -720,7 +720,7 @@ internal class FileGeneratorTestRendererFragment {
 
             @ContributesTo(AppScope::class)
             @OptIn(InternalWhetstoneApi::class)
-            public interface WhetstoneTestScreenNavEntryDestinationComponent : DestinationComponent
+            public interface WhetstoneTestScreenNavEntryNavDestinationComponent : NavDestinationComponent
             
         """.trimIndent()
 

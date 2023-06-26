@@ -11,7 +11,7 @@ import com.freeletics.mad.whetstone.codegen.common.ModuleGenerator
 import com.freeletics.mad.whetstone.codegen.compose.ComposeScreenGenerator
 import com.freeletics.mad.whetstone.codegen.fragment.ComposeFragmentGenerator
 import com.freeletics.mad.whetstone.codegen.fragment.RendererFragmentGenerator
-import com.freeletics.mad.whetstone.codegen.nav.DestinationComponentGenerator
+import com.freeletics.mad.whetstone.codegen.nav.NavDestinationComponentGenerator
 import com.freeletics.mad.whetstone.codegen.nav.NavDestinationModuleGenerator
 import com.freeletics.mad.whetstone.codegen.nav.NavEntryComponentGetterGenerator
 import com.squareup.kotlinpoet.FileSpec
@@ -85,7 +85,7 @@ public class FileGenerator {
             val componentGenerator = ComponentGenerator(data)
             val moduleGenerator = ModuleGenerator(data)
             val componentGetterGenerator = NavEntryComponentGetterGenerator(data)
-            val destinationComponentGenerator = DestinationComponentGenerator(data)
+            val destinationComponentGenerator = NavDestinationComponentGenerator(data)
 
             addType(componentGenerator.generate())
             addType(moduleGenerator.generate())

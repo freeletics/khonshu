@@ -34,7 +34,7 @@ internal val navEntryComponentGetterKey = ClassName(
     "com.freeletics.mad.whetstone.internal",
     "NavEntryComponentGetterKey",
 )
-internal val destinationComponent = ClassName("com.freeletics.mad.whetstone.internal", "DestinationComponent")
+internal val destinationComponent = ClassName("com.freeletics.mad.whetstone.internal", "NavDestinationComponent")
 
 // Navigator
 internal val navEventNavigator = ClassName("com.freeletics.mad.navigator", "NavEventNavigator")
