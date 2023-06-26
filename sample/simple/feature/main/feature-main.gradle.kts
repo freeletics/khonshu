@@ -8,10 +8,20 @@ freeletics {
 }
 
 dependencies {
-    implementation(libs.androidx.annotations)
+    api(libs.androidx.activity)
+    api(libs.androidx.compose.runtime)
+    api(libs.androidx.lifecycle.viewmodel.savedstate)
+    api(libs.coroutines)
+    api(libs.mad.navigator.compose)
+    api(libs.mad.statemachine)
+
     implementation(libs.androidx.activity.compose)
-    implementation(libs.fl.navigator.runtime.compose)
-    implementation(libs.fl.whetstone.runtime.compose)
-    implementation(libs.fl.whetstone.scope)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.mad.navigator)
+    implementation(libs.mad.whetstone.runtime)
+    implementation(libs.mad.whetstone.runtime.compose)
+    implementation(libs.mad.whetstone.scope)
     implementation(projects.feature.a.nav)
 }
