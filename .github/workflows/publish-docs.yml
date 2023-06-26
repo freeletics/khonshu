@@ -59,42 +59,36 @@ jobs:
           cp README.md docs/index.md
           cp CHANGELOG.md docs/changelog.md
           # Update page title
-          sed -i 's/# Modern Android Development - The Freeletics Way/# Overview/' docs/index.md
+          sed -i 's/# MAD/# Overview/' docs/index.md
           # Set current version in docs
-          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/navigator/get-started.md
-          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/navigator/testing.md
-          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/whetstone/get-started.md
-          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/whetstone/navigation.md
+          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/navigation/get-started.md
+          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/navigation/testing.md
+          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/codegen/get-started.md
+          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/codegen/navigation.md
           sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/helpers.md
           # Copy Dokka files
-          mkdir -p docs/navigator/API/runtime
-          cp -R navigator/runtime/build/dokka/html/. docs/navigator/API/runtime
-          mkdir -p docs/navigator/API/runtime-compose
-          cp -R navigator/runtime-compose/build/dokka/html/. docs/navigator/API/runtime-compose/
-          mkdir -p docs/navigator/API/runtime-fragment
-          cp -R navigator/runtime-fragment/build/dokka/html/. docs/navigator/API/runtime-fragment/
-          mkdir -p docs/navigator/API/testing
-          cp -R navigator/testing/build/dokka/html/. docs/navigator/API/testing/
+          mkdir -p docs/navigation/API/runtime
+          cp -R navigation/build/dokka/html/. docs/navigation/API/runtime
+          mkdir -p docs/navigation/API/runtime-compose
+          cp -R navigation-compose/build/dokka/html/. docs/navigation/API/compose/
+          mkdir -p docs/navigation/API/runtime-fragment
+          cp -R navigation-fragment/build/dokka/html/. docs/navigation/API/fragment/
+          mkdir -p docs/navigation/API/testing
+          cp -R navigation-testing/build/dokka/html/. docs/navigation/API/testing/
           mkdir -p docs/helpers/API/state-machine
-          cp -R state-machine/runtime/build/dokka/html/. docs/helpers/API/state-machine/
+          cp -R state-machine/build/dokka/html/. docs/helpers/API/state-machine/
           mkdir -p docs/helpers/API/state-machine-testing
-          cp -R state-machine/testing/build/dokka/html/. docs/helpers/API/state-machine-testing/
+          cp -R state-machine-testing/build/dokka/html/. docs/helpers/API/state-machine-testing/
           mkdir -p docs/helpers/API/text-resource
           cp -R text-resource/build/dokka/html/. docs/helpers/API/text-resource/
-          mkdir -p docs/whetstone/API/runtime
-          cp -R whetstone/runtime/build/dokka/html/. docs/whetstone/API/runtime/
-          mkdir -p docs/whetstone/API/runtime-compose
-          cp -R whetstone/runtime-compose/build/dokka/html/. docs/whetstone/API/runtime-compose/
-          mkdir -p docs/whetstone/API/runtime-fragment
-          cp -R whetstone/runtime-fragment/build/dokka/html/. docs/whetstone/API/runtime-fragment/
-          mkdir -p docs/whetstone/API/navigation
-          cp -R whetstone/navigation/build/dokka/html/. docs/whetstone/API/navigation/
-          mkdir -p docs/whetstone/API/navigation-compose
-          cp -R whetstone/navigation-compose/build/dokka/html/. docs/whetstone/API/navigation-compose/
-          mkdir -p docs/whetstone/API/navigation-fragment
-          cp -R whetstone/navigation-fragment/build/dokka/html/. docs/whetstone/API/navigation-fragment/
-          mkdir -p docs/whetstone/API/scope
-          cp -R whetstone/scope/build/dokka/html/. docs/whetstone/API/scope/
+          mkdir -p docs/codegen/API/runtime
+          cp -R codegen/build/dokka/html/. docs/codegen/API/runtime/
+          mkdir -p docs/codegen/API/compose
+          cp -R codegen-compose/build/dokka/html/. docs/codegen/API/compose/
+          mkdir -p docs/codegen/API/fragment
+          cp -R codegen-fragment/build/dokka/html/. docs/codegen/API/fragment/
+          mkdir -p docs/codegen/API/scope
+          cp -R codegen-scope/build/dokka/html/. docs/codegen/API/scope/
 
       - name: Build MkDocs
         run: mkdocs build

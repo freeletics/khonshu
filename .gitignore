@@ -7,6 +7,6 @@ kotlin-js-store/
 
 docs/index.md
 docs/changelog.md
-docs/navigator/API
-docs/whetstone/API
+docs/codegen/API
+docs/navigation/API
 docs/helpers/API

@@ -1,0 +1,39 @@
+public abstract interface annotation class com/freeletics/mad/codegen/fragment/ComposeDestination : java/lang/annotation/Annotation {
+	public abstract fun destinationScope ()Ljava/lang/Class;
+	public abstract fun destinationType ()Lcom/freeletics/mad/codegen/fragment/DestinationType;
+	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun route ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public abstract interface annotation class com/freeletics/mad/codegen/fragment/ComposeFragment : java/lang/annotation/Annotation {
+	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun scope ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public final class com/freeletics/mad/codegen/fragment/DestinationType : java/lang/Enum {
+	public static final field DIALOG Lcom/freeletics/mad/codegen/fragment/DestinationType;
+	public static final field SCREEN Lcom/freeletics/mad/codegen/fragment/DestinationType;
+	public static fun valueOf (Ljava/lang/String;)Lcom/freeletics/mad/codegen/fragment/DestinationType;
+	public static fun values ()[Lcom/freeletics/mad/codegen/fragment/DestinationType;
+}
+
+public abstract interface annotation class com/freeletics/mad/codegen/fragment/RendererDestination : java/lang/annotation/Annotation {
+	public abstract fun destinationScope ()Ljava/lang/Class;
+	public abstract fun destinationType ()Lcom/freeletics/mad/codegen/fragment/DestinationType;
+	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun route ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public abstract interface annotation class com/freeletics/mad/codegen/fragment/RendererFragment : java/lang/annotation/Annotation {
+	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun scope ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+

@@ -1,0 +1,21 @@
+public abstract interface annotation class com/freeletics/mad/codegen/compose/ComposeDestination : java/lang/annotation/Annotation {
+	public abstract fun destinationScope ()Ljava/lang/Class;
+	public abstract fun destinationType ()Lcom/freeletics/mad/codegen/compose/DestinationType;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun route ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public abstract interface annotation class com/freeletics/mad/codegen/compose/ComposeScreen : java/lang/annotation/Annotation {
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun scope ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public final class com/freeletics/mad/codegen/compose/DestinationType : java/lang/Enum {
+	public static final field OVERLAY Lcom/freeletics/mad/codegen/compose/DestinationType;
+	public static final field SCREEN Lcom/freeletics/mad/codegen/compose/DestinationType;
+	public static fun valueOf (Ljava/lang/String;)Lcom/freeletics/mad/codegen/compose/DestinationType;
+	public static fun values ()[Lcom/freeletics/mad/codegen/compose/DestinationType;
+}
+
