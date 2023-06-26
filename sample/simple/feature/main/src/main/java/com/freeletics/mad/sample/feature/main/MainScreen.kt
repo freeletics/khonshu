@@ -1,10 +1,10 @@
 package com.freeletics.mad.sample.feature.main
 
 import androidx.compose.runtime.Composable
-import com.freeletics.mad.navigator.compose.NavDestination
-import com.freeletics.mad.navigator.compose.NavHost
+import com.freeletics.mad.codegen.compose.ComposeScreen
+import com.freeletics.mad.navigation.compose.NavDestination
+import com.freeletics.mad.navigation.compose.NavHost
 import com.freeletics.mad.sample.feature.root.nav.RootRoute
-import com.freeletics.mad.whetstone.compose.ComposeScreen
 
 @ComposeScreen(
     scope = MainActivity::class,

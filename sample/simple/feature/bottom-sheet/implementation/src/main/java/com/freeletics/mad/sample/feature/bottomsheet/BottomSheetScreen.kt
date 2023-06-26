@@ -10,9 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.freeletics.mad.codegen.compose.ComposeDestination
+import com.freeletics.mad.codegen.compose.DestinationType
 import com.freeletics.mad.sample.feature.bottomsheet.nav.BottomSheetRoute
-import com.freeletics.mad.whetstone.compose.ComposeDestination
-import com.freeletics.mad.whetstone.compose.DestinationType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @ComposeDestination(
