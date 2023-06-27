@@ -15,13 +15,11 @@ dependencies {
     api(libs.mad.navigator.compose)
     api(libs.mad.statemachine)
     api(libs.mad.whetstone.compose)
-    api(projects.feature.screen.nav)
+    api(projects.feature.dialog.nav)
 
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.mad.whetstone)
     implementation(libs.mad.whetstone.runtime)
     implementation(libs.mad.whetstone.scope)
-    implementation(projects.feature.bottomSheet.nav)
-    implementation(projects.feature.dialog.nav)
 }

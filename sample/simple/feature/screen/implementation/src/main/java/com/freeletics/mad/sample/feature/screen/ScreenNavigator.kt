@@ -2,6 +2,7 @@ package com.freeletics.mad.sample.feature.screen
 
 import com.freeletics.mad.navigator.NavEventNavigator
 import com.freeletics.mad.sample.feature.bottomsheet.nav.BottomSheetRoute
+import com.freeletics.mad.sample.feature.dialog.nav.DialogRoute
 import com.freeletics.mad.sample.feature.screen.nav.ScreenRoute
 import com.freeletics.mad.whetstone.ScopeTo
 import com.squareup.anvil.annotations.ContributesBinding
@@ -15,6 +16,10 @@ class ScreenNavigator @Inject constructor(
 
     fun navigateToScreen() {
         navigateTo(ScreenRoute(route.number + 1))
+    }
+
+    fun navigateToDialog() {
+        navigateTo(DialogRoute)
     }
 
     fun navigateToBottomSheet() {

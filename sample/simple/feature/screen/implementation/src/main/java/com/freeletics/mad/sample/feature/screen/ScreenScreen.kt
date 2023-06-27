@@ -40,6 +40,13 @@ fun ScreenScreen(
         Spacer(Modifier.height(12.dp))
 
         BasicText(
+            modifier = Modifier.clickable { sendAction(ScreenAction.DialogButtonClicked) },
+            text = "Open Dialog",
+        )
+
+        Spacer(Modifier.height(12.dp))
+
+        BasicText(
             modifier = Modifier.clickable { sendAction(ScreenAction.BottomSheetButtonClicked) },
             text = "Open Bottom Sheet",
         )
