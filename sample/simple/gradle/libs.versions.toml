@@ -18,7 +18,7 @@ anvil = "2.4.6"
 coroutines = "1.7.1"
 dagger = "2.46.1"
 dependency-analysis-gradle = "1.20.0"
-fgp = "0.3.4"
+fgp = "0.3.7"
 mad = "0.14.1"
 inject = "1"
 java-target = "11"
@@ -48,13 +48,11 @@ inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 mad-navigator = { module = "com.freeletics.mad:navigator", version.ref = "mad" }
 mad-navigator-compose = { module = "com.freeletics.mad:navigator-compose", version.ref = "mad" }
 mad-whetstone-compiler = { module = "com.freeletics.mad:whetstone-compiler", version.ref = "mad" }
-fl-whetstone-compiler = { module = "com.freeletics.mad:whetstone-compiler", version.ref = "mad" }
 mad-whetstone = { module = "com.freeletics.mad:whetstone-navigation", version.ref = "mad" }
 mad-whetstone-compose = { module = "com.freeletics.mad:whetstone-navigation-compose", version.ref = "mad" }
 mad-whetstone-runtime = { module = "com.freeletics.mad:whetstone-runtime", version.ref = "mad" }
 mad-whetstone-runtime-compose = { module = "com.freeletics.mad:whetstone-runtime-compose", version.ref = "mad" }
 mad-whetstone-scope = { module = "com.freeletics.mad:whetstone-scope", version.ref = "mad" }
-fl-whetstone-scope = { module = "com.freeletics.mad:whetstone-scope", version.ref = "mad" }
 mad-statemachine = { module = "com.freeletics.mad:state-machine", version.ref = "mad" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
