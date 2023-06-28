@@ -7,12 +7,12 @@ import com.freeletics.mad.whetstone.codegen.util.destinationComponent
 import com.freeletics.mad.whetstone.codegen.util.optInAnnotation
 import com.squareup.kotlinpoet.TypeSpec
 
-internal class DestinationComponentGenerator(
+internal class NavDestinationComponentGenerator(
     override val data: BaseData,
 ) : Generator<BaseData>() {
 
     fun generate(): TypeSpec {
-        return TypeSpec.interfaceBuilder("Whetstone${data.baseName}DestinationComponent")
+        return TypeSpec.interfaceBuilder("Whetstone${data.baseName}NavDestinationComponent")
             .addAnnotation(contributesToAnnotation(data.navigation!!.destinationScope))
             .addAnnotation(optInAnnotation())
             .addSuperinterface(destinationComponent)

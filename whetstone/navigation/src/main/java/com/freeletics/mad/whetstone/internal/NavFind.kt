@@ -15,7 +15,7 @@ public fun <T : Any> Context.findComponentByScope(
     executor: NavigationExecutor,
 ): T {
     if (scope != destinationScope) {
-        val destinationComponent = find(destinationScope) as? DestinationComponent
+        val destinationComponent = find(destinationScope) as? NavDestinationComponent
         val getter = destinationComponent?.navEntryComponentGetters?.get(scope.java)
         if (getter != null) {
             @Suppress("UNCHECKED_CAST")
