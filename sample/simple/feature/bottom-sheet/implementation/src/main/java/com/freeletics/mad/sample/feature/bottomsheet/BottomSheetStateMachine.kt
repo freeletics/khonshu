@@ -9,10 +9,18 @@ sealed interface BottomSheetState
 
 object Init : BottomSheetState
 
-sealed interface BottomSheetAction
+sealed interface BottomSheetAction {
+    object DismissRequested : BottomSheetAction
+}
 
-class BottomSheetStateMachine @Inject constructor() : StateMachine<BottomSheetState, BottomSheetAction> {
+class BottomSheetStateMachine @Inject constructor(
+    private val navigator: BottomSheetNavigator,
+) : StateMachine<BottomSheetState, BottomSheetAction> {
     override val state: Flow<BottomSheetState> = flowOf(Init)
 
-    override suspend fun dispatch(action: BottomSheetAction) {}
+    override suspend fun dispatch(action: BottomSheetAction) {
+        when (action) {
+            BottomSheetAction.DismissRequested -> navigator.navigateBack()
+        }
+    }
 }

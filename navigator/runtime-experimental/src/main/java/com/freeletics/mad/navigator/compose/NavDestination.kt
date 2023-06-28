@@ -35,33 +35,17 @@ internal class ScreenDestination<T : BaseRoute>(
 ) : ContentDestination<T>
 
 /**
- * Creates a new [NavDestination] that represents a dialog. The class of [T] will be used
- * as a unique identifier. The given [content] will be shown inside the dialog window when
+ * Creates a new [NavDestination] that is shown on top a [ScreenDestination], for example a dialog or bottom sheet. The
+ * class of [T] will be used as a unique identifier. The given [content] will be shown inside the dialog window when
  * navigating to it by using an instance of [T].
  */
 @Suppress("FunctionName")
-public inline fun <reified T : NavRoute> DialogDestination(
+public inline fun <reified T : NavRoute> OverlayDestination(
     noinline content: @Composable (T) -> Unit,
-): NavDestination = DialogDestination(DestinationId(T::class), content)
+): NavDestination = OverlayDestination(DestinationId(T::class), content)
 
 @PublishedApi
-internal class DialogDestination<T : NavRoute>(
-    override val id: DestinationId<T>,
-    override val content: @Composable (T) -> Unit,
-) : ContentDestination<T>
-
-/**
- * Creates a new [NavDestination] that represents a bottom sheet. The class of [T] will be used
- * as a unique identifier. The given [content] will be shown inside the bottom sheet
- * when navigating to it by using an instance of [T].
- */
-@Suppress("FunctionName")
-public inline fun <reified T : NavRoute> BottomSheetDestination(
-    noinline content: @Composable (T) -> Unit,
-): NavDestination = BottomSheetDestination(DestinationId(T::class), content)
-
-@PublishedApi
-internal class BottomSheetDestination<T : NavRoute>(
+internal class OverlayDestination<T : NavRoute>(
     override val id: DestinationId<T>,
     override val content: @Composable (T) -> Unit,
 ) : ContentDestination<T>

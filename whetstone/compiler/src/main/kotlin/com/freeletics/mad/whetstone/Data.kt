@@ -1,8 +1,7 @@
 package com.freeletics.mad.whetstone
 
-import com.freeletics.mad.whetstone.codegen.util.composeBottomSheetDestination
 import com.freeletics.mad.whetstone.codegen.util.composeDestination
-import com.freeletics.mad.whetstone.codegen.util.composeDialogDestination
+import com.freeletics.mad.whetstone.codegen.util.composeOverlayDestination
 import com.freeletics.mad.whetstone.codegen.util.composeScreenDestination
 import com.freeletics.mad.whetstone.codegen.util.fragmentDestination
 import com.freeletics.mad.whetstone.codegen.util.fragmentDialogDestination
@@ -119,8 +118,7 @@ public sealed interface Navigation {
 
         override val destinationMethod: MemberName = when (destinationType) {
             "SCREEN" -> composeScreenDestination
-            "DIALOG" -> composeDialogDestination
-            "BOTTOM_SHEET" -> composeBottomSheetDestination
+            "OVERLAY" -> composeOverlayDestination
             else -> throw IllegalArgumentException("Unknown destinationType $destinationType")
         }
     }

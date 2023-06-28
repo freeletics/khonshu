@@ -7,11 +7,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 object DialogState
 
-sealed interface DialogAction
+sealed interface DialogAction {
+    object DismissRequested : DialogAction
+}
 
-class DialogStateMachine @Inject constructor() : StateMachine<DialogState, DialogAction> {
+class DialogStateMachine @Inject constructor(
+    private val navigator: DialogNavigator,
+) : StateMachine<DialogState, DialogAction> {
     private val _state = MutableStateFlow(DialogState)
     override val state: Flow<DialogState> = _state
 
-    override suspend fun dispatch(action: DialogAction) {}
+    override suspend fun dispatch(action: DialogAction) {
+        when (action) {
+            DialogAction.DismissRequested -> navigator.navigateBack()
+        }
+    }
 }

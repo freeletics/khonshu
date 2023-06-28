@@ -1,24 +1,17 @@
 package com.freeletics.mad.navigator.compose
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ModalBottomSheetDefaults
-import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.ComposeNavigator
-import androidx.navigation.compose.DialogNavigator
 import androidx.navigation.compose.NavHost as AndroidXNavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
@@ -27,6 +20,8 @@ import com.freeletics.mad.navigator.BaseRoute
 import com.freeletics.mad.navigator.DeepLinkHandler
 import com.freeletics.mad.navigator.NavRoot
 import com.freeletics.mad.navigator.NavRoute
+import com.freeletics.mad.navigator.compose.internal.OverlayHost
+import com.freeletics.mad.navigator.compose.internal.OverlayNavigator
 import com.freeletics.mad.navigator.internal.AndroidXNavigationExecutor
 import com.freeletics.mad.navigator.internal.CustomActivityNavigator
 import com.freeletics.mad.navigator.internal.InternalNavigatorApi
@@ -35,10 +30,6 @@ import com.freeletics.mad.navigator.internal.destinationId
 import com.freeletics.mad.navigator.internal.getArguments
 import com.freeletics.mad.navigator.internal.handleDeepLink
 import com.freeletics.mad.navigator.internal.requireRoute
-import com.google.accompanist.navigation.material.BottomSheetNavigator
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.google.accompanist.navigation.material.ModalBottomSheetLayout
-import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 
 /**
  * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
@@ -54,7 +45,6 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
-@OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
 public fun NavHost(
     startRoute: NavRoot,
@@ -62,14 +52,9 @@ public fun NavHost(
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
-    bottomSheetShape: Shape = MaterialTheme.shapes.large,
-    bottomSheetElevation: Dp = ModalBottomSheetDefaults.Elevation,
-    bottomSheetBackgroundColor: Color = MaterialTheme.colors.surface,
-    bottomSheetContentColor: Color = contentColorFor(bottomSheetBackgroundColor),
-    bottomSheetScrimColor: Color = ModalBottomSheetDefaults.scrimColor,
 ) {
-    val bottomSheetNavigator = rememberBottomSheetNavigator()
-    val navController = rememberNavController(bottomSheetNavigator)
+    val overlayNavigator = remember { OverlayNavigator() }
+    val navController = rememberNavController(overlayNavigator)
     val executor = remember(navController) { AndroidXNavigationExecutor(navController) }
     val context = LocalContext.current
 
@@ -100,22 +85,19 @@ public fun NavHost(
     }
 
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
-        ModalBottomSheetLayout(
-            bottomSheetNavigator = bottomSheetNavigator,
-            sheetShape = bottomSheetShape,
-            sheetElevation = bottomSheetElevation,
-            sheetBackgroundColor = bottomSheetBackgroundColor,
-            sheetContentColor = bottomSheetContentColor,
-            scrimColor = bottomSheetScrimColor,
-        ) {
-            AndroidXNavHost(navController, graph)
-        }
+        AndroidXNavHost(
+            navController = navController,
+            graph = graph,
+        )
+
+        OverlayHost(
+            overlayNavigator = overlayNavigator,
+        )
     }
 }
 
 // the BottomSheet class and creator methods are marked with ExperimentalMaterialNavigationApi
 // if those stay unused the experimental code is never called, so we swallow the warning here
-@OptIn(ExperimentalMaterialNavigationApi::class)
 private fun NavGraphBuilder.addDestination(
     controller: NavController,
     destination: NavDestination,
@@ -123,8 +105,7 @@ private fun NavGraphBuilder.addDestination(
 ) {
     val newDestination = when (destination) {
         is ScreenDestination<*> -> destination.toDestination(controller, startRoute)
-        is DialogDestination<*> -> destination.toDestination(controller)
-        is BottomSheetDestination<*> -> destination.toDestination(controller)
+        is OverlayDestination<*> -> destination.toDestination(controller)
         is ActivityDestination -> destination.toDestination(controller)
     }
     addDestination(newDestination)
@@ -151,23 +132,11 @@ private fun <T : BaseRoute> ScreenDestination<T>.toDestination(
     }
 }
 
-private fun <T : NavRoute> DialogDestination<T>.toDestination(
+private fun <T : NavRoute> OverlayDestination<T>.toDestination(
     controller: NavController,
-): DialogNavigator.Destination {
-    val navigator = controller.navigatorProvider[DialogNavigator::class]
-    return DialogNavigator.Destination(navigator) { content(it.arguments.requireRoute()) }.also {
-        it.id = id.destinationId()
-    }
-}
-
-// the BottomSheet class and creator methods are marked with ExperimentalMaterialNavigationApi
-// if those stay unused this method is never called, so we swallow the warning here
-@OptIn(ExperimentalMaterialNavigationApi::class)
-private fun <T : NavRoute> BottomSheetDestination<T>.toDestination(
-    controller: NavController,
-): BottomSheetNavigator.Destination {
-    val navigator = controller.navigatorProvider[BottomSheetNavigator::class]
-    return BottomSheetNavigator.Destination(navigator) { content(it.arguments.requireRoute()) }.also {
+): OverlayNavigator.Destination {
+    val navigator = controller.navigatorProvider[OverlayNavigator::class]
+    return OverlayNavigator.Destination(navigator) { content(it.arguments.requireRoute()) }.also {
         it.id = id.destinationId()
     }
 }
