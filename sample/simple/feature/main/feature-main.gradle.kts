@@ -20,8 +20,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.mad.navigator)
-    implementation(libs.mad.whetstone.runtime)
-    implementation(libs.mad.whetstone.runtime.compose)
-    implementation(libs.mad.whetstone.scope)
+    implementation(libs.mad.codegen)
+    implementation(libs.mad.codegen.compose)
+    implementation(libs.mad.codegen.scope)
     implementation(projects.feature.root.nav)
 }

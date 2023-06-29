@@ -1,7 +1,7 @@
 package com.freeletics.mad.sample.app
 
 import android.app.Application
-import com.freeletics.mad.whetstone.AppScope
+import com.freeletics.mad.codegen.AppScope
 
 class App : Application() {
     override fun getSystemService(name: String): Any? {

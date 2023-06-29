@@ -1,4 +1,4 @@
-# Modern Android Development - The Freeletics Way
+# MAD
 
 At Freeletics we use many of the Jetpack/AndroidX libraries but not always in the way
 they are advertised and recommended in Google's tutorials.
@@ -6,18 +6,18 @@ This project showcases our own flavored version of Modern Android Development
 as well as some of our own utilities.
 
 
-## Navigator
+## Navigation
 
-The navigator library is a wrapper around AndroidX navigation that allows to separate navigation
+The navigation library is a wrapper around AndroidX navigation that allows to separate navigation
 logic from the UI layer and provides a scalable approach to type safe navigation in a highly
 modularized code base.
 
 For more information check out the [docs][4].
 
 
-## Whetstone
+## Codegen
 
-Whetstone is a plugin for [Anvil][5] that helps with
+Codegen is a plugin for [Anvil][5] that helps with
 generating dependency injection related code and common boilerplate for feature screens.
 
 For more information check out the [docs][6].
@@ -50,7 +50,7 @@ limitations under the License.
 
 [1]: https://freeletics.engineering/2021/01/22/abstraction-text-resource.html
 [2]: https://freeletics.github.io/FlowRedux/dsl/
-[4]: https://freeletics.github.io/mad/navigator/get-started/
+[4]: https://freeletics.github.io/mad/navigation/get-started/
 [5]: https://github.com/square/anvil
-[6]: https://freeletics.github.io/mad/whetstone/get-started/
+[6]: https://freeletics.github.io/mad/codegen/get-started/
 [7]: https://freeletics.github.io/mad/helpers/

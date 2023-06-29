@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.freeletics.mad.codegen.compose.ComposeDestination
 import com.freeletics.mad.sample.feature.root.nav.RootRoute
-import com.freeletics.mad.whetstone.compose.ComposeDestination
 
 @ComposeDestination(
     route = RootRoute::class,

@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.freeletics.mad.codegen.compose.ComposeDestination
+import com.freeletics.mad.codegen.compose.DestinationType
 import com.freeletics.mad.sample.feature.dialog.nav.DialogRoute
-import com.freeletics.mad.whetstone.compose.ComposeDestination
-import com.freeletics.mad.whetstone.compose.DestinationType
 
 @ComposeDestination(
     route = DialogRoute::class,

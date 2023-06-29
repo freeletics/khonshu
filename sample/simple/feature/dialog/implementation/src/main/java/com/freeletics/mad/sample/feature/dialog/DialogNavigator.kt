@@ -1,8 +1,8 @@
 package com.freeletics.mad.sample.feature.dialog
 
-import com.freeletics.mad.navigator.NavEventNavigator
+import com.freeletics.mad.codegen.ScopeTo
+import com.freeletics.mad.navigation.NavEventNavigator
 import com.freeletics.mad.sample.feature.dialog.nav.DialogRoute
-import com.freeletics.mad.whetstone.ScopeTo
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 

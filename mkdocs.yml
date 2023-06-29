@@ -1,6 +1,6 @@
-site_name: MAD at Freeletics
+site_name: MAD
 site_url: https://freeletics.github.io/mad/
-repo_name: MAD Freeletics
+repo_name: MAD
 repo_url: https://github.com/freeletics/mad
 site_description: "Modern Android Development the Freeletics way"
 site_author: Freeletics
@@ -21,30 +21,27 @@ theme:
 nav:
   - index.md
   - 'Navigator':
-      - navigator/get-started.md
-      - navigator/activities.md
-      - navigator/results.md
-      - navigator/back-stacks.md
-      - navigator/deeplinks.md
-      - navigator/testing.md
+      - navigation/get-started.md
+      - navigation/activities.md
+      - navigation/results.md
+      - navigation/back-stacks.md
+      - navigation/deeplinks.md
+      - navigation/testing.md
       - 'API':
-          - 'Runtime': navigator/API/runtime/index.html
-          - 'Runtime Compose': navigator/API/runtime-compose/index.html
-          - 'Runtime Fragment': navigator/API/runtime-fragment/index.html
-          - 'Testing': navigator/API/testing/index.html
-  - 'Whetstone':
-      - whetstone/get-started.md
-      - whetstone/navigation.md
-      - whetstone/compose-injection.md
-      - whetstone/closeable-support.md
+          - 'Runtime': navigation/API/runtime/index.html
+          - 'Compose': navigation/API/compose/index.html
+          - 'Fragment': navigation/API/fragment/index.html
+          - 'Testing': navigation/API/testing/index.html
+  - 'Codegen':
+      - codegen/get-started.md
+      - codegen/navigation.md
+      - codegen/compose-injection.md
+      - codegen/closeable-support.md
       - 'API':
-          - 'Scope': whetstone/API/scope/index.html
-          - 'Runtime': whetstone/API/runtime/index.html
-          - 'Runtime Compose': whetstone/API/runtime-compose/index.html
-          - 'Runtime Fragment': whetstone/API/runtime-fragment/index.html
-          - 'Navigation': whetstone/API/navigation/index.html
-          - 'Navigation Compose': whetstone/API/navigation-compose/index.html
-          - 'Navigation Fragment': whetstone/API/navigation-fragment/index.html
+          - 'Scope': codegen/API/scope/index.html
+          - 'Runtime': codegen/API/runtime/index.html
+          - 'Compose': codegen/API/compose/index.html
+          - 'Fragment': codegen/API/fragment/index.html
   - 'Helpers':
       - helpers.md
       - 'API':

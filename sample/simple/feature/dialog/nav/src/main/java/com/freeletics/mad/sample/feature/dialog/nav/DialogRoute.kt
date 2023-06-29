@@ -1,6 +1,6 @@
 package com.freeletics.mad.sample.feature.dialog.nav
 
-import com.freeletics.mad.navigator.NavRoute
+import com.freeletics.mad.navigation.NavRoute
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

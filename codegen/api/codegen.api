@@ -1,0 +1,18 @@
+public abstract interface annotation class com/freeletics/mad/codegen/NavEntry : java/lang/annotation/Annotation {
+	public abstract fun scope ()Ljava/lang/Class;
+}
+
+public abstract interface annotation class com/freeletics/mad/codegen/NavEntryComponent : java/lang/annotation/Annotation {
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun scope ()Ljava/lang/Class;
+}
+
+public final class com/freeletics/mad/codegen/internal/CollectAsStateKt {
+}
+
+public final class com/freeletics/mad/codegen/internal/FindKt {
+}
+
+public abstract interface annotation class com/freeletics/mad/codegen/internal/InternalCodegenApi : java/lang/annotation/Annotation {
+}
+

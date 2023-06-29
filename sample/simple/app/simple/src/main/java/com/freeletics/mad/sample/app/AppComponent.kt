@@ -1,8 +1,8 @@
 package com.freeletics.mad.sample.app
 
 import android.app.Application
-import com.freeletics.mad.whetstone.AppScope
-import com.freeletics.mad.whetstone.ScopeTo
+import com.freeletics.mad.codegen.AppScope
+import com.freeletics.mad.codegen.ScopeTo
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component

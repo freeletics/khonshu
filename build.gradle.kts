@@ -23,61 +23,34 @@ dependencyAnalysis {
             }
         }
 
-        project(":whetstone:runtime") {
+        project(":codegen") {
             onUnusedDependencies {
-                exclude(":whetstone:scope")
+                exclude(":codegen-scope")
             }
             onIncorrectConfiguration {
-                exclude(":whetstone:scope")
+                exclude(":codegen-scope")
             }
         }
 
-        project(":whetstone:runtime-compose") {
+        project(":codegen-compose") {
             onUnusedDependencies {
-                exclude(":whetstone:runtime")
+                exclude(":codegen")
             }
             onIncorrectConfiguration {
-                exclude(":whetstone:runtime")
+                exclude(":codegen")
             }
         }
 
-        project(":whetstone:runtime-fragment") {
+        project(":codegen-fragment") {
             onUnusedDependencies {
-                exclude(":whetstone:runtime")
+                exclude(":codegen")
             }
             onIncorrectConfiguration {
-                exclude(":whetstone:runtime")
+                exclude(":codegen")
             }
         }
 
-        project(":whetstone:navigation") {
-            onUnusedDependencies {
-                exclude(":whetstone:runtime")
-            }
-            onIncorrectConfiguration {
-                exclude(":whetstone:runtime")
-            }
-        }
-
-        project(":whetstone:navigation-compose") {
-            onUnusedDependencies {
-                exclude(":whetstone:navigation", ":whetstone:runtime-compose")
-            }
-            onIncorrectConfiguration {
-                exclude(":whetstone:navigation", ":whetstone:runtime-compose")
-            }
-        }
-
-        project(":whetstone:navigation-fragment") {
-            onUnusedDependencies {
-                exclude(":whetstone:navigation", ":whetstone:runtime-fragment")
-            }
-            onIncorrectConfiguration {
-                exclude(":whetstone:navigation", ":whetstone:runtime-fragment")
-            }
-        }
-
-        project(":whetstone:compiler-test") {
+        project(":codegen-compiler-test") {
             onUnusedDependencies {
                 // needed for compile testing
                 exclude(
@@ -86,19 +59,16 @@ dependencyAnalysis {
                     "com.gabrielittner.renderer:connect",
                     "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
                     "org.jetbrains.kotlin:kotlin-compiler-embeddable",
-                    ":navigator:runtime-compose",
-                    ":navigator:runtime-fragment",
-                    ":whetstone:navigation",
-                    ":whetstone:navigation-compose",
-                    ":whetstone:navigation-fragment",
-                    ":whetstone:runtime",
-                    ":whetstone:runtime-compose",
-                    ":whetstone:runtime-fragment",
+                    ":codegen",
+                    ":codegen-compose",
+                    ":codegen-fragment",
+                    ":navigation-compose",
+                    ":navigation-fragment",
                 )
             }
         }
 
-        project(":navigator:runtime") {
+        project(":navigation") {
             onUsedTransitiveDependencies {
                 exclude(
                     // false positive
@@ -114,19 +84,13 @@ dependencyAnalysis {
             }
         }
     }
-
-    abi {
-        exclusions {
-            excludeClasses(".*\\.navigator\\.internal\\..*")
-        }
-    }
 }
 
 apiValidation {
-    ignoredProjects += arrayOf("compiler")
+    ignoredProjects += arrayOf("codegen-compiler", "codegen-compiler-test")
 
     nonPublicMarkers += arrayOf(
-        "com.freeletics.mad.navigator.internal.InternalNavigatorApi",
-        "com.freeletics.mad.whetstone.internal.InternalWhetstoneApi",
+        "com.freeletics.mad.navigation.internal.InternalNavigationApi",
+        "com.freeletics.mad.codegen.internal.InternalCodegenApi",
     )
 }
