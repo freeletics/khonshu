@@ -48,15 +48,11 @@ inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 khonshu-navigator = { module = "com.freeletics.khonshu:navigation", version.ref = "khonshu" }
 khonshu-navigator-compose = { module = "com.freeletics.khonshu:navigation-compose", version.ref = "khonshu" }
 khonshu-codegen-compiler = { module = "com.freeletics.khonshu:codegen-compiler", version.ref = "khonshu" }
-khonshu-codegen = { module = "com.freeletics.khonshu:codegen", version.ref = "khonshu" }
+khonshu-codegen = { module = "com.freeletics.khonshu:codegen-runtime", version.ref = "khonshu" }
 khonshu-codegen-compose = { module = "com.freeletics.khonshu:codegen-compose", version.ref = "khonshu" }
 khonshu-codegen-scope = { module = "com.freeletics.khonshu:codegen-scope", version.ref = "khonshu" }
 khonshu-statemachine = { module = "com.freeletics.khonshu:state-machine", version.ref = "khonshu" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
-
-# TODO: remove when updated naming is reflected in FGP
-mad-whetstone-compiler = { module = "com.freeletics.khonshu:codegen-compiler", version.ref = "khonshu" }
-mad-whetstone-scope = { module = "com.freeletics.khonshu:codegen-scope", version.ref = "khonshu" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
