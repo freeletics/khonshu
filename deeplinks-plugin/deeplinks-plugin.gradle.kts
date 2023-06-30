@@ -13,8 +13,8 @@ dependencies {
 gradlePlugin {
     plugins {
         create("plugin") {
-            id = "com.freeletics.mad.deeplinks"
-            implementationClass = "com.freeletics.mad.deeplinks.plugin.DeeplinksPlugin"
+            id = "com.freeletics.khonshu.deeplinks"
+            implementationClass = "com.freeletics.khonshu.deeplinks.plugin.DeeplinksPlugin"
         }
     }
 }

@@ -1,6 +1,6 @@
 # Get started
 
-MAD's Codegen is a plugin for [Anvil](https://github.com/square/anvil) that helps with
+Khonshu's Codegen is a plugin for [Anvil](https://github.com/square/anvil) that helps with
 generating dependency injection related code and common boilerplate for screens.
 
 ## Advantages
@@ -27,15 +27,15 @@ it falls into the `Fragment` category.
 === "Compose"
 
     ```groovy
-    implementation("com.freeletics.mad:codegen-compose:<latest-version>")
-    anvil("com.freeletics.mad:codegen-compiler:<latest-version>")
+    implementation("com.freeletics.khonshu:codegen-compose:<latest-version>")
+    anvil("com.freeletics.khonshu:codegen-compiler:<latest-version>")
     ```
 
 === "Compose with Fragments"
 
     ```groovy
-    implementation("com.freeletics.mad:codegen-fragment:<latest-version>")
-    anvil("com.freeletics.mad:codegen-compiler:<latest-version>")
+    implementation("com.freeletics.khonshu:codegen-fragment:<latest-version>")
+    anvil("com.freeletics.khonshu:codegen-compiler:<latest-version>")
     ```
 
 === "Views with Fragments"
@@ -53,7 +53,7 @@ it falls into the `Fragment` category.
     The `@ComposeScreen` annotation is added to the top level composable of a screen. This function 
     can have 2 parameters: the state that should be rendered and a lambda that allows
     the composable to send actions for user interactions. This will then generate
-    another Composable function called `MadExampleUi` and a Dagger component.
+    another Composable function called `KhonshuExampleUi` and a Dagger component.
     
     ```kotlin
     @ComposeScreen(
@@ -71,7 +71,7 @@ it falls into the `Fragment` category.
     ```
     *`scope` and `parentScope` are described in the next section*
 
-    The generated `MadExampleUi` function will use the generated component, the
+    The generated `KhonshuExampleUi` function will use the generated component, the
     annotated composable as well as the `stateMachine` parameter from the
     annotation. It will automatically hook up the
     state machine with the composable so that the state from the state machine
@@ -84,7 +84,7 @@ it falls into the `Fragment` category.
     The `@ComposeFragment` annotation is added to the top level composable of a screen. This function 
     can have 2 parameters: the state that should be rendered and a lambda that allows
     the composable to send actions for user interactions. This will then generate
-    a `Fragment` called `MadExampleUiFragment` and a Dagger component.
+    a `Fragment` called `KhonshuExampleUiFragment` and a Dagger component.
     
     ```kotlin
     @ComposeFragment(
@@ -102,7 +102,7 @@ it falls into the `Fragment` category.
     ```
     *`scope` and `parentScope` are described in the next section*
 
-    The generated `MadExampleUiFragment` will use the generated component, the
+    The generated `KhonshuExampleUiFragment` will use the generated component, the
     annotated composable as well as the `stateMachine` parameter from the
     annotation. It will use the composable as its view and automatically hook up the
     state machine with the composable so that the state from the state machine
@@ -121,7 +121,7 @@ it falls into the `Fragment` category.
     which separates the view/ui logic from Fragments or other framework classes.
     Similar to composables above a Renderer receives a state object and emits
     actions. Codegen has a `@RendererFragment` annotation which needs to be added to the 
-    Renderer class. This will then generate a `Fragment` called `MadExampleUiFragment` 
+    Renderer class. This will then generate a `Fragment` called `KhonshuExampleUiFragment` 
     and a Dagger component.
     
     ```kotlin
@@ -143,7 +143,7 @@ it falls into the `Fragment` category.
     }
     ```
     
-    The generated `MadExampleRendererFragment` will use the generated component, the
+    The generated `KhonshuExampleRendererFragment` will use the generated component, the
     annotated composable as well as the `stateMachine`. It will use the `ViewRenderer.Factory`
     to create an istance of the `Renderer` and use it as its view. It will then
     automatically hook up the state machine with the renderer so that the state from the state machine
@@ -186,7 +186,7 @@ available which can be injected to classes like the state machine to save state.
 
 ## Example
 
-This is a minimal example of how using MAD's Codegen for a screen would look like.
+This is a minimal example of how using Khonshu's Codegen for a screen would look like.
 
 ```kotlin
 // marker class for the scope

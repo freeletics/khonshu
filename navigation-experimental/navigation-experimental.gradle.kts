@@ -6,7 +6,7 @@ plugins {
 
 freeletics {
     explicitApi()
-    optIn("com.freeletics.mad.navigation.internal.InternalNavigationApi")
+    optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationApi")
     enableCompose()
     enableParcelize()
 }

@@ -6,8 +6,8 @@ plugins {
 freeletics {
     explicitApi()
     optIn(
-        "com.freeletics.mad.navigation.internal.InternalNavigationApi",
-        "com.freeletics.mad.codegen.internal.InternalCodegenApi",
+        "com.freeletics.khonshu.navigation.internal.InternalNavigationApi",
+        "com.freeletics.khonshu.codegen.internal.InternalCodegenApi",
     )
     enableCompose()
 }

@@ -1,10 +1,8 @@
-# MAD
+# Khonshu
 
-At Freeletics we use many of the Jetpack/AndroidX libraries but not always in the way
-they are advertised and recommended in Google's tutorials.
-This project showcases our own flavored version of Modern Android Development
-as well as some of our own utilities.
-
+Khonshu is the foundation of how we build apps at Freeletics. It provides the general set up
+for screens and navigation. The project grew over time based on our needs, issues we ran into
+and common pitfalls we wanted to avoid.
 
 ## Navigation
 
@@ -17,8 +15,9 @@ For more information check out the [docs][4].
 
 ## Codegen
 
-Codegen is a plugin for [Anvil][5] that helps with
-generating dependency injection related code and common boilerplate for feature screens.
+Codegen provides a plugin for [Anvil][5] that helps with generating dependency injection 
+related code and common boilerplate for screens as well as handling most of the set up
+of the navigation library.
 
 For more information check out the [docs][6].
 
@@ -50,7 +49,7 @@ limitations under the License.
 
 [1]: https://freeletics.engineering/2021/01/22/abstraction-text-resource.html
 [2]: https://freeletics.github.io/FlowRedux/dsl/
-[4]: https://freeletics.github.io/mad/navigation/get-started/
+[4]: https://freeletics.github.io/khonshu/navigation/get-started/
 [5]: https://github.com/square/anvil
-[6]: https://freeletics.github.io/mad/codegen/get-started/
-[7]: https://freeletics.github.io/mad/helpers/
+[6]: https://freeletics.github.io/khonshu/codegen/get-started/
+[7]: https://freeletics.github.io/khonshu/helpers/

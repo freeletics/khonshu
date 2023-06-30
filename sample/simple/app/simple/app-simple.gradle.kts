@@ -3,14 +3,14 @@ plugins {
 }
 
 freeletics {
-    applicationId("com.freeletics.mad.sample.simple")
+    applicationId("com.freeletics.khonshu.sample.simple")
     useDaggerWithComponent()
 }
 
 dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
-    implementation(libs.mad.navigator)
-    implementation(libs.mad.navigator.compose)
+    implementation(libs.khonshu.navigator)
+    implementation(libs.khonshu.navigator.compose)
     implementation(projects.feature.bottomSheet.implementation)
     implementation(projects.feature.bottomSheet.nav)
     implementation(projects.feature.dialog.implementation)

@@ -14,11 +14,11 @@
 -keepattributes Signature,Exceptions,*Annotation*,InnerClasses,PermittedSubclasses,EnclosingMethod,Deprecated,SourceFile,LineNumberTable
 
 # Keep your public API so that it's callable from scripts
--keep class com.freeletics.mad.deeplinks.plugin.*Extension { *; }
--keep class com.freeletics.mad.deeplinks.plugin.*Plugin { *; }
--keep class com.freeletics.mad.deeplinks.plugin.*Task { *; }
+-keep class com.freeletics.khonshu.deeplinks.plugin.*Extension { *; }
+-keep class com.freeletics.khonshu.deeplinks.plugin.*Plugin { *; }
+-keep class com.freeletics.khonshu.deeplinks.plugin.*Task { *; }
 
 # No need to obfuscate class names
 -dontobfuscate
 
--repackageclasses com.freeletics.mad.deeplinks.plugin.relocated
+-repackageclasses com.freeletics.khonshu.deeplinks.plugin.relocated

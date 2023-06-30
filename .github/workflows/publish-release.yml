@@ -9,7 +9,7 @@ jobs:
   publish:
 
     runs-on: macos-latest
-    if: github.repository == 'freeletics/mad'
+    if: github.repository == 'freeletics/khonshu'
 
     steps:
       - name: Checkout

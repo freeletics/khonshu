@@ -1,9 +1,9 @@
-public final class com/freeletics/mad/navigation/internal/AndroidXDeepLinkHandlerKt {
+public final class com/freeletics/khonshu/navigation/internal/AndroidXDeepLinkHandlerKt {
 }
 
-public final class com/freeletics/mad/navigation/internal/BundleKt {
+public final class com/freeletics/khonshu/navigation/internal/BundleKt {
 }
 
-public final class com/freeletics/mad/navigation/internal/DestinationIdIntKt {
+public final class com/freeletics/khonshu/navigation/internal/DestinationIdIntKt {
 }
 

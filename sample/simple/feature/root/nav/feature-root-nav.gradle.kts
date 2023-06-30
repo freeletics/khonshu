@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(libs.mad.navigator)
+    api(libs.khonshu.navigator)
 }

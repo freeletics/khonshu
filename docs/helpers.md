@@ -12,14 +12,14 @@ the `StateMachine` can be observed with `produceState()` and actions can be disp
 to it by simply launching them from a `CoroutineScope` created with `rememberCoroutineScope()`.
 
 ```groovy
-implementation("com.freeletics.mad:state-machine:<latest-version>")
+implementation("com.freeletics.khonshu:state-machine:<latest-version>")
 ```
 
 Additionally there is a test artifact that provides `StateMachine.test` and `StateMachine.testIn`
 extension functions.
 
 ```groovy
-testImplementation("com.freeletics.mad:state-machine-testing:<latest-version>")
+testImplementation("com.freeletics.khonshu:state-machine-testing:<latest-version>")
 ```
 
 ## TextResource
@@ -34,5 +34,5 @@ For more information about the motivation for this abstraction check out this
 [blog post][1].
 
 ```groovy
-implementation("com.freeletics.mad:text-resource:<latest-version>")
+implementation("com.freeletics.khonshu:text-resource:<latest-version>")
 ```

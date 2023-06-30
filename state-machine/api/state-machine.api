@@ -1,4 +1,4 @@
-public abstract interface class com/freeletics/mad/statemachine/StateMachine {
+public abstract interface class com/freeletics/khonshu/statemachine/StateMachine {
 	public abstract fun dispatch (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getState ()Lkotlinx/coroutines/flow/Flow;
 }

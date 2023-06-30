@@ -1,15 +1,15 @@
-public final class com/freeletics/mad/text/CompositeTextResource$Creator : android/os/Parcelable$Creator {
+public final class com/freeletics/khonshu/text/CompositeTextResource$Creator : android/os/Parcelable$Creator {
 	public fun <init> ()V
-	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/text/CompositeTextResource;
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/khonshu/text/CompositeTextResource;
 	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
-	public final fun newArray (I)[Lcom/freeletics/mad/text/CompositeTextResource;
+	public final fun newArray (I)[Lcom/freeletics/khonshu/text/CompositeTextResource;
 	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
-public final class com/freeletics/mad/text/LoadingTextResource : com/freeletics/mad/text/TextResource {
+public final class com/freeletics/khonshu/text/LoadingTextResource : com/freeletics/khonshu/text/TextResource {
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
-	public static final field INSTANCE Lcom/freeletics/mad/text/LoadingTextResource;
+	public static final field INSTANCE Lcom/freeletics/khonshu/text/LoadingTextResource;
 	public fun describeContents ()I
 	public synthetic fun format (Landroid/content/Context;)Ljava/lang/String;
 	public fun format (Landroid/content/Context;)Ljava/lang/Void;
@@ -18,63 +18,63 @@ public final class com/freeletics/mad/text/LoadingTextResource : com/freeletics/
 	public fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
-public final class com/freeletics/mad/text/LoadingTextResource$Creator : android/os/Parcelable$Creator {
+public final class com/freeletics/khonshu/text/LoadingTextResource$Creator : android/os/Parcelable$Creator {
 	public fun <init> ()V
-	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/text/LoadingTextResource;
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/khonshu/text/LoadingTextResource;
 	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
-	public final fun newArray (I)[Lcom/freeletics/mad/text/LoadingTextResource;
+	public final fun newArray (I)[Lcom/freeletics/khonshu/text/LoadingTextResource;
 	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
-public final class com/freeletics/mad/text/PluralTextResource$Creator : android/os/Parcelable$Creator {
+public final class com/freeletics/khonshu/text/PluralTextResource$Creator : android/os/Parcelable$Creator {
 	public fun <init> ()V
-	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/text/PluralTextResource;
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/khonshu/text/PluralTextResource;
 	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
-	public final fun newArray (I)[Lcom/freeletics/mad/text/PluralTextResource;
+	public final fun newArray (I)[Lcom/freeletics/khonshu/text/PluralTextResource;
 	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
-public final class com/freeletics/mad/text/SimpleTextResource$Creator : android/os/Parcelable$Creator {
+public final class com/freeletics/khonshu/text/SimpleTextResource$Creator : android/os/Parcelable$Creator {
 	public fun <init> ()V
-	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/text/SimpleTextResource;
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/khonshu/text/SimpleTextResource;
 	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
-	public final fun newArray (I)[Lcom/freeletics/mad/text/SimpleTextResource;
+	public final fun newArray (I)[Lcom/freeletics/khonshu/text/SimpleTextResource;
 	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
-public final class com/freeletics/mad/text/StringTextResource$Creator : android/os/Parcelable$Creator {
+public final class com/freeletics/khonshu/text/StringTextResource$Creator : android/os/Parcelable$Creator {
 	public fun <init> ()V
-	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/mad/text/StringTextResource;
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/khonshu/text/StringTextResource;
 	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
-	public final fun newArray (I)[Lcom/freeletics/mad/text/StringTextResource;
+	public final fun newArray (I)[Lcom/freeletics/khonshu/text/StringTextResource;
 	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
-public abstract class com/freeletics/mad/text/TextResource : android/os/Parcelable {
+public abstract class com/freeletics/khonshu/text/TextResource : android/os/Parcelable {
 	public static final field $stable I
-	public static final field Companion Lcom/freeletics/mad/text/TextResource$Companion;
+	public static final field Companion Lcom/freeletics/khonshu/text/TextResource$Companion;
 	public abstract fun format (Landroid/content/Context;)Ljava/lang/String;
 	public abstract fun format (Landroidx/compose/runtime/Composer;I)Ljava/lang/String;
-	public static final fun join (Ljava/util/List;)Lcom/freeletics/mad/text/TextResource;
-	public static final fun join (Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/mad/text/TextResource;
+	public static final fun join (Ljava/util/List;)Lcom/freeletics/khonshu/text/TextResource;
+	public static final fun join (Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/khonshu/text/TextResource;
 }
 
-public final class com/freeletics/mad/text/TextResource$Companion {
-	public final fun createWithQuantity (II[Ljava/lang/Object;)Lcom/freeletics/mad/text/TextResource;
-	public final fun fromNullableString (Ljava/lang/String;)Lcom/freeletics/mad/text/TextResource;
-	public final fun fromString (Ljava/lang/String;)Lcom/freeletics/mad/text/TextResource;
-	public final fun fromStringResource (I[Ljava/lang/Object;)Lcom/freeletics/mad/text/TextResource;
-	public final fun join (Ljava/util/List;)Lcom/freeletics/mad/text/TextResource;
-	public final fun join (Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/mad/text/TextResource;
-	public static synthetic fun join$default (Lcom/freeletics/mad/text/TextResource$Companion;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/mad/text/TextResource;
+public final class com/freeletics/khonshu/text/TextResource$Companion {
+	public final fun createWithQuantity (II[Ljava/lang/Object;)Lcom/freeletics/khonshu/text/TextResource;
+	public final fun fromNullableString (Ljava/lang/String;)Lcom/freeletics/khonshu/text/TextResource;
+	public final fun fromString (Ljava/lang/String;)Lcom/freeletics/khonshu/text/TextResource;
+	public final fun fromStringResource (I[Ljava/lang/Object;)Lcom/freeletics/khonshu/text/TextResource;
+	public final fun join (Ljava/util/List;)Lcom/freeletics/khonshu/text/TextResource;
+	public final fun join (Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/khonshu/text/TextResource;
+	public static synthetic fun join$default (Lcom/freeletics/khonshu/text/TextResource$Companion;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/text/TextResource;
 }
 
-public final class com/freeletics/mad/text/TextResourcesKt {
-	public static final fun joinToTextResource (Ljava/lang/Iterable;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/freeletics/mad/text/TextResource;
-	public static synthetic fun joinToTextResource$default (Ljava/lang/Iterable;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/freeletics/mad/text/TextResource;
-	public static final fun plus (Lcom/freeletics/mad/text/TextResource;Lcom/freeletics/mad/text/TextResource;)Lcom/freeletics/mad/text/TextResource;
-	public static final fun plus (Lcom/freeletics/mad/text/TextResource;Ljava/lang/String;)Lcom/freeletics/mad/text/TextResource;
-	public static final fun setText (Landroid/widget/TextView;Lcom/freeletics/mad/text/TextResource;)V
-	public static final fun toTextResource (Ljava/lang/String;)Lcom/freeletics/mad/text/TextResource;
+public final class com/freeletics/khonshu/text/TextResourcesKt {
+	public static final fun joinToTextResource (Ljava/lang/Iterable;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/freeletics/khonshu/text/TextResource;
+	public static synthetic fun joinToTextResource$default (Ljava/lang/Iterable;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/freeletics/khonshu/text/TextResource;
+	public static final fun plus (Lcom/freeletics/khonshu/text/TextResource;Lcom/freeletics/khonshu/text/TextResource;)Lcom/freeletics/khonshu/text/TextResource;
+	public static final fun plus (Lcom/freeletics/khonshu/text/TextResource;Ljava/lang/String;)Lcom/freeletics/khonshu/text/TextResource;
+	public static final fun setText (Landroid/widget/TextView;Lcom/freeletics/khonshu/text/TextResource;)V
+	public static final fun toTextResource (Ljava/lang/String;)Lcom/freeletics/khonshu/text/TextResource;
 }
 

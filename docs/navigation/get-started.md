@@ -27,13 +27,13 @@ are hosted inside fragments it falls into the `Fragment` category.
 === "Compose"
 
     ```groovy
-    implementation("com.freeletics.mad:navigation-compose:<latest-version>")
+    implementation("com.freeletics.khonshu:navigation-compose:<latest-version>")
     ```
 
 === "Fragment"
 
     ```kotlin
-    implementation("com.freeletics.mad:navigation-fragment:<latest-version>")
+    implementation("com.freeletics.khonshu:navigation-fragment:<latest-version>")
     ```
 
 
