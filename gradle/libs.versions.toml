@@ -35,7 +35,7 @@ auto-service = "1.1.1"
 junit = "4.13.2"
 truth = "1.1.5"
 turbine = "1.0.0"
-kotlin-compile-testing = "0.2.1"
+kotlin-compile-testing = "0.3.0"
 
 publish = "0.25.2"
 dokka = "1.8.20"
