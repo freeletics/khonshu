@@ -4,7 +4,7 @@ plugins {
 
 freeletics {
     enableCompose()
-    useDaggerWithWhetstone()
+    useDaggerWithKhonshu()
 }
 
 dependencies {
