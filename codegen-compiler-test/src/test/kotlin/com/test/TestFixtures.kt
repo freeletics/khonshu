@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.view.View
 import androidx.viewbinding.ViewBinding
 import com.freeletics.khonshu.navigation.NavRoute
-import com.freeletics.mad.statemachine.StateMachine
+import com.freeletics.khonshu.statemachine.StateMachine
 import kotlinx.coroutines.flow.Flow
 
 public class TestScreen
