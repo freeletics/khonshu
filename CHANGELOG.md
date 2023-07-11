@@ -6,6 +6,44 @@ Change Log
 -
 
 
+## 0.15.0 *(2023-07-11)*
+
+MAD has beed renamed to Khonshu and Whetstone is now just codegen.
+
+|**Old**|**New**|
+|-|-|
+|`com.freeletics.mad:navigator-runtime`|`com.freeletics.khonshu:navigation`|
+|`com.freeletics.mad:navigator-compose`|`com.freeletics.khonshu:navigation-compose`|
+|`com.freeletics.mad:navigator-experimental`|`com.freeletics.khonshu:navigation-experimental`|
+|`com.freeletics.mad:navigator-fragment`|`com.freeletics.khonshu:navigation-fragment`|
+|`com.freeletics.mad:navigator-testing`|`com.freeletics.khonshu:navigation-testing`|
+|`com.freeletics.mad:whetstone-compiler`|`com.freeletics.khonshu:codegen-compiler`|
+|`com.freeletics.mad:whetstone-scope`|`com.freeletics.khonshu:codegen-scope`|
+|`com.freeletics.mad:whetstone-runtime`|`com.freeletics.khonshu:codegen-runtime`|
+|`com.freeletics.mad:whetstone-runtime-compose`|`com.freeletics.khonshu:codegen-compose`|
+|`com.freeletics.mad:whetstone-runtime-fragment`|`com.freeletics.khonshu:codegen-fragment`|
+|`com.freeletics.mad:whetstone-navigation`|Merged into `com.freeletics.khonshu:codegen-runtime`|
+|`com.freeletics.mad:whetstone-navigation-compose`|Merged into `com.freeletics.khonshu:codegen-compose`|
+|`com.freeletics.mad:whetstone-navigation-fragment`|Merged into `com.freeletics.khonshu:codegen-fragment`|
+|`com.freeletics.mad:state-machine`|`com.freeletics.khonshu:state-machine`|
+|`com.freeletics.mad:state-machine-testing`|`com.freeletics.khonshu:state-machine-testing`|
+|`com.freeletics.mad:text-resource`|`com.freeletics.khonshu:text-resource`|
+
+### Navigation
+
+- Compose: The `Dialog` and `BottomSheet` destination types haven been replaced by a new `Overlay` destination.
+  This new type generally behaves like the old ones except for not automically wrapping the given content in 
+  a `Dialog` or `ModalBottomSheetLayout` composable. This gives more flexibility and avoids some issues in the
+  default implementations, like not being able to show multiple bottom sheet destinations on top of each other. 
+  It is recommended to use something like Material 3's `ModalBottomSheet` to display a bottom sheet.
+- Compose: Removed dependency on Accompanist and usages of experimental APIs.
+
+### Codegen
+
+- Updated `DestinationType` for the navigation change above.
+- Renamed `DestinationComponent` to `NavDestinationComponent`.
+
+
 ## 0.14.1 *(2023-05-26)*
 
 ### Whetstone
