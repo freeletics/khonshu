@@ -34,3 +34,11 @@ dependencies {
     testImplementation(libs.anvil.annotations)
     testImplementation(testFixtures(libs.anvil.compiler.utils))
 }
+
+// exclude external dependency on state machine connect, we include the local module instead
+configurations.configureEach {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module("com.freeletics.khonshu:state-machine"))
+            .using(project(projects.stateMachine.dependencyProject.path))
+    }
+}
