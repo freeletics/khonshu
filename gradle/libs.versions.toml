@@ -28,7 +28,7 @@ uri = "0.0.12"
 inject = "1"
 dagger = "2.46.1"
 anvil = "2.4.6"
-renderer = "0.12.0"
+renderer = "0.13.0"
 kotlinpoet = "1.14.2"
 auto-service = "1.1.1"
 
