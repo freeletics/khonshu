@@ -39,7 +39,8 @@
         "!org.jetbrains.kotlinx",
         "com.google.devtools.ksp",
         "org.jetbrains.compose",
-        "androidx.compose.compiler"
+        "androidx.compose.compiler",
+        "dev.zacsweers.kctfork"
       ],
       groupName: "Kotlin and Compose Compiler"
     },
