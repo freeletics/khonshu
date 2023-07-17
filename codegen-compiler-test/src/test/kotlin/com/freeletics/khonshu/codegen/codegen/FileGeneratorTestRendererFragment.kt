@@ -1,4 +1,5 @@
 @file:Suppress("RedundantVisibilityModifier", "TestFunctionName")
+
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.AppScope
@@ -739,6 +740,7 @@ internal class FileGeneratorTestRendererFragment {
         val dialogFragment = data.copy(
             fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment"),
         )
+
         @Language("kotlin")
         val source = """
             package com.test

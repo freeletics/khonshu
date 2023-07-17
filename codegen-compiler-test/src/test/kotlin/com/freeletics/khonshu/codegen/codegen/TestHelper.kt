@@ -21,7 +21,7 @@ public fun test(data: BaseData, fileName: String, source: String, expectedCode: 
 }
 
 private fun compile(fileName: String, source: String, data: BaseData, expectedCode: String) {
-    val generatedCode = when(data) {
+    val generatedCode = when (data) {
         is ComposeFragmentData -> FileGenerator().generate(data).toString()
         is ComposeScreenData -> FileGenerator().generate(data).toString()
         is RendererFragmentData -> FileGenerator().generate(data).toString()

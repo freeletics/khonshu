@@ -1,4 +1,5 @@
 @file:Suppress("RedundantVisibilityModifier", "TestFunctionName")
+
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.AppScope
