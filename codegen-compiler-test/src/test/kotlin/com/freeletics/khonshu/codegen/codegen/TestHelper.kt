@@ -1,8 +1,10 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import androidx.compose.compiler.plugins.kotlin.ComposeComponentRegistrar
+import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.ComposeScreenData
+import com.freeletics.khonshu.codegen.NavEntryData
 import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.google.common.truth.Truth.assertThat
 import com.squareup.anvil.compiler.internal.testing.AnvilCompilation
@@ -10,43 +12,36 @@ import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import com.tschuchort.compiletesting.SourceFile
 import java.io.File
+import java.lang.IllegalArgumentException
 import java.nio.file.Files
 
-public fun test(data: ComposeScreenData, fileName: String, source: String, expected: String) {
-    val actual = FileGenerator().generate(data).toString()
-    assertThat(actual).isEqualTo(expected)
-    compile(fileName, source, actual)
-    compileWithAnvil(fileName, source, actual)
+public fun test(data: BaseData, fileName: String, source: String, expectedCode: String) {
+    compile(fileName = fileName, source = source, data = data, expectedCode = expectedCode)
+    compileWithAnvil(fileName = fileName, source = source, expectedCode = expectedCode)
 }
 
-public fun test(data: ComposeFragmentData, fileName: String, source: String, expected: String) {
-    val actual = FileGenerator().generate(data).toString()
-    assertThat(actual).isEqualTo(expected)
-    compile(fileName, source, actual)
-    compileWithAnvil(fileName, source, actual)
-}
+private fun compile(fileName: String, source: String, data: BaseData, expectedCode: String) {
+    val generatedCode = when(data) {
+        is ComposeFragmentData -> FileGenerator().generate(data).toString()
+        is ComposeScreenData -> FileGenerator().generate(data).toString()
+        is RendererFragmentData -> FileGenerator().generate(data).toString()
+        is NavEntryData -> throw IllegalArgumentException("Standalone codegen for NavEntryData not supported")
+    }
 
-public fun test(data: RendererFragmentData, fileName: String, source: String, expected: String) {
-    val actual = FileGenerator().generate(data).toString()
-    assertThat(actual).isEqualTo(expected)
-    compile(fileName, source, actual)
-    compileWithAnvil(fileName, source, actual)
-}
-
-private fun compile(fileName: String, source: String, output: String) {
     val compilation = KotlinCompilation().apply {
         configure()
 
         sources = listOf(
             sourceFile(fileName, source),
-            sourceFile(fileName.testFileName(), output),
+            sourceFile(fileName.testFileName(), generatedCode),
         )
     }
 
     assertThat(compilation.compile().exitCode).isEqualTo(ExitCode.OK)
+    assertThat(generatedCode).isEqualTo(expectedCode)
 }
 
-private fun compileWithAnvil(fileName: String, source: String, output: String) {
+private fun compileWithAnvil(fileName: String, source: String, expectedCode: String) {
     val compilation = AnvilCompilation().apply {
         configureAnvil()
         kotlinCompilation.configure()
@@ -56,7 +51,7 @@ private fun compileWithAnvil(fileName: String, source: String, output: String) {
     }
 
     assertThat(compilation.compile().exitCode).isEqualTo(ExitCode.OK)
-    assertThat(compilation.kotlinCompilation.generatedFile(fileName)).isEqualTo(output)
+    assertThat(compilation.kotlinCompilation.generatedFile(fileName)).isEqualTo(expectedCode)
 }
 
 private fun KotlinCompilation.sourceFile(name: String, content: String): SourceFile {

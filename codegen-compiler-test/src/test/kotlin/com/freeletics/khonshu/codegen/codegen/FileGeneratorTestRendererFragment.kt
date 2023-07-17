@@ -1,3 +1,4 @@
+@file:Suppress("RedundantVisibilityModifier", "TestFunctionName")
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.AppScope
@@ -6,6 +7,7 @@ import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.asClassName
+import org.intellij.lang.annotations.Language
 import org.junit.Test
 
 internal class FileGeneratorTestRendererFragment {
@@ -37,6 +39,7 @@ internal class FileGeneratorTestRendererFragment {
 
     @Test
     fun `generates code for RendererFragmentData`() {
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -58,6 +61,7 @@ internal class FileGeneratorTestRendererFragment {
             }
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -155,6 +159,7 @@ internal class FileGeneratorTestRendererFragment {
             navigation = navigation,
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -179,6 +184,7 @@ internal class FileGeneratorTestRendererFragment {
             }
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -299,6 +305,7 @@ internal class FileGeneratorTestRendererFragment {
             navEntryData = navEntryData,
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -328,6 +335,7 @@ internal class FileGeneratorTestRendererFragment {
             }
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -521,6 +529,7 @@ internal class FileGeneratorTestRendererFragment {
             ),
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -545,6 +554,7 @@ internal class FileGeneratorTestRendererFragment {
             }
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -729,6 +739,7 @@ internal class FileGeneratorTestRendererFragment {
         val dialogFragment = data.copy(
             fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment"),
         )
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -752,6 +763,7 @@ internal class FileGeneratorTestRendererFragment {
             }
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 

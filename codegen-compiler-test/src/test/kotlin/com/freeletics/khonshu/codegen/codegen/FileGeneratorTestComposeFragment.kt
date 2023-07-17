@@ -1,3 +1,4 @@
+@file:Suppress("RedundantVisibilityModifier", "TestFunctionName")
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.AppScope
@@ -13,6 +14,7 @@ import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.UNIT
 import com.squareup.kotlinpoet.asClassName
+import org.intellij.lang.annotations.Language
 import org.junit.Test
 
 internal class FileGeneratorTestComposeFragment {
@@ -52,6 +54,7 @@ internal class FileGeneratorTestComposeFragment {
 
     @Test
     fun `generates code for ComposeFragmentData`() {
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -72,6 +75,7 @@ internal class FileGeneratorTestComposeFragment {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -192,6 +196,7 @@ internal class FileGeneratorTestComposeFragment {
             navigation = navigation,
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -216,6 +221,7 @@ internal class FileGeneratorTestComposeFragment {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -359,6 +365,7 @@ internal class FileGeneratorTestComposeFragment {
             navEntryData = navEntryData,
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -388,6 +395,7 @@ internal class FileGeneratorTestComposeFragment {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -604,6 +612,7 @@ internal class FileGeneratorTestComposeFragment {
             ),
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -628,6 +637,7 @@ internal class FileGeneratorTestComposeFragment {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -836,6 +846,7 @@ internal class FileGeneratorTestComposeFragment {
             fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment"),
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -858,6 +869,7 @@ internal class FileGeneratorTestComposeFragment {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -995,6 +1007,7 @@ internal class FileGeneratorTestComposeFragment {
             ),
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -1020,6 +1033,7 @@ internal class FileGeneratorTestComposeFragment {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -1159,6 +1173,7 @@ internal class FileGeneratorTestComposeFragment {
             sendActionParameter = null,
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -1178,6 +1193,7 @@ internal class FileGeneratorTestComposeFragment {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -1293,6 +1309,7 @@ internal class FileGeneratorTestComposeFragment {
             stateParameter = null,
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -1312,6 +1329,7 @@ internal class FileGeneratorTestComposeFragment {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 

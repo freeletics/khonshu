@@ -1,3 +1,4 @@
+@file:Suppress("RedundantVisibilityModifier", "TestFunctionName")
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.AppScope
@@ -13,6 +14,7 @@ import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.UNIT
 import com.squareup.kotlinpoet.asClassName
+import org.intellij.lang.annotations.Language
 import org.junit.Test
 
 internal class FileGeneratorTestCompose {
@@ -51,6 +53,7 @@ internal class FileGeneratorTestCompose {
 
     @Test
     fun `generates code for ComposeScreenData`() {
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -71,6 +74,7 @@ internal class FileGeneratorTestCompose {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -168,6 +172,7 @@ internal class FileGeneratorTestCompose {
             navigation = navigation,
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -192,6 +197,7 @@ internal class FileGeneratorTestCompose {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -311,6 +317,7 @@ internal class FileGeneratorTestCompose {
             navEntryData = navEntryData,
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -340,6 +347,7 @@ internal class FileGeneratorTestCompose {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -532,6 +540,7 @@ internal class FileGeneratorTestCompose {
             ),
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -556,6 +565,7 @@ internal class FileGeneratorTestCompose {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -757,6 +767,7 @@ internal class FileGeneratorTestCompose {
             ),
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -782,6 +793,7 @@ internal class FileGeneratorTestCompose {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -898,6 +910,7 @@ internal class FileGeneratorTestCompose {
             sendActionParameter = null,
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -917,6 +930,7 @@ internal class FileGeneratorTestCompose {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
@@ -1009,6 +1023,7 @@ internal class FileGeneratorTestCompose {
             stateParameter = null,
         )
 
+        @Language("kotlin")
         val source = """
             package com.test
             
@@ -1028,6 +1043,7 @@ internal class FileGeneratorTestCompose {
             ) {}
         """.trimIndent()
 
+        @Language("kotlin")
         val expected = """
             package com.test
 
