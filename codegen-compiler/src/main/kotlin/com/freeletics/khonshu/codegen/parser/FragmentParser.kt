@@ -32,6 +32,7 @@ internal fun ClassReference.toRendererFragmentDestinationData(): RendererFragmen
 
     val navigation = Navigation.Fragment(
         route = annotation.route,
+        parentScopeIsRoute = annotation.parentScopeReference.extendsBaseRoute(),
         destinationType = annotation.destinationType,
         destinationScope = annotation.destinationScope,
     )
@@ -80,6 +81,7 @@ internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): Compo
 
     val navigation = Navigation.Fragment(
         route = annotation.route,
+        parentScopeIsRoute = annotation.parentScopeReference.extendsBaseRoute(),
         destinationType = annotation.destinationType,
         destinationScope = annotation.destinationScope,
     )

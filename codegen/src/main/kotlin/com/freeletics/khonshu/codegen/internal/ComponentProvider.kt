@@ -47,8 +47,6 @@ public inline fun <reified C : Any, P : Any, R : BaseRoute> component(
     executor: NavigationExecutor,
     context: Context,
     parentScope: KClass<*>,
-    // TODO remove parameter
-    @Suppress("UNUSED_PARAMETER") destinationScope: KClass<*>,
     crossinline factory: (P, SavedStateHandle, R) -> C,
 ): C {
     return executor.storeFor(destinationId).getOrCreate(C::class) {
@@ -66,8 +64,7 @@ public inline fun <reified C : Any, P : Any, R : BaseRoute> component(
  * To be used in generated code.
  */
 @InternalCodegenApi
-@JvmName("componentForNavDestination") // TODO give unique name to method
-public inline fun <reified C : Any, P : Any, PR : BaseRoute, R : BaseRoute> component(
+public inline fun <reified C : Any, P : Any, PR : BaseRoute, R : BaseRoute> componentFromParentRoute(
     destinationId: DestinationId<out R>,
     route: R,
     executor: NavigationExecutor,
