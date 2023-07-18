@@ -81,11 +81,23 @@ scope (usually an app wide or an Activity level scope). With that it's not neces
 to manually create a `Set` of all destinations anymore. It can simply be injected.
 
 The integration of Khonshu's Codegen and Navigation libraries also expects a `NavEventNavigator`
-to be injectable. This can be easily achieved by adding
-`@ScopeTo(ExampleScope::class) @ContributesBinding(ExampleScope::class, NavEventNavigator::class)`
+to be injectable. This can be easily achieved by adding `@ScopeTo(ExampleScope::class)
+@ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, NavEventNavigator::class)`
 to a subclass of it. The generated code will automatically take care of setting up
 the navigator by calling `NavigationSetup` for compose and `handleNavigation`
 for Fragments inside the generated code.
+
+
+## Sharing objects between screens
+
+Sometimes it is needed to share an object between 2 or more screens, for example
+in a flow of screens that are connected to each other and work on the same data.
+This is possible by using the route of the first screen in the flow as `parentScope`
+for the other scopes. Internally this will cause the generated component for the
+first screen to become the parent for the components of the other screens.
+
+This then allows injecting anything that is available in the scope of the first screen,
+including the `SavedStateHandle` and route of the initial/parent screen.
 
 
 ## Example
@@ -105,6 +117,7 @@ internal class ExampleStateMachine @Inject constructor(
 
 // scope the navigator so that everything interacts with the same instance
 @ScopeTo(ExampleRoute::class)
+@ForScope(ExampleRoute::class)
 // make ExampleNavigator available as NavEventNavigator so that the generated code can automatically
 // set up the navigation handling
 @ContributesBinding(ExampleRoute::class, NavEventNavigator::class)
