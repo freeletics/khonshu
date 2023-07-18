@@ -247,6 +247,8 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
+            import com.freeletics.khonshu.codegen.`internal`.NavComponentProvider
+            import com.freeletics.khonshu.codegen.`internal`.NavDestinationComponent
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavEventNavigator
@@ -265,11 +267,13 @@ internal class FileGeneratorTestComposeFragment {
             import dagger.BindsInstance
             import dagger.Module
             import dagger.Provides
+            import dagger.multibindings.IntoMap
             import dagger.multibindings.IntoSet
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.collections.Set
+            import kotlin.jvm.JvmSuppressWildcards
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -318,6 +322,10 @@ internal class FileGeneratorTestComposeFragment {
                 parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
               }
             }
+
+            @ContributesTo(TestDestinationScope::class)
+            @OptIn(InternalCodegenApi::class)
+            public interface KhonshuTestNavDestinationComponent : NavDestinationComponent
 
             @Module
             @ContributesTo(TestRoute::class)
@@ -370,7 +378,8 @@ internal class FileGeneratorTestComposeFragment {
                 )
               }
             }
-            
+
+            @OptIn(InternalCodegenApi::class)
             @Module
             @ContributesTo(TestDestinationScope::class)
             public object KhonshuTestNavDestinationModule {
@@ -378,6 +387,12 @@ internal class FileGeneratorTestComposeFragment {
               @IntoSet
               public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute,
                   KhonshuTestFragment>()
+
+              @Provides
+              @IntoMap
+              @NavComponentProvider(TestRoute::class)
+              public fun bindComponentProvider(): @JvmSuppressWildcards ComponentProvider<*, *> =
+                  KhonshuTestComponentProvider
             }
             
         """.trimIndent()
@@ -443,6 +458,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
+            import com.freeletics.khonshu.codegen.`internal`.NavComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.NavDestinationComponent
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetterKey
@@ -466,6 +482,7 @@ internal class FileGeneratorTestComposeFragment {
             import dagger.BindsInstance
             import dagger.Module
             import dagger.Provides
+            import dagger.multibindings.IntoMap
             import dagger.multibindings.IntoSet
             import dagger.multibindings.Multibinds
             import java.io.Closeable
@@ -473,6 +490,7 @@ internal class FileGeneratorTestComposeFragment {
             import kotlin.Any
             import kotlin.OptIn
             import kotlin.collections.Set
+            import kotlin.jvm.JvmSuppressWildcards
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -521,6 +539,10 @@ internal class FileGeneratorTestComposeFragment {
                 parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
               }
             }
+            
+            @ContributesTo(TestDestinationScope::class)
+            @OptIn(InternalCodegenApi::class)
+            public interface KhonshuTestNavDestinationComponent : NavDestinationComponent
 
             @Module
             @ContributesTo(TestRoute::class)
@@ -574,6 +596,7 @@ internal class FileGeneratorTestComposeFragment {
               }
             }
 
+            @OptIn(InternalCodegenApi::class)
             @Module
             @ContributesTo(TestDestinationScope::class)
             public object KhonshuTestNavDestinationModule {
@@ -581,6 +604,12 @@ internal class FileGeneratorTestComposeFragment {
               @IntoSet
               public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute,
                   KhonshuTestFragment>()
+
+              @Provides
+              @IntoMap
+              @NavComponentProvider(TestRoute::class)
+              public fun bindComponentProvider(): @JvmSuppressWildcards ComponentProvider<*, *> =
+                  KhonshuTestComponentProvider
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -704,6 +733,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
+            import com.freeletics.khonshu.codegen.`internal`.NavComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.NavDestinationComponent
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetterKey
@@ -725,6 +755,7 @@ internal class FileGeneratorTestComposeFragment {
             import dagger.BindsInstance
             import dagger.Module
             import dagger.Provides
+            import dagger.multibindings.IntoMap
             import dagger.multibindings.IntoSet
             import dagger.multibindings.Multibinds
             import java.io.Closeable
@@ -732,6 +763,7 @@ internal class FileGeneratorTestComposeFragment {
             import kotlin.Any
             import kotlin.OptIn
             import kotlin.collections.Set
+            import kotlin.jvm.JvmSuppressWildcards
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -780,6 +812,10 @@ internal class FileGeneratorTestComposeFragment {
                 parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
               }
             }
+
+            @ContributesTo(AppScope::class)
+            @OptIn(InternalCodegenApi::class)
+            public interface KhonshuTestNavDestinationComponent : NavDestinationComponent
 
             @Module
             @ContributesTo(TestRoute::class)
@@ -833,6 +869,7 @@ internal class FileGeneratorTestComposeFragment {
               }
             }
 
+            @OptIn(InternalCodegenApi::class)
             @Module
             @ContributesTo(AppScope::class)
             public object KhonshuTestNavDestinationModule {
@@ -840,6 +877,12 @@ internal class FileGeneratorTestComposeFragment {
               @IntoSet
               public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute,
                   KhonshuTestFragment>()
+
+              @Provides
+              @IntoMap
+              @NavComponentProvider(TestRoute::class)
+              public fun bindComponentProvider(): @JvmSuppressWildcards ComponentProvider<*, *> =
+                  KhonshuTestComponentProvider
             }
 
             @OptIn(InternalCodegenApi::class)

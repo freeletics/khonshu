@@ -81,6 +81,8 @@ public class FileGenerator {
         if (data.navigation != null) {
             val componentProviderGenerator = ComponentProviderGenerator(data)
             addType(componentProviderGenerator.generate())
+            val destinationComponentGenerator = NavDestinationComponentGenerator(data)
+            addType(destinationComponentGenerator.generate())
         }
     }
 
