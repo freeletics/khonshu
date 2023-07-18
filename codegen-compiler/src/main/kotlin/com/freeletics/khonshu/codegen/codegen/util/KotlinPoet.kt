@@ -81,8 +81,8 @@ internal fun contributesToAnnotation(scope: ClassName): AnnotationSpec {
         .build()
 }
 
-internal fun navEntryAnnotation(scope: ClassName, target: UseSiteTarget? = null): AnnotationSpec {
-    return AnnotationSpec.builder(navEntry)
+internal fun forScope(scope: ClassName, target: UseSiteTarget? = null): AnnotationSpec {
+    return AnnotationSpec.builder(forScope)
         .addMember("%T::class", scope)
         .useSiteTarget(target)
         .build()

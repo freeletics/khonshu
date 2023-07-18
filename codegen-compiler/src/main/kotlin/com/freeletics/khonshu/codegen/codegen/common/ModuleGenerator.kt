@@ -1,12 +1,11 @@
 package com.freeletics.khonshu.codegen.codegen.common
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.NavEntryData
 import com.freeletics.khonshu.codegen.codegen.Generator
 import com.freeletics.khonshu.codegen.codegen.util.contributesToAnnotation
+import com.freeletics.khonshu.codegen.codegen.util.forScope
 import com.freeletics.khonshu.codegen.codegen.util.module
 import com.freeletics.khonshu.codegen.codegen.util.multibinds
-import com.freeletics.khonshu.codegen.codegen.util.navEntryAnnotation
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -33,11 +32,7 @@ internal class ModuleGenerator(
         return FunSpec.builder("bindCloseables")
             .addModifiers(ABSTRACT)
             .addAnnotation(multibinds)
-            .apply {
-                if (data is NavEntryData) {
-                    addAnnotation(navEntryAnnotation(data.scope))
-                }
-            }
+            .addAnnotation(forScope(data.scope))
             .returns(SET.parameterizedBy(Closeable::class.asClassName()))
             .build()
     }
