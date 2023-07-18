@@ -9,7 +9,7 @@ import com.freeletics.khonshu.codegen.codegen.Generator
 import com.freeletics.khonshu.codegen.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.codegen.util.bindsInstanceParameter
 import com.freeletics.khonshu.codegen.codegen.util.contributesToAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.navEntryAnnotation
+import com.freeletics.khonshu.codegen.codegen.util.forScope
 import com.freeletics.khonshu.codegen.codegen.util.navEventNavigator
 import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.codegen.util.savedStateHandle
@@ -68,7 +68,9 @@ internal class ComponentGenerator(
             properties += simplePropertySpec(data.stateMachine!!)
         }
         if (data.navigation != null && data !is NavEntryData) {
-            properties += simplePropertySpec(navEventNavigator)
+            properties += simplePropertySpec(navEventNavigator).toBuilder()
+                .addAnnotation(forScope(data.scope, GET))
+                .build()
         }
         when (data) {
             is ComposeFragmentData -> {
@@ -85,11 +87,7 @@ internal class ComponentGenerator(
             is NavEntryData -> {}
         }
         properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName()))
-            .apply {
-                if (data is NavEntryData) {
-                    addAnnotation(navEntryAnnotation(data.scope, GET))
-                }
-            }
+            .addAnnotation(forScope(data.scope, GET))
             .build()
         return properties
     }
@@ -104,15 +102,17 @@ internal class ComponentGenerator(
     }
 
     private fun retainedComponentFactory(): TypeSpec {
-        val qualifier = if (data is NavEntryData) {
-            navEntryAnnotation(data.scope)
-        } else {
-            null
-        }
         val createFun = FunSpec.builder(retainedComponentFactoryCreateName)
             .addModifiers(ABSTRACT)
-            .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle, qualifier))
-            .addParameter(bindsInstanceParameter(data.navigation.asParameter(), qualifier))
+            .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
+            .addParameter(
+                bindsInstanceParameter(
+                    data.navigation.asParameter(),
+                    forScope(data.scope).takeIf {
+                        data.navigation == null || data is NavEntryData
+                    },
+                ),
+            )
             .returns(retainedComponentClassName)
             .build()
         return TypeSpec.interfaceBuilder(retainedComponentFactoryClassName)

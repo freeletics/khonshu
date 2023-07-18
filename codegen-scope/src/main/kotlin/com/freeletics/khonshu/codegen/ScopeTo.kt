@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.codegen
 
+import javax.inject.Qualifier
 import javax.inject.Scope
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.reflect.KClass
@@ -15,5 +16,8 @@ import kotlin.reflect.KClass
  */
 @Scope
 @Retention(RUNTIME)
-@MustBeDocumented
 public annotation class ScopeTo(val marker: KClass<*>)
+
+@Qualifier
+@Retention(RUNTIME)
+public annotation class ForScope(val marker: KClass<*>)

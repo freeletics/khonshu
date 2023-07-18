@@ -1,6 +1,10 @@
 public abstract interface class com/freeletics/khonshu/codegen/AppScope {
 }
 
+public abstract interface annotation class com/freeletics/khonshu/codegen/ForScope : java/lang/annotation/Annotation {
+	public abstract fun marker ()Ljava/lang/Class;
+}
+
 public abstract interface annotation class com/freeletics/khonshu/codegen/ScopeTo : java/lang/annotation/Annotation {
 	public abstract fun marker ()Ljava/lang/Class;
 }

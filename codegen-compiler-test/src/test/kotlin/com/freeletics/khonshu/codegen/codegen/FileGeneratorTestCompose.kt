@@ -86,6 +86,7 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+            import com.freeletics.khonshu.codegen.ForScope
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
@@ -110,6 +111,7 @@ internal class FileGeneratorTestCompose {
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
+              @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
     
               override fun close() {
@@ -120,7 +122,8 @@ internal class FileGeneratorTestCompose {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                public fun create(@BindsInstance @ForScope(TestScreen::class)
+                    savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
                     arguments: Bundle): KhonshuTestComponent
               }
 
@@ -134,6 +137,7 @@ internal class FileGeneratorTestCompose {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestModule {
               @Multibinds
+              @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
@@ -214,6 +218,7 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.ForScope
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
@@ -250,8 +255,10 @@ internal class FileGeneratorTestCompose {
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
+              @get:ForScope(TestRoute::class)
               public val navEventNavigator: NavEventNavigator
 
+              @get:ForScope(TestRoute::class)
               public val closeables: Set<Closeable>
     
               override fun close() {
@@ -262,8 +269,8 @@ internal class FileGeneratorTestCompose {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
-                    testRoute: TestRoute): KhonshuTestComponent
+                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
+                    @BindsInstance testRoute: TestRoute): KhonshuTestComponent
               }
 
               @ContributesTo(TestParentScope::class)
@@ -290,6 +297,7 @@ internal class FileGeneratorTestCompose {
             @ContributesTo(TestRoute::class)
             public interface KhonshuTestModule {
               @Multibinds
+              @ForScope(TestRoute::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
@@ -385,7 +393,7 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.khonshu.codegen.NavEntry
+            import com.freeletics.khonshu.codegen.ForScope
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
@@ -429,8 +437,10 @@ internal class FileGeneratorTestCompose {
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
+              @get:ForScope(TestRoute::class)
               public val navEventNavigator: NavEventNavigator
 
+              @get:ForScope(TestRoute::class)
               public val closeables: Set<Closeable>
     
               override fun close() {
@@ -441,8 +451,8 @@ internal class FileGeneratorTestCompose {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
-                    testRoute: TestRoute): KhonshuTestComponent
+                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
+                    @BindsInstance testRoute: TestRoute): KhonshuTestComponent
               }
 
               @ContributesTo(TestParentScope::class)
@@ -469,6 +479,7 @@ internal class FileGeneratorTestCompose {
             @ContributesTo(TestRoute::class)
             public interface KhonshuTestModule {
               @Multibinds
+              @ForScope(TestRoute::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
@@ -518,7 +529,7 @@ internal class FileGeneratorTestCompose {
               parentScope = TestParentScope::class,
             )
             public interface KhonshuTestScreenNavEntryComponent : Closeable {
-              @get:NavEntry(TestScreen::class)
+              @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
     
               override fun close() {
@@ -529,8 +540,8 @@ internal class FileGeneratorTestCompose {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance @NavEntry(TestScreen::class)
-                    savedStateHandle: SavedStateHandle, @BindsInstance @NavEntry(TestScreen::class)
+                public fun create(@BindsInstance @ForScope(TestScreen::class)
+                    savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
                     testRoute: TestRoute): KhonshuTestScreenNavEntryComponent
               }
 
@@ -544,7 +555,7 @@ internal class FileGeneratorTestCompose {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestScreenNavEntryModule {
               @Multibinds
-              @NavEntry(TestScreen::class)
+              @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
@@ -622,7 +633,7 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.AppScope
-            import com.freeletics.khonshu.codegen.NavEntry
+            import com.freeletics.khonshu.codegen.ForScope
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
@@ -664,8 +675,10 @@ internal class FileGeneratorTestCompose {
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
+              @get:ForScope(TestRoute::class)
               public val navEventNavigator: NavEventNavigator
 
+              @get:ForScope(TestRoute::class)
               public val closeables: Set<Closeable>
     
               override fun close() {
@@ -676,8 +689,8 @@ internal class FileGeneratorTestCompose {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
-                    testRoute: TestRoute): KhonshuTestComponent
+                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
+                    @BindsInstance testRoute: TestRoute): KhonshuTestComponent
               }
 
               @ContributesTo(AppScope::class)
@@ -704,6 +717,7 @@ internal class FileGeneratorTestCompose {
             @ContributesTo(TestRoute::class)
             public interface KhonshuTestModule {
               @Multibinds
+              @ForScope(TestRoute::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
@@ -753,7 +767,7 @@ internal class FileGeneratorTestCompose {
               parentScope = AppScope::class,
             )
             public interface KhonshuTestScreenNavEntryComponent : Closeable {
-              @get:NavEntry(TestScreen::class)
+              @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
     
               override fun close() {
@@ -764,8 +778,8 @@ internal class FileGeneratorTestCompose {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance @NavEntry(TestScreen::class)
-                    savedStateHandle: SavedStateHandle, @BindsInstance @NavEntry(TestScreen::class)
+                public fun create(@BindsInstance @ForScope(TestScreen::class)
+                    savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
                     testRoute: TestRoute): KhonshuTestScreenNavEntryComponent
               }
 
@@ -779,7 +793,7 @@ internal class FileGeneratorTestCompose {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestScreenNavEntryModule {
               @Multibinds
-              @NavEntry(TestScreen::class)
+              @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
@@ -869,6 +883,7 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+            import com.freeletics.khonshu.codegen.ForScope
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
@@ -905,6 +920,7 @@ internal class FileGeneratorTestCompose {
 
               public val testMap: Map<String, Int>
 
+              @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
     
               override fun close() {
@@ -915,7 +931,8 @@ internal class FileGeneratorTestCompose {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                public fun create(@BindsInstance @ForScope(TestScreen::class)
+                    savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
                     arguments: Bundle): KhonshuTest2Component
               }
 
@@ -929,6 +946,7 @@ internal class FileGeneratorTestCompose {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTest2Module {
               @Multibinds
+              @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
@@ -1011,6 +1029,7 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+            import com.freeletics.khonshu.codegen.ForScope
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
@@ -1034,6 +1053,7 @@ internal class FileGeneratorTestCompose {
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
+              @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
     
               override fun close() {
@@ -1044,7 +1064,8 @@ internal class FileGeneratorTestCompose {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                public fun create(@BindsInstance @ForScope(TestScreen::class)
+                    savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
                     arguments: Bundle): KhonshuTestComponent
               }
 
@@ -1058,6 +1079,7 @@ internal class FileGeneratorTestCompose {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestModule {
               @Multibinds
+              @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
@@ -1131,6 +1153,7 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
             import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+            import com.freeletics.khonshu.codegen.ForScope
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
@@ -1155,6 +1178,7 @@ internal class FileGeneratorTestCompose {
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
+              @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
     
               override fun close() {
@@ -1165,7 +1189,8 @@ internal class FileGeneratorTestCompose {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance savedStateHandle: SavedStateHandle, @BindsInstance
+                public fun create(@BindsInstance @ForScope(TestScreen::class)
+                    savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
                     arguments: Bundle): KhonshuTestComponent
               }
 
@@ -1179,6 +1204,7 @@ internal class FileGeneratorTestCompose {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestModule {
               @Multibinds
+              @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
