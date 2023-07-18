@@ -6,6 +6,7 @@ import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.NavEntryData
 import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.codegen.common.ComponentGenerator
+import com.freeletics.khonshu.codegen.codegen.common.ComponentProviderGenerator
 import com.freeletics.khonshu.codegen.codegen.common.ComposeGenerator
 import com.freeletics.khonshu.codegen.codegen.common.ModuleGenerator
 import com.freeletics.khonshu.codegen.codegen.compose.ComposeScreenGenerator
@@ -35,6 +36,7 @@ public class FileGenerator {
 
         return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
             .addType(componentGenerator.generate())
+            .addComponentProviderType(data)
             .addType(moduleGenerator.generate())
             .addFunction(composeScreenGenerator.generate())
             .addFunction(composeGenerator.generate())
@@ -51,6 +53,7 @@ public class FileGenerator {
 
         return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
             .addType(componentGenerator.generate())
+            .addComponentProviderType(data)
             .addType(moduleGenerator.generate())
             .addType(composeFragmentGenerator.generate())
             .addFunction(composeGenerator.generate())
@@ -66,11 +69,19 @@ public class FileGenerator {
 
         return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
             .addType(componentGenerator.generate())
+            .addComponentProviderType(data)
             .addType(moduleGenerator.generate())
             .addType(rendererFragmentGenerator.generate())
             .addNavDestinationTypes(data)
             .addNavEntryTypes(data.navEntryData)
             .build()
+    }
+
+    private fun FileSpec.Builder.addComponentProviderType(data: BaseData) = apply {
+        if (data.navigation != null) {
+            val componentProviderGenerator = ComponentProviderGenerator(data)
+            addType(componentProviderGenerator.generate())
+        }
     }
 
     private fun FileSpec.Builder.addNavDestinationTypes(data: BaseData) = apply {

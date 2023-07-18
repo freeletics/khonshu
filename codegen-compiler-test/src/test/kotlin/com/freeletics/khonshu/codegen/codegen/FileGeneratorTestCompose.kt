@@ -208,17 +208,20 @@ internal class FileGeneratorTestCompose {
         val expected = """
             package com.test
 
+            import android.content.Context
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ScopeTo
+            import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
+            import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
             import com.freeletics.khonshu.navigation.`internal`.destinationId
             import com.freeletics.khonshu.navigation.compose.LocalNavigationExecutor
             import com.freeletics.khonshu.navigation.compose.NavDestination
@@ -268,6 +271,20 @@ internal class FileGeneratorTestCompose {
                 public fun khonshuTestComponentFactory(): Factory
               }
             }
+            
+            @OptIn(InternalCodegenApi::class)
+            public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
+              @OptIn(InternalNavigationApi::class)
+              override fun provide(
+                route: TestRoute,
+                executor: NavigationExecutor,
+                context: Context,
+              ): KhonshuTestComponent = component(route.destinationId, route, executor, context,
+                  TestParentScope::class, TestDestinationScope::class) { parentComponent:
+                  KhonshuTestComponent.ParentComponent, savedStateHandle, testRoute ->
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              }
+            }
 
             @Module
             @ContributesTo(TestRoute::class)
@@ -282,11 +299,7 @@ internal class FileGeneratorTestCompose {
               val context = LocalContext.current
               val executor = LocalNavigationExecutor.current
               val component = remember(context, executor, testRoute) {
-                component(testRoute.destinationId, testRoute, executor, context, TestParentScope::class,
-                    TestDestinationScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                    savedStateHandle, testRouteForComponent ->
-                  parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRouteForComponent)
-                }
+                KhonshuTestComponentProvider.provide(testRoute, executor, context)
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -374,6 +387,7 @@ internal class FileGeneratorTestCompose {
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.NavEntry
             import com.freeletics.khonshu.codegen.ScopeTo
+            import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.NavDestinationComponent
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
@@ -436,6 +450,20 @@ internal class FileGeneratorTestCompose {
                 public fun khonshuTestComponentFactory(): Factory
               }
             }
+            
+            @OptIn(InternalCodegenApi::class)
+            public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
+              @OptIn(InternalNavigationApi::class)
+              override fun provide(
+                route: TestRoute,
+                executor: NavigationExecutor,
+                context: Context,
+              ): KhonshuTestComponent = component(route.destinationId, route, executor, context,
+                  TestParentScope::class, TestDestinationScope::class) { parentComponent:
+                  KhonshuTestComponent.ParentComponent, savedStateHandle, testRoute ->
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              }
+            }
 
             @Module
             @ContributesTo(TestRoute::class)
@@ -450,11 +478,7 @@ internal class FileGeneratorTestCompose {
               val context = LocalContext.current
               val executor = LocalNavigationExecutor.current
               val component = remember(context, executor, testRoute) {
-                component(testRoute.destinationId, testRoute, executor, context, TestParentScope::class,
-                    TestDestinationScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                    savedStateHandle, testRouteForComponent ->
-                  parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRouteForComponent)
-                }
+                KhonshuTestComponentProvider.provide(testRoute, executor, context)
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -600,6 +624,7 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.khonshu.codegen.AppScope
             import com.freeletics.khonshu.codegen.NavEntry
             import com.freeletics.khonshu.codegen.ScopeTo
+            import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.NavDestinationComponent
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
@@ -660,6 +685,20 @@ internal class FileGeneratorTestCompose {
                 public fun khonshuTestComponentFactory(): Factory
               }
             }
+            
+            @OptIn(InternalCodegenApi::class)
+            public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
+              @OptIn(InternalNavigationApi::class)
+              override fun provide(
+                route: TestRoute,
+                executor: NavigationExecutor,
+                context: Context,
+              ): KhonshuTestComponent = component(route.destinationId, route, executor, context,
+                  AppScope::class, AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
+                  savedStateHandle, testRoute ->
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              }
+            }
 
             @Module
             @ContributesTo(TestRoute::class)
@@ -674,11 +713,7 @@ internal class FileGeneratorTestCompose {
               val context = LocalContext.current
               val executor = LocalNavigationExecutor.current
               val component = remember(context, executor, testRoute) {
-                component(testRoute.destinationId, testRoute, executor, context, AppScope::class,
-                    AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
-                    testRouteForComponent ->
-                  parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRouteForComponent)
-                }
+                KhonshuTestComponentProvider.provide(testRoute, executor, context)
               }
 
               NavigationSetup(component.navEventNavigator)

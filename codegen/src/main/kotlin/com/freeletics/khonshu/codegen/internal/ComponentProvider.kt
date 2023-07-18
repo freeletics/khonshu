@@ -29,10 +29,15 @@ public inline fun <reified C : Any, P : Any> component(
     }
 }
 
+@InternalCodegenApi
+public interface ComponentProvider<R : BaseRoute, T> {
+    public fun provide(route: R, executor: NavigationExecutor, context: Context): T
+}
+
 /**
  * Creates a [ViewModel] for the given [destinationId]. The `ViewModel.Factory` will use [parentScope]
  * to lookup a parent component instance. That component will then be passed to the given [factory]
- * together with a [SavedStateHandle] and the passed in [destination].
+ * together with a [SavedStateHandle] and the passed in [destinationId].
  *
  * To be used in generated code.
  */

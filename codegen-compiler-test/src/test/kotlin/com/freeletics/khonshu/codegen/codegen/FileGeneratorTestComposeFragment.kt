@@ -227,6 +227,7 @@ internal class FileGeneratorTestComposeFragment {
         val expected = """
             package com.test
 
+            import android.content.Context
             import android.os.Bundle
             import android.view.LayoutInflater
             import android.view.View
@@ -239,11 +240,13 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ScopeTo
+            import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
+            import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
             import com.freeletics.khonshu.navigation.`internal`.destinationId
             import com.freeletics.khonshu.navigation.fragment.NavDestination
             import com.freeletics.khonshu.navigation.fragment.ScreenDestination
@@ -294,6 +297,20 @@ internal class FileGeneratorTestComposeFragment {
                 public fun khonshuTestComponentFactory(): Factory
               }
             }
+            
+            @OptIn(InternalCodegenApi::class)
+            public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
+              @OptIn(InternalNavigationApi::class)
+              override fun provide(
+                route: TestRoute,
+                executor: NavigationExecutor,
+                context: Context,
+              ): KhonshuTestComponent = component(route.destinationId, route, executor, context,
+                  TestParentScope::class, TestDestinationScope::class) { parentComponent:
+                  KhonshuTestComponent.ParentComponent, savedStateHandle, testRoute ->
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              }
+            }
 
             @Module
             @ContributesTo(TestRoute::class)
@@ -315,12 +332,8 @@ internal class FileGeneratorTestComposeFragment {
                 if (!::khonshuTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
                   val executor = findNavigationExecutor()
-                  khonshuTestComponent = component(testRoute.destinationId, testRoute, executor,
-                      requireContext(), TestParentScope::class, TestDestinationScope::class) { parentComponent:
-                      KhonshuTestComponent.ParentComponent, savedStateHandle, testRouteForComponent ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
-                        testRouteForComponent)
-                  }
+                  khonshuTestComponent = KhonshuTestComponentProvider.provide(testRoute, executor,
+                      requireContext())
             
                   handleNavigation(this, khonshuTestComponent.navEventNavigator)
                 }
@@ -420,6 +433,7 @@ internal class FileGeneratorTestComposeFragment {
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.NavEntry
             import com.freeletics.khonshu.codegen.ScopeTo
+            import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.NavDestinationComponent
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
@@ -483,6 +497,20 @@ internal class FileGeneratorTestComposeFragment {
                 public fun khonshuTestComponentFactory(): Factory
               }
             }
+            
+            @OptIn(InternalCodegenApi::class)
+            public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
+              @OptIn(InternalNavigationApi::class)
+              override fun provide(
+                route: TestRoute,
+                executor: NavigationExecutor,
+                context: Context,
+              ): KhonshuTestComponent = component(route.destinationId, route, executor, context,
+                  TestParentScope::class, TestDestinationScope::class) { parentComponent:
+                  KhonshuTestComponent.ParentComponent, savedStateHandle, testRoute ->
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              }
+            }
 
             @Module
             @ContributesTo(TestRoute::class)
@@ -504,12 +532,8 @@ internal class FileGeneratorTestComposeFragment {
                 if (!::khonshuTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
                   val executor = findNavigationExecutor()
-                  khonshuTestComponent = component(testRoute.destinationId, testRoute, executor,
-                      requireContext(), TestParentScope::class, TestDestinationScope::class) { parentComponent:
-                      KhonshuTestComponent.ParentComponent, savedStateHandle, testRouteForComponent ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
-                        testRouteForComponent)
-                  }
+                  khonshuTestComponent = KhonshuTestComponentProvider.provide(testRoute, executor,
+                      requireContext())
 
                   handleNavigation(this, khonshuTestComponent.navEventNavigator)
                 }
@@ -667,6 +691,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.AppScope
             import com.freeletics.khonshu.codegen.NavEntry
             import com.freeletics.khonshu.codegen.ScopeTo
+            import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.NavDestinationComponent
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
@@ -728,6 +753,20 @@ internal class FileGeneratorTestComposeFragment {
                 public fun khonshuTestComponentFactory(): Factory
               }
             }
+            
+            @OptIn(InternalCodegenApi::class)
+            public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
+              @OptIn(InternalNavigationApi::class)
+              override fun provide(
+                route: TestRoute,
+                executor: NavigationExecutor,
+                context: Context,
+              ): KhonshuTestComponent = component(route.destinationId, route, executor, context,
+                  AppScope::class, AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
+                  savedStateHandle, testRoute ->
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              }
+            }
 
             @Module
             @ContributesTo(TestRoute::class)
@@ -749,12 +788,8 @@ internal class FileGeneratorTestComposeFragment {
                 if (!::khonshuTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
                   val executor = findNavigationExecutor()
-                  khonshuTestComponent = component(testRoute.destinationId, testRoute, executor,
-                      requireContext(), AppScope::class, AppScope::class) { parentComponent:
-                      KhonshuTestComponent.ParentComponent, savedStateHandle, testRouteForComponent ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
-                        testRouteForComponent)
-                  }
+                  khonshuTestComponent = KhonshuTestComponentProvider.provide(testRoute, executor,
+                      requireContext())
 
                   handleNavigation(this, khonshuTestComponent.navEventNavigator)
                 }
