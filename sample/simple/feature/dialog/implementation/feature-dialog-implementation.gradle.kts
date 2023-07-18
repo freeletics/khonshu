@@ -9,6 +9,7 @@ freeletics {
 
 dependencies {
     api(libs.androidx.compose.runtime)
+    api(libs.androidx.lifecycle.viewmodel.compose)
     api(libs.androidx.lifecycle.viewmodel.savedstate)
     api(libs.coroutines)
     api(libs.khonshu.navigator)

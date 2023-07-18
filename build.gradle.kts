@@ -35,6 +35,7 @@ dependencyAnalysis {
         project(":codegen-compose") {
             onUnusedDependencies {
                 exclude(":codegen")
+                exclude(":navigation-compose")
             }
             onIncorrectConfiguration {
                 exclude(":codegen")
@@ -44,6 +45,7 @@ dependencyAnalysis {
         project(":codegen-fragment") {
             onUnusedDependencies {
                 exclude(":codegen")
+                exclude(":navigation-fragment")
             }
             onIncorrectConfiguration {
                 exclude(":codegen")

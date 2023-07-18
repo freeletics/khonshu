@@ -26,9 +26,8 @@ internal val navEntryComponentFqName = FqName(navEntryComponent.canonicalName)
 // Codegen Internal API
 internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.internal", "asComposeState")
 internal val InternalCodegenApi = ClassName("com.freeletics.khonshu.codegen.internal", "InternalCodegenApi")
+internal val getComponent = MemberName("com.freeletics.khonshu.codegen.internal", "component")
 internal val getNavEntryComponent = MemberName("com.freeletics.khonshu.codegen.internal", "navEntryComponent")
-internal val fragmentComponent = MemberName("com.freeletics.khonshu.codegen.fragment.internal", "component")
-internal val rememberComponent = MemberName("com.freeletics.khonshu.codegen.compose.internal", "rememberComponent")
 internal val navEntryComponentGetter = ClassName("com.freeletics.khonshu.codegen.internal", "NavEntryComponentGetter")
 internal val navEntryComponentGetterKey = ClassName(
     "com.freeletics.khonshu.codegen.internal",
@@ -39,10 +38,15 @@ internal val destinationComponent = ClassName("com.freeletics.khonshu.codegen.in
 // Navigator
 internal val navEventNavigator = ClassName("com.freeletics.khonshu.navigation", "NavEventNavigator")
 internal val navigationExecutor = ClassName("com.freeletics.khonshu.navigation.internal", "NavigationExecutor")
+internal val destinationId = MemberName("com.freeletics.khonshu.navigation.internal", "destinationId")
 internal val composeNavigationHandler = MemberName("com.freeletics.khonshu.navigation.compose", "NavigationSetup")
 internal val composeDestination = ClassName("com.freeletics.khonshu.navigation.compose", "NavDestination")
 internal val composeScreenDestination = MemberName("com.freeletics.khonshu.navigation.compose", "ScreenDestination")
 internal val composeOverlayDestination = MemberName("com.freeletics.khonshu.navigation.compose", "OverlayDestination")
+internal val composeLocalNavigationExecutor =
+    MemberName("com.freeletics.khonshu.navigation.compose", "LocalNavigationExecutor")
+internal val fragmentFindNavigationExecutor =
+    MemberName("com.freeletics.khonshu.navigation.fragment", "findNavigationExecutor")
 internal val fragmentNavigationHandler = MemberName("com.freeletics.khonshu.navigation.fragment", "handleNavigation")
 internal val fragmentDestination = ClassName("com.freeletics.khonshu.navigation.fragment", "NavDestination")
 internal val fragmentScreenDestination = MemberName("com.freeletics.khonshu.navigation.fragment", "ScreenDestination")
@@ -77,6 +81,7 @@ internal val module = ClassName("dagger", "Module")
 // AndroidX
 internal val fragment = ClassName("androidx.fragment.app", "Fragment")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
+internal val localViewModelStoreOwner = ClassName("androidx.lifecycle.viewmodel.compose", "LocalViewModelStoreOwner")
 
 // Compose
 internal val composable = ClassName("androidx.compose.runtime", "Composable")
@@ -84,6 +89,7 @@ internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val remember = MemberName("androidx.compose.runtime", "remember")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 internal val composeView = ClassName("androidx.compose.ui.platform", "ComposeView")
+internal val localContext = MemberName("androidx.compose.ui.platform", "LocalContext")
 internal val viewCompositionStrategy = ClassName("androidx.compose.ui.platform", "ViewCompositionStrategy")
 internal val disposeOnLifecycleDestroyed = viewCompositionStrategy.nestedClass("DisposeOnViewTreeLifecycleDestroyed")
 

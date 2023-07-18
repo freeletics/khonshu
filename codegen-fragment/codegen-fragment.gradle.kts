@@ -20,9 +20,6 @@ dependencies {
     implementation(projects.codegenScope)
     implementation(projects.navigationFragment)
     implementation(projects.stateMachine)
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.viewmodel)
-    implementation(libs.androidx.viewmodel.savedstate)
 
     compileOnly(libs.renderer)
 }
