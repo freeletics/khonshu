@@ -4,7 +4,6 @@ import androidx.compose.compiler.plugins.kotlin.ComposeComponentRegistrar
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.ComposeScreenData
-import com.freeletics.khonshu.codegen.NavEntryData
 import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.google.common.truth.Truth.assertThat
 import com.squareup.anvil.compiler.internal.testing.AnvilCompilation
@@ -12,7 +11,6 @@ import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import com.tschuchort.compiletesting.SourceFile
 import java.io.File
-import java.lang.IllegalArgumentException
 import java.nio.file.Files
 
 public fun test(data: BaseData, fileName: String, source: String, expectedCode: String) {
@@ -25,7 +23,6 @@ private fun compile(fileName: String, source: String, data: BaseData, expectedCo
         is ComposeFragmentData -> FileGenerator().generate(data).toString()
         is ComposeScreenData -> FileGenerator().generate(data).toString()
         is RendererFragmentData -> FileGenerator().generate(data).toString()
-        is NavEntryData -> throw IllegalArgumentException("Standalone codegen for NavEntryData not supported")
     }
 
     val compilation = KotlinCompilation().apply {
