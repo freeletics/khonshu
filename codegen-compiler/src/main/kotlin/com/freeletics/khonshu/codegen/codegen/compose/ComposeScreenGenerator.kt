@@ -2,6 +2,7 @@ package com.freeletics.khonshu.codegen.codegen.compose
 
 import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.codegen.Generator
+import com.freeletics.khonshu.codegen.codegen.common.componentProviderClassName
 import com.freeletics.khonshu.codegen.codegen.common.composableName
 import com.freeletics.khonshu.codegen.codegen.common.retainedComponentFactoryCreateName
 import com.freeletics.khonshu.codegen.codegen.common.retainedParentComponentClassName
@@ -11,7 +12,6 @@ import com.freeletics.khonshu.codegen.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.codegen.util.composable
 import com.freeletics.khonshu.codegen.codegen.util.composeLocalNavigationExecutor
 import com.freeletics.khonshu.codegen.codegen.util.composeNavigationHandler
-import com.freeletics.khonshu.codegen.codegen.util.destinationId
 import com.freeletics.khonshu.codegen.codegen.util.getComponent
 import com.freeletics.khonshu.codegen.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.codegen.util.localContext
@@ -45,18 +45,7 @@ internal class ComposeScreenGenerator(
                 if (data.navigation != null) {
                     it.addStatement("val executor = %M.current", composeLocalNavigationExecutor)
                     it.beginControlFlow("val component = %M(context, executor, %N)", remember, parameter)
-                    it.beginControlFlow(
-                        "%M(%N.%M, %N, executor, context, %T::class, %T::class) { " +
-                            "parentComponent: %T, savedStateHandle, %L ->",
-                        getComponent,
-                        parameter,
-                        destinationId,
-                        parameter,
-                        data.parentScope,
-                        data.navigation.destinationScope,
-                        retainedParentComponentClassName,
-                        innerParameterName,
-                    )
+                    it.addStatement("%T.provide(%N, executor, context)", componentProviderClassName, parameter)
                 } else {
                     it.addStatement("val viewModelStoreOwner = checkNotNull(%T.current)", localViewModelStoreOwner)
                     it.beginControlFlow("val component = %M(viewModelStoreOwner, context, arguments)", remember)
@@ -69,15 +58,15 @@ internal class ComposeScreenGenerator(
                         retainedParentComponentClassName,
                         innerParameterName,
                     )
+                    it.addStatement(
+                        "parentComponent.%L().%L(savedStateHandle, %L)",
+                        retainedParentComponentGetterName,
+                        retainedComponentFactoryCreateName,
+                        innerParameterName,
+                    )
+                    it.endControlFlow()
                 }
             }
-            .addStatement(
-                "parentComponent.%L().%L(savedStateHandle, %L)",
-                retainedParentComponentGetterName,
-                retainedComponentFactoryCreateName,
-                innerParameterName,
-            )
-            .endControlFlow()
             .endControlFlow()
             .addCode("\n")
             .addCode(composableNavigationSetup())

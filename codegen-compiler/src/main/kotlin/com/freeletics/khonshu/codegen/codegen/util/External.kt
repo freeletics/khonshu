@@ -28,6 +28,7 @@ internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.interna
 internal val InternalCodegenApi = ClassName("com.freeletics.khonshu.codegen.internal", "InternalCodegenApi")
 internal val getComponent = MemberName("com.freeletics.khonshu.codegen.internal", "component")
 internal val getNavEntryComponent = MemberName("com.freeletics.khonshu.codegen.internal", "navEntryComponent")
+internal val componentProvider = ClassName("com.freeletics.khonshu.codegen.internal", "ComponentProvider")
 internal val navEntryComponentGetter = ClassName("com.freeletics.khonshu.codegen.internal", "NavEntryComponentGetter")
 internal val navEntryComponentGetterKey = ClassName(
     "com.freeletics.khonshu.codegen.internal",
