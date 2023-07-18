@@ -19,9 +19,4 @@ dependencies {
     implementation(projects.codegenScope)
     implementation(projects.navigationCompose)
     implementation(projects.stateMachine)
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.viewmodel)
-    implementation(libs.androidx.viewmodel.savedstate)
-    implementation(libs.androidx.viewmodel.compose)
 }
