@@ -94,7 +94,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.fragment.`internal`.component
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -153,8 +153,9 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::khonshuTestComponent.isInitialized) {
                   val arguments = requireArguments()
-                  khonshuTestComponent = component(TestParentScope::class, arguments) { parentComponent:
-                      KhonshuTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                  khonshuTestComponent = component(this, requireContext(), TestParentScope::class, arguments) {
+                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
+                      argumentsForComponent ->
                     parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
                         argumentsForComponent)
                   }
@@ -240,10 +241,13 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.fragment.`internal`.component
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavEventNavigator
+            import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
+            import com.freeletics.khonshu.navigation.`internal`.destinationId
             import com.freeletics.khonshu.navigation.fragment.NavDestination
             import com.freeletics.khonshu.navigation.fragment.ScreenDestination
+            import com.freeletics.khonshu.navigation.fragment.findNavigationExecutor
             import com.freeletics.khonshu.navigation.fragment.handleNavigation
             import com.freeletics.khonshu.navigation.fragment.requireRoute
             import com.squareup.anvil.annotations.ContributesSubcomponent
@@ -302,6 +306,7 @@ internal class FileGeneratorTestComposeFragment {
             public class KhonshuTestFragment : Fragment() {
               private lateinit var khonshuTestComponent: KhonshuTestComponent
             
+              @OptIn(InternalNavigationApi::class)
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
@@ -309,9 +314,10 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::khonshuTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
-                  khonshuTestComponent = component(TestParentScope::class, TestDestinationScope::class,
-                      testRoute) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
-                      testRouteForComponent ->
+                  val executor = findNavigationExecutor()
+                  khonshuTestComponent = component(testRoute.destinationId, testRoute, executor,
+                      requireContext(), TestParentScope::class, TestDestinationScope::class) { parentComponent:
+                      KhonshuTestComponent.ParentComponent, savedStateHandle, testRouteForComponent ->
                     parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
                         testRouteForComponent)
                   }
@@ -419,13 +425,15 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetterKey
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.codegen.`internal`.navEntryComponent
-            import com.freeletics.khonshu.codegen.fragment.`internal`.component
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
+            import com.freeletics.khonshu.navigation.`internal`.destinationId
             import com.freeletics.khonshu.navigation.fragment.NavDestination
             import com.freeletics.khonshu.navigation.fragment.ScreenDestination
+            import com.freeletics.khonshu.navigation.fragment.findNavigationExecutor
             import com.freeletics.khonshu.navigation.fragment.handleNavigation
             import com.freeletics.khonshu.navigation.fragment.requireRoute
             import com.squareup.anvil.annotations.ContributesMultibinding
@@ -487,6 +495,7 @@ internal class FileGeneratorTestComposeFragment {
             public class KhonshuTestFragment : Fragment() {
               private lateinit var khonshuTestComponent: KhonshuTestComponent
 
+              @OptIn(InternalNavigationApi::class)
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
@@ -494,9 +503,10 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::khonshuTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
-                  khonshuTestComponent = component(TestParentScope::class, TestDestinationScope::class,
-                      testRoute) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
-                      testRouteForComponent ->
+                  val executor = findNavigationExecutor()
+                  khonshuTestComponent = component(testRoute.destinationId, testRoute, executor,
+                      requireContext(), TestParentScope::class, TestDestinationScope::class) { parentComponent:
+                      KhonshuTestComponent.ParentComponent, savedStateHandle, testRouteForComponent ->
                     parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
                         testRouteForComponent)
                   }
@@ -662,13 +672,15 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetterKey
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.codegen.`internal`.navEntryComponent
-            import com.freeletics.khonshu.codegen.fragment.`internal`.component
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
+            import com.freeletics.khonshu.navigation.`internal`.destinationId
             import com.freeletics.khonshu.navigation.fragment.NavDestination
             import com.freeletics.khonshu.navigation.fragment.ScreenDestination
+            import com.freeletics.khonshu.navigation.fragment.findNavigationExecutor
             import com.freeletics.khonshu.navigation.fragment.handleNavigation
             import com.freeletics.khonshu.navigation.fragment.requireRoute
             import com.squareup.anvil.annotations.ContributesMultibinding
@@ -728,6 +740,7 @@ internal class FileGeneratorTestComposeFragment {
             public class KhonshuTestFragment : Fragment() {
               private lateinit var khonshuTestComponent: KhonshuTestComponent
 
+              @OptIn(InternalNavigationApi::class)
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
@@ -735,9 +748,10 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::khonshuTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
-                  khonshuTestComponent = component(AppScope::class, AppScope::class, testRoute) {
-                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
-                      testRouteForComponent ->
+                  val executor = findNavigationExecutor()
+                  khonshuTestComponent = component(testRoute.destinationId, testRoute, executor,
+                      requireContext(), AppScope::class, AppScope::class) { parentComponent:
+                      KhonshuTestComponent.ParentComponent, savedStateHandle, testRouteForComponent ->
                     parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
                         testRouteForComponent)
                   }
@@ -888,7 +902,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.fragment.`internal`.component
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -947,8 +961,9 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::khonshuTestComponent.isInitialized) {
                   val arguments = requireArguments()
-                  khonshuTestComponent = component(TestParentScope::class, arguments) { parentComponent:
-                      KhonshuTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                  khonshuTestComponent = component(this, requireContext(), TestParentScope::class, arguments) {
+                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
+                      argumentsForComponent ->
                     parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
                         argumentsForComponent)
                   }
@@ -1052,7 +1067,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.fragment.`internal`.component
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.other.TestClass2
@@ -1123,8 +1138,9 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::khonshuTest2Component.isInitialized) {
                   val arguments = requireArguments()
-                  khonshuTest2Component = component(TestParentScope::class, arguments) { parentComponent:
-                      KhonshuTest2Component.ParentComponent, savedStateHandle, argumentsForComponent ->
+                  khonshuTest2Component = component(this, requireContext(), TestParentScope::class, arguments) {
+                      parentComponent: KhonshuTest2Component.ParentComponent, savedStateHandle,
+                      argumentsForComponent ->
                     parentComponent.khonshuTest2ComponentFactory().create(savedStateHandle,
                         argumentsForComponent)
                   }
@@ -1211,7 +1227,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.fragment.`internal`.component
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -1269,8 +1285,9 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::khonshuTestComponent.isInitialized) {
                   val arguments = requireArguments()
-                  khonshuTestComponent = component(TestParentScope::class, arguments) { parentComponent:
-                      KhonshuTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                  khonshuTestComponent = component(this, requireContext(), TestParentScope::class, arguments) {
+                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
+                      argumentsForComponent ->
                     parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
                         argumentsForComponent)
                   }
@@ -1348,7 +1365,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.fragment.`internal`.component
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -1407,8 +1424,9 @@ internal class FileGeneratorTestComposeFragment {
               ): View {
                 if (!::khonshuTestComponent.isInitialized) {
                   val arguments = requireArguments()
-                  khonshuTestComponent = component(TestParentScope::class, arguments) { parentComponent:
-                      KhonshuTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                  khonshuTestComponent = component(this, requireContext(), TestParentScope::class, arguments) {
+                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
+                      argumentsForComponent ->
                     parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
                         argumentsForComponent)
                   }

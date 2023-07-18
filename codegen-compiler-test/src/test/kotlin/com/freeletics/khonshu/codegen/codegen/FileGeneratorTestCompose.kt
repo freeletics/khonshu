@@ -83,11 +83,13 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
+            import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
+            import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.compose.`internal`.rememberComponent
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -138,9 +140,13 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalCodegenApi::class)
             public fun KhonshuTest(arguments: Bundle) {
-              val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
-                  KhonshuTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, argumentsForComponent)
+              val context = LocalContext.current
+              val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
+              val component = remember(viewModelStoreOwner, context, arguments) {
+                component(viewModelStoreOwner, context, TestParentScope::class, arguments) { parentComponent:
+                    KhonshuTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                  parentComponent.khonshuTestComponentFactory().create(savedStateHandle, argumentsForComponent)
+                }
               }
 
               KhonshuTest(component)
@@ -205,12 +211,16 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
+            import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.compose.`internal`.rememberComponent
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavEventNavigator
+            import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
+            import com.freeletics.khonshu.navigation.`internal`.destinationId
+            import com.freeletics.khonshu.navigation.compose.LocalNavigationExecutor
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavigationSetup
             import com.freeletics.khonshu.navigation.compose.ScreenDestination
@@ -267,12 +277,16 @@ internal class FileGeneratorTestCompose {
             }
 
             @Composable
-            @OptIn(InternalCodegenApi::class)
+            @OptIn(InternalCodegenApi::class, InternalNavigationApi::class)
             public fun KhonshuTest(testRoute: TestRoute) {
-              val component = rememberComponent(TestParentScope::class, TestDestinationScope::class, testRoute)
-                  { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
-                  testRouteForComponent ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRouteForComponent)
+              val context = LocalContext.current
+              val executor = LocalNavigationExecutor.current
+              val component = remember(context, executor, testRoute) {
+                component(testRoute.destinationId, testRoute, executor, context, TestParentScope::class,
+                    TestDestinationScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
+                    savedStateHandle, testRouteForComponent ->
+                  parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRouteForComponent)
+                }
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -356,6 +370,7 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
+            import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.NavEntry
             import com.freeletics.khonshu.codegen.ScopeTo
@@ -364,11 +379,13 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetterKey
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.codegen.`internal`.navEntryComponent
-            import com.freeletics.khonshu.codegen.compose.`internal`.rememberComponent
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
+            import com.freeletics.khonshu.navigation.`internal`.destinationId
+            import com.freeletics.khonshu.navigation.compose.LocalNavigationExecutor
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavigationSetup
             import com.freeletics.khonshu.navigation.compose.ScreenDestination
@@ -428,12 +445,16 @@ internal class FileGeneratorTestCompose {
             }
 
             @Composable
-            @OptIn(InternalCodegenApi::class)
+            @OptIn(InternalCodegenApi::class, InternalNavigationApi::class)
             public fun KhonshuTest(testRoute: TestRoute) {
-              val component = rememberComponent(TestParentScope::class, TestDestinationScope::class, testRoute)
-                  { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
-                  testRouteForComponent ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRouteForComponent)
+              val context = LocalContext.current
+              val executor = LocalNavigationExecutor.current
+              val component = remember(context, executor, testRoute) {
+                component(testRoute.destinationId, testRoute, executor, context, TestParentScope::class,
+                    TestDestinationScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
+                    savedStateHandle, testRouteForComponent ->
+                  parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRouteForComponent)
+                }
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -574,6 +595,7 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
+            import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.AppScope
             import com.freeletics.khonshu.codegen.NavEntry
@@ -583,11 +605,13 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
             import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetterKey
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.codegen.`internal`.navEntryComponent
-            import com.freeletics.khonshu.codegen.compose.`internal`.rememberComponent
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
+            import com.freeletics.khonshu.navigation.`internal`.destinationId
+            import com.freeletics.khonshu.navigation.compose.LocalNavigationExecutor
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavigationSetup
             import com.freeletics.khonshu.navigation.compose.ScreenDestination
@@ -645,11 +669,16 @@ internal class FileGeneratorTestCompose {
             }
 
             @Composable
-            @OptIn(InternalCodegenApi::class)
+            @OptIn(InternalCodegenApi::class, InternalNavigationApi::class)
             public fun KhonshuTest(testRoute: TestRoute) {
-              val component = rememberComponent(AppScope::class, AppScope::class, testRoute) { parentComponent:
-                  KhonshuTestComponent.ParentComponent, savedStateHandle, testRouteForComponent ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRouteForComponent)
+              val context = LocalContext.current
+              val executor = LocalNavigationExecutor.current
+              val component = remember(context, executor, testRoute) {
+                component(testRoute.destinationId, testRoute, executor, context, AppScope::class,
+                    AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
+                    testRouteForComponent ->
+                  parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRouteForComponent)
+                }
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -802,11 +831,13 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
+            import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
+            import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.compose.`internal`.rememberComponent
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.other.TestClass2
@@ -869,9 +900,13 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalCodegenApi::class)
             public fun KhonshuTest2(arguments: Bundle) {
-              val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
-                  KhonshuTest2Component.ParentComponent, savedStateHandle, argumentsForComponent ->
-                parentComponent.khonshuTest2ComponentFactory().create(savedStateHandle, argumentsForComponent)
+              val context = LocalContext.current
+              val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
+              val component = remember(viewModelStoreOwner, context, arguments) {
+                component(viewModelStoreOwner, context, TestParentScope::class, arguments) { parentComponent:
+                    KhonshuTest2Component.ParentComponent, savedStateHandle, argumentsForComponent ->
+                  parentComponent.khonshuTest2ComponentFactory().create(savedStateHandle, argumentsForComponent)
+                }
               }
 
               KhonshuTest2(component)
@@ -938,11 +973,13 @@ internal class FileGeneratorTestCompose {
             import android.os.Bundle
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
+            import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
+            import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.compose.`internal`.rememberComponent
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -992,9 +1029,13 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalCodegenApi::class)
             public fun KhonshuTest(arguments: Bundle) {
-              val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
-                  KhonshuTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, argumentsForComponent)
+              val context = LocalContext.current
+              val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
+              val component = remember(viewModelStoreOwner, context, arguments) {
+                component(viewModelStoreOwner, context, TestParentScope::class, arguments) { parentComponent:
+                    KhonshuTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                  parentComponent.khonshuTestComponentFactory().create(savedStateHandle, argumentsForComponent)
+                }
               }
 
               KhonshuTest(component)
@@ -1052,11 +1093,13 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
+            import androidx.compose.ui.platform.LocalContext
             import androidx.lifecycle.SavedStateHandle
+            import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.compose.`internal`.rememberComponent
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -1107,9 +1150,13 @@ internal class FileGeneratorTestCompose {
             @Composable
             @OptIn(InternalCodegenApi::class)
             public fun KhonshuTest(arguments: Bundle) {
-              val component = rememberComponent(TestParentScope::class, arguments) { parentComponent:
-                  KhonshuTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, argumentsForComponent)
+              val context = LocalContext.current
+              val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
+              val component = remember(viewModelStoreOwner, context, arguments) {
+                component(viewModelStoreOwner, context, TestParentScope::class, arguments) { parentComponent:
+                    KhonshuTestComponent.ParentComponent, savedStateHandle, argumentsForComponent ->
+                  parentComponent.khonshuTestComponentFactory().create(savedStateHandle, argumentsForComponent)
+                }
               }
 
               KhonshuTest(component)

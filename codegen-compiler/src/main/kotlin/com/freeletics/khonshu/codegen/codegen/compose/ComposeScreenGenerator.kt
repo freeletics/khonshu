@@ -6,13 +6,20 @@ import com.freeletics.khonshu.codegen.codegen.common.composableName
 import com.freeletics.khonshu.codegen.codegen.common.retainedComponentFactoryCreateName
 import com.freeletics.khonshu.codegen.codegen.common.retainedParentComponentClassName
 import com.freeletics.khonshu.codegen.codegen.common.retainedParentComponentGetterName
+import com.freeletics.khonshu.codegen.codegen.util.InternalCodegenApi
 import com.freeletics.khonshu.codegen.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.codegen.util.composable
+import com.freeletics.khonshu.codegen.codegen.util.composeLocalNavigationExecutor
 import com.freeletics.khonshu.codegen.codegen.util.composeNavigationHandler
+import com.freeletics.khonshu.codegen.codegen.util.destinationId
+import com.freeletics.khonshu.codegen.codegen.util.getComponent
+import com.freeletics.khonshu.codegen.codegen.util.internalNavigatorApi
+import com.freeletics.khonshu.codegen.codegen.util.localContext
+import com.freeletics.khonshu.codegen.codegen.util.localViewModelStoreOwner
 import com.freeletics.khonshu.codegen.codegen.util.navEventNavigator
 import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.codegen.util.propertyName
-import com.freeletics.khonshu.codegen.codegen.util.rememberComponent
+import com.freeletics.khonshu.codegen.codegen.util.remember
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 
@@ -25,23 +32,38 @@ internal class ComposeScreenGenerator(
         val innerParameterName = "${parameter.name}ForComponent"
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
-            .addAnnotation(optInAnnotation())
-            .addParameter(parameter)
             .also {
                 if (data.navigation != null) {
+                    it.addAnnotation(optInAnnotation(InternalCodegenApi, internalNavigatorApi))
+                } else {
+                    it.addAnnotation(optInAnnotation())
+                }
+            }
+            .addParameter(parameter)
+            .addStatement("val context = %M.current", localContext)
+            .also {
+                if (data.navigation != null) {
+                    it.addStatement("val executor = %M.current", composeLocalNavigationExecutor)
+                    it.beginControlFlow("val component = %M(context, executor, %N)", remember, parameter)
                     it.beginControlFlow(
-                        "val component = %M(%T::class, %T::class, %N) { parentComponent: %T, savedStateHandle, %L ->",
-                        rememberComponent,
+                        "%M(%N.%M, %N, executor, context, %T::class, %T::class) { " +
+                            "parentComponent: %T, savedStateHandle, %L ->",
+                        getComponent,
+                        parameter,
+                        destinationId,
+                        parameter,
                         data.parentScope,
                         data.navigation.destinationScope,
-                        parameter,
                         retainedParentComponentClassName,
                         innerParameterName,
                     )
                 } else {
+                    it.addStatement("val viewModelStoreOwner = checkNotNull(%T.current)", localViewModelStoreOwner)
+                    it.beginControlFlow("val component = %M(viewModelStoreOwner, context, arguments)", remember)
                     it.beginControlFlow(
-                        "val component = %M(%T::class, %N) { parentComponent: %T, savedStateHandle, %L ->",
-                        rememberComponent,
+                        "%M(viewModelStoreOwner, context, %T::class, %N) { " +
+                            "parentComponent: %T, savedStateHandle, %L ->",
+                        getComponent,
                         data.parentScope,
                         parameter,
                         retainedParentComponentClassName,
@@ -55,6 +77,7 @@ internal class ComposeScreenGenerator(
                 retainedComponentFactoryCreateName,
                 innerParameterName,
             )
+            .endControlFlow()
             .endControlFlow()
             .addCode("\n")
             .addCode(composableNavigationSetup())

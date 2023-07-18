@@ -9,8 +9,11 @@ import com.freeletics.khonshu.codegen.codegen.common.retainedParentComponentClas
 import com.freeletics.khonshu.codegen.codegen.common.retainedParentComponentGetterName
 import com.freeletics.khonshu.codegen.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.codegen.util.bundle
-import com.freeletics.khonshu.codegen.codegen.util.fragmentComponent
+import com.freeletics.khonshu.codegen.codegen.util.destinationId
+import com.freeletics.khonshu.codegen.codegen.util.fragmentFindNavigationExecutor
 import com.freeletics.khonshu.codegen.codegen.util.fragmentNavigationHandler
+import com.freeletics.khonshu.codegen.codegen.util.getComponent
+import com.freeletics.khonshu.codegen.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.codegen.util.lateinitPropertySpec
 import com.freeletics.khonshu.codegen.codegen.util.layoutInflater
 import com.freeletics.khonshu.codegen.codegen.util.navEventNavigator
@@ -53,21 +56,27 @@ internal abstract class BaseFragmentGenerator<T : FragmentData> : Generator<T>()
             .addCode("\n")
             .also {
                 if (data.navigation != null) {
+                    it.addAnnotation(optInAnnotation(internalNavigatorApi))
+                    it.addStatement("val executor = %M()", fragmentFindNavigationExecutor)
                     it.beginControlFlow(
-                        "%L = %M(%T::class, %T::class, %N) { parentComponent: %T, savedStateHandle, %L ->",
+                        "%L = %M(%N.%M, %N, executor, requireContext(), %T::class, %T::class) { " +
+                            "parentComponent: %T, savedStateHandle, %L ->",
                         retainedComponentClassName.propertyName,
-                        fragmentComponent,
+                        getComponent,
+                        argumentsParameter,
+                        destinationId,
+                        argumentsParameter,
                         data.parentScope,
                         data.navigation!!.destinationScope,
-                        argumentsParameter,
                         retainedParentComponentClassName,
                         innerParameterName,
                     )
                 } else {
                     it.beginControlFlow(
-                        "%L = %M(%T::class, %N) { parentComponent: %T, savedStateHandle, %L ->",
+                        "%L = %M(this, requireContext(), %T::class, %N) { " +
+                            "parentComponent: %T, savedStateHandle, %L ->",
                         retainedComponentClassName.propertyName,
-                        fragmentComponent,
+                        getComponent,
                         data.parentScope,
                         argumentsParameter,
                         retainedParentComponentClassName,
