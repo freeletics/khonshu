@@ -7,11 +7,11 @@ import com.freeletics.khonshu.navigation.compose.ScreenDestination
 import com.freeletics.khonshu.navigation.internal.ActivityDestinationId
 import com.freeletics.khonshu.navigation.internal.DestinationId
 
-internal val simpleRootDestination = ScreenDestination(DestinationId(SimpleRoot::class)) {}
-internal val otherRootDestination = ScreenDestination(DestinationId(OtherRoot::class)) {}
-internal val simpleRouteDestination = ScreenDestination(DestinationId(SimpleRoute::class)) {}
-internal val otherRouteDestination = OverlayDestination(DestinationId(OtherRoute::class)) {}
-internal val thirdRouteDestination = OverlayDestination(DestinationId(ThirdRoute::class)) {}
+internal val simpleRootDestination = ScreenDestination(DestinationId(SimpleRoot::class), null) {}
+internal val otherRootDestination = ScreenDestination(DestinationId(OtherRoot::class), null) {}
+internal val simpleRouteDestination = ScreenDestination(DestinationId(SimpleRoute::class), null) {}
+internal val otherRouteDestination = OverlayDestination(DestinationId(OtherRoute::class), null) {}
+internal val thirdRouteDestination = OverlayDestination(DestinationId(ThirdRoute::class), null) {}
 
 internal val destinations = listOf(
     simpleRootDestination,

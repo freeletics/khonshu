@@ -10,6 +10,7 @@ import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import com.freeletics.khonshu.navigation.internal.destinationId
+import java.io.Serializable
 
 internal class MultiStackNavigationExecutor(
     private val stack: MultiStack,
@@ -98,8 +99,12 @@ internal class MultiStackNavigationExecutor(
         return storeFor(entry.id)
     }
 
-    @Suppress("unused", "unused_parameter") // TODO
-    fun storeFor(entryId: StackEntry.Id): NavigationExecutor.Store {
+    override fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Serializable {
+        val entry = entryFor(destinationId)
+        return entry.destination.extra!!
+    }
+
+    internal fun storeFor(entryId: StackEntry.Id): NavigationExecutor.Store {
         return viewModel.provideStore(entryId)
     }
 

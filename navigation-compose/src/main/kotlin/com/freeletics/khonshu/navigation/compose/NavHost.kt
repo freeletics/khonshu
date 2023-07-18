@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
+import androidx.navigation.NavDestination as AndroidXNavDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost as AndroidXNavHost
@@ -30,6 +31,7 @@ import com.freeletics.khonshu.navigation.internal.destinationId
 import com.freeletics.khonshu.navigation.internal.getArguments
 import com.freeletics.khonshu.navigation.internal.handleDeepLink
 import com.freeletics.khonshu.navigation.internal.requireRoute
+import java.io.Serializable
 
 /**
  * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
@@ -118,6 +120,7 @@ private fun <T : BaseRoute> ScreenDestination<T>.toDestination(
     val navigator = controller.navigatorProvider[ComposeNavigator::class]
     return ComposeNavigator.Destination(navigator) { content(it.arguments.requireRoute()) }.also {
         it.id = id.destinationId()
+        it.addExtra(extra)
         if (startRoute::class == id.route) {
             val arguments = startRoute.getArguments()
             @Suppress("DEPRECATION")
@@ -138,7 +141,20 @@ private fun <T : NavRoute> OverlayDestination<T>.toDestination(
     val navigator = controller.navigatorProvider[OverlayNavigator::class]
     return OverlayNavigator.Destination(navigator) { content(it.arguments.requireRoute()) }.also {
         it.id = id.destinationId()
+        it.addExtra(extra)
     }
+}
+
+private fun AndroidXNavDestination.addExtra(extra: Serializable?) {
+    if (extra == null) {
+        return
+    }
+
+    val argument = NavArgument.Builder()
+        .setDefaultValue(extra)
+        .setIsNullable(false)
+        .build()
+    addArgument("NAV_SECRET_EXTRA", argument)
 }
 
 private fun ActivityDestination.toDestination(

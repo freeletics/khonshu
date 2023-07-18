@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
+import java.io.Serializable
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
@@ -29,7 +30,7 @@ public inline fun <reified C : Any, P : Any> component(
     }
 }
 
-public interface ComponentProvider<R : BaseRoute, T> {
+public interface ComponentProvider<R : BaseRoute, T> : Serializable {
     public fun provide(route: R, executor: NavigationExecutor, context: Context): T
 }
 
@@ -41,18 +42,18 @@ public interface ComponentProvider<R : BaseRoute, T> {
  * To be used in generated code.
  */
 @InternalCodegenApi
-public inline fun <reified C : Any, P : Any, R : BaseRoute> component(
+public inline fun <reified C : Any, PC : Any, R : BaseRoute> component(
     destinationId: DestinationId<out R>,
     route: R,
     executor: NavigationExecutor,
     context: Context,
     parentScope: KClass<*>,
-    crossinline factory: (P, SavedStateHandle, R) -> C,
+    crossinline factory: (PC, SavedStateHandle, R) -> C,
 ): C {
     return executor.storeFor(destinationId).getOrCreate(C::class) {
-        val component = context.findComponentByScope<P>(parentScope)
+        val parentComponent = context.findComponentByScope<PC>(parentScope)
         val savedStateHandle = executor.savedStateHandleFor(destinationId)
-        factory(component, savedStateHandle, route)
+        factory(parentComponent, savedStateHandle, route)
     }
 }
 
@@ -64,56 +65,33 @@ public inline fun <reified C : Any, P : Any, R : BaseRoute> component(
  * To be used in generated code.
  */
 @InternalCodegenApi
-public inline fun <reified C : Any, P : Any, PR : BaseRoute, R : BaseRoute> componentFromParentRoute(
+public inline fun <reified C : Any, PC : Any, R : BaseRoute, PR : BaseRoute> componentFromParentRoute(
     destinationId: DestinationId<out R>,
     route: R,
     executor: NavigationExecutor,
     context: Context,
     parentScope: KClass<PR>,
-    destinationScope: KClass<*>,
-    crossinline factory: (P, SavedStateHandle, R) -> C,
+    crossinline factory: (PC, SavedStateHandle, R) -> C,
 ): C {
     return executor.storeFor(destinationId).getOrCreate(C::class) {
-        val component = context.findComponentByScope<P, PR>(parentScope, destinationScope, executor)
+        val parentDestinationId = DestinationId((parentScope))
+
+        @Suppress("UNCHECKED_CAST")
+        val parentComponentProvider = executor.extra(parentDestinationId) as ComponentProvider<PR, PC>
+        val parentRoute = executor.routeFor(parentDestinationId)
+        val parentComponent = parentComponentProvider.provide(parentRoute, executor, context)
         val savedStateHandle = executor.savedStateHandleFor(destinationId)
-        factory(component, savedStateHandle, route)
+        factory(parentComponent, savedStateHandle, route)
     }
 }
 
 @PublishedApi
 internal fun <T> Context.findComponentByScope(scope: KClass<*>): T {
-    val component = find(scope)
+    val serviceName = scope.qualifiedName!!
+    val component = getSystemService(serviceName) ?: applicationContext.getSystemService(serviceName)
     checkNotNull(component) {
         "Could not find scope ${scope.qualifiedName} through getSystemService"
     }
     @Suppress("UNCHECKED_CAST")
     return component as T
-}
-
-private fun Context.find(service: KClass<*>): Any? {
-    val serviceName = service.qualifiedName!!
-    return getSystemService(serviceName) ?: applicationContext.getSystemService(serviceName)
-}
-
-/**
- * Looks up [T] by searching for a fitting [NavEntryComponentGetter] or finding the [scope] in
- * [Context.getSystemService].
- */
-@PublishedApi
-internal fun <T : Any, R : BaseRoute> Context.findComponentByScope(
-    scope: KClass<R>,
-    destinationScope: KClass<*>,
-    executor: NavigationExecutor,
-): T {
-    if (scope != destinationScope) {
-        val destinationComponent = find(destinationScope) as? NavDestinationComponent
-
-        @Suppress("UNCHECKED_CAST")
-        val provider = destinationComponent?.componentProviders?.get(scope.java) as ComponentProvider<R, T>?
-        if (provider != null) {
-            val route = executor.routeFor(DestinationId(scope))
-            return provider.provide(route, executor, this)
-        }
-    }
-    return findComponentByScope(scope)
 }

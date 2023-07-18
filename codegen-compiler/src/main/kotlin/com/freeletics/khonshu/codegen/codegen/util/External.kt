@@ -20,8 +20,6 @@ internal val codegenComposeDestinationFqName = FqName(codegenComposeDestination.
 internal val scopeTo = ClassName("com.freeletics.khonshu.codegen", "ScopeTo")
 internal val forScope = ClassName("com.freeletics.khonshu.codegen", "ForScope")
 internal val appScope = ClassName("com.freeletics.khonshu.codegen", "AppScope")
-internal val navEntryComponent = ClassName("com.freeletics.khonshu.codegen", "NavEntryComponent")
-internal val navEntryComponentFqName = FqName(navEntryComponent.canonicalName)
 
 // Codegen Internal API
 internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.internal", "asComposeState")
@@ -29,8 +27,6 @@ internal val InternalCodegenApi = ClassName("com.freeletics.khonshu.codegen.inte
 internal val getComponent = MemberName("com.freeletics.khonshu.codegen.internal", "component")
 internal val getComponentFromRoute = MemberName("com.freeletics.khonshu.codegen.internal", "componentFromParentRoute")
 internal val componentProvider = ClassName("com.freeletics.khonshu.codegen.internal", "ComponentProvider")
-internal val navComponentProvider = ClassName("com.freeletics.khonshu.codegen.internal", "NavComponentProvider")
-internal val destinationComponent = ClassName("com.freeletics.khonshu.codegen.internal", "NavDestinationComponent")
 
 // Navigator
 internal val baseRoute = ClassName("com.freeletics.khonshu.navigation", "BaseRoute")
