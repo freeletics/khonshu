@@ -24,7 +24,6 @@ internal fun ClassReference.toRendererFragmentData(): RendererFragmentData? {
         fragmentBaseClass = annotation.fragmentBaseClass(3),
         factory = findRendererFactory(),
         navigation = null,
-        navEntryData = null,
     )
 }
 
@@ -46,7 +45,6 @@ internal fun ClassReference.toRendererFragmentDestinationData(): RendererFragmen
         fragmentBaseClass = annotation.fragmentBaseClass(5),
         factory = findRendererFactory(),
         navigation = navigation,
-        navEntryData = navEntryData(navigation),
     )
 }
 
@@ -66,7 +64,6 @@ internal fun TopLevelFunctionReference.toComposeFragmentData(): ComposeFragmentD
         stateMachine = stateMachine.asClassName(),
         fragmentBaseClass = annotation.fragmentBaseClass(3),
         navigation = null,
-        navEntryData = null,
         composableParameter = getComposeParameters(stateParameter, actionParameter),
         stateParameter = getStateParameter(stateParameter),
         sendActionParameter = getSendActionParameter(actionParameter),
@@ -95,7 +92,6 @@ internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): Compo
         stateMachine = stateMachine.asClassName(),
         fragmentBaseClass = annotation.fragmentBaseClass(5),
         navigation = navigation,
-        navEntryData = navEntryData(navigation),
         composableParameter = getComposeParameters(stateParameter, actionParameter),
         stateParameter = getStateParameter(stateParameter),
         sendActionParameter = getSendActionParameter(actionParameter),

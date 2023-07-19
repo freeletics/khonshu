@@ -1,8 +1,3 @@
-public abstract interface annotation class com/freeletics/khonshu/codegen/NavEntryComponent : java/lang/annotation/Annotation {
-	public abstract fun parentScope ()Ljava/lang/Class;
-	public abstract fun scope ()Ljava/lang/Class;
-}
-
 public final class com/freeletics/khonshu/codegen/internal/CollectAsStateKt {
 }
 

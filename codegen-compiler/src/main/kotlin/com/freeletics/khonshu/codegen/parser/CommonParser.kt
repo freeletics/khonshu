@@ -1,13 +1,9 @@
 package com.freeletics.khonshu.codegen.parser
 
 import com.freeletics.khonshu.codegen.ComposableParameter
-import com.freeletics.khonshu.codegen.NavEntryData
-import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.codegen.util.appScope
 import com.freeletics.khonshu.codegen.codegen.util.fragment
-import com.freeletics.khonshu.codegen.codegen.util.navEntryComponentFqName
 import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactoryFqName
-import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionClassReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
@@ -41,19 +37,6 @@ internal val AnnotationReference.destinationScope: ClassName
 
 internal fun AnnotationReference.fragmentBaseClass(index: Int): ClassName {
     return optionalClassArgument("fragmentBaseClass", index) ?: fragment
-}
-
-internal fun AnnotatedReference.navEntryData(
-    navigation: Navigation,
-): NavEntryData? {
-    val annotation = findAnnotation(navEntryComponentFqName) ?: return null
-
-    return NavEntryData(
-        packageName = packageName,
-        scope = annotation.scope,
-        parentScope = annotation.parentScope,
-        navigation = navigation,
-    )
 }
 
 internal fun TopLevelFunctionReference.getStateParameter(stateParameter: TypeName): ComposableParameter? {

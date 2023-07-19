@@ -23,7 +23,6 @@ public sealed interface BaseData {
 
 public sealed interface ComposeData : BaseData {
     override val stateMachine: ClassName
-    public val navEntryData: NavEntryData?
     public val stateParameter: ComposableParameter?
     public val sendActionParameter: ComposableParameter?
     public val composableParameter: List<ComposableParameter>
@@ -44,7 +43,6 @@ public data class ComposeScreenData(
     override val stateMachine: ClassName,
 
     override val navigation: Navigation.Compose?,
-    override val navEntryData: NavEntryData?,
 
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
@@ -54,7 +52,6 @@ public data class ComposeScreenData(
 public sealed interface FragmentData : BaseData {
     public val fragmentBaseClass: ClassName
     override val navigation: Navigation.Fragment?
-    public val navEntryData: NavEntryData?
 }
 
 public data class ComposeFragmentData(
@@ -68,7 +65,6 @@ public data class ComposeFragmentData(
     override val fragmentBaseClass: ClassName,
 
     override val navigation: Navigation.Fragment?,
-    override val navEntryData: NavEntryData?,
 
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
@@ -87,21 +83,7 @@ public data class RendererFragmentData(
     override val fragmentBaseClass: ClassName,
 
     override val navigation: Navigation.Fragment?,
-    override val navEntryData: NavEntryData?,
 ) : FragmentData
-
-public data class NavEntryData(
-    override val packageName: String,
-
-    override val scope: ClassName,
-    override val parentScope: ClassName,
-
-    override val navigation: Navigation,
-) : BaseData {
-    override val baseName: String = "${scope.simpleName}NavEntry"
-
-    override val stateMachine: ClassName? = null
-}
 
 public sealed interface Navigation {
     public val route: ClassName

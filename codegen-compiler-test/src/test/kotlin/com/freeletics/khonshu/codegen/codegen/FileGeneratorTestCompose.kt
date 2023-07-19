@@ -5,7 +5,6 @@ package com.freeletics.khonshu.codegen.codegen
 import com.freeletics.khonshu.codegen.AppScope
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.ComposeScreenData
-import com.freeletics.khonshu.codegen.NavEntryData
 import com.freeletics.khonshu.codegen.Navigation
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
@@ -33,7 +32,6 @@ internal class FileGeneratorTestCompose {
         parentScope = ClassName("com.test.parent", "TestParentScope"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
         navigation = null,
-        navEntryData = null,
         composableParameter = emptyList(),
         stateParameter = ComposableParameter("state", ClassName("com.test", "TestState")),
         sendActionParameter = ComposableParameter(
@@ -43,13 +41,6 @@ internal class FileGeneratorTestCompose {
                 UNIT,
             ),
         ),
-    )
-
-    private val navEntryData = NavEntryData(
-        packageName = "com.test",
-        scope = ClassName("com.test", "TestScreen"),
-        parentScope = ClassName("com.test.parent", "TestParentScope"),
-        navigation = navigation,
     )
 
     @Test
@@ -361,269 +352,12 @@ internal class FileGeneratorTestCompose {
     }
 
     @Test
-    fun `generates code for ComposeScreenData with navigation, destination and navEntry`() {
-        val withNavEntry = data.copy(
-            scope = navigation.route,
-            navigation = navigation,
-            navEntryData = navEntryData,
-        )
-
-        @Language("kotlin")
-        val source = """
-            package com.test
-            
-            import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.ComposeDestination
-            import com.freeletics.khonshu.codegen.compose.DestinationType
-            import com.freeletics.khonshu.codegen.NavEntryComponent
-            import com.test.destination.TestDestinationScope
-            import com.test.parent.TestParentScope
-            
-            @ComposeDestination(
-              route = TestRoute::class,
-              parentScope = TestParentScope::class,
-              stateMachine = TestStateMachine::class,
-              destinationType = DestinationType.SCREEN,
-              destinationScope = TestDestinationScope::class,
-            )
-            @NavEntryComponent(
-              scope = TestScreen::class,
-              parentScope = TestParentScope::class,
-            )
-            @Composable
-            @Suppress("unused_parameter")
-            public fun Test(
-              state: TestState,
-              sendAction: (TestAction) -> Unit
-            ) {}
-        """.trimIndent()
-
-        @Language("kotlin")
-        val expected = """
-            package com.test
-
-            import android.content.Context
-            import androidx.compose.runtime.Composable
-            import androidx.compose.runtime.remember
-            import androidx.compose.runtime.rememberCoroutineScope
-            import androidx.compose.ui.platform.LocalContext
-            import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.khonshu.codegen.ForScope
-            import com.freeletics.khonshu.codegen.ScopeTo
-            import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
-            import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
-            import com.freeletics.khonshu.codegen.`internal`.NavComponentProvider
-            import com.freeletics.khonshu.codegen.`internal`.NavDestinationComponent
-            import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
-            import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetterKey
-            import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.`internal`.component
-            import com.freeletics.khonshu.codegen.`internal`.navEntryComponent
-            import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
-            import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
-            import com.freeletics.khonshu.navigation.`internal`.destinationId
-            import com.freeletics.khonshu.navigation.compose.LocalNavigationExecutor
-            import com.freeletics.khonshu.navigation.compose.NavDestination
-            import com.freeletics.khonshu.navigation.compose.NavigationSetup
-            import com.freeletics.khonshu.navigation.compose.ScreenDestination
-            import com.squareup.anvil.annotations.ContributesMultibinding
-            import com.squareup.anvil.annotations.ContributesSubcomponent
-            import com.squareup.anvil.annotations.ContributesTo
-            import com.test.destination.TestDestinationScope
-            import com.test.parent.TestParentScope
-            import dagger.BindsInstance
-            import dagger.Module
-            import dagger.Provides
-            import dagger.multibindings.IntoMap
-            import dagger.multibindings.IntoSet
-            import dagger.multibindings.Multibinds
-            import java.io.Closeable
-            import javax.inject.Inject
-            import kotlin.Any
-            import kotlin.OptIn
-            import kotlin.collections.Set
-            import kotlin.jvm.JvmSuppressWildcards
-            import kotlinx.coroutines.launch
-
-            @OptIn(InternalCodegenApi::class)
-            @ScopeTo(TestRoute::class)
-            @ContributesSubcomponent(
-              scope = TestRoute::class,
-              parentScope = TestParentScope::class,
-            )
-            public interface KhonshuTestComponent : Closeable {
-              public val testStateMachine: TestStateMachine
-
-              @get:ForScope(TestRoute::class)
-              public val navEventNavigator: NavEventNavigator
-
-              @get:ForScope(TestRoute::class)
-              public val closeables: Set<Closeable>
-    
-              override fun close() {
-                closeables.forEach {
-                  it.close()
-                }
-              }
-
-              @ContributesSubcomponent.Factory
-              public interface Factory {
-                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
-                    @BindsInstance testRoute: TestRoute): KhonshuTestComponent
-              }
-
-              @ContributesTo(TestParentScope::class)
-              public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
-              }
-            }
-            
-            @OptIn(InternalCodegenApi::class)
-            public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
-              @OptIn(InternalNavigationApi::class)
-              override fun provide(
-                route: TestRoute,
-                executor: NavigationExecutor,
-                context: Context,
-              ): KhonshuTestComponent = component(route.destinationId, route, executor, context,
-                  TestParentScope::class, TestDestinationScope::class) { parentComponent:
-                  KhonshuTestComponent.ParentComponent, savedStateHandle, testRoute ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
-              }
-            }
-            
-            @ContributesTo(TestDestinationScope::class)
-            @OptIn(InternalCodegenApi::class)
-            public interface KhonshuTestNavDestinationComponent : NavDestinationComponent
-
-            @Module
-            @ContributesTo(TestRoute::class)
-            public interface KhonshuTestModule {
-              @Multibinds
-              @ForScope(TestRoute::class)
-              public fun bindCloseables(): Set<Closeable>
-            }
-
-            @Composable
-            @OptIn(InternalCodegenApi::class, InternalNavigationApi::class)
-            public fun KhonshuTest(testRoute: TestRoute) {
-              val context = LocalContext.current
-              val executor = LocalNavigationExecutor.current
-              val component = remember(context, executor, testRoute) {
-                KhonshuTestComponentProvider.provide(testRoute, executor, context)
-              }
-
-              NavigationSetup(component.navEventNavigator)
-
-              KhonshuTest(component)
-            }
-
-            @Composable
-            @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent) {
-              val stateMachine = remember { component.testStateMachine }
-              val state = stateMachine.asComposeState()
-              val currentState = state.value
-              if (currentState != null) {
-                val scope = rememberCoroutineScope()
-                Test(
-                  state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
-                )
-              }
-            }
-
-            @OptIn(InternalCodegenApi::class)
-            @Module
-            @ContributesTo(TestDestinationScope::class)
-            public object KhonshuTestNavDestinationModule {
-              @Provides
-              @IntoSet
-              public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute> {
-                KhonshuTest(it)
-              }
-
-              @Provides
-              @IntoMap
-              @NavComponentProvider(TestRoute::class)
-              public fun bindComponentProvider(): @JvmSuppressWildcards ComponentProvider<*, *> =
-                  KhonshuTestComponentProvider
-            }
-
-            @OptIn(InternalCodegenApi::class)
-            @ScopeTo(TestScreen::class)
-            @ContributesSubcomponent(
-              scope = TestScreen::class,
-              parentScope = TestParentScope::class,
-            )
-            public interface KhonshuTestScreenNavEntryComponent : Closeable {
-              @get:ForScope(TestScreen::class)
-              public val closeables: Set<Closeable>
-    
-              override fun close() {
-                closeables.forEach {
-                  it.close()
-                }
-              }
-
-              @ContributesSubcomponent.Factory
-              public interface Factory {
-                public fun create(@BindsInstance @ForScope(TestScreen::class)
-                    savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    testRoute: TestRoute): KhonshuTestScreenNavEntryComponent
-              }
-
-              @ContributesTo(TestParentScope::class)
-              public interface ParentComponent {
-                public fun khonshuTestScreenNavEntryComponentFactory(): Factory
-              }
-            }
-
-            @Module
-            @ContributesTo(TestScreen::class)
-            public interface KhonshuTestScreenNavEntryModule {
-              @Multibinds
-              @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
-            }
-
-            @OptIn(InternalCodegenApi::class)
-            @NavEntryComponentGetterKey(TestScreen::class)
-            @ContributesMultibinding(
-              TestDestinationScope::class,
-              NavEntryComponentGetter::class,
-            )
-            public class TestScreenNavEntryComponentGetter @Inject constructor() : NavEntryComponentGetter {
-              @OptIn(InternalCodegenApi::class, InternalNavigationApi::class)
-              override fun retrieve(executor: NavigationExecutor, context: Context): Any =
-                  navEntryComponent(TestRoute::class, executor, context, TestParentScope::class,
-                  TestDestinationScope::class) { parentComponent:
-                  KhonshuTestScreenNavEntryComponent.ParentComponent, savedStateHandle, testRoute ->
-                parentComponent.khonshuTestScreenNavEntryComponentFactory().create(savedStateHandle, testRoute)
-              }
-            }
-
-            @ContributesTo(TestDestinationScope::class)
-            @OptIn(InternalCodegenApi::class)
-            public interface KhonshuTestScreenNavEntryNavDestinationComponent : NavDestinationComponent
-
-        """.trimIndent()
-
-        test(withNavEntry, "com/test/Test.kt", source, expected)
-    }
-
-    @Test
     fun `generates code for ComposeScreenData with default values`() {
         val navigation = navigation.copy(destinationScope = AppScope::class.asClassName())
         val withDefaultValues = data.copy(
             scope = navigation.route,
             parentScope = AppScope::class.asClassName(),
             navigation = navigation,
-            navEntryData = navEntryData.copy(
-                parentScope = AppScope::class.asClassName(),
-                navigation = navigation,
-            ),
         )
 
         @Language("kotlin")
@@ -633,15 +367,11 @@ internal class FileGeneratorTestCompose {
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.compose.ComposeDestination
             import com.freeletics.khonshu.codegen.compose.DestinationType
-            import com.freeletics.khonshu.codegen.NavEntryComponent
             
             @ComposeDestination(
               route = TestRoute::class,
               stateMachine = TestStateMachine::class,
               destinationType = DestinationType.SCREEN,
-            )
-            @NavEntryComponent(
-              scope = TestScreen::class,
             )
             @Composable
             @Suppress("unused_parameter")
@@ -668,11 +398,8 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.NavComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.NavDestinationComponent
-            import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetter
-            import com.freeletics.khonshu.codegen.`internal`.NavEntryComponentGetterKey
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
-            import com.freeletics.khonshu.codegen.`internal`.navEntryComponent
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
@@ -681,7 +408,6 @@ internal class FileGeneratorTestCompose {
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavigationSetup
             import com.freeletics.khonshu.navigation.compose.ScreenDestination
-            import com.squareup.anvil.annotations.ContributesMultibinding
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import dagger.BindsInstance
@@ -691,8 +417,6 @@ internal class FileGeneratorTestCompose {
             import dagger.multibindings.IntoSet
             import dagger.multibindings.Multibinds
             import java.io.Closeable
-            import javax.inject.Inject
-            import kotlin.Any
             import kotlin.OptIn
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
@@ -802,63 +526,6 @@ internal class FileGeneratorTestCompose {
               public fun bindComponentProvider(): @JvmSuppressWildcards ComponentProvider<*, *> =
                   KhonshuTestComponentProvider
             }
-
-            @OptIn(InternalCodegenApi::class)
-            @ScopeTo(TestScreen::class)
-            @ContributesSubcomponent(
-              scope = TestScreen::class,
-              parentScope = AppScope::class,
-            )
-            public interface KhonshuTestScreenNavEntryComponent : Closeable {
-              @get:ForScope(TestScreen::class)
-              public val closeables: Set<Closeable>
-    
-              override fun close() {
-                closeables.forEach {
-                  it.close()
-                }
-              }
-
-              @ContributesSubcomponent.Factory
-              public interface Factory {
-                public fun create(@BindsInstance @ForScope(TestScreen::class)
-                    savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    testRoute: TestRoute): KhonshuTestScreenNavEntryComponent
-              }
-
-              @ContributesTo(AppScope::class)
-              public interface ParentComponent {
-                public fun khonshuTestScreenNavEntryComponentFactory(): Factory
-              }
-            }
-
-            @Module
-            @ContributesTo(TestScreen::class)
-            public interface KhonshuTestScreenNavEntryModule {
-              @Multibinds
-              @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
-            }
-
-            @OptIn(InternalCodegenApi::class)
-            @NavEntryComponentGetterKey(TestScreen::class)
-            @ContributesMultibinding(
-              AppScope::class,
-              NavEntryComponentGetter::class,
-            )
-            public class TestScreenNavEntryComponentGetter @Inject constructor() : NavEntryComponentGetter {
-              @OptIn(InternalCodegenApi::class, InternalNavigationApi::class)
-              override fun retrieve(executor: NavigationExecutor, context: Context): Any =
-                  navEntryComponent(TestRoute::class, executor, context, AppScope::class, AppScope::class) {
-                  parentComponent: KhonshuTestScreenNavEntryComponent.ParentComponent, savedStateHandle,
-                  testRoute ->
-                parentComponent.khonshuTestScreenNavEntryComponentFactory().create(savedStateHandle, testRoute)
-              }
-            }
-
-            @ContributesTo(AppScope::class)
-            @OptIn(InternalCodegenApi::class)
-            public interface KhonshuTestScreenNavEntryNavDestinationComponent : NavDestinationComponent
 
         """.trimIndent()
 

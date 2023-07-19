@@ -5,7 +5,6 @@ import kotlin.reflect.KClass
 
 @InternalCodegenApi
 public interface NavDestinationComponent {
-    public val navEntryComponentGetters: @JvmSuppressWildcards Map<Class<*>, NavEntryComponentGetter>
     public val componentProviders: @JvmSuppressWildcards Map<Class<*>, ComponentProvider<*, *>>
 }
 

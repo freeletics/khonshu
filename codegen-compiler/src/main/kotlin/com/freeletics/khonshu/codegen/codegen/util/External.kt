@@ -27,14 +27,8 @@ internal val navEntryComponentFqName = FqName(navEntryComponent.canonicalName)
 internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.internal", "asComposeState")
 internal val InternalCodegenApi = ClassName("com.freeletics.khonshu.codegen.internal", "InternalCodegenApi")
 internal val getComponent = MemberName("com.freeletics.khonshu.codegen.internal", "component")
-internal val getNavEntryComponent = MemberName("com.freeletics.khonshu.codegen.internal", "navEntryComponent")
 internal val componentProvider = ClassName("com.freeletics.khonshu.codegen.internal", "ComponentProvider")
 internal val navComponentProvider = ClassName("com.freeletics.khonshu.codegen.internal", "NavComponentProvider")
-internal val navEntryComponentGetter = ClassName("com.freeletics.khonshu.codegen.internal", "NavEntryComponentGetter")
-internal val navEntryComponentGetterKey = ClassName(
-    "com.freeletics.khonshu.codegen.internal",
-    "NavEntryComponentGetterKey",
-)
 internal val destinationComponent = ClassName("com.freeletics.khonshu.codegen.internal", "NavDestinationComponent")
 
 // Navigator
@@ -73,7 +67,6 @@ internal val optIn = ClassName("kotlin", "OptIn")
 internal val launch = MemberName("kotlinx.coroutines", "launch")
 
 // Dagger
-internal val inject = ClassName("javax.inject", "Inject")
 internal val provides = ClassName("dagger", "Provides")
 internal val multibinds = ClassName("dagger.multibindings", "Multibinds")
 internal val intoSet = ClassName("dagger.multibindings", "IntoSet")

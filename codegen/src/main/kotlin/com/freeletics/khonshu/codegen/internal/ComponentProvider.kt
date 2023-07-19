@@ -83,35 +83,6 @@ public inline fun <reified C : Any, P : Any, PR : BaseRoute, R : BaseRoute> comp
     }
 }
 
-/**
- * Creates a [ViewModel] for the given [destination]. The `ViewModel.Factory` will use [parentScope]
- * to lookup a parent component instance. That component will then be passed to the given [factory]
- * together with a [SavedStateHandle] and the passed in [destination].
- *
- * To be used in generated code.
- */
-@InternalCodegenApi
-public inline fun <reified C : Any, P : Any, R : BaseRoute> navEntryComponent(
-    destination: KClass<R>,
-    executor: NavigationExecutor,
-    context: Context,
-    parentScope: KClass<*>,
-    destinationScope: KClass<*>,
-    crossinline factory: (P, SavedStateHandle, R) -> C,
-): C {
-    val destinationId = DestinationId(destination)
-    val route = executor.routeFor(DestinationId(destination))
-    return component(
-        destinationId = destinationId,
-        route = route,
-        executor = executor,
-        context = context,
-        parentScope = parentScope,
-        destinationScope = destinationScope,
-        factory = factory,
-    )
-}
-
 @PublishedApi
 internal fun <T> Context.findComponentByScope(scope: KClass<*>): T {
     val component = find(scope)
@@ -145,11 +116,6 @@ internal fun <T : Any, R : BaseRoute> Context.findComponentByScope(
         if (provider != null) {
             val route = executor.routeFor(DestinationId(scope))
             return provider.provide(route, executor, this)
-        }
-        val getter = destinationComponent?.navEntryComponentGetters?.get(scope.java)
-        if (getter != null) {
-            @Suppress("UNCHECKED_CAST")
-            return getter.retrieve(executor, this) as T
         }
     }
     return findComponentByScope(scope)

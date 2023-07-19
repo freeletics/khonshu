@@ -3,7 +3,6 @@ package com.freeletics.khonshu.codegen.codegen.common
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.ComposeScreenData
-import com.freeletics.khonshu.codegen.NavEntryData
 import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.codegen.Generator
 import com.freeletics.khonshu.codegen.codegen.util.asParameter
@@ -67,7 +66,7 @@ internal class ComponentGenerator(
         if (data.stateMachine != null) {
             properties += simplePropertySpec(data.stateMachine!!)
         }
-        if (data.navigation != null && data !is NavEntryData) {
+        if (data.navigation != null) {
             properties += simplePropertySpec(navEventNavigator).toBuilder()
                 .addAnnotation(forScope(data.scope, GET))
                 .build()
@@ -84,7 +83,6 @@ internal class ComponentGenerator(
                 }
             }
             is RendererFragmentData -> properties += simplePropertySpec(data.factory)
-            is NavEntryData -> {}
         }
         properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName()))
             .addAnnotation(forScope(data.scope, GET))
@@ -108,9 +106,7 @@ internal class ComponentGenerator(
             .addParameter(
                 bindsInstanceParameter(
                     data.navigation.asParameter(),
-                    forScope(data.scope).takeIf {
-                        data.navigation == null || data is NavEntryData
-                    },
+                    forScope(data.scope).takeIf { data.navigation == null },
                 ),
             )
             .returns(retainedComponentClassName)

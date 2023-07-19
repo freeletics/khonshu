@@ -3,7 +3,6 @@ package com.freeletics.khonshu.codegen.codegen
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.ComposeScreenData
-import com.freeletics.khonshu.codegen.NavEntryData
 import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.codegen.common.ComponentGenerator
 import com.freeletics.khonshu.codegen.codegen.common.ComponentProviderGenerator
@@ -14,7 +13,6 @@ import com.freeletics.khonshu.codegen.codegen.fragment.ComposeFragmentGenerator
 import com.freeletics.khonshu.codegen.codegen.fragment.RendererFragmentGenerator
 import com.freeletics.khonshu.codegen.codegen.nav.NavDestinationComponentGenerator
 import com.freeletics.khonshu.codegen.codegen.nav.NavDestinationModuleGenerator
-import com.freeletics.khonshu.codegen.codegen.nav.NavEntryComponentGetterGenerator
 import com.squareup.kotlinpoet.FileSpec
 
 public class FileGenerator {
@@ -24,7 +22,6 @@ public class FileGenerator {
             is ComposeFragmentData -> generate(data)
             is ComposeScreenData -> generate(data)
             is RendererFragmentData -> generate(data)
-            is NavEntryData -> throw IllegalArgumentException("Can't generate file for NavEntryData")
         }
     }
 
@@ -41,7 +38,6 @@ public class FileGenerator {
             .addFunction(composeScreenGenerator.generate())
             .addFunction(composeGenerator.generate())
             .addNavDestinationTypes(data)
-            .addNavEntryTypes(data.navEntryData)
             .build()
     }
 
@@ -58,7 +54,6 @@ public class FileGenerator {
             .addType(composeFragmentGenerator.generate())
             .addFunction(composeGenerator.generate())
             .addNavDestinationTypes(data)
-            .addNavEntryTypes(data.navEntryData)
             .build()
     }
 
@@ -73,7 +68,6 @@ public class FileGenerator {
             .addType(moduleGenerator.generate())
             .addType(rendererFragmentGenerator.generate())
             .addNavDestinationTypes(data)
-            .addNavEntryTypes(data.navEntryData)
             .build()
     }
 
@@ -90,20 +84,6 @@ public class FileGenerator {
         if (data.navigation != null) {
             val navDestinationGenerator = NavDestinationModuleGenerator(data)
             addType(navDestinationGenerator.generate())
-        }
-    }
-
-    private fun FileSpec.Builder.addNavEntryTypes(data: NavEntryData?) = apply {
-        if (data != null) {
-            val componentGenerator = ComponentGenerator(data)
-            val moduleGenerator = ModuleGenerator(data)
-            val componentGetterGenerator = NavEntryComponentGetterGenerator(data)
-            val destinationComponentGenerator = NavDestinationComponentGenerator(data)
-
-            addType(componentGenerator.generate())
-            addType(moduleGenerator.generate())
-            addType(componentGetterGenerator.generate())
-            addType(destinationComponentGenerator.generate())
         }
     }
 }
