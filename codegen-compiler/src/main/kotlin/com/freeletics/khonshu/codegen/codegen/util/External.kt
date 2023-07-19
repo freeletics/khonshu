@@ -29,6 +29,7 @@ internal val InternalCodegenApi = ClassName("com.freeletics.khonshu.codegen.inte
 internal val getComponent = MemberName("com.freeletics.khonshu.codegen.internal", "component")
 internal val getNavEntryComponent = MemberName("com.freeletics.khonshu.codegen.internal", "navEntryComponent")
 internal val componentProvider = ClassName("com.freeletics.khonshu.codegen.internal", "ComponentProvider")
+internal val navComponentProvider = ClassName("com.freeletics.khonshu.codegen.internal", "NavComponentProvider")
 internal val navEntryComponentGetter = ClassName("com.freeletics.khonshu.codegen.internal", "NavEntryComponentGetter")
 internal val navEntryComponentGetterKey = ClassName(
     "com.freeletics.khonshu.codegen.internal",
@@ -76,6 +77,7 @@ internal val inject = ClassName("javax.inject", "Inject")
 internal val provides = ClassName("dagger", "Provides")
 internal val multibinds = ClassName("dagger.multibindings", "Multibinds")
 internal val intoSet = ClassName("dagger.multibindings", "IntoSet")
+internal val intoMap = ClassName("dagger.multibindings", "IntoMap")
 internal val bindsInstance = ClassName("dagger", "BindsInstance")
 internal val module = ClassName("dagger", "Module")
 

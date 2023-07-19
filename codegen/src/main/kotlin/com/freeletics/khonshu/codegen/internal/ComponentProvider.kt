@@ -29,7 +29,6 @@ public inline fun <reified C : Any, P : Any> component(
     }
 }
 
-@InternalCodegenApi
 public interface ComponentProvider<R : BaseRoute, T> {
     public fun provide(route: R, executor: NavigationExecutor, context: Context): T
 }
@@ -48,11 +47,37 @@ public inline fun <reified C : Any, P : Any, R : BaseRoute> component(
     executor: NavigationExecutor,
     context: Context,
     parentScope: KClass<*>,
+    // TODO remove parameter
+    @Suppress("UNUSED_PARAMETER") destinationScope: KClass<*>,
+    crossinline factory: (P, SavedStateHandle, R) -> C,
+): C {
+    return executor.storeFor(destinationId).getOrCreate(C::class) {
+        val component = context.findComponentByScope<P>(parentScope)
+        val savedStateHandle = executor.savedStateHandleFor(destinationId)
+        factory(component, savedStateHandle, route)
+    }
+}
+
+/**
+ * Creates a [ViewModel] for the given [destinationId]. The `ViewModel.Factory` will use [parentScope]
+ * to lookup a parent component instance. That component will then be passed to the given [factory]
+ * together with a [SavedStateHandle] and the passed in [destinationId].
+ *
+ * To be used in generated code.
+ */
+@InternalCodegenApi
+@JvmName("componentForNavDestination") // TODO give unique name to method
+public inline fun <reified C : Any, P : Any, PR : BaseRoute, R : BaseRoute> component(
+    destinationId: DestinationId<out R>,
+    route: R,
+    executor: NavigationExecutor,
+    context: Context,
+    parentScope: KClass<PR>,
     destinationScope: KClass<*>,
     crossinline factory: (P, SavedStateHandle, R) -> C,
 ): C {
     return executor.storeFor(destinationId).getOrCreate(C::class) {
-        val component = context.findComponentByScope<P>(parentScope, destinationScope, executor)
+        val component = context.findComponentByScope<P, PR>(parentScope, destinationScope, executor)
         val savedStateHandle = executor.savedStateHandleFor(destinationId)
         factory(component, savedStateHandle, route)
     }
@@ -107,13 +132,20 @@ private fun Context.find(service: KClass<*>): Any? {
  * [Context.getSystemService].
  */
 @PublishedApi
-internal fun <T : Any> Context.findComponentByScope(
-    scope: KClass<*>,
+internal fun <T : Any, R : BaseRoute> Context.findComponentByScope(
+    scope: KClass<R>,
     destinationScope: KClass<*>,
     executor: NavigationExecutor,
 ): T {
     if (scope != destinationScope) {
         val destinationComponent = find(destinationScope) as? NavDestinationComponent
+
+        @Suppress("UNCHECKED_CAST")
+        val provider = destinationComponent?.componentProviders?.get(scope.java) as ComponentProvider<R, T>?
+        if (provider != null) {
+            val route = executor.routeFor(DestinationId(scope))
+            return provider.provide(route, executor, this)
+        }
         val getter = destinationComponent?.navEntryComponentGetters?.get(scope.java)
         if (getter != null) {
             @Suppress("UNCHECKED_CAST")

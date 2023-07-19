@@ -180,8 +180,9 @@ with `Context.getSystemService(name)` using the fully qualified name of the give
 key for the lookup. It is expected that the app will provide it through its `Application` class or an
 `Activity`.
 
-For convenience purposes the generated component will make a `SavedStateHandle`
-available which can be injected to classes like the state machine to save state.
+For convenience purposes the generated component will make the `Bundle` with arguments and a 
+`SavedStateHandle` available which can be injected to classes like the state machine to save state.
+When injecting either of them the `@ForScope(ExampleScope::class)` qualifier needs to be used.
 
 
 ## Example
@@ -195,7 +196,10 @@ sealed interface ExampleScope
 // state machine survives orientation changes
 @ScopeTo(ExampleScope::class)
 internal class ExampleStateMachine @Inject constructor(
+    @ForScope(ExampleScope::class) 
     val bundle: Bundle, // the arguments passed to this screen
+    @ForScope(ExampleScope::class) 
+    val savedStateHandle: SavedStateHandle // a saved state handle tied to this screen 
     val repository: ExampleRepository, // a repository that pas provided somewhere in the app
 ) : StateMachine<ExampleState, ExampleAction> { 
     // ... 
