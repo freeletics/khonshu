@@ -87,12 +87,14 @@ public data class RendererFragmentData(
 
 public sealed interface Navigation {
     public val route: ClassName
+    public val parentScopeIsRoute: Boolean
     public val destinationClass: ClassName
     public val destinationScope: ClassName
     public val destinationMethod: MemberName?
 
     public data class Compose(
         override val route: ClassName,
+        override val parentScopeIsRoute: Boolean,
         private val destinationType: String,
         override val destinationScope: ClassName,
     ) : Navigation {
@@ -107,6 +109,7 @@ public sealed interface Navigation {
 
     public data class Fragment(
         override val route: ClassName,
+        override val parentScopeIsRoute: Boolean,
         private val destinationType: String,
         override val destinationScope: ClassName,
     ) : Navigation {

@@ -2,6 +2,7 @@ package com.freeletics.khonshu.codegen.parser
 
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.codegen.util.appScope
+import com.freeletics.khonshu.codegen.codegen.util.baseRouteFqName
 import com.freeletics.khonshu.codegen.codegen.util.fragment
 import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactoryFqName
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
@@ -21,7 +22,10 @@ internal val AnnotationReference.route: ClassName
     get() = requireClassArgument("route", 0)
 
 internal val AnnotationReference.parentScope: ClassName
-    get() = optionalClassArgument("parentScope", 1) ?: appScope
+    get() = parentScopeReference?.asClassName() ?: appScope
+
+internal val AnnotationReference.parentScopeReference: ClassReference?
+    get() = optionalClassReferenceArgument("parentScope", 1)
 
 internal val AnnotationReference.stateMachine: ClassName
     get() = stateMachineReference.asClassName()
@@ -86,4 +90,10 @@ internal fun ClassReference.findRendererFactory(): ClassName {
             this,
             "Couldn't find a ViewRender.Factory subclass nested inside $fqName",
         )
+}
+
+internal fun ClassReference?.extendsBaseRoute(): Boolean {
+    return this?.allSuperTypeClassReferences()?.any { superType ->
+        superType.fqName == baseRouteFqName
+    } == true
 }

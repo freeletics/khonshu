@@ -6,6 +6,7 @@ import com.freeletics.khonshu.codegen.codegen.util.componentProvider
 import com.freeletics.khonshu.codegen.codegen.util.context
 import com.freeletics.khonshu.codegen.codegen.util.destinationId
 import com.freeletics.khonshu.codegen.codegen.util.getComponent
+import com.freeletics.khonshu.codegen.codegen.util.getComponentFromRoute
 import com.freeletics.khonshu.codegen.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.codegen.util.navigationExecutor
 import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
@@ -41,16 +42,30 @@ internal class ComponentProviderGenerator(
             .addParameter("executor", navigationExecutor)
             .addParameter("context", context)
             .returns(retainedComponentClassName)
-            .beginControlFlow(
-                "return %M(route.%M, route, executor, context, %T::class, %T::class) " +
-                    "{ parentComponent: %T, savedStateHandle, %L ->",
-                getComponent,
-                destinationId,
-                data.parentScope,
-                data.navigation!!.destinationScope,
-                retainedParentComponentClassName,
-                data.navigation!!.route.propertyName,
-            )
+            .apply {
+                if (data.navigation?.parentScopeIsRoute == true) {
+                    beginControlFlow(
+                        "return %M(route.%M, route, executor, context, %T::class, %T::class) " +
+                            "{ parentComponent: %T, savedStateHandle, %L ->",
+                        getComponentFromRoute,
+                        destinationId,
+                        data.parentScope,
+                        data.navigation!!.destinationScope,
+                        retainedParentComponentClassName,
+                        data.navigation!!.route.propertyName,
+                    )
+                } else {
+                    beginControlFlow(
+                        "return %M(route.%M, route, executor, context, %T::class) " +
+                            "{ parentComponent: %T, savedStateHandle, %L ->",
+                        getComponent,
+                        destinationId,
+                        data.parentScope,
+                        retainedParentComponentClassName,
+                        data.navigation!!.route.propertyName,
+                    )
+                }
+            }
             .addStatement(
                 "parentComponent.%L().%L(savedStateHandle, %L)",
                 retainedParentComponentGetterName,

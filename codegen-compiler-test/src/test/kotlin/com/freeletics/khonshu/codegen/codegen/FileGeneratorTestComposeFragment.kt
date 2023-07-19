@@ -21,6 +21,7 @@ internal class FileGeneratorTestComposeFragment {
 
     private val navigation = Navigation.Fragment(
         route = ClassName("com.test", "TestRoute"),
+        parentScopeIsRoute = true,
         destinationType = "SCREEN",
         destinationScope = ClassName("com.test.destination", "TestDestinationScope"),
     )
@@ -190,6 +191,7 @@ internal class FileGeneratorTestComposeFragment {
     fun `generates code for ComposeFragmentData with navigation`() {
         val withNavigation = data.copy(
             scope = navigation.route,
+            parentScope = ClassName("com.test.parent", "TestParentRoute"),
             navigation = navigation,
         )
 
@@ -201,11 +203,11 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.fragment.ComposeDestination
             import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.test.destination.TestDestinationScope
-            import com.test.parent.TestParentScope
+            import com.test.parent.TestParentRoute
             
             @ComposeDestination(
               route = TestRoute::class,
-              parentScope = TestParentScope::class,
+              parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,
               destinationType = DestinationType.SCREEN,
               destinationScope = TestDestinationScope::class,
@@ -241,7 +243,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.freeletics.khonshu.codegen.`internal`.NavComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.NavDestinationComponent
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
@@ -254,7 +256,7 @@ internal class FileGeneratorTestComposeFragment {
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.destination.TestDestinationScope
-            import com.test.parent.TestParentScope
+            import com.test.parent.TestParentRoute
             import dagger.BindsInstance
             import dagger.Module
             import dagger.Provides
@@ -271,7 +273,7 @@ internal class FileGeneratorTestComposeFragment {
             @ScopeTo(TestRoute::class)
             @ContributesSubcomponent(
               scope = TestRoute::class,
-              parentScope = TestParentScope::class,
+              parentScope = TestParentRoute::class,
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
@@ -294,7 +296,7 @@ internal class FileGeneratorTestComposeFragment {
                     @BindsInstance testRoute: TestRoute): KhonshuTestComponent
               }
 
-              @ContributesTo(TestParentScope::class)
+              @ContributesTo(TestParentRoute::class)
               public interface ParentComponent {
                 public fun khonshuTestComponentFactory(): Factory
               }
@@ -307,8 +309,8 @@ internal class FileGeneratorTestComposeFragment {
                 route: TestRoute,
                 executor: NavigationExecutor,
                 context: Context,
-              ): KhonshuTestComponent = component(route.destinationId, route, executor, context,
-                  TestParentScope::class, TestDestinationScope::class) { parentComponent:
+              ): KhonshuTestComponent = componentFromParentRoute(route.destinationId, route, executor, context,
+                  TestParentRoute::class, TestDestinationScope::class) { parentComponent:
                   KhonshuTestComponent.ParentComponent, savedStateHandle, testRoute ->
                 parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
               }
@@ -393,7 +395,10 @@ internal class FileGeneratorTestComposeFragment {
 
     @Test
     fun `generates code for ComposeFragmentData with default values`() {
-        val navigation = navigation.copy(destinationScope = AppScope::class.asClassName())
+        val navigation = navigation.copy(
+            parentScopeIsRoute = false,
+            destinationScope = AppScope::class.asClassName(),
+        )
         val withDefaultValues = data.copy(
             scope = navigation.route,
             parentScope = AppScope::class.asClassName(),
@@ -510,8 +515,8 @@ internal class FileGeneratorTestComposeFragment {
                 executor: NavigationExecutor,
                 context: Context,
               ): KhonshuTestComponent = component(route.destinationId, route, executor, context,
-                  AppScope::class, AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                  savedStateHandle, testRoute ->
+                  AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
+                  testRoute ->
                 parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
               }
             }

@@ -39,6 +39,7 @@ internal fun TopLevelFunctionReference.toComposeScreenDestinationData(): Compose
 
     val navigation = Navigation.Compose(
         route = annotation.route,
+        parentScopeIsRoute = annotation.parentScopeReference.extendsBaseRoute(),
         destinationType = annotation.destinationType,
         destinationScope = annotation.destinationScope,
     )
