@@ -1,8 +1,8 @@
 package com.freeletics.khonshu.codegen.parser
 
+import com.freeletics.khonshu.codegen.compileAnvil
 import com.google.common.truth.Truth.assertThat
 import com.squareup.anvil.compiler.api.CodeGenerator
-import com.squareup.anvil.compiler.internal.testing.compileAnvil
 import com.squareup.anvil.compiler.internal.testing.simpleCodeGenerator
 import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.ClassName
@@ -10,8 +10,8 @@ import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.LONG
 import com.squareup.kotlinpoet.SHORT
 import com.squareup.kotlinpoet.STRING
+import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
-import com.tschuchort.compiletesting.KotlinCompilation.Result
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.name.FqName
 import org.junit.Test
@@ -134,12 +134,12 @@ internal class ReferenceTest {
 
     private fun compile(
         @Language("kotlin") vararg sources: String,
-        previousCompilationResult: Result? = null,
+        previousCompilationResult: JvmCompilationResult? = null,
         enableDaggerAnnotationProcessor: Boolean = false,
         codeGenerators: List<CodeGenerator> = emptyList(),
         allWarningsAsErrors: Boolean = true,
-        block: Result.() -> Unit = { },
-    ): Result {
+        block: JvmCompilationResult.() -> Unit = { },
+    ): JvmCompilationResult {
         return compileAnvil(
             sources = sources,
             allWarningsAsErrors = allWarningsAsErrors,

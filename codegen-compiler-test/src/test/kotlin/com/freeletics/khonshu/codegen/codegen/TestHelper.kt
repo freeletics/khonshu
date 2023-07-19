@@ -1,13 +1,13 @@
 package com.freeletics.khonshu.codegen.codegen
 
-import androidx.compose.compiler.plugins.kotlin.ComposeComponentRegistrar
+import androidx.compose.compiler.plugins.kotlin.ComposePluginRegistrar
+import com.freeletics.khonshu.codegen.AnvilCompilation
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.NavEntryData
 import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.google.common.truth.Truth.assertThat
-import com.squareup.anvil.compiler.internal.testing.AnvilCompilation
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import com.tschuchort.compiletesting.SourceFile
@@ -72,8 +72,7 @@ private fun String.testFileName(): String {
 }
 
 private fun KotlinCompilation.configure() {
-    @Suppress("DEPRECATION") // can be changed once compose uses ComponentPluginRegistrar
-    componentRegistrars = componentRegistrars + listOf(ComposeComponentRegistrar())
+    compilerPluginRegistrars = compilerPluginRegistrars + listOf(ComposePluginRegistrar())
     kotlincArguments = kotlincArguments + listOf(
         "-P",
         "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=1.7.22",

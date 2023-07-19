@@ -52,6 +52,12 @@ dependencyAnalysis {
             }
         }
 
+        project(":codegen-compiler") {
+            onUnusedDependencies {
+                exclude("dev.zacsweers.kctfork:core", "com.squareup.anvil:compiler-utils")
+            }
+        }
+
         project(":codegen-compiler-test") {
             onUnusedDependencies {
                 // needed for compile testing
@@ -61,7 +67,9 @@ dependencyAnalysis {
                     "com.gabrielittner.renderer:connect",
                     "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
                     "org.jetbrains.kotlin:kotlin-compiler-embeddable",
+                    "com.squareup.anvil:compiler-utils",
                     ":codegen",
+                    ":codegen-compiler",
                     ":codegen-compose",
                     ":codegen-fragment",
                     ":navigation-compose",
