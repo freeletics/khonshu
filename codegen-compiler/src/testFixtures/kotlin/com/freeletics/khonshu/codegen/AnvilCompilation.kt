@@ -12,18 +12,18 @@ import com.tschuchort.compiletesting.PluginOption
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.addPreviousResultToClasspath
 import dagger.internal.codegen.ComponentProcessor
-import org.intellij.lang.annotations.Language
-import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 import java.io.OutputStream
 import java.nio.file.Files
+import org.intellij.lang.annotations.Language
+import org.jetbrains.kotlin.config.JvmTarget
 
 /**
  * A simple API over a [KotlinCompilation] with extra configuration support for Anvil.
  */
 @ExperimentalAnvilApi
 public class AnvilCompilation internal constructor(
-    public val kotlinCompilation: KotlinCompilation
+    public val kotlinCompilation: KotlinCompilation,
 ) {
 
     private var isCompiled = false
@@ -52,7 +52,7 @@ public class AnvilCompilation internal constructor(
             // Deprecation tracked in https://github.com/square/anvil/issues/672
             @Suppress("DEPRECATION")
             componentRegistrars = listOf(
-                AnvilComponentRegistrar().also { it.addCodeGenerators(codeGenerators) }
+                AnvilComponentRegistrar().also { it.addCodeGenerators(codeGenerators) },
             )
             if (enableDaggerAnnotationProcessor) {
                 annotationProcessors = listOf(ComponentProcessor(), AutoAnnotationProcessor())
@@ -65,29 +65,29 @@ public class AnvilCompilation internal constructor(
                 PluginOption(
                     pluginId = anvilCommandLineProcessor.pluginId,
                     optionName = "src-gen-dir",
-                    optionValue = File(workingDir, "build/anvil").absolutePath
+                    optionValue = File(workingDir, "build/anvil").absolutePath,
                 ),
                 PluginOption(
                     pluginId = anvilCommandLineProcessor.pluginId,
                     optionName = "generate-dagger-factories",
-                    optionValue = generateDaggerFactories.toString()
+                    optionValue = generateDaggerFactories.toString(),
                 ),
                 PluginOption(
                     pluginId = anvilCommandLineProcessor.pluginId,
                     optionName = "generate-dagger-factories-only",
-                    optionValue = generateDaggerFactoriesOnly.toString()
+                    optionValue = generateDaggerFactoriesOnly.toString(),
                 ),
                 PluginOption(
                     pluginId = anvilCommandLineProcessor.pluginId,
                     optionName = "disable-component-merging",
-                    optionValue = disableComponentMerging.toString()
-                )
+                    optionValue = disableComponentMerging.toString(),
+                ),
             )
 
             if (enableExperimentalAnvilApis) {
                 kotlincArguments += listOf(
                     "-opt-in=kotlin.RequiresOptIn",
-                    "-opt-in=com.squareup.anvil.annotations.ExperimentalAnvilApi"
+                    "-opt-in=com.squareup.anvil.annotations.ExperimentalAnvilApi",
                 )
             }
         }
@@ -129,14 +129,14 @@ public class AnvilCompilation internal constructor(
      */
     public fun generatedAnvilFile(
         packageName: String,
-        fileName: String
+        fileName: String,
     ): File {
         check(isCompiled) {
             "No compilation run yet! Call compile() first."
         }
         return File(
             kotlinCompilation.workingDir,
-            "build/anvil/${packageName.replace('.', File.separatorChar)}/$fileName.kt"
+            "build/anvil/${packageName.replace('.', File.separatorChar)}/$fileName.kt",
         )
             .apply {
                 check(exists()) {
@@ -157,7 +157,7 @@ public class AnvilCompilation internal constructor(
      */
     public fun compile(
         @Language("kotlin") vararg sources: String,
-        block: JvmCompilationResult.() -> Unit = {}
+        block: JvmCompilationResult.() -> Unit = {},
     ): JvmCompilationResult {
         checkNotCompiled()
         if (!anvilConfigured) {
@@ -178,7 +178,7 @@ public class AnvilCompilation internal constructor(
                     inheritClassPath = true
                     jvmTarget = JvmTarget.JVM_1_8.description
                     verbose = false
-                }
+                },
             )
         }
     }
