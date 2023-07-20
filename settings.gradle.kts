@@ -9,7 +9,7 @@ pluginManagement {
 }
 
 plugins {
-    id("com.freeletics.gradle.settings").version("0.3.8")
+    id("com.freeletics.gradle.settings").version("0.4.0")
 }
 
 rootProject.name = "khonshu"
