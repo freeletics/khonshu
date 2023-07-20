@@ -18,7 +18,7 @@ plugins {
 dependencyAnalysis {
     issues {
         all {
-            onCompileOnly {
+            onUsedTransitiveDependencies {
                 exclude("dev.drewhamilton.poko:poko-annotations")
             }
         }
