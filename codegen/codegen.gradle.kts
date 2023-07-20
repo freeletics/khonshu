@@ -19,7 +19,6 @@ dependencies {
     api(projects.stateMachine)
     api(projects.codegenScope)
     api(projects.navigation)
-    api(libs.dagger)
 
     implementation(libs.coroutines.core)
 }

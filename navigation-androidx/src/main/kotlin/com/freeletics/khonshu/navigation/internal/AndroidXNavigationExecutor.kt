@@ -9,6 +9,7 @@ import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import java.io.Serializable
 
 @InternalNavigationApi
 public class AndroidXNavigationExecutor(
@@ -81,6 +82,12 @@ public class AndroidXNavigationExecutor(
         val viewModelStore = entryFor(destinationId).viewModelStore
         val factory = ViewModelProvider.NewInstanceFactory()
         return ViewModelProvider(viewModelStore, factory)[StoreViewModel::class.java]
+    }
+
+    override fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Serializable {
+        val destination = entryFor(destinationId).destination
+        val extraArgument = destination.arguments["NAV_SECRET_EXTRA"]!!
+        return extraArgument.defaultValue as Serializable
     }
 
     private fun entryFor(destinationId: DestinationId<*>): NavBackStackEntry {

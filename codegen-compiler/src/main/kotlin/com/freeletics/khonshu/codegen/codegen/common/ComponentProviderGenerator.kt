@@ -11,6 +11,7 @@ import com.freeletics.khonshu.codegen.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.codegen.util.navigationExecutor
 import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.codegen.util.propertyName
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -45,12 +46,11 @@ internal class ComponentProviderGenerator(
             .apply {
                 if (data.navigation?.parentScopeIsRoute == true) {
                     beginControlFlow(
-                        "return %M(route.%M, route, executor, context, %T::class, %T::class) " +
+                        "return %M(route.%M, route, executor, context, %T::class) " +
                             "{ parentComponent: %T, savedStateHandle, %L ->",
                         getComponentFromRoute,
                         destinationId,
                         data.parentScope,
-                        data.navigation!!.destinationScope,
                         retainedParentComponentClassName,
                         data.navigation!!.route.propertyName,
                     )

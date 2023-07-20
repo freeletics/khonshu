@@ -5,6 +5,7 @@ import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import java.io.Serializable
 import kotlin.reflect.KClass
 
 @InternalNavigationApi
@@ -19,6 +20,7 @@ public interface NavigationExecutor {
     public fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T
     public fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle
     public fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): Store
+    public fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Serializable
 
     @InternalNavigationApi
     public interface Store {

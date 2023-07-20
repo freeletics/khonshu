@@ -8,11 +8,10 @@ import com.freeletics.khonshu.codegen.codegen.common.ComponentGenerator
 import com.freeletics.khonshu.codegen.codegen.common.ComponentProviderGenerator
 import com.freeletics.khonshu.codegen.codegen.common.ComposeGenerator
 import com.freeletics.khonshu.codegen.codegen.common.ModuleGenerator
+import com.freeletics.khonshu.codegen.codegen.common.NavDestinationModuleGenerator
 import com.freeletics.khonshu.codegen.codegen.compose.ComposeScreenGenerator
 import com.freeletics.khonshu.codegen.codegen.fragment.ComposeFragmentGenerator
 import com.freeletics.khonshu.codegen.codegen.fragment.RendererFragmentGenerator
-import com.freeletics.khonshu.codegen.codegen.nav.NavDestinationComponentGenerator
-import com.freeletics.khonshu.codegen.codegen.nav.NavDestinationModuleGenerator
 import com.squareup.kotlinpoet.FileSpec
 
 public class FileGenerator {
@@ -75,8 +74,6 @@ public class FileGenerator {
         if (data.navigation != null) {
             val componentProviderGenerator = ComponentProviderGenerator(data)
             addType(componentProviderGenerator.generate())
-            val destinationComponentGenerator = NavDestinationComponentGenerator(data)
-            addType(destinationComponentGenerator.generate())
         }
     }
 

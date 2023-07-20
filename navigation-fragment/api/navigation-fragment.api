@@ -3,7 +3,7 @@ public final class com/freeletics/khonshu/navigation/fragment/ActivityDestinatio
 }
 
 public final class com/freeletics/khonshu/navigation/fragment/DialogDestination : com/freeletics/khonshu/navigation/fragment/NavDestination {
-	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/lang/String;Ljava/io/Serializable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
 public final class com/freeletics/khonshu/navigation/fragment/FragmentExtensionsKt {
@@ -23,6 +23,6 @@ public final class com/freeletics/khonshu/navigation/fragment/NavHostFragmentKt 
 }
 
 public final class com/freeletics/khonshu/navigation/fragment/ScreenDestination : com/freeletics/khonshu/navigation/fragment/NavDestination {
-	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/lang/String;Ljava/io/Serializable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 

@@ -1,24 +1,17 @@
-package com.freeletics.khonshu.codegen.codegen.nav
+package com.freeletics.khonshu.codegen.codegen.common
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.codegen.Generator
-import com.freeletics.khonshu.codegen.codegen.common.componentProviderClassName
-import com.freeletics.khonshu.codegen.codegen.common.composableName
 import com.freeletics.khonshu.codegen.codegen.fragment.fragmentName
-import com.freeletics.khonshu.codegen.codegen.util.componentProvider
 import com.freeletics.khonshu.codegen.codegen.util.contributesToAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.intoMap
+import com.freeletics.khonshu.codegen.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.codegen.util.intoSet
 import com.freeletics.khonshu.codegen.codegen.util.module
-import com.freeletics.khonshu.codegen.codegen.util.navComponentProvider
 import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.codegen.util.provides
-import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeSpec
 
 internal class NavDestinationModuleGenerator(
@@ -33,7 +26,6 @@ internal class NavDestinationModuleGenerator(
             .addAnnotation(module)
             .addAnnotation(contributesToAnnotation(data.navigation!!.destinationScope))
             .addFunction(providesDestination())
-            .addFunction(providesComponentProvider())
             .build()
     }
 
@@ -41,6 +33,7 @@ internal class NavDestinationModuleGenerator(
         return FunSpec.builder("provideNavDestination")
             .addAnnotation(provides)
             .addAnnotation(intoSet)
+            .addAnnotation(optInAnnotation(internalNavigatorApi))
             .returns(data.navigation!!.destinationClass)
             .addCode(providesDestinationCode())
             .build()
@@ -52,9 +45,10 @@ internal class NavDestinationModuleGenerator(
             is Navigation.Compose -> {
                 CodeBlock.builder()
                     .beginControlFlow(
-                        "return %M<%T>",
+                        "return %M<%T>(%T)",
                         navigation.destinationMethod,
                         navigation.route,
+                        componentProviderClassName,
                     )
                     .addStatement("%L(it)", composableName)
                     .endControlFlow()
@@ -62,33 +56,13 @@ internal class NavDestinationModuleGenerator(
             }
             is Navigation.Fragment -> {
                 CodeBlock.of(
-                    "return %M<%T, %T>()",
+                    "return %M<%T, %T>(%T)",
                     navigation.destinationMethod,
                     navigation.route,
                     ClassName(fragmentName),
+                    componentProviderClassName,
                 )
             }
         }
-    }
-
-    private fun providesComponentProvider(): FunSpec {
-        return FunSpec.builder("bindComponentProvider")
-            .addAnnotation(provides)
-            .addAnnotation(intoMap)
-            .addAnnotation(mapKeyAnnotation())
-            .returns(
-                componentProvider.parameterizedBy(
-                    STAR,
-                    STAR,
-                ).copy(annotations = listOf(AnnotationSpec.builder(JvmSuppressWildcards::class).build())),
-            )
-            .addStatement("return %T", componentProviderClassName)
-            .build()
-    }
-
-    private fun mapKeyAnnotation(): AnnotationSpec {
-        return AnnotationSpec.builder(navComponentProvider)
-            .addMember("%T::class", data.scope)
-            .build()
     }
 }
