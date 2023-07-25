@@ -43,7 +43,7 @@
       ],
       excludePackagePatterns: [
         "org.jetbrains.kotlinx",
-      ]
+      ],
       groupName: "Kotlin and Compose Compiler"
     },
     {
