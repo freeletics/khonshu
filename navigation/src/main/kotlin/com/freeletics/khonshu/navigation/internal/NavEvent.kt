@@ -66,6 +66,6 @@ public sealed interface NavEvent {
     @InternalNavigationApi
     @Poko
     public class MultiNavEvent(
-        internal val navEvents: List<NavEvent>
+        internal val navEvents: List<NavEvent>,
     ) : NavEvent
 }

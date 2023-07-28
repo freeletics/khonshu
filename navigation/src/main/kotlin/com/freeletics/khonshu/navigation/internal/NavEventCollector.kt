@@ -3,10 +3,10 @@ package com.freeletics.khonshu.navigation.internal
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 
-public class NavEventCollector internal constructor(){
+public class NavEventCollector internal constructor() {
 
     private val _navEvents = mutableListOf<NavEvent>()
-    internal val navEvents : List<NavEvent> = _navEvents
+    internal val navEvents: List<NavEvent> = _navEvents
 
     public fun navigateTo(route: NavRoute) {
         val event = NavEvent.NavigateToEvent(route)

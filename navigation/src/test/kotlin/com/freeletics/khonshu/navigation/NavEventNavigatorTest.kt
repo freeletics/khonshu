@@ -205,8 +205,8 @@ internal class NavEventNavigatorTest {
                     listOf(
                         NavEvent.BackToEvent(DestinationId(SimpleRoute::class), true),
                         NavigateToEvent(SimpleRoute(1)),
-                        NavEvent.BackEvent
-                    )
+                        NavEvent.BackEvent,
+                    ),
                 ),
             )
 
