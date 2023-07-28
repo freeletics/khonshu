@@ -15,7 +15,6 @@ import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToActivityEve
 import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.UpEvent
 import com.freeletics.khonshu.navigation.internal.NavEventCollector
-import com.freeletics.khonshu.navigation.internal.Navigator
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -168,9 +167,10 @@ public open class NavEventNavigator {
      * Triggers a new [NavEvent] that collects and combines the nav events sent in the block so they can be
      * handled individually.
      *
-     * Note: This should be used when navigating multiple times fe calling `navigateBackTo` followed by `navigateTo`.
+     * Note: This should be used when navigating multiple times, for example calling `navigateBackTo`
+     * followed by `navigateTo`.
      */
-    public fun navigate(block: Navigator.() -> Unit) {
+    public fun navigate(block: NavEventCollector.() -> Unit) {
         val navEvents = NavEventCollector().apply(block).navEvents
         sendNavEvent(MultiNavEvent(navEvents))
     }

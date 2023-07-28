@@ -2,49 +2,43 @@ package com.freeletics.khonshu.navigation.internal
 
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
-import kotlin.reflect.KClass
 
-
-public interface Navigator {
-    public fun navigateTo(route: NavRoute)
-    public fun navigateToRoot(root: NavRoot, restoreRootState: Boolean = false)
-    public fun navigateUp()
-    public fun navigateBack()
-    public fun <T : NavRoute> navigateBackTo(navRoute: KClass<T> , inclusive: Boolean = false)
-    public fun resetToRoot(root: NavRoot)
-}
-
-internal class NavEventCollector : Navigator {
+public class NavEventCollector internal constructor(){
 
     private val _navEvents = mutableListOf<NavEvent>()
-    val navEvents : List<NavEvent> = _navEvents
+    internal val navEvents : List<NavEvent> = _navEvents
 
-    override fun navigateTo(route: NavRoute) {
+    public fun navigateTo(route: NavRoute) {
         val event = NavEvent.NavigateToEvent(route)
         _navEvents.add(event)
     }
 
-    override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
+    public fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
         val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
         _navEvents.add(event)
     }
 
-    override fun navigateUp() {
+    public fun navigateUp() {
         val event = NavEvent.UpEvent
         _navEvents.add(event)
     }
 
-    override fun navigateBack() {
+    public fun navigateBack() {
         val event = NavEvent.BackEvent
         _navEvents.add(event)
     }
 
-    override fun <T : NavRoute> navigateBackTo(navRoute: KClass<T>, inclusive: Boolean) {
-        val event = NavEvent.BackToEvent(DestinationId(navRoute), inclusive)
+    public inline fun <reified T : NavRoute> navigateBackTo(inclusive: Boolean) {
+        navigateBackTo(DestinationId(T::class), inclusive)
+    }
+
+    @PublishedApi
+    internal fun <T : NavRoute> navigateBackTo(destination: DestinationId<T>, inclusive: Boolean) {
+        val event = NavEvent.BackToEvent(destination, inclusive)
         _navEvents.add(event)
     }
 
-    override fun resetToRoot(root: NavRoot) {
+    public fun resetToRoot(root: NavRoot) {
         val event = NavEvent.ResetToRoot(root)
         _navEvents.add(event)
     }

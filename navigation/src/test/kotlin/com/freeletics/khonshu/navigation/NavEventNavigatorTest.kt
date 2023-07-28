@@ -195,7 +195,7 @@ internal class NavEventNavigatorTest {
 
         navigator.navEvents.test {
             navigator.navigate {
-                navigateBackTo(SimpleRoute::class, true)
+                navigateBackTo<SimpleRoute>(true)
                 navigateTo(SimpleRoute(1))
                 navigateBack()
             }
