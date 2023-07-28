@@ -142,6 +142,26 @@ internal class NavigationSetupTest {
     }
 
     @Test
+    fun `MultiNavEvent is handled properly and events are forwarded to executor`() = runBlocking {
+        setup()
+
+        navigator.navigate {
+            navigateBackTo<SimpleRoute>(true)
+            navigateTo(SimpleRoute(1))
+            navigateBack()
+        }
+
+        assertThat(executor.received.awaitItem())
+            .isEqualTo(NavEvent.BackToEvent(DestinationId(SimpleRoute::class), inclusive = true))
+
+        assertThat(executor.received.awaitItem())
+            .isEqualTo(NavEvent.NavigateToEvent(SimpleRoute(1)))
+
+        assertThat(executor.received.awaitItem())
+            .isEqualTo(NavEvent.BackEvent)
+    }
+
+    @Test
     fun `DestinationResultEvent is forwarded to executor`() = runBlocking {
         setup()
 

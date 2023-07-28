@@ -64,6 +64,9 @@ private fun NavigationExecutor.navigate(
         is NavEvent.DestinationResultEvent<*> -> {
             savedStateHandleFor(event.key.destinationId)[event.key.requestKey] = event.result
         }
+        is NavEvent.MultiNavEvent -> {
+            event.navEvents.forEach { navigate(it, activityLaunchers) }
+        }
     }
 }
 

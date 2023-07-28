@@ -79,6 +79,7 @@ public class com/freeletics/khonshu/navigation/NavEventNavigator {
 	public final fun backPresses ()Lkotlinx/coroutines/flow/Flow;
 	public final fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 	public final fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
+	public final fun navigate (Lkotlin/jvm/functions/Function1;)V
 	public final fun navigateBack ()V
 	public final fun navigateBackTo-UamjCxQ (Lkotlin/reflect/KClass;Z)V
 	public static synthetic fun navigateBackTo-UamjCxQ$default (Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
@@ -170,6 +171,15 @@ public final class com/freeletics/khonshu/navigation/internal/InitialValue$Creat
 }
 
 public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationApi : java/lang/annotation/Annotation {
+}
+
+public final class com/freeletics/khonshu/navigation/internal/NavEventCollector {
+	public final fun navigateBack ()V
+	public final fun navigateBackTo-UamjCxQ (Lkotlin/reflect/KClass;Z)V
+	public final fun navigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
+	public final fun navigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
+	public final fun navigateUp ()V
+	public final fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 }
 
 public final class com/freeletics/khonshu/navigation/internal/NavigationSetupKt {
