@@ -190,6 +190,31 @@ internal class NavEventNavigatorTest {
     }
 
     @Test
+    fun `navigate event with multiple nav directions is received`(): Unit = runBlocking {
+        val navigator = TestNavigator()
+
+        navigator.navEvents.test {
+            navigator.navigate {
+                navigateBackTo(SimpleRoute::class, true)
+                navigateTo(SimpleRoute(1))
+                navigateBack()
+            }
+
+            assertThat(awaitItem()).isEqualTo(
+                NavEvent.MultiNavEvent(
+                    listOf(
+                        NavEvent.BackToEvent(DestinationId(SimpleRoute::class), true),
+                        NavigateToEvent(SimpleRoute(1)),
+                        NavEvent.BackEvent
+                    )
+                ),
+            )
+
+            cancel()
+        }
+    }
+
+    @Test
     fun `backPresses sends out events`(): Unit = runBlocking {
         val navigator = TestNavigator()
 

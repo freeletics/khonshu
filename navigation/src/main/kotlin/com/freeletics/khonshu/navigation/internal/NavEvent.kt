@@ -62,4 +62,10 @@ public sealed interface NavEvent {
         internal val key: NavigationResultRequest.Key<O>,
         internal val result: O,
     ) : NavEvent
+
+    @InternalNavigationApi
+    @Poko
+    public class MultiNavEvent(
+        internal val navEvents: List<NavEvent>
+    ) : NavEvent
 }
