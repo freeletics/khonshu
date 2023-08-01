@@ -1,9 +1,29 @@
 Change Log
 ==========
 
-## 0.15.1 **UNRELEASED**
+## 0.16.1 **UNRELEASED**
 
 -
+
+
+## 0.16.0 *(2023-09-01)*
+
+- Now uses Kotlin 1.9.0 and Anvil 2.4.7.
+
+## Navigation
+
+- Added `navigate` method to `NavEventNavigator` that takes a lambda as parameter. That lambda can
+  contain multiple navigation actions that will end up being bundled into one event that
+
+## Codegen
+
+- Added general `ForScope` annotation.
+- It's now possible to use the `scope` of another screen using codegen as `parentScope`.
+- The above replace the need to `@NavEntryComponent` and `@NavEntry` which have both been removed.
+- To enable the parent scope mechanism the following the 3 types now need a `ForScope` qualifier:
+    - `NavEventNavigator`
+    - `SavedStateHandle`
+    - anything provided into the `Set` of `Closeables`
 
 
 ## 0.15.0 *(2023-07-11)*
