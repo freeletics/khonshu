@@ -93,6 +93,14 @@ public interface NavigatorTurbine {
     public suspend fun awaitNavigateTo(route: ActivityRoute)
 
     /**
+     * Assert that all the events in the [block] are received. This function
+     * will suspend if no events have been received.
+     *
+     * @throws AssertionError - if the next event is not a MultiNavEvent followed by the events contained in the block
+     */
+    public suspend fun awaitNavigate(block: TestNavEventCollector.() -> Unit)
+
+    /**
      * Assert that the next event received was an "up" navigation event. This function
      * will suspend if no events have been received.
      *
@@ -217,6 +225,15 @@ internal class DefaultNavigatorTurbine(
     override suspend fun awaitNavigateTo(route: ActivityRoute) {
         val event = NavEvent.NavigateToActivityEvent(route)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
+    }
+
+    override suspend fun awaitNavigate(block: TestNavEventCollector.() -> Unit) {
+        val navEvents = TestNavEventCollector().apply(block).navEvents
+        val multiNavEvent = NavEvent.MultiNavEvent(navEvents)
+        Truth.assertThat(turbine.awaitItem()).isEqualTo(multiNavEvent)
+        navEvents.forEach {
+            Truth.assertThat(turbine.awaitItem()).isEqualTo(it)
+        }
     }
 
     override suspend fun awaitNavigateUp() {
