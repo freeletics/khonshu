@@ -234,6 +234,7 @@ internal class DefaultNavigatorTurbine(
         navEvents.forEach {
             Truth.assertThat(turbine.awaitItem()).isEqualTo(it)
         }
+        turbine.expectNoEvents()
     }
 
     override suspend fun awaitNavigateUp() {
