@@ -231,10 +231,6 @@ internal class DefaultNavigatorTurbine(
         val navEvents = TestNavEventCollector().apply(block).navEvents
         val multiNavEvent = NavEvent.MultiNavEvent(navEvents)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(multiNavEvent)
-        navEvents.forEach {
-            Truth.assertThat(turbine.awaitItem()).isEqualTo(it)
-        }
-        turbine.expectNoEvents()
     }
 
     override suspend fun awaitNavigateUp() {
