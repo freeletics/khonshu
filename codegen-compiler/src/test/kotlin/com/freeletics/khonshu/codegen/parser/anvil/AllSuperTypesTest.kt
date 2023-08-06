@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.codegen.parser.anvil
 
+import com.freeletics.khonshu.codegen.codegen.util.stateMachine
 import com.freeletics.khonshu.codegen.compileAnvil
 import com.google.common.truth.Truth.assertThat
 import com.squareup.anvil.compiler.api.CodeGenerator
@@ -8,15 +9,22 @@ import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.LONG
+import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.SHORT
 import com.squareup.kotlinpoet.STRING
+import com.squareup.kotlinpoet.TypeName
 import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import org.intellij.lang.annotations.Language
-import org.jetbrains.kotlin.name.FqName
 import org.junit.Test
 
-internal class ReferenceTest {
+internal class AllSuperTypesTest {
+
+    private fun Sequence<TypeName>.find(expected: TypeName): ParameterizedTypeName? {
+        return firstNotNullOfOrNull {
+            (it as? ParameterizedTypeName)?.takeIf { it.rawType == expected }
+        }
+    }
 
     @Test
     fun `type parameters are resolved`() {
@@ -41,40 +49,49 @@ internal class ReferenceTest {
             class HierarchyImplementation : Hierarchy2<Boolean, Long, Short, String, Int>()
 
             """.trimIndent(),
-            allWarningsAsErrors = false,
             codeGenerators = listOf(
                 simpleCodeGenerator { psiRef ->
                     when (psiRef.shortName) {
                         "StateMachine" -> {}
                         "Implementation" -> {
-                            val superType = psiRef.superTypeReference(FqName("com.freeletics.test.StateMachine"))
-                            assertThat(psiRef.resolveTypeParameter("State", superType)).isEqualTo(STRING)
-                            assertThat(psiRef.resolveTypeParameter("Action", superType)).isEqualTo(INT)
+                            val superType = psiRef.allSuperTypes().find(
+                                ClassName("com.freeletics.test", "StateMachine"),
+                            )
+                            assertThat(superType!!.typeArguments[0]).isEqualTo(STRING)
+                            assertThat(superType.typeArguments[1]).isEqualTo(INT)
                         }
                         "StateMachineWithShortTypeParameters" -> {}
                         "ImplementationWithShortTypeParameters" -> {
-                            val superType = psiRef.superTypeReference(FqName("com.freeletics.test.StateMachine"))
-                            assertThat(psiRef.resolveTypeParameter("State", superType)).isEqualTo(LONG)
-                            assertThat(psiRef.resolveTypeParameter("Action", superType)).isEqualTo(BOOLEAN)
+                            val superType = psiRef.allSuperTypes().find(
+                                ClassName("com.freeletics.test", "StateMachine"),
+                            )
+                            assertThat(superType!!.typeArguments[0]).isEqualTo(LONG)
+                            assertThat(superType.typeArguments[1]).isEqualTo(BOOLEAN)
                         }
                         "StateMachineWithSwappedParameters" -> {}
                         "ImplementationWithWithSwappedParameters" -> {
-                            val superType = psiRef.superTypeReference(FqName("com.freeletics.test.StateMachine"))
-                            assertThat(psiRef.resolveTypeParameter("State", superType)).isEqualTo(STRING)
-                            assertThat(psiRef.resolveTypeParameter("Action", superType)).isEqualTo(INT)
+                            val superType = psiRef.allSuperTypes().find(
+                                ClassName("com.freeletics.test", "StateMachine"),
+                            )
+                            assertThat(superType!!.typeArguments[0]).isEqualTo(STRING)
+                            assertThat(superType.typeArguments[1]).isEqualTo(INT)
                         }
                         "StateMachineWithExtraParameters" -> {}
                         "ImplementationWithWithExtraParameters" -> {
-                            val superType = psiRef.superTypeReference(FqName("com.freeletics.test.StateMachine"))
-                            assertThat(psiRef.resolveTypeParameter("State", superType)).isEqualTo(SHORT)
-                            assertThat(psiRef.resolveTypeParameter("Action", superType)).isEqualTo(STRING)
+                            val superType = psiRef.allSuperTypes().find(
+                                ClassName("com.freeletics.test", "StateMachine"),
+                            )
+                            assertThat(superType!!.typeArguments[0]).isEqualTo(SHORT)
+                            assertThat(superType.typeArguments[1]).isEqualTo(STRING)
                         }
                         "Hierarchy1" -> {}
                         "Hierarchy2" -> {}
                         "HierarchyImplementation" -> {
-                            val superType = psiRef.superTypeReference(FqName("com.freeletics.test.StateMachine"))
-                            assertThat(psiRef.resolveTypeParameter("State", superType)).isEqualTo(SHORT)
-                            assertThat(psiRef.resolveTypeParameter("Action", superType)).isEqualTo(STRING)
+                            val superType = psiRef.allSuperTypes().find(
+                                ClassName("com.freeletics.test", "StateMachine"),
+                            )
+                            assertThat(superType!!.typeArguments[0]).isEqualTo(SHORT)
+                            assertThat(superType.typeArguments[1]).isEqualTo(STRING)
                         }
                         else -> throw NotImplementedError(psiRef.shortName)
                     }
@@ -104,17 +121,14 @@ internal class ReferenceTest {
                 object DefaultCreateCustomActivityLoadingState : CreateCustomActivityState
                 sealed interface CreateCustomActivityAction
             """.trimIndent(),
-            allWarningsAsErrors = false,
             codeGenerators = listOf(
                 simpleCodeGenerator { psiRef ->
                     when (psiRef.shortName) {
                         "CreateCustomActivityStateMachine" -> {
-                            val superType = psiRef.superTypeReference(
-                                FqName("com.freeletics.khonshu.statemachine.StateMachine"),
-                            )
-                            assertThat(psiRef.resolveTypeParameter("State", superType))
+                            val superType = psiRef.allSuperTypes().find(stateMachine)
+                            assertThat(superType!!.typeArguments[0])
                                 .isEqualTo(ClassName("com.freeletics.test", "CreateCustomActivityState"))
-                            assertThat(psiRef.resolveTypeParameter("Action", superType))
+                            assertThat(superType.typeArguments[1])
                                 .isEqualTo(ClassName("com.freeletics.test", "CreateCustomActivityAction"))
                         }
                         "CreateCustomActivityState",

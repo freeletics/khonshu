@@ -7,7 +7,6 @@ import com.freeletics.khonshu.codegen.codegen.util.composeFragmentDestinationFqN
 import com.freeletics.khonshu.codegen.codegen.util.composeFragmentFqName
 import com.freeletics.khonshu.codegen.codegen.util.rendererFragmentDestinationFqName
 import com.freeletics.khonshu.codegen.codegen.util.rendererFragmentFqName
-import com.freeletics.khonshu.codegen.codegen.util.stateMachineFqName
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.asClassName
@@ -53,9 +52,7 @@ internal fun TopLevelFunctionReference.toComposeFragmentData(): ComposeFragmentD
     val annotation = findAnnotation(composeFragmentFqName) ?: return null
 
     val stateMachine = annotation.stateMachineReference
-    val stateMachineSuperType = stateMachine.superTypeReference(stateMachineFqName)
-    val stateParameter = stateMachine.stateMachineStateParameter(stateMachineSuperType)
-    val actionParameter = stateMachine.stateMachineActionFunctionParameter(stateMachineSuperType)
+    val (stateParameter, actionParameter) = stateMachine.stateMachineParameters()
 
     return ComposeFragmentData(
         baseName = name,
@@ -75,9 +72,7 @@ internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): Compo
     val annotation = findAnnotation(composeFragmentDestinationFqName) ?: return null
 
     val stateMachine = annotation.stateMachineReference
-    val stateMachineSuperType = stateMachine.superTypeReference(stateMachineFqName)
-    val stateParameter = stateMachine.stateMachineStateParameter(stateMachineSuperType)
-    val actionParameter = stateMachine.stateMachineActionFunctionParameter(stateMachineSuperType)
+    val (stateParameter, actionParameter) = stateMachine.stateMachineParameters()
 
     val navigation = Navigation.Fragment(
         route = annotation.route,

@@ -4,7 +4,6 @@ import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.codegen.util.codegenComposeDestinationFqName
 import com.freeletics.khonshu.codegen.codegen.util.composeFqName
-import com.freeletics.khonshu.codegen.codegen.util.stateMachineFqName
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.asClassName
 
@@ -12,9 +11,7 @@ internal fun TopLevelFunctionReference.toComposeScreenData(): ComposeScreenData?
     val annotation = findAnnotation(composeFqName) ?: return null
 
     val stateMachine = annotation.stateMachineReference
-    val stateMachineSuperType = stateMachine.superTypeReference(stateMachineFqName)
-    val stateParameter = stateMachine.stateMachineStateParameter(stateMachineSuperType)
-    val actionParameter = stateMachine.stateMachineActionFunctionParameter(stateMachineSuperType)
+    val (stateParameter, actionParameter) = stateMachine.stateMachineParameters()
 
     return ComposeScreenData(
         baseName = name,
@@ -33,9 +30,7 @@ internal fun TopLevelFunctionReference.toComposeScreenDestinationData(): Compose
     val annotation = findAnnotation(codegenComposeDestinationFqName) ?: return null
 
     val stateMachine = annotation.stateMachineReference
-    val stateMachineSuperType = stateMachine.superTypeReference(stateMachineFqName)
-    val stateParameter = stateMachine.stateMachineStateParameter(stateMachineSuperType)
-    val actionParameter = stateMachine.stateMachineActionFunctionParameter(stateMachineSuperType)
+    val (stateParameter, actionParameter) = stateMachine.stateMachineParameters()
 
     val navigation = Navigation.Compose(
         route = annotation.route,
