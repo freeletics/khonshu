@@ -1,10 +1,9 @@
 package com.freeletics.khonshu.codegen.parser.anvil
 
+import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.anvilCompilation
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
-import com.freeletics.khonshu.codegen.compileAnvil
+import com.freeletics.khonshu.codegen.simpleCodeGenerator
 import com.google.common.truth.Truth.assertThat
-import com.squareup.anvil.compiler.api.CodeGenerator
-import com.squareup.anvil.compiler.internal.testing.simpleCodeGenerator
 import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
@@ -13,9 +12,7 @@ import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.SHORT
 import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeName
-import com.tschuchort.compiletesting.JvmCompilationResult
-import com.tschuchort.compiletesting.KotlinCompilation
-import org.intellij.lang.annotations.Language
+import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import org.junit.Test
 
 internal class AllSuperTypesTest {
@@ -28,7 +25,7 @@ internal class AllSuperTypesTest {
 
     @Test
     fun `type parameters are resolved`() {
-        compile(
+        anvilCompilation(
             """
             package com.freeletics.test
 
@@ -95,18 +92,16 @@ internal class AllSuperTypesTest {
                         }
                         else -> throw NotImplementedError(psiRef.shortName)
                     }
-
-                    null
                 },
             ),
-        ) {
-            assertThat(exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        ).compile {
+            assertThat(it.exitCode).isEqualTo(ExitCode.OK)
         }
     }
 
     @Test
     fun `type parameters are resolved for external classes`() {
-        compile(
+        anvilCompilation(
             """
                 package com.freeletics.test
 
@@ -137,30 +132,10 @@ internal class AllSuperTypesTest {
                         -> {}
                         else -> throw NotImplementedError(psiRef.shortName)
                     }
-
-                    null
                 },
             ),
-        ) {
-            assertThat(exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        ).compile {
+            assertThat(it.exitCode).isEqualTo(ExitCode.OK)
         }
-    }
-
-    private fun compile(
-        @Language("kotlin") vararg sources: String,
-        previousCompilationResult: JvmCompilationResult? = null,
-        enableDaggerAnnotationProcessor: Boolean = false,
-        codeGenerators: List<CodeGenerator> = emptyList(),
-        allWarningsAsErrors: Boolean = true,
-        block: JvmCompilationResult.() -> Unit = { },
-    ): JvmCompilationResult {
-        return compileAnvil(
-            sources = sources,
-            allWarningsAsErrors = allWarningsAsErrors,
-            previousCompilationResult = previousCompilationResult,
-            enableDaggerAnnotationProcessor = enableDaggerAnnotationProcessor,
-            codeGenerators = codeGenerators,
-            block = block,
-        )
     }
 }

@@ -20,6 +20,7 @@ dependencies {
     testImplementation(projects.navigationFragment)
     testImplementation(projects.navigationCompose)
     testImplementation(projects.stateMachine)
+    testImplementation(libs.anvil.annotations)
     testImplementation(libs.androidx.compose.runtime)
     testImplementation(libs.androidx.viewbinding)
     testImplementation(libs.renderer)
@@ -31,9 +32,7 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(libs.kotlin.compile.testing)
     testImplementation(libs.androidx.compose.compiler)
-    testImplementation(libs.anvil.annotations)
     testImplementation(testFixtures(projects.codegenCompiler))
-    testImplementation(testFixtures(libs.anvil.compiler.utils))
 }
 
 // exclude external dependency on state machine connect, we include the local module instead
