@@ -23,9 +23,9 @@ internal fun TopLevelFunctionReference.toComposeScreenData(): ComposeScreenData?
         parentScope = annotation.parentScope,
         stateMachine = stateMachine.asClassName(),
         navigation = null,
-        composableParameter = getComposeParameters(stateParameter, actionParameter),
-        stateParameter = getStateParameter(stateParameter),
-        sendActionParameter = getSendActionParameter(actionParameter),
+        composableParameter = getInjectedParameters(stateParameter, actionParameter),
+        stateParameter = getParameterWithType(stateParameter),
+        sendActionParameter = getParameterWithType(actionParameter),
     )
 }
 
@@ -51,8 +51,8 @@ internal fun TopLevelFunctionReference.toComposeScreenDestinationData(): Compose
         parentScope = annotation.parentScope,
         stateMachine = stateMachine.asClassName(),
         navigation = navigation,
-        composableParameter = getComposeParameters(stateParameter, actionParameter),
-        stateParameter = getStateParameter(stateParameter),
-        sendActionParameter = getSendActionParameter(actionParameter),
+        composableParameter = getInjectedParameters(stateParameter, actionParameter),
+        stateParameter = getParameterWithType(stateParameter),
+        sendActionParameter = getParameterWithType(actionParameter),
     )
 }

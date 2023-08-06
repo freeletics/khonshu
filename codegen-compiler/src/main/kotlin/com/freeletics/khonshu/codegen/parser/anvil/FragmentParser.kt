@@ -65,9 +65,9 @@ internal fun TopLevelFunctionReference.toComposeFragmentData(): ComposeFragmentD
         stateMachine = stateMachine.asClassName(),
         fragmentBaseClass = annotation.fragmentBaseClass(3),
         navigation = null,
-        composableParameter = getComposeParameters(stateParameter, actionParameter),
-        stateParameter = getStateParameter(stateParameter),
-        sendActionParameter = getSendActionParameter(actionParameter),
+        composableParameter = getInjectedParameters(stateParameter, actionParameter),
+        stateParameter = getParameterWithType(stateParameter),
+        sendActionParameter = getParameterWithType(actionParameter),
     )
 }
 
@@ -94,8 +94,8 @@ internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): Compo
         stateMachine = stateMachine.asClassName(),
         fragmentBaseClass = annotation.fragmentBaseClass(5),
         navigation = navigation,
-        composableParameter = getComposeParameters(stateParameter, actionParameter),
-        stateParameter = getStateParameter(stateParameter),
-        sendActionParameter = getSendActionParameter(actionParameter),
+        composableParameter = getInjectedParameters(stateParameter, actionParameter),
+        stateParameter = getParameterWithType(stateParameter),
+        sendActionParameter = getParameterWithType(actionParameter),
     )
 }

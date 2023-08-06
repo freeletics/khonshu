@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.codegen.parser.anvil
 
-import com.freeletics.khonshu.codegen.ComposableParameter
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionAnnotationReference
@@ -8,7 +7,6 @@ import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionC
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.MemberFunctionReference
 import com.squareup.anvil.compiler.internal.reference.MemberPropertyReference
-import com.squareup.anvil.compiler.internal.reference.ParameterReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.TypeReference
 import com.squareup.anvil.compiler.internal.reference.argumentAt
@@ -49,13 +47,6 @@ internal fun AnnotationReference.requireEnumArgument(name: String, index: Int): 
 
 internal fun AnnotationReference.optionalEnumArgument(name: String, index: Int): String? {
     return argumentAt(name, index)?.value<FqName>()?.shortName()?.asString()
-}
-
-internal fun ParameterReference.toComposableParameter(): ComposableParameter {
-    return ComposableParameter(
-        name = name,
-        typeName = type().asTypeName(),
-    )
 }
 
 internal val AnnotatedReference.packageName: String
