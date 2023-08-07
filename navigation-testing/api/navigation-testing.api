@@ -1,4 +1,5 @@
 public abstract interface class com/freeletics/khonshu/navigation/NavigatorTurbine {
+	public abstract fun awaitNavigate (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateBack (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateBackTo (Lkotlin/reflect/KClass;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateForResult (Lcom/freeletics/khonshu/navigation/ActivityResultRequest;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -30,5 +31,14 @@ public final class com/freeletics/khonshu/navigation/ResultOwnerTestingKt {
 	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/lang/String;Lcom/freeletics/khonshu/navigation/PermissionsResultRequest$PermissionResult;)V
 	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/Map;)V
 	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;[Lkotlin/Pair;)V
+}
+
+public final class com/freeletics/khonshu/navigation/TestNavEventCollector {
+	public final fun awaitNavigateBack ()V
+	public final fun awaitNavigateBackTo-UamjCxQ (Lkotlin/reflect/KClass;Z)V
+	public final fun awaitNavigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
+	public final fun awaitNavigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
+	public final fun awaitNavigateUp ()V
+	public final fun awaitResetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 }
 
