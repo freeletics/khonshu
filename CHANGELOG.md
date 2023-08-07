@@ -1,12 +1,20 @@
 Change Log
 ==========
 
-## 0.16.1 **UNRELEASED**
+## 0.16.2 **UNRELEASED**
 
 -
 
 
-## 0.16.0 *(2023-09-01)*
+## 0.16.1 *(2023-08-07)*
+
+## Navigation
+
+- Added `awaitNavigate` method to `NavigatorTurbine` that takes a lambda as parameter. It verifies that one nav event,
+  containing all navigation actions from the lambda, is being received.
+
+
+## 0.16.0 *(2023-08-01)*
 
 - Now uses Kotlin 1.9.0 and Anvil 2.4.7.
 
@@ -52,9 +60,9 @@ MAD has beed renamed to Khonshu and Whetstone is now just codegen.
 ### Navigation
 
 - Compose: The `Dialog` and `BottomSheet` destination types haven been replaced by a new `Overlay` destination.
-  This new type generally behaves like the old ones except for not automically wrapping the given content in 
+  This new type generally behaves like the old ones except for not automically wrapping the given content in
   a `Dialog` or `ModalBottomSheetLayout` composable. This gives more flexibility and avoids some issues in the
-  default implementations, like not being able to show multiple bottom sheet destinations on top of each other. 
+  default implementations, like not being able to show multiple bottom sheet destinations on top of each other.
   It is recommended to use something like Material 3's `ModalBottomSheet` to display a bottom sheet.
 - Compose: Removed dependency on Accompanist and usages of experimental APIs.
 
@@ -109,7 +117,7 @@ gradle.beforeProject {
 
 ### Whetstone
 
-- Fix `whetstone-scope` artifact being published as `aar` instead of as `jar`. 
+- Fix `whetstone-scope` artifact being published as `aar` instead of as `jar`.
 
 
 ## 0.13.1 *(2023-03-23)*
@@ -130,7 +138,7 @@ gradle.beforeProject {
 
 ### Whetstone
 
-- The `state` and `sendAction` parameters in annotated composables are now optional and only need 
+- The `state` and `sendAction` parameters in annotated composables are now optional and only need
   to be specified if they are needed
 - The `state` and `sendAction` parameters of annotated composables can now have different names
 - Automatically discover `ViewRenderer.Factory` subclass nested inside the annotated `ViewRenderer`
