@@ -1,6 +1,6 @@
 package com.freeletics.khonshu.navigation
 
-import android.os.Parcelable
+import com.freeletics.khonshu.navigation.internal.Parcelable
 
 public sealed interface BaseRoute : Parcelable
 
