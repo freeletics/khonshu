@@ -35,13 +35,13 @@ internal class FileGeneratorTestRendererFragment {
         @Language("kotlin")
         val source = """
             package com.test
-            
+
             import android.view.View
             import com.freeletics.khonshu.codegen.fragment.RendererFragment
             import com.gabrielittner.renderer.ViewRenderer
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentScope
-            
+
             @RendererFragment(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
@@ -49,7 +49,7 @@ internal class FileGeneratorTestRendererFragment {
             )
             public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
               override fun renderToView(state: TestState) {}
-            
+
               public abstract class Factory : ViewRenderer.Factory<TestBinding, TestRenderer>({ _, _, _ -> TestBinding() })
             }
         """.trimIndent()
@@ -92,7 +92,7 @@ internal class FileGeneratorTestRendererFragment {
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
-    
+
               override fun close() {
                 closeables.forEach {
                   it.close()
@@ -119,7 +119,7 @@ internal class FileGeneratorTestRendererFragment {
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestRendererFragment : Fragment() {
               private lateinit var khonshuTestRendererComponent: KhonshuTestRendererComponent
@@ -138,13 +138,13 @@ internal class FileGeneratorTestRendererFragment {
                         argumentsForComponent)
                   }
                 }
-            
+
                 val renderer = khonshuTestRendererComponent.testRendererFactory.inflate(inflater, container)
                 connect(renderer, khonshuTestRendererComponent.testStateMachine)
                 return renderer.rootView
               }
             }
-            
+
         """.trimIndent()
 
         test(data, "com/test/TestRenderer.kt", source, expected)
@@ -161,14 +161,14 @@ internal class FileGeneratorTestRendererFragment {
         @Language("kotlin")
         val source = """
             package com.test
-            
+
             import android.view.View
             import com.freeletics.khonshu.codegen.fragment.RendererDestination
             import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.gabrielittner.renderer.ViewRenderer
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
-            
+
             @RendererDestination(
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
@@ -178,7 +178,7 @@ internal class FileGeneratorTestRendererFragment {
             )
             public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
               override fun renderToView(state: TestState) {}
-            
+
               public abstract class Factory : ViewRenderer.Factory<TestBinding, TestRenderer>({ _, _, _ -> TestBinding() })
             }
         """.trimIndent()
@@ -238,7 +238,7 @@ internal class FileGeneratorTestRendererFragment {
 
               @get:ForScope(TestRoute::class)
               public val closeables: Set<Closeable>
-    
+
               override fun close() {
                 closeables.forEach {
                   it.close()
@@ -256,7 +256,7 @@ internal class FileGeneratorTestRendererFragment {
                 public fun khonshuTestRendererComponentFactory(): Factory
               }
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public object KhonshuTestRendererComponentProvider :
                 ComponentProvider<TestRoute, KhonshuTestRendererComponent> {
@@ -279,7 +279,7 @@ internal class FileGeneratorTestRendererFragment {
               @ForScope(TestRoute::class)
               public fun bindCloseables(): Set<Closeable>
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestRendererFragment : Fragment() {
               private lateinit var khonshuTestRendererComponent: KhonshuTestRendererComponent
@@ -295,16 +295,16 @@ internal class FileGeneratorTestRendererFragment {
                   val executor = findNavigationExecutor()
                   khonshuTestRendererComponent = KhonshuTestRendererComponentProvider.provide(testRoute,
                       executor, requireContext())
-            
+
                   handleNavigation(this, khonshuTestRendererComponent.navEventNavigator)
                 }
-            
+
                 val renderer = khonshuTestRendererComponent.testRendererFactory.inflate(inflater, container)
                 connect(renderer, khonshuTestRendererComponent.testStateMachine)
                 return renderer.rootView
               }
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             @Module
             @ContributesTo(TestDestinationScope::class)
@@ -315,7 +315,7 @@ internal class FileGeneratorTestRendererFragment {
               public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute,
                   KhonshuTestRendererFragment>(KhonshuTestRendererComponentProvider)
             }
-            
+
         """.trimIndent()
 
         test(withNavigation, "com/test/TestRenderer.kt", source, expected)
@@ -336,12 +336,12 @@ internal class FileGeneratorTestRendererFragment {
         @Language("kotlin")
         val source = """
             package com.test
-            
+
             import android.view.View
             import com.freeletics.khonshu.codegen.fragment.RendererDestination
             import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.gabrielittner.renderer.ViewRenderer
-            
+
             @RendererDestination(
               route = TestRoute::class,
               stateMachine = TestStateMachine::class,
@@ -349,7 +349,7 @@ internal class FileGeneratorTestRendererFragment {
             )
             public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
               override fun renderToView(state: TestState) {}
-            
+
               public abstract class Factory : ViewRenderer.Factory<TestBinding, TestRenderer>({ _, _, _ -> TestBinding() })
             }
         """.trimIndent()
@@ -408,7 +408,7 @@ internal class FileGeneratorTestRendererFragment {
 
               @get:ForScope(TestRoute::class)
               public val closeables: Set<Closeable>
-    
+
               override fun close() {
                 closeables.forEach {
                   it.close()
@@ -426,7 +426,7 @@ internal class FileGeneratorTestRendererFragment {
                 public fun khonshuTestRendererComponentFactory(): Factory
               }
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public object KhonshuTestRendererComponentProvider :
                 ComponentProvider<TestRoute, KhonshuTestRendererComponent> {
@@ -500,14 +500,14 @@ internal class FileGeneratorTestRendererFragment {
         @Language("kotlin")
         val source = """
             package com.test
-            
+
             import android.view.View
             import androidx.fragment.app.DialogFragment
             import com.freeletics.khonshu.codegen.fragment.RendererFragment
             import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.gabrielittner.renderer.ViewRenderer
             import com.test.parent.TestParentScope
-            
+
             @RendererFragment(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
@@ -516,7 +516,7 @@ internal class FileGeneratorTestRendererFragment {
             )
             public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
               override fun renderToView(state: TestState) {}
-            
+
               public abstract class Factory : ViewRenderer.Factory<TestBinding, TestRenderer>({ _, _, _ -> TestBinding() })
             }
         """.trimIndent()
@@ -559,7 +559,7 @@ internal class FileGeneratorTestRendererFragment {
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
-    
+
               override fun close() {
                 closeables.forEach {
                   it.close()
@@ -586,7 +586,7 @@ internal class FileGeneratorTestRendererFragment {
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestRendererFragment : DialogFragment() {
               private lateinit var khonshuTestRendererComponent: KhonshuTestRendererComponent
@@ -605,7 +605,7 @@ internal class FileGeneratorTestRendererFragment {
                         argumentsForComponent)
                   }
                 }
-            
+
                 val renderer = khonshuTestRendererComponent.testRendererFactory.inflate(inflater, container)
                 connect(renderer, khonshuTestRendererComponent.testStateMachine)
                 return renderer.rootView

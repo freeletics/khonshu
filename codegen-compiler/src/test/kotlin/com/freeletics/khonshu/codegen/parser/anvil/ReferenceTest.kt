@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.codegen.parser
+package com.freeletics.khonshu.codegen.parser.anvil
 
 import com.freeletics.khonshu.codegen.compileAnvil
 import com.google.common.truth.Truth.assertThat
@@ -23,19 +23,19 @@ internal class ReferenceTest {
         compile(
             """
             package com.freeletics.test
-              
+
             interface StateMachine<State, Action>
             class Implementation : StateMachine<String, Int>
-            
+
             interface StateMachineWithShortTypeParameters<S, A> : StateMachine<S, A>
             class ImplementationWithShortTypeParameters : StateMachineWithShortTypeParameters<Long, Boolean>
-            
+
             interface StateMachineWithSwappedParameters<A2, S2> : StateMachine<S2, A2>
             class ImplementationWithWithSwappedParameters : StateMachineWithSwappedParameters<Int, String>
-            
+
             interface StateMachineWithExtraParameters<T1, T2, S3, A3, T3> : StateMachine<S3, A3>
             class ImplementationWithWithExtraParameters : StateMachineWithExtraParameters<Boolean, Long, Short, String, Int>
-    
+
             abstract class Hierarchy1<A4, S4>: StateMachineWithShortTypeParameters<S4, A4>
             abstract class Hierarchy2<T1, T2, S5, A5, T3>: Hierarchy1<A5, S5>()
             class HierarchyImplementation : Hierarchy2<Boolean, Long, Short, String, Int>()
@@ -94,12 +94,12 @@ internal class ReferenceTest {
                 package com.freeletics.test
 
                 import com.freeletics.khonshu.codegen.parser.TestStateMachine
-                                
-                class CreateCustomActivityStateMachine : 
+
+                class CreateCustomActivityStateMachine :
                     TestStateMachine<CreateCustomActivityState, CreateCustomActivityAction>(
                         DefaultCreateCustomActivityLoadingState,
                     )
-                
+
                 sealed interface CreateCustomActivityState
                 object DefaultCreateCustomActivityLoadingState : CreateCustomActivityState
                 sealed interface CreateCustomActivityAction

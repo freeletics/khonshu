@@ -50,11 +50,11 @@ internal class FileGeneratorTestComposeFragment {
         @Language("kotlin")
         val source = """
             package com.test
-            
+
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.fragment.ComposeFragment
             import com.test.parent.TestParentScope
-            
+
             @ComposeFragment(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
@@ -110,7 +110,7 @@ internal class FileGeneratorTestComposeFragment {
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
-    
+
               override fun close() {
                 closeables.forEach {
                   it.close()
@@ -137,11 +137,11 @@ internal class FileGeneratorTestComposeFragment {
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestFragment : Fragment() {
               private lateinit var khonshuTestComponent: KhonshuTestComponent
-            
+
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
@@ -181,7 +181,7 @@ internal class FileGeneratorTestComposeFragment {
                 )
               }
             }
-            
+
         """.trimIndent()
 
         test(data, "com/test/Test.kt", source, expected)
@@ -198,13 +198,13 @@ internal class FileGeneratorTestComposeFragment {
         @Language("kotlin")
         val source = """
             package com.test
-            
+
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.fragment.ComposeDestination
             import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
-            
+
             @ComposeDestination(
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
@@ -279,7 +279,7 @@ internal class FileGeneratorTestComposeFragment {
 
               @get:ForScope(TestRoute::class)
               public val closeables: Set<Closeable>
-    
+
               override fun close() {
                 closeables.forEach {
                   it.close()
@@ -297,7 +297,7 @@ internal class FileGeneratorTestComposeFragment {
                 public fun khonshuTestComponentFactory(): Factory
               }
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
               @OptIn(InternalNavigationApi::class)
@@ -319,11 +319,11 @@ internal class FileGeneratorTestComposeFragment {
               @ForScope(TestRoute::class)
               public fun bindCloseables(): Set<Closeable>
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestFragment : Fragment() {
               private lateinit var khonshuTestComponent: KhonshuTestComponent
-            
+
               @OptIn(InternalNavigationApi::class)
               override fun onCreateView(
                 inflater: LayoutInflater,
@@ -335,10 +335,10 @@ internal class FileGeneratorTestComposeFragment {
                   val executor = findNavigationExecutor()
                   khonshuTestComponent = KhonshuTestComponentProvider.provide(testRoute, executor,
                       requireContext())
-            
+
                   handleNavigation(this, khonshuTestComponent.navEventNavigator)
                 }
-            
+
                 return ComposeView(requireContext()).apply {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
@@ -374,7 +374,7 @@ internal class FileGeneratorTestComposeFragment {
               public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute,
                   KhonshuTestFragment>(KhonshuTestComponentProvider)
             }
-            
+
         """.trimIndent()
 
         test(withNavigation, "com/test/Test.kt", source, expected)
@@ -395,11 +395,11 @@ internal class FileGeneratorTestComposeFragment {
         @Language("kotlin")
         val source = """
             package com.test
-            
+
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.fragment.ComposeDestination
             import com.freeletics.khonshu.codegen.fragment.DestinationType
-            
+
             @ComposeDestination(
               route = TestRoute::class,
               stateMachine = TestStateMachine::class,
@@ -471,7 +471,7 @@ internal class FileGeneratorTestComposeFragment {
 
               @get:ForScope(TestRoute::class)
               public val closeables: Set<Closeable>
-    
+
               override fun close() {
                 closeables.forEach {
                   it.close()
@@ -489,7 +489,7 @@ internal class FileGeneratorTestComposeFragment {
                 public fun khonshuTestComponentFactory(): Factory
               }
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
               @OptIn(InternalNavigationApi::class)
@@ -581,12 +581,12 @@ internal class FileGeneratorTestComposeFragment {
         @Language("kotlin")
         val source = """
             package com.test
-            
+
             import androidx.compose.runtime.Composable
             import androidx.fragment.app.DialogFragment
             import com.freeletics.khonshu.codegen.fragment.ComposeFragment
             import com.test.parent.TestParentScope
-            
+
             @ComposeFragment(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
@@ -643,7 +643,7 @@ internal class FileGeneratorTestComposeFragment {
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
-    
+
               override fun close() {
                 closeables.forEach {
                   it.close()
@@ -670,11 +670,11 @@ internal class FileGeneratorTestComposeFragment {
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestFragment : DialogFragment() {
               private lateinit var khonshuTestComponent: KhonshuTestComponent
-            
+
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
@@ -747,12 +747,12 @@ internal class FileGeneratorTestComposeFragment {
         @Language("kotlin")
         val source = """
             package com.test
-            
+
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.fragment.ComposeFragment
             import com.test.other.TestClass2
             import com.test.parent.TestParentScope
-            
+
             @ComposeFragment(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
@@ -817,14 +817,14 @@ internal class FileGeneratorTestComposeFragment {
               public val testClass: TestClass
 
               public val test: TestClass2
-            
+
               public val testSet: Set<String>
 
               public val testMap: Map<String, Int>
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
-    
+
               override fun close() {
                 closeables.forEach {
                   it.close()
@@ -851,11 +851,11 @@ internal class FileGeneratorTestComposeFragment {
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTest2Fragment : Fragment() {
               private lateinit var khonshuTest2Component: KhonshuTest2Component
-            
+
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
@@ -903,7 +903,7 @@ internal class FileGeneratorTestComposeFragment {
                 )
               }
             }
-            
+
         """.trimIndent()
 
         test(withInjectedParameters, "com/test/Test2.kt", source, expected)
@@ -918,11 +918,11 @@ internal class FileGeneratorTestComposeFragment {
         @Language("kotlin")
         val source = """
             package com.test
-            
+
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.fragment.ComposeFragment
             import com.test.parent.TestParentScope
-            
+
             @ComposeFragment(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
@@ -975,7 +975,7 @@ internal class FileGeneratorTestComposeFragment {
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
-    
+
               override fun close() {
                 closeables.forEach {
                   it.close()
@@ -1002,11 +1002,11 @@ internal class FileGeneratorTestComposeFragment {
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestFragment : Fragment() {
               private lateinit var khonshuTestComponent: KhonshuTestComponent
-            
+
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
@@ -1044,7 +1044,7 @@ internal class FileGeneratorTestComposeFragment {
                 )
               }
             }
-            
+
         """.trimIndent()
 
         test(withoutSendAction, "com/test/Test.kt", source, expected)
@@ -1059,11 +1059,11 @@ internal class FileGeneratorTestComposeFragment {
         @Language("kotlin")
         val source = """
             package com.test
-            
+
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.fragment.ComposeFragment
             import com.test.parent.TestParentScope
-            
+
             @ComposeFragment(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
@@ -1118,7 +1118,7 @@ internal class FileGeneratorTestComposeFragment {
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
-    
+
               override fun close() {
                 closeables.forEach {
                   it.close()
@@ -1145,11 +1145,11 @@ internal class FileGeneratorTestComposeFragment {
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
-            
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestFragment : Fragment() {
               private lateinit var khonshuTestComponent: KhonshuTestComponent
-            
+
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
@@ -1188,7 +1188,7 @@ internal class FileGeneratorTestComposeFragment {
                 )
               }
             }
-            
+
         """.trimIndent()
 
         test(withoutSendAction, "com/test/Test.kt", source, expected)
