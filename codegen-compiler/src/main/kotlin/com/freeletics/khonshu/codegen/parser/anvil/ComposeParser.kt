@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.codegen.parser
+package com.freeletics.khonshu.codegen.parser.anvil
 
 import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.Navigation

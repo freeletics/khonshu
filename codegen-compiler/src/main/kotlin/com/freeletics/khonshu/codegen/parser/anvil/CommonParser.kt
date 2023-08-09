@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.codegen.parser
+package com.freeletics.khonshu.codegen.parser.anvil
 
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.codegen.util.appScope

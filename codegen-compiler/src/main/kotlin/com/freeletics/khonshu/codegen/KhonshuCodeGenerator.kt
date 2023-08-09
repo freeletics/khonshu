@@ -1,12 +1,12 @@
 package com.freeletics.khonshu.codegen
 
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
-import com.freeletics.khonshu.codegen.parser.toComposeFragmentData
-import com.freeletics.khonshu.codegen.parser.toComposeFragmentDestinationData
-import com.freeletics.khonshu.codegen.parser.toComposeScreenData
-import com.freeletics.khonshu.codegen.parser.toComposeScreenDestinationData
-import com.freeletics.khonshu.codegen.parser.toRendererFragmentData
-import com.freeletics.khonshu.codegen.parser.toRendererFragmentDestinationData
+import com.freeletics.khonshu.codegen.parser.anvil.toComposeFragmentData
+import com.freeletics.khonshu.codegen.parser.anvil.toComposeFragmentDestinationData
+import com.freeletics.khonshu.codegen.parser.anvil.toComposeScreenData
+import com.freeletics.khonshu.codegen.parser.anvil.toComposeScreenDestinationData
+import com.freeletics.khonshu.codegen.parser.anvil.toRendererFragmentData
+import com.freeletics.khonshu.codegen.parser.anvil.toRendererFragmentDestinationData
 import com.google.auto.service.AutoService
 import com.squareup.anvil.compiler.api.AnvilContext
 import com.squareup.anvil.compiler.api.CodeGenerator
