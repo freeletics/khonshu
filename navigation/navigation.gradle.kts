@@ -7,7 +7,10 @@ plugins {
 freeletics {
     explicitApi()
     optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationApi")
-    enableParcelize()
+
+    android {
+        enableParcelize()
+    }
 }
 
 android {

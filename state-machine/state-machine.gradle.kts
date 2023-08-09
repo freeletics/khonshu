@@ -5,7 +5,10 @@ plugins {
 
 freeletics {
     explicitApi()
-    addCommonTargets()
+
+    multiplatform {
+        addCommonTargets()
+    }
 }
 
 dependencies {

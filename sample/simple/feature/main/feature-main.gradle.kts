@@ -3,8 +3,11 @@ plugins {
 }
 
 freeletics {
-    enableCompose()
     useDaggerWithKhonshu()
+
+    android {
+        enableCompose()
+    }
 }
 
 dependencies {

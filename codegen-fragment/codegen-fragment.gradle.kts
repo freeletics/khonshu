@@ -9,7 +9,10 @@ freeletics {
         "com.freeletics.khonshu.navigation.internal.InternalNavigationApi",
         "com.freeletics.khonshu.codegen.internal.InternalCodegenApi",
     )
-    enableCompose()
+
+    android {
+        enableCompose()
+    }
 }
 
 dependencies {

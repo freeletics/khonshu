@@ -6,7 +6,10 @@ plugins {
 freeletics {
     explicitApi()
     optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationApi")
-    enableCompose()
+
+    android {
+        enableCompose()
+    }
 }
 
 dependencies {
