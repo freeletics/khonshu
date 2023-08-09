@@ -7,8 +7,11 @@ plugins {
 freeletics {
     explicitApi()
     optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationApi")
-    enableCompose()
-    enableParcelize()
+
+    android {
+        enableCompose()
+        enableParcelize()
+    }
 }
 
 dependencies {
