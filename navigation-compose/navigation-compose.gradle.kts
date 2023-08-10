@@ -22,6 +22,7 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.runtime.saveable)
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.navigation.runtime)
     implementation(libs.androidx.navigation.compose)
