@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.runtime.saveable)
+    implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.navigation.runtime)
     implementation(libs.androidx.navigation.compose)
