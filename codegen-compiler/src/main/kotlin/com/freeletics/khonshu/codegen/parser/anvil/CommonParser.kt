@@ -9,6 +9,7 @@ import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactoryFqName
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionClassReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
+import com.squareup.anvil.compiler.internal.reference.ParameterReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.allSuperTypeClassReferences
 import com.squareup.anvil.compiler.internal.reference.asClassName
@@ -44,28 +45,23 @@ internal fun AnnotationReference.fragmentBaseClass(index: Int): ClassName {
     return optionalClassArgument("fragmentBaseClass", index) ?: fragment
 }
 
-internal fun TopLevelFunctionReference.getStateParameter(stateParameter: TypeName): ComposableParameter? {
-    return parameters
-        .find { it.type().asTypeName() == stateParameter }
-        ?.toComposableParameter()
+internal fun TopLevelFunctionReference.getParameterWithType(expectedType: TypeName): ComposableParameter? {
+    return parameters.firstNotNullOfOrNull { parameter ->
+        parameter.toComposableParameter { it == expectedType }
+    }
 }
 
-internal fun TopLevelFunctionReference.getSendActionParameter(actionParameter: TypeName): ComposableParameter? {
-    return parameters
-        .find { it.type().asTypeName() == actionParameter }
-        ?.toComposableParameter()
-}
-
-internal fun TopLevelFunctionReference.getComposeParameters(
+internal fun TopLevelFunctionReference.getInjectedParameters(
     stateParameter: TypeName,
     actionParameter: TypeName,
 ): List<ComposableParameter> {
-    return parameters
-        .filter {
-            val type = it.type().asTypeName()
-            type != stateParameter && type != actionParameter
-        }
-        .map { it.toComposableParameter() }
+    return parameters.mapNotNull { parameter ->
+        parameter.toComposableParameter { it != stateParameter && it != actionParameter }
+    }
+}
+
+private fun ParameterReference.toComposableParameter(condition: (TypeName) -> Boolean): ComposableParameter? {
+    return type().asTypeName().takeIf(condition)?.let { ComposableParameter(name, it) }
 }
 
 internal fun ClassReference.stateMachineParameters(): Pair<TypeName, TypeName> {
