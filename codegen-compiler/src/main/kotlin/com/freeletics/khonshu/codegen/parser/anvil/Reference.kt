@@ -4,18 +4,19 @@ import com.freeletics.khonshu.codegen.ComposableParameter
 import com.squareup.anvil.compiler.internal.reference.AnnotatedReference
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionAnnotationReference
-import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionClassReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.MemberFunctionReference
 import com.squareup.anvil.compiler.internal.reference.MemberPropertyReference
 import com.squareup.anvil.compiler.internal.reference.ParameterReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
-import com.squareup.anvil.compiler.internal.reference.TypeReference
+import com.squareup.anvil.compiler.internal.reference.TypeParameterReference
 import com.squareup.anvil.compiler.internal.reference.argumentAt
 import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
+import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.UNIT
 import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.descriptors.containingPackage
@@ -84,48 +85,75 @@ internal fun TypeName.asFunction1Parameter(): TypeName {
     return Function1::class.asClassName().parameterizedBy(this, UNIT)
 }
 
-internal fun ClassReference.resolveTypeParameter(
-    parameter: String,
-    superTypes: List<TypeReference>,
-): TypeName {
-    var currentName = parameter
-    superTypes.forEach { superType ->
-        // find the index of the type parameters that the current class has
-        // e.g. for a StateMachine and State this would return 0
-        val index = superType.asClassReference().typeParameters.indexOfFirst { it.name == currentName }
-        // this is the type that is used in the implementation
-        // e.g. for ... : StateMachine<S, A> this would be S
-        val unwrappedType = superType.unwrappedTypes[index]
-        // resolve the type using the implementation class
-        val resolved = unwrappedType.resolveGenericTypeOrNull(this)
-        if (resolved != null) {
-            return resolved.asTypeName()
+/**
+ * Creates a [Sequence] of all direct and indirect super types. This uses a depth first search.
+ *
+ * While walking through the type hierarchy the method will resolve type parameters so that the emitted
+ * `TypeName` values will have resolved `typeArguments` instead of intermediate `TypeVariableNames`. See
+ * [updateWith] for more details.
+ */
+internal fun ClassReference.allSuperTypes(): Sequence<TypeName> = allSuperTypes(asClassName())
+
+private fun ClassReference.allSuperTypes(
+    typeName: TypeName,
+): Sequence<TypeName> = sequence {
+    val parentTypeParameters = typeParameters
+    val parentTypeArguments = (typeName as? ParameterizedTypeName)?.typeArguments ?: emptyList()
+    directSuperTypeReferences().forEach { superType ->
+        var superTypeName = superType.asTypeName()
+        if (parentTypeArguments.isNotEmpty() && superTypeName is ParameterizedTypeName) {
+            superTypeName = superTypeName.updateWith(parentTypeArguments, parentTypeParameters)
         }
-        currentName = unwrappedType.asTypeName().toString()
+        yield(superTypeName)
+
+        val superDeclaration = superType.asClassReferenceOrNull() ?: return@forEach
+        yieldAll(superDeclaration.allSuperTypes(superTypeName))
     }
-    throw AnvilCompilationExceptionClassReference(this, "Error resolving type parameters of $fqName")
 }
 
-internal fun ClassReference.superTypeReference(superClass: FqName): List<TypeReference> {
-    fun ClassReference.depthFirstSearch(superClass: FqName): List<TypeReference>? {
-        directSuperTypeReferences().forEach {
-            val classReference = it.asClassReferenceOrNull()
-            if (classReference != null) {
-                if (classReference.fqName == superClass) {
-                    return listOf(it)
-                }
-
-                val fromSuperClasses = classReference.depthFirstSearch(superClass)
-                if (fromSuperClasses != null) {
-                    return fromSuperClasses + it
-                }
+/**
+ * Changes the type arguments of the `ParameterizedTypeName` this is called on to the
+ * real resolved `TypeName` values given to this function.
+ *
+ * Example type hierarchy (that the type parameter order gets swapped is intentional):
+ * - TestStateMachine : FooStateMachine<com.test.TestAction, com.test.TestState>
+ * - FooStateMachine<A, S> : StateMachine<S, A>
+ * - StateMachine<State, Action>
+ *
+ * When this is called for `StateMachine<S, A>`, `parentTypeArguments` will be
+ * `[com.test.TestAction, com.test.TestState]` and `parentTypeParameters` will be `[A, S]`.
+ *
+ * The function will then iterate through `[S, A]` from the `ParameterizedTypeName`. In each iteration it will
+ * find the index of the variable name in `parentTypeParameters` and then use that index to get the actual
+ * type from `parentTypeArguments`.
+ *
+ * Example:
+ * 1) First iteration
+ *      a) search `S`
+ *      b) index in `parentTypeParameters` is `1`
+ *      c) `TypeName` at index `1` in `parentTypeArguments` is `com.test.TestState`
+ * 2) Second iteration
+ *      a) search `A`
+ *      b) index in `parentTypeParameters` is `0`
+ *      c) `TypeName` at index `0` in `parentTypeArguments` is `com.test.TestAction`
+ *
+ * Result: `StateMachine<S, A>` becomes `StateMachine<com.test.TestState, com.test.TestAction>`
+ */
+private fun ParameterizedTypeName.updateWith(
+    parentTypeArguments: List<TypeName>,
+    parentTypeParameters: List<TypeParameterReference>,
+): ParameterizedTypeName {
+    val updated = this.typeArguments.map { argument ->
+        if (argument is TypeVariableName) {
+            val index = parentTypeParameters.indexOfFirst { it.name == argument.name }
+            if (index >= 0) {
+                parentTypeArguments[index]
+            } else {
+                argument
             }
+        } else {
+            argument
         }
-        return null
     }
-
-    return depthFirstSearch(superClass) ?: throw AnvilCompilationExceptionClassReference(
-        this,
-        "$fqName does not extend $superClass",
-    )
+    return rawType.parameterizedBy(updated)
 }
