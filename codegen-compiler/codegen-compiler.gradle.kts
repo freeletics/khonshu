@@ -28,13 +28,12 @@ dependencies {
     testImplementation(libs.kotlin.compile.testing)
     testImplementation(libs.coroutines.core)
     testImplementation(libs.flowredux)
-    testImplementation(testFixtures(libs.anvil.compiler.utils))
 
-    testFixturesApi(testFixtures(libs.anvil.compiler.utils))
     testFixturesApi(libs.kotlin.compile.testing)
     testFixturesImplementation(libs.anvil.compiler)
+    testFixturesImplementation(testFixtures(libs.anvil.compiler.utils))
     testFixturesImplementation(libs.dagger.compiler)
-    testFixturesImplementation("com.google.auto.value:auto-value:1.10.2")
+    testFixturesImplementation(libs.auto.value)
 }
 
 // exclude external dependency on state machine connect, we include the local module instead
