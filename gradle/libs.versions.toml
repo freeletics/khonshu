@@ -32,7 +32,7 @@ anvil = "2.4.7"
 renderer = "0.13.0"
 kotlinpoet = "1.14.2"
 auto-service = "1.1.1"
-auto-value = "1.10.2"
+auto-value = "1.10.3"
 
 junit = "4.13.2"
 truth = "1.1.5"
