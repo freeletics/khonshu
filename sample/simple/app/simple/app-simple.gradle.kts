@@ -3,8 +3,11 @@ plugins {
 }
 
 freeletics {
-    applicationId("com.freeletics.khonshu.sample.simple")
     useDaggerWithComponent()
+
+    app {
+        applicationId("com.freeletics.khonshu.sample.simple")
+    }
 }
 
 dependencies {
