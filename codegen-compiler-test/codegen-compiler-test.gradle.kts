@@ -12,10 +12,7 @@ freeletics {
 
 dependencies {
     testImplementation(projects.codegenCompiler)
-    testImplementation(projects.codegenScope)
     testImplementation(projects.codegen)
-    testImplementation(projects.codegenCompose)
-    testImplementation(projects.codegenFragment)
     testImplementation(projects.navigation)
     testImplementation(projects.navigationFragment)
     testImplementation(projects.navigationCompose)
