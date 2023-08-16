@@ -17,6 +17,7 @@ dependencies {
     api(libs.kotlin.compiler)
     api(libs.anvil.compiler.api)
     api(libs.kotlinpoet)
+    api(projects.codegen)
     implementation(libs.anvil.annotations)
     implementation(libs.anvil.compiler.utils)
 

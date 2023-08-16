@@ -5,6 +5,7 @@ package com.freeletics.khonshu.codegen.codegen
 import com.freeletics.khonshu.codegen.AppScope
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.RendererFragmentData
+import com.freeletics.khonshu.codegen.fragment.DestinationType
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.asClassName
 import org.intellij.lang.annotations.Language
@@ -15,7 +16,7 @@ internal class FileGeneratorTestRendererFragment {
     private val navigation = Navigation.Fragment(
         route = ClassName("com.test", "TestRoute"),
         parentScopeIsRoute = true,
-        destinationType = "SCREEN",
+        destinationType = DestinationType.SCREEN,
         destinationScope = ClassName("com.test.destination", "TestDestinationScope"),
     )
 
