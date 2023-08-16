@@ -1,5 +1,7 @@
+import com.freeletics.gradle.plugin.FreeleticsAndroidExtension
+
 plugins {
-    alias(libs.plugins.fgp.android)
+    alias(libs.plugins.fgp.multiplatform)
     alias(libs.plugins.poko)
     alias(libs.plugins.fgp.publish)
 }
@@ -8,31 +10,31 @@ freeletics {
     explicitApi()
     optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationApi")
 
-    android {
-        enableParcelize()
+    multiplatform {
+        addJvmTarget()
+        addAndroidTarget(publish = true)
     }
-}
 
-android {
-    defaultConfig {
-        consumerProguardFile(project.file("navigation.pro"))
+    extensions.configure(FreeleticsAndroidExtension::class) {
+        enableParcelize()
+        consumerProguardFiles("navigation.pro")
     }
 }
 
 dependencies {
-    api(libs.androidx.activity)
-    api(libs.androidx.core)
-    api(libs.androidx.lifecycle.common)
-    api(libs.androidx.viewmodel.savedstate)
-    api(libs.coroutines.core)
-    api(libs.uri)
+    "androidMainApi"(libs.androidx.activity)
+    "androidMainApi"(libs.androidx.core)
+    "androidMainApi"(libs.androidx.lifecycle.common)
+    "androidMainApi"(libs.androidx.viewmodel.savedstate)
+    "androidMainApi"(libs.coroutines.core)
+    "androidMainApi"(libs.uri)
 
-    implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.kotlin.parcelize)
+    "androidMainImplementation"(libs.androidx.lifecycle.runtime)
+    "androidMainImplementation"(libs.kotlin.parcelize)
 
-    testImplementation(libs.junit)
-    testImplementation(libs.truth)
-    testImplementation(libs.turbine)
-    testImplementation(libs.androidx.lifecycle.testing)
-    testImplementation(libs.coroutines.test)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.truth)
+    "androidUnitTestImplementation"(libs.turbine)
+    "androidUnitTestImplementation"(libs.androidx.lifecycle.testing)
+    "androidUnitTestImplementation"(libs.coroutines.test)
 }

@@ -1,0 +1,18 @@
+public abstract interface class com/freeletics/khonshu/navigation/BaseRoute : com/freeletics/khonshu/navigation/internal/Parcelable {
+}
+
+public abstract interface class com/freeletics/khonshu/navigation/NavRoot : com/freeletics/khonshu/navigation/BaseRoute {
+}
+
+public abstract interface class com/freeletics/khonshu/navigation/NavRoute : com/freeletics/khonshu/navigation/BaseRoute {
+}
+
+public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationApi : java/lang/annotation/Annotation {
+}
+
+public abstract interface class com/freeletics/khonshu/navigation/internal/Parcelable {
+}
+
+public abstract interface annotation class com/freeletics/khonshu/navigation/internal/Parcelize : java/lang/annotation/Annotation {
+}
+
