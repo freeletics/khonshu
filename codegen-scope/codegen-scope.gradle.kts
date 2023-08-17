@@ -4,9 +4,8 @@ plugins {
 }
 
 freeletics {
-    explicitApi()
 }
 
 dependencies {
-    api(libs.inject)
+    api(projects.codegen)
 }

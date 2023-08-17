@@ -23,31 +23,20 @@ dependencyAnalysis {
             }
         }
 
-        project(":codegen") {
+        project(":codegen-scope") {
             onUnusedDependencies {
-                exclude(":codegen-scope")
-            }
-            onIncorrectConfiguration {
-                exclude(":codegen-scope")
+                exclude(":codegen")
             }
         }
 
         project(":codegen-compose") {
             onUnusedDependencies {
                 exclude(":codegen")
-                exclude(":navigation-compose")
-            }
-            onIncorrectConfiguration {
-                exclude(":codegen")
             }
         }
 
         project(":codegen-fragment") {
             onUnusedDependencies {
-                exclude(":codegen")
-                exclude(":navigation-fragment")
-            }
-            onIncorrectConfiguration {
                 exclude(":codegen")
             }
         }
