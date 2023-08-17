@@ -6,6 +6,7 @@ import com.freeletics.khonshu.codegen.AppScope
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.Navigation
+import com.freeletics.khonshu.codegen.fragment.DestinationType
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.MAP
@@ -22,7 +23,7 @@ internal class FileGeneratorTestComposeFragment {
     private val navigation = Navigation.Fragment(
         route = ClassName("com.test", "TestRoute"),
         parentScopeIsRoute = true,
-        destinationType = "SCREEN",
+        destinationType = DestinationType.SCREEN,
         destinationScope = ClassName("com.test.destination", "TestDestinationScope"),
     )
 

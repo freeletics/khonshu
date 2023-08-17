@@ -6,6 +6,8 @@ import com.freeletics.khonshu.codegen.codegen.util.composeScreenDestination
 import com.freeletics.khonshu.codegen.codegen.util.fragmentDestination
 import com.freeletics.khonshu.codegen.codegen.util.fragmentDialogDestination
 import com.freeletics.khonshu.codegen.codegen.util.fragmentScreenDestination
+import com.freeletics.khonshu.codegen.compose.DestinationType
+import com.freeletics.khonshu.codegen.fragment.DestinationType as FragmentDestinationType
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.TypeName
@@ -95,30 +97,28 @@ public sealed interface Navigation {
     public data class Compose(
         override val route: ClassName,
         override val parentScopeIsRoute: Boolean,
-        private val destinationType: String,
+        private val destinationType: DestinationType,
         override val destinationScope: ClassName,
     ) : Navigation {
         override val destinationClass: ClassName = composeDestination
 
         override val destinationMethod: MemberName = when (destinationType) {
-            "SCREEN" -> composeScreenDestination
-            "OVERLAY" -> composeOverlayDestination
-            else -> throw IllegalArgumentException("Unknown destinationType $destinationType")
+            DestinationType.SCREEN -> composeScreenDestination
+            DestinationType.OVERLAY -> composeOverlayDestination
         }
     }
 
     public data class Fragment(
         override val route: ClassName,
         override val parentScopeIsRoute: Boolean,
-        private val destinationType: String,
+        private val destinationType: FragmentDestinationType,
         override val destinationScope: ClassName,
     ) : Navigation {
         override val destinationClass: ClassName = fragmentDestination
 
         override val destinationMethod: MemberName = when (destinationType) {
-            "SCREEN" -> fragmentScreenDestination
-            "DIALOG" -> fragmentDialogDestination
-            else -> throw IllegalArgumentException("Unknown destinationType $destinationType")
+            FragmentDestinationType.SCREEN -> fragmentScreenDestination
+            FragmentDestinationType.DIALOG -> fragmentDialogDestination
         }
     }
 }

@@ -7,6 +7,7 @@ import com.freeletics.khonshu.codegen.codegen.util.composeFragmentDestinationFqN
 import com.freeletics.khonshu.codegen.codegen.util.composeFragmentFqName
 import com.freeletics.khonshu.codegen.codegen.util.rendererFragmentDestinationFqName
 import com.freeletics.khonshu.codegen.codegen.util.rendererFragmentFqName
+import com.freeletics.khonshu.codegen.fragment.DestinationType
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.asClassName
@@ -32,7 +33,7 @@ internal fun ClassReference.toRendererFragmentDestinationData(): RendererFragmen
     val navigation = Navigation.Fragment(
         route = annotation.route,
         parentScopeIsRoute = annotation.parentScopeReference.extendsBaseRoute(),
-        destinationType = annotation.destinationType,
+        destinationType = DestinationType.valueOf(annotation.destinationType),
         destinationScope = annotation.destinationScope,
     )
 
@@ -77,7 +78,7 @@ internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): Compo
     val navigation = Navigation.Fragment(
         route = annotation.route,
         parentScopeIsRoute = annotation.parentScopeReference.extendsBaseRoute(),
-        destinationType = annotation.destinationType,
+        destinationType = DestinationType.valueOf(annotation.destinationType),
         destinationScope = annotation.destinationScope,
     )
 
