@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.fgp.jvm)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.fgp.publish)
     id("java-test-fixtures")
 }
@@ -22,7 +22,7 @@ dependencies {
     implementation(libs.anvil.compiler.utils)
 
     compileOnly(libs.auto.service.annotations)
-    kapt(libs.auto.service.compiler)
+    ksp(libs.auto.service.compiler)
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)
