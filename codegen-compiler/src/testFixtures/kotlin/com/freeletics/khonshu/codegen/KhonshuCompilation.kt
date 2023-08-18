@@ -1,11 +1,17 @@
 package com.freeletics.khonshu.codegen
 
+import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.processing.SymbolProcessor
+import com.google.devtools.ksp.processing.SymbolProcessorProvider
+import com.google.devtools.ksp.symbol.KSAnnotated
 import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.testing.simpleCodeGenerator as anvilSimpleCodeGenerator
 import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
+import com.tschuchort.compiletesting.kspSourcesDir
+import com.tschuchort.compiletesting.symbolProcessorProviders
 import java.io.File
 import java.nio.file.Files
 import org.intellij.lang.annotations.Language
@@ -36,6 +42,19 @@ interface KhonshuCompilation {
                 sources = listOf(fileName to source),
                 compilerPlugins = compilerPlugins,
                 codeGenerators = codeGenerators,
+            )
+        }
+
+        fun kspCompilation(
+            @Language("kotlin") source: String,
+            fileName: String = "Test.kt",
+            compilerPlugins: List<CompilerPluginRegistrar> = emptyList(),
+            symbolProcessors: List<SymbolProcessorProvider> = emptyList(),
+        ): KhonshuCompilation {
+            return KspKhonshuCompilation(
+                listOf(fileName to source),
+                compilerPlugins,
+                symbolProcessors,
             )
         }
     }
@@ -78,6 +97,26 @@ private class AnvilKhonshuCompilation(
     }
 }
 
+private class KspKhonshuCompilation(
+    sources: List<Pair<String, String>>,
+    compilerPlugins: List<CompilerPluginRegistrar>,
+    symbolProcessors: List<SymbolProcessorProvider>,
+) : KhonshuCompilation {
+    val compilation = KotlinCompilation().apply {
+        symbolProcessorProviders = symbolProcessors
+        configure(sources, compilerPlugins)
+    }
+
+    override fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit) {
+        return block(compilation.compile())
+    }
+
+    override fun generatedFileFor(name: String): String {
+        val path = "${compilation.kspSourcesDir.absolutePath}/kotlin/${name.testFileName()}"
+        return File(path).readText()
+    }
+}
+
 private fun KotlinCompilation.configure(
     sourceFiles: List<Pair<String, String>>,
     compilerPlugins: List<CompilerPluginRegistrar>,
@@ -108,5 +147,16 @@ public fun simpleCodeGenerator(block: (ClassReference) -> Unit): CodeGenerator {
     return anvilSimpleCodeGenerator {
         block(it)
         null
+    }
+}
+
+public fun simpleSymbolProcessor(block: (Resolver) -> Unit): SymbolProcessorProvider {
+    return SymbolProcessorProvider {
+        object : SymbolProcessor {
+            override fun process(resolver: Resolver): List<KSAnnotated> {
+                block(resolver)
+                return emptyList()
+            }
+        }
     }
 }

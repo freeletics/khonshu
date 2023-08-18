@@ -9,6 +9,7 @@ freeletics {
     explicitApi()
     optIn(
         "com.squareup.anvil.annotations.ExperimentalAnvilApi",
+        "com.google.devtools.ksp.KspExperimental",
         "org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi",
     )
 }
@@ -16,7 +17,9 @@ freeletics {
 dependencies {
     api(libs.kotlin.compiler)
     api(libs.anvil.compiler.api)
+    api(libs.ksp.api)
     api(libs.kotlinpoet)
+    api(libs.kotlinpoet.ksp)
     api(projects.codegen)
     implementation(libs.anvil.annotations)
     implementation(libs.anvil.compiler.utils)
@@ -33,6 +36,7 @@ dependencies {
     testFixturesApi(libs.kotlin.compile.testing)
     testFixturesImplementation(libs.anvil.compiler)
     testFixturesImplementation(testFixtures(libs.anvil.compiler.utils))
+    testFixturesImplementation(libs.kotlin.compile.testing.ksp)
     testFixturesImplementation(libs.dagger.compiler)
     testFixturesImplementation(libs.auto.value)
 }
