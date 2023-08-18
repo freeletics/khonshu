@@ -3,6 +3,7 @@ package com.freeletics.khonshu.codegen.parser.ksp
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.codegen.util.baseRoute
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
+import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactory
 import com.freeletics.khonshu.codegen.parser.anvil.asFunction1Parameter
 import com.google.devtools.ksp.getClassDeclarationByName
 import com.google.devtools.ksp.processing.KSPLogger
@@ -11,6 +12,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSTypeParameter
 import com.google.devtools.ksp.symbol.KSValueParameter
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
@@ -59,6 +61,23 @@ internal fun KClass<*>.stateMachineParameters(resolver: Resolver, logger: KSPLog
     val stateParameter = stateMachineType.typeArguments[0]
     val actionParameter = stateMachineType.typeArguments[1].asFunction1Parameter()
     return stateParameter to actionParameter
+}
+
+internal fun KSClassDeclaration.findRendererFactory(logger: KSPLogger): ClassName? {
+    val factory = declarations.filterIsInstance<KSClassDeclaration>()
+        .firstNotNullOfOrNull {
+            if (it.allSuperTypes().any { superType -> superType.asParameterized()?.rawType == viewRendererFactory }) {
+                it.toClassName()
+            } else {
+                null
+            }
+        }
+
+    if (factory == null) {
+        logger.error("Couldn't find a ViewRender.Factory subclass nested inside $qualifiedName")
+    }
+
+    return factory
 }
 
 internal fun KClass<*>.extendsBaseRoute(resolver: Resolver): Boolean {
