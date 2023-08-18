@@ -30,9 +30,10 @@ inject = "1"
 dagger = "2.47"
 anvil = "2.4.7"
 renderer = "0.13.0"
-ksp = "1.9.0-1.0.12"
+ksp = "1.9.0-1.0.13"
 kotlinpoet = "1.14.2"
 auto-service = "1.1.1"
+auto-service-ksp = "1.1.0"
 auto-value = "1.10.3"
 
 junit = "4.13.2"
@@ -99,7 +100,7 @@ ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.re
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoet" }
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service" }
-auto-service-compiler = { module = "com.google.auto.service:auto-service", version.ref = "auto-service" }
+auto-service-compiler = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "auto-service-ksp" }
 auto-value = { module = "com.google.auto.value:auto-value", version.ref = "auto-value" }
 flowredux = { module = "com.freeletics.flowredux:flowredux", version = "1.2.0" }
 
@@ -123,8 +124,8 @@ android-library = { id = "com.android.library", version.ref = "android-gradle" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binarycompatibility" }

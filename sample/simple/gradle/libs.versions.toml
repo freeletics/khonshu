@@ -20,6 +20,7 @@ dagger = "2.47"
 dependency-analysis-gradle = "1.21.0"
 fgp = "0.5.0"
 khonshu = "0.16.1"
+ksp = "1.9.0-1.0.13"
 inject = "1"
 java-target = "11"
 java-toolchain = "17"
@@ -64,3 +65,4 @@ fgp-feature = { id = "com.freeletics.gradle.feature", version.ref = "fgp" }
 fgp-nav = { id = "com.freeletics.gradle.nav", version.ref = "fgp" }
 fgp-root = { id = "com.freeletics.gradle.root", version.ref = "fgp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
