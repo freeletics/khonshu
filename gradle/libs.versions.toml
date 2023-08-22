@@ -8,7 +8,7 @@ java-toolchain = "19"
 fgp = "0.5.0"
 gradle-api = "8.2.1"
 
-android-gradle = "8.1.0"
+android-gradle = "8.1.1"
 android-min = "21"
 android-target = "33"
 android-compile = "33"
