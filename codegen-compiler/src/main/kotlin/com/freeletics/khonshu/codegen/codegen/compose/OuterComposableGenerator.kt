@@ -23,7 +23,12 @@ import com.freeletics.khonshu.codegen.codegen.util.remember
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 
-internal class ComposeScreenGenerator(
+/**
+ * Generates the outer Composable when not using Fragments. This will obtain
+ * the component, if needed call NavigationSetup and finally will call the
+ * inner Composable.
+ */
+internal class OuterComposableGenerator(
     override val data: ComposeScreenData,
 ) : Generator<ComposeScreenData>() {
 

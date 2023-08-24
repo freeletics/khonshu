@@ -23,11 +23,9 @@ internal fun test(data: BaseData, fileName: String, source: String, expectedCode
 }
 
 private fun compile(fileName: String, source: String, data: BaseData, expectedCode: String) {
-    val generatedCode = when (data) {
-        is ComposeFragmentData -> FileGenerator().generate(data).toString()
-        is ComposeScreenData -> FileGenerator().generate(data).toString()
-        is RendererFragmentData -> FileGenerator().generate(data).toString()
-    }
+    val generatedCode = FileGenerator().generate(data).toString()
+
+    assertThat(generatedCode).isEqualTo(expectedCode)
 
     simpleCompilation(
         sources = listOf(
@@ -37,7 +35,6 @@ private fun compile(fileName: String, source: String, data: BaseData, expectedCo
         compilerPlugins = listOf(ComposePluginRegistrar()),
     ).compile {
         assertThat(it.exitCode).isEqualTo(ExitCode.OK)
-        assertThat(generatedCode).isEqualTo(expectedCode)
     }
 }
 

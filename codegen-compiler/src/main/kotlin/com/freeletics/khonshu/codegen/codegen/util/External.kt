@@ -51,7 +51,6 @@ internal val internalNavigatorApi = ClassName("com.freeletics.khonshu.navigation
 
 // StateMachine
 internal val stateMachine = ClassName("com.freeletics.khonshu.statemachine", "StateMachine")
-internal val stateMachineFqName = FqName(stateMachine.canonicalName)
 
 // Renderer
 internal val viewRenderer = ClassName("com.gabrielittner.renderer", "ViewRenderer")
@@ -69,7 +68,6 @@ internal val launch = MemberName("kotlinx.coroutines", "launch")
 internal val provides = ClassName("dagger", "Provides")
 internal val multibinds = ClassName("dagger.multibindings", "Multibinds")
 internal val intoSet = ClassName("dagger.multibindings", "IntoSet")
-internal val intoMap = ClassName("dagger.multibindings", "IntoMap")
 internal val bindsInstance = ClassName("dagger", "BindsInstance")
 internal val module = ClassName("dagger", "Module")
 
