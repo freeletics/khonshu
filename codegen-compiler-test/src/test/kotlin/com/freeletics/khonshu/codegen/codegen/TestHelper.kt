@@ -2,14 +2,11 @@ package com.freeletics.khonshu.codegen.codegen
 
 import androidx.compose.compiler.plugins.kotlin.ComposePluginRegistrar
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.ComposeFragmentData
-import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.FragmentData
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.anvilCompilation
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.kspCompilation
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.simpleCompilation
 import com.freeletics.khonshu.codegen.KhonshuSymbolProcessor.KhonshuSymbolProcessorProvider
-import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.testFileName
 import com.google.common.truth.Truth.assertThat
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
