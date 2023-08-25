@@ -3,58 +3,55 @@ package com.freeletics.khonshu.codegen.parser.ksp
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.RendererFragmentData
-import com.freeletics.khonshu.codegen.fragment.ComposeDestination
-import com.freeletics.khonshu.codegen.fragment.ComposeFragment
-import com.freeletics.khonshu.codegen.fragment.RendererDestination
-import com.freeletics.khonshu.codegen.fragment.RendererFragment
+import com.freeletics.khonshu.codegen.fragment.DestinationType
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.squareup.kotlinpoet.asClassName
 
 internal fun KSClassDeclaration.toRendererFragmentData(
-    annotation: RendererFragment,
+    annotation: KSAnnotation,
     logger: KSPLogger,
 ): RendererFragmentData? {
     return RendererFragmentData(
         baseName = simpleName.asString(),
         packageName = packageName.asString(),
-        scope = annotation.scope.asClassName(),
-        parentScope = annotation.parentScope.asClassName(),
-        stateMachine = annotation.stateMachine.asClassName(),
-        fragmentBaseClass = annotation.fragmentBaseClass.asClassName(),
+        scope = annotation.scope,
+        parentScope = annotation.parentScope,
+        stateMachine = annotation.stateMachine,
+        fragmentBaseClass = annotation.fragmentBaseClass,
         factory = findRendererFactory(logger) ?: return null,
         navigation = null,
     )
 }
 
 internal fun KSClassDeclaration.toRendererFragmentDestinationData(
-    annotation: RendererDestination,
+    annotation: KSAnnotation,
     resolver: Resolver,
     logger: KSPLogger,
 ): RendererFragmentData? {
     val navigation = Navigation.Fragment(
-        route = annotation.route.asClassName(),
+        route = annotation.route,
         parentScopeIsRoute = annotation.parentScope.extendsBaseRoute(resolver),
-        destinationType = annotation.destinationType,
-        destinationScope = annotation.destinationScope.asClassName(),
+        destinationType = DestinationType.valueOf(annotation.destinationType),
+        destinationScope = annotation.destinationScope,
     )
 
     return RendererFragmentData(
         baseName = simpleName.asString(),
         packageName = packageName.asString(),
-        scope = annotation.route.asClassName(),
-        parentScope = annotation.parentScope.asClassName(),
-        stateMachine = annotation.stateMachine.asClassName(),
-        fragmentBaseClass = annotation.fragmentBaseClass.asClassName(),
+        scope = annotation.route,
+        parentScope = annotation.parentScope,
+        stateMachine = annotation.stateMachine,
+        fragmentBaseClass = annotation.fragmentBaseClass,
         factory = findRendererFactory(logger) ?: return null,
         navigation = navigation,
     )
 }
 
 internal fun KSFunctionDeclaration.toComposeFragmentData(
-    annotation: ComposeFragment,
+    annotation: KSAnnotation,
     resolver: Resolver,
     logger: KSPLogger,
 ): ComposeFragmentData? {
@@ -64,10 +61,10 @@ internal fun KSFunctionDeclaration.toComposeFragmentData(
     return ComposeFragmentData(
         baseName = simpleName.asString(),
         packageName = packageName.asString(),
-        scope = annotation.scope.asClassName(),
-        parentScope = annotation.parentScope.asClassName(),
-        stateMachine = annotation.stateMachine.asClassName(),
-        fragmentBaseClass = annotation.fragmentBaseClass.asClassName(),
+        scope = annotation.scope,
+        parentScope = annotation.parentScope,
+        stateMachine = annotation.stateMachine,
+        fragmentBaseClass = annotation.fragmentBaseClass,
         navigation = null,
         composableParameter = getInjectedParameters(stateParameter, actionParameter),
         stateParameter = this.getParameterWithType(stateParameter),
@@ -76,7 +73,7 @@ internal fun KSFunctionDeclaration.toComposeFragmentData(
 }
 
 internal fun KSFunctionDeclaration.toComposeFragmentDestinationData(
-    annotation: ComposeDestination,
+    annotation: KSAnnotation,
     resolver: Resolver,
     logger: KSPLogger,
 ): ComposeFragmentData? {
@@ -84,19 +81,19 @@ internal fun KSFunctionDeclaration.toComposeFragmentDestinationData(
         ?: return null
 
     val navigation = Navigation.Fragment(
-        route = annotation.route.asClassName(),
+        route = annotation.route,
         parentScopeIsRoute = annotation.parentScope.extendsBaseRoute(resolver),
-        destinationType = annotation.destinationType,
-        destinationScope = annotation.destinationScope.asClassName(),
+        destinationType = DestinationType.valueOf(annotation.destinationType),
+        destinationScope = annotation.destinationScope,
     )
 
     return ComposeFragmentData(
         baseName = simpleName.asString(),
         packageName = packageName.asString(),
-        scope = annotation.route.asClassName(),
-        parentScope = annotation.parentScope.asClassName(),
-        stateMachine = annotation.stateMachine.asClassName(),
-        fragmentBaseClass = annotation.fragmentBaseClass.asClassName(),
+        scope = annotation.route,
+        parentScope = annotation.parentScope,
+        stateMachine = annotation.stateMachine,
+        fragmentBaseClass = annotation.fragmentBaseClass,
         navigation = navigation,
         composableParameter = getInjectedParameters(stateParameter, actionParameter),
         stateParameter = this.getParameterWithType(stateParameter),

@@ -15,7 +15,6 @@ import com.freeletics.khonshu.codegen.parser.ksp.toRendererFragmentData
 import com.freeletics.khonshu.codegen.parser.ksp.toRendererFragmentDestinationData
 import com.google.auto.service.AutoService
 import com.google.devtools.ksp.containingFile
-import com.google.devtools.ksp.getAnnotationsByType
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -23,6 +22,7 @@ import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.squareup.kotlinpoet.ksp.writeTo
@@ -64,7 +64,7 @@ public class KhonshuSymbolProcessor(
     }
 
     private inline fun <reified T : KSAnnotated, reified A : Annotation> Resolver.generateCodeForAnnotation(
-        parser: T.(A) -> BaseData?,
+        parser: T.(KSAnnotation) -> BaseData?,
     ) {
         getSymbolsWithAnnotation(A::class.qualifiedName!!)
             .forEach {
@@ -78,13 +78,11 @@ public class KhonshuSymbolProcessor(
                     return@forEach
                 }
 
-                val annotations = it.getAnnotationsByType(A::class).toList()
-                if (annotations.size > 1) {
-                    logger.error("@${A::class.simpleName} can only be applied to once", it)
-                    return@forEach
+                val annotation = it.annotations.first {
+                    it.annotationType.resolve().declaration.qualifiedName?.asString() == A::class.qualifiedName
                 }
 
-                val data = parser(it, annotations.first()) ?: return@forEach
+                val data = parser(it, annotation) ?: return@forEach
                 val file = fileGenerator.generate(data)
                 file.writeTo(codeGenerator, aggregating = false, originatingKSFiles = listOf(it.containingFile!!))
             }
