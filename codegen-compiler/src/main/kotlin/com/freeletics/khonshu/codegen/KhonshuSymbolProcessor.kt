@@ -15,7 +15,6 @@ import com.freeletics.khonshu.codegen.parser.ksp.toRendererFragmentData
 import com.freeletics.khonshu.codegen.parser.ksp.toRendererFragmentDestinationData
 import com.google.auto.service.AutoService
 import com.google.devtools.ksp.containingFile
-import com.google.devtools.ksp.getAnnotationsByType
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver

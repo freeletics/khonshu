@@ -2,14 +2,11 @@ package com.freeletics.khonshu.codegen.parser.ksp
 
 import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.Navigation
-import com.freeletics.khonshu.codegen.compose.ComposeDestination
-import com.freeletics.khonshu.codegen.compose.ComposeScreen
 import com.freeletics.khonshu.codegen.compose.DestinationType
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.squareup.kotlinpoet.asClassName
 
 internal fun KSFunctionDeclaration.toComposeScreenData(
     annotation: KSAnnotation,

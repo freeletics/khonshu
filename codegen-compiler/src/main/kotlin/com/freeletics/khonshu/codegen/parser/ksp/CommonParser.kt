@@ -41,14 +41,14 @@ internal val KSAnnotation.destinationType: String
     get() = (findArgument("destinationType").value as KSType).declaration.simpleName.asString()
 
 internal val KSAnnotation.destinationScope: ClassName
-    get() =  (findArgument("destinationScope").value as KSType).toClassName()
+    get() = (findArgument("destinationScope").value as KSType).toClassName()
 
 internal val KSAnnotation.fragmentBaseClass: ClassName
     get() = (findArgument("fragmentBaseClass").value as KSType).toClassName()
 
 private fun KSAnnotation.findArgument(name: String): KSValueArgument {
-    return arguments.find { it.name?.asString() == name } ?:
-        defaultArguments.find { it.name?.asString() == name }!!
+    return arguments.find { it.name?.asString() == name }
+        ?: defaultArguments.find { it.name?.asString() == name }!!
 }
 
 internal fun KSFunctionDeclaration.getParameterWithType(expectedType: TypeName): ComposableParameter? {
