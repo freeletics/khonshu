@@ -8,9 +8,12 @@ import com.freeletics.khonshu.codegen.parser.anvil.asFunction1Parameter
 import com.google.devtools.ksp.getClassDeclarationByName
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeParameter
+import com.google.devtools.ksp.symbol.KSValueArgument
 import com.google.devtools.ksp.symbol.KSValueParameter
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName
@@ -20,8 +23,33 @@ import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.toTypeParameterResolver
-import kotlin.reflect.KClass
 import org.jetbrains.annotations.VisibleForTesting
+
+internal val KSAnnotation.scope: ClassName
+    get() = (findArgument("scope").value as KSType).toClassName()
+
+internal val KSAnnotation.route: ClassName
+    get() = (findArgument("route").value as KSType).toClassName()
+
+internal val KSAnnotation.parentScope: ClassName
+    get() = (findArgument("parentScope").value as KSType).toClassName()
+
+internal val KSAnnotation.stateMachine: ClassName
+    get() = (findArgument("stateMachine").value as KSType).toClassName()
+
+internal val KSAnnotation.destinationType: String
+    get() = (findArgument("destinationType").value as KSType).declaration.simpleName.asString()
+
+internal val KSAnnotation.destinationScope: ClassName
+    get() =  (findArgument("destinationScope").value as KSType).toClassName()
+
+internal val KSAnnotation.fragmentBaseClass: ClassName
+    get() = (findArgument("fragmentBaseClass").value as KSType).toClassName()
+
+private fun KSAnnotation.findArgument(name: String): KSValueArgument {
+    return arguments.find { it.name?.asString() == name } ?:
+        defaultArguments.find { it.name?.asString() == name }!!
+}
 
 internal fun KSFunctionDeclaration.getParameterWithType(expectedType: TypeName): ComposableParameter? {
     return parameters.firstNotNullOfOrNull { parameter ->
@@ -47,8 +75,8 @@ private fun KSValueParameter.toComposableParameter(condition: (TypeName) -> Bool
     }
 }
 
-internal fun KClass<*>.stateMachineParameters(resolver: Resolver, logger: KSPLogger): Pair<TypeName, TypeName>? {
-    val stateMachineDeclaration = resolver.getClassDeclarationByName(qualifiedName!!)!!
+internal fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLogger): Pair<TypeName, TypeName>? {
+    val stateMachineDeclaration = resolver.getClassDeclarationByName(toString())!!
 
     val stateMachineType = stateMachineDeclaration.allSuperTypes().firstNotNullOfOrNull { superType ->
         superType.asParameterized()?.takeIf { it.rawType == stateMachine }
@@ -80,8 +108,8 @@ internal fun KSClassDeclaration.findRendererFactory(logger: KSPLogger): ClassNam
     return factory
 }
 
-internal fun KClass<*>.extendsBaseRoute(resolver: Resolver): Boolean {
-    val declaration = resolver.getClassDeclarationByName(qualifiedName!!)!!
+internal fun ClassName.extendsBaseRoute(resolver: Resolver): Boolean {
+    val declaration = resolver.getClassDeclarationByName(toString())!!
     return declaration.allSuperTypes().any { it == baseRoute }
 }
 
@@ -149,7 +177,7 @@ private fun ParameterizedTypeName.updateWith(
     parentTypeArguments: List<TypeName>,
     parentTypeParameters: List<KSTypeParameter>,
 ): ParameterizedTypeName {
-    val updated = this.typeArguments.map { argument ->
+    val updated = typeArguments.map { argument ->
         if (argument is TypeVariableName) {
             val index = parentTypeParameters.indexOfFirst { it.name.asString() == argument.name }
             if (index >= 0) {

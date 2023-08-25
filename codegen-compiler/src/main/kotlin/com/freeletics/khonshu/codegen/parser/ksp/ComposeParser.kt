@@ -4,13 +4,15 @@ import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.compose.ComposeDestination
 import com.freeletics.khonshu.codegen.compose.ComposeScreen
+import com.freeletics.khonshu.codegen.compose.DestinationType
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.squareup.kotlinpoet.asClassName
 
 internal fun KSFunctionDeclaration.toComposeScreenData(
-    annotation: ComposeScreen,
+    annotation: KSAnnotation,
     resolver: Resolver,
     logger: KSPLogger,
 ): ComposeScreenData? {
@@ -20,9 +22,9 @@ internal fun KSFunctionDeclaration.toComposeScreenData(
     return ComposeScreenData(
         baseName = simpleName.asString(),
         packageName = packageName.asString(),
-        scope = annotation.scope.asClassName(),
-        parentScope = annotation.parentScope.asClassName(),
-        stateMachine = annotation.stateMachine.asClassName(),
+        scope = annotation.scope,
+        parentScope = annotation.parentScope,
+        stateMachine = annotation.stateMachine,
         navigation = null,
         composableParameter = getInjectedParameters(stateParameter, actionParameter),
         stateParameter = getParameterWithType(stateParameter),
@@ -31,7 +33,7 @@ internal fun KSFunctionDeclaration.toComposeScreenData(
 }
 
 internal fun KSFunctionDeclaration.toComposeScreenDestinationData(
-    annotation: ComposeDestination,
+    annotation: KSAnnotation,
     resolver: Resolver,
     logger: KSPLogger,
 ): ComposeScreenData? {
@@ -39,18 +41,18 @@ internal fun KSFunctionDeclaration.toComposeScreenDestinationData(
         ?: return null
 
     val navigation = Navigation.Compose(
-        route = annotation.route.asClassName(),
+        route = annotation.route,
         parentScopeIsRoute = annotation.parentScope.extendsBaseRoute(resolver),
-        destinationType = annotation.destinationType,
-        destinationScope = annotation.destinationScope.asClassName(),
+        destinationType = DestinationType.valueOf(annotation.destinationType),
+        destinationScope = annotation.destinationScope,
     )
 
     return ComposeScreenData(
         baseName = simpleName.asString(),
         packageName = packageName.asString(),
-        scope = annotation.route.asClassName(),
-        parentScope = annotation.parentScope.asClassName(),
-        stateMachine = annotation.stateMachine.asClassName(),
+        scope = annotation.route,
+        parentScope = annotation.parentScope,
+        stateMachine = annotation.stateMachine,
         navigation = navigation,
         composableParameter = getInjectedParameters(stateParameter, actionParameter),
         stateParameter = this.getParameterWithType(stateParameter),
