@@ -17,7 +17,12 @@ import com.squareup.kotlinpoet.KModifier.PRIVATE
 internal val Generator<out BaseData>.composableName
     get() = "Khonshu${data.baseName}"
 
-internal class ComposeGenerator(
+/**
+ * The inner Composable is used for both Fragments and pure compose mode.
+ * Receives the component, will do the StateMachine set up and then calls
+ * the annotated composable with all required paramters.
+ */
+internal class InnerComposableGenerator(
     override val data: ComposeData,
 ) : Generator<ComposeData>() {
 

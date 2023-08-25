@@ -2,13 +2,10 @@ package com.freeletics.khonshu.codegen.codegen
 
 import androidx.compose.compiler.plugins.kotlin.ComposePluginRegistrar
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.ComposeFragmentData
-import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.anvilCompilation
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.kspCompilation
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.simpleCompilation
 import com.freeletics.khonshu.codegen.KhonshuSymbolProcessor.KhonshuSymbolProcessorProvider
-import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.testFileName
 import com.google.common.truth.Truth.assertThat
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
@@ -20,11 +17,9 @@ internal fun test(data: BaseData, fileName: String, source: String, expectedCode
 }
 
 private fun compile(fileName: String, source: String, data: BaseData, expectedCode: String) {
-    val generatedCode = when (data) {
-        is ComposeFragmentData -> FileGenerator().generate(data).toString()
-        is ComposeScreenData -> FileGenerator().generate(data).toString()
-        is RendererFragmentData -> FileGenerator().generate(data).toString()
-    }
+    val generatedCode = FileGenerator().generate(data).toString()
+
+    assertThat(generatedCode).isEqualTo(expectedCode)
 
     simpleCompilation(
         sources = listOf(
@@ -34,7 +29,6 @@ private fun compile(fileName: String, source: String, data: BaseData, expectedCo
         compilerPlugins = listOf(ComposePluginRegistrar()),
     ).compile {
         assertThat(it.exitCode).isEqualTo(ExitCode.OK)
-        assertThat(generatedCode).isEqualTo(expectedCode)
     }
 }
 
