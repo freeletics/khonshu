@@ -25,6 +25,7 @@ internal class FileGeneratorTestNavHostActivity {
         scope = ClassName("com.test", "TestScreen"),
         parentScope = ClassName("com.test.parent", "TestParentScope"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
+        activityBaseClass = ClassName("androidx.activity", "ComponentActivity"),
         stateParameter = ComposableParameter("state", ClassName("com.test", "TestState")),
         sendActionParameter = ComposableParameter(
             "sendAction",
@@ -71,6 +72,8 @@ internal class FileGeneratorTestNavHostActivity {
             package com.test
 
             import android.os.Bundle
+            import androidx.activity.ComponentActivity
+            import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
@@ -79,6 +82,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -127,6 +131,25 @@ internal class FileGeneratorTestNavHostActivity {
               @Multibinds
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
+            }
+
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuTestActivity : ComponentActivity() {
+              private lateinit var khonshuTestComponent: KhonshuTestComponent
+
+              override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                if (!::khonshuTestComponent.isInitialized) {
+                  khonshuTestComponent = component(this, this, TestParentScope::class, intent.extras) {
+                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle, extras ->
+                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle, extras)
+                  }
+                }
+
+                setContent {
+                  KhonshuTest(khonshuTestComponent)
+                }
+              }
             }
 
             @Composable
@@ -186,6 +209,8 @@ internal class FileGeneratorTestNavHostActivity {
             package com.test
 
             import android.os.Bundle
+            import androidx.activity.ComponentActivity
+            import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
@@ -196,6 +221,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import dagger.BindsInstance
@@ -243,6 +269,25 @@ internal class FileGeneratorTestNavHostActivity {
               @Multibinds
               @ForScope(ActivityScope::class)
               public fun bindCloseables(): Set<Closeable>
+            }
+
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuTestActivity : ComponentActivity() {
+              private lateinit var khonshuTestComponent: KhonshuTestComponent
+
+              override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                if (!::khonshuTestComponent.isInitialized) {
+                  khonshuTestComponent = component(this, this, AppScope::class, intent.extras) {
+                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle, extras ->
+                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle, extras)
+                  }
+                }
+
+                setContent {
+                  KhonshuTest(khonshuTestComponent)
+                }
+              }
             }
 
             @Composable
@@ -327,6 +372,8 @@ internal class FileGeneratorTestNavHostActivity {
             package com.test
 
             import android.os.Bundle
+            import androidx.activity.ComponentActivity
+            import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
@@ -335,6 +382,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.other.TestClass2
@@ -395,6 +443,25 @@ internal class FileGeneratorTestNavHostActivity {
               @Multibinds
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
+            }
+
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuTest2Activity : ComponentActivity() {
+              private lateinit var khonshuTest2Component: KhonshuTest2Component
+
+              override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                if (!::khonshuTest2Component.isInitialized) {
+                  khonshuTest2Component = component(this, this, TestParentScope::class, intent.extras) {
+                      parentComponent: KhonshuTest2Component.ParentComponent, savedStateHandle, extras ->
+                    parentComponent.khonshuTest2ComponentFactory().create(savedStateHandle, extras)
+                  }
+                }
+
+                setContent {
+                  KhonshuTest2(khonshuTest2Component)
+                }
+              }
             }
 
             @Composable
@@ -463,6 +530,8 @@ internal class FileGeneratorTestNavHostActivity {
             package com.test
 
             import android.os.Bundle
+            import androidx.activity.ComponentActivity
+            import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.lifecycle.SavedStateHandle
@@ -470,6 +539,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -517,6 +587,25 @@ internal class FileGeneratorTestNavHostActivity {
               @Multibinds
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
+            }
+
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuTestActivity : ComponentActivity() {
+              private lateinit var khonshuTestComponent: KhonshuTestComponent
+
+              override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                if (!::khonshuTestComponent.isInitialized) {
+                  khonshuTestComponent = component(this, this, TestParentScope::class, intent.extras) {
+                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle, extras ->
+                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle, extras)
+                  }
+                }
+
+                setContent {
+                  KhonshuTest(khonshuTestComponent)
+                }
+              }
             }
 
             @Composable
@@ -575,6 +664,8 @@ internal class FileGeneratorTestNavHostActivity {
             package com.test
 
             import android.os.Bundle
+            import androidx.activity.ComponentActivity
+            import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
@@ -583,6 +674,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
+            import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -631,6 +723,25 @@ internal class FileGeneratorTestNavHostActivity {
               @Multibinds
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
+            }
+
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuTestActivity : ComponentActivity() {
+              private lateinit var khonshuTestComponent: KhonshuTestComponent
+
+              override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                if (!::khonshuTestComponent.isInitialized) {
+                  khonshuTestComponent = component(this, this, TestParentScope::class, intent.extras) {
+                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle, extras ->
+                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle, extras)
+                  }
+                }
+
+                setContent {
+                  KhonshuTest(khonshuTestComponent)
+                }
+              }
             }
 
             @Composable
