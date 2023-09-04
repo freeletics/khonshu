@@ -15,7 +15,8 @@ import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeName
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import org.junit.Test
-all
+
+internal class AllSuperTypesTest {
 
     private fun Sequence<TypeName>.find(expected: TypeName): ParameterizedTypeName? {
         return firstNotNullOfOrNull {
