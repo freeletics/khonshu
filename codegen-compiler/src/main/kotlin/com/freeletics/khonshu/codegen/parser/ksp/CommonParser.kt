@@ -78,7 +78,7 @@ private fun KSValueParameter.toComposableParameter(condition: (TypeName) -> Bool
 internal fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLogger): Pair<TypeName, TypeName>? {
     val stateMachineDeclaration = resolver.getClassDeclarationByName(toString())!!
 
-    val stateMachineType = stateMachineDeclaration.allSuperTypes().firstNotNullOfOrNull { superType ->
+    val stateMachineType = stateMachineDeclaration.allSuperTypes(true).firstNotNullOfOrNull { superType ->
         superType.asParameterized()?.takeIf { it.rawType == stateMachine }
     }
     if (stateMachineType == null) {
@@ -94,7 +94,7 @@ internal fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLog
 internal fun KSClassDeclaration.findRendererFactory(logger: KSPLogger): ClassName? {
     val factory = declarations.filterIsInstance<KSClassDeclaration>()
         .firstNotNullOfOrNull {
-            if (it.allSuperTypes().any { superType -> superType.asParameterized()?.rawType == viewRendererFactory }) {
+            if (it.allSuperTypes(false).any { superType -> superType == viewRendererFactory }) {
                 it.toClassName()
             } else {
                 null
@@ -102,7 +102,7 @@ internal fun KSClassDeclaration.findRendererFactory(logger: KSPLogger): ClassNam
         }
 
     if (factory == null) {
-        logger.error("Couldn't find a ViewRender.Factory subclass nested inside $qualifiedName")
+        logger.error("Couldn't find a ViewRender.Factory subclass nested inside ${qualifiedName?.asString()}")
     }
 
     return factory
@@ -110,7 +110,7 @@ internal fun KSClassDeclaration.findRendererFactory(logger: KSPLogger): ClassNam
 
 internal fun ClassName.extendsBaseRoute(resolver: Resolver): Boolean {
     val declaration = resolver.getClassDeclarationByName(toString())!!
-    return declaration.allSuperTypes().any { it == baseRoute }
+    return declaration.allSuperTypes(false).any { it == baseRoute }
 }
 
 private fun TypeName.asParameterized(): ParameterizedTypeName? {
@@ -125,23 +125,31 @@ private fun TypeName.asParameterized(): ParameterizedTypeName? {
  * [updateWith] for more details.
  */
 @VisibleForTesting
-internal fun KSClassDeclaration.allSuperTypes(): Sequence<TypeName> = allSuperTypes(toClassName())
+internal fun KSClassDeclaration.allSuperTypes(resolveTypeParameters: Boolean): Sequence<TypeName> {
+    return allSuperTypes(toClassName(), resolveTypeParameters)
+}
 
 private fun KSClassDeclaration.allSuperTypes(
     typeName: TypeName,
+    resolveTypeParameters: Boolean,
 ): Sequence<TypeName> = sequence {
     val parentTypeParameters = typeParameters
     val parentTypeArguments = (typeName as? ParameterizedTypeName)?.typeArguments ?: emptyList()
     superTypes.forEach { superTypeReference ->
         val superType = superTypeReference.resolve()
-        var superTypeName = superType.toTypeName(parentTypeParameters.toTypeParameterResolver())
-        if (parentTypeArguments.isNotEmpty() && superTypeName is ParameterizedTypeName) {
-            superTypeName = superTypeName.updateWith(parentTypeArguments, parentTypeParameters)
+        var superTypeName: TypeName
+        if (resolveTypeParameters) {
+            superTypeName = superType.toTypeName(parentTypeParameters.toTypeParameterResolver())
+            if (parentTypeArguments.isNotEmpty() && superTypeName is ParameterizedTypeName) {
+                superTypeName = superTypeName.updateWith(parentTypeArguments, parentTypeParameters)
+            }
+        } else {
+            superTypeName = superType.toClassName()
         }
         yield(superTypeName)
 
         val superDeclaration = superType.declaration as? KSClassDeclaration ?: return@forEach
-        yieldAll(superDeclaration.allSuperTypes(superTypeName))
+        yieldAll(superDeclaration.allSuperTypes(superTypeName, resolveTypeParameters))
     }
 }
 
