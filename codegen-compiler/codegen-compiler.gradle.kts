@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.anvil.annotations)
     implementation(libs.anvil.compiler.utils)
     implementation(libs.kotlinpoet.ksp)
+    implementation(projects.navigation)
 
     compileOnly(libs.auto.service.annotations)
     ksp(libs.auto.service.compiler)

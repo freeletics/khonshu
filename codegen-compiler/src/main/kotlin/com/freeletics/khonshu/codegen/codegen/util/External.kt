@@ -1,7 +1,11 @@
 package com.freeletics.khonshu.codegen.codegen.util
 
+import com.freeletics.khonshu.navigation.NavRoot
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.MemberName
+import com.squareup.kotlinpoet.UNIT
+import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.name.FqName
 
 // Codegen Public API
@@ -17,9 +21,13 @@ internal val compose = ClassName("com.freeletics.khonshu.codegen.compose", "Comp
 internal val composeFqName = FqName(compose.canonicalName)
 internal val codegenComposeDestination = ClassName("com.freeletics.khonshu.codegen.compose", "ComposeDestination")
 internal val codegenComposeDestinationFqName = FqName(codegenComposeDestination.canonicalName)
+internal val navHostActivity = ClassName("com.freeletics.khonshu.codegen.compose", "NavHostActivity")
+internal val navHostActivityFqName = FqName(navHostActivity.canonicalName)
 internal val scopeTo = ClassName("com.freeletics.khonshu.codegen", "ScopeTo")
 internal val forScope = ClassName("com.freeletics.khonshu.codegen", "ForScope")
 internal val appScope = ClassName("com.freeletics.khonshu.codegen", "AppScope")
+internal val activityScope = ClassName("com.freeletics.khonshu.codegen", "ActivityScope")
+
 
 // Codegen Internal API
 internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.internal", "asComposeState")
@@ -52,6 +60,13 @@ internal val fragmentDialogDestination = MemberName("com.freeletics.khonshu.navi
 internal val fragmentRequireRoute = MemberName("com.freeletics.khonshu.navigation.fragment", "requireRoute")
 internal val internalNavigatorApi = ClassName("com.freeletics.khonshu.navigation.internal", "InternalNavigationApi")
 
+internal val navHostLambda = LambdaTypeName.get(
+    null,
+    NavRoot::class.asClassName(),
+    LambdaTypeName.get(null, baseRoute, returnType = UNIT).copy(nullable = true),
+    returnType = UNIT,
+)
+
 // StateMachine
 internal val stateMachine = ClassName("com.freeletics.khonshu.statemachine", "StateMachine")
 
@@ -63,6 +78,8 @@ internal val rendererConnect = MemberName("com.gabrielittner.renderer.connect", 
 
 // Kotlin
 internal val optIn = ClassName("kotlin", "OptIn")
+internal val function1 = ClassName("kotlin", "Function1")
+internal val function2 = ClassName("kotlin", "Function2")
 
 // Coroutines
 internal val launch = MemberName("kotlinx.coroutines", "launch")

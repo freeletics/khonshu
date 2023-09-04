@@ -72,9 +72,6 @@ private fun FqName.packageString(): String {
     return pathSegments().joinToString(separator = ".")
 }
 
-internal fun TypeName.asFunction1Parameter(): TypeName {
-    return Function1::class.asClassName().parameterizedBy(this, UNIT)
-}
 
 /**
  * Creates a [Sequence] of all direct and indirect super types. This uses a depth first search.

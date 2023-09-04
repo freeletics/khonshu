@@ -10,8 +10,14 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.KModifier.LATEINIT
 import com.squareup.kotlinpoet.KModifier.PRIVATE
+import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterSpec
+import com.squareup.kotlinpoet.ParameterizedTypeName
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.TypeName
+import com.squareup.kotlinpoet.UNIT
+import com.squareup.kotlinpoet.asClassName
 
 internal val ClassName.propertyName: String get() {
     return simpleNames.first().replaceFirstChar(Char::lowercaseChar) +
@@ -126,4 +132,19 @@ internal fun Navigation.Fragment?.requireArguments(): CodeBlock {
         return CodeBlock.of("%M<%T>()", fragmentRequireRoute, route)
     }
     return CodeBlock.of("requireArguments()")
+}
+
+internal fun TypeName.asLambdaParameter(): TypeName {
+    return LambdaTypeName.get(null, this, returnType = UNIT)
+}
+
+// KSP and Anvil don't have the same behavior for returning lambdas
+// this turns all Function1 and Function2 types into lambdas
+internal fun TypeName.functionToLambda(): TypeName {
+    if (this is ParameterizedTypeName && (rawType == function1 || rawType == function2)) {
+        val parameters = typeArguments.dropLast(1).map { it.functionToLambda() }.toTypedArray()
+        return LambdaTypeName.get(null, *parameters, returnType = typeArguments.last())
+            .copy(nullable = isNullable)
+    }
+    return this
 }
