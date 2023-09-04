@@ -11,6 +11,7 @@ import com.freeletics.khonshu.codegen.codegen.common.retainedParentComponentGett
 import com.freeletics.khonshu.codegen.codegen.util.bundle
 import com.freeletics.khonshu.codegen.codegen.util.getComponent
 import com.freeletics.khonshu.codegen.codegen.util.lateinitPropertySpec
+import com.freeletics.khonshu.codegen.codegen.util.navHost
 import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.codegen.util.setContent
@@ -57,7 +58,19 @@ internal class ActivityGenerator(
             .endControlFlow()
             .addStatement("")
             .beginControlFlow("%M", setContent)
-            .addStatement("%L(%L)", composableName, retainedComponentClassName.propertyName)
+            .beginControlFlow(
+                "%L(%L) { startRoute, destinationChangedCallback ->",
+                composableName,
+                retainedComponentClassName.propertyName,
+            )
+            .addStatement("%M(", navHost)
+            .addStatement("  startRoute,")
+            .addStatement("  %L.destinations,", retainedComponentClassName.propertyName)
+            .addStatement("  %L.deepLinkHandlers,", retainedComponentClassName.propertyName)
+            .addStatement("  %L.deepLinkPrefixes,", retainedComponentClassName.propertyName)
+            .addStatement("  destinationChangedCallback,")
+            .addStatement(")")
+            .endControlFlow()
             .endControlFlow()
             .build()
     }

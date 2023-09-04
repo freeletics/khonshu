@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.codegen.codegen.util
 
+import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.Navigation
 import com.squareup.anvil.annotations.ContributesSubcomponent
 import com.squareup.anvil.annotations.ContributesTo
@@ -35,6 +36,14 @@ internal fun bindsInstanceParameter(
     return spec.toBuilder()
         .addAnnotation(bindsInstance)
         .apply { if (annotation != null) addAnnotation(annotation) }
+        .build()
+}
+
+internal fun navHostParameter(parameter: ComposableParameter): ParameterSpec {
+    return ParameterSpec.builder(
+        parameter.name,
+        parameter.typeName.copy(annotations = listOf(AnnotationSpec.builder(composable).build())),
+    )
         .build()
 }
 

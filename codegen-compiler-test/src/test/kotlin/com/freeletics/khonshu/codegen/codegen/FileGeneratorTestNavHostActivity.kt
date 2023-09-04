@@ -6,8 +6,10 @@ import com.freeletics.khonshu.codegen.ActivityScope
 import com.freeletics.khonshu.codegen.AppScope
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.NavHostActivityData
+import com.freeletics.khonshu.navigation.NavRoot
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
+import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.MAP
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.SET
@@ -26,6 +28,16 @@ internal class FileGeneratorTestNavHostActivity {
         parentScope = ClassName("com.test.parent", "TestParentScope"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
         activityBaseClass = ClassName("androidx.activity", "ComponentActivity"),
+        navHostParameter = ComposableParameter(
+            "navHost",
+            LambdaTypeName.get(
+                null,
+                NavRoot::class.asClassName(),
+                LambdaTypeName.get(null, ClassName("com.freeletics.khonshu.navigation", "BaseRoute"), returnType = UNIT)
+                    .copy(nullable = true),
+                returnType = UNIT,
+            ),
+        ),
         stateParameter = ComposableParameter("state", ClassName("com.test", "TestState")),
         sendActionParameter = ComposableParameter(
             "sendAction",
@@ -63,7 +75,9 @@ internal class FileGeneratorTestNavHostActivity {
             public fun Test(
               state: TestState,
               sendAction: (TestAction) -> Unit,
+              navHost: @Composable (NavRoot, ((BaseRoute) -> Unit)?) -> Unit,
             ) {
+                navHost(TestRoot()) {}
             }
         """.trimIndent()
 
@@ -83,6 +97,11 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.BaseRoute
+            import com.freeletics.khonshu.navigation.DeepLinkHandler
+            import com.freeletics.khonshu.navigation.NavRoot
+            import com.freeletics.khonshu.navigation.compose.NavDestination
+            import com.freeletics.khonshu.navigation.compose.NavHost
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -91,6 +110,7 @@ internal class FileGeneratorTestNavHostActivity {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -102,6 +122,12 @@ internal class FileGeneratorTestNavHostActivity {
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
+
+              public val destinations: Set<NavDestination>
+
+              public val deepLinkHandlers: Set<DeepLinkHandler>
+
+              public val deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
@@ -147,14 +173,23 @@ internal class FileGeneratorTestNavHostActivity {
                 }
 
                 setContent {
-                  KhonshuTest(khonshuTestComponent)
+                  KhonshuTest(khonshuTestComponent) { startRoute, destinationChangedCallback ->
+                    NavHost(
+                      startRoute,
+                      khonshuTestComponent.destinations,
+                      khonshuTestComponent.deepLinkHandlers,
+                      khonshuTestComponent.deepLinkPrefixes,
+                      destinationChangedCallback,
+                    )
+                  }
                 }
               }
             }
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent) {
+            private fun KhonshuTest(component: KhonshuTestComponent, navHost: @Composable (NavRoot,
+                ((BaseRoute) -> Unit)?) -> Unit) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -163,6 +198,7 @@ internal class FileGeneratorTestNavHostActivity {
                 Test(
                   state = currentState,
                   sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  navHost = navHost,
                 )
               }
             }
@@ -200,7 +236,9 @@ internal class FileGeneratorTestNavHostActivity {
             public fun Test(
               state: TestState,
               sendAction: (TestAction) -> Unit,
+              navHost: @Composable (NavRoot, ((BaseRoute) -> Unit)?) -> Unit,
             ) {
+                navHost(TestRoot()) {}
             }
         """.trimIndent()
 
@@ -222,6 +260,11 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.BaseRoute
+            import com.freeletics.khonshu.navigation.DeepLinkHandler
+            import com.freeletics.khonshu.navigation.NavRoot
+            import com.freeletics.khonshu.navigation.compose.NavDestination
+            import com.freeletics.khonshu.navigation.compose.NavHost
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import dagger.BindsInstance
@@ -229,6 +272,7 @@ internal class FileGeneratorTestNavHostActivity {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -240,6 +284,12 @@ internal class FileGeneratorTestNavHostActivity {
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
+
+              public val destinations: Set<NavDestination>
+
+              public val deepLinkHandlers: Set<DeepLinkHandler>
+
+              public val deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
 
               @get:ForScope(ActivityScope::class)
               public val closeables: Set<Closeable>
@@ -285,14 +335,23 @@ internal class FileGeneratorTestNavHostActivity {
                 }
 
                 setContent {
-                  KhonshuTest(khonshuTestComponent)
+                  KhonshuTest(khonshuTestComponent) { startRoute, destinationChangedCallback ->
+                    NavHost(
+                      startRoute,
+                      khonshuTestComponent.destinations,
+                      khonshuTestComponent.deepLinkHandlers,
+                      khonshuTestComponent.deepLinkPrefixes,
+                      destinationChangedCallback,
+                    )
+                  }
                 }
               }
             }
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent) {
+            private fun KhonshuTest(component: KhonshuTestComponent, navHost: @Composable (NavRoot,
+                ((BaseRoute) -> Unit)?) -> Unit) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -301,6 +360,7 @@ internal class FileGeneratorTestNavHostActivity {
                 Test(
                   state = currentState,
                   sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  navHost = navHost,
                 )
               }
             }
@@ -363,7 +423,9 @@ internal class FileGeneratorTestNavHostActivity {
                 test: TestClass2,
                 testSet: Set<String>,
                 testMap: Map<String, Int>,
+                navHost: @Composable (NavRoot, ((BaseRoute) -> Unit)?) -> Unit,
             ) {
+                navHost(TestRoot()) {}
             }
         """.trimIndent()
 
@@ -383,6 +445,11 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.BaseRoute
+            import com.freeletics.khonshu.navigation.DeepLinkHandler
+            import com.freeletics.khonshu.navigation.NavRoot
+            import com.freeletics.khonshu.navigation.compose.NavDestination
+            import com.freeletics.khonshu.navigation.compose.NavHost
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.other.TestClass2
@@ -394,6 +461,7 @@ internal class FileGeneratorTestNavHostActivity {
             import kotlin.Int
             import kotlin.OptIn
             import kotlin.String
+            import kotlin.Unit
             import kotlin.collections.Map
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
@@ -414,6 +482,12 @@ internal class FileGeneratorTestNavHostActivity {
               public val testSet: Set<String>
 
               public val testMap: Map<String, Int>
+
+              public val destinations: Set<NavDestination>
+
+              public val deepLinkHandlers: Set<DeepLinkHandler>
+
+              public val deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
@@ -459,14 +533,23 @@ internal class FileGeneratorTestNavHostActivity {
                 }
 
                 setContent {
-                  KhonshuTest2(khonshuTest2Component)
+                  KhonshuTest2(khonshuTest2Component) { startRoute, destinationChangedCallback ->
+                    NavHost(
+                      startRoute,
+                      khonshuTest2Component.destinations,
+                      khonshuTest2Component.deepLinkHandlers,
+                      khonshuTest2Component.deepLinkPrefixes,
+                      destinationChangedCallback,
+                    )
+                  }
                 }
               }
             }
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest2(component: KhonshuTest2Component) {
+            private fun KhonshuTest2(component: KhonshuTest2Component, navHost: @Composable (NavRoot,
+                ((BaseRoute) -> Unit)?) -> Unit) {
               val testClass = remember { component.testClass }
               val test = remember { component.test }
               val testSet = remember { component.testSet }
@@ -483,6 +566,7 @@ internal class FileGeneratorTestNavHostActivity {
                   testMap = testMap,
                   state = currentState,
                   sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  navHost = navHost,
                 )
               }
             }
@@ -521,7 +605,9 @@ internal class FileGeneratorTestNavHostActivity {
             @Suppress("unused_parameter")
             public fun Test(
               state: TestState,
+              navHost: @Composable (NavRoot, ((BaseRoute) -> Unit)?) -> Unit,
             ) {
+                navHost(TestRoot()) {}
             }
         """.trimIndent()
 
@@ -540,6 +626,11 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.BaseRoute
+            import com.freeletics.khonshu.navigation.DeepLinkHandler
+            import com.freeletics.khonshu.navigation.NavRoot
+            import com.freeletics.khonshu.navigation.compose.NavDestination
+            import com.freeletics.khonshu.navigation.compose.NavHost
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -548,6 +639,7 @@ internal class FileGeneratorTestNavHostActivity {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class)
@@ -558,6 +650,12 @@ internal class FileGeneratorTestNavHostActivity {
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
+
+              public val destinations: Set<NavDestination>
+
+              public val deepLinkHandlers: Set<DeepLinkHandler>
+
+              public val deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
@@ -603,20 +701,30 @@ internal class FileGeneratorTestNavHostActivity {
                 }
 
                 setContent {
-                  KhonshuTest(khonshuTestComponent)
+                  KhonshuTest(khonshuTestComponent) { startRoute, destinationChangedCallback ->
+                    NavHost(
+                      startRoute,
+                      khonshuTestComponent.destinations,
+                      khonshuTestComponent.deepLinkHandlers,
+                      khonshuTestComponent.deepLinkPrefixes,
+                      destinationChangedCallback,
+                    )
+                  }
                 }
               }
             }
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent) {
+            private fun KhonshuTest(component: KhonshuTestComponent, navHost: @Composable (NavRoot,
+                ((BaseRoute) -> Unit)?) -> Unit) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
                 Test(
                   state = currentState,
+                  navHost = navHost,
                 )
               }
             }
@@ -655,7 +763,9 @@ internal class FileGeneratorTestNavHostActivity {
             @Suppress("unused_parameter")
             public fun Test(
               sendAction: (TestAction) -> Unit,
+              navHost: @Composable (NavRoot, ((BaseRoute) -> Unit)?) -> Unit,
             ) {
+                navHost(TestRoot()) {}
             }
         """.trimIndent()
 
@@ -675,6 +785,11 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.BaseRoute
+            import com.freeletics.khonshu.navigation.DeepLinkHandler
+            import com.freeletics.khonshu.navigation.NavRoot
+            import com.freeletics.khonshu.navigation.compose.NavDestination
+            import com.freeletics.khonshu.navigation.compose.NavHost
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.test.parent.TestParentScope
@@ -683,6 +798,7 @@ internal class FileGeneratorTestNavHostActivity {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -694,6 +810,12 @@ internal class FileGeneratorTestNavHostActivity {
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
+
+              public val destinations: Set<NavDestination>
+
+              public val deepLinkHandlers: Set<DeepLinkHandler>
+
+              public val deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
@@ -739,14 +861,23 @@ internal class FileGeneratorTestNavHostActivity {
                 }
 
                 setContent {
-                  KhonshuTest(khonshuTestComponent)
+                  KhonshuTest(khonshuTestComponent) { startRoute, destinationChangedCallback ->
+                    NavHost(
+                      startRoute,
+                      khonshuTestComponent.destinations,
+                      khonshuTestComponent.deepLinkHandlers,
+                      khonshuTestComponent.deepLinkPrefixes,
+                      destinationChangedCallback,
+                    )
+                  }
                 }
               }
             }
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent) {
+            private fun KhonshuTest(component: KhonshuTestComponent, navHost: @Composable (NavRoot,
+                ((BaseRoute) -> Unit)?) -> Unit) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -754,6 +885,7 @@ internal class FileGeneratorTestNavHostActivity {
                 val scope = rememberCoroutineScope()
                 Test(
                   sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  navHost = navHost,
                 )
               }
             }

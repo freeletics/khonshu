@@ -2,10 +2,12 @@ package com.freeletics.khonshu.codegen.codegen.common
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.ComposeData
+import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.codegen.Generator
 import com.freeletics.khonshu.codegen.codegen.util.asComposeState
 import com.freeletics.khonshu.codegen.codegen.util.composable
 import com.freeletics.khonshu.codegen.codegen.util.launch
+import com.freeletics.khonshu.codegen.codegen.util.navHostParameter
 import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.codegen.util.remember
@@ -32,6 +34,11 @@ internal class InnerComposableGenerator(
             .addAnnotation(optInAnnotation())
             .addModifiers(PRIVATE)
             .addParameter("component", retainedComponentClassName)
+            .also {
+                if (data is NavHostActivityData) {
+                    it.addParameter(navHostParameter(data.navHostParameter))
+                }
+            }
             .addCode(composableBlock())
             .build()
     }
@@ -66,6 +73,13 @@ internal class InnerComposableGenerator(
                         "  %L = { scope.%M { stateMachine.dispatch(it) } },",
                         data.sendActionParameter!!.name,
                         launch,
+                    )
+                }
+                if (data is NavHostActivityData) {
+                    addStatement(
+                        "  %L = %L,",
+                        data.navHostParameter.name,
+                        data.navHostParameter.name,
                     )
                 }
             }
