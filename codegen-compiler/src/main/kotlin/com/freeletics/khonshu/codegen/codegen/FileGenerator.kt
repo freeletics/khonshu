@@ -3,6 +3,7 @@ package com.freeletics.khonshu.codegen.codegen
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.ComposeScreenData
+import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.codegen.common.ComponentGenerator
 import com.freeletics.khonshu.codegen.codegen.common.ComponentProviderGenerator
@@ -21,6 +22,7 @@ public class FileGenerator {
             is ComposeFragmentData -> generate(data)
             is ComposeScreenData -> generate(data)
             is RendererFragmentData -> generate(data)
+            is NavHostActivityData -> generate(data)
         }
     }
 
@@ -37,6 +39,18 @@ public class FileGenerator {
             .addFunction(outerComposable.generate())
             .addFunction(innerComposable.generate())
             .addNavDestinationTypes(data)
+            .build()
+    }
+
+    public fun generate(data: NavHostActivityData): FileSpec {
+        val component = ComponentGenerator(data)
+        val module = ModuleGenerator(data)
+        val innerComposable = InnerComposableGenerator(data)
+
+        return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
+            .addType(component.generate())
+            .addType(module.generate())
+            .addFunction(innerComposable.generate())
             .build()
     }
 

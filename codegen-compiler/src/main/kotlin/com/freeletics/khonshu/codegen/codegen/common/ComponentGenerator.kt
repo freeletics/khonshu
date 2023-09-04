@@ -1,8 +1,7 @@
 package com.freeletics.khonshu.codegen.codegen.common
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.ComposeFragmentData
-import com.freeletics.khonshu.codegen.ComposeScreenData
+import com.freeletics.khonshu.codegen.ComposeData
 import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.codegen.Generator
 import com.freeletics.khonshu.codegen.codegen.util.asParameter
@@ -72,12 +71,7 @@ internal class ComponentGenerator(
                 .build()
         }
         when (data) {
-            is ComposeFragmentData -> {
-                properties += data.composableParameter.map {
-                    PropertySpec.builder(it.name, it.typeName).build()
-                }
-            }
-            is ComposeScreenData -> {
+            is ComposeData -> {
                 properties += data.composableParameter.map {
                     PropertySpec.builder(it.name, it.typeName).build()
                 }
