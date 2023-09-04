@@ -5,14 +5,10 @@ import com.freeletics.khonshu.codegen.FragmentData
 import com.freeletics.khonshu.codegen.codegen.Generator
 import com.freeletics.khonshu.codegen.codegen.common.componentProviderClassName
 import com.freeletics.khonshu.codegen.codegen.common.retainedComponentClassName
-import com.freeletics.khonshu.codegen.codegen.common.retainedComponentFactoryCreateName
-import com.freeletics.khonshu.codegen.codegen.common.retainedParentComponentClassName
-import com.freeletics.khonshu.codegen.codegen.common.retainedParentComponentGetterName
 import com.freeletics.khonshu.codegen.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.codegen.util.bundle
 import com.freeletics.khonshu.codegen.codegen.util.fragmentFindNavigationExecutor
 import com.freeletics.khonshu.codegen.codegen.util.fragmentNavigationHandler
-import com.freeletics.khonshu.codegen.codegen.util.getComponent
 import com.freeletics.khonshu.codegen.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.codegen.util.lateinitPropertySpec
 import com.freeletics.khonshu.codegen.codegen.util.layoutInflater
@@ -43,7 +39,6 @@ internal abstract class BaseFragmentGenerator<T : FragmentData> : Generator<T>()
 
     private fun onCreateViewFun(): FunSpec {
         val argumentsParameter = data.navigation.asParameter()
-        val innerParameterName = "${argumentsParameter.name}ForComponent"
         return FunSpec.builder("onCreateView")
             .addModifiers(OVERRIDE)
             .addParameter("inflater", layoutInflater)
@@ -54,37 +49,21 @@ internal abstract class BaseFragmentGenerator<T : FragmentData> : Generator<T>()
             .addCode("val %N = ", argumentsParameter)
             .addCode(data.navigation.requireArguments())
             .addCode("\n")
-            .also {
-                if (data.navigation != null) {
-                    it.addAnnotation(optInAnnotation(internalNavigatorApi))
-                    it.addStatement("val executor = %M()", fragmentFindNavigationExecutor)
-                    it.addStatement(
-                        "%L = %T.provide(%N, executor, requireContext())",
-                        retainedComponentClassName.propertyName,
-                        componentProviderClassName,
-                        argumentsParameter,
-                    )
-                } else {
-                    it.beginControlFlow(
-                        "%L = %M(this, requireContext(), %T::class, %N) { " +
-                            "parentComponent: %T, savedStateHandle, %L ->",
-                        retainedComponentClassName.propertyName,
-                        getComponent,
-                        data.parentScope,
-                        argumentsParameter,
-                        retainedParentComponentClassName,
-                        innerParameterName,
-                    )
-                    it.addStatement(
-                        "parentComponent.%L().%L(savedStateHandle, %L)",
-                        retainedParentComponentGetterName,
-                        retainedComponentFactoryCreateName,
-                        innerParameterName,
-                    )
-                    it.endControlFlow()
-                }
-            }
-            .addCode(navigationCode())
+            .addAnnotation(optInAnnotation(internalNavigatorApi))
+            .addStatement("val executor = %M()", fragmentFindNavigationExecutor)
+            .addStatement(
+                "%L = %T.provide(%N, executor, requireContext())",
+                retainedComponentClassName.propertyName,
+                componentProviderClassName,
+                argumentsParameter,
+            )
+            .addStatement("")
+            .addStatement(
+                "%M(this, %L.%L)",
+                fragmentNavigationHandler,
+                retainedComponentClassName.propertyName,
+                navEventNavigator.propertyName,
+            )
             .endControlFlow()
             .addCode("\n")
             .addCode(createViewCode())
@@ -92,20 +71,4 @@ internal abstract class BaseFragmentGenerator<T : FragmentData> : Generator<T>()
     }
 
     protected abstract fun createViewCode(): CodeBlock
-
-    private fun navigationCode(): CodeBlock {
-        if (data.navigation == null) {
-            return CodeBlock.of("")
-        }
-
-        return CodeBlock.builder()
-            .add("\n")
-            .addStatement(
-                "%M(this, %L.%L)",
-                fragmentNavigationHandler,
-                retainedComponentClassName.propertyName,
-                navEventNavigator.propertyName,
-            )
-            .build()
-    }
 }

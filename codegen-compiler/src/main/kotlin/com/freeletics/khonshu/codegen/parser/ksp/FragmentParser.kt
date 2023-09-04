@@ -10,22 +10,6 @@ import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 
-internal fun KSClassDeclaration.toRendererFragmentData(
-    annotation: KSAnnotation,
-    logger: KSPLogger,
-): RendererFragmentData? {
-    return RendererFragmentData(
-        baseName = simpleName.asString(),
-        packageName = packageName.asString(),
-        scope = annotation.scope,
-        parentScope = annotation.parentScope,
-        stateMachine = annotation.stateMachine,
-        fragmentBaseClass = annotation.fragmentBaseClass,
-        factory = findRendererFactory(logger) ?: return null,
-        navigation = null,
-    )
-}
-
 internal fun KSClassDeclaration.toRendererFragmentDestinationData(
     annotation: KSAnnotation,
     resolver: Resolver,
@@ -47,28 +31,6 @@ internal fun KSClassDeclaration.toRendererFragmentDestinationData(
         fragmentBaseClass = annotation.fragmentBaseClass,
         factory = findRendererFactory(logger) ?: return null,
         navigation = navigation,
-    )
-}
-
-internal fun KSFunctionDeclaration.toComposeFragmentData(
-    annotation: KSAnnotation,
-    resolver: Resolver,
-    logger: KSPLogger,
-): ComposeFragmentData? {
-    val (stateParameter, actionParameter) = annotation.stateMachine.stateMachineParameters(resolver, logger)
-        ?: return null
-
-    return ComposeFragmentData(
-        baseName = simpleName.asString(),
-        packageName = packageName.asString(),
-        scope = annotation.scope,
-        parentScope = annotation.parentScope,
-        stateMachine = annotation.stateMachine,
-        fragmentBaseClass = annotation.fragmentBaseClass,
-        navigation = null,
-        composableParameter = getInjectedParameters(stateParameter, actionParameter),
-        stateParameter = this.getParameterWithType(stateParameter),
-        sendActionParameter = this.getParameterWithType(actionParameter),
     )
 }
 

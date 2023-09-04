@@ -9,16 +9,10 @@ import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.name.FqName
 
 // Codegen Public API
-internal val rendererFragment = ClassName("com.freeletics.khonshu.codegen.fragment", "RendererFragment")
-internal val rendererFragmentFqName = FqName(rendererFragment.canonicalName)
-internal val composeFragment = ClassName("com.freeletics.khonshu.codegen.fragment", "ComposeFragment")
-internal val composeFragmentFqName = FqName(composeFragment.canonicalName)
 internal val rendererFragmentDestination = ClassName("com.freeletics.khonshu.codegen.fragment", "RendererDestination")
 internal val rendererFragmentDestinationFqName = FqName(rendererFragmentDestination.canonicalName)
 internal val composeFragmentDestination = ClassName("com.freeletics.khonshu.codegen.fragment", "ComposeDestination")
 internal val composeFragmentDestinationFqName = FqName(composeFragmentDestination.canonicalName)
-internal val compose = ClassName("com.freeletics.khonshu.codegen.compose", "ComposeScreen")
-internal val composeFqName = FqName(compose.canonicalName)
 internal val codegenComposeDestination = ClassName("com.freeletics.khonshu.codegen.compose", "ComposeDestination")
 internal val codegenComposeDestinationFqName = FqName(codegenComposeDestination.canonicalName)
 internal val navHostActivity = ClassName("com.freeletics.khonshu.codegen.compose", "NavHostActivity")
@@ -92,7 +86,6 @@ internal val module = ClassName("dagger", "Module")
 internal val fragment = ClassName("androidx.fragment.app", "Fragment")
 internal val setContent = MemberName("androidx.activity.compose", "setContent")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
-internal val localViewModelStoreOwner = ClassName("androidx.lifecycle.viewmodel.compose", "LocalViewModelStoreOwner")
 
 // Compose
 internal val composable = ClassName("androidx.compose.runtime", "Composable")

@@ -22,7 +22,7 @@ internal val Generator<out BaseData>.composableName
 /**
  * The inner Composable is used for both Fragments and pure compose mode.
  * Receives the component, will do the StateMachine set up and then calls
- * the annotated composable with all required paramters.
+ * the annotated composable with all required parameters.
  */
 internal class InnerComposableGenerator(
     override val data: ComposeData,

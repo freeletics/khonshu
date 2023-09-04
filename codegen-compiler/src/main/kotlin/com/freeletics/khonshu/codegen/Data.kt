@@ -44,7 +44,7 @@ public data class ComposeScreenData(
 
     override val stateMachine: ClassName,
 
-    override val navigation: Navigation.Compose?,
+    override val navigation: Navigation.Compose,
 
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
@@ -72,7 +72,7 @@ public data class NavHostActivityData(
 
 public sealed interface FragmentData : BaseData {
     public val fragmentBaseClass: ClassName
-    override val navigation: Navigation.Fragment?
+    override val navigation: Navigation.Fragment
 }
 
 public data class ComposeFragmentData(
@@ -85,7 +85,7 @@ public data class ComposeFragmentData(
     override val stateMachine: ClassName,
     override val fragmentBaseClass: ClassName,
 
-    override val navigation: Navigation.Fragment?,
+    override val navigation: Navigation.Fragment,
 
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
@@ -103,7 +103,7 @@ public data class RendererFragmentData(
     public val factory: ClassName,
     override val fragmentBaseClass: ClassName,
 
-    override val navigation: Navigation.Fragment?,
+    override val navigation: Navigation.Fragment,
 ) : FragmentData
 
 public sealed interface Navigation {

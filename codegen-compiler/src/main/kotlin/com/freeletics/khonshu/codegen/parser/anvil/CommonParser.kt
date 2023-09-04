@@ -47,9 +47,8 @@ internal val AnnotationReference.destinationType: String
 internal val AnnotationReference.destinationScope: ClassName
     get() = optionalClassArgument("destinationScope", 4) ?: appScope
 
-internal fun AnnotationReference.fragmentBaseClass(index: Int): ClassName {
-    return optionalClassArgument("fragmentBaseClass", index) ?: fragment
-}
+internal val AnnotationReference.fragmentBaseClass: ClassName
+    get() = optionalClassArgument("fragmentBaseClass", 5) ?: fragment
 
 internal val AnnotationReference.activityBaseClass: ClassName
     get() = requireClassReferenceArgument("activityBaseClass", 3).asClassName()
