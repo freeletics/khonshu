@@ -15,8 +15,7 @@ import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeName
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import org.junit.Test
-
-internal class AllSuperTypesTest {
+all
 
     private fun Sequence<TypeName>.find(expected: TypeName): ParameterizedTypeName? {
         return firstNotNullOfOrNull {
@@ -49,7 +48,7 @@ internal class AllSuperTypesTest {
             symbolProcessors = listOf(
                 simpleSymbolProcessor { resolver ->
                     resolver.getClassDeclarationByName("com.freeletics.test.Implementation")!!.also {
-                        val superType = it.allSuperTypes().find(ClassName("com.freeletics.test", "StateMachine"))
+                        val superType = it.allSuperTypes(true).find(ClassName("com.freeletics.test", "StateMachine"))
                         assertThat(superType).isNotNull()
                         assertThat(superType!!.typeArguments[0]).isEqualTo(STRING)
                         assertThat(superType.typeArguments[1]).isEqualTo(INT)
@@ -57,7 +56,7 @@ internal class AllSuperTypesTest {
                     resolver.getClassDeclarationByName(
                         "com.freeletics.test.ImplementationWithShortTypeParameters",
                     )!!.also {
-                        val superType = it.allSuperTypes().find(ClassName("com.freeletics.test", "StateMachine"))
+                        val superType = it.allSuperTypes(true).find(ClassName("com.freeletics.test", "StateMachine"))
                         assertThat(superType).isNotNull()
                         assertThat(superType!!.typeArguments[0]).isEqualTo(LONG)
                         assertThat(superType.typeArguments[1]).isEqualTo(BOOLEAN)
@@ -65,7 +64,7 @@ internal class AllSuperTypesTest {
                     resolver.getClassDeclarationByName(
                         "com.freeletics.test.ImplementationWithWithSwappedParameters",
                     )!!.also {
-                        val superType = it.allSuperTypes().find(ClassName("com.freeletics.test", "StateMachine"))
+                        val superType = it.allSuperTypes(true).find(ClassName("com.freeletics.test", "StateMachine"))
                         assertThat(superType).isNotNull()
                         assertThat(superType!!.typeArguments[0]).isEqualTo(STRING)
                         assertThat(superType.typeArguments[1]).isEqualTo(INT)
@@ -73,13 +72,13 @@ internal class AllSuperTypesTest {
                     resolver.getClassDeclarationByName(
                         "com.freeletics.test.ImplementationWithWithExtraParameters",
                     )!!.also {
-                        val superType = it.allSuperTypes().find(ClassName("com.freeletics.test", "StateMachine"))
+                        val superType = it.allSuperTypes(true).find(ClassName("com.freeletics.test", "StateMachine"))
                         assertThat(superType).isNotNull()
                         assertThat(superType!!.typeArguments[0]).isEqualTo(SHORT)
                         assertThat(superType.typeArguments[1]).isEqualTo(STRING)
                     }
                     resolver.getClassDeclarationByName("com.freeletics.test.HierarchyImplementation")!!.also {
-                        val superType = it.allSuperTypes().find(ClassName("com.freeletics.test", "StateMachine"))
+                        val superType = it.allSuperTypes(true).find(ClassName("com.freeletics.test", "StateMachine"))
                         assertThat(superType).isNotNull()
                         assertThat(superType!!.typeArguments[0]).isEqualTo(SHORT)
                         assertThat(superType.typeArguments[1]).isEqualTo(STRING)
@@ -111,7 +110,7 @@ internal class AllSuperTypesTest {
             symbolProcessors = listOf(
                 simpleSymbolProcessor { resolver ->
                     resolver.getClassDeclarationByName("com.freeletics.test.CreateCustomActivityStateMachine")!!.also {
-                        val superType = it.allSuperTypes().find(stateMachine)
+                        val superType = it.allSuperTypes(true).find(stateMachine)
                         assertThat(superType!!.typeArguments[0])
                             .isEqualTo(ClassName("com.freeletics.test", "CreateCustomActivityState"))
                         assertThat(superType.typeArguments[1])
