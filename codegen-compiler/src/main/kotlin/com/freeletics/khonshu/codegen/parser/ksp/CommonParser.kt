@@ -1,7 +1,10 @@
 package com.freeletics.khonshu.codegen.parser.ksp
 
 import com.freeletics.khonshu.codegen.ComposableParameter
+import com.freeletics.khonshu.codegen.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.codegen.util.baseRoute
+import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
+import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
 import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactory
 import com.google.devtools.ksp.getClassDeclarationByName
@@ -47,6 +50,9 @@ internal val KSAnnotation.destinationScope: ClassName
 internal val KSAnnotation.fragmentBaseClass: ClassName
     get() = (findArgument("fragmentBaseClass").value as KSType).toClassName()
 
+internal val KSAnnotation.activityBaseClass: ClassName
+    get() = (findArgument("activityBaseClass").value as KSType).toClassName()
+
 private fun KSAnnotation.findArgument(name: String): KSValueArgument {
     return arguments.find { it.name?.asString() == name }
         ?: defaultArguments.find { it.name?.asString() == name }!!
@@ -58,17 +64,14 @@ internal fun KSFunctionDeclaration.getParameterWithType(expectedType: TypeName):
     }
 }
 
-internal fun KSFunctionDeclaration.getInjectedParameters(
-    stateParameter: TypeName,
-    actionParameter: TypeName,
-): List<ComposableParameter> {
+internal fun KSFunctionDeclaration.getInjectedParameters(vararg exclude: TypeName): List<ComposableParameter> {
     return parameters.mapNotNull { parameter ->
-        parameter.toComposableParameter { it != stateParameter && it != actionParameter }
+        parameter.toComposableParameter { !exclude.contains(it) }
     }
 }
 
 private fun KSValueParameter.toComposableParameter(condition: (TypeName) -> Boolean): ComposableParameter? {
-    val type = type.toTypeName()
+    val type = type.toTypeName().functionToLambda()
     return if (condition(type)) {
         ComposableParameter(name!!.asString(), type)
     } else {
@@ -76,8 +79,12 @@ private fun KSValueParameter.toComposableParameter(condition: (TypeName) -> Bool
     }
 }
 
-internal fun TypeName.asFunction1Parameter(): TypeName {
-    return Function1::class.asClassName().parameterizedBy(this, UNIT)
+internal fun KSFunctionDeclaration.navHostParameter(logger: KSPLogger): ComposableParameter? {
+    val parameter = getParameterWithType(navHostLambda)
+    if (parameter == null) {
+        logger.error("Could not find a NavHost parameter with type $navHostLambda")
+    }
+    return parameter
 }
 
 internal fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLogger): Pair<TypeName, TypeName>? {
@@ -92,7 +99,7 @@ internal fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLog
     }
 
     val stateParameter = stateMachineType.typeArguments[0]
-    val actionParameter = stateMachineType.typeArguments[1].asFunction1Parameter()
+    val actionParameter = stateMachineType.typeArguments[1].asLambdaParameter()
     return stateParameter to actionParameter
 }
 
