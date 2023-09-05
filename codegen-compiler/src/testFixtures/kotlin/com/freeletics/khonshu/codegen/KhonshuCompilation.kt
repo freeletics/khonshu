@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.freeletics.khonshu.codegen
 
 import com.google.devtools.ksp.processing.Resolver
@@ -16,6 +18,7 @@ import java.io.File
 import java.nio.file.Files
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
+import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 
 interface KhonshuCompilation {
     fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit)
@@ -25,10 +28,12 @@ interface KhonshuCompilation {
         fun simpleCompilation(
             sources: List<Pair<String, String>>,
             compilerPlugins: List<CompilerPluginRegistrar> = emptyList(),
+            legacyCompilerPlugins: List<ComponentRegistrar> = emptyList(),
         ): KhonshuCompilation {
             return SimpleKhonshuCompilation(
                 sources = sources,
                 compilerPlugins = compilerPlugins,
+                legacyCompilerPlugins = legacyCompilerPlugins,
             )
         }
 
@@ -36,11 +41,13 @@ interface KhonshuCompilation {
             @Language("kotlin") source: String,
             fileName: String = "Test.kt",
             compilerPlugins: List<CompilerPluginRegistrar> = emptyList(),
+            legacyCompilerPlugins: List<ComponentRegistrar> = emptyList(),
             codeGenerators: List<CodeGenerator> = emptyList(),
         ): KhonshuCompilation {
             return AnvilKhonshuCompilation(
                 sources = listOf(fileName to source),
                 compilerPlugins = compilerPlugins,
+                legacyCompilerPlugins = legacyCompilerPlugins,
                 codeGenerators = codeGenerators,
             )
         }
@@ -49,11 +56,13 @@ interface KhonshuCompilation {
             @Language("kotlin") source: String,
             fileName: String = "Test.kt",
             compilerPlugins: List<CompilerPluginRegistrar> = emptyList(),
+            legacyCompilerPlugins: List<ComponentRegistrar> = emptyList(),
             symbolProcessors: List<SymbolProcessorProvider> = emptyList(),
         ): KhonshuCompilation {
             return KspKhonshuCompilation(
                 listOf(fileName to source),
                 compilerPlugins,
+                legacyCompilerPlugins,
                 symbolProcessors,
             )
         }
@@ -63,9 +72,10 @@ interface KhonshuCompilation {
 private class SimpleKhonshuCompilation(
     sources: List<Pair<String, String>>,
     compilerPlugins: List<CompilerPluginRegistrar>,
+    legacyCompilerPlugins: List<ComponentRegistrar>,
 ) : KhonshuCompilation {
     val compilation = KotlinCompilation().apply {
-        configure(sources, compilerPlugins)
+        configure(sources, compilerPlugins, legacyCompilerPlugins)
     }
 
     override fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit) {
@@ -80,11 +90,12 @@ private class SimpleKhonshuCompilation(
 private class AnvilKhonshuCompilation(
     sources: List<Pair<String, String>>,
     compilerPlugins: List<CompilerPluginRegistrar>,
+    legacyCompilerPlugins: List<ComponentRegistrar>,
     codeGenerators: List<CodeGenerator>,
 ) : KhonshuCompilation {
     val compilation = AnvilCompilation().apply {
         configureAnvil(codeGenerators = codeGenerators)
-        kotlinCompilation.configure(sources, compilerPlugins)
+        kotlinCompilation.configure(sources, compilerPlugins, legacyCompilerPlugins)
     }
 
     override fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit) {
@@ -100,11 +111,12 @@ private class AnvilKhonshuCompilation(
 private class KspKhonshuCompilation(
     sources: List<Pair<String, String>>,
     compilerPlugins: List<CompilerPluginRegistrar>,
+    legacyCompilerPlugins: List<ComponentRegistrar>,
     symbolProcessors: List<SymbolProcessorProvider>,
 ) : KhonshuCompilation {
     val compilation = KotlinCompilation().apply {
         symbolProcessorProviders = symbolProcessors
-        configure(sources, compilerPlugins)
+        configure(sources, compilerPlugins, legacyCompilerPlugins)
     }
 
     override fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit) {
@@ -120,7 +132,9 @@ private class KspKhonshuCompilation(
 private fun KotlinCompilation.configure(
     sourceFiles: List<Pair<String, String>>,
     compilerPlugins: List<CompilerPluginRegistrar>,
+    legacyCompilerPlugins: List<ComponentRegistrar>,
 ) {
+    componentRegistrars += legacyCompilerPlugins
     compilerPluginRegistrars += compilerPlugins
     jvmTarget = "11"
     inheritClassPath = true
