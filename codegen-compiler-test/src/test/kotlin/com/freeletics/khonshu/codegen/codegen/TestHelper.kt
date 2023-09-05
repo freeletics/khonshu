@@ -26,7 +26,7 @@ private fun compile(fileName: String, source: String, data: BaseData, expectedCo
             fileName to source,
             fileName.testFileName() to generatedCode,
         ),
-        compilerPlugins = listOf(ComposePluginRegistrar()),
+        legacyCompilerPlugins = listOf(ComposePluginRegistrar()),
     ).compile {
         assertThat(it.exitCode).isEqualTo(ExitCode.OK)
     }
@@ -36,7 +36,7 @@ private fun compileWithAnvil(fileName: String, source: String, expectedCode: Str
     anvilCompilation(
         source = source,
         fileName = fileName,
-        compilerPlugins = listOf(ComposePluginRegistrar()),
+        legacyCompilerPlugins = listOf(ComposePluginRegistrar()),
     ).compile {
         assertThat(it.exitCode).isEqualTo(ExitCode.OK)
         assertThat(generatedFileFor(fileName)).isEqualTo(expectedCode)
@@ -47,7 +47,7 @@ private fun compileWithKsp(fileName: String, source: String, expectedCode: Strin
     kspCompilation(
         source = source,
         fileName = fileName,
-        compilerPlugins = listOf(ComposePluginRegistrar()),
+        legacyCompilerPlugins = listOf(ComposePluginRegistrar()),
         symbolProcessors = listOf(KhonshuSymbolProcessorProvider()),
     ).compile {
         assertThat(it.exitCode).isEqualTo(ExitCode.OK)
