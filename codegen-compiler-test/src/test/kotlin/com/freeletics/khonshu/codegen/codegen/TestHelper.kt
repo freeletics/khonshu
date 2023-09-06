@@ -6,14 +6,17 @@ import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.anvilCompilat
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.kspCompilation
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.simpleCompilation
 import com.freeletics.khonshu.codegen.KhonshuSymbolProcessor.KhonshuSymbolProcessorProvider
+import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.testFileName
 import com.google.common.truth.Truth.assertThat
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 
 internal fun test(data: BaseData, fileName: String, source: String, expectedCode: String) {
     compile(fileName = fileName, source = source, data = data, expectedCode = expectedCode)
-    compileWithAnvil(fileName = fileName, source = source, expectedCode = expectedCode)
-    compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode)
+    if (data !is NavHostActivityData) {
+        compileWithAnvil(fileName = fileName, source = source, expectedCode = expectedCode)
+        compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode)
+    }
 }
 
 private fun compile(fileName: String, source: String, data: BaseData, expectedCode: String) {

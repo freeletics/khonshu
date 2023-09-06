@@ -51,6 +51,22 @@ public data class ComposeScreenData(
     override val composableParameter: List<ComposableParameter>,
 ) : ComposeData
 
+public data class NavHostActivityData(
+    override val baseName: String,
+    override val packageName: String,
+
+    override val scope: ClassName,
+    override val parentScope: ClassName,
+
+    override val stateMachine: ClassName,
+
+    override val stateParameter: ComposableParameter?,
+    override val sendActionParameter: ComposableParameter?,
+    override val composableParameter: List<ComposableParameter>,
+) : ComposeData {
+    override val navigation: Navigation? = null
+}
+
 public sealed interface FragmentData : BaseData {
     public val fragmentBaseClass: ClassName
     override val navigation: Navigation.Fragment?

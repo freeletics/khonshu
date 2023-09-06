@@ -1,3 +1,6 @@
+public abstract interface class com/freeletics/khonshu/codegen/ActivityScope {
+}
+
 public abstract interface class com/freeletics/khonshu/codegen/AppScope {
 }
 
@@ -29,6 +32,13 @@ public final class com/freeletics/khonshu/codegen/compose/DestinationType : java
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/freeletics/khonshu/codegen/compose/DestinationType;
 	public static fun values ()[Lcom/freeletics/khonshu/codegen/compose/DestinationType;
+}
+
+public abstract interface annotation class com/freeletics/khonshu/codegen/compose/NavHostActivity : java/lang/annotation/Annotation {
+	public abstract fun activityBaseClass ()Ljava/lang/Class;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun scope ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
 }
 
 public abstract interface annotation class com/freeletics/khonshu/codegen/fragment/ComposeDestination : java/lang/annotation/Annotation {
