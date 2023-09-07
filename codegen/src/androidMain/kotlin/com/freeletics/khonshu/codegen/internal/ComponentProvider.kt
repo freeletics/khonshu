@@ -19,14 +19,14 @@ public inline fun <reified C : Any, P : Any> component(
     viewModelStoreOwner: ViewModelStoreOwner,
     context: Context,
     parentScope: KClass<*>,
-    arguments: Bundle,
+    arguments: Bundle?,
     crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, Bundle) -> C,
 ): C {
     val store = ViewModelProvider(viewModelStoreOwner, SavedStateViewModelFactory())[StoreViewModel::class.java]
     return store.getOrCreate(C::class) {
         val parentComponent = context.findComponentByScope<P>(parentScope)
         val savedStateHandle = store.savedStateHandle
-        factory(parentComponent, savedStateHandle, arguments)
+        factory(parentComponent, savedStateHandle, arguments ?: Bundle.EMPTY)
     }
 }
 
