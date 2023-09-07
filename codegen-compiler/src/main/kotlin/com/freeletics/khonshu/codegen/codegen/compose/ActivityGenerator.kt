@@ -18,7 +18,7 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.TypeSpec
 
-internal val Generator<out BaseData>.fragmentName
+internal val Generator<out BaseData>.activityName
     get() = "Khonshu${data.baseName}Activity"
 
 internal class ActivityGenerator(
@@ -26,7 +26,7 @@ internal class ActivityGenerator(
 ) : Generator<NavHostActivityData>() {
 
     internal fun generate(): TypeSpec {
-        return TypeSpec.classBuilder(fragmentName)
+        return TypeSpec.classBuilder(activityName)
             .addAnnotation(optInAnnotation())
             .superclass(data.activityBaseClass)
             .addProperty(lateinitPropertySpec(retainedComponentClassName))
