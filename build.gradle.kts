@@ -55,6 +55,7 @@ dependencyAnalysis {
                     "com.gabrielittner.renderer:connect",
                     "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
                     "org.jetbrains.kotlin:kotlin-compiler-embeddable",
+                    "com.squareup.anvil:annotations-optional",
                     "com.squareup.anvil:compiler-utils",
                     ":codegen",
                     ":codegen-compiler",

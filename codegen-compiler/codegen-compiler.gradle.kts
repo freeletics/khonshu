@@ -21,6 +21,7 @@ dependencies {
     api(libs.kotlinpoet)
     api(projects.codegen)
     implementation(libs.anvil.annotations)
+    implementation(libs.anvil.annotations.optional)
     implementation(libs.anvil.compiler.utils)
     implementation(libs.kotlinpoet.ksp)
 
