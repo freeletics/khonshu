@@ -17,8 +17,6 @@ internal val compose = ClassName("com.freeletics.khonshu.codegen.compose", "Comp
 internal val composeFqName = FqName(compose.canonicalName)
 internal val codegenComposeDestination = ClassName("com.freeletics.khonshu.codegen.compose", "ComposeDestination")
 internal val codegenComposeDestinationFqName = FqName(codegenComposeDestination.canonicalName)
-internal val scopeTo = ClassName("com.freeletics.khonshu.codegen", "ScopeTo")
-internal val forScope = ClassName("com.freeletics.khonshu.codegen", "ForScope")
 internal val appScope = ClassName("com.freeletics.khonshu.codegen", "AppScope")
 
 // Codegen Internal API

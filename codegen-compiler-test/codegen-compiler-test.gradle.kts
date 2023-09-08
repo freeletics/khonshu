@@ -18,6 +18,7 @@ dependencies {
     testImplementation(projects.navigationCompose)
     testImplementation(projects.stateMachine)
     testImplementation(libs.anvil.annotations)
+    testImplementation(libs.anvil.annotations.optional)
     testImplementation(libs.androidx.compose.runtime)
     testImplementation(libs.androidx.viewbinding)
     testImplementation(libs.renderer)

@@ -17,7 +17,7 @@ This can be used to run any kind of cleanup you normally do in `ViewModel.onClea
     @ContributesTo(ExampleScope::class)
     object ExampleModule {
         @Provides
-        @ScopeTo(ExampleScope::class)
+        @SingleIn(ExampleScope::class)
         fun provideCoroutineScope(): CoroutineScope = MainScope()
 
         // Closeable to cancel CoroutineScope
@@ -37,7 +37,7 @@ This can be used to run any kind of cleanup you normally do in `ViewModel.onClea
     @ContributesTo(ExampleScope::class)
     object ExampleModule {
         @Provides
-        @ScopeTo(ExampleScope::class)
+        @SingleIn(ExampleScope::class)
         fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
 
         // Closeable to clear CompositeDisposable

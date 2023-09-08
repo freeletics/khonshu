@@ -5,7 +5,3 @@ package com.freeletics.khonshu.codegen
  */
 public sealed interface AppScope
 
-/**
- * A default scope marker that represents an activity wide scope
- */
-public sealed interface ActivityScope

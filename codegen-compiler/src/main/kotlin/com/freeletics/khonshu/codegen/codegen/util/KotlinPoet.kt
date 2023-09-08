@@ -3,6 +3,8 @@ package com.freeletics.khonshu.codegen.codegen.util
 import com.freeletics.khonshu.codegen.Navigation
 import com.squareup.anvil.annotations.ContributesSubcomponent
 import com.squareup.anvil.annotations.ContributesTo
+import com.squareup.anvil.annotations.optional.ForScope
+import com.squareup.anvil.annotations.optional.SingleIn
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget
 import com.squareup.kotlinpoet.ClassName
@@ -70,7 +72,7 @@ internal fun subcomponentFactoryAnnotation(): AnnotationSpec {
 }
 
 internal fun scopeToAnnotation(scope: ClassName): AnnotationSpec {
-    return AnnotationSpec.builder(scopeTo)
+    return AnnotationSpec.builder(SingleIn::class)
         .addMember("%T::class", scope)
         .build()
 }
@@ -82,7 +84,7 @@ internal fun contributesToAnnotation(scope: ClassName): AnnotationSpec {
 }
 
 internal fun forScope(scope: ClassName, target: UseSiteTarget? = null): AnnotationSpec {
-    return AnnotationSpec.builder(forScope)
+    return AnnotationSpec.builder(ForScope::class)
         .addMember("%T::class", scope)
         .useSiteTarget(target)
         .build()

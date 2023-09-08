@@ -28,7 +28,7 @@ uri = "0.0.14"
 
 inject = "1"
 dagger = "2.48"
-anvil = "2.4.8-1-8"
+anvil = "2.4.8"
 renderer = "0.13.0"
 ksp = "1.9.10-1.0.13"
 kotlinpoet = "1.14.2"
@@ -91,6 +91,7 @@ inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }
+anvil-annotations-optional = { module = "com.squareup.anvil:annotations-optional", version.ref = "anvil" }
 anvil-compiler = { module = "com.squareup.anvil:compiler", version.ref = "anvil" }
 anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "anvil" }
 anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvil" }

@@ -78,13 +78,13 @@ internal class FileGeneratorTestNavHostActivity {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.khonshu.codegen.ForScope
-            import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
+            import com.squareup.anvil.annotations.optional.ForScope
+            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Module
@@ -95,7 +95,7 @@ internal class FileGeneratorTestNavHostActivity {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @ScopeTo(TestScreen::class)
+            @SingleIn(TestScreen::class)
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
@@ -217,13 +217,13 @@ internal class FileGeneratorTestNavHostActivity {
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.AppScope
-            import com.freeletics.khonshu.codegen.ForScope
-            import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
+            import com.squareup.anvil.annotations.optional.ForScope
+            import com.squareup.anvil.annotations.optional.SingleIn
             import dagger.BindsInstance
             import dagger.Module
             import dagger.multibindings.Multibinds
@@ -233,7 +233,7 @@ internal class FileGeneratorTestNavHostActivity {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @ScopeTo(ActivityScope::class)
+            @SingleIn(ActivityScope::class)
             @ContributesSubcomponent(
               scope = ActivityScope::class,
               parentScope = AppScope::class,
@@ -378,13 +378,13 @@ internal class FileGeneratorTestNavHostActivity {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.khonshu.codegen.ForScope
-            import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
+            import com.squareup.anvil.annotations.optional.ForScope
+            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.other.TestClass2
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
@@ -399,7 +399,7 @@ internal class FileGeneratorTestNavHostActivity {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @ScopeTo(TestScreen::class)
+            @SingleIn(TestScreen::class)
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
@@ -535,13 +535,13 @@ internal class FileGeneratorTestNavHostActivity {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.khonshu.codegen.ForScope
-            import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
+            import com.squareup.anvil.annotations.optional.ForScope
+            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Module
@@ -551,7 +551,7 @@ internal class FileGeneratorTestNavHostActivity {
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class)
-            @ScopeTo(TestScreen::class)
+            @SingleIn(TestScreen::class)
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
@@ -670,13 +670,13 @@ internal class FileGeneratorTestNavHostActivity {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.khonshu.codegen.ForScope
-            import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
+            import com.squareup.anvil.annotations.optional.ForScope
+            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Module
@@ -687,7 +687,7 @@ internal class FileGeneratorTestNavHostActivity {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @ScopeTo(TestScreen::class)
+            @SingleIn(TestScreen::class)
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
