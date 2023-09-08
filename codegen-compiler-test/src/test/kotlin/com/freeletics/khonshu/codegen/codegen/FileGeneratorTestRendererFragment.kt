@@ -65,13 +65,13 @@ internal class FileGeneratorTestRendererFragment {
             import android.view.ViewGroup
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.khonshu.codegen.ForScope
-            import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
+            import com.squareup.anvil.annotations.optional.ForScope
+            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Module
@@ -81,7 +81,7 @@ internal class FileGeneratorTestRendererFragment {
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class)
-            @ScopeTo(TestScreen::class)
+            @SingleIn(TestScreen::class)
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
@@ -195,8 +195,6 @@ internal class FileGeneratorTestRendererFragment {
             import android.view.ViewGroup
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.khonshu.codegen.ForScope
-            import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
@@ -212,6 +210,8 @@ internal class FileGeneratorTestRendererFragment {
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
+            import com.squareup.anvil.annotations.optional.ForScope
+            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
             import dagger.BindsInstance
@@ -224,7 +224,7 @@ internal class FileGeneratorTestRendererFragment {
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class)
-            @ScopeTo(TestRoute::class)
+            @SingleIn(TestRoute::class)
             @ContributesSubcomponent(
               scope = TestRoute::class,
               parentScope = TestParentRoute::class,
@@ -367,8 +367,6 @@ internal class FileGeneratorTestRendererFragment {
             import androidx.fragment.app.Fragment
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.AppScope
-            import com.freeletics.khonshu.codegen.ForScope
-            import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.component
@@ -384,6 +382,8 @@ internal class FileGeneratorTestRendererFragment {
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
+            import com.squareup.anvil.annotations.optional.ForScope
+            import com.squareup.anvil.annotations.optional.SingleIn
             import dagger.BindsInstance
             import dagger.Module
             import dagger.Provides
@@ -394,7 +394,7 @@ internal class FileGeneratorTestRendererFragment {
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class)
-            @ScopeTo(TestRoute::class)
+            @SingleIn(TestRoute::class)
             @ContributesSubcomponent(
               scope = TestRoute::class,
               parentScope = AppScope::class,
@@ -532,13 +532,13 @@ internal class FileGeneratorTestRendererFragment {
             import android.view.ViewGroup
             import androidx.fragment.app.DialogFragment
             import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.khonshu.codegen.ForScope
-            import com.freeletics.khonshu.codegen.ScopeTo
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.gabrielittner.renderer.connect.connect
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
+            import com.squareup.anvil.annotations.optional.ForScope
+            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Module
@@ -548,7 +548,7 @@ internal class FileGeneratorTestRendererFragment {
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class)
-            @ScopeTo(TestScreen::class)
+            @SingleIn(TestScreen::class)
             @ContributesSubcomponent(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,

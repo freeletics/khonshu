@@ -24,7 +24,6 @@ internal val codegenComposeDestinationFqName = FqName(codegenComposeDestination.
 internal val navHostActivity = ClassName("com.freeletics.khonshu.codegen.compose", "NavHostActivity")
 internal val navHostActivityFqName = FqName(navHostActivity.canonicalName)
 internal val scopeTo = ClassName("com.freeletics.khonshu.codegen", "ScopeTo")
-internal val forScope = ClassName("com.freeletics.khonshu.codegen", "ForScope")
 internal val appScope = ClassName("com.freeletics.khonshu.codegen", "AppScope")
 internal val activityScope = ClassName("com.freeletics.khonshu.codegen", "ActivityScope")
 
