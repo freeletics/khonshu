@@ -62,6 +62,7 @@ public data class NavHostActivityData(
 
     public val activityBaseClass: ClassName,
 
+    val navHostParameter: ComposableParameter,
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
