@@ -159,6 +159,16 @@ internal class FileGeneratorTestNavHostActivity {
               public fun bindCloseables(): Set<Closeable>
             }
 
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface KhonshuTestActivityModule {
+              @Multibinds
+              public fun bindDeepLinkHandler(): Set<DeepLinkHandler>
+
+              @Multibinds
+              public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
+            }
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestActivity : ComponentActivity() {
               private lateinit var khonshuTestComponent: KhonshuTestComponent
@@ -319,6 +329,16 @@ internal class FileGeneratorTestNavHostActivity {
               @Multibinds
               @ForScope(ActivityScope::class)
               public fun bindCloseables(): Set<Closeable>
+            }
+
+            @Module
+            @ContributesTo(ActivityScope::class)
+            public interface KhonshuTestActivityModule {
+              @Multibinds
+              public fun bindDeepLinkHandler(): Set<DeepLinkHandler>
+
+              @Multibinds
+              public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -519,6 +539,16 @@ internal class FileGeneratorTestNavHostActivity {
               public fun bindCloseables(): Set<Closeable>
             }
 
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface KhonshuTest2ActivityModule {
+              @Multibinds
+              public fun bindDeepLinkHandler(): Set<DeepLinkHandler>
+
+              @Multibinds
+              public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
+            }
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTest2Activity : ComponentActivity() {
               private lateinit var khonshuTest2Component: KhonshuTest2Component
@@ -687,6 +717,16 @@ internal class FileGeneratorTestNavHostActivity {
               public fun bindCloseables(): Set<Closeable>
             }
 
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface KhonshuTestActivityModule {
+              @Multibinds
+              public fun bindDeepLinkHandler(): Set<DeepLinkHandler>
+
+              @Multibinds
+              public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
+            }
+
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestActivity : ComponentActivity() {
               private lateinit var khonshuTestComponent: KhonshuTestComponent
@@ -845,6 +885,16 @@ internal class FileGeneratorTestNavHostActivity {
               @Multibinds
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
+            }
+
+            @Module
+            @ContributesTo(TestScreen::class)
+            public interface KhonshuTestActivityModule {
+              @Multibinds
+              public fun bindDeepLinkHandler(): Set<DeepLinkHandler>
+
+              @Multibinds
+              public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
             }
 
             @OptIn(InternalCodegenApi::class)
