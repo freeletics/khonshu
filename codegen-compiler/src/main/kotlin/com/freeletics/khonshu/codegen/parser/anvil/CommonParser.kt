@@ -4,15 +4,12 @@ import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.codegen.util.activityScope
 import com.freeletics.khonshu.codegen.codegen.util.appScope
 import com.freeletics.khonshu.codegen.codegen.util.asLambdaParameter
-import com.freeletics.khonshu.codegen.codegen.util.baseRoute
 import com.freeletics.khonshu.codegen.codegen.util.baseRouteFqName
 import com.freeletics.khonshu.codegen.codegen.util.fragment
-import com.freeletics.khonshu.codegen.codegen.util.function2
 import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
 import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
 import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactoryFqName
-import com.freeletics.khonshu.navigation.NavRoot
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionClassReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionFunctionReference
@@ -22,11 +19,8 @@ import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.allSuperTypeClassReferences
 import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
-import com.squareup.kotlinpoet.UNIT
 import com.squareup.kotlinpoet.asClassName
 
 internal val AnnotationReference.scope: ClassName

@@ -28,7 +28,6 @@ internal val forScope = ClassName("com.freeletics.khonshu.codegen", "ForScope")
 internal val appScope = ClassName("com.freeletics.khonshu.codegen", "AppScope")
 internal val activityScope = ClassName("com.freeletics.khonshu.codegen", "ActivityScope")
 
-
 // Codegen Internal API
 internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.internal", "asComposeState")
 internal val InternalCodegenApi = ClassName("com.freeletics.khonshu.codegen.internal", "InternalCodegenApi")

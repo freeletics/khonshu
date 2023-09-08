@@ -15,7 +15,6 @@ import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeVariableName
-import com.squareup.kotlinpoet.UNIT
 import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.name.FqName
@@ -71,7 +70,6 @@ internal val ClassReference.packageName: String
 private fun FqName.packageString(): String {
     return pathSegments().joinToString(separator = ".")
 }
-
 
 /**
  * Creates a [Sequence] of all direct and indirect super types. This uses a depth first search.
