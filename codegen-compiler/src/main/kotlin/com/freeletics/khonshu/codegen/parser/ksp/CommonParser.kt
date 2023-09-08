@@ -4,7 +4,6 @@ import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.codegen.util.baseRoute
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
 import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactory
-import com.freeletics.khonshu.codegen.parser.anvil.asFunction1Parameter
 import com.google.devtools.ksp.getClassDeclarationByName
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -20,6 +19,8 @@ import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeVariableName
+import com.squareup.kotlinpoet.UNIT
+import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.toTypeParameterResolver
@@ -73,6 +74,10 @@ private fun KSValueParameter.toComposableParameter(condition: (TypeName) -> Bool
     } else {
         null
     }
+}
+
+internal fun TypeName.asFunction1Parameter(): TypeName {
+    return Function1::class.asClassName().parameterizedBy(this, UNIT)
 }
 
 internal fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLogger): Pair<TypeName, TypeName>? {
