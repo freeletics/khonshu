@@ -34,7 +34,7 @@ ksp = "1.9.10-1.0.13"
 kotlinpoet = "1.14.2"
 auto-service = "1.1.1"
 auto-service-ksp = "1.1.0"
-auto-value = "1.10.3"
+auto-value = "1.10.4"
 
 junit = "4.13.2"
 truth = "1.1.5"
