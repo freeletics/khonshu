@@ -5,6 +5,7 @@ import com.freeletics.khonshu.codegen.parser.anvil.toComposeFragmentData
 import com.freeletics.khonshu.codegen.parser.anvil.toComposeFragmentDestinationData
 import com.freeletics.khonshu.codegen.parser.anvil.toComposeScreenData
 import com.freeletics.khonshu.codegen.parser.anvil.toComposeScreenDestinationData
+import com.freeletics.khonshu.codegen.parser.anvil.toNavHostActivityData
 import com.freeletics.khonshu.codegen.parser.anvil.toRendererFragmentData
 import com.freeletics.khonshu.codegen.parser.anvil.toRendererFragmentDestinationData
 import com.google.auto.service.AutoService
@@ -30,18 +31,23 @@ public class KhonshuCodeGenerator : CodeGenerator {
     ): Collection<GeneratedFile> {
         val compose = projectFiles
             .topLevelFunctionReferences(module)
-            .mapNotNull {
-                it.toComposeScreenDestinationData()
-                    ?: it.toComposeScreenData()
-                    ?: it.toComposeFragmentDestinationData()
-                    ?: it.toComposeFragmentData()
+            .flatMap {
+                listOfNotNull(
+                    it.toComposeScreenDestinationData(),
+                    it.toComposeScreenData(),
+                    it.toComposeFragmentDestinationData(),
+                    it.toComposeFragmentData(),
+                    it.toNavHostActivityData(),
+                )
             }
 
         val renderer = projectFiles
             .classAndInnerClassReferences(module)
-            .mapNotNull {
-                it.toRendererFragmentDestinationData()
-                    ?: it.toRendererFragmentData()
+            .flatMap {
+                listOfNotNull(
+                    it.toRendererFragmentDestinationData(),
+                    it.toRendererFragmentData(),
+                )
             }
 
         val data = compose.toList() + renderer

@@ -15,7 +15,6 @@ import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeVariableName
-import com.squareup.kotlinpoet.UNIT
 import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.name.FqName
@@ -70,10 +69,6 @@ internal val ClassReference.packageName: String
 
 private fun FqName.packageString(): String {
     return pathSegments().joinToString(separator = ".")
-}
-
-internal fun TypeName.asFunction1Parameter(): TypeName {
-    return Function1::class.asClassName().parameterizedBy(this, UNIT)
 }
 
 /**
