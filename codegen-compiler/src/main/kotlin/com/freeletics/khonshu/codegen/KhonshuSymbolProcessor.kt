@@ -3,6 +3,7 @@ package com.freeletics.khonshu.codegen
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
 import com.freeletics.khonshu.codegen.compose.ComposeDestination
 import com.freeletics.khonshu.codegen.compose.ComposeScreen
+import com.freeletics.khonshu.codegen.compose.NavHostActivity
 import com.freeletics.khonshu.codegen.fragment.ComposeDestination as ComposeFragmentDestination
 import com.freeletics.khonshu.codegen.fragment.ComposeFragment
 import com.freeletics.khonshu.codegen.fragment.RendererDestination
@@ -11,6 +12,7 @@ import com.freeletics.khonshu.codegen.parser.ksp.toComposeFragmentData
 import com.freeletics.khonshu.codegen.parser.ksp.toComposeFragmentDestinationData
 import com.freeletics.khonshu.codegen.parser.ksp.toComposeScreenData
 import com.freeletics.khonshu.codegen.parser.ksp.toComposeScreenDestinationData
+import com.freeletics.khonshu.codegen.parser.ksp.toNavHostActivityData
 import com.freeletics.khonshu.codegen.parser.ksp.toRendererFragmentData
 import com.freeletics.khonshu.codegen.parser.ksp.toRendererFragmentDestinationData
 import com.google.auto.service.AutoService
@@ -59,6 +61,9 @@ public class KhonshuSymbolProcessor(
         }
         resolver.generateCodeForAnnotation<KSFunctionDeclaration, ComposeFragmentDestination> {
             toComposeFragmentDestinationData(it, resolver, logger)
+        }
+        resolver.generateCodeForAnnotation<KSFunctionDeclaration, NavHostActivity> {
+            toNavHostActivityData(it, resolver, logger)
         }
         return emptyList()
     }

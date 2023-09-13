@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.codegen.parser.ksp
 
 import com.freeletics.khonshu.codegen.ComposeScreenData
+import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.compose.DestinationType
 import com.google.devtools.ksp.processing.KSPLogger
@@ -54,5 +55,29 @@ internal fun KSFunctionDeclaration.toComposeScreenDestinationData(
         composableParameter = getInjectedParameters(stateParameter, actionParameter),
         stateParameter = this.getParameterWithType(stateParameter),
         sendActionParameter = this.getParameterWithType(actionParameter),
+    )
+}
+
+internal fun KSFunctionDeclaration.toNavHostActivityData(
+    annotation: KSAnnotation,
+    resolver: Resolver,
+    logger: KSPLogger,
+): NavHostActivityData? {
+    val (stateParameter, actionParameter) = annotation.stateMachine.stateMachineParameters(resolver, logger)
+        ?: return null
+
+    val navHostParameter = navHostParameter(logger) ?: return null
+
+    return NavHostActivityData(
+        baseName = simpleName.asString(),
+        packageName = packageName.asString(),
+        scope = annotation.scope,
+        parentScope = annotation.parentScope,
+        stateMachine = annotation.stateMachine,
+        activityBaseClass = annotation.activityBaseClass,
+        navHostParameter = navHostParameter,
+        composableParameter = getInjectedParameters(stateParameter, actionParameter, navHostParameter.typeName),
+        stateParameter = getParameterWithType(stateParameter),
+        sendActionParameter = getParameterWithType(actionParameter),
     )
 }
