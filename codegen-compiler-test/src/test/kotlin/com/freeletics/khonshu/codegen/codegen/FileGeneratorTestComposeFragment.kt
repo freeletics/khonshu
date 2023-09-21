@@ -28,7 +28,7 @@ internal class FileGeneratorTestComposeFragment {
     )
 
     private val data = ComposeFragmentData(
-        baseName = "Test",
+        baseName = "FragmentTest",
         packageName = "com.test",
         scope = ClassName("com.test", "TestScreen"),
         parentScope = ClassName("com.test.parent", "TestParentScope"),
@@ -106,7 +106,7 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface KhonshuTestComponent : Closeable {
+            public interface KhonshuFragmentTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               @get:ForScope(TestScreen::class)
@@ -122,38 +122,38 @@ internal class FileGeneratorTestComposeFragment {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestScreen::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuTestComponent
+                    arguments: Bundle): KhonshuFragmentTestComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
+                public fun khonshuFragmentTestComponentFactory(): Factory
               }
             }
 
             @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestModule {
+            public interface KhonshuFragmentTestModule {
               @Multibinds
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
             @OptIn(InternalCodegenApi::class)
-            public class KhonshuTestFragment : Fragment() {
-              private lateinit var khonshuTestComponent: KhonshuTestComponent
+            public class KhonshuFragmentTestFragment : Fragment() {
+              private lateinit var khonshuFragmentTestComponent: KhonshuFragmentTestComponent
 
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
               ): View {
-                if (!::khonshuTestComponent.isInitialized) {
+                if (!::khonshuFragmentTestComponent.isInitialized) {
                   val arguments = requireArguments()
-                  khonshuTestComponent = component(this, requireContext(), TestParentScope::class, arguments) {
-                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
-                      argumentsForComponent ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
+                  khonshuFragmentTestComponent = component(this, requireContext(), TestParentScope::class,
+                      arguments) { parentComponent: KhonshuFragmentTestComponent.ParentComponent,
+                      savedStateHandle, argumentsForComponent ->
+                    parentComponent.khonshuFragmentTestComponentFactory().create(savedStateHandle,
                         argumentsForComponent)
                   }
                 }
@@ -162,7 +162,7 @@ internal class FileGeneratorTestComposeFragment {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
-                    KhonshuTest(khonshuTestComponent)
+                    KhonshuFragmentTest(khonshuFragmentTestComponent)
                   }
                 }
               }
@@ -170,7 +170,7 @@ internal class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent) {
+            private fun KhonshuFragmentTest(component: KhonshuFragmentTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -185,7 +185,7 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(data, "com/test/Test.kt", source, expected)
+        test(data, "com/test/FragmentTest.kt", source, expected)
     }
 
     @Test
@@ -272,7 +272,7 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestRoute::class,
               parentScope = TestParentRoute::class,
             )
-            public interface KhonshuTestComponent : Closeable {
+            public interface KhonshuFragmentTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               @get:ForScope(TestRoute::class)
@@ -290,40 +290,41 @@ internal class FileGeneratorTestComposeFragment {
               @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
-                    @BindsInstance testRoute: TestRoute): KhonshuTestComponent
+                    @BindsInstance testRoute: TestRoute): KhonshuFragmentTestComponent
               }
 
               @ContributesTo(TestParentRoute::class)
               public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
+                public fun khonshuFragmentTestComponentFactory(): Factory
               }
             }
 
             @OptIn(InternalCodegenApi::class)
-            public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
+            public object KhonshuFragmentTestComponentProvider :
+                ComponentProvider<TestRoute, KhonshuFragmentTestComponent> {
               @OptIn(InternalNavigationApi::class)
               override fun provide(
                 route: TestRoute,
                 executor: NavigationExecutor,
                 context: Context,
-              ): KhonshuTestComponent = componentFromParentRoute(route.destinationId, route, executor, context,
-                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                  savedStateHandle, testRoute ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              ): KhonshuFragmentTestComponent = componentFromParentRoute(route.destinationId, route, executor,
+                  context, TestParentRoute::class) { parentComponent:
+                  KhonshuFragmentTestComponent.ParentComponent, savedStateHandle, testRoute ->
+                parentComponent.khonshuFragmentTestComponentFactory().create(savedStateHandle, testRoute)
               }
             }
 
             @Module
             @ContributesTo(TestRoute::class)
-            public interface KhonshuTestModule {
+            public interface KhonshuFragmentTestModule {
               @Multibinds
               @ForScope(TestRoute::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
             @OptIn(InternalCodegenApi::class)
-            public class KhonshuTestFragment : Fragment() {
-              private lateinit var khonshuTestComponent: KhonshuTestComponent
+            public class KhonshuFragmentTestFragment : Fragment() {
+              private lateinit var khonshuFragmentTestComponent: KhonshuFragmentTestComponent
 
               @OptIn(InternalNavigationApi::class)
               override fun onCreateView(
@@ -331,20 +332,20 @@ internal class FileGeneratorTestComposeFragment {
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
               ): View {
-                if (!::khonshuTestComponent.isInitialized) {
+                if (!::khonshuFragmentTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
                   val executor = findNavigationExecutor()
-                  khonshuTestComponent = KhonshuTestComponentProvider.provide(testRoute, executor,
-                      requireContext())
+                  khonshuFragmentTestComponent = KhonshuFragmentTestComponentProvider.provide(testRoute,
+                      executor, requireContext())
 
-                  handleNavigation(this, khonshuTestComponent.navEventNavigator)
+                  handleNavigation(this, khonshuFragmentTestComponent.navEventNavigator)
                 }
 
                 return ComposeView(requireContext()).apply {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
-                    KhonshuTest(khonshuTestComponent)
+                    KhonshuFragmentTest(khonshuFragmentTestComponent)
                   }
                 }
               }
@@ -352,7 +353,7 @@ internal class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent) {
+            private fun KhonshuFragmentTest(component: KhonshuFragmentTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -368,17 +369,17 @@ internal class FileGeneratorTestComposeFragment {
             @OptIn(InternalCodegenApi::class)
             @Module
             @ContributesTo(TestDestinationScope::class)
-            public object KhonshuTestNavDestinationModule {
+            public object KhonshuFragmentTestNavDestinationModule {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationApi::class)
               public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute,
-                  KhonshuTestFragment>(KhonshuTestComponentProvider)
+                  KhonshuFragmentTestFragment>(KhonshuFragmentTestComponentProvider)
             }
 
         """.trimIndent()
 
-        test(withNavigation, "com/test/Test.kt", source, expected)
+        test(withNavigation, "com/test/FragmentTest.kt", source, expected)
     }
 
     @Test
@@ -464,7 +465,7 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestRoute::class,
               parentScope = AppScope::class,
             )
-            public interface KhonshuTestComponent : Closeable {
+            public interface KhonshuFragmentTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               @get:ForScope(TestRoute::class)
@@ -482,40 +483,41 @@ internal class FileGeneratorTestComposeFragment {
               @ContributesSubcomponent.Factory
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
-                    @BindsInstance testRoute: TestRoute): KhonshuTestComponent
+                    @BindsInstance testRoute: TestRoute): KhonshuFragmentTestComponent
               }
 
               @ContributesTo(AppScope::class)
               public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
+                public fun khonshuFragmentTestComponentFactory(): Factory
               }
             }
 
             @OptIn(InternalCodegenApi::class)
-            public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
+            public object KhonshuFragmentTestComponentProvider :
+                ComponentProvider<TestRoute, KhonshuFragmentTestComponent> {
               @OptIn(InternalNavigationApi::class)
               override fun provide(
                 route: TestRoute,
                 executor: NavigationExecutor,
                 context: Context,
-              ): KhonshuTestComponent = component(route.destinationId, route, executor, context,
-                  AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
-                  testRoute ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              ): KhonshuFragmentTestComponent = component(route.destinationId, route, executor, context,
+                  AppScope::class) { parentComponent: KhonshuFragmentTestComponent.ParentComponent,
+                  savedStateHandle, testRoute ->
+                parentComponent.khonshuFragmentTestComponentFactory().create(savedStateHandle, testRoute)
               }
             }
 
             @Module
             @ContributesTo(TestRoute::class)
-            public interface KhonshuTestModule {
+            public interface KhonshuFragmentTestModule {
               @Multibinds
               @ForScope(TestRoute::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
             @OptIn(InternalCodegenApi::class)
-            public class KhonshuTestFragment : Fragment() {
-              private lateinit var khonshuTestComponent: KhonshuTestComponent
+            public class KhonshuFragmentTestFragment : Fragment() {
+              private lateinit var khonshuFragmentTestComponent: KhonshuFragmentTestComponent
 
               @OptIn(InternalNavigationApi::class)
               override fun onCreateView(
@@ -523,20 +525,20 @@ internal class FileGeneratorTestComposeFragment {
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
               ): View {
-                if (!::khonshuTestComponent.isInitialized) {
+                if (!::khonshuFragmentTestComponent.isInitialized) {
                   val testRoute = requireRoute<TestRoute>()
                   val executor = findNavigationExecutor()
-                  khonshuTestComponent = KhonshuTestComponentProvider.provide(testRoute, executor,
-                      requireContext())
+                  khonshuFragmentTestComponent = KhonshuFragmentTestComponentProvider.provide(testRoute,
+                      executor, requireContext())
 
-                  handleNavigation(this, khonshuTestComponent.navEventNavigator)
+                  handleNavigation(this, khonshuFragmentTestComponent.navEventNavigator)
                 }
 
                 return ComposeView(requireContext()).apply {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
-                    KhonshuTest(khonshuTestComponent)
+                    KhonshuFragmentTest(khonshuFragmentTestComponent)
                   }
                 }
               }
@@ -544,7 +546,7 @@ internal class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent) {
+            private fun KhonshuFragmentTest(component: KhonshuFragmentTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -560,17 +562,17 @@ internal class FileGeneratorTestComposeFragment {
             @OptIn(InternalCodegenApi::class)
             @Module
             @ContributesTo(AppScope::class)
-            public object KhonshuTestNavDestinationModule {
+            public object KhonshuFragmentTestNavDestinationModule {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationApi::class)
               public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute,
-                  KhonshuTestFragment>(KhonshuTestComponentProvider)
+                  KhonshuFragmentTestFragment>(KhonshuFragmentTestComponentProvider)
             }
 
         """.trimIndent()
 
-        test(withDefaultValues, "com/test/Test.kt", source, expected)
+        test(withDefaultValues, "com/test/FragmentTest.kt", source, expected)
     }
 
     @Test
@@ -639,7 +641,7 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface KhonshuTestComponent : Closeable {
+            public interface KhonshuFragmentTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               @get:ForScope(TestScreen::class)
@@ -655,38 +657,38 @@ internal class FileGeneratorTestComposeFragment {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestScreen::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuTestComponent
+                    arguments: Bundle): KhonshuFragmentTestComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
+                public fun khonshuFragmentTestComponentFactory(): Factory
               }
             }
 
             @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestModule {
+            public interface KhonshuFragmentTestModule {
               @Multibinds
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
             @OptIn(InternalCodegenApi::class)
-            public class KhonshuTestFragment : DialogFragment() {
-              private lateinit var khonshuTestComponent: KhonshuTestComponent
+            public class KhonshuFragmentTestFragment : DialogFragment() {
+              private lateinit var khonshuFragmentTestComponent: KhonshuFragmentTestComponent
 
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
               ): View {
-                if (!::khonshuTestComponent.isInitialized) {
+                if (!::khonshuFragmentTestComponent.isInitialized) {
                   val arguments = requireArguments()
-                  khonshuTestComponent = component(this, requireContext(), TestParentScope::class, arguments) {
-                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
-                      argumentsForComponent ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
+                  khonshuFragmentTestComponent = component(this, requireContext(), TestParentScope::class,
+                      arguments) { parentComponent: KhonshuFragmentTestComponent.ParentComponent,
+                      savedStateHandle, argumentsForComponent ->
+                    parentComponent.khonshuFragmentTestComponentFactory().create(savedStateHandle,
                         argumentsForComponent)
                   }
                 }
@@ -695,7 +697,7 @@ internal class FileGeneratorTestComposeFragment {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
-                    KhonshuTest(khonshuTestComponent)
+                    KhonshuFragmentTest(khonshuFragmentTestComponent)
                   }
                 }
               }
@@ -703,7 +705,7 @@ internal class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent) {
+            private fun KhonshuFragmentTest(component: KhonshuFragmentTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -718,13 +720,13 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(dialogFragment, "com/test/Test.kt", source, expected)
+        test(dialogFragment, "com/test/FragmentTest.kt", source, expected)
     }
 
     @Test
     fun `generates code for ComposeFragmentData with Composable Depedencies`() {
         val withInjectedParameters = data.copy(
-            baseName = "Test2",
+            baseName = "FragmentTest2",
             composableParameter = listOf(
                 ComposableParameter(
                     name = "testClass",
@@ -812,7 +814,7 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface KhonshuTest2Component : Closeable {
+            public interface KhonshuFragmentTest2Component : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val testClass: TestClass
@@ -836,38 +838,38 @@ internal class FileGeneratorTestComposeFragment {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestScreen::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuTest2Component
+                    arguments: Bundle): KhonshuFragmentTest2Component
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                public fun khonshuTest2ComponentFactory(): Factory
+                public fun khonshuFragmentTest2ComponentFactory(): Factory
               }
             }
 
             @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTest2Module {
+            public interface KhonshuFragmentTest2Module {
               @Multibinds
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
             @OptIn(InternalCodegenApi::class)
-            public class KhonshuTest2Fragment : Fragment() {
-              private lateinit var khonshuTest2Component: KhonshuTest2Component
+            public class KhonshuFragmentTest2Fragment : Fragment() {
+              private lateinit var khonshuFragmentTest2Component: KhonshuFragmentTest2Component
 
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
               ): View {
-                if (!::khonshuTest2Component.isInitialized) {
+                if (!::khonshuFragmentTest2Component.isInitialized) {
                   val arguments = requireArguments()
-                  khonshuTest2Component = component(this, requireContext(), TestParentScope::class, arguments) {
-                      parentComponent: KhonshuTest2Component.ParentComponent, savedStateHandle,
-                      argumentsForComponent ->
-                    parentComponent.khonshuTest2ComponentFactory().create(savedStateHandle,
+                  khonshuFragmentTest2Component = component(this, requireContext(), TestParentScope::class,
+                      arguments) { parentComponent: KhonshuFragmentTest2Component.ParentComponent,
+                      savedStateHandle, argumentsForComponent ->
+                    parentComponent.khonshuFragmentTest2ComponentFactory().create(savedStateHandle,
                         argumentsForComponent)
                   }
                 }
@@ -876,7 +878,7 @@ internal class FileGeneratorTestComposeFragment {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
-                    KhonshuTest2(khonshuTest2Component)
+                    KhonshuFragmentTest2(khonshuFragmentTest2Component)
                   }
                 }
               }
@@ -884,7 +886,7 @@ internal class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest2(component: KhonshuTest2Component) {
+            private fun KhonshuFragmentTest2(component: KhonshuFragmentTest2Component) {
               val testClass = remember { component.testClass }
               val test = remember { component.test }
               val testSet = remember { component.testSet }
@@ -907,7 +909,7 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(withInjectedParameters, "com/test/Test2.kt", source, expected)
+        test(withInjectedParameters, "com/test/FragmentTest2.kt", source, expected)
     }
 
     @Test
@@ -971,7 +973,7 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface KhonshuTestComponent : Closeable {
+            public interface KhonshuFragmentTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               @get:ForScope(TestScreen::class)
@@ -987,38 +989,38 @@ internal class FileGeneratorTestComposeFragment {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestScreen::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuTestComponent
+                    arguments: Bundle): KhonshuFragmentTestComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
+                public fun khonshuFragmentTestComponentFactory(): Factory
               }
             }
 
             @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestModule {
+            public interface KhonshuFragmentTestModule {
               @Multibinds
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
             @OptIn(InternalCodegenApi::class)
-            public class KhonshuTestFragment : Fragment() {
-              private lateinit var khonshuTestComponent: KhonshuTestComponent
+            public class KhonshuFragmentTestFragment : Fragment() {
+              private lateinit var khonshuFragmentTestComponent: KhonshuFragmentTestComponent
 
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
               ): View {
-                if (!::khonshuTestComponent.isInitialized) {
+                if (!::khonshuFragmentTestComponent.isInitialized) {
                   val arguments = requireArguments()
-                  khonshuTestComponent = component(this, requireContext(), TestParentScope::class, arguments) {
-                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
-                      argumentsForComponent ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
+                  khonshuFragmentTestComponent = component(this, requireContext(), TestParentScope::class,
+                      arguments) { parentComponent: KhonshuFragmentTestComponent.ParentComponent,
+                      savedStateHandle, argumentsForComponent ->
+                    parentComponent.khonshuFragmentTestComponentFactory().create(savedStateHandle,
                         argumentsForComponent)
                   }
                 }
@@ -1027,7 +1029,7 @@ internal class FileGeneratorTestComposeFragment {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
-                    KhonshuTest(khonshuTestComponent)
+                    KhonshuFragmentTest(khonshuFragmentTestComponent)
                   }
                 }
               }
@@ -1035,7 +1037,7 @@ internal class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent) {
+            private fun KhonshuFragmentTest(component: KhonshuFragmentTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -1048,7 +1050,7 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(withoutSendAction, "com/test/Test.kt", source, expected)
+        test(withoutSendAction, "com/test/FragmentTest.kt", source, expected)
     }
 
     @Test
@@ -1114,7 +1116,7 @@ internal class FileGeneratorTestComposeFragment {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface KhonshuTestComponent : Closeable {
+            public interface KhonshuFragmentTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               @get:ForScope(TestScreen::class)
@@ -1130,38 +1132,38 @@ internal class FileGeneratorTestComposeFragment {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestScreen::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuTestComponent
+                    arguments: Bundle): KhonshuFragmentTestComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
+                public fun khonshuFragmentTestComponentFactory(): Factory
               }
             }
 
             @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestModule {
+            public interface KhonshuFragmentTestModule {
               @Multibinds
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
             @OptIn(InternalCodegenApi::class)
-            public class KhonshuTestFragment : Fragment() {
-              private lateinit var khonshuTestComponent: KhonshuTestComponent
+            public class KhonshuFragmentTestFragment : Fragment() {
+              private lateinit var khonshuFragmentTestComponent: KhonshuFragmentTestComponent
 
               override fun onCreateView(
                 inflater: LayoutInflater,
                 container: ViewGroup?,
                 savedInstanceState: Bundle?,
               ): View {
-                if (!::khonshuTestComponent.isInitialized) {
+                if (!::khonshuFragmentTestComponent.isInitialized) {
                   val arguments = requireArguments()
-                  khonshuTestComponent = component(this, requireContext(), TestParentScope::class, arguments) {
-                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle,
-                      argumentsForComponent ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
+                  khonshuFragmentTestComponent = component(this, requireContext(), TestParentScope::class,
+                      arguments) { parentComponent: KhonshuFragmentTestComponent.ParentComponent,
+                      savedStateHandle, argumentsForComponent ->
+                    parentComponent.khonshuFragmentTestComponentFactory().create(savedStateHandle,
                         argumentsForComponent)
                   }
                 }
@@ -1170,7 +1172,7 @@ internal class FileGeneratorTestComposeFragment {
                   setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
                   setContent {
-                    KhonshuTest(khonshuTestComponent)
+                    KhonshuFragmentTest(khonshuFragmentTestComponent)
                   }
                 }
               }
@@ -1178,7 +1180,7 @@ internal class FileGeneratorTestComposeFragment {
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent) {
+            private fun KhonshuFragmentTest(component: KhonshuFragmentTestComponent) {
               val stateMachine = remember { component.testStateMachine }
               val state = stateMachine.asComposeState()
               val currentState = state.value
@@ -1192,6 +1194,6 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(withoutSendAction, "com/test/Test.kt", source, expected)
+        test(withoutSendAction, "com/test/FragmentTest.kt", source, expected)
     }
 }
