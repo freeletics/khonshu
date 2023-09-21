@@ -12,14 +12,13 @@ freeletics {
 
 dependencies {
     testImplementation(projects.codegenCompiler)
-    testImplementation(projects.codegenScope)
     testImplementation(projects.codegen)
-    testImplementation(projects.codegenCompose)
-    testImplementation(projects.codegenFragment)
     testImplementation(projects.navigation)
     testImplementation(projects.navigationFragment)
     testImplementation(projects.navigationCompose)
-    testImplementation(projects.stateMachineLegacy)
+    testImplementation(projects.stateMachine)
+    testImplementation(libs.anvil.annotations)
+    testImplementation(libs.anvil.annotations.optional)
     testImplementation(libs.androidx.compose.runtime)
     testImplementation(libs.androidx.viewbinding)
     testImplementation(libs.renderer)
@@ -31,16 +30,13 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(libs.kotlin.compile.testing)
     testImplementation(libs.androidx.compose.compiler)
-    testImplementation(libs.anvil.annotations)
-    testImplementation(testFixtures(libs.anvil.compiler.utils))
+    testImplementation(testFixtures(projects.codegenCompiler))
 }
 
 // exclude external dependency on state machine connect, we include the local module instead
 configurations.configureEach {
-    resolutionStrategy.dependencySubstitution.run {
+    resolutionStrategy.dependencySubstitution {
         substitute(module("com.freeletics.khonshu:state-machine"))
             .using(project(projects.stateMachine.dependencyProject.path))
-        substitute(module("com.freeletics.mad:state-machine"))
-            .using(project(projects.stateMachineLegacy.dependencyProject.path))
     }
 }

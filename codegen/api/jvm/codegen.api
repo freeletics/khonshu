@@ -1,0 +1,85 @@
+public abstract interface class com/freeletics/khonshu/codegen/ActivityScope {
+}
+
+public abstract interface class com/freeletics/khonshu/codegen/AppScope {
+}
+
+public abstract interface annotation class com/freeletics/khonshu/codegen/compose/ComposeDestination : java/lang/annotation/Annotation {
+	public abstract fun destinationScope ()Ljava/lang/Class;
+	public abstract fun destinationType ()Lcom/freeletics/khonshu/codegen/compose/DestinationType;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun route ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public abstract interface annotation class com/freeletics/khonshu/codegen/compose/ComposeScreen : java/lang/annotation/Annotation {
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun scope ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public final class com/freeletics/khonshu/codegen/compose/DestinationType : java/lang/Enum {
+	public static final field OVERLAY Lcom/freeletics/khonshu/codegen/compose/DestinationType;
+	public static final field SCREEN Lcom/freeletics/khonshu/codegen/compose/DestinationType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/freeletics/khonshu/codegen/compose/DestinationType;
+	public static fun values ()[Lcom/freeletics/khonshu/codegen/compose/DestinationType;
+}
+
+public abstract interface annotation class com/freeletics/khonshu/codegen/compose/NavHostActivity : java/lang/annotation/Annotation {
+	public abstract fun activityBaseClass ()Ljava/lang/Class;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun scope ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public abstract interface annotation class com/freeletics/khonshu/codegen/fragment/ComposeDestination : java/lang/annotation/Annotation {
+	public abstract fun destinationScope ()Ljava/lang/Class;
+	public abstract fun destinationType ()Lcom/freeletics/khonshu/codegen/fragment/DestinationType;
+	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun route ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public abstract interface annotation class com/freeletics/khonshu/codegen/fragment/ComposeFragment : java/lang/annotation/Annotation {
+	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun scope ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public final class com/freeletics/khonshu/codegen/fragment/DestinationType : java/lang/Enum {
+	public static final field DIALOG Lcom/freeletics/khonshu/codegen/fragment/DestinationType;
+	public static final field SCREEN Lcom/freeletics/khonshu/codegen/fragment/DestinationType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/freeletics/khonshu/codegen/fragment/DestinationType;
+	public static fun values ()[Lcom/freeletics/khonshu/codegen/fragment/DestinationType;
+}
+
+public abstract interface annotation class com/freeletics/khonshu/codegen/fragment/RendererDestination : java/lang/annotation/Annotation {
+	public abstract fun destinationScope ()Ljava/lang/Class;
+	public abstract fun destinationType ()Lcom/freeletics/khonshu/codegen/fragment/DestinationType;
+	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun route ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public abstract interface annotation class com/freeletics/khonshu/codegen/fragment/RendererFragment : java/lang/annotation/Annotation {
+	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
+	public abstract fun parentScope ()Ljava/lang/Class;
+	public abstract fun scope ()Ljava/lang/Class;
+	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public final class com/freeletics/khonshu/codegen/internal/Fragment {
+	public fun <init> ()V
+}
+
+public abstract interface annotation class com/freeletics/khonshu/codegen/internal/InternalCodegenApi : java/lang/annotation/Annotation {
+}
+
+public abstract interface class com/freeletics/khonshu/codegen/internal/Renderer {
+}
+

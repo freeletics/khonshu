@@ -6,8 +6,11 @@ plugins {
 
 freeletics {
     explicitApi()
-    enableCompose()
-    enableParcelize()
+
+    android {
+        enableCompose()
+        enableParcelize()
+    }
 }
 
 dependencies {

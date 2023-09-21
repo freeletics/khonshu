@@ -2,6 +2,7 @@ package com.freeletics.khonshu.navigation.fragment
 
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination as AndroidXNavDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.createGraph
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -14,6 +15,7 @@ import com.freeletics.khonshu.navigation.internal.CustomActivityNavigator
 import com.freeletics.khonshu.navigation.internal.destinationId
 import com.freeletics.khonshu.navigation.internal.getArguments
 import com.freeletics.khonshu.navigation.internal.handleDeepLink
+import java.io.Serializable
 
 /**
  * Creates and sets a [androidx.navigation.NavGraph] containing all given [destinations].
@@ -65,6 +67,7 @@ private fun ScreenDestination<*>.toDestination(
     return FragmentNavigator.Destination(navigator).also {
         it.id = id.destinationId()
         it.setClassName(fragmentClass)
+        it.addExtra(extra)
         if (startRoute::class == id.route) {
             val arguments = startRoute.getArguments()
             arguments.keySet().forEach { key ->
@@ -86,7 +89,20 @@ private fun DialogDestination<*>.toDestination(
     return DialogFragmentNavigator.Destination(navigator).also {
         it.id = id.destinationId()
         it.setClassName(fragmentClass)
+        it.addExtra(extra)
     }
+}
+
+private fun AndroidXNavDestination.addExtra(extra: Serializable?) {
+    if (extra == null) {
+        return
+    }
+
+    val argument = NavArgument.Builder()
+        .setDefaultValue(extra)
+        .setIsNullable(false)
+        .build()
+    addArgument("NAV_SECRET_EXTRA", argument)
 }
 
 private fun ActivityDestination<*>.toDestination(

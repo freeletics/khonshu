@@ -1,16 +1,23 @@
 package com.freeletics.khonshu.codegen.codegen.util
 
+import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.Navigation
 import com.squareup.anvil.annotations.ContributesSubcomponent
 import com.squareup.anvil.annotations.ContributesTo
+import com.squareup.anvil.annotations.optional.ForScope
+import com.squareup.anvil.annotations.optional.SingleIn
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.KModifier.LATEINIT
 import com.squareup.kotlinpoet.KModifier.PRIVATE
+import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterSpec
+import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.TypeName
+import com.squareup.kotlinpoet.UNIT
 
 internal val ClassName.propertyName: String get() {
     return simpleNames.first().replaceFirstChar(Char::lowercaseChar) +
@@ -35,6 +42,14 @@ internal fun bindsInstanceParameter(
     return spec.toBuilder()
         .addAnnotation(bindsInstance)
         .apply { if (annotation != null) addAnnotation(annotation) }
+        .build()
+}
+
+internal fun navHostParameter(parameter: ComposableParameter): ParameterSpec {
+    return ParameterSpec.builder(
+        parameter.name,
+        parameter.typeName.copy(annotations = listOf(AnnotationSpec.builder(composable).build())),
+    )
         .build()
 }
 
@@ -70,7 +85,7 @@ internal fun subcomponentFactoryAnnotation(): AnnotationSpec {
 }
 
 internal fun scopeToAnnotation(scope: ClassName): AnnotationSpec {
-    return AnnotationSpec.builder(scopeTo)
+    return AnnotationSpec.builder(SingleIn::class)
         .addMember("%T::class", scope)
         .build()
 }
@@ -81,8 +96,8 @@ internal fun contributesToAnnotation(scope: ClassName): AnnotationSpec {
         .build()
 }
 
-internal fun navEntryAnnotation(scope: ClassName, target: UseSiteTarget? = null): AnnotationSpec {
-    return AnnotationSpec.builder(navEntry)
+internal fun forScope(scope: ClassName, target: UseSiteTarget? = null): AnnotationSpec {
+    return AnnotationSpec.builder(ForScope::class)
         .addMember("%T::class", scope)
         .useSiteTarget(target)
         .build()
@@ -117,4 +132,19 @@ internal fun Navigation.Fragment?.requireArguments(): CodeBlock {
         return CodeBlock.of("%M<%T>()", fragmentRequireRoute, route)
     }
     return CodeBlock.of("requireArguments()")
+}
+
+internal fun TypeName.asLambdaParameter(): TypeName {
+    return LambdaTypeName.get(null, this, returnType = UNIT)
+}
+
+// KSP and Anvil don't have the same behavior for returning lambdas
+// this turns all Function1 and Function2 types into lambdas
+internal fun TypeName.functionToLambda(): TypeName {
+    if (this is ParameterizedTypeName && (rawType == function1 || rawType == function2)) {
+        val parameters = typeArguments.dropLast(1).map { it.functionToLambda() }.toTypedArray()
+        return LambdaTypeName.get(null, *parameters, returnType = typeArguments.last())
+            .copy(nullable = isNullable)
+    }
+    return this
 }

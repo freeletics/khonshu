@@ -1,15 +1,17 @@
 package com.freeletics.khonshu.codegen.codegen.common
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.ComposeFragmentData
-import com.freeletics.khonshu.codegen.ComposeScreenData
-import com.freeletics.khonshu.codegen.NavEntryData
+import com.freeletics.khonshu.codegen.ComposeData
+import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.codegen.Generator
 import com.freeletics.khonshu.codegen.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.codegen.util.bindsInstanceParameter
+import com.freeletics.khonshu.codegen.codegen.util.composeDestination
 import com.freeletics.khonshu.codegen.codegen.util.contributesToAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.navEntryAnnotation
+import com.freeletics.khonshu.codegen.codegen.util.deepLinkHandler
+import com.freeletics.khonshu.codegen.codegen.util.deepLinkPrefix
+import com.freeletics.khonshu.codegen.codegen.util.forScope
 import com.freeletics.khonshu.codegen.codegen.util.navEventNavigator
 import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.codegen.util.savedStateHandle
@@ -67,29 +69,28 @@ internal class ComponentGenerator(
         if (data.stateMachine != null) {
             properties += simplePropertySpec(data.stateMachine!!)
         }
-        if (data.navigation != null && data !is NavEntryData) {
-            properties += simplePropertySpec(navEventNavigator)
+        if (data.navigation != null) {
+            properties += simplePropertySpec(navEventNavigator).toBuilder()
+                .addAnnotation(forScope(data.scope, GET))
+                .build()
         }
         when (data) {
-            is ComposeFragmentData -> {
+            is ComposeData -> {
                 properties += data.composableParameter.map {
                     PropertySpec.builder(it.name, it.typeName).build()
                 }
-            }
-            is ComposeScreenData -> {
-                properties += data.composableParameter.map {
-                    PropertySpec.builder(it.name, it.typeName).build()
+                if (data is NavHostActivityData) {
+                    properties += listOf(
+                        PropertySpec.builder("destinations", SET.parameterizedBy(composeDestination)).build(),
+                        PropertySpec.builder("deepLinkHandlers", SET.parameterizedBy(deepLinkHandler)).build(),
+                        PropertySpec.builder("deepLinkPrefixes", SET.parameterizedBy(deepLinkPrefix)).build(),
+                    )
                 }
             }
             is RendererFragmentData -> properties += simplePropertySpec(data.factory)
-            is NavEntryData -> {}
         }
         properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName()))
-            .apply {
-                if (data is NavEntryData) {
-                    addAnnotation(navEntryAnnotation(data.scope, GET))
-                }
-            }
+            .addAnnotation(forScope(data.scope, GET))
             .build()
         return properties
     }
@@ -104,15 +105,15 @@ internal class ComponentGenerator(
     }
 
     private fun retainedComponentFactory(): TypeSpec {
-        val qualifier = if (data is NavEntryData) {
-            navEntryAnnotation(data.scope)
-        } else {
-            null
-        }
         val createFun = FunSpec.builder(retainedComponentFactoryCreateName)
             .addModifiers(ABSTRACT)
-            .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle, qualifier))
-            .addParameter(bindsInstanceParameter(data.navigation.asParameter(), qualifier))
+            .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
+            .addParameter(
+                bindsInstanceParameter(
+                    data.navigation.asParameter(),
+                    forScope(data.scope).takeIf { data.navigation == null },
+                ),
+            )
             .returns(retainedComponentClassName)
             .build()
         return TypeSpec.interfaceBuilder(retainedComponentFactoryClassName)

@@ -1,5 +1,7 @@
+import com.freeletics.gradle.plugin.FreeleticsAndroidExtension
+
 plugins {
-    alias(libs.plugins.fgp.android)
+    alias(libs.plugins.fgp.multiplatform)
     alias(libs.plugins.fgp.publish)
 }
 
@@ -9,17 +11,29 @@ freeletics {
         "com.freeletics.khonshu.navigation.internal.InternalNavigationApi",
         "com.freeletics.khonshu.codegen.internal.InternalCodegenApi",
     )
-    enableCompose()
+
+    multiplatform {
+        addJvmTarget()
+        addAndroidTarget(publish = true)
+    }
+
+    extensions.configure(FreeleticsAndroidExtension::class) {
+        enableCompose()
+    }
 }
 
 dependencies {
-    api(libs.androidx.compose.runtime)
-    api(libs.androidx.viewmodel)
-    api(libs.androidx.viewmodel.savedstate)
-    api(projects.stateMachine)
-    api(projects.codegenScope)
-    api(projects.navigation)
-    api(libs.dagger)
+    "commonMainApi"(projects.stateMachine)
+    "commonMainApi"(projects.navigation)
+    "commonMainApi"(libs.inject)
 
-    implementation(libs.coroutines.core)
+    "androidMainApi"(libs.androidx.compose.runtime)
+    "androidMainApi"(libs.androidx.viewmodel)
+    "androidMainApi"(libs.androidx.viewmodel.savedstate)
+    "androidMainApi"(projects.stateMachine)
+
+    "androidMainImplementation"(libs.coroutines.core)
+
+    "androidMainCompileOnly"(libs.androidx.fragment)
+    "androidMainCompileOnly"(libs.renderer)
 }

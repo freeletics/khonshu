@@ -8,6 +8,8 @@ import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.internal.ActivityDestinationId
 import com.freeletics.khonshu.navigation.internal.DestinationId
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import java.io.Serializable
 
 /**
  * A destination that can be navigated to. See [setGraph] for how to configure a `NavGraph` with it.
@@ -21,12 +23,18 @@ public sealed interface NavDestination
  */
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute, reified F : Fragment> ScreenDestination():
-    NavDestination = ScreenDestination(DestinationId(T::class), F::class.qualifiedName!!)
+    NavDestination = ScreenDestination(DestinationId(T::class), F::class.qualifiedName!!, null)
+
+@InternalNavigationApi
+@Suppress("FunctionName")
+public inline fun <reified T : BaseRoute, reified F : Fragment> ScreenDestination(extra: Serializable):
+    NavDestination = ScreenDestination(DestinationId(T::class), F::class.qualifiedName!!, extra)
 
 @PublishedApi
 internal class ScreenDestination<T : BaseRoute>(
     internal val id: DestinationId<T>,
     internal val fragmentClass: String,
+    internal val extra: Serializable?,
 ) : NavDestination
 
 /**
@@ -36,12 +44,18 @@ internal class ScreenDestination<T : BaseRoute>(
  */
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute, reified F : DialogFragment> DialogDestination():
-    NavDestination = DialogDestination(DestinationId(T::class), F::class.qualifiedName!!)
+    NavDestination = DialogDestination(DestinationId(T::class), F::class.qualifiedName!!, null)
+
+@InternalNavigationApi
+@Suppress("FunctionName")
+public inline fun <reified T : NavRoute, reified F : DialogFragment> DialogDestination(extra: Serializable):
+    NavDestination = DialogDestination(DestinationId(T::class), F::class.qualifiedName!!, extra)
 
 @PublishedApi
 internal class DialogDestination<T : NavRoute>(
     internal val id: DestinationId<T>,
     internal val fragmentClass: String,
+    internal val extra: Serializable?,
 ) : NavDestination
 
 /**

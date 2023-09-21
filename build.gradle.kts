@@ -1,13 +1,12 @@
 plugins {
     alias(libs.plugins.kotlin.android).apply(false)
     alias(libs.plugins.kotlin.jvm).apply(false)
-    alias(libs.plugins.kotlin.kapt).apply(false)
     alias(libs.plugins.kotlin.parcelize).apply(false)
     alias(libs.plugins.kotlin.multiplatform).apply(false)
     alias(libs.plugins.android.library).apply(false)
     alias(libs.plugins.dokka).apply(false)
     alias(libs.plugins.publish).apply(false)
-    alias(libs.plugins.gr8) apply (false)
+    alias(libs.plugins.gr8).apply(false)
     alias(libs.plugins.dependency.analysis).apply(false)
     alias(libs.plugins.bestpractices).apply(false)
 
@@ -18,25 +17,19 @@ plugins {
 dependencyAnalysis {
     issues {
         all {
-            onCompileOnly {
+            onUsedTransitiveDependencies {
                 exclude("dev.drewhamilton.poko:poko-annotations")
             }
         }
 
-        project(":codegen") {
+        project(":codegen-scope") {
             onUnusedDependencies {
-                exclude(":codegen-scope")
-            }
-            onIncorrectConfiguration {
-                exclude(":codegen-scope")
+                exclude(":codegen")
             }
         }
 
         project(":codegen-compose") {
             onUnusedDependencies {
-                exclude(":codegen")
-            }
-            onIncorrectConfiguration {
                 exclude(":codegen")
             }
         }
@@ -45,8 +38,11 @@ dependencyAnalysis {
             onUnusedDependencies {
                 exclude(":codegen")
             }
-            onIncorrectConfiguration {
-                exclude(":codegen")
+        }
+
+        project(":codegen-compiler") {
+            onUnusedDependencies {
+                exclude("dev.zacsweers.kctfork:core", "com.squareup.anvil:compiler-utils")
             }
         }
 
@@ -59,7 +55,10 @@ dependencyAnalysis {
                     "com.gabrielittner.renderer:connect",
                     "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
                     "org.jetbrains.kotlin:kotlin-compiler-embeddable",
+                    "com.squareup.anvil:annotations-optional",
+                    "com.squareup.anvil:compiler-utils",
                     ":codegen",
+                    ":codegen-compiler",
                     ":codegen-compose",
                     ":codegen-fragment",
                     ":navigation-compose",

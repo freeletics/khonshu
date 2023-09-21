@@ -1,9 +1,75 @@
 Change Log
 ==========
 
-## 0.14.2 **UNRELEASED**
+## 0.16.2 **UNRELEASED**
 
 -
+
+
+## 0.16.1 *(2023-08-07)*
+
+## Navigation
+
+- Added `awaitNavigate` method to `NavigatorTurbine` that takes a lambda as parameter. It verifies that one nav event,
+  containing all navigation actions from the lambda, is being received.
+
+
+## 0.16.0 *(2023-08-01)*
+
+- Now uses Kotlin 1.9.0 and Anvil 2.4.7.
+
+## Navigation
+
+- Added `navigate` method to `NavEventNavigator` that takes a lambda as parameter. That lambda can
+  contain multiple navigation actions that will end up being bundled into one event that
+
+## Codegen
+
+- Added general `ForScope` annotation.
+- It's now possible to use the `scope` of another screen using codegen as `parentScope`.
+- The above replace the need to `@NavEntryComponent` and `@NavEntry` which have both been removed.
+- To enable the parent scope mechanism the following the 3 types now need a `ForScope` qualifier:
+    - `NavEventNavigator`
+    - `SavedStateHandle`
+    - anything provided into the `Set` of `Closeables`
+
+
+## 0.15.0 *(2023-07-11)*
+
+MAD has beed renamed to Khonshu and Whetstone is now just codegen.
+
+|**Old**|**New**|
+|-|-|
+|`com.freeletics.mad:navigator-runtime`|`com.freeletics.khonshu:navigation`|
+|`com.freeletics.mad:navigator-compose`|`com.freeletics.khonshu:navigation-compose`|
+|`com.freeletics.mad:navigator-experimental`|`com.freeletics.khonshu:navigation-experimental`|
+|`com.freeletics.mad:navigator-fragment`|`com.freeletics.khonshu:navigation-fragment`|
+|`com.freeletics.mad:navigator-testing`|`com.freeletics.khonshu:navigation-testing`|
+|`com.freeletics.mad:whetstone-compiler`|`com.freeletics.khonshu:codegen-compiler`|
+|`com.freeletics.mad:whetstone-scope`|`com.freeletics.khonshu:codegen-scope`|
+|`com.freeletics.mad:whetstone-runtime`|`com.freeletics.khonshu:codegen-runtime`|
+|`com.freeletics.mad:whetstone-runtime-compose`|`com.freeletics.khonshu:codegen-compose`|
+|`com.freeletics.mad:whetstone-runtime-fragment`|`com.freeletics.khonshu:codegen-fragment`|
+|`com.freeletics.mad:whetstone-navigation`|Merged into `com.freeletics.khonshu:codegen-runtime`|
+|`com.freeletics.mad:whetstone-navigation-compose`|Merged into `com.freeletics.khonshu:codegen-compose`|
+|`com.freeletics.mad:whetstone-navigation-fragment`|Merged into `com.freeletics.khonshu:codegen-fragment`|
+|`com.freeletics.mad:state-machine`|`com.freeletics.khonshu:state-machine`|
+|`com.freeletics.mad:state-machine-testing`|`com.freeletics.khonshu:state-machine-testing`|
+|`com.freeletics.mad:text-resource`|`com.freeletics.khonshu:text-resource`|
+
+### Navigation
+
+- Compose: The `Dialog` and `BottomSheet` destination types haven been replaced by a new `Overlay` destination.
+  This new type generally behaves like the old ones except for not automically wrapping the given content in
+  a `Dialog` or `ModalBottomSheetLayout` composable. This gives more flexibility and avoids some issues in the
+  default implementations, like not being able to show multiple bottom sheet destinations on top of each other.
+  It is recommended to use something like Material 3's `ModalBottomSheet` to display a bottom sheet.
+- Compose: Removed dependency on Accompanist and usages of experimental APIs.
+
+### Codegen
+
+- Updated `DestinationType` for the navigation change above.
+- Renamed `DestinationComponent` to `NavDestinationComponent`.
 
 
 ## 0.14.1 *(2023-05-26)*
@@ -51,7 +117,7 @@ gradle.beforeProject {
 
 ### Whetstone
 
-- Fix `whetstone-scope` artifact being published as `aar` instead of as `jar`. 
+- Fix `whetstone-scope` artifact being published as `aar` instead of as `jar`.
 
 
 ## 0.13.1 *(2023-03-23)*
@@ -72,7 +138,7 @@ gradle.beforeProject {
 
 ### Whetstone
 
-- The `state` and `sendAction` parameters in annotated composables are now optional and only need 
+- The `state` and `sendAction` parameters in annotated composables are now optional and only need
   to be specified if they are needed
 - The `state` and `sendAction` parameters of annotated composables can now have different names
 - Automatically discover `ViewRenderer.Factory` subclass nested inside the annotated `ViewRenderer`

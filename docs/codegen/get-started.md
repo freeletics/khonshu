@@ -6,22 +6,22 @@ generating dependency injection related code and common boilerplate for screens.
 ## Advantages
 
 - eliminate boilerplate that usually needs to be repeated on each screen
-- optional integration with Navigator to simplify its setup 
-- easily let objects survive configuration changes 
+- optional integration with Navigator to simplify its setup
+- easily let objects survive configuration changes
 
-One other general advantage is around Fragments. If an app uses them or has to use them for legacy 
+One other general advantage is around Fragments. If an app uses them or has to use them for legacy
 reasons, Codegen will mostly hide them from the developers because it generates the Fragment
 for each screen it's used in. This way logic is kept out of them and the actual components like
 UI and state machine (presenter/view model) can be tested more easily in isolation. It also makes
-a migration away from Fragments easier since generated code can be easily replaced by other 
-generated code. In fact migrating an app where each screen uses Codegen from Fragments to 
+a migration away from Fragments easier since generated code can be easily replaced by other
+generated code. In fact migrating an app where each screen uses Codegen from Fragments to
 just using Compose is as easy as replacing a single annotation on each screen.
 
 
 ## Dependency
 
-The library provides 2 different runtime implementations. One for `Fragment` based apps and one 
-for pure `Compose` apps. If an app uses Compose but the composables are hosted inside fragments 
+The library provides 2 different runtime implementations. One for `Fragment` based apps and one
+for pure `Compose` apps. If an app uses Compose but the composables are hosted inside fragments
 it falls into the `Fragment` category.
 
 === "Compose"
@@ -50,11 +50,11 @@ it falls into the `Fragment` category.
 
 === "Compose"
 
-    The `@ComposeScreen` annotation is added to the top level composable of a screen. This function 
+    The `@ComposeScreen` annotation is added to the top level composable of a screen. This function
     can have 2 parameters: the state that should be rendered and a lambda that allows
     the composable to send actions for user interactions. This will then generate
     another Composable function called `KhonshuExampleUi` and a Dagger component.
-    
+
     ```kotlin
     @ComposeScreen(
         scope = ExampleScope::class,
@@ -81,11 +81,11 @@ it falls into the `Fragment` category.
 
 === "Compose with Fragments"
 
-    The `@ComposeFragment` annotation is added to the top level composable of a screen. This function 
+    The `@ComposeFragment` annotation is added to the top level composable of a screen. This function
     can have 2 parameters: the state that should be rendered and a lambda that allows
     the composable to send actions for user interactions. This will then generate
     a `Fragment` called `KhonshuExampleUiFragment` and a Dagger component.
-    
+
     ```kotlin
     @ComposeFragment(
         scope = ExampleScope::class,
@@ -120,10 +120,10 @@ it falls into the `Fragment` category.
     This is based on the separate [Renderer library](https://github.com/gabrielittner/renderer)
     which separates the view/ui logic from Fragments or other framework classes.
     Similar to composables above a Renderer receives a state object and emits
-    actions. Codegen has a `@RendererFragment` annotation which needs to be added to the 
-    Renderer class. This will then generate a `Fragment` called `KhonshuExampleUiFragment` 
+    actions. Codegen has a `@RendererFragment` annotation which needs to be added to the
+    Renderer class. This will then generate a `Fragment` called `KhonshuExampleUiFragment`
     and a Dagger component.
-    
+
     ```kotlin
     @RendererFragment(
         scope = ExampleScope::class,
@@ -133,16 +133,16 @@ it falls into the `Fragment` category.
     internal class ExampleRenderer @AssistedInject constructor(
         @Assisted private val binding: ExampleViewBinding,
     ) : ViewRenderer<ExampleState, ExampleAction>(binding) {
-    
+
         override fun renderToView(state: ExampleState) {
             // view logic
         }
-    
+
         @AssistedFactory
         abstract class Factory : ViewRenderer.Factory<ExampleViewBinding, ExampleRenderer>(ExampleViewBinding::inflate)
     }
     ```
-    
+
     The generated `KhonshuExampleRendererFragment` will use the generated component, the
     annotated composable as well as the `stateMachine`. It will use the `ViewRenderer.Factory`
     to create an istance of the `Renderer` and use it as its view. It will then
@@ -159,8 +159,8 @@ it falls into the `Fragment` category.
 
 ## Generated component
 
-All annotations have a `scope` and a `parentScope` parameter. These will be used in Anvil's 
-`@ContributesSubcomponent` annotation on the generated subcomponent, i.e. 
+All annotations have a `scope` and a `parentScope` parameter. These will be used in Anvil's
+`@ContributesSubcomponent` annotation on the generated subcomponent, i.e.
 `@ContributesSubcomponent(scope = ExampleScope::class, parentScope = AppScope::class)`.
 
 Since the generated subcomponent is using `@ContributesSubcomponent`, it is possible
@@ -168,20 +168,21 @@ to use `@ContributesTo`, `@ContributesBinding` and so on with that same scope
 to contribute objects into it.
 
 `scope` is also used for Dagger scopes. The generated component is annotated
-with the `@ScopeTo` annotation that ships with the Codegen runtime and uses
+with the `@SingleIn` annotation that ships with Anvil and uses
 the `scope` value as a parameter. To scope a class just add
-`@ScopeTo(ExampleScope::class)` to it. Any object using this scope will automatically 
+`@SingleIn(ExampleScope::class)` to it. Any object using this scope will automatically
 survive configuration changes and will not be recreated together with the UI. In fact any
 scoped object that is created in generated component will do so together with component itself.
 
 A factory for the generated subcomponent is automatically generated and contributed to
 the component that uses `parentScope` as its own scope. This component will be looked up internally
-with `Context.getSystemService(name)` using the fully qualified name of the given `parentScope` as 
+with `Context.getSystemService(name)` using the fully qualified name of the given `parentScope` as
 key for the lookup. It is expected that the app will provide it through its `Application` class or an
 `Activity`.
 
-For convenience purposes the generated component will make a `SavedStateHandle`
-available which can be injected to classes like the state machine to save state.
+For convenience purposes the generated component will make the `Bundle` with arguments and a
+`SavedStateHandle` available which can be injected to classes like the state machine to save state.
+When injecting either of them the `@ForScope(ExampleScope::class)` qualifier needs to be used.
 
 
 ## Example
@@ -193,12 +194,15 @@ This is a minimal example of how using Khonshu's Codegen for a screen would look
 sealed interface ExampleScope
 
 // state machine survives orientation changes
-@ScopeTo(ExampleScope::class)
+@SingleIn(ExampleScope::class)
 internal class ExampleStateMachine @Inject constructor(
+    @ForScope(ExampleScope::class)
     val bundle: Bundle, // the arguments passed to this screen
+    @ForScope(ExampleScope::class)
+    val savedStateHandle: SavedStateHandle // a saved state handle tied to this screen
     val repository: ExampleRepository, // a repository that pas provided somewhere in the app
-) : StateMachine<ExampleState, ExampleAction> { 
-    // ... 
+) : StateMachine<ExampleState, ExampleAction> {
+    // ...
 }
 ```
 
@@ -214,7 +218,7 @@ internal class ExampleStateMachine @Inject constructor(
     internal fun ExampleUi(
         state: ExampleState,
         sendAction: (ExampleAction) -> Unit,
-    ) { 
+    ) {
         // render the ui for ExampleState
     }
     ```
@@ -231,7 +235,7 @@ internal class ExampleStateMachine @Inject constructor(
     internal fun ExampleUi(
         state: ExampleState,
         sendAction: (ExampleAction) -> Unit,
-    ) { 
+    ) {
         // render the ui for ExampleState
     }
     ```
@@ -247,11 +251,11 @@ internal class ExampleStateMachine @Inject constructor(
     internal class ExampleRenderer @AssistedInject constructor(
         @Assisted private val binding: ExampleViewBinding,
     ) : ViewRenderer<ExampleState, ExampleAction>(binding) {
-    
+
         override fun renderToView(state: ExampleState) {
             // render the ui for ExampleState
         }
-    
+
         @AssistedFactory
         abstract class Factory : ViewRenderer.Factory<ExampleViewBinding, ExampleRenderer>(ExampleViewBinding::inflate)
     }
@@ -266,7 +270,7 @@ component through `getSystemService` to retrieve the parent component:
 interface AppComponent {
     // allows an Activity to get all generated NavDestinations to set up the NavHost
     val destinations: Set<NavDestination>
-    
+
     @Component.Factory
     interface Factory {
         fun create(): AppComponent
@@ -276,7 +280,7 @@ interface AppComponent {
 class App : Application() {
 
     private val component: AppComponent = DaggerAppComponent.factory().create(this)
-    
+
     override fun getSystemService(name: String): Any {
         if (name == AppScope::class.qualifiedName) {
             return component

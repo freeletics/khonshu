@@ -14,14 +14,16 @@ public final class com/freeletics/khonshu/navigation/compose/NavigationSetupKt {
 }
 
 public final class com/freeletics/khonshu/navigation/compose/OverlayDestination : com/freeletics/khonshu/navigation/compose/ContentDestination {
-	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/io/Serializable;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getContent ()Lkotlin/jvm/functions/Function3;
+	public fun getExtra ()Ljava/io/Serializable;
 	public fun getId-4Y2Adlc ()Lkotlin/reflect/KClass;
 }
 
 public final class com/freeletics/khonshu/navigation/compose/ScreenDestination : com/freeletics/khonshu/navigation/compose/ContentDestination {
-	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/io/Serializable;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getContent ()Lkotlin/jvm/functions/Function3;
+	public fun getExtra ()Ljava/io/Serializable;
 	public fun getId-4Y2Adlc ()Lkotlin/reflect/KClass;
 }
 

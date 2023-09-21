@@ -1,29 +1,30 @@
 [versions]
 
-android-compile = "33"
+android-compile = "34"
 android-desugarjdklibs = "2.0.3"
-android-gradle = "8.0.2"
+android-gradle = "8.1.1"
 android-min = "26"
 android-target = "33"
 androidx-activity = "1.7.2"
 androidx-annotations = "1.6.0"
-androidx-compose-compiler = "1.4.8"
-androidx-compose-runtime = "1.4.3"
-androidx-compose-ui = "1.4.3"
-androidx-compose-foundation = "1.4.3"
-androidx-compose-material = "1.1.1"
-androidx-core = "1.10.1"
-androidx-lifecycle = "2.6.1"
-anvil = "2.4.6"
-coroutines = "1.7.2"
-dagger = "2.46.1"
-dependency-analysis-gradle = "1.20.0"
-fgp = "0.3.7"
-khonshu = "0.14.1"
+androidx-compose-compiler = "1.5.3"
+androidx-compose-runtime = "1.5.1"
+androidx-compose-ui = "1.5.1"
+androidx-compose-foundation = "1.5.1"
+androidx-compose-material = "1.1.2"
+androidx-core = "1.12.0"
+androidx-lifecycle = "2.6.2"
+anvil = "2.4.8-1-8"
+coroutines = "1.7.3"
+dagger = "2.48"
+dependency-analysis-gradle = "1.22.0"
+fgp = "0.6.1"
+khonshu = "0.16.1"
+ksp = "1.9.10-1.0.13"
 inject = "1"
 java-target = "11"
 java-toolchain = "17"
-kotlin = "1.8.22"
+kotlin = "1.9.10"
 timber = "5.0.1"
 
 [libraries]
@@ -39,8 +40,10 @@ androidx-compose-material = { module = "androidx.compose.material3:material3", v
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
 anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }
+anvil-annotations-optional = { module = "com.squareup.anvil:annotations-optional", version.ref = "anvil" }
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
@@ -48,15 +51,11 @@ inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 khonshu-navigator = { module = "com.freeletics.khonshu:navigation", version.ref = "khonshu" }
 khonshu-navigator-compose = { module = "com.freeletics.khonshu:navigation-compose", version.ref = "khonshu" }
 khonshu-codegen-compiler = { module = "com.freeletics.khonshu:codegen-compiler", version.ref = "khonshu" }
-khonshu-codegen = { module = "com.freeletics.khonshu:codegen", version.ref = "khonshu" }
+khonshu-codegen = { module = "com.freeletics.khonshu:codegen-runtime", version.ref = "khonshu" }
 khonshu-codegen-compose = { module = "com.freeletics.khonshu:codegen-compose", version.ref = "khonshu" }
 khonshu-codegen-scope = { module = "com.freeletics.khonshu:codegen-scope", version.ref = "khonshu" }
 khonshu-statemachine = { module = "com.freeletics.khonshu:state-machine", version.ref = "khonshu" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
-
-# TODO: remove when updated naming is reflected in FGP
-mad-whetstone-compiler = { module = "com.freeletics.khonshu:codegen-compiler", version.ref = "khonshu" }
-mad-whetstone-scope = { module = "com.freeletics.khonshu:codegen-scope", version.ref = "khonshu" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
@@ -67,3 +66,4 @@ fgp-feature = { id = "com.freeletics.gradle.feature", version.ref = "fgp" }
 fgp-nav = { id = "com.freeletics.gradle.nav", version.ref = "fgp" }
 fgp-root = { id = "com.freeletics.gradle.root", version.ref = "fgp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

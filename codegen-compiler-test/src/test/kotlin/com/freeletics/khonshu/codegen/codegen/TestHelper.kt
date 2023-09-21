@@ -1,90 +1,56 @@
 package com.freeletics.khonshu.codegen.codegen
 
-import androidx.compose.compiler.plugins.kotlin.ComposeComponentRegistrar
-import com.freeletics.khonshu.codegen.ComposeFragmentData
-import com.freeletics.khonshu.codegen.ComposeScreenData
-import com.freeletics.khonshu.codegen.RendererFragmentData
+import androidx.compose.compiler.plugins.kotlin.ComposePluginRegistrar
+import com.freeletics.khonshu.codegen.BaseData
+import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.anvilCompilation
+import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.kspCompilation
+import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.simpleCompilation
+import com.freeletics.khonshu.codegen.KhonshuSymbolProcessor.KhonshuSymbolProcessorProvider
+import com.freeletics.khonshu.codegen.testFileName
 import com.google.common.truth.Truth.assertThat
-import com.squareup.anvil.compiler.internal.testing.AnvilCompilation
-import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
-import com.tschuchort.compiletesting.SourceFile
-import java.io.File
-import java.nio.file.Files
 
-public fun test(data: ComposeScreenData, fileName: String, source: String, expected: String) {
-    val actual = FileGenerator().generate(data).toString()
-    assertThat(actual).isEqualTo(expected)
-    compile(fileName, source, actual)
-    compileWithAnvil(fileName, source, actual)
+internal fun test(data: BaseData, fileName: String, source: String, expectedCode: String) {
+    compile(fileName = fileName, source = source, data = data, expectedCode = expectedCode)
+    compileWithAnvil(fileName = fileName, source = source, expectedCode = expectedCode)
+    compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode)
 }
 
-public fun test(data: ComposeFragmentData, fileName: String, source: String, expected: String) {
-    val actual = FileGenerator().generate(data).toString()
-    assertThat(actual).isEqualTo(expected)
-    compile(fileName, source, actual)
-    compileWithAnvil(fileName, source, actual)
-}
+private fun compile(fileName: String, source: String, data: BaseData, expectedCode: String) {
+    val generatedCode = FileGenerator().generate(data).toString()
 
-public fun test(data: RendererFragmentData, fileName: String, source: String, expected: String) {
-    val actual = FileGenerator().generate(data).toString()
-    assertThat(actual).isEqualTo(expected)
-    compile(fileName, source, actual)
-    compileWithAnvil(fileName, source, actual)
-}
+    assertThat(generatedCode).isEqualTo(expectedCode)
 
-private fun compile(fileName: String, source: String, output: String) {
-    val compilation = KotlinCompilation().apply {
-        configure()
-
+    simpleCompilation(
         sources = listOf(
-            sourceFile(fileName, source),
-            sourceFile(fileName.testFileName(), output),
-        )
+            fileName to source,
+            fileName.testFileName() to generatedCode,
+        ),
+        legacyCompilerPlugins = listOf(ComposePluginRegistrar()),
+    ).compile {
+        assertThat(it.exitCode).isEqualTo(ExitCode.OK)
     }
-
-    assertThat(compilation.compile().exitCode).isEqualTo(ExitCode.OK)
 }
 
-private fun compileWithAnvil(fileName: String, source: String, output: String) {
-    val compilation = AnvilCompilation().apply {
-        configureAnvil()
-        kotlinCompilation.configure()
-        kotlinCompilation.sources = listOf(
-            kotlinCompilation.sourceFile(fileName, source),
-        )
+private fun compileWithAnvil(fileName: String, source: String, expectedCode: String) {
+    anvilCompilation(
+        source = source,
+        fileName = fileName,
+        legacyCompilerPlugins = listOf(ComposePluginRegistrar()),
+    ).compile {
+        assertThat(it.exitCode).isEqualTo(ExitCode.OK)
+        assertThat(generatedFileFor(fileName)).isEqualTo(expectedCode)
     }
-
-    assertThat(compilation.compile().exitCode).isEqualTo(ExitCode.OK)
-    assertThat(compilation.kotlinCompilation.generatedFile(fileName)).isEqualTo(output)
 }
 
-private fun KotlinCompilation.sourceFile(name: String, content: String): SourceFile {
-    val path = "${workingDir.absolutePath}/sources/src/main/kotlin/$name"
-    Files.createDirectories(File(path).parentFile!!.toPath())
-    return SourceFile.kotlin(path, content)
-}
-
-private fun KotlinCompilation.generatedFile(name: String): String {
-    val path = "${workingDir.absolutePath}/build/anvil/${name.testFileName()}"
-    return File(path).readText()
-}
-
-private fun String.testFileName(): String {
-    val path = substringBeforeLast("/")
-    val name = substringAfterLast("/")
-    return "$path/Khonshu$name"
-}
-
-private fun KotlinCompilation.configure() {
-    @Suppress("DEPRECATION") // can be changed once compose uses ComponentPluginRegistrar
-    componentRegistrars = componentRegistrars + listOf(ComposeComponentRegistrar())
-    kotlincArguments = kotlincArguments + listOf(
-        "-P",
-        "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=1.7.22",
-    )
-    jvmTarget = "11"
-    inheritClassPath = true
-    messageOutputStream = System.out // see diagnostics in real time
-    allWarningsAsErrors = true
+private fun compileWithKsp(fileName: String, source: String, expectedCode: String) {
+    kspCompilation(
+        source = source,
+        fileName = fileName,
+        legacyCompilerPlugins = listOf(ComposePluginRegistrar()),
+        symbolProcessors = listOf(KhonshuSymbolProcessorProvider()),
+    ).compile {
+        assertThat(it.exitCode).isEqualTo(ExitCode.OK)
+        assertThat(generatedFileFor(fileName)).isEqualTo(expectedCode)
+    }
 }

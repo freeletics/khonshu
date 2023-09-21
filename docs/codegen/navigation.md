@@ -7,12 +7,12 @@ The codegen also simplifies the usage of the [Khonshu Navigation library](../nav
 === "Compose"
 
     Instead of adding the `@ComposeScreen` annotation use `@ComposeDestination`. The `scope`
-    parameter is replaced by a `route` parameter. The given `route` will be used both as a 
+    parameter is replaced by a `route` parameter. The given `route` will be used both as a
     scope marker and to generate a `NavDestination` for this screen.
 
-    Additionally there is a `destinationType` parameter to determine whether the 
-    annotated composable is a screen or the content of a dialog or bottom sheet and a 
-    `destinationScope` parameter that determines to which component the `NavDestination` is 
+    Additionally there is a `destinationType` parameter to determine whether the
+    annotated composable is a screen or the content of a dialog or bottom sheet and a
+    `destinationScope` parameter that determines to which component the `NavDestination` is
     contributed to.
 
     ```kotlin
@@ -30,12 +30,12 @@ The codegen also simplifies the usage of the [Khonshu Navigation library](../nav
 === "Compose with Fragments"
 
     Instead of adding the `@ComposeFragment` annotation use `@ComposeDestination`. The `scope`
-    parameter is replaced by a `route` parameter. The given `route` will be used both as a 
+    parameter is replaced by a `route` parameter. The given `route` will be used both as a
     scope marker and to generate a `NavDestination` for this screen.
 
-    Additionally there is a `destinationType` parameter to determine whether the 
-    annotated composable is a screen or the content of a dialog or bottom sheet and a 
-    `destinationScope` parameter that determines to which component the `NavDestination` is 
+    Additionally there is a `destinationType` parameter to determine whether the
+    annotated composable is a screen or the content of a dialog or bottom sheet and a
+    `destinationScope` parameter that determines to which component the `NavDestination` is
     contributed to.
 
     ```kotlin
@@ -52,12 +52,12 @@ The codegen also simplifies the usage of the [Khonshu Navigation library](../nav
 === "Views with Fragments"
 
     Instead of adding the `@RendererFragment` annotation use `@RendererDestination`. The `scope`
-    parameter is replaced by a `route` parameter. The given `route` will be used both as a 
+    parameter is replaced by a `route` parameter. The given `route` will be used both as a
     scope marker and to generate a `NavDestination` for this screen.
 
-    Additionally there is a `destinationType` parameter to determine whether the 
-    annotated composable is a screen or the content of a dialog or bottom sheet and a 
-    `destinationScope` parameter that determines to which component the `NavDestination` is 
+    Additionally there is a `destinationType` parameter to determine whether the
+    annotated composable is a screen or the content of a dialog or bottom sheet and a
+    `destinationScope` parameter that determines to which component the `NavDestination` is
     contributed to.
 
     ```kotlin
@@ -71,8 +71,8 @@ The codegen also simplifies the usage of the [Khonshu Navigation library](../nav
     internal class ExampleRenderer ... // same as in general guide
     ```
 
-The instance of `NavRoute` that was passed to the screen when navigating to 
-it will be automatically available in the generated component, so it can be 
+The instance of `NavRoute` that was passed to the screen when navigating to
+it will be automatically available in the generated component, so it can be
 injected into the state machine or other classes to read given parameters.
 
 The generated `NavDestination` for the screen that uses `route` and `destinationType`
@@ -81,35 +81,48 @@ scope (usually an app wide or an Activity level scope). With that it's not neces
 to manually create a `Set` of all destinations anymore. It can simply be injected.
 
 The integration of Khonshu's Codegen and Navigation libraries also expects a `NavEventNavigator`
-to be injectable. This can be easily achieved by adding
-`@ScopeTo(ExampleScope::class) @ContributesBinding(ExampleScope::class, NavEventNavigator::class)`
+to be injectable. This can be easily achieved by adding `@SingleIn(ExampleScope::class)
+@ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, NavEventNavigator::class)`
 to a subclass of it. The generated code will automatically take care of setting up
 the navigator by calling `NavigationSetup` for compose and `handleNavigation`
 for Fragments inside the generated code.
 
 
+## Sharing objects between screens
+
+Sometimes it is needed to share an object between 2 or more screens, for example
+in a flow of screens that are connected to each other and work on the same data.
+This is possible by using the route of the first screen in the flow as `parentScope`
+for the other scopes. Internally this will cause the generated component for the
+first screen to become the parent for the components of the other screens.
+
+This then allows injecting anything that is available in the scope of the first screen,
+including the `SavedStateHandle` and route of the initial/parent screen.
+
+
 ## Example
 
-This is a minimal example of how using Codegen for a screen with the navigation integration 
+This is a minimal example of how using Codegen for a screen with the navigation integration
 would look like.
 
 ```kotlin
 // state machine survives orientation changes
-@ScopeTo(ExampleRoute::class)
+@SingleIn(ExampleRoute::class)
 internal class ExampleStateMachine @Inject constructor(
     val route: ExampleRoute, // inject the navigator route that was used to get to this screen
     val repository: ExampleRepository, // a repository that pas provided somewhere in the app
-) : StateMachine<ExampleState, ExampleAction> { 
-    // ... 
+) : StateMachine<ExampleState, ExampleAction> {
+    // ...
 }
 
 // scope the navigator so that everything interacts with the same instance
-@ScopeTo(ExampleRoute::class)
+@SingleIn(ExampleRoute::class)
+@ForScope(ExampleRoute::class)
 // make ExampleNavigator available as NavEventNavigator so that the generated code can automatically
 // set up the navigation handling
 @ContributesBinding(ExampleRoute::class, NavEventNavigator::class)
 class ExampleNavigator @Inject constructor() : NavEventNavigator() {
-    // ... 
+    // ...
 }
 ```
 
@@ -127,7 +140,7 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
     internal fun ExampleUi(
         state: ExampleState,
         sendAction: (ExampleAction) -> Unit,
-    ) { 
+    ) {
         // render the ui for ExampleState
     }
     ```
@@ -146,7 +159,7 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
     internal fun ExampleUi(
         state: ExampleState,
         sendAction: (ExampleAction) -> Unit,
-    ) { 
+    ) {
         // render the ui for ExampleState
     }
     ```
@@ -164,11 +177,11 @@ class ExampleNavigator @Inject constructor() : NavEventNavigator() {
     internal class ExampleRenderer @AssistedInject constructor(
         @Assisted private val binding: ExampleViewBinding,
     ) : ViewRenderer<ExampleState, ExampleAction>(binding) {
-    
+
         override fun renderToView(state: ExampleState) {
             // render the ui for ExampleState
         }
-    
+
         @AssistedFactory
         abstract class Factory : ViewRenderer.Factory<ExampleViewBinding, ExampleRenderer>(ExampleViewBinding::inflate)
     }

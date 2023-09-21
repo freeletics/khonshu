@@ -19,38 +19,52 @@
   packageRules: [
     {
       matchDatasources: ["maven"],
-      registryUrls: ["https://repo.maven.apache.org/maven2", "https://dl.google.com/android/maven2"]
+      registryUrls: [
+        "https://repo.maven.apache.org/maven2",
+        "https://dl.google.com/android/maven2",
+        "https://plugins.gradle.org/m2",
+      ]
     },
     {
       matchPackageNames: [
-        "gradle"
+        "gradle",
       ],
       prBodyNotes: "[Changelog](https://docs.gradle.org/{{{newVersion}}}/release-notes.html)"
     },
     {
       matchPackagePatterns: [
-        "com.freeletics.gradle"
+        "com.freeletics.gradle",
       ],
       groupName: "Freeletics Gradle Plugin"
     },
     {
       matchPackagePatterns: [
-        "org.jetbrains.kotlin:",
-        "org.jetbrains.kotlin.android",
-        "org.jetbrains.kotlin.jvm",
-        "org.jetbrains.kotlin.multiplatform",
+        "org.jetbrains.kotlin",
         "com.google.devtools.ksp",
-        "org.jetbrains.compose",
-        "androidx.compose.compiler"
+        "dev.zacsweers.kctfork",
+        "androidx.compose.compiler",
+        "org.jetbrains.compose.compiler",
       ],
-      groupName: "Kotlin and Compose Compiler"
+      excludePackagePatterns: [
+        "org.jetbrains.kotlinx",
+      ],
+      groupName: "Kotlin, KSP and Compose Compiler"
     },
     {
       matchPackagePatterns: [
         "androidx.compose.runtime",
         "androidx.compose.ui",
         "androidx.compose.foundation",
+        "androidx.compose.animation",
         "androidx.compose.material",
+        "androidx.compose.material3",
+        "org.jetbrains.compose$",
+        "org.jetbrains.compose.runtime",
+        "org.jetbrains.compose.ui",
+        "org.jetbrains.compose.foundation",
+        "org.jetbrains.compose.animation",
+        "org.jetbrains.compose.material",
+        "org.jetbrains.compose.material3",
       ],
       groupName: "Compose"
     }

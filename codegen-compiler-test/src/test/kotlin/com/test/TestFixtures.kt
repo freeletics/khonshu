@@ -3,14 +3,20 @@ package com.test
 import android.os.Parcel
 import android.view.View
 import androidx.viewbinding.ViewBinding
+import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
-import com.freeletics.mad.statemachine.StateMachine
+import com.freeletics.khonshu.statemachine.StateMachine
 import kotlinx.coroutines.flow.Flow
 
 public class TestScreen
 public class TestClass
 
 public class TestRoute : NavRoute {
+    override fun describeContents(): Int = 0
+    override fun writeToParcel(p0: Parcel, p1: Int) {}
+}
+
+public class TestRoot : NavRoot {
     override fun describeContents(): Int = 0
     override fun writeToParcel(p0: Parcel, p1: Int) {}
 }

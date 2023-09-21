@@ -3,17 +3,18 @@ package com.freeletics.khonshu.codegen.codegen
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.ComposeScreenData
-import com.freeletics.khonshu.codegen.NavEntryData
+import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.codegen.common.ComponentGenerator
-import com.freeletics.khonshu.codegen.codegen.common.ComposeGenerator
+import com.freeletics.khonshu.codegen.codegen.common.ComponentProviderGenerator
+import com.freeletics.khonshu.codegen.codegen.common.InnerComposableGenerator
 import com.freeletics.khonshu.codegen.codegen.common.ModuleGenerator
-import com.freeletics.khonshu.codegen.codegen.compose.ComposeScreenGenerator
+import com.freeletics.khonshu.codegen.codegen.common.NavDestinationModuleGenerator
+import com.freeletics.khonshu.codegen.codegen.compose.ActivityGenerator
+import com.freeletics.khonshu.codegen.codegen.compose.ActivityModuleGenerator
+import com.freeletics.khonshu.codegen.codegen.compose.OuterComposableGenerator
 import com.freeletics.khonshu.codegen.codegen.fragment.ComposeFragmentGenerator
 import com.freeletics.khonshu.codegen.codegen.fragment.RendererFragmentGenerator
-import com.freeletics.khonshu.codegen.codegen.nav.NavDestinationComponentGenerator
-import com.freeletics.khonshu.codegen.codegen.nav.NavDestinationModuleGenerator
-import com.freeletics.khonshu.codegen.codegen.nav.NavEntryComponentGetterGenerator
 import com.squareup.kotlinpoet.FileSpec
 
 public class FileGenerator {
@@ -23,74 +24,83 @@ public class FileGenerator {
             is ComposeFragmentData -> generate(data)
             is ComposeScreenData -> generate(data)
             is RendererFragmentData -> generate(data)
-            is NavEntryData -> throw IllegalArgumentException("Can't generate file for NavEntryData")
+            is NavHostActivityData -> generate(data)
         }
     }
 
     public fun generate(data: ComposeScreenData): FileSpec {
-        val componentGenerator = ComponentGenerator(data)
-        val moduleGenerator = ModuleGenerator(data)
-        val composeScreenGenerator = ComposeScreenGenerator(data)
-        val composeGenerator = ComposeGenerator(data)
+        val component = ComponentGenerator(data)
+        val module = ModuleGenerator(data)
+        val outerComposable = OuterComposableGenerator(data)
+        val innerComposable = InnerComposableGenerator(data)
 
         return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
-            .addType(componentGenerator.generate())
-            .addType(moduleGenerator.generate())
-            .addFunction(composeScreenGenerator.generate())
-            .addFunction(composeGenerator.generate())
+            .addType(component.generate())
+            .addComponentProviderType(data)
+            .addType(module.generate())
+            .addFunction(outerComposable.generate())
+            .addFunction(innerComposable.generate())
             .addNavDestinationTypes(data)
-            .addNavEntryTypes(data.navEntryData)
+            .build()
+    }
+
+    public fun generate(data: NavHostActivityData): FileSpec {
+        val component = ComponentGenerator(data)
+        val module = ModuleGenerator(data)
+        val activityModule = ActivityModuleGenerator(data)
+        val activity = ActivityGenerator(data)
+        val innerComposable = InnerComposableGenerator(data)
+
+        return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
+            .addType(component.generate())
+            .addType(module.generate())
+            .addType(activityModule.generate())
+            .addType(activity.generate())
+            .addFunction(innerComposable.generate())
             .build()
     }
 
     public fun generate(data: ComposeFragmentData): FileSpec {
-        val componentGenerator = ComponentGenerator(data)
-        val moduleGenerator = ModuleGenerator(data)
-        val composeFragmentGenerator = ComposeFragmentGenerator(data)
-        val composeGenerator = ComposeGenerator(data)
+        val component = ComponentGenerator(data)
+        val module = ModuleGenerator(data)
+        val fragment = ComposeFragmentGenerator(data)
+        val innerComposable = InnerComposableGenerator(data)
 
         return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
-            .addType(componentGenerator.generate())
-            .addType(moduleGenerator.generate())
-            .addType(composeFragmentGenerator.generate())
-            .addFunction(composeGenerator.generate())
+            .addType(component.generate())
+            .addComponentProviderType(data)
+            .addType(module.generate())
+            .addType(fragment.generate())
+            .addFunction(innerComposable.generate())
             .addNavDestinationTypes(data)
-            .addNavEntryTypes(data.navEntryData)
             .build()
     }
 
     public fun generate(data: RendererFragmentData): FileSpec {
-        val componentGenerator = ComponentGenerator(data)
-        val moduleGenerator = ModuleGenerator(data)
-        val rendererFragmentGenerator = RendererFragmentGenerator(data)
+        val component = ComponentGenerator(data)
+        val module = ModuleGenerator(data)
+        val renderer = RendererFragmentGenerator(data)
 
         return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
-            .addType(componentGenerator.generate())
-            .addType(moduleGenerator.generate())
-            .addType(rendererFragmentGenerator.generate())
+            .addType(component.generate())
+            .addComponentProviderType(data)
+            .addType(module.generate())
+            .addType(renderer.generate())
             .addNavDestinationTypes(data)
-            .addNavEntryTypes(data.navEntryData)
             .build()
+    }
+
+    private fun FileSpec.Builder.addComponentProviderType(data: BaseData) = apply {
+        if (data.navigation != null) {
+            val componentProvider = ComponentProviderGenerator(data)
+            addType(componentProvider.generate())
+        }
     }
 
     private fun FileSpec.Builder.addNavDestinationTypes(data: BaseData) = apply {
         if (data.navigation != null) {
-            val navDestinationGenerator = NavDestinationModuleGenerator(data)
-            addType(navDestinationGenerator.generate())
-        }
-    }
-
-    private fun FileSpec.Builder.addNavEntryTypes(data: NavEntryData?) = apply {
-        if (data != null) {
-            val componentGenerator = ComponentGenerator(data)
-            val moduleGenerator = ModuleGenerator(data)
-            val componentGetterGenerator = NavEntryComponentGetterGenerator(data)
-            val destinationComponentGenerator = NavDestinationComponentGenerator(data)
-
-            addType(componentGenerator.generate())
-            addType(moduleGenerator.generate())
-            addType(componentGetterGenerator.generate())
-            addType(destinationComponentGenerator.generate())
+            val navDestinationModule = NavDestinationModuleGenerator(data)
+            addType(navDestinationModule.generate())
         }
     }
 }
