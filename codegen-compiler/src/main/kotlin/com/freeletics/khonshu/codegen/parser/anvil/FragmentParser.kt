@@ -56,7 +56,7 @@ internal fun TopLevelFunctionReference.toComposeFragmentData(): ComposeFragmentD
     val (stateParameter, actionParameter) = stateMachine.stateMachineParameters()
 
     return ComposeFragmentData(
-        baseName = name,
+        baseName = "Fragment$name",
         packageName = packageName,
         scope = annotation.scope,
         parentScope = annotation.parentScope,
@@ -83,7 +83,7 @@ internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): Compo
     )
 
     return ComposeFragmentData(
-        baseName = name,
+        baseName = "Fragment$name",
         packageName = packageName,
         scope = annotation.route,
         parentScope = annotation.parentScope,
