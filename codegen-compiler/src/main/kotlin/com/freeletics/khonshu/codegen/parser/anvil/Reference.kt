@@ -40,11 +40,6 @@ internal fun AnnotationReference.optionalClassReferenceArgument(name: String, in
     return argumentAt(name, index)?.value()
 }
 
-internal fun AnnotationReference.requireEnumArgument(name: String, index: Int): String {
-    return optionalEnumArgument(name, index)
-        ?: throw AnvilCompilationExceptionAnnotationReference(this, "Couldn't find $name for $fqName")
-}
-
 internal fun AnnotationReference.optionalEnumArgument(name: String, index: Int): String? {
     return argumentAt(name, index)?.value<FqName>()?.shortName()?.asString()
 }
