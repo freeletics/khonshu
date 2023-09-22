@@ -50,7 +50,7 @@ internal fun KSFunctionDeclaration.toComposeFragmentDestinationData(
     )
 
     return ComposeFragmentData(
-        baseName = simpleName.asString(),
+        baseName = "Fragment" + simpleName.asString(),
         packageName = packageName.asString(),
         scope = annotation.route,
         parentScope = annotation.parentScope,

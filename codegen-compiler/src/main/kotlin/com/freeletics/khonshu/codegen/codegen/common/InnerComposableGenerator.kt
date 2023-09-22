@@ -59,7 +59,7 @@ internal class InnerComposableGenerator(
                     addStatement("val scope = %M()", rememberCoroutineScope)
                 }
             }
-            .addStatement("%L(", data.baseName)
+            .addStatement("%L(", data.baseName.removePrefix("Fragment"))
             .apply {
                 data.composableParameter.forEach { parameter ->
                     addStatement("  %L = %L,", parameter.name, parameter.name)

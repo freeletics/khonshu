@@ -46,7 +46,7 @@ internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): Compo
     )
 
     return ComposeFragmentData(
-        baseName = name,
+        baseName = "Fragment$name",
         packageName = packageName,
         scope = annotation.route,
         parentScope = annotation.parentScope,
