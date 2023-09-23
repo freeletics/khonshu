@@ -118,7 +118,6 @@ private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
 
     LaunchedEffect(executor, callback) {
         snapshotFlow { executor.canNavigateBack.value }
-            .distinctUntilChanged()
             .collect { callback.isEnabled = it }
     }
 
