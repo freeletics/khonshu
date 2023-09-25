@@ -29,7 +29,7 @@ Change Log
   and Composables without relying on Khonshu navigation. We've only ever used this for Activities
   which now have a better solution. In the beginning we saw the codegen and navigation as 2
   separate things but now the codegen is more of an add-on, so we decided to remove the standalone
-  mode for codegen.
+  mode (codegen without navigation) for codegen.
 - The following 3 artifacts are now empty and will not be publihshed anymore from the next release
   onwards. They have been merged into `com.freeletics.khonshu:codegen-runtime` and depend on it
   to make updating easier.
