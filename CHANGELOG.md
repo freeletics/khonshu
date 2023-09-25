@@ -17,15 +17,15 @@ Change Log
 
 - **Breaking**: Renamed the Compose `@ComposeDestnation` annotation to `@NavDestination` and
   the Fragment `@ComposeDestination` to `@ComposeFragmentDestination`.
-- **Breaking**: Removed `@ScopeTo` and `ForScope` annotations. They have been replaced by
+- **Breaking**: Removed `@ScopeTo` and `@ForScope` annotations. They have been replaced by
   Anvil's `@SingleIn` and `@ForScope` from `com.squareup.anvil:annotations-optional`.
-- New: The code generation now supports KSP. The functionality is generally the same
-- New: A new `@NavHostActivity` annotation was added and will generate an `Activity` and the
+- **New**: The code generation now supports KSP. The functionality is generally the same
+- **New**: A new `@NavHostActivity` annotation was added and will generate an `Activity` and the
   related boilerplate. Check out [the docs](https://freeletics.github.io/khonshu/codegen/) for
   more details.
 - It's now possible to use both `@NavDestination` and `@ComposeFragmentDestination` at the same
   time on the same composable. This allows transitioning from Fragments to Compose more easily.
-- Removed: `@RendererScreen` and `@ComposeScreen` annotations. These allowed generating Fragments
+- **Removed**: `@RendererScreen` and `@ComposeScreen` annotations. These allowed generating Fragments
   and Composables without relying on Khonshu navigation. We've only ever used this for Activities
   which now have a better solution. In the beginning we saw the codegen and navigation as 2
   separate things but now the codegen is more of an add-on, so we decided to remove the standalone
