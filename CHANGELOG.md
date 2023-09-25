@@ -6,14 +6,14 @@ Change Log
 
 ## 0.17.0 *(2023-09-25)*
 
-## Navigation
+### Navigation
 
 - `com.freeletics.khonshu:navigation` is now a multiplatform module with JVM and Android
   targets. The goal is not to support multiplatform navigation (for now at least), but to
   make it possible to reference `NavRoute` in Kotlin/JVM modules.
 
 
-## Codegen
+### Codegen
 
 - **Breaking**: Renamed the Compose `@ComposeDestnation` annotation to `@NavDestination` and
   the Fragment `@ComposeDestination` to `@ComposeFragmentDestination`.
@@ -43,7 +43,7 @@ Change Log
 
 ## 0.16.1 *(2023-08-07)*
 
-## Navigation
+### Navigation
 
 - Added `awaitNavigate` method to `NavigatorTurbine` that takes a lambda as parameter. It verifies that one nav event,
   containing all navigation actions from the lambda, is being received.
@@ -53,12 +53,12 @@ Change Log
 
 - Now uses Kotlin 1.9.0 and Anvil 2.4.7.
 
-## Navigation
+### Navigation
 
 - Added `navigate` method to `NavEventNavigator` that takes a lambda as parameter. That lambda can
   contain multiple navigation actions that will end up being bundled into one event that
 
-## Codegen
+### Codegen
 
 - Added general `ForScope` annotation.
 - It's now possible to use the `scope` of another screen using codegen as `parentScope`.
