@@ -64,7 +64,6 @@ jobs:
           sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/navigation/get-started.md
           sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/navigation/testing.md
           sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/codegen/get-started.md
-          sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/codegen/navigation.md
           sed -i "s/<latest-version>/$(git describe --tags --abbrev=0)/" docs/helpers.md
           # Copy Dokka files
           mkdir -p docs/navigation/API/runtime
