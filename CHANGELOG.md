@@ -1,9 +1,44 @@
 Change Log
 ==========
 
-## 0.16.2 **UNRELEASED**
+## 0.17.1 **UNRELEASED**
 
--
+
+## 0.17.0 *(2023-09-25)*
+
+## Navigation
+
+- `com.freeletics.khonshu:navigation` is now a multiplatform module with JVM and Android
+  targets. The goal is not to support multiplatform navigation (for now at least), but to
+  make it possible to reference `NavRoute` in Kotlin/JVM modules.
+
+
+## Codegen
+
+- **Breaking**: Renamed the Compose `@ComposeDestnation` annotation to `@NavDestination` and
+  the Fragment `@ComposeDestination` to `@ComposeFragmentDestination`.
+- **Breaking**: Removed `@ScopeTo` and `@ForScope` annotations. They have been replaced by
+  Anvil's `@SingleIn` and `@ForScope` from `com.squareup.anvil:annotations-optional`.
+- **New**: The code generation now supports KSP. The functionality is generally the same
+- **New**: A new `@NavHostActivity` annotation was added and will generate an `Activity` and the
+  related boilerplate. Check out [the docs](https://freeletics.github.io/khonshu/codegen/) for
+  more details.
+- It's now possible to use both `@NavDestination` and `@ComposeFragmentDestination` at the same
+  time on the same composable. This allows transitioning from Fragments to Compose more easily.
+- **Removed**: `@RendererScreen` and `@ComposeScreen` annotations. These allowed generating Fragments
+  and Composables without relying on Khonshu navigation. We've only ever used this for Activities
+  which now have a better solution. In the beginning we saw the codegen and navigation as 2
+  separate things but now the codegen is more of an add-on, so we decided to remove the standalone
+  mode (codegen without navigation) for codegen.
+- The following 3 artifacts are now empty and will not be publihshed anymore from the next release
+  onwards. They have been merged into `com.freeletics.khonshu:codegen-runtime` and depend on it
+  to make updating easier.
+    - `com.freeletics.khonshu:codegen-scope`
+    - `com.freeletics.khonshu:codegen-compose`
+    - `com.freeletics.khonshu:codegen-fragment`
+- `com.freeletics.khonshu:codegen-runtime` is now a multiplatform module with JVM and Android
+  targets. The code generation still only supports Android but a few classes like `AppScope`
+  can now be referenced from Kotlin/JVM modules.
 
 
 ## 0.16.1 *(2023-08-07)*

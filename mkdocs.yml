@@ -34,7 +34,7 @@ nav:
           - 'Testing': navigation/API/testing/index.html
   - 'Codegen':
       - codegen/get-started.md
-      - codegen/navigation.md
+      - codegen/activity-generation.md
       - codegen/compose-injection.md
       - codegen/closeable-support.md
       - 'API':

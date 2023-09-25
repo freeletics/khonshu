@@ -20,46 +20,34 @@ just using Compose is as easy as replacing a single annotation on each screen.
 
 ## Dependency
 
+```groovy
+implementation("com.freeletics.khonshu:codegen-runtime:<latest-version>")
+// instead of `anvil` it's also possible to use `ksp`
+anvil("com.freeletics.khonshu:codegen-compiler:<latest-version>")
+```
+
+
+## Basic usage
+
 The library provides 2 different runtime implementations. One for `Fragment` based apps and one
 for pure `Compose` apps. If an app uses Compose but the composables are hosted inside fragments
 it falls into the `Fragment` category.
 
 === "Compose"
 
-    ```groovy
-    implementation("com.freeletics.khonshu:codegen-compose:<latest-version>")
-    anvil("com.freeletics.khonshu:codegen-compiler:<latest-version>")
-    ```
-
-=== "Compose with Fragments"
-
-    ```groovy
-    implementation("com.freeletics.khonshu:codegen-fragment:<latest-version>")
-    anvil("com.freeletics.khonshu:codegen-compiler:<latest-version>")
-    ```
-
-=== "Views with Fragments"
-
-    ```kotlin
-    implementation("com.freeletics.codegen:codegen-fragment:<latest-version>")
-    anvil("com.freeletics.codegen:codegen-compiler:<latest-version>")
-    ```
-
-
-## Basic usage
-
-=== "Compose"
-
-    The `@ComposeScreen` annotation is added to the top level composable of a screen. This function
+    The `@NavDestination` annotation is added to the top level composable of a screen. This function
     can have 2 parameters: the state that should be rendered and a lambda that allows
-    the composable to send actions for user interactions. This will then generate
-    another Composable function called `KhonshuExampleUi` and a Dagger component.
+    the composable to send actions for user interactions. Adding the annotation will then generate
+    another Composable function called `KhonshuExampleUi`, a Dagger component and a `NavDestination`
+    that uses the given `route` and the generated composable.
 
     ```kotlin
-    @ComposeScreen(
-        scope = ExampleScope::class,
+    @NavDestination(
+        route = ExampleRoute::class,
         parentScope = AppScope::class, // AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class,
+        destinationType = DestintionType.SCREEN, // SCREEN is the default value and can be omitted
+        destinationScope = AppScope::class, // AppScope is the default value and can be omitted
     )
     @Composable
     internal fun ExampleUi(
@@ -69,7 +57,7 @@ it falls into the `Fragment` category.
       // composable logic ...
     }
     ```
-    *`scope` and `parentScope` are described in the next section*
+    *`scope`, `parentScope`, destionationScope` and `destinationType` are described in the next sections*
 
     The generated `KhonshuExampleUi` function will use the generated component, the
     annotated composable as well as the `stateMachine` parameter from the
@@ -81,16 +69,19 @@ it falls into the `Fragment` category.
 
 === "Compose with Fragments"
 
-    The `@ComposeFragment` annotation is added to the top level composable of a screen. This function
+    The `@ComposeFragmentDestination` annotation is added to the top level composable of a screen. This function
     can have 2 parameters: the state that should be rendered and a lambda that allows
-    the composable to send actions for user interactions. This will then generate
-    a `Fragment` called `KhonshuExampleUiFragment` and a Dagger component.
+    the composable to send actions for user interactions. Adding the annotation will then generate
+    a `Fragment` called `KhonshuExampleUiFragment`, a Dagger component and a `NavDestination`
+    that uses the given `route` and the generated Fragment.
 
     ```kotlin
-    @ComposeFragment(
-        scope = ExampleScope::class,
+    @ComposeFragmentDestination(
+        route = ExampleRoute::class,
         parentScope = AppScope::class, // AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class,
+        destinationType = DestintionType.SCREEN, // SCREEN is the default value and can be omitted
+        destinationScope = AppScope::class, // AppScope is the default value and can be omitted
     )
     @Composable
     internal fun ExampleUi(
@@ -100,7 +91,7 @@ it falls into the `Fragment` category.
       // composable logic ...
     }
     ```
-    *`scope` and `parentScope` are described in the next section*
+    *`scope`, `parentScope`, destionationScope` and `destinationType` are described in the next sections*
 
     The generated `KhonshuExampleUiFragment` will use the generated component, the
     annotated composable as well as the `stateMachine` parameter from the
@@ -120,15 +111,17 @@ it falls into the `Fragment` category.
     This is based on the separate [Renderer library](https://github.com/gabrielittner/renderer)
     which separates the view/ui logic from Fragments or other framework classes.
     Similar to composables above a Renderer receives a state object and emits
-    actions. Codegen has a `@RendererFragment` annotation which needs to be added to the
-    Renderer class. This will then generate a `Fragment` called `KhonshuExampleUiFragment`
-    and a Dagger component.
+    actions. Codegen has a `@RendererDestination` annotation which needs to be added to the
+    Renderer class. This will then generate a `Fragment` called `KhonshuExampleUiFragment`,
+    a Dagger component and a `NavDestination` that uses the given `route` and the generated Fragment.
 
     ```kotlin
-    @RendererFragment(
-        scope = ExampleScope::class,
+    @RendererDestination(
+        route = ExampleRoute::class,
         parentScope = AppScope::class, // AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class,
+        destinationType = DestintionType.SCREEN, // SCREEN is the default value and can be omitted
+        destinationScope = AppScope::class, // AppScope is the default value and can be omitted
     )
     internal class ExampleRenderer @AssistedInject constructor(
         @Assisted private val binding: ExampleViewBinding,
@@ -142,6 +135,7 @@ it falls into the `Fragment` category.
         abstract class Factory : ViewRenderer.Factory<ExampleViewBinding, ExampleRenderer>(ExampleViewBinding::inflate)
     }
     ```
+    *`scope`, `parentScope`, destionationScope` and `destinationType` are described in the next sections*
 
     The generated `KhonshuExampleRendererFragment` will use the generated component, the
     annotated composable as well as the `stateMachine`. It will use the `ViewRenderer.Factory`
@@ -161,7 +155,7 @@ it falls into the `Fragment` category.
 
 All annotations have a `scope` and a `parentScope` parameter. These will be used in Anvil's
 `@ContributesSubcomponent` annotation on the generated subcomponent, i.e.
-`@ContributesSubcomponent(scope = ExampleScope::class, parentScope = AppScope::class)`.
+`@ContributesSubcomponent(route = ExampleRoute::class, parentScope = AppScope::class)`.
 
 Since the generated subcomponent is using `@ContributesSubcomponent`, it is possible
 to use `@ContributesTo`, `@ContributesBinding` and so on with that same scope
@@ -180,9 +174,46 @@ with `Context.getSystemService(name)` using the fully qualified name of the give
 key for the lookup. It is expected that the app will provide it through its `Application` class or an
 `Activity`.
 
-For convenience purposes the generated component will make the `Bundle` with arguments and a
-`SavedStateHandle` available which can be injected to classes like the state machine to save state.
-When injecting either of them the `@ForScope(ExampleScope::class)` qualifier needs to be used.
+For convenience purposes the generated component will make the instance of `route` that was used to
+navigate to the screen and a `SavedStateHandle` available which can be injected to classes like
+the state machine to save state. When injecting the `SavedStateHandle` a `@ForScope(ExampleScope::class)`
+qualifier needs to be added.
+
+
+## NavDestination
+
+A `NavDestination` is automatically generated for each annotated screen. The type of the generated
+destination is determined by the `destinationType` parameter of the annotation.
+
+To avoid having to access any generated code the destination is directly contributed to
+a `Set<NavDestination>` which can then be injected where the `NavHost` or `NavHostFragment` is
+created. By default this set lives in the `AppScope` component, but this can be changed
+by setting a different scope marker class to `destinationScope`. It's also possible to use
+`destinationScope` to create distinct sets of destinations. For example if an app has a logged in
+and a logged out component, their scopes could be used as `destinationScope` depending on whether
+a screen is shown in the logged in or logged out state.
+
+
+## Navigation set up
+
+The integration of Khonshu's Codegen and Navigation libraries also expects a `NavEventNavigator`
+to be injectable. This can be easily achieved by adding `@SingleIn(ExampleScope::class)
+@ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, NavEventNavigator::class)`
+to a subclass of it. The generated code will automatically take care of setting up
+the navigator by calling `NavigationSetup` for compose and `handleNavigation`
+for Fragments inside the generated code.
+
+
+## Sharing objects between screens
+
+Sometimes it is needed to share an object between 2 or more screens, for example
+in a flow of screens that are connected to each other and work on the same data.
+This is possible by using the route of the first screen in the flow as `parentScope`
+for the other scopes. Internally this will cause the generated component for the
+first screen to become the parent for the components of the other screens.
+
+This then allows injecting anything that is available in the scope of the first screen,
+including the `SavedStateHandle` and route of the initial/parent screen.
 
 
 ## Example
@@ -194,14 +225,23 @@ This is a minimal example of how using Khonshu's Codegen for a screen would look
 sealed interface ExampleScope
 
 // state machine survives orientation changes
-@SingleIn(ExampleScope::class)
+@SingleIn(ExampleRoute::class)
 internal class ExampleStateMachine @Inject constructor(
-    @ForScope(ExampleScope::class)
-    val bundle: Bundle, // the arguments passed to this screen
-    @ForScope(ExampleScope::class)
-    val savedStateHandle: SavedStateHandle // a saved state handle tied to this screen
+    val route: ExampleRoute, // inject the navigator route that was used to get to this screen
+    @ForScope(ExampleRoute::class)
+    val savedStateHandle: SavedStateHandle, // a saved state handle tied to this screen
     val repository: ExampleRepository, // a repository that pas provided somewhere in the app
 ) : StateMachine<ExampleState, ExampleAction> {
+    // ...
+}
+
+// scope the navigator so that everything interacts with the same instance
+@SingleIn(ExampleRoute::class)
+@ForScope(ExampleRoute::class)
+// make ExampleNavigator available as NavEventNavigator so that the generated code can automatically
+// set up the navigation handling
+@ContributesBinding(ExampleRoute::class, NavEventNavigator::class)
+class ExampleNavigator @Inject constructor() : NavEventNavigator() {
     // ...
 }
 ```
@@ -209,10 +249,12 @@ internal class ExampleStateMachine @Inject constructor(
 === "Compose"
 
     ```kotlin
-    @ComposeScreen(
-        scope = ExampleScope::class, // uses our marker class
+    @NavDestination(
+        route = ExampleRoute::class, // the route used to navigate to ExampleUi
         parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
+        destinationType = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet, SCREEN is the default value and can be omitted
+        destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted
     )
     @Composable
     internal fun ExampleUi(
@@ -226,10 +268,12 @@ internal class ExampleStateMachine @Inject constructor(
 === "Compose with Fragments"
 
     ```kotlin
-    @ComposeFragment(
-        scope = ExampleScope::class, // uses our marker class
+    @ComposeFragmentDestination(
+        route = ExampleRoute::class, // the route used to navigate to ExampleUi
         parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
+        destinationType = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet, SCREEN is the default value and can be omitted
+        destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted
     )
     @Composable
     internal fun ExampleUi(
@@ -243,10 +287,12 @@ internal class ExampleStateMachine @Inject constructor(
 === "Views with Fragments"
 
     ```kotlin
-    @RendererFragment(
-        scope = ExampleScope::class, // uses our marker class
+    @RendererDestination(
+        route = ExampleRoute::class, // the route used to navigate to ExampleUi
         parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
         stateMachine = ExampleStateMachine::class, // the state machine used for this ui
+        destinationType = DestinationType.SCREEN, // whether it's a screen, dialog or bottom sheet, SCREEN is the default value and can be omitted
+        destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted
     )
     internal class ExampleRenderer @AssistedInject constructor(
         @Assisted private val binding: ExampleViewBinding,
