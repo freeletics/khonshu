@@ -1,9 +1,9 @@
 package com.freeletics.khonshu.codegen
 
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
-import com.freeletics.khonshu.codegen.compose.ComposeDestination
+import com.freeletics.khonshu.codegen.compose.NavDestination
 import com.freeletics.khonshu.codegen.compose.NavHostActivity
-import com.freeletics.khonshu.codegen.fragment.ComposeDestination as ComposeFragmentDestination
+import com.freeletics.khonshu.codegen.fragment.ComposeFragmentDestination as ComposeFragmentDestination
 import com.freeletics.khonshu.codegen.fragment.RendererDestination
 import com.freeletics.khonshu.codegen.parser.ksp.toComposeFragmentDestinationData
 import com.freeletics.khonshu.codegen.parser.ksp.toComposeScreenDestinationData
@@ -38,7 +38,7 @@ public class KhonshuSymbolProcessor(
     private val fileGenerator = FileGenerator()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        resolver.generateCodeForAnnotation<KSFunctionDeclaration, ComposeDestination> {
+        resolver.generateCodeForAnnotation<KSFunctionDeclaration, NavDestination> {
             toComposeScreenDestinationData(it, resolver, logger)
         }
         resolver.generateCodeForAnnotation<KSClassDeclaration, RendererDestination> {

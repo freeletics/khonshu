@@ -3,14 +3,14 @@ package com.freeletics.khonshu.codegen.parser.anvil
 import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.Navigation
-import com.freeletics.khonshu.codegen.codegen.util.codegenComposeDestinationFqName
+import com.freeletics.khonshu.codegen.codegen.util.navDestinationFqName
 import com.freeletics.khonshu.codegen.codegen.util.navHostActivityFqName
 import com.freeletics.khonshu.codegen.compose.DestinationType
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.asClassName
 
 internal fun TopLevelFunctionReference.toComposeScreenDestinationData(): ComposeScreenData? {
-    val annotation = findAnnotation(codegenComposeDestinationFqName) ?: return null
+    val annotation = findAnnotation(navDestinationFqName) ?: return null
 
     val stateMachine = annotation.stateMachineReference
     val (stateParameter, actionParameter) = stateMachine.stateMachineParameters()

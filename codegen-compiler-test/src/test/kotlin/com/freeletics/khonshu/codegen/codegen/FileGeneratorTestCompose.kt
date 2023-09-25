@@ -52,12 +52,12 @@ internal class FileGeneratorTestCompose {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.ComposeDestination
+            import com.freeletics.khonshu.codegen.compose.NavDestination
             import com.freeletics.khonshu.codegen.compose.DestinationType
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 
-            @ComposeDestination(
+            @NavDestination(
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,
@@ -229,10 +229,10 @@ internal class FileGeneratorTestCompose {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.ComposeDestination
+            import com.freeletics.khonshu.codegen.compose.NavDestination
             import com.freeletics.khonshu.codegen.compose.DestinationType
 
-            @ComposeDestination(
+            @NavDestination(
               route = TestRoute::class,
               stateMachine = TestStateMachine::class,
               destinationType = DestinationType.SCREEN,
@@ -413,13 +413,13 @@ internal class FileGeneratorTestCompose {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.ComposeDestination
+            import com.freeletics.khonshu.codegen.compose.NavDestination
             import com.freeletics.khonshu.codegen.compose.DestinationType
             import com.test.destination.TestDestinationScope
             import com.test.other.TestClass2
             import com.test.parent.TestParentRoute
 
-            @ComposeDestination(
+            @NavDestination(
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,
@@ -609,12 +609,12 @@ internal class FileGeneratorTestCompose {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.ComposeDestination
+            import com.freeletics.khonshu.codegen.compose.NavDestination
             import com.freeletics.khonshu.codegen.compose.DestinationType
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 
-            @ComposeDestination(
+            @NavDestination(
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,
@@ -775,12 +775,12 @@ internal class FileGeneratorTestCompose {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.ComposeDestination
+            import com.freeletics.khonshu.codegen.compose.NavDestination
             import com.freeletics.khonshu.codegen.compose.DestinationType
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 
-            @ComposeDestination(
+            @NavDestination(
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,

@@ -53,12 +53,12 @@ internal class FileGeneratorTestComposeFragment {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.fragment.ComposeDestination
+            import com.freeletics.khonshu.codegen.fragment.ComposeFragmentDestination
             import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 
-            @ComposeDestination(
+            @ComposeFragmentDestination(
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,
@@ -251,10 +251,10 @@ internal class FileGeneratorTestComposeFragment {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.fragment.ComposeDestination
+            import com.freeletics.khonshu.codegen.fragment.ComposeFragmentDestination
             import com.freeletics.khonshu.codegen.fragment.DestinationType
 
-            @ComposeDestination(
+            @ComposeFragmentDestination(
               route = TestRoute::class,
               stateMachine = TestStateMachine::class,
             )
@@ -442,12 +442,12 @@ internal class FileGeneratorTestComposeFragment {
 
             import androidx.compose.runtime.Composable
             import androidx.fragment.app.DialogFragment
-            import com.freeletics.khonshu.codegen.fragment.ComposeDestination
+            import com.freeletics.khonshu.codegen.fragment.ComposeFragmentDestination
             import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 
-            @ComposeDestination(
+            @ComposeFragmentDestination(
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,
@@ -653,13 +653,13 @@ internal class FileGeneratorTestComposeFragment {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.fragment.ComposeDestination
+            import com.freeletics.khonshu.codegen.fragment.ComposeFragmentDestination
             import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.test.destination.TestDestinationScope
             import com.test.other.TestClass2
             import com.test.parent.TestParentRoute
 
-            @ComposeDestination(
+            @ComposeFragmentDestination(
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,
@@ -870,12 +870,12 @@ internal class FileGeneratorTestComposeFragment {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.fragment.ComposeDestination
+            import com.freeletics.khonshu.codegen.fragment.ComposeFragmentDestination
             import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 
-            @ComposeDestination(
+            @ComposeFragmentDestination(
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,
@@ -1057,12 +1057,12 @@ internal class FileGeneratorTestComposeFragment {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.fragment.ComposeDestination
+            import com.freeletics.khonshu.codegen.fragment.ComposeFragmentDestination
             import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 
-            @ComposeDestination(
+            @ComposeFragmentDestination(
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,
