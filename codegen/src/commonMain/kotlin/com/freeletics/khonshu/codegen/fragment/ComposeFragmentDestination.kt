@@ -19,7 +19,7 @@ import kotlin.reflect.KClass
  */
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
-public annotation class ComposeDestination(
+public annotation class ComposeFragmentDestination(
     val route: KClass<out BaseRoute>,
     val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,

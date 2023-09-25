@@ -11,10 +11,10 @@ import org.jetbrains.kotlin.name.FqName
 // Codegen Public API
 internal val rendererFragmentDestination = ClassName("com.freeletics.khonshu.codegen.fragment", "RendererDestination")
 internal val rendererFragmentDestinationFqName = FqName(rendererFragmentDestination.canonicalName)
-internal val composeFragmentDestination = ClassName("com.freeletics.khonshu.codegen.fragment", "ComposeDestination")
+internal val composeFragmentDestination = ClassName("com.freeletics.khonshu.codegen.fragment", "ComposeFragmentDestination")
 internal val composeFragmentDestinationFqName = FqName(composeFragmentDestination.canonicalName)
-internal val codegenComposeDestination = ClassName("com.freeletics.khonshu.codegen.compose", "ComposeDestination")
-internal val codegenComposeDestinationFqName = FqName(codegenComposeDestination.canonicalName)
+internal val navDestination = ClassName("com.freeletics.khonshu.codegen.compose", "NavDestination")
+internal val navDestinationFqName = FqName(navDestination.canonicalName)
 internal val navHostActivity = ClassName("com.freeletics.khonshu.codegen.compose", "NavHostActivity")
 internal val navHostActivityFqName = FqName(navHostActivity.canonicalName)
 internal val appScope = ClassName("com.freeletics.khonshu.codegen", "AppScope")
