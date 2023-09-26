@@ -82,12 +82,6 @@ jobs:
           cp -R text-resource/build/dokka/html/. docs/helpers/API/text-resource/
           mkdir -p docs/codegen/API/runtime
           cp -R codegen/build/dokka/html/. docs/codegen/API/runtime/
-          mkdir -p docs/codegen/API/compose
-          cp -R codegen-compose/build/dokka/html/. docs/codegen/API/compose/
-          mkdir -p docs/codegen/API/fragment
-          cp -R codegen-fragment/build/dokka/html/. docs/codegen/API/fragment/
-          mkdir -p docs/codegen/API/scope
-          cp -R codegen-scope/build/dokka/html/. docs/codegen/API/scope/
 
       - name: Build MkDocs
         run: mkdocs build
