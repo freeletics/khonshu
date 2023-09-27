@@ -46,7 +46,7 @@ dokka = "1.9.0"
 bestpractices = "0.10"
 binarycompatibility = "0.13.2"
 dependency-analysis = "1.22.0"
-gr8 = "0.9"
+gr8 = "0.10"
 
 [libraries]
 gradle-api = { module = "dev.gradleplugins:gradle-api", version.ref = "gradle-api" }
