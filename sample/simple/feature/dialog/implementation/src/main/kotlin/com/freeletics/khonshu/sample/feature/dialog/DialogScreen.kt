@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.freeletics.khonshu.codegen.compose.ComposeDestination
 import com.freeletics.khonshu.codegen.compose.DestinationType
+import com.freeletics.khonshu.codegen.compose.NavDestination
 import com.freeletics.khonshu.sample.feature.dialog.nav.DialogRoute
 
-@ComposeDestination(
+@NavDestination(
     route = DialogRoute::class,
     stateMachine = DialogStateMachine::class,
     destinationType = DestinationType.OVERLAY,

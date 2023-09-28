@@ -5,11 +5,11 @@ plugins {
 }
 
 freeletics {
-    explicitApi()
     optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationApi")
 
+    useCompose()
+
     android {
-        enableCompose()
         enableParcelize()
     }
 }

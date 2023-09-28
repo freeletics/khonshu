@@ -12,12 +12,16 @@ android-gradle = "8.1.1"
 android-min = "21"
 android-target = "33"
 android-compile = "33"
-androidx-activity = "1.7.2"
-androidx-annotations = "1.5.0"
+
 androidx-compose-compiler = "1.5.3"
 androidx-compose-runtime = "1.5.2"
 androidx-compose-ui = "1.5.2"
 androidx-compose-animation = "1.5.2"
+jetbrains-compose = "1.5.1"
+jetbrains-compose-compiler = "1.5.2"
+
+androidx-activity = "1.7.2"
+androidx-annotations = "1.5.0"
 androidx-core = "1.12.0"
 androidx-lifecycle = "2.6.2"
 androidx-fragment = "1.6.1"
@@ -62,14 +66,17 @@ kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
-androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
-androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidx-annotations" }
 androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "androidx-compose-compiler" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "androidx-compose-runtime" }
 androidx-compose-runtime-saveable = { module = "androidx.compose.runtime:runtime-saveable", version.ref = "androidx-compose-runtime" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose-ui" }
 androidx-compose-animation = { module = "androidx.compose.animation:animation", version.ref = "androidx-compose-animation" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
+jetbrains-compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "jetbrains-compose-compiler" }
+
+androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidx-annotations" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
@@ -113,11 +120,11 @@ kotlin-compile-testing-ksp = { module = "dev.zacsweers.kctfork:ksp", version.ref
 gr8 = { module = "com.gradleup:gr8-plugin", version.ref = "gr8" }
 
 [plugins]
-fgp-android = { id = "com.freeletics.gradle.common.android", version.ref = "fgp" }
-fgp-jvm = { id = "com.freeletics.gradle.common.jvm", version.ref = "fgp" }
-fgp-multiplatform = { id = "com.freeletics.gradle.common.multiplatform", version.ref = "fgp" }
-fgp-gradle = { id = "com.freeletics.gradle.common.gradle", version.ref = "fgp" }
-fgp-publish = { id = "com.freeletics.gradle.common.publish.oss", version.ref = "fgp" }
+fgp-android = { id = "com.freeletics.gradle.android", version.ref = "fgp" }
+fgp-jvm = { id = "com.freeletics.gradle.jvm", version.ref = "fgp" }
+fgp-multiplatform = { id = "com.freeletics.gradle.multiplatform", version.ref = "fgp" }
+fgp-gradle = { id = "com.freeletics.gradle.gradle", version.ref = "fgp" }
+fgp-publish = { id = "com.freeletics.gradle.publish.oss", version.ref = "fgp" }
 fgp-root = { id = "com.freeletics.gradle.root", version.ref = "fgp" }
 fgp-settings = { id = "com.freeletics.gradle.settings", version.ref = "fgp" }
 
@@ -126,6 +133,7 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }

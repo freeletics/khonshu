@@ -11,10 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.freeletics.khonshu.codegen.compose.ComposeDestination
+import com.freeletics.khonshu.codegen.compose.NavDestination
 import com.freeletics.khonshu.sample.feature.screen.nav.ScreenRoute
 
-@ComposeDestination(
+@NavDestination(
     route = ScreenRoute::class,
     stateMachine = ScreenStateMachine::class,
 )
