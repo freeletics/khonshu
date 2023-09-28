@@ -5,10 +5,9 @@ plugins {
 }
 
 freeletics {
-    explicitApi()
+    useCompose()
 
     android {
-        enableCompose()
         enableParcelize()
     }
 }

@@ -6,7 +6,6 @@ plugins {
 }
 
 freeletics {
-    explicitApi()
     optIn(
         "com.squareup.anvil.annotations.ExperimentalAnvilApi",
         "com.google.devtools.ksp.KspExperimental",
