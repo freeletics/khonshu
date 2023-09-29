@@ -17,36 +17,6 @@ plugins {
 
 dependencyAnalysis {
     issues {
-        all {
-            onUsedTransitiveDependencies {
-                exclude("dev.drewhamilton.poko:poko-annotations")
-            }
-        }
-
-        project(":codegen-scope") {
-            onUnusedDependencies {
-                exclude(":codegen")
-            }
-        }
-
-        project(":codegen-compose") {
-            onUnusedDependencies {
-                exclude(":codegen")
-            }
-        }
-
-        project(":codegen-fragment") {
-            onUnusedDependencies {
-                exclude(":codegen")
-            }
-        }
-
-        project(":codegen-compiler") {
-            onUnusedDependencies {
-                exclude("dev.zacsweers.kctfork:core", "com.squareup.anvil:compiler-utils")
-            }
-        }
-
         project(":codegen-compiler-test") {
             onUnusedDependencies {
                 // needed for compile testing
@@ -60,27 +30,9 @@ dependencyAnalysis {
                     "com.squareup.anvil:compiler-utils",
                     ":codegen",
                     ":codegen-compiler",
-                    ":codegen-compose",
-                    ":codegen-fragment",
                     ":navigation-compose",
                     ":navigation-fragment",
                 )
-            }
-        }
-
-        project(":navigation") {
-            onUsedTransitiveDependencies {
-                exclude(
-                    // false positive
-                    "org.checkerframework:checker-qual",
-                )
-            }
-        }
-
-        project(":deeplinks-plugin") {
-            onIncorrectConfiguration {
-                // suggests junit to be api instead of testImplementation
-                exclude("junit:junit")
             }
         }
     }
