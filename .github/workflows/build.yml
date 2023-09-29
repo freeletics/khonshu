@@ -30,7 +30,7 @@ jobs:
       - uses: gradle/gradle-build-action@v2
 
       - name: Build with Gradle
-        run: ./gradlew build buildHealth --stacktrace
+        run: ./gradlew build buildHealth --stacktrace --scan
 
       - name: Check code style
         run: ./kotlinw .kts/ktlint.main.kts --fail-on-changes
