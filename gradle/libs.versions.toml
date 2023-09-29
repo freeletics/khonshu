@@ -28,7 +28,7 @@ androidx-fragment = "1.6.1"
 androidx-navigation = "2.7.3"
 androidx-savedstate = "1.2.1"
 
-uri = "0.0.14"
+uri = "0.0.15"
 
 inject = "1"
 dagger = "2.48"
