@@ -11,7 +11,7 @@ freeletics {
 
     multiplatform {
         addJvmTarget()
-        addAndroidTarget(publish = true)
+        addAndroidTarget()
     }
 
     extensions.configure(FreeleticsAndroidExtension::class) {
