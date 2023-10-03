@@ -31,7 +31,7 @@ androidx-savedstate = "1.2.1"
 uri = "0.0.15"
 
 inject = "1"
-dagger = "2.48"
+dagger = "2.48.1"
 anvil = "2.4.8"
 renderer = "0.13.0"
 ksp = "1.9.10-1.0.13"
