@@ -1,9 +1,9 @@
 package com.freeletics.khonshu.navigation.test
 
 import com.eygraber.uri.Uri
-import com.freeletics.khonshu.navigation.DeepLinkHandler
-import com.freeletics.khonshu.navigation.DeepLinkHandler.Prefix
-import com.freeletics.khonshu.navigation.internal.matchesPattern
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix
+import com.freeletics.khonshu.navigation.deeplinks.matchesPattern
 import com.google.common.truth.BooleanSubject
 import com.google.common.truth.FailureMetadata
 import com.google.common.truth.Subject

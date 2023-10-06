@@ -1,9 +1,8 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation.deeplinks
 
 import com.eygraber.uri.Uri
-import com.freeletics.khonshu.navigation.DeepLink
-import com.freeletics.khonshu.navigation.DeepLinkHandler
-import com.freeletics.khonshu.navigation.DeepLinkHandler.Prefix
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 
 /**
  * Checks if the given [uri] matches one of the [DeepLinkHandler] in the `Set` and if yes

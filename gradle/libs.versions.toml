@@ -92,7 +92,7 @@ androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "andr
 androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
 androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "android-gradle" }
 
-uri = { module = "com.eygraber:uri-kmp-android", version.ref = "uri" }
+uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }

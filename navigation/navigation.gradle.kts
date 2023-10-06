@@ -21,12 +21,13 @@ freeletics {
 }
 
 dependencies {
+    "commonMainApi"(libs.uri)
+
     "androidMainApi"(libs.androidx.activity)
     "androidMainApi"(libs.androidx.core)
     "androidMainApi"(libs.androidx.lifecycle.common)
     "androidMainApi"(libs.androidx.viewmodel.savedstate)
     "androidMainApi"(libs.coroutines.core)
-    "androidMainApi"(libs.uri)
 
     "androidMainImplementation"(libs.androidx.lifecycle.runtime)
     "androidMainImplementation"(libs.kotlin.parcelize)

@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation
+package com.freeletics.khonshu.navigation.deeplinks
 
 /**
  * DeepLinkHandler can be used to implement Uri based deep links.

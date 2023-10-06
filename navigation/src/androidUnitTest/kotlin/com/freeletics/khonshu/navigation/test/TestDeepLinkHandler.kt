@@ -1,9 +1,9 @@
 package com.freeletics.khonshu.navigation.test
 
-import com.freeletics.khonshu.navigation.DeepLink
-import com.freeletics.khonshu.navigation.DeepLinkHandler
-import com.freeletics.khonshu.navigation.DeepLinkHandler.Pattern
-import com.freeletics.khonshu.navigation.DeepLinkHandler.Prefix
+import com.freeletics.khonshu.navigation.deeplinks.DeepLink
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Pattern
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix
 
 internal class TestDeepLinkHandler(
     override val patterns: Set<Pattern>,

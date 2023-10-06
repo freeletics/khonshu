@@ -13,11 +13,11 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.DeepLinkHandler
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.compose.internal.MultiStackNavigationExecutor
 import com.freeletics.khonshu.navigation.compose.internal.StackEntry
 import com.freeletics.khonshu.navigation.compose.internal.rememberNavigationExecutor
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import java.io.Closeable

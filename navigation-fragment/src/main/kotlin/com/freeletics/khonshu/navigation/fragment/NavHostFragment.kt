@@ -10,7 +10,7 @@ import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.get
 import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.DeepLinkHandler
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.CustomActivityNavigator
 import com.freeletics.khonshu.navigation.internal.destinationId
 import com.freeletics.khonshu.navigation.internal.getArguments

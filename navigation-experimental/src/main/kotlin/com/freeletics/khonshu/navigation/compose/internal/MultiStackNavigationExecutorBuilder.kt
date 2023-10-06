@@ -9,15 +9,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.eygraber.uri.Uri
-import com.freeletics.khonshu.navigation.DeepLink.Companion.EXTRA_DEEPLINK_ROUTES
-import com.freeletics.khonshu.navigation.DeepLinkHandler
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.compose.ActivityDestination
 import com.freeletics.khonshu.navigation.compose.ContentDestination
 import com.freeletics.khonshu.navigation.compose.NavDestination
 import com.freeletics.khonshu.navigation.compose.findActivity
 import com.freeletics.khonshu.navigation.compose.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
-import com.freeletics.khonshu.navigation.internal.createDeepLinkIfMatching
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
+import com.freeletics.khonshu.navigation.deeplinks.EXTRA_DEEPLINK_ROUTES
+import com.freeletics.khonshu.navigation.deeplinks.buildIntent
+import com.freeletics.khonshu.navigation.deeplinks.createDeepLinkIfMatching
 
 @Composable
 internal fun rememberNavigationExecutor(
