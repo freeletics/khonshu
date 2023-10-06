@@ -44,7 +44,7 @@ internal fun DeepLinkHandler.findMatchingPattern(
     // find the pattern that matches uriString
     return patterns.find { pattern ->
         // replace all {name} placeholders in the pattern with a regex placeholder
-        val regexPattern = pattern.value.replace(PARAM_REGEX, PARAM_VALUE)
+        val regexPattern = pattern.replacePlaceholders()
         // when the pattern is not empty check for it, otherwise check for the prefixes with
         // an optional trailing slash, query parameters are allowed in both cases
         val regex = if (regexPattern.isNotBlank()) {
@@ -64,14 +64,24 @@ private fun Set<Prefix>.asOneOfRegex(): String {
     }
 }
 
+private fun Pattern.replacePlaceholders(replacement: String = PARAM_VALUE): String {
+    // $1 and $3 will add the optional leading and trailing slashes if needed
+    return value.replace(PARAM_REGEX, "$1$replacement$3")
+}
+
+@InternalNavigationApi
+public fun Pattern.replacePlaceholders(replacement: (String) -> String): String {
+    // $1 and $3 will add the optional leading and trailing slashes if needed
+    return value.replace(PARAM_REGEX) { "${it.groupValues[1]}${replacement(it.groupValues[2])}${it.groupValues[3]}" }
+}
+
 // matches placeholders like {locale} or {foo_bar-1}, requires a leading slash and either a trailing
 // slash or the end of the  string to avoid that a path segment is not fully filled by the
 // placeholder
 private val PARAM_REGEX = "(/|^)\\{([a-zA-Z][a-zA-Z0-9_-]*)\\}(/|$)".toRegex()
 
 // a regex for values that are allowed in the path segment that contains the placeholder
-// $2 will add the optional trailing / if needed
-private const val PARAM_VALUE = "$1([a-zA-Z0-9_'!+%~=,\\-\\.\\@\\$\\:]+)$3"
+private const val PARAM_VALUE = "([a-zA-Z0-9_'!+%~=,\\-\\.\\@\\$\\:]+)"
 
 // the query parameter itself is optional and starts with a question mark, afterwards anything
 // is accepted since its not part of the pattern, ends with the end of the whole url

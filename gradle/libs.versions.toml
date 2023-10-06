@@ -93,6 +93,8 @@ androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref =
 androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "android-gradle" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
+toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.3.5" }
+serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.6.0" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
@@ -133,6 +135,7 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }

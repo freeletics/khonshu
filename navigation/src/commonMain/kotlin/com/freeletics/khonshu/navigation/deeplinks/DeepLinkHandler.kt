@@ -64,11 +64,11 @@ public interface DeepLinkHandler {
     public value class Pattern(internal val value: String) {
         init {
             check(!value.startsWith("/")) { "Pattern should not start with a / but is $value" }
-            check(!value.contains("?")) { "Pattern should not contain any query parameters is $value" }
+            check(!value.contains("?")) { "Pattern should not contain any query parameters but is $value" }
         }
     }
 
     private companion object {
-        private val PREFIX_REGEX = "[a-z]+://[a-z0-9._-]+.[a-z]+".toRegex()
+        private val PREFIX_REGEX = "^[a-z]+://[a-z0-9._-]+\\.[a-z]+$".toRegex()
     }
 }
