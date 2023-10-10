@@ -1,9 +1,6 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation.deeplinks
 
 import com.eygraber.uri.Uri
-import com.freeletics.khonshu.navigation.DeepLink
-import com.freeletics.khonshu.navigation.DeepLinkHandler.Pattern
-import com.freeletics.khonshu.navigation.DeepLinkHandler.Prefix
 import com.freeletics.khonshu.navigation.test.DeepLinkHandlerPatternSubject.Companion.assertThat
 import com.freeletics.khonshu.navigation.test.DeepLinkRoute
 import com.freeletics.khonshu.navigation.test.TestDeepLinkHandler
@@ -13,7 +10,7 @@ import org.junit.Test
 internal class DeepLinkParserTest {
     @Test
     fun `when the pattern is home`() {
-        val pattern = Pattern("home")
+        val pattern = DeepLinkHandler.Pattern("home")
 
         assertThat(pattern).extractPathParameters("https://a.com/home").isEmpty()
         assertThat(pattern).extractPathParameters("https://b.de/home").isEmpty()
@@ -23,7 +20,7 @@ internal class DeepLinkParserTest {
 
     @Test
     fun `when the pattern is empty`() {
-        val pattern = Pattern("")
+        val pattern = DeepLinkHandler.Pattern("")
 
         assertThat(pattern).extractPathParameters("https://a.com/").isEmpty()
         assertThat(pattern).extractPathParameters("https://b.de/").isEmpty()
@@ -37,7 +34,7 @@ internal class DeepLinkParserTest {
 
     @Test
     fun `when the pattern is foo_bar_placeholder`() {
-        val pattern = Pattern("foo/bar/{placeholder}")
+        val pattern = DeepLinkHandler.Pattern("foo/bar/{placeholder}")
 
         assertThat(pattern).extractPathParameters("https://a.com/foo/bar/abc")
             .containsExactly("placeholder", "abc")
@@ -55,7 +52,7 @@ internal class DeepLinkParserTest {
 
     @Test
     fun `when the pattern is placeholder_foo_bar`() {
-        val pattern = Pattern("{placeholder}/foo/bar")
+        val pattern = DeepLinkHandler.Pattern("{placeholder}/foo/bar")
 
         assertThat(pattern).extractPathParameters("https://a.com/abc/foo/bar")
             .containsExactly("placeholder", "abc")
@@ -73,7 +70,7 @@ internal class DeepLinkParserTest {
 
     @Test
     fun `when the pattern is foo_placeholder_bar`() {
-        val pattern = Pattern("foo/{placeholder}/bar")
+        val pattern = DeepLinkHandler.Pattern("foo/{placeholder}/bar")
 
         assertThat(pattern).extractPathParameters("https://a.com/foo/abc/bar")
             .containsExactly("placeholder", "abc")
@@ -91,7 +88,7 @@ internal class DeepLinkParserTest {
 
     @Test
     fun `when the pattern is foo_placeholder1_bar_placeholder2`() {
-        val pattern = Pattern("foo/{placeholder1}/bar/{placeholder2}")
+        val pattern = DeepLinkHandler.Pattern("foo/{placeholder1}/bar/{placeholder2}")
 
         assertThat(pattern).extractPathParameters("https://a.com/foo/abc/bar/aBC123_=")
             .containsExactly("placeholder1", "abc", "placeholder2", "aBC123_=")
@@ -101,8 +98,8 @@ internal class DeepLinkParserTest {
     fun `for a set of deep links, returns deep link if one matches`() {
         val handlers = setOf(
             TestDeepLinkHandler(
-                patterns = setOf(Pattern("home")),
-                prefixes = setOf(Prefix("https://a.com")),
+                patterns = setOf(DeepLinkHandler.Pattern("home")),
+                prefixes = setOf(DeepLinkHandler.Prefix("https://a.com")),
                 deepLinkFactory = { _, _ -> DeepLink("test", listOf()) },
             ),
             TestDeepLinkHandler(""),
@@ -118,8 +115,8 @@ internal class DeepLinkParserTest {
     fun `for a set of deep links, returns deep link with parameters if one matches`() {
         val handlers = setOf(
             TestDeepLinkHandler(
-                patterns = setOf(Pattern("{path}")),
-                prefixes = setOf(Prefix("https://a.com")),
+                patterns = setOf(DeepLinkHandler.Pattern("{path}")),
+                prefixes = setOf(DeepLinkHandler.Prefix("https://a.com")),
                 deepLinkFactory = { path, query ->
                     DeepLink("test", listOf(DeepLinkRoute(path, query)))
                 },
@@ -145,8 +142,8 @@ internal class DeepLinkParserTest {
     fun `for a set of deep links, returns null if none matches`() {
         val handlers = setOf(
             TestDeepLinkHandler(
-                patterns = setOf(Pattern("home")),
-                prefixes = setOf(Prefix("https://a.com")),
+                patterns = setOf(DeepLinkHandler.Pattern("home")),
+                prefixes = setOf(DeepLinkHandler.Prefix("https://a.com")),
             ),
             TestDeepLinkHandler(""),
         )

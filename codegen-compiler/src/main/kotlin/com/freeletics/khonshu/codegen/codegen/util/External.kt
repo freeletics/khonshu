@@ -43,7 +43,7 @@ internal val composeLocalNavigationExecutor =
     MemberName("com.freeletics.khonshu.navigation.compose", "LocalNavigationExecutor")
 internal val fragmentFindNavigationExecutor =
     MemberName("com.freeletics.khonshu.navigation.fragment", "findNavigationExecutor")
-internal val deepLinkHandler = ClassName("com.freeletics.khonshu.navigation", "DeepLinkHandler")
+internal val deepLinkHandler = ClassName("com.freeletics.khonshu.navigation.deeplinks", "DeepLinkHandler")
 internal val deepLinkPrefix = deepLinkHandler.nestedClass("Prefix")
 internal val fragmentNavigationHandler = MemberName("com.freeletics.khonshu.navigation.fragment", "handleNavigation")
 internal val fragmentDestination = ClassName("com.freeletics.khonshu.navigation.fragment", "NavDestination")

@@ -59,9 +59,9 @@ internal class FileGeneratorTestNavHostActivity {
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.compose.NavHostActivity
             import com.freeletics.khonshu.navigation.BaseRoute
-            import com.freeletics.khonshu.navigation.DeepLinkHandler
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
+            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.test.parent.TestParentScope
 
             @NavHostActivity(
@@ -96,10 +96,10 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.BaseRoute
-            import com.freeletics.khonshu.navigation.DeepLinkHandler
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
+            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -234,7 +234,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.compose.NavHostActivity
             import com.freeletics.khonshu.navigation.BaseRoute
-            import com.freeletics.khonshu.navigation.DeepLinkHandler
+            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.freeletics.khonshu.navigation.NavRoot
 
             @NavHostActivity(
@@ -269,10 +269,10 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.BaseRoute
-            import com.freeletics.khonshu.navigation.DeepLinkHandler
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
+            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -422,9 +422,9 @@ internal class FileGeneratorTestNavHostActivity {
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.compose.NavHostActivity
             import com.freeletics.khonshu.navigation.BaseRoute
-            import com.freeletics.khonshu.navigation.DeepLinkHandler
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
+            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.test.other.TestClass2
             import com.test.parent.TestParentScope
 
@@ -464,10 +464,10 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.BaseRoute
-            import com.freeletics.khonshu.navigation.DeepLinkHandler
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
+            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -620,9 +620,9 @@ internal class FileGeneratorTestNavHostActivity {
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.compose.NavHostActivity
             import com.freeletics.khonshu.navigation.BaseRoute
-            import com.freeletics.khonshu.navigation.DeepLinkHandler
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
+            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.test.parent.TestParentScope
 
             @NavHostActivity(
@@ -655,10 +655,10 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.BaseRoute
-            import com.freeletics.khonshu.navigation.DeepLinkHandler
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
+            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -788,9 +788,9 @@ internal class FileGeneratorTestNavHostActivity {
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.compose.NavHostActivity
             import com.freeletics.khonshu.navigation.BaseRoute
-            import com.freeletics.khonshu.navigation.DeepLinkHandler
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
+            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.test.parent.TestParentScope
 
             @NavHostActivity(
@@ -824,10 +824,10 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.BaseRoute
-            import com.freeletics.khonshu.navigation.DeepLinkHandler
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
+            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope

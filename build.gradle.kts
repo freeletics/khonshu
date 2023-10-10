@@ -17,6 +17,17 @@ plugins {
 
 dependencyAnalysis {
     issues {
+        all {
+            onAny {
+                // issue with Kotlin multiplatform artifacts
+                exclude(
+                    "com.eygraber:uri-kmp",
+                    "com.eygraber:uri-kmp-android",
+                    "com.eygraber:uri-kmp-android-debug",
+                )
+            }
+        }
+
         project(":codegen-compiler-test") {
             onUnusedDependencies {
                 // needed for compile testing

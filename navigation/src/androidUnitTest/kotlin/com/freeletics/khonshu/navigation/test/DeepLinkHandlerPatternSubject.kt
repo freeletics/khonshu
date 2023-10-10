@@ -1,8 +1,8 @@
 package com.freeletics.khonshu.navigation.test
 
 import com.eygraber.uri.Uri
-import com.freeletics.khonshu.navigation.DeepLinkHandler
-import com.freeletics.khonshu.navigation.internal.extractPathParameters
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
+import com.freeletics.khonshu.navigation.deeplinks.extractPathParameters
 import com.google.common.truth.FailureMetadata
 import com.google.common.truth.MapSubject
 import com.google.common.truth.Subject

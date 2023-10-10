@@ -7,6 +7,57 @@ public abstract interface class com/freeletics/khonshu/navigation/NavRoot : com/
 public abstract interface class com/freeletics/khonshu/navigation/NavRoute : com/freeletics/khonshu/navigation/BaseRoute {
 }
 
+public final class com/freeletics/khonshu/navigation/deeplinks/DeepLink {
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler {
+	public abstract fun deepLink (Ljava/util/Map;Ljava/util/Map;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
+	public abstract fun getPatterns ()Ljava/util/Set;
+	public fun getPrefixes ()Ljava/util/Set;
+}
+
+public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Pattern {
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Pattern;
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Prefix {
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Prefix;
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkKt {
+	public static final fun DeepLink (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
+	public static final fun DeepLink (Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
+	public static synthetic fun DeepLink$default (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
+	public static synthetic fun DeepLink$default (Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
+}
+
+public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkMatcherKt {
+}
+
+public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkParserKt {
+}
+
 public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationApi : java/lang/annotation/Annotation {
 }
 

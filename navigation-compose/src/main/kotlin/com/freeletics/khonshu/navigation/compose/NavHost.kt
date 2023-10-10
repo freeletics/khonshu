@@ -18,11 +18,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.get
 import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.DeepLinkHandler
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.compose.internal.OverlayHost
 import com.freeletics.khonshu.navigation.compose.internal.OverlayNavigator
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.AndroidXNavigationExecutor
 import com.freeletics.khonshu.navigation.internal.CustomActivityNavigator
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi

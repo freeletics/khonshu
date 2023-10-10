@@ -9,9 +9,11 @@ import androidx.navigation.NavController.Companion.KEY_DEEP_LINK_IDS
 import com.eygraber.uri.Uri
 import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.DeepLink
-import com.freeletics.khonshu.navigation.DeepLink.Companion.EXTRA_DEEPLINK_ROUTES
-import com.freeletics.khonshu.navigation.DeepLinkHandler
+import com.freeletics.khonshu.navigation.deeplinks.DeepLink
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
+import com.freeletics.khonshu.navigation.deeplinks.EXTRA_DEEPLINK_ROUTES
+import com.freeletics.khonshu.navigation.deeplinks.buildIntent
+import com.freeletics.khonshu.navigation.deeplinks.createDeepLinkIfMatching
 
 /**
  * Handles 2 different kind of deep links:
