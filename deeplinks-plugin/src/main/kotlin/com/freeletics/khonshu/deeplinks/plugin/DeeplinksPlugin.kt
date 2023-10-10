@@ -10,7 +10,7 @@ import org.gradle.api.Project
  * Plugin for deeplinks integration:
  * - appends intent filters to app's manifest for deeplinks from configuration file
  */
-abstract class DeeplinksPlugin : Plugin<Project> {
+public abstract class DeeplinksPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val configurationFile = File(project.projectDir, "deeplinks.toml")
         if (!configurationFile.exists()) {
