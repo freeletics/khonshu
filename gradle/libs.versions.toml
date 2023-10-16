@@ -93,7 +93,7 @@ androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref =
 androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "android-gradle" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
-toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.3.6" }
+toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.3.7" }
 serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.6.0" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
