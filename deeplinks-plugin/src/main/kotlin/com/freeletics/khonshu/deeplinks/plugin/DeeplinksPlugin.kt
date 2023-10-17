@@ -2,7 +2,6 @@ package com.freeletics.khonshu.deeplinks.plugin
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
-import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -12,31 +11,24 @@ import org.gradle.api.Project
  */
 public abstract class DeeplinksPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val configurationFile = File(project.projectDir, "deeplinks.toml")
-        if (!configurationFile.exists()) {
-            // configuration file doesn't exist -> skipping
-            return
-        }
+        val extension = project.extensions.create("deepLinks", DeepLinksExtension::class.java)
+        extension.deepLinkDefinitionsFile.convention(project.layout.projectDirectory.file("deeplinks.toml"))
 
         project.plugins.withId("com.android.library") {
-            setupDeeplinksManifestConfigurator(project, configurationFile)
+            setupDeeplinksManifestConfigurator(project, extension)
         }
 
         project.plugins.withId("com.android.application") {
-            setupDeeplinksManifestConfigurator(project, configurationFile)
+            setupDeeplinksManifestConfigurator(project, extension)
         }
     }
 
-    private fun setupDeeplinksManifestConfigurator(project: Project, configurationFile: File) {
+    private fun setupDeeplinksManifestConfigurator(project: Project, extension: DeepLinksExtension) {
         val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
         androidComponents.onVariants { variant ->
-            val manifestUpdater = project.tasks.register(
-                variant.name + "DeeplinksManifestConfigurator",
-                DeeplinksManifestConfiguratorTask::class.java,
-            ) {
-                it.deeplinksConfigurationFile.set(
-                    configurationFile,
-                )
+            val name = "${variant.name}DeeplinksManifestConfigurator"
+            val manifestUpdater = project.tasks.register(name, DeeplinksManifestConfiguratorTask::class.java) {
+                it.deepLinkDefinitionsFile.set(extension.deepLinkDefinitionsFile)
             }
             variant.artifacts.use(manifestUpdater).wiredWithFiles(
                 DeeplinksManifestConfiguratorTask::mergedManifest,
