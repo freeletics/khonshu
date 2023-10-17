@@ -1,7 +1,5 @@
-package com.freeletics.khonshu.deeplinks.plugin
+package com.freeletics.khonshu.navigation.deeplinks
 
-import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
-import com.freeletics.khonshu.navigation.deeplinks.replacePlaceholders
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString

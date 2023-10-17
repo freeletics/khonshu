@@ -1,16 +1,30 @@
 plugins {
-    alias(libs.plugins.fgp.android)
+    alias(libs.plugins.fgp.multiplatform)
     alias(libs.plugins.fgp.publish)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 freeletics {
     optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationApi")
+
+    multiplatform {
+        addJvmTarget()
+        addAndroidTarget()
+    }
 }
 
 dependencies {
-    api(projects.navigation)
-    api(libs.coroutines.core)
-    api(libs.turbine)
-    implementation(libs.androidx.activity)
-    implementation(libs.truth)
+}
+
+dependencies {
+    "commonMainApi"(projects.navigation)
+    "commonMainApi"(libs.serialization)
+
+    "commonMainImplementation"(libs.toml)
+
+    "androidMainApi"(libs.coroutines.core)
+    "androidMainApi"(libs.turbine)
+
+    "androidMainImplementation"(libs.androidx.activity)
+    "androidMainImplementation"(libs.truth)
 }

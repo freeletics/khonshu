@@ -1,13 +1,10 @@
 plugins {
     alias(libs.plugins.fgp.gradle)
     alias(libs.plugins.fgp.publish)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 dependencies {
-    implementation(libs.toml)
-    implementation(libs.serialization)
-    implementation(projects.navigation)
+    implementation(projects.navigationTesting)
 
     compileOnly(libs.android.gradle.api)
 
