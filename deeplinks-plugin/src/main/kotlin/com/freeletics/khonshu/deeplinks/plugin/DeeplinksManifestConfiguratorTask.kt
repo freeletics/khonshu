@@ -9,7 +9,7 @@ import org.gradle.api.tasks.TaskAction
 public abstract class DeeplinksManifestConfiguratorTask : DefaultTask() {
 
     @get:InputFile
-    public abstract val deeplinksConfigurationFile: RegularFileProperty
+    public abstract val deepLinkDefinitionsFile: RegularFileProperty
 
     @get:InputFile
     public abstract val mergedManifest: RegularFileProperty
@@ -19,7 +19,7 @@ public abstract class DeeplinksManifestConfiguratorTask : DefaultTask() {
 
     @TaskAction
     public fun taskAction() {
-        val configurationFile = deeplinksConfigurationFile.get().asFile
+        val configurationFile = deepLinkDefinitionsFile.get().asFile
         val inputManifest = mergedManifest.get().asFile
         val outputManifest = updatedManifest.get().asFile
 

@@ -1,6 +1,11 @@
+public abstract class com/freeletics/khonshu/deeplinks/plugin/DeepLinksExtension {
+	public fun <init> ()V
+	public abstract fun getDeepLinkDefinitionsFile ()Lorg/gradle/api/file/RegularFileProperty;
+}
+
 public abstract class com/freeletics/khonshu/deeplinks/plugin/DeeplinksManifestConfiguratorTask : org/gradle/api/DefaultTask {
 	public fun <init> ()V
-	public abstract fun getDeeplinksConfigurationFile ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getDeepLinkDefinitionsFile ()Lorg/gradle/api/file/RegularFileProperty;
 	public abstract fun getMergedManifest ()Lorg/gradle/api/file/RegularFileProperty;
 	public abstract fun getUpdatedManifest ()Lorg/gradle/api/file/RegularFileProperty;
 	public final fun taskAction ()V
