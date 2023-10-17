@@ -15,10 +15,6 @@
 
 # Keep your public API so that it's callable from scripts
 -keep class com.freeletics.khonshu.deeplinks.plugin.** { public *; }
--keepnames class kotlin.jvm.internal.DefaultConstructorMarker
--keepclassmembers @com.squareup.moshi.JsonClass @kotlin.Metadata class * {
-    synthetic <init>(...);
-}
 
 # No need to obfuscate class names
 -dontobfuscate
