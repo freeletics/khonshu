@@ -18,10 +18,9 @@ dependencies {
 
 dependencies {
     "commonMainApi"(projects.navigation)
-    "commonMainApi"(libs.kotlin.test)
+    "commonMainApi"(libs.serialization)
 
     "commonMainImplementation"(libs.toml)
-    "commonMainImplementation"(libs.serialization)
 
     "androidMainApi"(libs.coroutines.core)
     "androidMainApi"(libs.turbine)
