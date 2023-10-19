@@ -1,7 +1,20 @@
 Change Log
 ==========
 
-## 0.17.1 **UNRELEASED**
+## 0.18.1 **UNRELEASED**
+
+
+## 0.18.0 *(2023-10-19)*
+
+### Navigation
+
+- **New**: `com.freeletics.khonshu.deeplinks` Gradle plugin that generates AndroidManifest 
+  `intent-filters` based on definitions from  a `toml` file
+- **New**: The navigation-testing artifact now ships with 
+  `DeepLinkDefinitions.containsAllDeepLinks(Set<DeepLinkHandler>)` which checks that the
+  deep links defined in the `toml` are match the given set of `DeepLinkHandlers`.
+- **Breaking**: All deep link related classes have been moved to the
+  `com.freeletics.khonshu.navigation.deeplinks` package.
 
 
 ## 0.17.0 *(2023-09-25)*
