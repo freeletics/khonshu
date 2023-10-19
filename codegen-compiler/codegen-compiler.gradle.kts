@@ -33,7 +33,10 @@ dependencies {
     testImplementation(libs.kotlin.compile.testing)
     testImplementation(libs.coroutines.core)
     testImplementation(libs.flowredux)
+    // TODO https://github.com/autonomousapps/dependency-analysis-gradle-plugin/issues/972
+    testImplementation(projects.codegenCompiler)
 
+    testFixturesApi(libs.kotlin.compile.testing)
     testFixturesImplementation(libs.anvil.compiler)
     testFixturesImplementation(testFixtures(libs.anvil.compiler.utils))
     testFixturesImplementation(libs.kotlin.compile.testing.ksp)
