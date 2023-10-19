@@ -19,6 +19,7 @@ dependencies {
 dependencies {
     "commonMainApi"(projects.navigation)
     "commonMainApi"(libs.serialization)
+    "commonMainApi"(libs.kotlin.test)
 
     "commonMainImplementation"(libs.toml)
 
