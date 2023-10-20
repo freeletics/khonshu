@@ -85,8 +85,8 @@ internal class MultiStackNavigationExecutor(
         stack.resetToRoot(root)
     }
 
-    override fun replaceRoot(root: NavRoot) {
-        stack.replaceRoot(root)
+    override fun replaceAll(root: NavRoot) {
+        stack.replaceAll(root)
     }
 
     override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T {

@@ -149,7 +149,7 @@ internal class MultiStack(
         updateVisibleDestinations()
     }
 
-    fun replaceRoot(root: NavRoot) {
+    fun replaceAll(root: NavRoot) {
         // remove all stacks
         val iterator = allStacks.listIterator(allStacks.size)
         while (iterator.hasPrevious()) {

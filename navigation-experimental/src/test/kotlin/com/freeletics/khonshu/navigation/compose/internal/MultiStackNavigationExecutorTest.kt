@@ -510,10 +510,10 @@ internal class MultiStackNavigationExecutorTest {
     }
 
     @Test
-    fun `replaceRoot with start root from start executor`() {
+    fun `replaceAll with start root from start executor`() {
         val executor = underTest()
         executor.navigate(SimpleRoute(1))
-        executor.replaceRoot(SimpleRoot(2))
+        executor.replaceAll(SimpleRoot(2))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -530,6 +530,58 @@ internal class MultiStackNavigationExecutorTest {
             .containsExactly(
                 StackEntry.Id("100"),
                 StackEntry.Id("101"),
+            )
+    }
+
+    @Test
+    fun `replaceAll with start root from other executor`() {
+        val executor = underTest()
+        executor.navigate(OtherRoot(1), restoreRootState = true)
+        executor.replaceAll(SimpleRoot(2))
+
+        assertThat(executor.visibleEntries.value)
+            .containsExactly(
+                StackEntry(
+                    StackEntry.Id("102"),
+                    SimpleRoot(2),
+                    simpleRootDestination,
+                ),
+            )
+            .inOrder()
+        assertThat(executor.canNavigateBack.value).isFalse()
+
+        assertThat(removed).containsExactly(
+            StackEntry.Id("100"),
+            StackEntry.Id("101"),
+        )
+    }
+
+    @Test
+    fun `replaceAll after navigating with root and without clearing the target executor from within back executor`() {
+        val executor = underTest()
+        executor.navigate(SimpleRoute(1))
+        executor.navigate(OtherRoot(1), restoreRootState = true)
+
+        assertThat(executor.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("102"), OtherRoot(1), otherRootDestination),
+            )
+            .inOrder()
+        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(removed).isEmpty()
+
+        executor.replaceAll(SimpleRoot(1))
+        assertThat(executor.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("103"), SimpleRoot(1), simpleRootDestination),
+            )
+            .inOrder()
+        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(removed)
+            .containsExactly(
+                StackEntry.Id("102"),
+                StackEntry.Id("101"),
+                StackEntry.Id("100"),
             )
     }
 

@@ -198,8 +198,15 @@ public open class NavEventNavigator {
         sendNavEvent(event)
     }
 
-    public fun replaceRoot(root: NavRoot) {
-        val event = NavEvent.ReplaceRoot(root)
+    /**
+     * Replace the current back stack with the given [root].
+     * The current back stack will cleared and the given [root] will be recreated.
+     *
+     * This differs from [resetToRoot] in that [resetToRoot] does not pop the start route (exclusive)
+     * whereas this does.
+     */
+    public fun replaceAll(root: NavRoot) {
+        val event = NavEvent.ReplaceAll(root)
         sendNavEvent(event)
     }
 

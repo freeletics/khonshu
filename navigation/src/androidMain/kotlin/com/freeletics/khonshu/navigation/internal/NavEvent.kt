@@ -51,7 +51,7 @@ public sealed interface NavEvent {
 
     @InternalNavigationApi
     @Poko
-    public class ReplaceRoot(
+    public class ReplaceAll(
         internal val root: NavRoot,
     ) : NavEvent
 

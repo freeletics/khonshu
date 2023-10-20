@@ -52,8 +52,8 @@ private fun NavigationExecutor.navigate(
         is NavEvent.ResetToRoot -> {
             resetToRoot(event.root)
         }
-        is NavEvent.ReplaceRoot -> {
-            replaceRoot(event.root)
+        is NavEvent.ReplaceAll -> {
+            replaceAll(event.root)
         }
         is NavEvent.ActivityResultEvent<*> -> {
             val request = event.request

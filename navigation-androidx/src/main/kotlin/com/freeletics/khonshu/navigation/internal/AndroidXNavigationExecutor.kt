@@ -71,7 +71,7 @@ public class AndroidXNavigationExecutor(
         controller.navigate(root.destinationId(), root.getArguments(), options)
     }
 
-    override fun replaceRoot(root: NavRoot) {
+    override fun replaceAll(root: NavRoot) {
         val options = navOptions {
             // pop all entries from the backstack
             popUpTo(controller.graph.startDestinationId) {
