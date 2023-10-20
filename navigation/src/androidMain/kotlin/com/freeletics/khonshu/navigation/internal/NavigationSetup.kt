@@ -12,6 +12,8 @@ import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.navigation.NavigationResultRequest
 import com.freeletics.khonshu.navigation.PermissionsResultRequest
 import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 
 @InternalNavigationApi
@@ -20,10 +22,22 @@ public suspend fun NavEventNavigator.collectAndHandleNavEvents(
     executor: NavigationExecutor,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
 ) {
-    navEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
-        .collect { event ->
-            executor.navigate(event, activityLaunchers)
-        }
+    // Following comment https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295,
+    // the events could be lost due to the prompt cancellation guarantee of Channel,
+    // we must use `Dispatchers.Main.immediate` to receive events.
+    //
+    // Note, when calling this method from a Composable,
+    // the dispatcher of the Compose Side-effect is [androidx.compose.ui.platform.AndroidUiDispatcher],
+    // it does not execute coroutines immediately when the current thread is the main thread,
+    // but performs the dispatch during a handler callback or choreographer animation frame stage,
+    // whichever comes first. Basically, it has some certain delay compared to [Dispatchers.Main.immediate].
+    // So we must switch to [Dispatchers.Main.immediate] before collecting events.
+    withContext(Dispatchers.Main.immediate) {
+        navEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
+            .collect { event ->
+                executor.navigate(event, activityLaunchers)
+            }
+    }
 }
 
 private fun NavigationExecutor.navigate(

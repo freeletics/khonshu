@@ -3,6 +3,7 @@ package com.freeletics.khonshu.navigation.internal
 import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.lifecycle.testing.TestLifecycleOwner
 import app.cash.turbine.test
@@ -47,7 +48,8 @@ internal class NavigationSetupTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher: CoroutineDispatcher = UnconfinedTestDispatcher()
-    private val lifecyle = TestLifecycleOwner(RESUMED, dispatcher).lifecycle
+    private val testLifecycleOwner = TestLifecycleOwner(RESUMED, dispatcher)
+    private val lifecyle = testLifecycleOwner.lifecycle
 
     @Before
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -68,6 +70,31 @@ internal class NavigationSetupTest {
         activityLauncher.launched.cancel()
         permissionLauncher.launched.cancel()
         Dispatchers.resetMain()
+    }
+
+    @Test
+    fun `does not drop events when paused`() = runBlocking {
+        repeat(1000) {
+            navigator.navigateTo(SimpleRoute(it))
+        }
+        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+
+        setup()
+
+        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        assertThat(List(1000) { executor.received.awaitItem() })
+            .containsExactlyElementsIn(List(1000) { NavEvent.NavigateToEvent(SimpleRoute(it)) })
+            .inOrder()
+        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+
+        repeat(1000) {
+            navigator.navigateTo(SimpleRoute(2 + it))
+        }
+
+        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        assertThat(List(1000) { executor.received.awaitItem() })
+            .containsExactlyElementsIn(List(1000) { NavEvent.NavigateToEvent(SimpleRoute(2 + it)) })
+            .inOrder()
     }
 
     @Test
