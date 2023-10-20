@@ -510,6 +510,30 @@ internal class MultiStackNavigationExecutorTest {
     }
 
     @Test
+    fun `replaceRoot with start root from start executor`() {
+        val executor = underTest()
+        executor.navigate(SimpleRoute(1))
+        executor.replaceRoot(SimpleRoot(2))
+
+        assertThat(executor.visibleEntries.value)
+            .containsExactly(
+                StackEntry(
+                    StackEntry.Id("102"),
+                    SimpleRoot(2),
+                    simpleRootDestination,
+                ),
+            )
+            .inOrder()
+        assertThat(executor.canNavigateBack.value).isFalse()
+
+        assertThat(removed)
+            .containsExactly(
+                StackEntry.Id("100"),
+                StackEntry.Id("101"),
+            )
+    }
+
+    @Test
     fun `navigateUp throws exception when start executor is at root`() {
         val executor = underTest()
         val exception = assertThrows(IllegalStateException::class.java) {

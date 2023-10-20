@@ -35,7 +35,7 @@ internal class MultiStackTest {
         currentStack: Stack = defaultStack,
     ): MultiStack {
         return MultiStack(
-            allStacks = listOfNotNull(startStack, currentStack).toMutableList(),
+            allStacks = listOf(startStack, currentStack).filterNotNullTo(ArrayList()),
             startStack = startStack,
             currentStack = startStack,
             destinations = destinations,

@@ -51,6 +51,12 @@ public sealed interface NavEvent {
 
     @InternalNavigationApi
     @Poko
+    public class ReplaceRoot(
+        internal val root: NavRoot,
+    ) : NavEvent
+
+    @InternalNavigationApi
+    @Poko
     public class ActivityResultEvent<I>(
         internal val request: ContractResultOwner<I, *, *>,
         internal val input: I,

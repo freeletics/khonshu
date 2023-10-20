@@ -52,6 +52,9 @@ private fun NavigationExecutor.navigate(
         is NavEvent.ResetToRoot -> {
             resetToRoot(event.root)
         }
+        is NavEvent.ReplaceRoot -> {
+            replaceRoot(event.root)
+        }
         is NavEvent.ActivityResultEvent<*> -> {
             val request = event.request
             val launcher = activityLaunchers[request] ?: throw IllegalStateException(

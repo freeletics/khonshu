@@ -14,7 +14,8 @@ import com.freeletics.khonshu.navigation.internal.destinationId
 import java.util.UUID
 
 internal class MultiStack(
-    private val allStacks: MutableList<Stack>,
+    // Use ArrayList to make sure it is a RandomAccess
+    private val allStacks: ArrayList<Stack>,
     private var startStack: Stack,
     private var currentStack: Stack,
     private val destinations: List<ContentDestination<*>>,
@@ -148,6 +149,35 @@ internal class MultiStack(
         updateVisibleDestinations()
     }
 
+    fun replaceRoot(root: NavRoot) {
+        // remove all stacks
+        val iterator = allStacks.listIterator(allStacks.size)
+        while (iterator.hasPrevious()) {
+            val stack = iterator.previous()
+            println(">>> Remove ${stack.id}")
+
+            // Cannot use removeBackStack
+            // because we're modifying the list while iterating
+            stack.clear()
+            iterator.remove()
+            onStackEntryRemoved(stack.rootEntry.id)
+        }
+        check(allStacks.isEmpty()) {
+            "allStacks should be empty after removing all stacks"
+        }
+
+        // create new stack with the root
+        val newStack = createBackStack(root)
+        startStack = newStack
+        currentStack = newStack
+
+        updateVisibleDestinations()
+
+        check(allStacks.size == 1) {
+            "allStacks should contain exactly one stack after replacing the root"
+        }
+    }
+
     fun saveState(): Bundle {
         return bundleOf(
             SAVED_STATE_ALL_STACKS to ArrayList(allStacks.map { it.saveState() }),
@@ -164,7 +194,7 @@ internal class MultiStack(
         ): MultiStack {
             val startStack = Stack.createWith(root, destinations, onStackEntryRemoved, idGenerator)
             return MultiStack(
-                allStacks = mutableListOf(startStack),
+                allStacks = arrayListOf(startStack),
                 startStack = startStack,
                 currentStack = startStack,
                 destinations = destinations,

@@ -198,6 +198,11 @@ public open class NavEventNavigator {
         sendNavEvent(event)
     }
 
+    public fun replaceRoot(root: NavRoot) {
+        val event = NavEvent.ReplaceRoot(root)
+        sendNavEvent(event)
+    }
+
     /**
      * Triggers a new [NavEvent] that launches the given [request].
      *

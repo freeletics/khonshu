@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import androidx.navigation.navOptions
 import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
@@ -67,6 +68,24 @@ public class AndroidXNavigationExecutor(
             // everything above it gets removed
             .setLaunchSingleTop(true)
             .build()
+        controller.navigate(root.destinationId(), root.getArguments(), options)
+    }
+
+    override fun replaceRoot(root: NavRoot) {
+        val options = navOptions {
+            // pop all entries from the backstack
+            popUpTo(controller.graph.startDestinationId) {
+                inclusive = true
+                saveState = false
+            }
+
+            // Avoid multiple copies of the same destination.
+            launchSingleTop = true
+
+            // Don't restore the state of the target destination.
+            restoreState = false
+        }
+
         controller.navigate(root.destinationId(), root.getArguments(), options)
     }
 
