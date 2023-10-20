@@ -1,7 +1,5 @@
 package com.freeletics.khonshu.navigation.compose
 
-import androidx.navigation.NavDestination as AndroidXNavDestination
-import androidx.navigation.compose.NavHost as AndroidXNavHost
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -12,8 +10,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
+import androidx.navigation.NavDestination as AndroidXNavDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.compose.NavHost as AndroidXNavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.get
