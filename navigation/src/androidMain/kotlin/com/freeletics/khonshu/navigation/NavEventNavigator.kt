@@ -201,6 +201,7 @@ public open class NavEventNavigator {
     /**
      * Replace the current back stack with the given [root].
      * The current back stack will cleared and the given [root] will be recreated.
+     * After this call the back stack will only contain the given [root].
      *
      * This differs from [resetToRoot] in that [resetToRoot] does not pop the start route (exclusive)
      * whereas this does.
