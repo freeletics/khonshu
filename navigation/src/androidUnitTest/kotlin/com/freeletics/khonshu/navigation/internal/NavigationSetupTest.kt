@@ -142,6 +142,15 @@ internal class NavigationSetupTest {
     }
 
     @Test
+    fun `ReplaceAll is forwarded to executor`() = runBlocking {
+        setup()
+
+        navigator.replaceAll(SimpleRoot(2))
+        assertThat(executor.received.awaitItem())
+            .isEqualTo(NavEvent.ReplaceAll(SimpleRoot(2)))
+    }
+
+    @Test
     fun `MultiNavEvent is handled properly and events are forwarded to executor`() = runBlocking {
         setup()
 

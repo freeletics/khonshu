@@ -145,6 +145,25 @@ internal class NavEventNavigatorTest {
     }
 
     @Test
+    fun `replaceAll event is received`(): Unit = runBlocking {
+        val navigator = TestNavigator()
+
+        navigator.navEvents.test {
+            navigator.replaceAll(
+                root = SimpleRoot(1),
+            )
+
+            assertThat(awaitItem()).isEqualTo(
+                NavEvent.ReplaceAll(
+                    root = SimpleRoot(1),
+                ),
+            )
+
+            cancel()
+        }
+    }
+
+    @Test
     fun `navigateForResult event is received`(): Unit = runBlocking {
         val navigator = TestNavigator()
 
