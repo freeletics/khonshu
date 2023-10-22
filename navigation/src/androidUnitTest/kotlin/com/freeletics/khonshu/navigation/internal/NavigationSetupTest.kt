@@ -74,6 +74,7 @@ internal class NavigationSetupTest {
 
     @Test
     fun `does not drop events when paused`() = runBlocking {
+        // send events before setup
         repeat(1000) {
             navigator.navigateTo(SimpleRoute(it))
         }
@@ -81,19 +82,22 @@ internal class NavigationSetupTest {
 
         setup()
 
+        // receive events on resume
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
         assertThat(List(1000) { executor.received.awaitItem() })
             .containsExactlyElementsIn(List(1000) { NavEvent.NavigateToEvent(SimpleRoute(it)) })
             .inOrder()
-        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
 
+        // send events on paused
+        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         repeat(1000) {
-            navigator.navigateTo(SimpleRoute(2 + it))
+            navigator.navigateTo(SimpleRoute(1000 + it))
         }
 
+        // receive events on resume
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
         assertThat(List(1000) { executor.received.awaitItem() })
-            .containsExactlyElementsIn(List(1000) { NavEvent.NavigateToEvent(SimpleRoute(2 + it)) })
+            .containsExactlyElementsIn(List(1000) { NavEvent.NavigateToEvent(SimpleRoute(1000 + it)) })
             .inOrder()
     }
 
