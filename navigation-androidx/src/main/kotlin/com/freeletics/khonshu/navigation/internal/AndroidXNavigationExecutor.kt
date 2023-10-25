@@ -74,7 +74,7 @@ public class AndroidXNavigationExecutor(
     override fun replaceAll(root: NavRoot) {
         val options = navOptions {
             // pop all entries from the backstack
-            popUpTo(controller.graph.startDestinationId) {
+            popUpTo(id = controller.graph.id) {
                 inclusive = true
                 saveState = false
             }
@@ -86,7 +86,13 @@ public class AndroidXNavigationExecutor(
             restoreState = false
         }
 
-        controller.navigate(root.destinationId(), root.getArguments(), options)
+        val rootId = root.destinationId()
+        controller.navigate(rootId, root.getArguments(), options)
+
+        // Call setStartDestination(rootId) to make sure that
+        // other methods can access the correct start destination (via controller.graph.startDestinationId).
+        controller.graph.setStartDestination(rootId)
+
     }
 
     override fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle {
