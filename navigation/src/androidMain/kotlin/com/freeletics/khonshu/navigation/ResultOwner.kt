@@ -23,7 +23,8 @@ import kotlinx.parcelize.Parcelize
 public sealed class ResultOwner<R> {
 
     /**
-     * A [Flow] of results that can be collected by a collector.
+     * Emits any result passed to [onResult]. Results will only be delivered
+     * to one collector at a time.
      */
     private val _results = Channel<R>(capacity = Channel.UNLIMITED)
 
