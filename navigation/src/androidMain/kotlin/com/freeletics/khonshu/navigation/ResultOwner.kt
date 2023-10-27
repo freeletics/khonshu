@@ -11,7 +11,7 @@ import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 
@@ -20,17 +20,14 @@ import kotlinx.parcelize.Parcelize
  * to one collector at a time.
  */
 public sealed class ResultOwner<R> {
-    private val _results = Channel<R>(capacity = Channel.UNLIMITED)
 
     /**
      * Emits any result passed to [onResult]. Results will only be delivered
      * to one collector at a time.
      */
-    public val results: Flow<R> = flow {
-        for (result in _results) {
-            emit(result)
-        }
-    }
+    private val _results = Channel<R>(capacity = Channel.UNLIMITED)
+
+    public val results: Flow<R> = _results.receiveAsFlow()
 
     /**
      * Deliver a new [result] to [results]. This method should be called by a
