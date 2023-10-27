@@ -4,4 +4,4 @@ import com.freeletics.khonshu.navigation.NavRoute
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-object BottomSheetRoute : NavRoute
+data class BottomSheetRoute(val number: Int) : NavRoute

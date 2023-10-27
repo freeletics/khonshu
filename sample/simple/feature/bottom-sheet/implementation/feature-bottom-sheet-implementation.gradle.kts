@@ -23,4 +23,6 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.khonshu.codegen)
     implementation(libs.khonshu.codegen.scope)
+    implementation(projects.feature.dialog.nav)
+    implementation(projects.feature.screen.nav)
 }

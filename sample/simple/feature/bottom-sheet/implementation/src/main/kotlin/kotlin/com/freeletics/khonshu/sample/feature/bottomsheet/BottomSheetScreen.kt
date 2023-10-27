@@ -1,7 +1,10 @@
 package com.freeletics.khonshu.sample.feature.bottomsheet
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,6 +25,7 @@ import com.freeletics.khonshu.sample.feature.bottomsheet.nav.BottomSheetRoute
 )
 @Composable
 fun BottomSheetScreen(
+    state: BottomSheetState,
     sendAction: (BottomSheetAction) -> Unit,
 ) {
     ModalBottomSheet(onDismissRequest = { sendAction(BottomSheetAction.DismissRequested) }) {
@@ -31,7 +35,28 @@ fun BottomSheetScreen(
                 .padding(vertical = 48.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            BasicText("Feature Bottom Sheet")
+            BasicText("Feature Bottom Sheet ${state.number}")
+
+            Spacer(Modifier.height(12.dp))
+
+            BasicText(
+                modifier = Modifier.clickable { sendAction(BottomSheetAction.ScreenButtonClicked) },
+                text = "Open Screen",
+            )
+
+            Spacer(Modifier.height(12.dp))
+
+            BasicText(
+                modifier = Modifier.clickable { sendAction(BottomSheetAction.DialogButtonClicked) },
+                text = "Open Dialog",
+            )
+
+            Spacer(Modifier.height(12.dp))
+
+            BasicText(
+                modifier = Modifier.clickable { sendAction(BottomSheetAction.BottomSheetButtonClicked) },
+                text = "Open Bottom Sheet",
+            )
         }
     }
 }
