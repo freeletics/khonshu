@@ -20,7 +20,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
  * This allows to trigger navigation actions from outside the view layer
@@ -37,11 +37,7 @@ public open class NavEventNavigator {
     private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
 
     @InternalNavigationApi
-    public val navEvents: Flow<NavEvent> = flow {
-        for (result in _navEvents) {
-            emit(result)
-        }
-    }
+    public val navEvents: Flow<NavEvent> = _navEvents.receiveAsFlow()
 
     private val _activityResultRequests = mutableListOf<ContractResultOwner<*, *, *>>()
     private val _navigationResultRequests = mutableListOf<NavigationResultRequest<*>>()
