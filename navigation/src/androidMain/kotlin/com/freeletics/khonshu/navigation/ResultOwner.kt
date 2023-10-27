@@ -84,7 +84,7 @@ public class PermissionsResultRequest internal constructor() :
         /**
          * The app has access to the requested permission.
          */
-        public data object Granted : PermissionResult
+        public object Granted : PermissionResult
 
         /**
          * The app doesn't have access to the requested permission for one of the reasons requested
