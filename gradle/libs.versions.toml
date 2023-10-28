@@ -5,7 +5,7 @@ coroutines = "1.7.3"
 java-target= "11"
 java-toolchain = "19"
 
-fgp = "0.7.2"
+fgp = "0.8.1"
 gradle-api = "8.4"
 
 android-gradle = "8.1.2"
@@ -49,7 +49,7 @@ publish = "0.25.3"
 dokka = "1.9.10"
 bestpractices = "0.10"
 binarycompatibility = "0.13.2"
-dependency-analysis = "1.22.0"
+dependency-analysis = "1.25.0"
 gr8 = "0.10"
 
 [libraries]

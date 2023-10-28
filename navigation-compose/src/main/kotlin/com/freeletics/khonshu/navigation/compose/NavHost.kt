@@ -55,13 +55,15 @@ public fun NavHost(
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
 ) {
-    val overlayNavigator = remember { OverlayNavigator() }
-    val navController = rememberNavController(overlayNavigator)
-    val executor = remember(navController) { AndroidXNavigationExecutor(navController) }
     val context = LocalContext.current
 
+    val overlayNavigator = remember { OverlayNavigator() }
+    val customActivityNavigator = remember(context) { CustomActivityNavigator(context) }
+    val navController = rememberNavController(overlayNavigator, customActivityNavigator)
+    val executor = remember(navController) { AndroidXNavigationExecutor(navController) }
+
     if (destinationChangedCallback != null) {
-        DisposableEffect(key1 = destinationChangedCallback) {
+        DisposableEffect(navController, destinationChangedCallback) {
             val listener = OnDestinationChangedListener { _, _, arguments ->
                 val route = arguments.requireRoute<BaseRoute>()
                 destinationChangedCallback.invoke(route)
@@ -74,10 +76,12 @@ public fun NavHost(
         }
     }
 
-    val graph = remember(navController, context, startRoute, destinations) {
+    DisposableEffect(context, deepLinkHandlers, deepLinkPrefixes) {
         context.findActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
+        onDispose { }
+    }
 
-        navController.navigatorProvider.addNavigator(CustomActivityNavigator(context))
+    val graph = remember(navController, startRoute, destinations) {
         @Suppress("deprecation")
         navController.createGraph(startDestination = startRoute.destinationId()) {
             destinations.forEach { destination ->
