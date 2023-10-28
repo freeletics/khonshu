@@ -11,6 +11,7 @@ sealed interface NewRootAction {
     data object ScreenButtonClicked : NewRootAction
     data object DialogButtonClicked : NewRootAction
     data object BottomSheetButtonClicked : NewRootAction
+    data object ReplaceAllButtonClicked: NewRootAction
 }
 
 class NewRootStateMachine @Inject constructor(
@@ -20,5 +21,11 @@ class NewRootStateMachine @Inject constructor(
     override val state: Flow<NewRootState> = _state
 
     override suspend fun dispatch(action: NewRootAction) {
+        when (action) {
+            NewRootAction.ScreenButtonClicked -> navigator.navigateToScreen()
+            NewRootAction.DialogButtonClicked -> navigator.navigateToDialog()
+            NewRootAction.BottomSheetButtonClicked -> navigator.navigateToBottomSheet()
+            NewRootAction.ReplaceAllButtonClicked -> navigator.replaceAllWithNewRoot()
+        }
     }
 }

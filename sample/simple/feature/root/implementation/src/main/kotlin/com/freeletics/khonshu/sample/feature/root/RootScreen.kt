@@ -53,7 +53,7 @@ fun RootScreen(
         Spacer(Modifier.height(12.dp))
 
         BasicText(
-            modifier = Modifier.clickable { sendAction(RootAction.BottomSheetButtonClicked) },
+            modifier = Modifier.clickable { sendAction(RootAction.ReplaceAllButtonClicked) },
             text = "Replace all with New Root",
         )
     }
