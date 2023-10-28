@@ -44,6 +44,7 @@ public class com/freeletics/khonshu/navigation/NavEventNavigator {
 	protected final fun registerForActivityResult (Landroidx/activity/result/contract/ActivityResultContract;)Lcom/freeletics/khonshu/navigation/ActivityResultRequest;
 	public final fun registerForNavigationResult-UamjCxQ (Lkotlin/reflect/KClass;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest;
 	protected final fun registerForPermissionsResult ()Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;
+	public final fun replaceAll (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 	public final fun requestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/List;)V
 	public final fun requestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;[Ljava/lang/String;)V
 	public final fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
