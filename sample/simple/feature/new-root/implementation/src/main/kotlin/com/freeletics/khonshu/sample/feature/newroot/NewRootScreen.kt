@@ -16,7 +16,7 @@ import com.freeletics.khonshu.sample.feature.root.nav.NewRootRoute
 )
 @Composable
 fun NewRootScreen(
-    sendAction: (NewRootAction) -> Unit,
+    @Suppress("UNUSED_PARAMETER") sendAction: (NewRootAction) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),

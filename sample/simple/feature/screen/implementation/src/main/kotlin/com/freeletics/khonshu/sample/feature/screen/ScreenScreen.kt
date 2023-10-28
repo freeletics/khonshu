@@ -54,7 +54,7 @@ fun ScreenScreen(
         Spacer(Modifier.height(12.dp))
 
         BasicText(
-            modifier = Modifier.clickable { sendAction(ScreenAction.BottomSheetButtonClicked) },
+            modifier = Modifier.clickable { sendAction(ScreenAction.ReplaceAllButtonClicked) },
             text = "Replace all with New Root",
         )
     }
