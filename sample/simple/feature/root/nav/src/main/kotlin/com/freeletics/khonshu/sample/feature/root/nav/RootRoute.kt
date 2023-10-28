@@ -4,4 +4,4 @@ import com.freeletics.khonshu.navigation.NavRoot
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-object RootRoute : NavRoot
+data object RootRoute : NavRoot

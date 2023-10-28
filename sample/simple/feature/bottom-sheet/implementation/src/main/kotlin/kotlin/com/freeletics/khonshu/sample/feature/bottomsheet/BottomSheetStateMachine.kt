@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.flowOf
 
 sealed interface BottomSheetState
 
-object Init : BottomSheetState
+data object Init : BottomSheetState
 
 sealed interface BottomSheetAction {
-    object DismissRequested : BottomSheetAction
+    data object DismissRequested : BottomSheetAction
 }
 
 class BottomSheetStateMachine @Inject constructor(
