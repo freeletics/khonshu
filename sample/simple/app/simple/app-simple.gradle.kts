@@ -23,4 +23,6 @@ dependencies {
     implementation(projects.feature.root.nav)
     implementation(projects.feature.screen.implementation)
     implementation(projects.feature.screen.nav)
+    implementation(projects.feature.newRoot.implementation)
+    implementation(projects.feature.newRoot.nav)
 }

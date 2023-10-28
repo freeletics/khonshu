@@ -11,6 +11,7 @@ sealed interface RootAction {
     object ScreenButtonClicked : RootAction
     object DialogButtonClicked : RootAction
     object BottomSheetButtonClicked : RootAction
+    object ReplaceAllButtonClicked : RootAction
 }
 
 class RootStateMachine @Inject constructor(
@@ -24,6 +25,7 @@ class RootStateMachine @Inject constructor(
             RootAction.ScreenButtonClicked -> navigator.navigateToScreen()
             RootAction.DialogButtonClicked -> navigator.navigateToDialog()
             RootAction.BottomSheetButtonClicked -> navigator.navigateToBottomSheet()
+            RootAction.ReplaceAllButtonClicked -> navigator.replaceAllWithNewRoot()
         }
     }
 }

@@ -12,6 +12,7 @@ sealed interface ScreenAction {
     object ScreenButtonClicked : ScreenAction
     object DialogButtonClicked : ScreenAction
     object BottomSheetButtonClicked : ScreenAction
+    object ReplaceAllButtonClicked : ScreenAction
 }
 
 class ScreenStateMachine @Inject constructor(
@@ -26,6 +27,7 @@ class ScreenStateMachine @Inject constructor(
             ScreenAction.ScreenButtonClicked -> navigator.navigateToScreen()
             ScreenAction.DialogButtonClicked -> navigator.navigateToDialog()
             ScreenAction.BottomSheetButtonClicked -> navigator.navigateToBottomSheet()
+            ScreenAction.ReplaceAllButtonClicked -> navigator.replaceAllWithNewRoot()
         }
     }
 }
