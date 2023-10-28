@@ -15,10 +15,10 @@ dependencies {
     api(libs.khonshu.navigator)
     api(libs.khonshu.navigator.compose)
     api(libs.khonshu.statemachine)
+    api(libs.khonshu.codegen)
     api(projects.feature.bottomSheet.nav)
 
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material)
-    api(libs.khonshu.codegen)
 }
