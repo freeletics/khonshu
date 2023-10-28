@@ -52,8 +52,6 @@ khonshu-navigator = { module = "com.freeletics.khonshu:navigation", version.ref 
 khonshu-navigator-compose = { module = "com.freeletics.khonshu:navigation-compose", version.ref = "khonshu" }
 khonshu-codegen-compiler = { module = "com.freeletics.khonshu:codegen-compiler", version.ref = "khonshu" }
 khonshu-codegen = { module = "com.freeletics.khonshu:codegen-runtime", version.ref = "khonshu" }
-khonshu-codegen-compose = { module = "com.freeletics.khonshu:codegen-compose", version.ref = "khonshu" }
-khonshu-codegen-scope = { module = "com.freeletics.khonshu:codegen-scope", version.ref = "khonshu" }
 khonshu-statemachine = { module = "com.freeletics.khonshu:state-machine", version.ref = "khonshu" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
