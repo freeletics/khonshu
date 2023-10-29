@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 object RootState
 
 sealed interface RootAction {
-    object ScreenButtonClicked : RootAction
-    object DialogButtonClicked : RootAction
-    object BottomSheetButtonClicked : RootAction
+    data object ScreenButtonClicked : RootAction
+    data object DialogButtonClicked : RootAction
+    data object BottomSheetButtonClicked : RootAction
 }
 
 class RootStateMachine @Inject constructor(

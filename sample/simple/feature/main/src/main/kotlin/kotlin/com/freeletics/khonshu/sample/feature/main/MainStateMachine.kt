@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flowOf
 
 sealed interface MainState
 
-object Init : MainState
+data object Init : MainState
 
 sealed interface MainAction
 
