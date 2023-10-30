@@ -1,0 +1,39 @@
+name: Build simple sample
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+jobs:
+  build:
+    name: Build simple sample
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./sample/simple
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Gradle Wrapper Validation
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Install JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 19
+
+      - name: Install Android SDK
+        run: ./.github/android-sdk.sh
+
+      - uses: gradle/gradle-build-action@v2
+
+      - name: Build with Gradle
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Check code style
+        run: ./kotlinw .kts/ktlint.main.kts --fail-on-changes
