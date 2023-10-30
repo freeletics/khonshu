@@ -2,9 +2,9 @@ name: Build simple sample
 
 on:
   push:
-    branches:
-      - '**'
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
       - uses: gradle/gradle-build-action@v2
 
       - name: Build with Gradle
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew :app:simple:assembleDebug buildHealth --stacktrace
 
       - name: Check code style
-        run: ./kotlinw .kts/ktlint.main.kts --fail-on-changes
+        run: ./kotlinw ../../.kts/ktlint.main.kts --fail-on-changes
