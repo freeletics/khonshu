@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 object DialogState
 
 sealed interface DialogAction {
-    object DismissRequested : DialogAction
+    data object DismissRequested : DialogAction
 }
 
 class DialogStateMachine @Inject constructor(

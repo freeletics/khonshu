@@ -1,9 +1,9 @@
 # Navigating to Activities and other apps
 
-It is also possible navigate to an `Activity` both inside and outside of the app. Similar to other 
-screens it is required to define a route and a destination for Activities. Instead of `NavRoute` 
-the route class needs to extend either `InternalActivtyRoute` for `Activity` instances in the 
-current app or `ExternalActivityRoute` if it is part of a different app. In both cases the 
+It is also possible navigate to an `Activity` both inside and outside of the app. Similar to other
+screens it is required to define a route and a destination for Activities. Instead of `NavRoute`
+the route class needs to extend either `InternalActivtyRoute` for `Activity` instances in the
+current app or `ExternalActivityRoute` if it is part of a different app. In both cases the
 destination is then declared using the `ActivityDestination` function.
 
 ## Internal Activities
@@ -26,24 +26,24 @@ val extraActivityDestination: NavDestination = ActivityDestination<SettingsRoute
 ## Other apps
 
 Activities in other apps can be targeted with `ExternalActivityRoute`. This provides an additional
-`fillInIntent` method that can optionally be overridden to dynamically add parameters to the 
+`fillInIntent` method that can optionally be overridden to dynamically add parameters to the
 started `Intent`.
 
-A very simple route would just be an object and the `Intent` is completely built as part of the 
+A very simple route would just be an object and the `Intent` is completely built as part of the
 destination:
 
 ```kotlin
 @Parcelize
-object PlayStoreRoute : ExternalActivityRoute
+data object PlayStoreRoute : ExternalActivityRoute
 
 val playStoreDestination: NavDestination = ActivityDestination<PlayStoreRoute>(
     intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${context.packageName}"))
 )
 ```
 
-A share `Intent` usually has changing messages so defining that statically when creating the 
+A share `Intent` usually has changing messages so defining that statically when creating the
 destination won't work. The dynamic parameters can be passed to the route and then added
-to the `fillInIntent`. The `Intent` of the destination will then be combined internally 
+to the `fillInIntent`. The `Intent` of the destination will then be combined internally
 with a call to [`Intent.fillIn`](https://developer.android.com/reference/android/content/Intent#fillIn(android.content.Intent,%20int))
 
 ```kotlin

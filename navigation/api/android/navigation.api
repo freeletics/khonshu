@@ -94,6 +94,9 @@ public final class com/freeletics/khonshu/navigation/PermissionsResultRequest$Pe
 
 public final class com/freeletics/khonshu/navigation/PermissionsResultRequest$PermissionResult$Granted : com/freeletics/khonshu/navigation/PermissionsResultRequest$PermissionResult {
 	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/PermissionsResultRequest$PermissionResult$Granted;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract class com/freeletics/khonshu/navigation/ResultOwner {
