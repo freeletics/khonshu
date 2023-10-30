@@ -15,6 +15,7 @@ import java.io.Serializable
 @InternalNavigationApi
 public class AndroidXNavigationExecutor(
     private val controller: NavController,
+    private val onSaveStartRoute: (NavRoot) -> Unit,
 ) : NavigationExecutor {
 
     override fun navigate(route: NavRoute) {
@@ -86,13 +87,8 @@ public class AndroidXNavigationExecutor(
             restoreState = false
         }
 
-        val rootId = root.destinationId()
-        controller.navigate(rootId, root.getArguments(), options)
-
-        // Call setStartDestination(rootId) to make sure that
-        // other methods can access the correct start destination (via controller.graph.startDestinationId).
-        controller.graph.setStartDestination(rootId)
-
+        controller.navigate(root.destinationId(), root.getArguments(), options)
+        onSaveStartRoute(root)
     }
 
     override fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle {
