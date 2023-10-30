@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 data class ScreenState(val number: Int)
 
 sealed interface ScreenAction {
-    object ScreenButtonClicked : ScreenAction
-    object DialogButtonClicked : ScreenAction
-    object BottomSheetButtonClicked : ScreenAction
+    data object ScreenButtonClicked : ScreenAction
+    data object DialogButtonClicked : ScreenAction
+    data object BottomSheetButtonClicked : ScreenAction
 }
 
 class ScreenStateMachine @Inject constructor(

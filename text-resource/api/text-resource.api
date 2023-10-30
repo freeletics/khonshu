@@ -11,10 +11,13 @@ public final class com/freeletics/khonshu/text/LoadingTextResource : com/freelet
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public static final field INSTANCE Lcom/freeletics/khonshu/text/LoadingTextResource;
 	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
 	public synthetic fun format (Landroid/content/Context;)Ljava/lang/String;
 	public fun format (Landroid/content/Context;)Ljava/lang/Void;
 	public synthetic fun format (Landroidx/compose/runtime/Composer;I)Ljava/lang/String;
 	public fun format (Landroidx/compose/runtime/Composer;I)Ljava/lang/Void;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 	public fun writeToParcel (Landroid/os/Parcel;I)V
 }
 

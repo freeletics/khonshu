@@ -31,10 +31,10 @@ public sealed interface NavEvent {
     ) : NavEvent
 
     @InternalNavigationApi
-    public object UpEvent : NavEvent
+    public data object UpEvent : NavEvent
 
     @InternalNavigationApi
-    public object BackEvent : NavEvent
+    public data object BackEvent : NavEvent
 
     @InternalNavigationApi
     @Poko

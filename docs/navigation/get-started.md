@@ -54,7 +54,7 @@ The most minimal implementation of `NavRoute` would be for a screen that doesn't
 arguments can be a simple Kotlin object:
 ```kotlin
 @Parcelize
-object HomeScreenRoute : NavRoute
+data object HomeScreenRoute : NavRoute
 ```
 
 The more common case when a destination needs arguments passed to it would look like this:
@@ -75,19 +75,19 @@ If we take the `DetailScreenRoute` example from above, declaring the destination
 like this:
 
 === "Compose"
-    
+
     ```kotlin
     val detailScreenDestination: NavDestination = ScreenDestination<DetailScreenRoute> { route: DetailScreenRoute ->
         DetailScreen(route)
     }
     ```
-    
+
     The `ScreenDestination` function will return a new `NavDestination` which is linked to the route
     that was passed as the generic type parameter. The lambda function then gets an instance of that
     `NavRoute` and calls the `@Composable` function that should be shown.
 
-    There is also an `OverlayDestination` function to declare destinations that use a dialog or bottom 
-    sheet as a container instead of being shown full screen. 
+    There is also an `OverlayDestination` function to declare destinations that use a dialog or bottom
+    sheet as a container instead of being shown full screen.
 
     ```kotlin
     val infoSheetDestination: NavDestination = OverlayDestination { route: InfoSheetRoute ->
@@ -109,12 +109,12 @@ like this:
     ```kotlin
     val detailScreenDestination: NavDestination = ScreenDestination<DetailScreenRoute, DetailFragment>()
     ```
-    
+
     The `ScreenDestination` function will return a new `NavDestination` which is linked to the route
     that was passed as the first generic type parameter. The second type parameter is the `Fragment`
     that will be shown for this destination.
 
-    There is also a `DialogDestination` function to declare destinations that use a dialog or bottom 
+    There is also a `DialogDestination` function to declare destinations that use a dialog or bottom
     sheet as a container instead of being shown full screen. Fragments used with this function
     should extend `DialogFragment`.
 
@@ -126,7 +126,7 @@ like this:
 
     Inside a Fragment the `requireRoute` extension method can be used to obtain the `NavRoute`
     used to navigate to it.
-    
+
     For example the `DetailFragment` could do this to obtain `DetailScreenRoute` and access the `id` in
     it:
     ```kotlin
@@ -148,9 +148,9 @@ takes care of displaying the currently visible destination(s).
         NavHost(
             // route to the screen that should be shown initially
             startRoute = HomeScreenRoute,
-            // should contain all destinations that can be navigated to 
+            // should contain all destinations that can be navigated to
             destinations = setOf(
-                homeDestination, 
+                homeDestination,
                 detailScreenDestination,
             ),
         )
@@ -164,9 +164,9 @@ takes care of displaying the currently visible destination(s).
     navHostFragment.setGraph(
         // route to the screen that should be shown initially
         startRoute = HomeScreenRoute,
-        // should contain all destinations that can be navigated to 
+        // should contain all destinations that can be navigated to
         destinations = setOf(
-            homeDestination, 
+            homeDestination,
             detailScreenDestination,
         ),
     )
@@ -216,7 +216,7 @@ set up:
     class MainActivity : ComponentActivity() {
         @Inject
         lateinit var destinations: Set<NavDestination>
-    
+
         override fun onCreate(savedInstanceState: Bundle) {
             super.onCreate()
             // inject the activity
@@ -236,7 +236,7 @@ set up:
     class MainActivity : FragmentActivity() {
         @Inject
         lateinit var destinations: Set<NavDestination>
-    
+
         override fun onCreate(savedInstanceState: Bundle) {
             super.onCreate()
             // inject the activity
