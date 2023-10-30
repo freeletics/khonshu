@@ -93,7 +93,7 @@ public sealed class TextResource : Parcelable {
  * and is meant as a marker to for example show a placeholder graphic.
  */
 @Parcelize
-public object LoadingTextResource : TextResource() {
+public data object LoadingTextResource : TextResource() {
     override fun format(context: Context): Nothing {
         throw UnsupportedOperationException("LoadingTextResource can not be formatted.")
     }
