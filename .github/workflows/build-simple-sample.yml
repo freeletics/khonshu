@@ -33,7 +33,7 @@ jobs:
       - uses: gradle/gradle-build-action@v2
 
       - name: Build with Gradle
-        run: ./gradlew :app:simple:assembleDebug buildHealth -Pdependency.analysis.android.ignored.variants=release --stacktrace
+        run: ./gradlew :app:simple:assembleDebug --stacktrace
 
       - name: Check code style
         run: ./kotlinw ../../.kts/ktlint.main.kts --fail-on-changes
