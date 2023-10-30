@@ -28,7 +28,7 @@ jobs:
           java-version: 19
 
       - name: Install Android SDK
-        run: ./.github/android-sdk.sh
+        run: ../../.github/android-sdk.sh
 
       - uses: gradle/gradle-build-action@v2
 
