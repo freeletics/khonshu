@@ -1,8 +1,10 @@
 package com.freeletics.khonshu.navigation.fragment
 
+import androidx.navigation.NavDestination as AndroidXNavDestination
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination as AndroidXNavDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.createGraph
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -10,12 +12,16 @@ import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.get
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.CustomActivityNavigator
 import com.freeletics.khonshu.navigation.internal.destinationId
 import com.freeletics.khonshu.navigation.internal.getArguments
 import com.freeletics.khonshu.navigation.internal.handleDeepLink
 import java.io.Serializable
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 /**
  * Creates and sets a [androidx.navigation.NavGraph] containing all given [destinations].
@@ -28,7 +34,7 @@ import java.io.Serializable
  * doesn't provide its own [DeepLinkHandler.prefixes].
  */
 public fun NavHostFragment.setGraph(
-    startRoute: BaseRoute,
+    startRoute: NavRoot,
     destinations: Set<NavDestination>,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
@@ -44,6 +50,19 @@ public fun NavHostFragment.setGraph(
     }
 
     navController.setGraph(graph, null)
+
+    ViewModelProvider(this)[HandleNavigationViewModel::class.java].run {
+        if (savedStartRouteState.value == null) {
+            onSaveStartRoute(startRoute)
+        }
+        savedStartRouteState
+            .filterNotNull()
+            .onEach {
+                println("$this setGraph $it")
+                graph.setStartDestination(it.destinationId())
+            }
+            .launchIn(lifecycleScope)
+    }
 }
 
 private fun NavGraphBuilder.addDestination(

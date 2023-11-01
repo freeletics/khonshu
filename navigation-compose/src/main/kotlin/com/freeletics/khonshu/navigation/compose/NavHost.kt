@@ -66,7 +66,7 @@ public fun NavHost(
     val navController = rememberNavController(overlayNavigator, customActivityNavigator)
 
     // This state is used to save the start route, so that we can update the start destination of the graph.
-    // It is updated when NavEventNavigation#replaceRoot is called or when the `startRoute` parameter changes.
+    // It is updated when NavEventNavigation#replaceAll is called or when the `startRoute` parameter changes.
     val savedStartRouteState = rememberSaveable { mutableStateOf(startRoute) }
 
     val executor = remember(navController, savedStartRouteState) {
@@ -107,7 +107,7 @@ public fun NavHost(
         }
     }
 
-    // When the start route changes because NavEventNavigation#replaceRoot was called,
+    // When the start route changes because NavEventNavigation#replaceAll was called,
     // we need to update the start destination of the graph.
     //
     // This is really necessary, because after a configuration changes or a process death,
