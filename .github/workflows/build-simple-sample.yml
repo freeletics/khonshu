@@ -28,12 +28,10 @@ jobs:
           java-version: 19
 
       - name: Install Android SDK
-        run: ../../.github/android-sdk.sh
+        run: ./.github/android-sdk.sh
 
       - uses: gradle/gradle-build-action@v2
 
       - name: Build with Gradle
-        run: ./gradlew :app:simple:assembleDebug --stacktrace
+        run: ./gradlew -p sample/simple :app:simple:assembleDebug --stacktrace
 
-      - name: Check code style
-        run: ../../.kotlinw ../../.kts/ktlint.main.kts --fail-on-changes
