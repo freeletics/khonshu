@@ -185,11 +185,11 @@ internal class FileGeneratorTestNavHostActivity {
                 setContent {
                   KhonshuTest(khonshuTestComponent) { startRoute, destinationChangedCallback ->
                     NavHost(
-                      startRoute,
-                      khonshuTestComponent.destinations,
-                      khonshuTestComponent.deepLinkHandlers,
-                      khonshuTestComponent.deepLinkPrefixes,
-                      destinationChangedCallback,
+                      startRoute = startRoute,
+                      destinations = khonshuTestComponent.destinations,
+                      deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
+                      deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
+                      destinationChangedCallback = destinationChangedCallback,
                     )
                   }
                 }
@@ -357,11 +357,11 @@ internal class FileGeneratorTestNavHostActivity {
                 setContent {
                   KhonshuTest(khonshuTestComponent) { startRoute, destinationChangedCallback ->
                     NavHost(
-                      startRoute,
-                      khonshuTestComponent.destinations,
-                      khonshuTestComponent.deepLinkHandlers,
-                      khonshuTestComponent.deepLinkPrefixes,
-                      destinationChangedCallback,
+                      startRoute = startRoute,
+                      destinations = khonshuTestComponent.destinations,
+                      deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
+                      deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
+                      destinationChangedCallback = destinationChangedCallback,
                     )
                   }
                 }
@@ -565,11 +565,11 @@ internal class FileGeneratorTestNavHostActivity {
                 setContent {
                   KhonshuTest2(khonshuTest2Component) { startRoute, destinationChangedCallback ->
                     NavHost(
-                      startRoute,
-                      khonshuTest2Component.destinations,
-                      khonshuTest2Component.deepLinkHandlers,
-                      khonshuTest2Component.deepLinkPrefixes,
-                      destinationChangedCallback,
+                      startRoute = startRoute,
+                      destinations = khonshuTest2Component.destinations,
+                      deepLinkHandlers = khonshuTest2Component.deepLinkHandlers,
+                      deepLinkPrefixes = khonshuTest2Component.deepLinkPrefixes,
+                      destinationChangedCallback = destinationChangedCallback,
                     )
                   }
                 }
@@ -743,11 +743,11 @@ internal class FileGeneratorTestNavHostActivity {
                 setContent {
                   KhonshuTest(khonshuTestComponent) { startRoute, destinationChangedCallback ->
                     NavHost(
-                      startRoute,
-                      khonshuTestComponent.destinations,
-                      khonshuTestComponent.deepLinkHandlers,
-                      khonshuTestComponent.deepLinkPrefixes,
-                      destinationChangedCallback,
+                      startRoute = startRoute,
+                      destinations = khonshuTestComponent.destinations,
+                      deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
+                      deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
+                      destinationChangedCallback = destinationChangedCallback,
                     )
                   }
                 }
@@ -913,11 +913,11 @@ internal class FileGeneratorTestNavHostActivity {
                 setContent {
                   KhonshuTest(khonshuTestComponent) { startRoute, destinationChangedCallback ->
                     NavHost(
-                      startRoute,
-                      khonshuTestComponent.destinations,
-                      khonshuTestComponent.deepLinkHandlers,
-                      khonshuTestComponent.deepLinkPrefixes,
-                      destinationChangedCallback,
+                      startRoute = startRoute,
+                      destinations = khonshuTestComponent.destinations,
+                      deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
+                      deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
+                      destinationChangedCallback = destinationChangedCallback,
                     )
                   }
                 }
