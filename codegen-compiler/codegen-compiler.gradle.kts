@@ -18,11 +18,11 @@ dependencies {
     api(libs.anvil.compiler.api)
     api(libs.ksp.api)
     api(libs.kotlinpoet)
-    api(projects.codegen)
     implementation(libs.anvil.annotations)
     implementation(libs.anvil.annotations.optional)
     implementation(libs.anvil.compiler.utils)
     implementation(libs.kotlinpoet.ksp)
+    implementation(projects.codegen)
     implementation(projects.navigation)
 
     compileOnly(libs.auto.service.annotations)

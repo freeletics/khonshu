@@ -3,6 +3,7 @@ package com.test
 import android.os.Parcel
 import android.view.View
 import androidx.viewbinding.ViewBinding
+import com.freeletics.khonshu.codegen.Overlay
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.statemachine.StateMachine
@@ -12,6 +13,11 @@ public class TestScreen
 public class TestClass
 
 public class TestRoute : NavRoute {
+    override fun describeContents(): Int = 0
+    override fun writeToParcel(p0: Parcel, p1: Int) {}
+}
+
+public class TestOverlayRoute : NavRoute, Overlay {
     override fun describeContents(): Int = 0
     override fun writeToParcel(p0: Parcel, p1: Int) {}
 }

@@ -5,6 +5,7 @@ import com.freeletics.khonshu.codegen.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.codegen.util.baseRoute
 import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
 import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
+import com.freeletics.khonshu.codegen.codegen.util.overlay
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
 import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactory
 import com.google.devtools.ksp.getClassDeclarationByName
@@ -104,7 +105,11 @@ internal fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLog
 internal fun KSClassDeclaration.findRendererFactory(logger: KSPLogger): ClassName? {
     val factory = declarations.filterIsInstance<KSClassDeclaration>()
         .firstNotNullOfOrNull {
-            if (it.allSuperTypes(false).any { superType -> superType == viewRendererFactory }) {
+            if (it.allSuperTypes(false).any { superType ->
+                    println("test: $superType")
+                    superType == viewRendererFactory
+                }
+            ) {
                 it.toClassName()
             } else {
                 null
@@ -121,6 +126,11 @@ internal fun KSClassDeclaration.findRendererFactory(logger: KSPLogger): ClassNam
 internal fun ClassName.extendsBaseRoute(resolver: Resolver): Boolean {
     val declaration = resolver.getClassDeclarationByName(toString())!!
     return declaration.allSuperTypes(false).any { it == baseRoute }
+}
+
+internal fun ClassName.extendsOverlay(resolver: Resolver): Boolean {
+    val declaration = resolver.getClassDeclarationByName(toString())!!
+    return declaration.allSuperTypes(false).any { it == overlay }
 }
 
 private fun TypeName.asParameterized(): ParameterizedTypeName? {
@@ -153,8 +163,13 @@ private fun KSClassDeclaration.allSuperTypes(
             if (parentTypeArguments.isNotEmpty() && superTypeName is ParameterizedTypeName) {
                 superTypeName = superTypeName.updateWith(parentTypeArguments, parentTypeParameters)
             }
+        } else if (superType is KSClassDeclaration) {
+            superTypeName = (superType as KSClassDeclaration).toClassName()
         } else {
-            superTypeName = superType.toClassName()
+            superTypeName = superType.toTypeName()
+        }
+        if (superTypeName is ParameterizedTypeName && !resolveTypeParameters) {
+            superTypeName = superTypeName.rawType
         }
         yield(superTypeName)
 

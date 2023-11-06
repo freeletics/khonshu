@@ -5,9 +5,9 @@ package com.freeletics.khonshu.codegen.codegen
 import com.freeletics.khonshu.codegen.AppScope
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.RendererFragmentData
-import com.freeletics.khonshu.codegen.fragment.DestinationType
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.asClassName
+import com.test.TestOverlayRoute
 import org.intellij.lang.annotations.Language
 import org.junit.Test
 
@@ -16,7 +16,7 @@ internal class FileGeneratorTestRendererFragment {
     private val navigation = Navigation.Fragment(
         route = ClassName("com.test", "TestRoute"),
         parentScopeIsRoute = true,
-        destinationType = DestinationType.SCREEN,
+        overlay = false,
         destinationScope = ClassName("com.test.destination", "TestDestinationScope"),
     )
 
@@ -39,7 +39,6 @@ internal class FileGeneratorTestRendererFragment {
 
             import android.view.View
             import com.freeletics.khonshu.codegen.fragment.RendererDestination
-            import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.gabrielittner.renderer.ViewRenderer
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
@@ -48,7 +47,6 @@ internal class FileGeneratorTestRendererFragment {
               route = TestRoute::class,
               parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,
-              destinationType = DestinationType.SCREEN,
               destinationScope = TestDestinationScope::class,
             )
             public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
@@ -214,13 +212,11 @@ internal class FileGeneratorTestRendererFragment {
 
             import android.view.View
             import com.freeletics.khonshu.codegen.fragment.RendererDestination
-            import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.gabrielittner.renderer.ViewRenderer
 
             @RendererDestination(
               route = TestRoute::class,
               stateMachine = TestStateMachine::class,
-              destinationType = DestinationType.SCREEN,
             )
             public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
               override fun renderToView(state: TestState) {}
@@ -369,9 +365,11 @@ internal class FileGeneratorTestRendererFragment {
     @Test
     fun `generates code for RendererFragmentData, dialog fragment`() {
         val navigation = navigation.copy(
-            destinationType = DestinationType.DIALOG,
+            route = TestOverlayRoute::class.asClassName(),
+            overlay = true,
         )
         val dialogFragment = data.copy(
+            scope = navigation.route,
             fragmentBaseClass = ClassName("androidx.fragment.app", "DialogFragment"),
             navigation = navigation,
         )
@@ -383,17 +381,15 @@ internal class FileGeneratorTestRendererFragment {
             import android.view.View
             import androidx.fragment.app.DialogFragment
             import com.freeletics.khonshu.codegen.fragment.RendererDestination
-            import com.freeletics.khonshu.codegen.fragment.DestinationType
             import com.gabrielittner.renderer.ViewRenderer
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 
             @RendererDestination(
-              route = TestRoute::class,
+              route = TestOverlayRoute::class,
               parentScope = TestParentRoute::class,
               stateMachine = TestStateMachine::class,
               destinationScope = TestDestinationScope::class,
-              destinationType = DestinationType.DIALOG,
               fragmentBaseClass = DialogFragment::class,
             )
             public class TestRenderer(view: View) : ViewRenderer<TestState, TestAction>(view) {
@@ -443,20 +439,20 @@ internal class FileGeneratorTestRendererFragment {
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
+            @SingleIn(TestOverlayRoute::class)
             @ContributesSubcomponent(
-              scope = TestRoute::class,
+              scope = TestOverlayRoute::class,
               parentScope = TestParentRoute::class,
             )
             public interface KhonshuTestRendererComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
-              @get:ForScope(TestRoute::class)
+              @get:ForScope(TestOverlayRoute::class)
               public val navEventNavigator: NavEventNavigator
 
               public val testRendererFactory: TestRenderer.Factory
 
-              @get:ForScope(TestRoute::class)
+              @get:ForScope(TestOverlayRoute::class)
               public val closeables: Set<Closeable>
 
               override fun close() {
@@ -467,8 +463,9 @@ internal class FileGeneratorTestRendererFragment {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
-                    @BindsInstance testRoute: TestRoute): KhonshuTestRendererComponent
+                public fun create(@BindsInstance @ForScope(TestOverlayRoute::class)
+                    savedStateHandle: SavedStateHandle, @BindsInstance testOverlayRoute: TestOverlayRoute):
+                    KhonshuTestRendererComponent
               }
 
               @ContributesTo(TestParentRoute::class)
@@ -479,24 +476,24 @@ internal class FileGeneratorTestRendererFragment {
 
             @OptIn(InternalCodegenApi::class)
             public object KhonshuTestRendererComponentProvider :
-                ComponentProvider<TestRoute, KhonshuTestRendererComponent> {
+                ComponentProvider<TestOverlayRoute, KhonshuTestRendererComponent> {
               @OptIn(InternalNavigationApi::class)
               override fun provide(
-                route: TestRoute,
+                route: TestOverlayRoute,
                 executor: NavigationExecutor,
                 context: Context,
               ): KhonshuTestRendererComponent = componentFromParentRoute(route.destinationId, route, executor,
                   context, TestParentRoute::class) { parentComponent:
-                  KhonshuTestRendererComponent.ParentComponent, savedStateHandle, testRoute ->
-                parentComponent.khonshuTestRendererComponentFactory().create(savedStateHandle, testRoute)
+                  KhonshuTestRendererComponent.ParentComponent, savedStateHandle, testOverlayRoute ->
+                parentComponent.khonshuTestRendererComponentFactory().create(savedStateHandle, testOverlayRoute)
               }
             }
 
             @Module
-            @ContributesTo(TestRoute::class)
+            @ContributesTo(TestOverlayRoute::class)
             public interface KhonshuTestRendererModule {
               @Multibinds
-              @ForScope(TestRoute::class)
+              @ForScope(TestOverlayRoute::class)
               public fun bindCloseables(): Set<Closeable>
             }
 
@@ -511,9 +508,9 @@ internal class FileGeneratorTestRendererFragment {
                 savedInstanceState: Bundle?,
               ): View {
                 if (!::khonshuTestRendererComponent.isInitialized) {
-                  val testRoute = requireRoute<TestRoute>()
+                  val testOverlayRoute = requireRoute<TestOverlayRoute>()
                   val executor = findNavigationExecutor()
-                  khonshuTestRendererComponent = KhonshuTestRendererComponentProvider.provide(testRoute,
+                  khonshuTestRendererComponent = KhonshuTestRendererComponentProvider.provide(testOverlayRoute,
                       executor, requireContext())
 
                   handleNavigation(this, khonshuTestRendererComponent.navEventNavigator)
@@ -532,7 +529,7 @@ internal class FileGeneratorTestRendererFragment {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationApi::class)
-              public fun provideNavDestination(): NavDestination = DialogDestination<TestRoute,
+              public fun provideNavDestination(): NavDestination = DialogDestination<TestOverlayRoute,
                   KhonshuTestRendererFragment>(KhonshuTestRendererComponentProvider)
             }
 

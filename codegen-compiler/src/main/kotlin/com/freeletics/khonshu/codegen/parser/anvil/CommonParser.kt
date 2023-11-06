@@ -8,6 +8,7 @@ import com.freeletics.khonshu.codegen.codegen.util.baseRouteFqName
 import com.freeletics.khonshu.codegen.codegen.util.fragment
 import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
 import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
+import com.freeletics.khonshu.codegen.codegen.util.overlayFqName
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
 import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactoryFqName
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
@@ -27,7 +28,10 @@ internal val AnnotationReference.scope: ClassName
     get() = optionalClassArgument("scope", 0) ?: activityScope
 
 internal val AnnotationReference.route: ClassName
-    get() = requireClassArgument("route", 0)
+    get() = routeReference.asClassName()
+
+internal val AnnotationReference.routeReference: ClassReference
+    get() = requireClassReferenceArgument("route", 0)
 
 internal val AnnotationReference.parentScope: ClassName
     get() = parentScopeReference?.asClassName() ?: appScope
@@ -106,5 +110,11 @@ internal fun ClassReference.findRendererFactory(): ClassName {
 internal fun ClassReference?.extendsBaseRoute(): Boolean {
     return this?.allSuperTypeClassReferences()?.any { superType ->
         superType.fqName == baseRouteFqName
+    } == true
+}
+
+internal fun ClassReference?.extendsOverlay(): Boolean {
+    return this?.allSuperTypeClassReferences()?.any { superType ->
+        superType.fqName == overlayFqName
     } == true
 }

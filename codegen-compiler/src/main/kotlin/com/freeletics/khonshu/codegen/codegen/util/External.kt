@@ -20,6 +20,8 @@ internal val navHostActivity = ClassName("com.freeletics.khonshu.codegen.compose
 internal val navHostActivityFqName = FqName(navHostActivity.canonicalName)
 internal val appScope = ClassName("com.freeletics.khonshu.codegen", "AppScope")
 internal val activityScope = ClassName("com.freeletics.khonshu.codegen", "ActivityScope")
+internal val overlay = ClassName("com.freeletics.khonshu.codegen", "Overlay")
+internal val overlayFqName = FqName(overlay.canonicalName)
 
 // Codegen Internal API
 internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.internal", "asComposeState")

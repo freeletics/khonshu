@@ -5,7 +5,8 @@ import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.codegen.util.navDestinationFqName
 import com.freeletics.khonshu.codegen.codegen.util.navHostActivityFqName
-import com.freeletics.khonshu.codegen.compose.DestinationType
+import com.freeletics.khonshu.codegen.parser.ksp.extendsBaseRoute
+import com.freeletics.khonshu.codegen.parser.ksp.extendsOverlay
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.asClassName
 
@@ -18,7 +19,7 @@ internal fun TopLevelFunctionReference.toComposeScreenDestinationData(): Compose
     val navigation = Navigation.Compose(
         route = annotation.route,
         parentScopeIsRoute = annotation.parentScopeReference.extendsBaseRoute(),
-        destinationType = DestinationType.valueOf(annotation.destinationType),
+        overlay = annotation.routeReference.extendsOverlay(),
         destinationScope = annotation.destinationScope,
     )
 

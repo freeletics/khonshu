@@ -22,7 +22,6 @@ public annotation class RendererDestination(
     val route: KClass<out BaseRoute>,
     val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,
-    val destinationType: DestinationType = DestinationType.SCREEN,
     val destinationScope: KClass<*> = AppScope::class,
     val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
 )
