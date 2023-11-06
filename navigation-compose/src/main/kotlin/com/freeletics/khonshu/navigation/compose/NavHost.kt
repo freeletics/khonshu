@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.NavDestination as AndroidXNavDestination
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost as AndroidXNavHost
 import androidx.navigation.compose.rememberNavController
@@ -44,6 +45,9 @@ import java.io.Serializable
  * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
  * doesn't provide its own [DeepLinkHandler.prefixes].
  *
+ * The [navController] can be passed in optionally when needed, for example when using the NavHost
+ * with a bottom navigation element.
+ *
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
@@ -53,13 +57,17 @@ public fun NavHost(
     destinations: Set<NavDestination>,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
+    navController: NavHostController = rememberNavController(),
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
 ) {
     val context = LocalContext.current
 
     val overlayNavigator = remember { OverlayNavigator() }
     val customActivityNavigator = remember(context) { CustomActivityNavigator(context) }
-    val navController = rememberNavController(overlayNavigator, customActivityNavigator)
+
+    navController.navigatorProvider.addNavigator(overlayNavigator)
+    navController.navigatorProvider.addNavigator(customActivityNavigator)
+
     val executor = remember(navController) { AndroidXNavigationExecutor(navController) }
 
     if (destinationChangedCallback != null) {
