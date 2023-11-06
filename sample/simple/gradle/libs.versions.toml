@@ -1,7 +1,7 @@
 [versions]
 
 android-compile = "34"
-android-desugarjdklibs = "2.0.3"
+android-desugarjdklibs = "2.0.4"
 android-gradle = "8.1.2"
 android-min = "26"
 android-target = "33"
