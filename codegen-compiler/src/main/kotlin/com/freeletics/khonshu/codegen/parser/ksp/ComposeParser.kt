@@ -3,7 +3,7 @@ package com.freeletics.khonshu.codegen.parser.ksp
 import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.Navigation
-import com.freeletics.khonshu.codegen.compose.DestinationType
+import com.freeletics.khonshu.codegen.parser.anvil.extendsOverlay
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSAnnotation
@@ -20,7 +20,7 @@ internal fun KSFunctionDeclaration.toComposeScreenDestinationData(
     val navigation = Navigation.Compose(
         route = annotation.route,
         parentScopeIsRoute = annotation.parentScope.extendsBaseRoute(resolver),
-        destinationType = DestinationType.valueOf(annotation.destinationType),
+        overlay = annotation.route.extendsOverlay(resolver),
         destinationScope = annotation.destinationScope,
     )
 

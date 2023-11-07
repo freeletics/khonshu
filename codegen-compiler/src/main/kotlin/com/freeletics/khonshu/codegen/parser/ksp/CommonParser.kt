@@ -5,6 +5,7 @@ import com.freeletics.khonshu.codegen.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.codegen.util.baseRoute
 import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
 import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
+import com.freeletics.khonshu.codegen.codegen.util.overlay
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
 import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactory
 import com.google.devtools.ksp.getClassDeclarationByName
@@ -123,6 +124,11 @@ internal fun ClassName.extendsBaseRoute(resolver: Resolver): Boolean {
     return declaration.allSuperTypes(false).any { it == baseRoute }
 }
 
+internal fun ClassName.extendsOverlay(resolver: Resolver): Boolean {
+    val declaration = resolver.getClassDeclarationByName(toString())!!
+    return declaration.allSuperTypes(false).any { it == overlay }
+}
+
 private fun TypeName.asParameterized(): ParameterizedTypeName? {
     return this as? ParameterizedTypeName
 }
@@ -153,8 +159,13 @@ private fun KSClassDeclaration.allSuperTypes(
             if (parentTypeArguments.isNotEmpty() && superTypeName is ParameterizedTypeName) {
                 superTypeName = superTypeName.updateWith(parentTypeArguments, parentTypeParameters)
             }
+        } else if (superType is KSClassDeclaration) {
+            superTypeName = (superType as KSClassDeclaration).toClassName()
         } else {
-            superTypeName = superType.toClassName()
+            superTypeName = superType.toTypeName()
+        }
+        if (superTypeName is ParameterizedTypeName && !resolveTypeParameters) {
+            superTypeName = superTypeName.rawType
         }
         yield(superTypeName)
 

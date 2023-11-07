@@ -22,6 +22,5 @@ public annotation class NavDestination(
     val route: KClass<out BaseRoute>,
     val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,
-    val destinationType: DestinationType = DestinationType.SCREEN,
     val destinationScope: KClass<*> = AppScope::class,
 )
