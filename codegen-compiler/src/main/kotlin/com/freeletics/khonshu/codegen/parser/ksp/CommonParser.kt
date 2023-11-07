@@ -105,11 +105,7 @@ internal fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLog
 internal fun KSClassDeclaration.findRendererFactory(logger: KSPLogger): ClassName? {
     val factory = declarations.filterIsInstance<KSClassDeclaration>()
         .firstNotNullOfOrNull {
-            if (it.allSuperTypes(false).any { superType ->
-                    println("test: $superType")
-                    superType == viewRendererFactory
-                }
-            ) {
+            if (it.allSuperTypes(false).any { superType -> superType == viewRendererFactory }) {
                 it.toClassName()
             } else {
                 null
