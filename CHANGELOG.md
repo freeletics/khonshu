@@ -1,7 +1,27 @@
 Change Log
 ==========
 
-## 0.18.1 **UNRELEASED**
+## 0.19.1 **UNRELEASED**
+
+
+## 0.19.0 *(2023-11-09)*
+
+### Navigation
+
+- **New**: Allow passing an already created `NavController` to `NavHost`. This allows controlling
+  the navigation from outside the host, for example from a bottom bavigation or navigation drawer.
+- **Fixed**: A crash that happened in `NavHost` on re-compositions.
+- Improved how nav events are collected internally.
+
+Thanks to @hoc081098 and @hoangchungk53qx1 for the contributions.
+
+### Codegen
+
+- **New**: Added an `Overlay` marker interface that can be added to routes to indicate
+  to the code generation that this should use an `OverlayDestination` (`DialogDestination` for
+  Fragments).
+- **Breaking**: Removed `destinationType` in favor of the new interface.
+- **Breaking**: Removed support for `@RendererDestination`.
 
 
 ## 0.18.0 *(2023-10-19)*
