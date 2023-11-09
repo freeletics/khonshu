@@ -15,16 +15,11 @@ import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeVariableName
-import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.name.FqName
 
 internal fun AnnotatedReference.findAnnotation(fqName: FqName): AnnotationReference? {
     return annotations.find { it.fqName == fqName }
-}
-
-internal fun AnnotationReference.requireClassArgument(name: String, index: Int): ClassName {
-    return requireClassReferenceArgument(name, index).asClassName()
 }
 
 internal fun AnnotationReference.optionalClassArgument(name: String, index: Int): ClassName? {
@@ -38,10 +33,6 @@ internal fun AnnotationReference.requireClassReferenceArgument(name: String, ind
 
 internal fun AnnotationReference.optionalClassReferenceArgument(name: String, index: Int): ClassReference? {
     return argumentAt(name, index)?.value()
-}
-
-internal fun AnnotationReference.optionalEnumArgument(name: String, index: Int): String? {
-    return argumentAt(name, index)?.value<FqName>()?.shortName()?.asString()
 }
 
 internal val AnnotatedReference.packageName: String

@@ -33,7 +33,6 @@ uri = "0.0.15"
 inject = "1"
 dagger = "2.48.1"
 anvil = "2.4.8"
-renderer = "0.13.0"
 ksp = "1.9.10-1.0.13"
 kotlinpoet = "1.14.2"
 auto-service = "1.1.1"
@@ -90,7 +89,6 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "androidx-navigation" }
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidx-fragment" }
 androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
-androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "android-gradle" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.3.7" }
@@ -104,8 +102,6 @@ anvil-annotations-optional = { module = "com.squareup.anvil:annotations-optional
 anvil-compiler = { module = "com.squareup.anvil:compiler", version.ref = "anvil" }
 anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "anvil" }
 anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvil" }
-renderer = { module = "com.gabrielittner.renderer:renderer", version.ref = "renderer" }
-renderer-connect = { module = "com.gabrielittner.renderer:connect", version.ref = "renderer" }
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoet" }
@@ -119,7 +115,6 @@ truth = { module = "com.google.truth:truth", version.ref = "truth" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 kotlin-compile-testing = { module = "dev.zacsweers.kctfork:core", version.ref = "kotlin-compile-testing" }
 kotlin-compile-testing-ksp = { module = "dev.zacsweers.kctfork:ksp", version.ref = "kotlin-compile-testing" }
-gr8 = { module = "com.gradleup:gr8-plugin", version.ref = "gr8" }
 
 [plugins]
 fgp-android = { id = "com.freeletics.gradle.android", version.ref = "fgp" }

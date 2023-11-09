@@ -7,7 +7,6 @@ import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
 import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
 import com.freeletics.khonshu.codegen.codegen.util.overlay
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
-import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactory
 import com.google.devtools.ksp.getClassDeclarationByName
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -39,9 +38,6 @@ internal val KSAnnotation.parentScope: ClassName
 
 internal val KSAnnotation.stateMachine: ClassName
     get() = (findArgument("stateMachine").value as KSType).toClassName()
-
-internal val KSAnnotation.destinationType: String
-    get() = (findArgument("destinationType").value as KSType).declaration.simpleName.asString()
 
 internal val KSAnnotation.destinationScope: ClassName
     get() = (findArgument("destinationScope").value as KSType).toClassName()
@@ -100,23 +96,6 @@ internal fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLog
     val stateParameter = stateMachineType.typeArguments[0]
     val actionParameter = stateMachineType.typeArguments[1].asLambdaParameter()
     return stateParameter to actionParameter
-}
-
-internal fun KSClassDeclaration.findRendererFactory(logger: KSPLogger): ClassName? {
-    val factory = declarations.filterIsInstance<KSClassDeclaration>()
-        .firstNotNullOfOrNull {
-            if (it.allSuperTypes(false).any { superType -> superType == viewRendererFactory }) {
-                it.toClassName()
-            } else {
-                null
-            }
-        }
-
-    if (factory == null) {
-        logger.error("Couldn't find a ViewRender.Factory subclass nested inside ${qualifiedName?.asString()}")
-    }
-
-    return factory
 }
 
 internal fun ClassName.extendsBaseRoute(resolver: Resolver): Boolean {

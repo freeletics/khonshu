@@ -90,20 +90,6 @@ public data class ComposeFragmentData(
     override val composableParameter: List<ComposableParameter>,
 ) : ComposeData, FragmentData
 
-public data class RendererFragmentData(
-    override val baseName: String,
-    override val packageName: String,
-
-    override val scope: ClassName,
-    override val parentScope: ClassName,
-
-    override val stateMachine: ClassName,
-    public val factory: ClassName,
-    override val fragmentBaseClass: ClassName,
-
-    override val navigation: Navigation.Fragment,
-) : FragmentData
-
 public sealed interface Navigation {
     public val route: ClassName
     public val parentScopeIsRoute: Boolean

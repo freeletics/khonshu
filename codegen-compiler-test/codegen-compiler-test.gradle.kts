@@ -19,9 +19,6 @@ dependencies {
     testImplementation(libs.anvil.annotations)
     testImplementation(libs.anvil.annotations.optional)
     testImplementation(libs.androidx.compose.runtime)
-    testImplementation(libs.androidx.viewbinding)
-    testImplementation(libs.renderer)
-    testImplementation(libs.renderer.connect)
     testImplementation(libs.coroutines.core)
 
     testImplementation(libs.kotlinpoet)
@@ -30,12 +27,4 @@ dependencies {
     testImplementation(libs.kotlin.compile.testing)
     testImplementation(libs.androidx.compose.compiler)
     testImplementation(testFixtures(projects.codegenCompiler))
-}
-
-// exclude external dependency on state machine connect, we include the local module instead
-configurations.configureEach {
-    resolutionStrategy.dependencySubstitution {
-        substitute(module("com.freeletics.khonshu:state-machine"))
-            .using(project(projects.stateMachine.dependencyProject.path))
-    }
 }
