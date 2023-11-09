@@ -4,7 +4,6 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.NavHostActivityData
-import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.codegen.common.ComponentGenerator
 import com.freeletics.khonshu.codegen.codegen.common.ComponentProviderGenerator
 import com.freeletics.khonshu.codegen.codegen.common.InnerComposableGenerator
@@ -14,7 +13,6 @@ import com.freeletics.khonshu.codegen.codegen.compose.ActivityGenerator
 import com.freeletics.khonshu.codegen.codegen.compose.ActivityModuleGenerator
 import com.freeletics.khonshu.codegen.codegen.compose.OuterComposableGenerator
 import com.freeletics.khonshu.codegen.codegen.fragment.ComposeFragmentGenerator
-import com.freeletics.khonshu.codegen.codegen.fragment.RendererFragmentGenerator
 import com.squareup.kotlinpoet.FileSpec
 
 public class FileGenerator {
@@ -23,7 +21,6 @@ public class FileGenerator {
         return when (data) {
             is ComposeFragmentData -> generate(data)
             is ComposeScreenData -> generate(data)
-            is RendererFragmentData -> generate(data)
             is NavHostActivityData -> generate(data)
         }
     }
@@ -72,20 +69,6 @@ public class FileGenerator {
             .addType(module.generate())
             .addType(fragment.generate())
             .addFunction(innerComposable.generate())
-            .addNavDestinationTypes(data)
-            .build()
-    }
-
-    public fun generate(data: RendererFragmentData): FileSpec {
-        val component = ComponentGenerator(data)
-        val module = ModuleGenerator(data)
-        val renderer = RendererFragmentGenerator(data)
-
-        return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
-            .addType(component.generate())
-            .addComponentProviderType(data)
-            .addType(module.generate())
-            .addType(renderer.generate())
             .addNavDestinationTypes(data)
             .build()
     }

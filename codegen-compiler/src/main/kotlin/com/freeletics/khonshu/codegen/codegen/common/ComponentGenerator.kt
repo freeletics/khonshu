@@ -3,7 +3,6 @@ package com.freeletics.khonshu.codegen.codegen.common
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.ComposeData
 import com.freeletics.khonshu.codegen.NavHostActivityData
-import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.codegen.Generator
 import com.freeletics.khonshu.codegen.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.codegen.util.bindsInstanceParameter
@@ -87,7 +86,6 @@ internal class ComponentGenerator(
                     )
                 }
             }
-            is RendererFragmentData -> properties += simplePropertySpec(data.factory)
         }
         properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName()))
             .addAnnotation(forScope(data.scope, GET))

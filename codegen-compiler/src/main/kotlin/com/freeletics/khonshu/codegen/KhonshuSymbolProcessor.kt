@@ -4,11 +4,9 @@ import com.freeletics.khonshu.codegen.codegen.FileGenerator
 import com.freeletics.khonshu.codegen.compose.NavDestination
 import com.freeletics.khonshu.codegen.compose.NavHostActivity
 import com.freeletics.khonshu.codegen.fragment.ComposeFragmentDestination as ComposeFragmentDestination
-import com.freeletics.khonshu.codegen.fragment.RendererDestination
 import com.freeletics.khonshu.codegen.parser.ksp.toComposeFragmentDestinationData
 import com.freeletics.khonshu.codegen.parser.ksp.toComposeScreenDestinationData
 import com.freeletics.khonshu.codegen.parser.ksp.toNavHostActivityData
-import com.freeletics.khonshu.codegen.parser.ksp.toRendererFragmentDestinationData
 import com.google.auto.service.AutoService
 import com.google.devtools.ksp.containingFile
 import com.google.devtools.ksp.processing.CodeGenerator
@@ -19,7 +17,6 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSAnnotation
-import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.squareup.kotlinpoet.ksp.writeTo
 
@@ -38,33 +35,25 @@ public class KhonshuSymbolProcessor(
     private val fileGenerator = FileGenerator()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        resolver.generateCodeForAnnotation<KSFunctionDeclaration, NavDestination> {
+        resolver.generateCodeForAnnotation<NavDestination> {
             toComposeScreenDestinationData(it, resolver, logger)
         }
-        resolver.generateCodeForAnnotation<KSClassDeclaration, RendererDestination> {
-            toRendererFragmentDestinationData(it, resolver, logger)
-        }
-        resolver.generateCodeForAnnotation<KSFunctionDeclaration, ComposeFragmentDestination> {
+        resolver.generateCodeForAnnotation<ComposeFragmentDestination> {
             toComposeFragmentDestinationData(it, resolver, logger)
         }
-        resolver.generateCodeForAnnotation<KSFunctionDeclaration, NavHostActivity> {
+        resolver.generateCodeForAnnotation<NavHostActivity> {
             toNavHostActivityData(it, resolver, logger)
         }
         return emptyList()
     }
 
-    private inline fun <reified T : KSAnnotated, reified A : Annotation> Resolver.generateCodeForAnnotation(
-        parser: T.(KSAnnotation) -> BaseData?,
+    private inline fun <reified A : Annotation> Resolver.generateCodeForAnnotation(
+        parser: KSFunctionDeclaration.(KSAnnotation) -> BaseData?,
     ) {
         getSymbolsWithAnnotation(A::class.qualifiedName!!)
             .forEach {
-                if (it !is T) {
-                    val target = when (T::class) {
-                        KSFunctionDeclaration::class -> "functions"
-                        KSClassDeclaration::class -> "classes"
-                        else -> throw IllegalStateException("Khonshu internal error: unexpected class ${T::class}")
-                    }
-                    logger.error("@${A::class.simpleName} can only be applied to $target", it)
+                if (it !is KSFunctionDeclaration) {
+                    logger.error("@${A::class.simpleName} can only be applied to functions", it)
                     return@forEach
                 }
 

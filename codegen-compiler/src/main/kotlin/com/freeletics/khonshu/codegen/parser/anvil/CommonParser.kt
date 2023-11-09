@@ -10,7 +10,6 @@ import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
 import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
 import com.freeletics.khonshu.codegen.codegen.util.overlayFqName
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
-import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactoryFqName
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionClassReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionFunctionReference
@@ -22,7 +21,6 @@ import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.TypeName
-import com.squareup.kotlinpoet.asClassName
 
 internal val AnnotationReference.scope: ClassName
     get() = optionalClassArgument("scope", 0) ?: activityScope
@@ -44,9 +42,6 @@ internal val AnnotationReference.stateMachine: ClassName
 
 internal val AnnotationReference.stateMachineReference: ClassReference
     get() = requireClassReferenceArgument("stateMachine", 2)
-
-internal val AnnotationReference.destinationType: String
-    get() = optionalEnumArgument("destinationType", 3) ?: "SCREEN"
 
 internal val AnnotationReference.destinationScope: ClassName
     get() = optionalClassArgument("destinationScope", 4) ?: appScope
@@ -92,19 +87,6 @@ internal fun ClassReference.stateMachineParameters(): Pair<TypeName, TypeName> {
     val stateParameter = stateMachineType.typeArguments[0]
     val actionParameter = stateMachineType.typeArguments[1].asLambdaParameter()
     return stateParameter to actionParameter
-}
-
-internal fun ClassReference.findRendererFactory(): ClassName {
-    val factoryClass = innerClasses().find { innerClass ->
-        innerClass.allSuperTypeClassReferences().any { superType ->
-            superType.fqName == viewRendererFactoryFqName
-        }
-    }
-    return factoryClass?.asClassName()
-        ?: throw AnvilCompilationExceptionClassReference(
-            this,
-            "Couldn't find a ViewRender.Factory subclass nested inside $fqName",
-        )
 }
 
 internal fun ClassReference?.extendsBaseRoute(): Boolean {

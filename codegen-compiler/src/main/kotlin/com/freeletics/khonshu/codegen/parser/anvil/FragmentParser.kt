@@ -2,34 +2,9 @@ package com.freeletics.khonshu.codegen.parser.anvil
 
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.Navigation
-import com.freeletics.khonshu.codegen.RendererFragmentData
 import com.freeletics.khonshu.codegen.codegen.util.composeFragmentDestinationFqName
-import com.freeletics.khonshu.codegen.codegen.util.rendererFragmentDestinationFqName
-import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.asClassName
-
-internal fun ClassReference.toRendererFragmentDestinationData(): RendererFragmentData? {
-    val annotation = findAnnotation(rendererFragmentDestinationFqName) ?: return null
-
-    val navigation = Navigation.Fragment(
-        route = annotation.route,
-        parentScopeIsRoute = annotation.parentScopeReference.extendsBaseRoute(),
-        overlay = annotation.routeReference.extendsOverlay(),
-        destinationScope = annotation.destinationScope,
-    )
-
-    return RendererFragmentData(
-        baseName = shortName,
-        packageName = packageName,
-        scope = annotation.route,
-        parentScope = annotation.parentScope,
-        stateMachine = annotation.stateMachine,
-        fragmentBaseClass = annotation.fragmentBaseClass,
-        factory = findRendererFactory(),
-        navigation = navigation,
-    )
-}
 
 internal fun TopLevelFunctionReference.toComposeFragmentDestinationData(): ComposeFragmentData? {
     val annotation = findAnnotation(composeFragmentDestinationFqName) ?: return null

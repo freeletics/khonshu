@@ -9,8 +9,6 @@ import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.name.FqName
 
 // Codegen Public API
-internal val rendererFragmentDestination = ClassName("com.freeletics.khonshu.codegen.fragment", "RendererDestination")
-internal val rendererFragmentDestinationFqName = FqName(rendererFragmentDestination.canonicalName)
 internal val composeFragmentDestination =
     ClassName("com.freeletics.khonshu.codegen.fragment", "ComposeFragmentDestination")
 internal val composeFragmentDestinationFqName = FqName(composeFragmentDestination.canonicalName)
@@ -63,12 +61,6 @@ internal val navHostLambda = LambdaTypeName.get(
 
 // StateMachine
 internal val stateMachine = ClassName("com.freeletics.khonshu.statemachine", "StateMachine")
-
-// Renderer
-internal val viewRenderer = ClassName("com.gabrielittner.renderer", "ViewRenderer")
-internal val viewRendererFactory = viewRenderer.nestedClass("Factory")
-internal val viewRendererFactoryFqName = FqName(viewRendererFactory.canonicalName)
-internal val rendererConnect = MemberName("com.gabrielittner.renderer.connect", "connect")
 
 // Kotlin
 internal val optIn = ClassName("kotlin", "OptIn")

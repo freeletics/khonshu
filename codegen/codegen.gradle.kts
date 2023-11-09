@@ -30,5 +30,4 @@ dependencies {
     "androidMainImplementation"(libs.coroutines.core)
 
     "androidMainCompileOnly"(libs.androidx.fragment)
-    "androidMainCompileOnly"(libs.renderer)
 }

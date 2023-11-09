@@ -5,8 +5,6 @@ import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.codegen.util.navDestinationFqName
 import com.freeletics.khonshu.codegen.codegen.util.navHostActivityFqName
-import com.freeletics.khonshu.codegen.parser.ksp.extendsBaseRoute
-import com.freeletics.khonshu.codegen.parser.ksp.extendsOverlay
 import com.squareup.anvil.compiler.internal.reference.TopLevelFunctionReference
 import com.squareup.anvil.compiler.internal.reference.asClassName
 
