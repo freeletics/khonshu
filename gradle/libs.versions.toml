@@ -92,7 +92,7 @@ androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref =
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.3.7" }
-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.6.0" }
+serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.6.1" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
