@@ -6,6 +6,7 @@ Change Log
 ### Navigation
 
 - **New** Add `Modifier` parameter to `NavHost` Composable.
+- **New** Add `NavHost` overloaded function that accepts `NavRoute` instead of `NavRoot`
 
 ## 0.19.0 *(2023-11-09)*
 

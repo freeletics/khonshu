@@ -40,7 +40,7 @@ import java.io.Serializable
  * containing all given [destinations]. [startRoute] will be used as the start destination
  * of the graph.
  *
- * To support deep links a set of [DeepLinkHandlers][DeepLinkHandler] can be passed in optionally.
+ * To support deep links a set of [deepLinkHandlers] can be passed in optionally.
  * These will be used to build the correct back stack when the current `Activity` was launched with
  * an `ACTION_VIEW` `Intent` that contains an url in it's data. [deepLinkPrefixes] can be used to
  * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
@@ -55,6 +55,44 @@ import java.io.Serializable
 @Composable
 public fun NavHost(
     startRoute: NavRoot,
+    destinations: Set<NavDestination>,
+    modifier: Modifier = Modifier,
+    deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
+    deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
+    navController: NavHostController = rememberNavController(),
+    destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
+) {
+    NavHost(
+        startRoute = startRoute,
+        destinations = destinations,
+        modifier = modifier,
+        deepLinkHandlers = deepLinkHandlers,
+        deepLinkPrefixes = deepLinkPrefixes,
+        navController = navController,
+        destinationChangedCallback = destinationChangedCallback,
+    )
+}
+
+/**
+ * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
+ * containing all given [destinations]. [startRoute] will be used as the start destination
+ * of the graph.
+ *
+ * To support deep links a set of [deepLinkHandlers] can be passed in optionally.
+ * These will be used to build the correct back stack when the current `Activity` was launched with
+ * an `ACTION_VIEW` `Intent` that contains an url in it's data. [deepLinkPrefixes] can be used to
+ * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
+ * doesn't provide its own [DeepLinkHandler.prefixes].
+ *
+ * The [navController] can be passed in optionally when needed, for example when using the NavHost
+ * with a bottom navigation element.
+ *
+ * The [destinationChangedCallback] can be used to be notified when the current destination
+ * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
+ */
+@Composable
+public fun NavHost(
+    startRoute: NavRoute,
     destinations: Set<NavDestination>,
     modifier: Modifier = Modifier,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
