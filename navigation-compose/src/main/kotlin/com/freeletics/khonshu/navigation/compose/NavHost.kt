@@ -15,6 +15,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost as AndroidXNavHost
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.get
@@ -55,6 +56,7 @@ import java.io.Serializable
 public fun NavHost(
     startRoute: NavRoot,
     destinations: Set<NavDestination>,
+    modifier: Modifier = Modifier,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
     navController: NavHostController = rememberNavController(),
@@ -102,6 +104,7 @@ public fun NavHost(
         AndroidXNavHost(
             navController = navController,
             graph = graph,
+            modifier = modifier,
         )
 
         OverlayHost(
