@@ -3,6 +3,9 @@ Change Log
 
 ## 0.19.1 **UNRELEASED**
 
+### Navigation
+
+- **New** Add `Modifier` parameter to `NavHost` Composable.
 
 ## 0.19.0 *(2023-11-09)*
 

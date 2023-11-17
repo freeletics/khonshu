@@ -6,6 +6,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
@@ -55,6 +56,7 @@ import java.io.Serializable
 public fun NavHost(
     startRoute: NavRoot,
     destinations: Set<NavDestination>,
+    modifier: Modifier = Modifier,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
     navController: NavHostController = rememberNavController(),
@@ -102,6 +104,7 @@ public fun NavHost(
         AndroidXNavHost(
             navController = navController,
             graph = graph,
+            modifier = modifier,
         )
 
         OverlayHost(
