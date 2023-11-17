@@ -16,6 +16,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost as AndroidXNavHost
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.get
@@ -53,6 +54,7 @@ import java.io.Serializable
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
 @Composable
+@NonRestartableComposable
 public fun NavHost(
     startRoute: NavRoot,
     destinations: Set<NavDestination>,
@@ -91,6 +93,7 @@ public fun NavHost(
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
 @Composable
+@NonRestartableComposable
 @Deprecated("Will eventually be removed. The start destination should use a NavRoot")
 public fun NavHost(
     startRoute: NavRoute,
