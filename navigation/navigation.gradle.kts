@@ -38,3 +38,13 @@ dependencies {
     "androidUnitTestImplementation"(libs.androidx.lifecycle.testing)
     "androidUnitTestImplementation"(libs.coroutines.test)
 }
+
+kotlin {
+    targets.configureEach {
+        compilations.configureEach {
+            compilerOptions.configure {
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+            }
+        }
+    }
+}
