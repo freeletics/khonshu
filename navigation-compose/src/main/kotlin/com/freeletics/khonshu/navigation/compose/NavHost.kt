@@ -62,7 +62,7 @@ public fun NavHost(
     navController: NavHostController = rememberNavController(),
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
 ) {
-    NavHost(
+    InternalNavHost(
         startRoute = startRoute,
         destinations = destinations,
         modifier = modifier,
@@ -91,8 +91,30 @@ public fun NavHost(
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
 @Composable
+@Deprecated("Will eventually be removed. The start destination should use a NavRoot")
 public fun NavHost(
     startRoute: NavRoute,
+    destinations: Set<NavDestination>,
+    modifier: Modifier = Modifier,
+    deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
+    deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
+    navController: NavHostController = rememberNavController(),
+    destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
+) {
+    InternalNavHost(
+        startRoute = startRoute,
+        destinations = destinations,
+        modifier = modifier,
+        deepLinkHandlers = deepLinkHandlers,
+        deepLinkPrefixes = deepLinkPrefixes,
+        navController = navController,
+        destinationChangedCallback = destinationChangedCallback,
+    )
+}
+
+@Composable
+private fun InternalNavHost(
+    startRoute: BaseRoute,
     destinations: Set<NavDestination>,
     modifier: Modifier = Modifier,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
