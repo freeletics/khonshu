@@ -1,14 +1,22 @@
 package com.freeletics.khonshu.navigation.compose
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavArgument
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.NavDestination as AndroidXNavDestination
@@ -51,6 +59,8 @@ import java.io.Serializable
  *
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
+ *
+ * Optional [transitionAnimations] override default set of transition animations.
  */
 @Composable
 public fun NavHost(
@@ -61,6 +71,7 @@ public fun NavHost(
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
     navController: NavHostController = rememberNavController(),
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
+    transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
 ) {
     InternalNavHost(
         startRoute = startRoute,
@@ -70,6 +81,7 @@ public fun NavHost(
         deepLinkPrefixes = deepLinkPrefixes,
         navController = navController,
         destinationChangedCallback = destinationChangedCallback,
+        transitionAnimations = transitionAnimations,
     )
 }
 
@@ -89,6 +101,8 @@ public fun NavHost(
  *
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
+ *
+ * Optional [transitionAnimations] override default set of transition animations.
  */
 @Composable
 @Deprecated("Will eventually be removed. The start destination should use a NavRoot")
@@ -100,6 +114,7 @@ public fun NavHost(
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
     navController: NavHostController = rememberNavController(),
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
+    transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
 ) {
     InternalNavHost(
         startRoute = startRoute,
@@ -109,6 +124,7 @@ public fun NavHost(
         deepLinkPrefixes = deepLinkPrefixes,
         navController = navController,
         destinationChangedCallback = destinationChangedCallback,
+        transitionAnimations = transitionAnimations,
     )
 }
 
@@ -121,6 +137,7 @@ private fun InternalNavHost(
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
     navController: NavHostController = rememberNavController(),
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
+    transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
 ) {
     val context = LocalContext.current
 
@@ -165,11 +182,82 @@ private fun InternalNavHost(
             navController = navController,
             graph = graph,
             modifier = modifier,
+            enterTransition = transitionAnimations.enterTransition,
+            exitTransition = transitionAnimations.exitTransition,
+            popEnterTransition = transitionAnimations.popEnterTransition,
+            popExitTransition = transitionAnimations.popExitTransition,
         )
 
         OverlayHost(
             overlayNavigator = overlayNavigator,
         )
+    }
+}
+
+/**
+ * Defaults used in [NavHost]
+ */
+public object NavHostDefaults {
+
+    @Stable
+    public fun transitionAnimations(
+        enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
+            { fadeIn(animationSpec = tween(700)) },
+        exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
+            { fadeOut(animationSpec = tween(700)) },
+        popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
+            enterTransition,
+        popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
+            exitTransition,
+    ): NavHostTransitionAnimations = NavHostTransitionAnimations(
+        enterTransition = enterTransition,
+        exitTransition = exitTransition,
+        popEnterTransition = popEnterTransition,
+        popExitTransition = popExitTransition,
+    )
+}
+
+/**
+ * Represents set of callbacks to define transition animations for destinations in [NavHost]
+ */
+@Stable
+public class NavHostTransitionAnimations internal constructor(
+    public val enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
+    public val exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
+    public val popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
+    public val popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
+) {
+    public companion object {
+        /**
+         * Disables all transition animations
+         */
+        @Stable
+        public fun noAnimations(): NavHostTransitionAnimations = NavHostTransitionAnimations(
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { ExitTransition.None },
+        )
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || other !is NavHostTransitionAnimations) return false
+
+        if (enterTransition != other.enterTransition) return false
+        if (exitTransition != other.exitTransition) return false
+        if (popEnterTransition != other.popEnterTransition) return false
+        if (popExitTransition != other.popExitTransition) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = enterTransition.hashCode()
+        result = 31 * result + exitTransition.hashCode()
+        result = 31 * result + popEnterTransition.hashCode()
+        result = 31 * result + popExitTransition.hashCode()
+        return result
     }
 }
 
