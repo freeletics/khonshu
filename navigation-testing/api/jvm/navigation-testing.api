@@ -1,6 +1,5 @@
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition {
 	public static final field Companion Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition$Companion;
-	public synthetic fun <init> (ILjava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
 	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V
 	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/util/List;
@@ -16,7 +15,6 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitio
 	public final fun getPrefixes ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public static final synthetic fun write$Self (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -36,7 +34,6 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitio
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitions {
 	public static final field Companion Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitions$Companion;
-	public synthetic fun <init> (ILjava/util/List;Ljava/util/List;Ljava/util/Map;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
 	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/Map;)V
 	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/util/List;
@@ -50,7 +47,6 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitio
 	public final fun getPrefixes ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public static final synthetic fun write$Self (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitions;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitions$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -106,7 +102,6 @@ public final class com/freeletics/khonshu/navigation/deeplinks/PatternDefinition
 
 public final class com/freeletics/khonshu/navigation/deeplinks/PlaceholderDefinition {
 	public static final field Companion Lcom/freeletics/khonshu/navigation/deeplinks/PlaceholderDefinition$Companion;
-	public synthetic fun <init> (ILjava/lang/String;Ljava/util/List;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
 	public fun <init> (Ljava/lang/String;Ljava/util/List;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/util/List;
@@ -117,7 +112,6 @@ public final class com/freeletics/khonshu/navigation/deeplinks/PlaceholderDefini
 	public final fun getKey ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public static final synthetic fun write$Self (Lcom/freeletics/khonshu/navigation/deeplinks/PlaceholderDefinition;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/PlaceholderDefinition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -137,7 +131,6 @@ public final class com/freeletics/khonshu/navigation/deeplinks/PlaceholderDefini
 
 public final class com/freeletics/khonshu/navigation/deeplinks/PrefixDefinition {
 	public static final field Companion Lcom/freeletics/khonshu/navigation/deeplinks/PrefixDefinition$Companion;
-	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;ZLkotlinx/serialization/internal/SerializationConstructorMarker;)V
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Z)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
@@ -150,7 +143,6 @@ public final class com/freeletics/khonshu/navigation/deeplinks/PrefixDefinition 
 	public final fun getScheme ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public static final synthetic fun write$Self (Lcom/freeletics/khonshu/navigation/deeplinks/PrefixDefinition;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/PrefixDefinition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
