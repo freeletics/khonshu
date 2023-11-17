@@ -9,6 +9,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -63,6 +64,7 @@ import java.io.Serializable
  * Optional [transitionAnimations] override default set of transition animations.
  */
 @Composable
+@NonRestartableComposable
 public fun NavHost(
     startRoute: NavRoot,
     destinations: Set<NavDestination>,
@@ -105,6 +107,7 @@ public fun NavHost(
  * Optional [transitionAnimations] override default set of transition animations.
  */
 @Composable
+@NonRestartableComposable
 @Deprecated("Will eventually be removed. The start destination should use a NavRoot")
 public fun NavHost(
     startRoute: NavRoute,
