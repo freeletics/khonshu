@@ -6,8 +6,31 @@ public final class com/freeletics/khonshu/navigation/compose/ActivityDestination
 public abstract interface class com/freeletics/khonshu/navigation/compose/NavDestination {
 }
 
+public final class com/freeletics/khonshu/navigation/compose/NavHostDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/compose/NavHostDefaults;
+	public final fun transitionAnimations (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lcom/freeletics/khonshu/navigation/compose/NavHostTransitionAnimations;
+	public static synthetic fun transitionAnimations$default (Lcom/freeletics/khonshu/navigation/compose/NavHostDefaults;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/compose/NavHostTransitionAnimations;
+}
+
 public final class com/freeletics/khonshu/navigation/compose/NavHostKt {
-	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Landroidx/navigation/NavHostController;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/Set;Landroidx/compose/ui/Modifier;Ljava/util/Set;Ljava/util/Set;Landroidx/navigation/NavHostController;Lkotlin/jvm/functions/Function1;Lcom/freeletics/khonshu/navigation/compose/NavHostTransitionAnimations;Landroidx/compose/runtime/Composer;II)V
+	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoute;Ljava/util/Set;Landroidx/compose/ui/Modifier;Ljava/util/Set;Ljava/util/Set;Landroidx/navigation/NavHostController;Lkotlin/jvm/functions/Function1;Lcom/freeletics/khonshu/navigation/compose/NavHostTransitionAnimations;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/freeletics/khonshu/navigation/compose/NavHostTransitionAnimations {
+	public static final field $stable I
+	public static final field Companion Lcom/freeletics/khonshu/navigation/compose/NavHostTransitionAnimations$Companion;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEnterTransition ()Lkotlin/jvm/functions/Function1;
+	public final fun getExitTransition ()Lkotlin/jvm/functions/Function1;
+	public final fun getPopEnterTransition ()Lkotlin/jvm/functions/Function1;
+	public final fun getPopExitTransition ()Lkotlin/jvm/functions/Function1;
+	public fun hashCode ()I
+}
+
+public final class com/freeletics/khonshu/navigation/compose/NavHostTransitionAnimations$Companion {
+	public final fun noAnimations ()Lcom/freeletics/khonshu/navigation/compose/NavHostTransitionAnimations;
 }
 
 public final class com/freeletics/khonshu/navigation/compose/NavigationSetupKt {

@@ -1,7 +1,19 @@
 Change Log
 ==========
 
-## 0.19.1 **UNRELEASED**
+## 0.20.1 **UNRELEASED**
+
+
+## 0.20.0 *(2023-11-17)*
+
+### Navigation
+
+- **New** Add `Modifier` parameter to `NavHost` Composable.
+- **New** Add `NavHost` overloaded function that accepts `NavRoute` instead of `NavRoot`
+- **New** Add optional `transitionAnimations` parameter to `NavHost` Composable functions. Animations
+can be overriden with `NavHostDefaults.transitionAnimations` or disabled with
+`NavHostTransitionAnimations.noAnimations`. Default animations are the same as default animations
+in AndroidX's `NavHost`.
 
 
 ## 0.19.0 *(2023-11-09)*
