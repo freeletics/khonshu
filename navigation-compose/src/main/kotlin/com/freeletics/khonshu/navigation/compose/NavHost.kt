@@ -124,6 +124,7 @@ public fun NavHost(
         deepLinkPrefixes = deepLinkPrefixes,
         navController = navController,
         destinationChangedCallback = destinationChangedCallback,
+        transitionAnimations = transitionAnimations,
     )
 }
 
@@ -136,6 +137,7 @@ private fun InternalNavHost(
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
     navController: NavHostController = rememberNavController(),
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
+    transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
 ) {
     val context = LocalContext.current
 
