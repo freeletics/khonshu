@@ -34,7 +34,7 @@ public final class com/freeletics/khonshu/navigation/compose/NavHostTransitionAn
 }
 
 public final class com/freeletics/khonshu/navigation/compose/NavigationSetupKt {
-	public static final fun NavigationSetup (Lcom/freeletics/khonshu/navigation/NavEventNavigator;Landroidx/compose/runtime/Composer;I)V
+	public static final fun NavigationSetup (Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lcom/freeletics/khonshu/navigation/internal/NavigationExecutor;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/freeletics/khonshu/navigation/compose/OverlayDestination : com/freeletics/khonshu/navigation/compose/ContentDestination {

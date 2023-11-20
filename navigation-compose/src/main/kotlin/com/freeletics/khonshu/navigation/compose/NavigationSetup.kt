@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.freeletics.khonshu.navigation.ContractResultOwner
 import com.freeletics.khonshu.navigation.NavEventNavigator
+import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import com.freeletics.khonshu.navigation.internal.collectAndHandleNavEvents
 import com.freeletics.khonshu.navigation.internal.collectAndHandleNavigationResults
 import com.freeletics.khonshu.navigation.internal.deliverResult
@@ -22,8 +23,7 @@ import com.freeletics.khonshu.navigation.internal.deliverResult
  * are handled while the composition is active.
  */
 @Composable
-public fun NavigationSetup(navigator: NavEventNavigator) {
-    val executor = LocalNavigationExecutor.current
+public fun NavigationSetup(navigator: NavEventNavigator, executor: NavigationExecutor = LocalNavigationExecutor.current) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 

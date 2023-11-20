@@ -3,6 +3,10 @@ Change Log
 
 ## 0.20.1 **UNRELEASED**
 
+### Navigation
+
+- **New** Add optional `executor: NavigationExecutor` parameter to `NavigationSetup` to allow for usage outside of
+`NavHost` for compose navigation.
 
 ## 0.20.0 *(2023-11-17)*
 
