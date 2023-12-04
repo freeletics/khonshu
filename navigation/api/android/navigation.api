@@ -1,3 +1,10 @@
+public abstract interface class com/freeletics/khonshu/navigation/ActivityResultNavigator {
+	public abstract fun navigateForResult (Lcom/freeletics/khonshu/navigation/ActivityResultRequest;)V
+	public abstract fun navigateForResult (Lcom/freeletics/khonshu/navigation/ActivityResultRequest;Ljava/lang/Object;)V
+	public abstract fun requestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/List;)V
+	public abstract fun requestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;[Ljava/lang/String;)V
+}
+
 public final class com/freeletics/khonshu/navigation/ActivityResultRequest : com/freeletics/khonshu/navigation/ContractResultOwner {
 }
 
@@ -8,6 +15,11 @@ public abstract interface class com/freeletics/khonshu/navigation/ActivityRoute 
 public final class com/freeletics/khonshu/navigation/ActivityRouteKt {
 	public static final fun getRoute (Landroid/app/Activity;)Lcom/freeletics/khonshu/navigation/InternalActivityRoute;
 	public static final fun requireRoute (Landroid/app/Activity;)Lcom/freeletics/khonshu/navigation/InternalActivityRoute;
+}
+
+public abstract interface class com/freeletics/khonshu/navigation/BackInterceptor {
+	public abstract fun backPresses ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 }
 
 public abstract interface class com/freeletics/khonshu/navigation/BaseRoute : android/os/Parcelable {
@@ -25,28 +37,25 @@ public abstract class com/freeletics/khonshu/navigation/InternalActivityRoute : 
 	public final fun fillInIntent ()Landroid/content/Intent;
 }
 
-public class com/freeletics/khonshu/navigation/NavEventNavigator {
+public class com/freeletics/khonshu/navigation/NavEventNavigator : com/freeletics/khonshu/navigation/ActivityResultNavigator, com/freeletics/khonshu/navigation/BackInterceptor, com/freeletics/khonshu/navigation/Navigator, com/freeletics/khonshu/navigation/ResultNavigator {
 	public fun <init> ()V
-	public final fun backPresses ()Lkotlinx/coroutines/flow/Flow;
-	public final fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
-	public final fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
+	public fun backPresses ()Lkotlinx/coroutines/flow/Flow;
+	public fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
 	public final fun navigate (Lkotlin/jvm/functions/Function1;)V
-	public final fun navigateBack ()V
-	public final fun navigateBackTo-UamjCxQ (Lkotlin/reflect/KClass;Z)V
-	public static synthetic fun navigateBackTo-UamjCxQ$default (Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
-	public final fun navigateForResult (Lcom/freeletics/khonshu/navigation/ActivityResultRequest;)V
-	public final fun navigateForResult (Lcom/freeletics/khonshu/navigation/ActivityResultRequest;Ljava/lang/Object;)V
-	public final fun navigateTo (Lcom/freeletics/khonshu/navigation/ActivityRoute;)V
-	public final fun navigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
-	public final fun navigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
-	public static synthetic fun navigateToRoot$default (Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lcom/freeletics/khonshu/navigation/NavRoot;ZILjava/lang/Object;)V
-	public final fun navigateUp ()V
+	public fun navigateBack ()V
+	public fun navigateForResult (Lcom/freeletics/khonshu/navigation/ActivityResultRequest;)V
+	public fun navigateForResult (Lcom/freeletics/khonshu/navigation/ActivityResultRequest;Ljava/lang/Object;)V
+	public fun navigateTo (Lcom/freeletics/khonshu/navigation/ActivityRoute;)V
+	public fun navigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
+	public fun navigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
+	public fun navigateUp ()V
 	protected final fun registerForActivityResult (Landroidx/activity/result/contract/ActivityResultContract;)Lcom/freeletics/khonshu/navigation/ActivityResultRequest;
 	public final fun registerForNavigationResult-UamjCxQ (Lkotlin/reflect/KClass;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest;
 	protected final fun registerForPermissionsResult ()Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;
-	public final fun requestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/List;)V
-	public final fun requestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;[Ljava/lang/String;)V
-	public final fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
+	public fun requestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/List;)V
+	public fun requestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;[Ljava/lang/String;)V
+	public fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 }
 
 public abstract interface class com/freeletics/khonshu/navigation/NavRoot : com/freeletics/khonshu/navigation/BaseRoute {
@@ -76,6 +85,20 @@ public final class com/freeletics/khonshu/navigation/NavigationResultRequest$Key
 	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
+public abstract interface class com/freeletics/khonshu/navigation/Navigator {
+	public static final field Companion Lcom/freeletics/khonshu/navigation/Navigator$Companion;
+	public abstract fun navigateBack ()V
+	public abstract fun navigateTo (Lcom/freeletics/khonshu/navigation/ActivityRoute;)V
+	public abstract fun navigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
+	public abstract fun navigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
+	public static synthetic fun navigateToRoot$default (Lcom/freeletics/khonshu/navigation/Navigator;Lcom/freeletics/khonshu/navigation/NavRoot;ZILjava/lang/Object;)V
+	public abstract fun navigateUp ()V
+	public abstract fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
+}
+
+public final class com/freeletics/khonshu/navigation/Navigator$Companion {
+}
+
 public final class com/freeletics/khonshu/navigation/PermissionsResultRequest : com/freeletics/khonshu/navigation/ContractResultOwner {
 	public synthetic fun getContract ()Landroidx/activity/result/contract/ActivityResultContract;
 }
@@ -96,6 +119,10 @@ public final class com/freeletics/khonshu/navigation/PermissionsResultRequest$Pe
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/freeletics/khonshu/navigation/ResultNavigator {
+	public abstract fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
 }
 
 public abstract class com/freeletics/khonshu/navigation/ResultOwner {
@@ -181,15 +208,6 @@ public final class com/freeletics/khonshu/navigation/internal/InitialValue$Creat
 }
 
 public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationApi : java/lang/annotation/Annotation {
-}
-
-public final class com/freeletics/khonshu/navigation/internal/NavEventCollector {
-	public final fun navigateBack ()V
-	public final fun navigateBackTo-UamjCxQ (Lkotlin/reflect/KClass;Z)V
-	public final fun navigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
-	public final fun navigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
-	public final fun navigateUp ()V
-	public final fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 }
 
 public final class com/freeletics/khonshu/navigation/internal/NavigationSetupKt {

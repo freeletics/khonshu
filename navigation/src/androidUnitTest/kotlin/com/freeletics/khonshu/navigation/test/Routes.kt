@@ -9,22 +9,22 @@ import kotlinx.parcelize.Parcelize
 
 @Poko
 @Parcelize
-internal class SimpleRoute(val number: Int) : NavRoute
+internal class SimpleRoute(val number: Int) : NavRoute, Parcelable
 
 @Poko
 @Parcelize
-internal class OtherRoute(val number: Int) : NavRoute
+internal class OtherRoute(val number: Int) : NavRoute, Parcelable
 
 @Poko
 @Parcelize
 internal class DeepLinkRoute(
     val pathParameters: Map<String, String>,
     val queryParameters: Map<String, String>,
-) : NavRoute
+) : NavRoute, Parcelable
 
 @Poko
 @Parcelize
-internal class SimpleRoot(val number: Int) : NavRoot
+internal class SimpleRoot(val number: Int) : NavRoot, Parcelable
 
 @Poko
 @Parcelize

@@ -122,7 +122,7 @@ public interface NavigatorTurbine {
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun <T : BaseRoute> awaitNavigateBackTo(
+    public suspend fun <T : NavRoute> awaitNavigateBackTo(
         popUpTo: KClass<T>,
         inclusive: Boolean,
     )
@@ -243,7 +243,7 @@ internal class DefaultNavigatorTurbine(
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun <T : BaseRoute> awaitNavigateBackTo(
+    override suspend fun <T : NavRoute> awaitNavigateBackTo(
         popUpTo: KClass<T>,
         inclusive: Boolean,
     ) {

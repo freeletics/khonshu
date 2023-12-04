@@ -16,15 +16,15 @@ public class AndroidXNavigationExecutor(
     private val controller: NavController,
 ) : NavigationExecutor {
 
-    override fun navigate(route: NavRoute) {
+    override fun navigateTo(route: NavRoute) {
         controller.navigate(route.destinationId(), route.getArguments())
     }
 
-    override fun navigate(route: ActivityRoute) {
+    override fun navigateTo(route: ActivityRoute) {
         controller.navigate(route.destinationId(), route.getArguments())
     }
 
-    override fun navigate(root: NavRoot, restoreRootState: Boolean) {
+    override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
         val options = NavOptions.Builder()
             // save the state of the current root before leaving it
             .setPopUpTo(
@@ -49,8 +49,8 @@ public class AndroidXNavigationExecutor(
         controller.navigateUp()
     }
 
-    override fun <T : BaseRoute> navigateBackTo(destinationId: DestinationId<T>, isInclusive: Boolean) {
-        controller.popBackStack(destinationId.destinationId(), isInclusive)
+    override fun <T : BaseRoute> navigateBackToInternal(popUpTo: DestinationId<T>, inclusive: Boolean) {
+        controller.popBackStack(popUpTo.destinationId(), inclusive)
     }
 
     override fun resetToRoot(root: NavRoot) {
