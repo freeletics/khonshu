@@ -46,10 +46,7 @@ internal fun bindsInstanceParameter(
 }
 
 internal fun navHostParameter(parameter: ComposableParameter): ParameterSpec {
-    return ParameterSpec.builder(
-        parameter.name,
-        parameter.typeName.copy(annotations = listOf(AnnotationSpec.builder(composable).build())),
-    )
+    return ParameterSpec.builder(parameter.name, simpleNavHost)
         .build()
 }
 
@@ -141,7 +138,7 @@ internal fun TypeName.asLambdaParameter(): TypeName {
 // KSP and Anvil don't have the same behavior for returning lambdas
 // this turns all Function1 and Function2 types into lambdas
 internal fun TypeName.functionToLambda(): TypeName {
-    if (this is ParameterizedTypeName && (rawType == function1 || rawType == function2)) {
+    if (this is ParameterizedTypeName && (rawType == function1 || rawType == function2 || rawType == function3)) {
         val parameters = typeArguments.dropLast(1).map { it.functionToLambda() }.toTypedArray()
         return LambdaTypeName.get(null, *parameters, returnType = typeArguments.last())
             .copy(nullable = isNullable)

@@ -7,8 +7,9 @@ import com.freeletics.khonshu.codegen.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.codegen.util.baseRouteFqName
 import com.freeletics.khonshu.codegen.codegen.util.fragment
 import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
-import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
 import com.freeletics.khonshu.codegen.codegen.util.overlayFqName
+import com.freeletics.khonshu.codegen.codegen.util.simpleNavHost
+import com.freeletics.khonshu.codegen.codegen.util.simpleNavHostLambda
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionClassReference
@@ -69,10 +70,10 @@ private fun ParameterReference.toComposableParameter(condition: (TypeName) -> Bo
 }
 
 internal fun TopLevelFunctionReference.navHostParameter(): ComposableParameter {
-    return getParameterWithType(navHostLambda)
+    return getParameterWithType(simpleNavHost) ?: getParameterWithType(simpleNavHostLambda)
         ?: throw AnvilCompilationExceptionFunctionReference(
             this,
-            "Could not find a NavHost parameter with type $navHostLambda",
+            "Could not find a NavHost parameter with type $simpleNavHostLambda",
         )
 }
 

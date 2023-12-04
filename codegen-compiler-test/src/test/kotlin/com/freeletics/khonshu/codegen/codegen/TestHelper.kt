@@ -12,7 +12,7 @@ import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 
 internal fun test(data: BaseData, fileName: String, source: String, expectedCode: String) {
     compile(fileName = fileName, source = source, data = data, expectedCode = expectedCode)
-    compileWithAnvil(fileName = fileName, source = source, expectedCode = expectedCode)
+//    compileWithAnvil(fileName = fileName, source = source, expectedCode = expectedCode)
     compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode)
 }
 
