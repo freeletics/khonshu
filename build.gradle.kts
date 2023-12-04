@@ -59,9 +59,6 @@ apiValidation {
 dependencyAnalysis {
     issues {
         all {
-            onUnusedDependencies {
-                exclude("() -> kotlin.Any?")
-            }
             onIncorrectConfiguration {
                 exclude("org.jetbrains.kotlin:kotlin-stdlib")
             }
