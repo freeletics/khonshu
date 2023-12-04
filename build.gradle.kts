@@ -55,13 +55,3 @@ apiValidation {
         "com.freeletics.khonshu.codegen.internal.InternalCodegenApi",
     )
 }
-
-dependencyAnalysis {
-    issues {
-        all {
-            onIncorrectConfiguration {
-                exclude("org.jetbrains.kotlin:kotlin-stdlib")
-            }
-        }
-    }
-}
