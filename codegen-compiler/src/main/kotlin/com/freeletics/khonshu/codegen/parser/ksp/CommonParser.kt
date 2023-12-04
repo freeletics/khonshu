@@ -3,7 +3,6 @@ package com.freeletics.khonshu.codegen.parser.ksp
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.codegen.util.baseRoute
-import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
 import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
 import com.freeletics.khonshu.codegen.codegen.util.overlay
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
@@ -66,7 +65,7 @@ internal fun KSFunctionDeclaration.getInjectedParameters(vararg exclude: TypeNam
 }
 
 private fun KSValueParameter.toComposableParameter(condition: (TypeName) -> Boolean): ComposableParameter? {
-    val type = type.toTypeName().functionToLambda()
+    val type = type.toTypeName()
     return if (condition(type)) {
         ComposableParameter(name!!.asString(), type)
     } else {
