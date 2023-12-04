@@ -38,7 +38,7 @@ import kotlinx.coroutines.flow.map
  * doesn't provide its own [DeepLinkHandler.prefixes].
  *
  * If a [NavEventNavigator] is passed it will be automatically set up and can be used to
- * navigate within the `NavHost.
+ * navigate within the `NavHost`.
  *
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
