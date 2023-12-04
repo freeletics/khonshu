@@ -60,8 +60,6 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.compose.NavHostActivity
             import com.freeletics.khonshu.navigation.BaseRoute
             import com.freeletics.khonshu.navigation.NavRoot
-            import com.freeletics.khonshu.navigation.compose.NavDestination
-            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.test.parent.TestParentScope
 
             @NavHostActivity(
@@ -96,6 +94,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.BaseRoute
+            import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
@@ -122,6 +121,9 @@ internal class FileGeneratorTestNavHostActivity {
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
+
+              @get:ForScope(TestScreen::class)
+              public val navEventNavigator: NavEventNavigator
 
               public val destinations: Set<NavDestination>
 
@@ -189,6 +191,7 @@ internal class FileGeneratorTestNavHostActivity {
                       destinations = khonshuTestComponent.destinations,
                       deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
                       deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
+                      navEventNavigator = khonshuTestComponent.navEventNavigator,
                       destinationChangedCallback = destinationChangedCallback,
                     )
                   }
@@ -269,6 +272,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.BaseRoute
+            import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
@@ -294,6 +298,9 @@ internal class FileGeneratorTestNavHostActivity {
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
+
+              @get:ForScope(ActivityScope::class)
+              public val navEventNavigator: NavEventNavigator
 
               public val destinations: Set<NavDestination>
 
@@ -361,6 +368,7 @@ internal class FileGeneratorTestNavHostActivity {
                       destinations = khonshuTestComponent.destinations,
                       deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
                       deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
+                      navEventNavigator = khonshuTestComponent.navEventNavigator,
                       destinationChangedCallback = destinationChangedCallback,
                     )
                   }
@@ -423,8 +431,6 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.compose.NavHostActivity
             import com.freeletics.khonshu.navigation.BaseRoute
             import com.freeletics.khonshu.navigation.NavRoot
-            import com.freeletics.khonshu.navigation.compose.NavDestination
-            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.test.other.TestClass2
             import com.test.parent.TestParentScope
 
@@ -464,6 +470,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.BaseRoute
+            import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
@@ -494,6 +501,9 @@ internal class FileGeneratorTestNavHostActivity {
             )
             public interface KhonshuTest2Component : Closeable {
               public val testStateMachine: TestStateMachine
+
+              @get:ForScope(TestScreen::class)
+              public val navEventNavigator: NavEventNavigator
 
               public val testClass: TestClass
 
@@ -569,6 +579,7 @@ internal class FileGeneratorTestNavHostActivity {
                       destinations = khonshuTest2Component.destinations,
                       deepLinkHandlers = khonshuTest2Component.deepLinkHandlers,
                       deepLinkPrefixes = khonshuTest2Component.deepLinkPrefixes,
+                      navEventNavigator = khonshuTest2Component.navEventNavigator,
                       destinationChangedCallback = destinationChangedCallback,
                     )
                   }
@@ -621,8 +632,6 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.compose.NavHostActivity
             import com.freeletics.khonshu.navigation.BaseRoute
             import com.freeletics.khonshu.navigation.NavRoot
-            import com.freeletics.khonshu.navigation.compose.NavDestination
-            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.test.parent.TestParentScope
 
             @NavHostActivity(
@@ -655,6 +664,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.BaseRoute
+            import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
@@ -680,6 +690,9 @@ internal class FileGeneratorTestNavHostActivity {
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
+
+              @get:ForScope(TestScreen::class)
+              public val navEventNavigator: NavEventNavigator
 
               public val destinations: Set<NavDestination>
 
@@ -747,6 +760,7 @@ internal class FileGeneratorTestNavHostActivity {
                       destinations = khonshuTestComponent.destinations,
                       deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
                       deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
+                      navEventNavigator = khonshuTestComponent.navEventNavigator,
                       destinationChangedCallback = destinationChangedCallback,
                     )
                   }
@@ -789,8 +803,6 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.compose.NavHostActivity
             import com.freeletics.khonshu.navigation.BaseRoute
             import com.freeletics.khonshu.navigation.NavRoot
-            import com.freeletics.khonshu.navigation.compose.NavDestination
-            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.test.parent.TestParentScope
 
             @NavHostActivity(
@@ -824,6 +836,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.BaseRoute
+            import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
@@ -850,6 +863,9 @@ internal class FileGeneratorTestNavHostActivity {
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
+
+              @get:ForScope(TestScreen::class)
+              public val navEventNavigator: NavEventNavigator
 
               public val destinations: Set<NavDestination>
 
@@ -917,6 +933,7 @@ internal class FileGeneratorTestNavHostActivity {
                       destinations = khonshuTestComponent.destinations,
                       deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
                       deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
+                      navEventNavigator = khonshuTestComponent.navEventNavigator,
                       destinationChangedCallback = destinationChangedCallback,
                     )
                   }

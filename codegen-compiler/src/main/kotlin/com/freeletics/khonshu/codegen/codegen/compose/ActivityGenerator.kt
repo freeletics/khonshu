@@ -68,6 +68,7 @@ internal class ActivityGenerator(
             .addStatement("  destinations = %L.destinations,", retainedComponentClassName.propertyName)
             .addStatement("  deepLinkHandlers = %L.deepLinkHandlers,", retainedComponentClassName.propertyName)
             .addStatement("  deepLinkPrefixes = %L.deepLinkPrefixes,", retainedComponentClassName.propertyName)
+            .addStatement("  navEventNavigator = %L.navEventNavigator,", retainedComponentClassName.propertyName)
             .addStatement("  destinationChangedCallback = destinationChangedCallback,")
             .addStatement(")")
             .endControlFlow()

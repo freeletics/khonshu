@@ -68,7 +68,7 @@ internal class ComponentGenerator(
         if (data.stateMachine != null) {
             properties += simplePropertySpec(data.stateMachine!!)
         }
-        if (data.navigation != null) {
+        if (data.navigation != null || data is NavHostActivityData) {
             properties += simplePropertySpec(navEventNavigator).toBuilder()
                 .addAnnotation(forScope(data.scope, GET))
                 .build()

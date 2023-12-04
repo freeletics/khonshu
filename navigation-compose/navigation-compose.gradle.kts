@@ -14,7 +14,6 @@ dependencies {
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.ui)
     api(libs.androidx.navigation.common)
-    api(libs.androidx.navigation.runtime)
 
     implementation(projects.navigationAndroidx)
     implementation(libs.coroutines.core)
@@ -23,5 +22,6 @@ dependencies {
     implementation(libs.androidx.compose.runtime.saveable)
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.lifecycle.common)
+    implementation(libs.androidx.navigation.runtime)
     implementation(libs.androidx.navigation.compose)
 }

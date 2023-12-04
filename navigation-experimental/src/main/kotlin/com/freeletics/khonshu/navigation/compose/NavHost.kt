@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.compose.internal.MultiStackNavigationExecutor
 import com.freeletics.khonshu.navigation.compose.internal.StackEntry
@@ -36,6 +37,9 @@ import kotlinx.coroutines.flow.map
  * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
  * doesn't provide its own [DeepLinkHandler.prefixes].
  *
+ * If a [NavEventNavigator] is passed it will be automatically set up and can be used to
+ * navigate within the `NavHost`.
+ *
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
@@ -45,6 +49,7 @@ public fun NavHost(
     destinations: Set<NavDestination>,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
+    navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
 ) {
     val executor = rememberNavigationExecutor(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
@@ -54,6 +59,10 @@ public fun NavHost(
 
     val saveableStateHolder = rememberSaveableStateHolder()
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
+        if (navEventNavigator != null) {
+            NavigationSetup(navEventNavigator)
+        }
+
         val entries = executor.visibleEntries.value
         Show(entries, executor, saveableStateHolder)
     }

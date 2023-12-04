@@ -29,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.get
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.compose.internal.OverlayHost
@@ -55,8 +56,8 @@ import java.io.Serializable
  * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
  * doesn't provide its own [DeepLinkHandler.prefixes].
  *
- * The [navController] can be passed in optionally when needed, for example when using the NavHost
- * with a bottom navigation element.
+ * If a [NavEventNavigator] is passed it will be automatically set up and can be used to
+ * navigate within the `NavHost`.
  *
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
@@ -71,7 +72,7 @@ public fun NavHost(
     modifier: Modifier = Modifier,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
-    navController: NavHostController = rememberNavController(),
+    navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
     transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
 ) {
@@ -81,7 +82,7 @@ public fun NavHost(
         modifier = modifier,
         deepLinkHandlers = deepLinkHandlers,
         deepLinkPrefixes = deepLinkPrefixes,
-        navController = navController,
+        navEventNavigator = navEventNavigator,
         destinationChangedCallback = destinationChangedCallback,
         transitionAnimations = transitionAnimations,
     )
@@ -98,8 +99,8 @@ public fun NavHost(
  * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
  * doesn't provide its own [DeepLinkHandler.prefixes].
  *
- * The [navController] can be passed in optionally when needed, for example when using the NavHost
- * with a bottom navigation element.
+ * If a [NavEventNavigator] is passed it will be automatically set up and can be used to
+ * navigate within the `NavHost`.
  *
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
@@ -115,7 +116,7 @@ public fun NavHost(
     modifier: Modifier = Modifier,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
-    navController: NavHostController = rememberNavController(),
+    navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
     transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
 ) {
@@ -125,7 +126,7 @@ public fun NavHost(
         modifier = modifier,
         deepLinkHandlers = deepLinkHandlers,
         deepLinkPrefixes = deepLinkPrefixes,
-        navController = navController,
+        navEventNavigator = navEventNavigator,
         destinationChangedCallback = destinationChangedCallback,
         transitionAnimations = transitionAnimations,
     )
@@ -138,17 +139,21 @@ private fun InternalNavHost(
     modifier: Modifier = Modifier,
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
-    navController: NavHostController = rememberNavController(),
+    navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
     transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
 ) {
     val context = LocalContext.current
 
+    // should be called before rememberNavController to fill intent data with deeplinks
+    DisposableEffect(context, deepLinkHandlers, deepLinkPrefixes) {
+        context.findActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
+        onDispose { }
+    }
+
     val overlayNavigator = remember { OverlayNavigator() }
     val customActivityNavigator = remember(context) { CustomActivityNavigator(context) }
-
-    navController.navigatorProvider.addNavigator(overlayNavigator)
-    navController.navigatorProvider.addNavigator(customActivityNavigator)
+    val navController: NavHostController = rememberNavController(overlayNavigator, customActivityNavigator)
 
     val executor = remember(navController) { AndroidXNavigationExecutor(navController) }
 
@@ -166,11 +171,6 @@ private fun InternalNavHost(
         }
     }
 
-    DisposableEffect(context, deepLinkHandlers, deepLinkPrefixes) {
-        context.findActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
-        onDispose { }
-    }
-
     val graph = remember(navController, startRoute, destinations) {
         @Suppress("deprecation")
         navController.createGraph(startDestination = startRoute.destinationId()) {
@@ -181,6 +181,10 @@ private fun InternalNavHost(
     }
 
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
+        if (navEventNavigator != null) {
+            NavigationSetup(navigator = navEventNavigator)
+        }
+
         AndroidXNavHost(
             navController = navController,
             graph = graph,
@@ -192,7 +196,7 @@ private fun InternalNavHost(
         )
 
         OverlayHost(
-            overlayNavigator = overlayNavigator,
+            overlayNavigator = navController.navigatorProvider[OverlayNavigator::class],
         )
     }
 }
