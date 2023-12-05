@@ -7,7 +7,7 @@ public abstract interface class com/freeletics/khonshu/navigation/compose/NavDes
 }
 
 public final class com/freeletics/khonshu/navigation/compose/NavHostKt {
-	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/Set;Landroidx/compose/ui/Modifier;Ljava/util/Set;Ljava/util/Set;Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/freeletics/khonshu/navigation/compose/NavigationSetupKt {

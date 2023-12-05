@@ -44,6 +44,8 @@ import com.freeletics.khonshu.navigation.internal.getArguments
 import com.freeletics.khonshu.navigation.internal.handleDeepLink
 import com.freeletics.khonshu.navigation.internal.requireRoute
 import java.io.Serializable
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentSetOf
 
 /**
  * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
@@ -68,10 +70,10 @@ import java.io.Serializable
 @NonRestartableComposable
 public fun NavHost(
     startRoute: NavRoot,
-    destinations: Set<NavDestination>,
+    destinations: ImmutableSet<NavDestination>,
     modifier: Modifier = Modifier,
-    deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
-    deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
+    deepLinkHandlers: ImmutableSet<DeepLinkHandler> = persistentSetOf(),
+    deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
     navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
     transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
@@ -112,10 +114,10 @@ public fun NavHost(
 @Deprecated("Will eventually be removed. The start destination should use a NavRoot")
 public fun NavHost(
     startRoute: NavRoute,
-    destinations: Set<NavDestination>,
+    destinations: ImmutableSet<NavDestination>,
     modifier: Modifier = Modifier,
-    deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
-    deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
+    deepLinkHandlers: ImmutableSet<DeepLinkHandler> = persistentSetOf(),
+    deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
     navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
     transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),

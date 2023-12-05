@@ -98,10 +98,14 @@ internal class FileGeneratorTestNavHostActivity {
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Module
+            import dagger.Provides
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.collections.Set
+            import kotlin.jvm.JvmSuppressWildcards
+            import kotlinx.collections.immutable.ImmutableSet
+            import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -116,11 +120,11 @@ internal class FileGeneratorTestNavHostActivity {
               @get:ForScope(TestScreen::class)
               public val navEventNavigator: NavEventNavigator
 
-              public val destinations: Set<NavDestination>
+              public val destinations: ImmutableSet<NavDestination>
 
-              public val deepLinkHandlers: Set<DeepLinkHandler>
+              public val deepLinkHandlers: ImmutableSet<DeepLinkHandler>
 
-              public val deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
+              public val deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
@@ -160,6 +164,21 @@ internal class FileGeneratorTestNavHostActivity {
 
               @Multibinds
               public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
+
+              public companion object {
+                @Provides
+                public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
+                    Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkHandlers(handlers: @JvmSuppressWildcards
+                    Set<DeepLinkHandler>): ImmutableSet<DeepLinkHandler> = handlers.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkPrefixes(prefixes: @JvmSuppressWildcards
+                    Set<DeepLinkHandler.Prefix>): ImmutableSet<DeepLinkHandler.Prefix> =
+                    prefixes.toImmutableSet()
+              }
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -273,10 +292,14 @@ internal class FileGeneratorTestNavHostActivity {
             import com.squareup.anvil.annotations.optional.SingleIn
             import dagger.BindsInstance
             import dagger.Module
+            import dagger.Provides
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.collections.Set
+            import kotlin.jvm.JvmSuppressWildcards
+            import kotlinx.collections.immutable.ImmutableSet
+            import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -291,11 +314,11 @@ internal class FileGeneratorTestNavHostActivity {
               @get:ForScope(ActivityScope::class)
               public val navEventNavigator: NavEventNavigator
 
-              public val destinations: Set<NavDestination>
+              public val destinations: ImmutableSet<NavDestination>
 
-              public val deepLinkHandlers: Set<DeepLinkHandler>
+              public val deepLinkHandlers: ImmutableSet<DeepLinkHandler>
 
-              public val deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
+              public val deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>
 
               @get:ForScope(ActivityScope::class)
               public val closeables: Set<Closeable>
@@ -335,6 +358,21 @@ internal class FileGeneratorTestNavHostActivity {
 
               @Multibinds
               public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
+
+              public companion object {
+                @Provides
+                public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
+                    Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkHandlers(handlers: @JvmSuppressWildcards
+                    Set<DeepLinkHandler>): ImmutableSet<DeepLinkHandler> = handlers.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkPrefixes(prefixes: @JvmSuppressWildcards
+                    Set<DeepLinkHandler.Prefix>): ImmutableSet<DeepLinkHandler.Prefix> =
+                    prefixes.toImmutableSet()
+              }
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -472,6 +510,7 @@ internal class FileGeneratorTestNavHostActivity {
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Module
+            import dagger.Provides
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.Int
@@ -479,6 +518,9 @@ internal class FileGeneratorTestNavHostActivity {
             import kotlin.String
             import kotlin.collections.Map
             import kotlin.collections.Set
+            import kotlin.jvm.JvmSuppressWildcards
+            import kotlinx.collections.immutable.ImmutableSet
+            import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -501,11 +543,11 @@ internal class FileGeneratorTestNavHostActivity {
 
               public val testMap: Map<String, Int>
 
-              public val destinations: Set<NavDestination>
+              public val destinations: ImmutableSet<NavDestination>
 
-              public val deepLinkHandlers: Set<DeepLinkHandler>
+              public val deepLinkHandlers: ImmutableSet<DeepLinkHandler>
 
-              public val deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
+              public val deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
@@ -545,6 +587,21 @@ internal class FileGeneratorTestNavHostActivity {
 
               @Multibinds
               public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
+
+              public companion object {
+                @Provides
+                public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
+                    Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkHandlers(handlers: @JvmSuppressWildcards
+                    Set<DeepLinkHandler>): ImmutableSet<DeepLinkHandler> = handlers.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkPrefixes(prefixes: @JvmSuppressWildcards
+                    Set<DeepLinkHandler.Prefix>): ImmutableSet<DeepLinkHandler.Prefix> =
+                    prefixes.toImmutableSet()
+              }
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -664,10 +721,14 @@ internal class FileGeneratorTestNavHostActivity {
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Module
+            import dagger.Provides
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.collections.Set
+            import kotlin.jvm.JvmSuppressWildcards
+            import kotlinx.collections.immutable.ImmutableSet
+            import kotlinx.collections.immutable.toImmutableSet
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
@@ -681,11 +742,11 @@ internal class FileGeneratorTestNavHostActivity {
               @get:ForScope(TestScreen::class)
               public val navEventNavigator: NavEventNavigator
 
-              public val destinations: Set<NavDestination>
+              public val destinations: ImmutableSet<NavDestination>
 
-              public val deepLinkHandlers: Set<DeepLinkHandler>
+              public val deepLinkHandlers: ImmutableSet<DeepLinkHandler>
 
-              public val deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
+              public val deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
@@ -725,6 +786,21 @@ internal class FileGeneratorTestNavHostActivity {
 
               @Multibinds
               public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
+
+              public companion object {
+                @Provides
+                public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
+                    Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkHandlers(handlers: @JvmSuppressWildcards
+                    Set<DeepLinkHandler>): ImmutableSet<DeepLinkHandler> = handlers.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkPrefixes(prefixes: @JvmSuppressWildcards
+                    Set<DeepLinkHandler.Prefix>): ImmutableSet<DeepLinkHandler.Prefix> =
+                    prefixes.toImmutableSet()
+              }
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -835,10 +911,14 @@ internal class FileGeneratorTestNavHostActivity {
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Module
+            import dagger.Provides
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.collections.Set
+            import kotlin.jvm.JvmSuppressWildcards
+            import kotlinx.collections.immutable.ImmutableSet
+            import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -853,11 +933,11 @@ internal class FileGeneratorTestNavHostActivity {
               @get:ForScope(TestScreen::class)
               public val navEventNavigator: NavEventNavigator
 
-              public val destinations: Set<NavDestination>
+              public val destinations: ImmutableSet<NavDestination>
 
-              public val deepLinkHandlers: Set<DeepLinkHandler>
+              public val deepLinkHandlers: ImmutableSet<DeepLinkHandler>
 
-              public val deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
+              public val deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
@@ -897,6 +977,21 @@ internal class FileGeneratorTestNavHostActivity {
 
               @Multibinds
               public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
+
+              public companion object {
+                @Provides
+                public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
+                    Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkHandlers(handlers: @JvmSuppressWildcards
+                    Set<DeepLinkHandler>): ImmutableSet<DeepLinkHandler> = handlers.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkPrefixes(prefixes: @JvmSuppressWildcards
+                    Set<DeepLinkHandler.Prefix>): ImmutableSet<DeepLinkHandler.Prefix> =
+                    prefixes.toImmutableSet()
+              }
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -1009,10 +1104,14 @@ internal class FileGeneratorTestNavHostActivity {
             import com.test.parent.TestParentScope
             import dagger.BindsInstance
             import dagger.Module
+            import dagger.Provides
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.collections.Set
+            import kotlin.jvm.JvmSuppressWildcards
+            import kotlinx.collections.immutable.ImmutableSet
+            import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -1027,11 +1126,11 @@ internal class FileGeneratorTestNavHostActivity {
               @get:ForScope(TestScreen::class)
               public val navEventNavigator: NavEventNavigator
 
-              public val destinations: Set<NavDestination>
+              public val destinations: ImmutableSet<NavDestination>
 
-              public val deepLinkHandlers: Set<DeepLinkHandler>
+              public val deepLinkHandlers: ImmutableSet<DeepLinkHandler>
 
-              public val deepLinkPrefixes: Set<DeepLinkHandler.Prefix>
+              public val deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
@@ -1071,6 +1170,21 @@ internal class FileGeneratorTestNavHostActivity {
 
               @Multibinds
               public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
+
+              public companion object {
+                @Provides
+                public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
+                    Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkHandlers(handlers: @JvmSuppressWildcards
+                    Set<DeepLinkHandler>): ImmutableSet<DeepLinkHandler> = handlers.toImmutableSet()
+
+                @Provides
+                public fun provideImmutableDeepLinkPrefixes(prefixes: @JvmSuppressWildcards
+                    Set<DeepLinkHandler.Prefix>): ImmutableSet<DeepLinkHandler.Prefix> =
+                    prefixes.toImmutableSet()
+              }
             }
 
             @OptIn(InternalCodegenApi::class)
