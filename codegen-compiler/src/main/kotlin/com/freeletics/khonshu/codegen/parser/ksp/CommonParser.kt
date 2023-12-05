@@ -3,8 +3,9 @@ package com.freeletics.khonshu.codegen.parser.ksp
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.codegen.util.baseRoute
-import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
 import com.freeletics.khonshu.codegen.codegen.util.overlay
+import com.freeletics.khonshu.codegen.codegen.util.simpleNavHost
+import com.freeletics.khonshu.codegen.codegen.util.simpleNavHostLambda
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
 import com.google.devtools.ksp.getClassDeclarationByName
 import com.google.devtools.ksp.processing.KSPLogger
@@ -74,9 +75,9 @@ private fun KSValueParameter.toComposableParameter(condition: (TypeName) -> Bool
 }
 
 internal fun KSFunctionDeclaration.navHostParameter(logger: KSPLogger): ComposableParameter? {
-    val parameter = getParameterWithType(navHostLambda)
+    val parameter = getParameterWithType(simpleNavHost) ?: getParameterWithType(simpleNavHostLambda)
     if (parameter == null) {
-        logger.error("Could not find a NavHost parameter with type $navHostLambda")
+        logger.error("Could not find a NavHost parameter with type $simpleNavHostLambda")
     }
     return parameter
 }

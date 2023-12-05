@@ -21,6 +21,7 @@ dependencies {
     "commonMainApi"(projects.stateMachine)
     "commonMainApi"(projects.navigation)
     "commonMainApi"(libs.jetbrains.compose.runtime)
+    "commonMainApi"(libs.jetbrains.compose.ui)
     "commonMainApi"(libs.inject)
 
     "androidMainApi"(libs.androidx.viewmodel)

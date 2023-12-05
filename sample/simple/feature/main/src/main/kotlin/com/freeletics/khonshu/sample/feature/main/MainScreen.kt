@@ -1,10 +1,11 @@
 package com.freeletics.khonshu.sample.feature.main
 
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.freeletics.khonshu.codegen.compose.NavHostActivity
-import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.NavRoot
+import com.freeletics.khonshu.codegen.compose.SimpleNavHost
 import com.freeletics.khonshu.sample.feature.root.nav.RootRoute
 
 @NavHostActivity(
@@ -13,7 +14,7 @@ import com.freeletics.khonshu.sample.feature.root.nav.RootRoute
 )
 @Composable
 internal fun MainScreen(
-    navHost: @Composable (NavRoot, ((BaseRoute) -> Unit)?) -> Unit,
+    navHost: SimpleNavHost,
 ) {
-    navHost(RootRoute) {}
+    navHost(RootRoute, Modifier.fillMaxSize()) {}
 }

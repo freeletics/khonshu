@@ -52,9 +52,11 @@ internal val fragmentDialogDestination = MemberName("com.freeletics.khonshu.navi
 internal val fragmentRequireRoute = MemberName("com.freeletics.khonshu.navigation.fragment", "requireRoute")
 internal val internalNavigatorApi = ClassName("com.freeletics.khonshu.navigation.internal", "InternalNavigationApi")
 
-internal val navHostLambda = LambdaTypeName.get(
+internal val simpleNavHost = ClassName("com.freeletics.khonshu.codegen.compose", "SimpleNavHost")
+internal val simpleNavHostLambda = LambdaTypeName.get(
     null,
     NavRoot::class.asClassName(),
+    ClassName("androidx.compose.ui", "Modifier"),
     LambdaTypeName.get(null, baseRoute, returnType = UNIT).copy(nullable = true),
     returnType = UNIT,
 )
@@ -66,6 +68,7 @@ internal val stateMachine = ClassName("com.freeletics.khonshu.statemachine", "St
 internal val optIn = ClassName("kotlin", "OptIn")
 internal val function1 = ClassName("kotlin", "Function1")
 internal val function2 = ClassName("kotlin", "Function2")
+internal val function3 = ClassName("kotlin", "Function3")
 
 // Coroutines
 internal val launch = MemberName("kotlinx.coroutines", "launch")
