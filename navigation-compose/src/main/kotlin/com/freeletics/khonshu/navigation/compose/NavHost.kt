@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.navigation.NavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -23,6 +24,7 @@ import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.NavDestination as AndroidXNavDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.Navigation
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost as AndroidXNavHost
 import androidx.navigation.compose.rememberNavController
@@ -154,6 +156,15 @@ private fun InternalNavHost(
     val overlayNavigator = remember { OverlayNavigator() }
     val customActivityNavigator = remember(context) { CustomActivityNavigator(context) }
     val navController: NavHostController = rememberNavController(overlayNavigator, customActivityNavigator)
+
+    val composeView = LocalView.current
+    DisposableEffect(navController, composeView) {
+        Navigation.setViewNavController(composeView, navController)
+
+        onDispose {
+            Navigation.setViewNavController(composeView, null)
+        }
+    }
 
     val executor = remember(navController) { AndroidXNavigationExecutor(navController) }
 
