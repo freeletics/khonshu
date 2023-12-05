@@ -25,6 +25,7 @@ import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import java.io.Closeable
 import java.lang.ref.WeakReference
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -69,20 +70,10 @@ public fun NavHost(
         }
 
         Box(modifier = modifier) {
-            val entries = executor.visibleEntries.value
-            Show(entries, executor, saveableStateHolder)
+            executor.visibleEntries.value.forEach { entry ->
+                Show(entry, executor, saveableStateHolder)
+            }
         }
-    }
-}
-
-@Composable
-private fun Show(
-    entries: List<StackEntry<*>>,
-    executor: MultiStackNavigationExecutor,
-    saveableStateHolder: SaveableStateHolder,
-) {
-    entries.forEach { entry ->
-        Show(entry, executor, saveableStateHolder)
     }
 }
 

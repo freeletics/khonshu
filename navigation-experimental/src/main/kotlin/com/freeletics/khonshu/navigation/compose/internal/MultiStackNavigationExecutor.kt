@@ -11,6 +11,7 @@ import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import com.freeletics.khonshu.navigation.internal.destinationId
 import java.io.Serializable
+import kotlinx.collections.immutable.ImmutableList
 
 internal class MultiStackNavigationExecutor(
     private val stack: MultiStack,
@@ -19,11 +20,9 @@ internal class MultiStackNavigationExecutor(
     deepLinkRoutes: List<Parcelable>,
 ) : NavigationExecutor {
 
-    @Suppress("unused") // TODO
-    val visibleEntries: State<List<StackEntry<*>>>
+    val visibleEntries: State<ImmutableList<StackEntry<*>>>
         get() = stack.visibleEntries
 
-    @Suppress("unused") // TODO
     val canNavigateBack: State<Boolean>
         get() = stack.canNavigateBack
 
