@@ -25,7 +25,6 @@ import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import java.io.Closeable
 import java.lang.ref.WeakReference
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.flow.distinctUntilChanged
