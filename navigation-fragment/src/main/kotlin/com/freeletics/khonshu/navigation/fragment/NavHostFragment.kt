@@ -28,6 +28,7 @@ import java.io.Serializable
  * doesn't provide its own [DeepLinkHandler.prefixes].
  */
 @Deprecated("Fragment support will be removed in the next release")
+@Suppress("DEPRECATION")
 public fun NavHostFragment.setGraph(
     startRoute: BaseRoute,
     destinations: Set<NavDestination>,
@@ -47,6 +48,7 @@ public fun NavHostFragment.setGraph(
     navController.setGraph(graph, null)
 }
 
+@Suppress("DEPRECATION")
 private fun NavGraphBuilder.addDestination(
     controller: NavController,
     destination: NavDestination,
