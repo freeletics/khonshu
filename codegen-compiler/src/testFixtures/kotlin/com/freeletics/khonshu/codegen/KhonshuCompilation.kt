@@ -142,7 +142,7 @@ private fun KotlinCompilation.configure(
     sourceFiles: List<Pair<String, String>>,
     compilerPlugins: List<CompilerPluginRegistrar>,
     legacyCompilerPlugins: List<ComponentRegistrar>,
-    warningsAsErrors: Boolean
+    warningsAsErrors: Boolean,
 ) {
     componentRegistrars += legacyCompilerPlugins
     compilerPluginRegistrars += compilerPlugins
