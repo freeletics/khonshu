@@ -29,6 +29,9 @@ public abstract interface annotation class com/freeletics/khonshu/codegen/fragme
 	public abstract fun stateMachine ()Ljava/lang/Class;
 }
 
+public final class com/freeletics/khonshu/codegen/internal/CollectAsStateKt {
+}
+
 public final class com/freeletics/khonshu/codegen/internal/Fragment {
 	public static final field $stable I
 	public fun <init> ()V
