@@ -14,6 +14,7 @@ import java.io.Serializable
 /**
  * A destination that can be navigated to. See [setGraph] for how to configure a `NavGraph` with it.
  */
+@Deprecated("Fragment support will be removed in the next release")
 public sealed interface NavDestination
 
 /**
