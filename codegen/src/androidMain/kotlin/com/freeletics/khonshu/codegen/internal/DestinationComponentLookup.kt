@@ -1,13 +1,8 @@
 package com.freeletics.khonshu.codegen.internal
 
 import android.content.Context
-import android.os.Bundle
-import androidx.compose.runtime.DisallowComposableCalls
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
@@ -15,21 +10,6 @@ import java.io.Serializable
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
-public inline fun <reified C : Any, P : Any> component(
-    viewModelStoreOwner: ViewModelStoreOwner,
-    context: Context,
-    parentScope: KClass<*>,
-    arguments: Bundle?,
-    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, Bundle) -> C,
-): C {
-    val store = ViewModelProvider(viewModelStoreOwner, SavedStateViewModelFactory())[StoreViewModel::class.java]
-    return store.getOrCreate(C::class) {
-        val parentComponent = context.findComponentByScope<P>(parentScope)
-        val savedStateHandle = store.savedStateHandle
-        factory(parentComponent, savedStateHandle, arguments ?: Bundle.EMPTY)
-    }
-}
-
 public interface ComponentProvider<R : BaseRoute, T> : Serializable {
     public fun provide(route: R, executor: NavigationExecutor, context: Context): T
 }
@@ -83,15 +63,4 @@ public inline fun <reified C : Any, PC : Any, R : BaseRoute, PR : BaseRoute> com
         val savedStateHandle = executor.savedStateHandleFor(destinationId)
         factory(parentComponent, savedStateHandle, route)
     }
-}
-
-@PublishedApi
-internal fun <T> Context.findComponentByScope(scope: KClass<*>): T {
-    val serviceName = scope.qualifiedName!!
-    val component = getSystemService(serviceName) ?: applicationContext.getSystemService(serviceName)
-    checkNotNull(component) {
-        "Could not find scope ${scope.qualifiedName} through getSystemService"
-    }
-    @Suppress("UNCHECKED_CAST")
-    return component as T
 }
