@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.navigation.internal
 
 import android.app.Activity
-import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
@@ -35,24 +34,24 @@ public suspend fun NavEventNavigator.collectAndHandleNavEvents(
     withContext(Dispatchers.Main.immediate) {
         navEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
             .collect { event ->
-                executor.navigate(event, activityLaunchers)
+                executor.navigateTo(event, activityLaunchers)
             }
     }
 }
 
-private fun NavigationExecutor.navigate(
+private fun NavigationExecutor.navigateTo(
     event: NavEvent,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
 ) {
     when (event) {
         is NavEvent.NavigateToEvent -> {
-            navigate(event.route)
+            navigateTo(event.route)
         }
         is NavEvent.NavigateToRootEvent -> {
-            navigate(event.root, event.restoreRootState)
+            navigateToRoot(event.root, event.restoreRootState)
         }
         is NavEvent.NavigateToActivityEvent -> {
-            navigate(event.route)
+            navigateTo(event.route)
         }
         is NavEvent.UpEvent -> {
             navigateUp()
@@ -61,7 +60,7 @@ private fun NavigationExecutor.navigate(
             navigateBack()
         }
         is NavEvent.BackToEvent -> {
-            navigateBackTo(event.popUpTo, event.inclusive)
+            navigateBackToInternal(event.popUpTo, event.inclusive)
         }
         is NavEvent.ResetToRoot -> {
             resetToRoot(event.root)
@@ -79,7 +78,7 @@ private fun NavigationExecutor.navigate(
             savedStateHandleFor(event.key.destinationId)[event.key.requestKey] = event.result
         }
         is NavEvent.MultiNavEvent -> {
-            event.navEvents.forEach { navigate(it, activityLaunchers) }
+            event.navEvents.forEach { navigateTo(it, activityLaunchers) }
         }
     }
 }
