@@ -14,6 +14,7 @@ dependencies {
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.ui)
     api(libs.androidx.navigation.common)
+    api(libs.collections.immutable)
 
     implementation(projects.navigationAndroidx)
     implementation(libs.coroutines.core)

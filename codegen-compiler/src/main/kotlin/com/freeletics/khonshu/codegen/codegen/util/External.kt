@@ -73,6 +73,10 @@ internal val function3 = ClassName("kotlin", "Function3")
 // Coroutines
 internal val launch = MemberName("kotlinx.coroutines", "launch")
 
+// Collections Immutable
+internal val immutableSet = ClassName("kotlinx.collections.immutable", "ImmutableSet")
+internal val toImmutableSet = MemberName("kotlinx.collections.immutable", "toImmutableSet")
+
 // Dagger
 internal val provides = ClassName("dagger", "Provides")
 internal val multibinds = ClassName("dagger.multibindings", "Multibinds")

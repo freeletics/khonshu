@@ -2,11 +2,16 @@ package com.freeletics.khonshu.codegen.codegen.compose
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.codegen.Generator
+import com.freeletics.khonshu.codegen.codegen.util.composeDestination
 import com.freeletics.khonshu.codegen.codegen.util.contributesToAnnotation
 import com.freeletics.khonshu.codegen.codegen.util.deepLinkHandler
 import com.freeletics.khonshu.codegen.codegen.util.deepLinkPrefix
+import com.freeletics.khonshu.codegen.codegen.util.immutableSet
+import com.freeletics.khonshu.codegen.codegen.util.jvmSuppressWildcards
 import com.freeletics.khonshu.codegen.codegen.util.module
 import com.freeletics.khonshu.codegen.codegen.util.multibinds
+import com.freeletics.khonshu.codegen.codegen.util.provides
+import com.freeletics.khonshu.codegen.codegen.util.toImmutableSet
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -25,6 +30,7 @@ internal class ActivityModuleGenerator(
             .addAnnotation(contributesToAnnotation(data.scope))
             .addFunction(bindDeepLinkHandlerFunction())
             .addFunction(bindDeepLinkPrefixFunction())
+            .addType(companionObject())
             .build()
     }
 
@@ -41,6 +47,41 @@ internal class ActivityModuleGenerator(
             .addModifiers(ABSTRACT)
             .addAnnotation(multibinds)
             .returns(SET.parameterizedBy(deepLinkPrefix))
+            .build()
+    }
+
+    private fun companionObject(): TypeSpec {
+        return TypeSpec.companionObjectBuilder()
+            .addFunction(provideImmutableNavDestinationsFunction())
+            .addFunction(provideImmutableDeepLinkHandlersFunction())
+            .addFunction(provideImmutableDeepLinkHandlerPrefixesFunction())
+            .build()
+    }
+
+    private fun provideImmutableNavDestinationsFunction(): FunSpec {
+        return FunSpec.builder("provideImmutableNavDestinations")
+            .addAnnotation(provides)
+            .addParameter("destinations", SET.parameterizedBy(composeDestination).jvmSuppressWildcards())
+            .returns(immutableSet.parameterizedBy(composeDestination))
+            .addStatement("return destinations.%M()", toImmutableSet)
+            .build()
+    }
+
+    private fun provideImmutableDeepLinkHandlersFunction(): FunSpec {
+        return FunSpec.builder("provideImmutableDeepLinkHandlers")
+            .addAnnotation(provides)
+            .addParameter("handlers", SET.parameterizedBy(deepLinkHandler).jvmSuppressWildcards())
+            .returns(immutableSet.parameterizedBy(deepLinkHandler))
+            .addStatement("return handlers.%M()", toImmutableSet)
+            .build()
+    }
+
+    private fun provideImmutableDeepLinkHandlerPrefixesFunction(): FunSpec {
+        return FunSpec.builder("provideImmutableDeepLinkPrefixes")
+            .addAnnotation(provides)
+            .addParameter("prefixes", SET.parameterizedBy(deepLinkPrefix).jvmSuppressWildcards())
+            .returns(immutableSet.parameterizedBy(deepLinkPrefix))
+            .addStatement("return prefixes.%M()", toImmutableSet)
             .build()
     }
 }

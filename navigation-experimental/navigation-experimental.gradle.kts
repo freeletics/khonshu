@@ -18,6 +18,7 @@ dependencies {
     api(projects.navigation)
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.ui)
+    api(libs.collections.immutable)
 
     implementation(libs.coroutines.core)
     implementation(libs.androidx.annotations)
