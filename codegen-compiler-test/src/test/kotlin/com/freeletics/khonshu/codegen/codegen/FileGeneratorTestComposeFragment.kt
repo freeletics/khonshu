@@ -229,7 +229,7 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(data, "com/test/FragmentTest.kt", source, expected)
+        test(data, "com/test/FragmentTest.kt", source, expected, warningsAsErrors = false)
     }
 
     @Test
@@ -420,7 +420,7 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(withDefaultValues, "com/test/FragmentTest.kt", source, expected)
+        test(withDefaultValues, "com/test/FragmentTest.kt", source, expected, warningsAsErrors = false)
     }
 
     @Test
@@ -619,7 +619,7 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(dialogFragment, "com/test/FragmentTest.kt", source, expected)
+        test(dialogFragment, "com/test/FragmentTest.kt", source, expected, warningsAsErrors = false)
     }
 
     @Test
@@ -852,7 +852,7 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(withInjectedParameters, "com/test/FragmentTest2.kt", source, expected)
+        test(withInjectedParameters, "com/test/FragmentTest2.kt", source, expected, warningsAsErrors = false)
     }
 
     @Test
@@ -1037,7 +1037,7 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(withoutSendAction, "com/test/FragmentTest.kt", source, expected)
+        test(withoutSendAction, "com/test/FragmentTest.kt", source, expected, warningsAsErrors = false)
     }
 
     @Test
@@ -1225,6 +1225,6 @@ internal class FileGeneratorTestComposeFragment {
 
         """.trimIndent()
 
-        test(withoutSendAction, "com/test/FragmentTest.kt", source, expected)
+        test(withoutSendAction, "com/test/FragmentTest.kt", source, expected, warningsAsErrors = false)
     }
 }

@@ -29,11 +29,13 @@ interface KhonshuCompilation {
             sources: List<Pair<String, String>>,
             compilerPlugins: List<CompilerPluginRegistrar> = emptyList(),
             legacyCompilerPlugins: List<ComponentRegistrar> = emptyList(),
+            warningsAsErrors: Boolean = true,
         ): KhonshuCompilation {
             return SimpleKhonshuCompilation(
                 sources = sources,
                 compilerPlugins = compilerPlugins,
                 legacyCompilerPlugins = legacyCompilerPlugins,
+                warningsAsErrors = warningsAsErrors,
             )
         }
 
@@ -43,12 +45,14 @@ interface KhonshuCompilation {
             compilerPlugins: List<CompilerPluginRegistrar> = emptyList(),
             legacyCompilerPlugins: List<ComponentRegistrar> = emptyList(),
             codeGenerators: List<CodeGenerator> = emptyList(),
+            warningsAsErrors: Boolean = true,
         ): KhonshuCompilation {
             return AnvilKhonshuCompilation(
                 sources = listOf(fileName to source),
                 compilerPlugins = compilerPlugins,
                 legacyCompilerPlugins = legacyCompilerPlugins,
                 codeGenerators = codeGenerators,
+                warningsAsErrors = warningsAsErrors,
             )
         }
 
@@ -58,12 +62,14 @@ interface KhonshuCompilation {
             compilerPlugins: List<CompilerPluginRegistrar> = emptyList(),
             legacyCompilerPlugins: List<ComponentRegistrar> = emptyList(),
             symbolProcessors: List<SymbolProcessorProvider> = emptyList(),
+            warningsAsErrors: Boolean = true,
         ): KhonshuCompilation {
             return KspKhonshuCompilation(
-                listOf(fileName to source),
-                compilerPlugins,
-                legacyCompilerPlugins,
-                symbolProcessors,
+                sources = listOf(fileName to source),
+                compilerPlugins = compilerPlugins,
+                legacyCompilerPlugins = legacyCompilerPlugins,
+                symbolProcessors = symbolProcessors,
+                warningsAsErrors = warningsAsErrors,
             )
         }
     }
@@ -73,9 +79,10 @@ private class SimpleKhonshuCompilation(
     sources: List<Pair<String, String>>,
     compilerPlugins: List<CompilerPluginRegistrar>,
     legacyCompilerPlugins: List<ComponentRegistrar>,
+    warningsAsErrors: Boolean,
 ) : KhonshuCompilation {
     val compilation = KotlinCompilation().apply {
-        configure(sources, compilerPlugins, legacyCompilerPlugins)
+        configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors)
     }
 
     override fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit) {
@@ -92,10 +99,11 @@ private class AnvilKhonshuCompilation(
     compilerPlugins: List<CompilerPluginRegistrar>,
     legacyCompilerPlugins: List<ComponentRegistrar>,
     codeGenerators: List<CodeGenerator>,
+    warningsAsErrors: Boolean,
 ) : KhonshuCompilation {
     val compilation = AnvilCompilation().apply {
         configureAnvil(codeGenerators = codeGenerators)
-        kotlinCompilation.configure(sources, compilerPlugins, legacyCompilerPlugins)
+        kotlinCompilation.configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors)
     }
 
     override fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit) {
@@ -113,10 +121,11 @@ private class KspKhonshuCompilation(
     compilerPlugins: List<CompilerPluginRegistrar>,
     legacyCompilerPlugins: List<ComponentRegistrar>,
     symbolProcessors: List<SymbolProcessorProvider>,
+    warningsAsErrors: Boolean,
 ) : KhonshuCompilation {
     val compilation = KotlinCompilation().apply {
         symbolProcessorProviders = symbolProcessors
-        configure(sources, compilerPlugins, legacyCompilerPlugins)
+        configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors)
     }
 
     override fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit) {
@@ -133,13 +142,14 @@ private fun KotlinCompilation.configure(
     sourceFiles: List<Pair<String, String>>,
     compilerPlugins: List<CompilerPluginRegistrar>,
     legacyCompilerPlugins: List<ComponentRegistrar>,
+    warningsAsErrors: Boolean,
 ) {
     componentRegistrars += legacyCompilerPlugins
     compilerPluginRegistrars += compilerPlugins
     jvmTarget = "11"
     inheritClassPath = true
     messageOutputStream = System.out // see diagnostics in real time
-    allWarningsAsErrors = true
+    allWarningsAsErrors = warningsAsErrors
     sources = sourceFiles.map { (fileName, source) ->
         sourceFile(fileName, source)
     }

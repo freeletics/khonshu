@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
  * Handles the [NavEventNavigator] events while the Fragment's lifecycle is at least
  * started.
  */
+@Deprecated("Fragment support will be removed in the next release")
 public fun handleNavigation(fragment: Fragment, navigator: NavEventNavigator) {
     val activityLaunchers = navigator.activityResultRequests.associateWith {
         it.registerIn(fragment, fragment.requireActivity())
