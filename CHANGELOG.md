@@ -4,7 +4,7 @@ Change Log
 ## 0.21.1 **UNRELEASED**
 
 
-## 0.21.0 *(2023-12-06)*
+## 0.21.0 *(2023-12-07)*
 
 - **Note**: `Fragment` navigation and codegen have been deprecated and will be
   removed in the next release.
