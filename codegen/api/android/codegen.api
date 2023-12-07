@@ -29,15 +29,11 @@ public abstract interface annotation class com/freeletics/khonshu/codegen/fragme
 	public abstract fun stateMachine ()Ljava/lang/Class;
 }
 
-public final class com/freeletics/khonshu/codegen/internal/CollectAsStateKt {
-}
-
-public abstract interface class com/freeletics/khonshu/codegen/internal/ComponentProvider : java/io/Serializable {
-	public abstract fun provide (Lcom/freeletics/khonshu/navigation/BaseRoute;Lcom/freeletics/khonshu/navigation/internal/NavigationExecutor;Landroid/content/Context;)Ljava/lang/Object;
-}
-
-public final class com/freeletics/khonshu/codegen/internal/ComponentProviderKt {
+public final class com/freeletics/khonshu/codegen/internal/ActivityComponentLookupKt {
 	public static final fun findComponentByScope (Landroid/content/Context;Lkotlin/reflect/KClass;)Ljava/lang/Object;
+}
+
+public final class com/freeletics/khonshu/codegen/internal/CollectAsStateKt {
 }
 
 public abstract interface annotation class com/freeletics/khonshu/codegen/internal/InternalCodegenApi : java/lang/annotation/Annotation {
