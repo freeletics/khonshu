@@ -227,7 +227,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `visibleEntries contains new entry after navigating to screen destination`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(2))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -242,7 +242,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `visibleEntries contains original and new entry after navigating to dialog destination`() {
         val executor = underTest()
-        executor.navigate(OtherRoute(3))
+        executor.navigateTo(OtherRoute(3))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -258,7 +258,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `visibleEntries contains original and new entry after navigating to bottom sheet destination`() {
         val executor = underTest()
-        executor.navigate(ThirdRoute(4))
+        executor.navigateTo(ThirdRoute(4))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -274,15 +274,15 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `visibleEntries contains all entries starting from last screen`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
-        executor.navigate(SimpleRoute(3))
-        executor.navigate(SimpleRoute(4))
-        executor.navigate(SimpleRoute(5))
-        executor.navigate(OtherRoute(6))
-        executor.navigate(ThirdRoute(7))
-        executor.navigate(OtherRoute(8))
-        executor.navigate(OtherRoute(9))
-        executor.navigate(ThirdRoute(10))
+        executor.navigateTo(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(3))
+        executor.navigateTo(SimpleRoute(4))
+        executor.navigateTo(SimpleRoute(5))
+        executor.navigateTo(OtherRoute(6))
+        executor.navigateTo(ThirdRoute(7))
+        executor.navigateTo(OtherRoute(8))
+        executor.navigateTo(OtherRoute(9))
+        executor.navigateTo(ThirdRoute(10))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -302,15 +302,15 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `visibleEntries contains all entries starting from last screen 2`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
-        executor.navigate(SimpleRoute(3))
-        executor.navigate(SimpleRoute(4))
-        executor.navigate(OtherRoute(5))
-        executor.navigate(ThirdRoute(6))
-        executor.navigate(SimpleRoute(7))
-        executor.navigate(OtherRoute(8))
-        executor.navigate(OtherRoute(9))
-        executor.navigate(ThirdRoute(10))
+        executor.navigateTo(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(3))
+        executor.navigateTo(SimpleRoute(4))
+        executor.navigateTo(OtherRoute(5))
+        executor.navigateTo(ThirdRoute(6))
+        executor.navigateTo(SimpleRoute(7))
+        executor.navigateTo(OtherRoute(8))
+        executor.navigateTo(OtherRoute(9))
+        executor.navigateTo(ThirdRoute(10))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -328,7 +328,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigate with root and without clearing the target executor`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(1), restoreRootState = true)
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -343,9 +343,9 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigate with same root twice`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(1), restoreRootState = true)
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.navigate(OtherRoot(1), restoreRootState = true)
+            executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
         }
 
         assertThat(exception).hasMessageThat()
@@ -355,7 +355,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigate with root multiple times without clearing the target executor`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(1), restoreRootState = true)
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -364,7 +364,7 @@ internal class MultiStackNavigationExecutorTest {
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
 
-        executor.navigate(SimpleRoot(1), restoreRootState = true)
+        executor.navigateToRoot(SimpleRoot(1), restoreRootState = true)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -373,7 +373,7 @@ internal class MultiStackNavigationExecutorTest {
             .inOrder()
         assertThat(executor.canNavigateBack.value).isFalse()
 
-        executor.navigate(OtherRoot(1), restoreRootState = true)
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -388,7 +388,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigate with root multiple times with clearing the target executor`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(1), restoreRootState = false)
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = false)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -403,7 +403,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigate with root and clearing the target executor`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(1), restoreRootState = false)
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = false)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -412,7 +412,7 @@ internal class MultiStackNavigationExecutorTest {
             .inOrder()
         assertThat(executor.canNavigateBack.value).isTrue()
 
-        executor.navigate(SimpleRoot(1), restoreRootState = false)
+        executor.navigateToRoot(SimpleRoot(1), restoreRootState = false)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -421,7 +421,7 @@ internal class MultiStackNavigationExecutorTest {
             .inOrder()
         assertThat(executor.canNavigateBack.value).isFalse()
 
-        executor.navigate(OtherRoot(1), restoreRootState = false)
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = false)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -436,8 +436,8 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigate with root and without clearing the target executor from within back executor`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(1))
-        executor.navigate(OtherRoot(1), restoreRootState = true)
+        executor.navigateTo(SimpleRoute(1))
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -452,9 +452,9 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigate with root multiple times and without clearing the target executor from within back executor`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(1))
-        executor.navigate(OtherRoot(1), restoreRootState = true)
-        executor.navigate(SimpleRoot(1), restoreRootState = true)
+        executor.navigateTo(SimpleRoute(1))
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
+        executor.navigateToRoot(SimpleRoot(1), restoreRootState = true)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -469,7 +469,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `resetToRoot with start root from start executor`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(1))
+        executor.navigateTo(SimpleRoute(1))
         executor.resetToRoot(SimpleRoot(2))
 
         assertThat(executor.visibleEntries.value)
@@ -485,7 +485,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `resetToRoot with start root from other executor`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(1), restoreRootState = true)
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
         executor.resetToRoot(SimpleRoot(2))
 
         assertThat(executor.visibleEntries.value)
@@ -600,7 +600,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `visibleEntries contains root entry after navigateUp`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(2))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -624,7 +624,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigating the same route again after navigateUp will result in different executor entries`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(2))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -634,7 +634,7 @@ internal class MultiStackNavigationExecutorTest {
         assertThat(executor.canNavigateBack.value).isTrue()
 
         executor.navigateUp()
-        executor.navigate(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(2))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -649,7 +649,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigateUp from the root of a second executor`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(2), restoreRootState = false)
+        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
 
         val exception = assertThrows(IllegalStateException::class.java) {
             executor.navigateUp()
@@ -661,8 +661,8 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigateUp in a second executor`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(2), restoreRootState = false)
-        executor.navigate(SimpleRoute(3))
+        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        executor.navigateTo(SimpleRoute(3))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -696,7 +696,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `visibleEntries contains root entry after pop`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(2))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -720,7 +720,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigating the same route again after pop will result in different executor entries`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(2))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -730,7 +730,7 @@ internal class MultiStackNavigationExecutorTest {
         assertThat(executor.canNavigateBack.value).isTrue()
 
         executor.navigateBack()
-        executor.navigate(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(2))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -745,7 +745,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigateBack from a second root`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(2), restoreRootState = false)
+        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -769,7 +769,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigateBack from a second root and navigating there again`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(2), restoreRootState = false)
+        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -779,7 +779,7 @@ internal class MultiStackNavigationExecutorTest {
         assertThat(executor.canNavigateBack.value).isTrue()
 
         executor.navigateBack()
-        executor.navigate(OtherRoot(2), restoreRootState = false)
+        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -794,8 +794,8 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `navigateBack in a second root`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(2), restoreRootState = false)
-        executor.navigate(SimpleRoute(3))
+        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        executor.navigateTo(SimpleRoute(3))
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -819,19 +819,19 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `popUpTo removes all destinations until first matching entry, inclusive false`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
-        executor.navigate(SimpleRoute(3))
-        executor.navigate(SimpleRoute(4))
-        executor.navigate(SimpleRoute(5))
-        executor.navigate(OtherRoute(6))
-        executor.navigate(ThirdRoute(7))
-        executor.navigate(OtherRoute(8))
-        executor.navigate(OtherRoute(9))
-        executor.navigate(ThirdRoute(10))
+        executor.navigateTo(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(3))
+        executor.navigateTo(SimpleRoute(4))
+        executor.navigateTo(SimpleRoute(5))
+        executor.navigateTo(OtherRoute(6))
+        executor.navigateTo(ThirdRoute(7))
+        executor.navigateTo(OtherRoute(8))
+        executor.navigateTo(OtherRoute(9))
+        executor.navigateTo(ThirdRoute(10))
 
         assertThat(executor.visibleEntries.value).hasSize(6)
 
-        executor.navigateBackTo(simpleRouteDestination.id, isInclusive = false)
+        executor.navigateBackToInternal(simpleRouteDestination.id, inclusive = false)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -852,19 +852,19 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `popUpTo removes all destinations until first matching entry, inclusive true`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
-        executor.navigate(SimpleRoute(3))
-        executor.navigate(SimpleRoute(4))
-        executor.navigate(SimpleRoute(5))
-        executor.navigate(OtherRoute(6))
-        executor.navigate(ThirdRoute(7))
-        executor.navigate(OtherRoute(8))
-        executor.navigate(OtherRoute(9))
-        executor.navigate(ThirdRoute(10))
+        executor.navigateTo(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(3))
+        executor.navigateTo(SimpleRoute(4))
+        executor.navigateTo(SimpleRoute(5))
+        executor.navigateTo(OtherRoute(6))
+        executor.navigateTo(ThirdRoute(7))
+        executor.navigateTo(OtherRoute(8))
+        executor.navigateTo(OtherRoute(9))
+        executor.navigateTo(ThirdRoute(10))
 
         assertThat(executor.visibleEntries.value).hasSize(6)
 
-        executor.navigateBackTo(simpleRouteDestination.id, isInclusive = true)
+        executor.navigateBackToInternal(simpleRouteDestination.id, inclusive = true)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -886,19 +886,19 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `popUpTo with root and inclusive false removes all destinations`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
-        executor.navigate(SimpleRoute(3))
-        executor.navigate(SimpleRoute(4))
-        executor.navigate(SimpleRoute(5))
-        executor.navigate(OtherRoute(6))
-        executor.navigate(ThirdRoute(7))
-        executor.navigate(OtherRoute(8))
-        executor.navigate(OtherRoute(9))
-        executor.navigate(ThirdRoute(10))
+        executor.navigateTo(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(3))
+        executor.navigateTo(SimpleRoute(4))
+        executor.navigateTo(SimpleRoute(5))
+        executor.navigateTo(OtherRoute(6))
+        executor.navigateTo(ThirdRoute(7))
+        executor.navigateTo(OtherRoute(8))
+        executor.navigateTo(OtherRoute(9))
+        executor.navigateTo(ThirdRoute(10))
 
         assertThat(executor.visibleEntries.value).hasSize(6)
 
-        executor.navigateBackTo(simpleRootDestination.id, isInclusive = false)
+        executor.navigateBackToInternal(simpleRootDestination.id, inclusive = false)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -923,20 +923,20 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `popUpTo with root and inclusive true throws exception`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
-        executor.navigate(SimpleRoute(3))
-        executor.navigate(SimpleRoute(4))
-        executor.navigate(SimpleRoute(5))
-        executor.navigate(OtherRoute(6))
-        executor.navigate(ThirdRoute(7))
-        executor.navigate(OtherRoute(8))
-        executor.navigate(OtherRoute(9))
-        executor.navigate(ThirdRoute(10))
+        executor.navigateTo(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(3))
+        executor.navigateTo(SimpleRoute(4))
+        executor.navigateTo(SimpleRoute(5))
+        executor.navigateTo(OtherRoute(6))
+        executor.navigateTo(ThirdRoute(7))
+        executor.navigateTo(OtherRoute(8))
+        executor.navigateTo(OtherRoute(9))
+        executor.navigateTo(ThirdRoute(10))
 
         assertThat(executor.visibleEntries.value).hasSize(6)
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.navigateBackTo(simpleRootDestination.id, isInclusive = true)
+            executor.navigateBackToInternal(simpleRootDestination.id, inclusive = true)
         }
         assertThat(exception).hasMessageThat().isEqualTo("Can't pop the root of the back stack")
 
@@ -956,17 +956,17 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `popUpTo with route not present on the executor throws exception`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(2))
-        executor.navigate(SimpleRoute(3))
-        executor.navigate(SimpleRoute(4))
-        executor.navigate(SimpleRoute(5))
-        executor.navigate(ThirdRoute(6))
-        executor.navigate(ThirdRoute(7))
+        executor.navigateTo(SimpleRoute(2))
+        executor.navigateTo(SimpleRoute(3))
+        executor.navigateTo(SimpleRoute(4))
+        executor.navigateTo(SimpleRoute(5))
+        executor.navigateTo(ThirdRoute(6))
+        executor.navigateTo(ThirdRoute(7))
 
         assertThat(executor.visibleEntries.value).hasSize(3)
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.navigateBackTo(otherRouteDestination.id, isInclusive = false)
+            executor.navigateBackToInternal(otherRouteDestination.id, inclusive = false)
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo(

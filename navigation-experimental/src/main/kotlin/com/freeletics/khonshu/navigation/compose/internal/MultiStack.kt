@@ -12,6 +12,7 @@ import com.freeletics.khonshu.navigation.compose.ContentDestination
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.destinationId
 import java.util.UUID
+import kotlinx.collections.immutable.ImmutableList
 
 internal class MultiStack(
     // Use ArrayList to make sure it is a RandomAccess
@@ -23,9 +24,9 @@ internal class MultiStack(
     private val idGenerator: () -> String,
 ) {
 
-    private val visibleEntryState: MutableState<List<StackEntry<*>>> =
+    private val visibleEntryState: MutableState<ImmutableList<StackEntry<*>>> =
         mutableStateOf(currentStack.computeVisibleEntries())
-    val visibleEntries: State<List<StackEntry<*>>>
+    val visibleEntries: State<ImmutableList<StackEntry<*>>>
         get() = visibleEntryState
 
     private val canNavigateBackState: MutableState<Boolean> =

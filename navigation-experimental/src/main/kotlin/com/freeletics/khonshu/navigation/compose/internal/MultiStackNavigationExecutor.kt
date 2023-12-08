@@ -11,6 +11,7 @@ import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import com.freeletics.khonshu.navigation.internal.destinationId
 import java.io.Serializable
+import kotlinx.collections.immutable.ImmutableList
 
 internal class MultiStackNavigationExecutor(
     private val stack: MultiStack,
@@ -19,11 +20,9 @@ internal class MultiStackNavigationExecutor(
     deepLinkRoutes: List<Parcelable>,
 ) : NavigationExecutor {
 
-    @Suppress("unused") // TODO
-    val visibleEntries: State<List<StackEntry<*>>>
+    val visibleEntries: State<ImmutableList<StackEntry<*>>>
         get() = stack.visibleEntries
 
-    @Suppress("unused") // TODO
     val canNavigateBack: State<Boolean>
         get() = stack.canNavigateBack
 
@@ -41,7 +40,7 @@ internal class MultiStackNavigationExecutor(
                         stack.push(route, clearTargetStack = true)
                     }
                     is NavRoute -> stack.push(route)
-                    is ActivityRoute -> navigate(route)
+                    is ActivityRoute -> navigateTo(route)
                 }
             }
         }
@@ -54,15 +53,15 @@ internal class MultiStackNavigationExecutor(
         }
     }
 
-    override fun navigate(route: NavRoute) {
+    override fun navigateTo(route: NavRoute) {
         stack.push(route)
     }
 
-    override fun navigate(root: NavRoot, restoreRootState: Boolean) {
+    override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
         stack.push(root, clearTargetStack = !restoreRootState)
     }
 
-    override fun navigate(route: ActivityRoute) {
+    override fun navigateTo(route: ActivityRoute) {
         activityStarter(route)
     }
 
@@ -74,11 +73,11 @@ internal class MultiStackNavigationExecutor(
         stack.pop()
     }
 
-    override fun <T : BaseRoute> navigateBackTo(
-        destinationId: DestinationId<T>,
-        isInclusive: Boolean,
+    override fun <T : BaseRoute> navigateBackToInternal(
+        popUpTo: DestinationId<T>,
+        inclusive: Boolean,
     ) {
-        stack.popUpTo(destinationId, isInclusive)
+        stack.popUpTo(popUpTo, inclusive)
     }
 
     override fun resetToRoot(root: NavRoot) {

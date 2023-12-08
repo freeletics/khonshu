@@ -1,8 +1,7 @@
 package com.test
 
 import android.os.Parcel
-import android.view.View
-import androidx.viewbinding.ViewBinding
+import com.freeletics.khonshu.codegen.Overlay
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.statemachine.StateMachine
@@ -16,13 +15,14 @@ public class TestRoute : NavRoute {
     override fun writeToParcel(p0: Parcel, p1: Int) {}
 }
 
-public class TestRoot : NavRoot {
+public class TestOverlayRoute : NavRoute, Overlay {
     override fun describeContents(): Int = 0
     override fun writeToParcel(p0: Parcel, p1: Int) {}
 }
 
-public class TestBinding : ViewBinding {
-    override fun getRoot(): View = throw UnsupportedOperationException("Not implemented")
+public class TestRoot : NavRoot {
+    override fun describeContents(): Int = 0
+    override fun writeToParcel(p0: Parcel, p1: Int) {}
 }
 
 public class TestStateMachine : FooStateMachine<TestAction, TestState>() {

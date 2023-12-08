@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.lifecycle.testing.TestLifecycleOwner
 import app.cash.turbine.test
 import com.freeletics.khonshu.navigation.ContractResultOwner
+import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot

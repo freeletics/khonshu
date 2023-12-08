@@ -3,10 +3,10 @@ package com.freeletics.khonshu.codegen.parser.ksp
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.codegen.util.baseRoute
-import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
-import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
+import com.freeletics.khonshu.codegen.codegen.util.overlay
+import com.freeletics.khonshu.codegen.codegen.util.simpleNavHost
+import com.freeletics.khonshu.codegen.codegen.util.simpleNavHostLambda
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
-import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactory
 import com.google.devtools.ksp.getClassDeclarationByName
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -39,9 +39,6 @@ internal val KSAnnotation.parentScope: ClassName
 internal val KSAnnotation.stateMachine: ClassName
     get() = (findArgument("stateMachine").value as KSType).toClassName()
 
-internal val KSAnnotation.destinationType: String
-    get() = (findArgument("destinationType").value as KSType).declaration.simpleName.asString()
-
 internal val KSAnnotation.destinationScope: ClassName
     get() = (findArgument("destinationScope").value as KSType).toClassName()
 
@@ -69,7 +66,7 @@ internal fun KSFunctionDeclaration.getInjectedParameters(vararg exclude: TypeNam
 }
 
 private fun KSValueParameter.toComposableParameter(condition: (TypeName) -> Boolean): ComposableParameter? {
-    val type = type.toTypeName().functionToLambda()
+    val type = type.toTypeName()
     return if (condition(type)) {
         ComposableParameter(name!!.asString(), type)
     } else {
@@ -78,9 +75,9 @@ private fun KSValueParameter.toComposableParameter(condition: (TypeName) -> Bool
 }
 
 internal fun KSFunctionDeclaration.navHostParameter(logger: KSPLogger): ComposableParameter? {
-    val parameter = getParameterWithType(navHostLambda)
+    val parameter = getParameterWithType(simpleNavHost) ?: getParameterWithType(simpleNavHostLambda)
     if (parameter == null) {
-        logger.error("Could not find a NavHost parameter with type $navHostLambda")
+        logger.error("Could not find a NavHost parameter with type $simpleNavHostLambda")
     }
     return parameter
 }
@@ -101,26 +98,14 @@ internal fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLog
     return stateParameter to actionParameter
 }
 
-internal fun KSClassDeclaration.findRendererFactory(logger: KSPLogger): ClassName? {
-    val factory = declarations.filterIsInstance<KSClassDeclaration>()
-        .firstNotNullOfOrNull {
-            if (it.allSuperTypes(false).any { superType -> superType == viewRendererFactory }) {
-                it.toClassName()
-            } else {
-                null
-            }
-        }
-
-    if (factory == null) {
-        logger.error("Couldn't find a ViewRender.Factory subclass nested inside ${qualifiedName?.asString()}")
-    }
-
-    return factory
-}
-
 internal fun ClassName.extendsBaseRoute(resolver: Resolver): Boolean {
     val declaration = resolver.getClassDeclarationByName(toString())!!
     return declaration.allSuperTypes(false).any { it == baseRoute }
+}
+
+internal fun ClassName.extendsOverlay(resolver: Resolver): Boolean {
+    val declaration = resolver.getClassDeclarationByName(toString())!!
+    return declaration.allSuperTypes(false).any { it == overlay }
 }
 
 private fun TypeName.asParameterized(): ParameterizedTypeName? {
@@ -153,8 +138,13 @@ private fun KSClassDeclaration.allSuperTypes(
             if (parentTypeArguments.isNotEmpty() && superTypeName is ParameterizedTypeName) {
                 superTypeName = superTypeName.updateWith(parentTypeArguments, parentTypeParameters)
             }
+        } else if (superType is KSClassDeclaration) {
+            superTypeName = (superType as KSClassDeclaration).toClassName()
         } else {
-            superTypeName = superType.toClassName()
+            superTypeName = superType.toTypeName()
+        }
+        if (superTypeName is ParameterizedTypeName && !resolveTypeParameters) {
+            superTypeName = superTypeName.rawType
         }
         yield(superTypeName)
 

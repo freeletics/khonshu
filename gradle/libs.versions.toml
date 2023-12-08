@@ -1,41 +1,40 @@
 [versions]
-kotlin = "1.9.10"
+kotlin = "1.9.21"
 coroutines = "1.7.3"
 
 java-target= "11"
 java-toolchain = "19"
 
-fgp = "0.8.1"
+fgp = "0.9.0"
 gradle-api = "8.4"
 
-android-gradle = "8.1.2"
+android-gradle = "8.2.0"
 android-min = "21"
 android-target = "33"
 android-compile = "33"
 
-androidx-compose-compiler = "1.5.3"
+androidx-compose-compiler = "1.5.6"
 androidx-compose-runtime = "1.5.4"
 androidx-compose-ui = "1.5.4"
 androidx-compose-animation = "1.5.4"
-jetbrains-compose = "1.5.3"
-jetbrains-compose-compiler = "1.5.2"
+jetbrains-compose = "1.5.11"
+jetbrains-compose-compiler = "1.5.4"
 
-androidx-activity = "1.8.0"
+androidx-activity = "1.8.1"
 androidx-annotations = "1.5.0"
 androidx-core = "1.12.0"
 androidx-lifecycle = "2.6.2"
-androidx-fragment = "1.6.1"
-androidx-navigation = "2.7.4"
+androidx-fragment = "1.6.2"
+androidx-navigation = "2.7.5"
 androidx-savedstate = "1.2.1"
 
 uri = "0.0.15"
 
 inject = "1"
-dagger = "2.48.1"
+dagger = "2.49"
 anvil = "2.4.8"
-renderer = "0.13.0"
-ksp = "1.9.10-1.0.13"
-kotlinpoet = "1.14.2"
+ksp = "1.9.21-1.0.15"
+kotlinpoet = "1.15.3"
 auto-service = "1.1.1"
 auto-service-ksp = "1.1.0"
 auto-value = "1.10.4"
@@ -43,13 +42,13 @@ auto-value = "1.10.4"
 junit = "4.13.2"
 truth = "1.1.5"
 turbine = "1.0.0"
-kotlin-compile-testing = "0.3.2"
+kotlin-compile-testing = "0.4.0"
 
 publish = "0.25.3"
 dokka = "1.9.10"
 bestpractices = "0.10"
 binarycompatibility = "0.13.2"
-dependency-analysis = "1.25.0"
+dependency-analysis = "1.27.0"
 gr8 = "0.10"
 
 [libraries]
@@ -66,12 +65,16 @@ kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
+collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.3.6"}
+
 androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "androidx-compose-compiler" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "androidx-compose-runtime" }
 androidx-compose-runtime-saveable = { module = "androidx.compose.runtime:runtime-saveable", version.ref = "androidx-compose-runtime" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose-ui" }
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose-ui" }
 androidx-compose-animation = { module = "androidx.compose.animation:animation", version.ref = "androidx-compose-animation" }
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jetbrains-compose" }
 jetbrains-compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "jetbrains-compose-compiler" }
 
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
@@ -90,11 +93,10 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "androidx-navigation" }
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidx-fragment" }
 androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
-androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "android-gradle" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.3.7" }
-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.6.0" }
+serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.6.2" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
@@ -104,8 +106,6 @@ anvil-annotations-optional = { module = "com.squareup.anvil:annotations-optional
 anvil-compiler = { module = "com.squareup.anvil:compiler", version.ref = "anvil" }
 anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "anvil" }
 anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvil" }
-renderer = { module = "com.gabrielittner.renderer:renderer", version.ref = "renderer" }
-renderer-connect = { module = "com.gabrielittner.renderer:connect", version.ref = "renderer" }
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoet" }
@@ -119,7 +119,6 @@ truth = { module = "com.google.truth:truth", version.ref = "truth" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 kotlin-compile-testing = { module = "dev.zacsweers.kctfork:core", version.ref = "kotlin-compile-testing" }
 kotlin-compile-testing-ksp = { module = "dev.zacsweers.kctfork:ksp", version.ref = "kotlin-compile-testing" }
-gr8 = { module = "com.gradleup:gr8-plugin", version.ref = "gr8" }
 
 [plugins]
 fgp-android = { id = "com.freeletics.gradle.android", version.ref = "fgp" }
@@ -144,4 +143,4 @@ binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validat
 bestpractices = { id = "com.autonomousapps.plugin-best-practices-plugin", version.ref = "bestpractices" }
 gr8 = { id = "com.gradleup.gr8", version.ref = "gr8" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
-poko = { id = "dev.drewhamilton.poko", version = "0.15.0" }
+poko = { id = "dev.drewhamilton.poko", version = "0.15.1" }

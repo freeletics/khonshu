@@ -19,11 +19,11 @@ import kotlin.reflect.KClass
  */
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
+@Deprecated("Fragment support will be removed in the next release")
 public annotation class ComposeFragmentDestination(
     val route: KClass<out BaseRoute>,
     val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,
-    val destinationType: DestinationType = DestinationType.SCREEN,
     val destinationScope: KClass<*> = AppScope::class,
     val fragmentBaseClass: KClass<out Fragment> = Fragment::class,
 )

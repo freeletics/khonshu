@@ -33,6 +33,8 @@ import kotlinx.coroutines.flow.onEach
  * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
  * doesn't provide its own [DeepLinkHandler.prefixes].
  */
+@Deprecated("Fragment support will be removed in the next release")
+@Suppress("DEPRECATION")
 public fun NavHostFragment.setGraph(
     startRoute: NavRoot,
     destinations: Set<NavDestination>,
@@ -65,6 +67,7 @@ public fun NavHostFragment.setGraph(
     }
 }
 
+@Suppress("DEPRECATION")
 private fun NavGraphBuilder.addDestination(
     controller: NavController,
     destination: NavDestination,

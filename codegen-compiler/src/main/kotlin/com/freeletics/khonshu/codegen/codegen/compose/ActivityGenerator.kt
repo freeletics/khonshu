@@ -59,16 +59,18 @@ internal class ActivityGenerator(
             .addStatement("")
             .beginControlFlow("%M", setContent)
             .beginControlFlow(
-                "%L(%L) { startRoute, destinationChangedCallback ->",
+                "%L(%L) { startRoute, modifier, destinationChangedCallback ->",
                 composableName,
                 retainedComponentClassName.propertyName,
             )
             .addStatement("%M(", navHost)
-            .addStatement("  startRoute,")
-            .addStatement("  %L.destinations,", retainedComponentClassName.propertyName)
-            .addStatement("  %L.deepLinkHandlers,", retainedComponentClassName.propertyName)
-            .addStatement("  %L.deepLinkPrefixes,", retainedComponentClassName.propertyName)
-            .addStatement("  destinationChangedCallback,")
+            .addStatement("  startRoute = startRoute,")
+            .addStatement("  destinations = %L.destinations,", retainedComponentClassName.propertyName)
+            .addStatement("  modifier = modifier,")
+            .addStatement("  deepLinkHandlers = %L.deepLinkHandlers,", retainedComponentClassName.propertyName)
+            .addStatement("  deepLinkPrefixes = %L.deepLinkPrefixes,", retainedComponentClassName.propertyName)
+            .addStatement("  navEventNavigator = %L.navEventNavigator,", retainedComponentClassName.propertyName)
+            .addStatement("  destinationChangedCallback = destinationChangedCallback,")
             .addStatement(")")
             .endControlFlow()
             .endControlFlow()

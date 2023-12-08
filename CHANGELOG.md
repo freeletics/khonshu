@@ -1,7 +1,70 @@
 Change Log
 ==========
 
-## 0.18.1 **UNRELEASED**
+## 0.21.1 **UNRELEASED**
+
+
+## 0.21.0 *(2023-12-07)*
+
+- **Note**: `Fragment` navigation and codegen have been deprecated and will be
+  removed in the next release.
+- Updated Kotlin to 1.9.21.
+
+### Navigation
+
+- **Breaking**: `navigateBackTo<...>(...)` is now an extension method and might need
+  to be explicitly imported.
+- **Breaking**: The `Set` parameters of `NavHost` have been replaced with `ImmutableSet`
+  to allow the compose compiler to recognize these as immutable.
+- **Breaking**: Removed `navController` parameter from `HavHost`. Passing a manually
+  created `NavHostController` introduced issues like breaking deep link handling.
+- **New**: `NavHost` (both the AndroidX and the experimental variant) now supports
+  optionally passing a `NavEventNavigator`. This can be used instead of
+  `navController` to navigate from outside the `NavHost` (e.g. for bottom navigation).
+  The `NavHost` takes care of calling `NavigationSetup` for the passed navigator.
+- **New**: `NavHost` from `navigation-experimental` now also supports passing a
+  Modifier to it.
+- **New**: The AndroidX `NavHost` will internally call `Navigation.setViewNavController`
+  on the container `View`. This exists primarily for an easier migration from `Fragment`
+  navigation to Compose navigation.
+
+### Codegen
+
+- **New**: The `NavHostActivity` codegen now supports passing a `Modifier` to `NavHost`.
+- **New**: The `NavHostActivity` codegen automatically provides an `ImmutableSet` for
+  destinations, deep link handlers and deep link prefixes.
+
+
+## 0.20.0 *(2023-11-17)*
+
+### Navigation
+
+- **New** Add `Modifier` parameter to `NavHost` Composable.
+- **New** Add `NavHost` overloaded function that accepts `NavRoute` instead of `NavRoot`
+- **New** Add optional `transitionAnimations` parameter to `NavHost` Composable functions. Animations
+can be overriden with `NavHostDefaults.transitionAnimations` or disabled with
+`NavHostTransitionAnimations.noAnimations`. Default animations are the same as default animations
+in AndroidX's `NavHost`.
+
+
+## 0.19.0 *(2023-11-09)*
+
+### Navigation
+
+- **New**: Allow passing an already created `NavController` to `NavHost`. This allows controlling
+  the navigation from outside the host, for example from a bottom bavigation or navigation drawer.
+- **Fixed**: A crash that happened in `NavHost` on re-compositions.
+- Improved how nav events are collected internally.
+
+Thanks to @hoc081098 and @hoangchungk53qx1 for the contributions.
+
+### Codegen
+
+- **New**: Added an `Overlay` marker interface that can be added to routes to indicate
+  to the code generation that this should use an `OverlayDestination` (`DialogDestination` for
+  Fragments).
+- **Breaking**: Removed `destinationType` in favor of the new interface.
+- **Breaking**: Removed support for `@RendererDestination`.
 
 
 ## 0.18.0 *(2023-10-19)*

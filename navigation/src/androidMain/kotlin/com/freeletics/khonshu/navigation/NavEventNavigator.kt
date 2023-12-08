@@ -22,6 +22,120 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 
+public interface Navigator {
+    /**
+     * Triggers navigation to the given [route].
+     */
+    public fun navigateTo(route: NavRoute)
+
+    /**
+     * Triggers navigation to the given [root]. The current back stack will be removed
+     * and saved. Whether the backstack of the given `root` is restored depends on
+     * [restoreRootState].
+     */
+    public fun navigateToRoot(
+        root: NavRoot,
+        restoreRootState: Boolean = false,
+    )
+
+    /**
+     * Triggers navigation to the given [route].
+     */
+    public fun navigateTo(route: ActivityRoute)
+
+    /**
+     * Triggers up navigation.
+     */
+    public fun navigateUp()
+
+    /**
+     * Removes the top entry from the backstack to show the previous destination.
+     */
+    public fun navigateBack()
+
+    /**
+     * Removes all entries from the backstack until [T]. If [inclusive] is
+     * `true` [T] itself will also be removed.
+     */
+    @InternalNavigationApi
+    public fun <T : BaseRoute> navigateBackToInternal(popUpTo: DestinationId<T>, inclusive: Boolean = false)
+
+    /**
+     * Reset the back stack to the given [root]. The current back stack will cleared and if
+     * root was already on it it will be recreated.
+     */
+    public fun resetToRoot(root: NavRoot)
+
+    public fun replaceAll(root: NavRoot)
+
+    public companion object {
+        /**
+         * Removes all entries from the backstack until [T]. If [inclusive] is
+         * `true` [T] itself will also be removed.
+         */
+        public inline fun <reified T : NavRoute> Navigator.navigateBackTo(inclusive: Boolean = false) {
+            navigateBackToInternal(DestinationId(T::class), inclusive)
+        }
+    }
+}
+
+public interface ResultNavigator {
+    /**
+     * Delivers the [result] to the destination that created [key].
+     */
+    public fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O)
+}
+
+public interface ActivityResultNavigator {
+    /**
+     * Launches the given [request].
+     */
+    public fun navigateForResult(request: ActivityResultRequest<Void?, *>)
+
+    /**
+     * Launches the given [request] with the given [input].
+     */
+    public fun <I> navigateForResult(request: ActivityResultRequest<I, *>, input: I)
+
+    /**
+     * Launches the [request] for the given [permissions].
+     *
+     * Compared to using [navigateForResult] with
+     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
+     * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
+     * for more information.
+     */
+    public fun requestPermissions(request: PermissionsResultRequest, vararg permissions: String)
+
+    /**
+     * Launches the [request] for the given [permissions].
+     *
+     * Compared to using [navigateForResult] with
+     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
+     * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
+     * for more information.
+     */
+    public fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>)
+}
+
+public interface BackInterceptor {
+    /**
+     * Returns a [Flow] that will emit [Unit] on every back press. While this Flow is being collected
+     * all back presses will be intercepted and none of the default back press handling happens.
+     *
+     * When this is called multiple times only the latest caller will receive emissions.
+     */
+    public fun backPresses(): Flow<Unit>
+
+    /**
+     * Returns a [Flow] that will emit [value] on every back press. While this Flow is being collected
+     * all back presses will be intercepted and none of the default back press handling happens.
+     *
+     * When this is called multiple times only the latest caller will receive emissions.
+     */
+    public fun <T> backPresses(value: T): Flow<T>
+}
+
 /**
  * This allows to trigger navigation actions from outside the view layer
  * without keeping references to Android framework classes that might leak. It also improves
@@ -32,7 +146,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * permission requests can be handled through [registerForActivityResult]/[navigateForResult]
  * and [registerForPermissionsResult]/[requestPermissions] respectively.
  */
-public open class NavEventNavigator {
+public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResultNavigator, BackInterceptor {
 
     private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
 
@@ -117,7 +231,7 @@ public open class NavEventNavigator {
     /**
      * Triggers a new [NavEvent] to navigate to the given [route].
      */
-    public fun navigateTo(route: NavRoute) {
+    override fun navigateTo(route: NavRoute) {
         val event = NavigateToEvent(route)
         sendNavEvent(event)
     }
@@ -127,9 +241,9 @@ public open class NavEventNavigator {
      * be popped and saved. Whether the backstack of the given `root` is restored depends on
      * [restoreRootState].
      */
-    public fun navigateToRoot(
+    override fun navigateToRoot(
         root: NavRoot,
-        restoreRootState: Boolean = false,
+        restoreRootState: Boolean,
     ) {
         val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
         sendNavEvent(event)
@@ -138,7 +252,7 @@ public open class NavEventNavigator {
     /**
      * Triggers a new [NavEvent] to navigate to the given [route].
      */
-    public fun navigateTo(route: ActivityRoute) {
+    override fun navigateTo(route: ActivityRoute) {
         val event = NavigateToActivityEvent(route)
         sendNavEvent(event)
     }
@@ -146,7 +260,7 @@ public open class NavEventNavigator {
     /**
      * Triggers a new [NavEvent] that causes up navigation.
      */
-    public fun navigateUp() {
+    override fun navigateUp() {
         val event = UpEvent
         sendNavEvent(event)
     }
@@ -154,7 +268,7 @@ public open class NavEventNavigator {
     /**
      * Triggers a new [NavEvent] that pops the back stack to the previous destination.
      */
-    public fun navigateBack() {
+    override fun navigateBack() {
         val event = BackEvent
         sendNavEvent(event)
     }
@@ -166,21 +280,13 @@ public open class NavEventNavigator {
      * Note: This should be used when navigating multiple times, for example calling `navigateBackTo`
      * followed by `navigateTo`.
      */
-    public fun navigate(block: NavEventCollector.() -> Unit) {
+    public fun navigate(block: Navigator.() -> Unit) {
         val navEvents = NavEventCollector().apply(block).navEvents
         sendNavEvent(MultiNavEvent(navEvents))
     }
 
-    /**
-     * Triggers a new [NavEvent] that pops the back stack to [T]. If [inclusive] is
-     * `true` [T] itself will also be popped.
-     */
-    public inline fun <reified T : NavRoute> navigateBackTo(inclusive: Boolean = false) {
-        navigateBackTo(DestinationId(T::class), inclusive)
-    }
-
-    @PublishedApi
-    internal fun <T : BaseRoute> navigateBackTo(popUpTo: DestinationId<T>, inclusive: Boolean = false) {
+    @InternalNavigationApi
+    override fun <T : BaseRoute> navigateBackToInternal(popUpTo: DestinationId<T>, inclusive: Boolean) {
         val event = BackToEvent(popUpTo, inclusive)
         sendNavEvent(event)
     }
@@ -189,7 +295,7 @@ public open class NavEventNavigator {
      * Reset the back stack to the given [root]. The current back stack will cleared and if
      * root was already on it it will be recreated.
      */
-    public fun resetToRoot(root: NavRoot) {
+    override fun resetToRoot(root: NavRoot) {
         val event = NavEvent.ResetToRoot(root)
         sendNavEvent(event)
     }
@@ -202,7 +308,7 @@ public open class NavEventNavigator {
      * This differs from [resetToRoot] in that [resetToRoot] does not pop the start route (exclusive)
      * whereas this does.
      */
-    public fun replaceAll(root: NavRoot) {
+    public override fun replaceAll(root: NavRoot) {
         val event = NavEvent.ReplaceAll(root)
         sendNavEvent(event)
     }
@@ -212,7 +318,7 @@ public open class NavEventNavigator {
      *
      * The [request] can be obtained by calling [registerForActivityResult].
      */
-    public fun navigateForResult(request: ActivityResultRequest<Void?, *>) {
+    override fun navigateForResult(request: ActivityResultRequest<Void?, *>) {
         navigateForResult(request, null)
     }
 
@@ -221,7 +327,7 @@ public open class NavEventNavigator {
      *
      * The [request] can be obtained by calling [registerForActivityResult].
      */
-    public fun <I> navigateForResult(request: ActivityResultRequest<I, *>, input: I) {
+    override fun <I> navigateForResult(request: ActivityResultRequest<I, *>, input: I) {
         val event = ActivityResultEvent(request, input)
         sendNavEvent(event)
     }
@@ -236,7 +342,7 @@ public open class NavEventNavigator {
      *
      * The [request] can be obtained by calling [registerForPermissionsResult].
      */
-    public fun requestPermissions(request: PermissionsResultRequest, vararg permissions: String) {
+    override fun requestPermissions(request: PermissionsResultRequest, vararg permissions: String) {
         requestPermissions(request, permissions.toList())
     }
 
@@ -250,7 +356,7 @@ public open class NavEventNavigator {
      *
      * The [request] can be obtained by calling [registerForPermissionsResult].
      */
-    public fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>) {
+    override fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>) {
         val event = ActivityResultEvent(request, permissions)
         sendNavEvent(event)
     }
@@ -258,7 +364,7 @@ public open class NavEventNavigator {
     /**
      * Delivers the [result] to the destination that created [key].
      */
-    public fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
+    override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
         val event = NavEvent.DestinationResultEvent(key, result)
         sendNavEvent(event)
     }
@@ -274,7 +380,7 @@ public open class NavEventNavigator {
      *
      * When this is called multiple times only the latest caller will receive emissions.
      */
-    public fun backPresses(): Flow<Unit> {
+    override fun backPresses(): Flow<Unit> {
         return backPresses(Unit)
     }
 
@@ -284,7 +390,7 @@ public open class NavEventNavigator {
      *
      * When this is called multiple times only the latest caller will receive emissions.
      */
-    public fun <T> backPresses(value: T): Flow<T> {
+    override fun <T> backPresses(value: T): Flow<T> {
         return callbackFlow {
             val onBackPressed = {
                 check(trySendBlocking(value).isSuccess)

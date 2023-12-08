@@ -2,37 +2,10 @@ package com.freeletics.khonshu.codegen.parser.ksp
 
 import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.Navigation
-import com.freeletics.khonshu.codegen.RendererFragmentData
-import com.freeletics.khonshu.codegen.fragment.DestinationType
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSAnnotation
-import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-
-internal fun KSClassDeclaration.toRendererFragmentDestinationData(
-    annotation: KSAnnotation,
-    resolver: Resolver,
-    logger: KSPLogger,
-): RendererFragmentData? {
-    val navigation = Navigation.Fragment(
-        route = annotation.route,
-        parentScopeIsRoute = annotation.parentScope.extendsBaseRoute(resolver),
-        destinationType = DestinationType.valueOf(annotation.destinationType),
-        destinationScope = annotation.destinationScope,
-    )
-
-    return RendererFragmentData(
-        baseName = simpleName.asString(),
-        packageName = packageName.asString(),
-        scope = annotation.route,
-        parentScope = annotation.parentScope,
-        stateMachine = annotation.stateMachine,
-        fragmentBaseClass = annotation.fragmentBaseClass,
-        factory = findRendererFactory(logger) ?: return null,
-        navigation = navigation,
-    )
-}
 
 internal fun KSFunctionDeclaration.toComposeFragmentDestinationData(
     annotation: KSAnnotation,
@@ -45,7 +18,7 @@ internal fun KSFunctionDeclaration.toComposeFragmentDestinationData(
     val navigation = Navigation.Fragment(
         route = annotation.route,
         parentScopeIsRoute = annotation.parentScope.extendsBaseRoute(resolver),
-        destinationType = DestinationType.valueOf(annotation.destinationType),
+        overlay = annotation.route.extendsOverlay(resolver),
         destinationScope = annotation.destinationScope,
     )
 

@@ -2,6 +2,7 @@ package com.freeletics.khonshu.navigation
 
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
+import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToActivityEvent

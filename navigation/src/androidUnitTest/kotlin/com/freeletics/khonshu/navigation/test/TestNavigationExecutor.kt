@@ -16,15 +16,15 @@ internal class TestNavigationExecutor : NavigationExecutor {
     val received = Turbine<NavEvent>()
     val savedStateHandle = SavedStateHandle()
 
-    override fun navigate(route: NavRoute) {
+    override fun navigateTo(route: NavRoute) {
         received.add(NavEvent.NavigateToEvent(route))
     }
 
-    override fun navigate(root: NavRoot, restoreRootState: Boolean) {
+    override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
         received.add(NavEvent.NavigateToRootEvent(root, restoreRootState))
     }
 
-    override fun navigate(route: ActivityRoute) {
+    override fun navigateTo(route: ActivityRoute) {
         received.add(NavEvent.NavigateToActivityEvent(route))
     }
 
@@ -36,11 +36,11 @@ internal class TestNavigationExecutor : NavigationExecutor {
         received.add(NavEvent.BackEvent)
     }
 
-    override fun <T : BaseRoute> navigateBackTo(
-        destinationId: DestinationId<T>,
-        isInclusive: Boolean,
+    override fun <T : BaseRoute> navigateBackToInternal(
+        popUpTo: DestinationId<T>,
+        inclusive: Boolean,
     ) {
-        received.add(NavEvent.BackToEvent(destinationId, isInclusive))
+        received.add(NavEvent.BackToEvent(popUpTo, inclusive))
     }
 
     override fun resetToRoot(root: NavRoot) {

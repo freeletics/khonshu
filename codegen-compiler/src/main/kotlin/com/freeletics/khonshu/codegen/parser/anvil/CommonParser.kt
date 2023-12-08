@@ -7,9 +7,10 @@ import com.freeletics.khonshu.codegen.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.codegen.util.baseRouteFqName
 import com.freeletics.khonshu.codegen.codegen.util.fragment
 import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
-import com.freeletics.khonshu.codegen.codegen.util.navHostLambda
+import com.freeletics.khonshu.codegen.codegen.util.overlayFqName
+import com.freeletics.khonshu.codegen.codegen.util.simpleNavHost
+import com.freeletics.khonshu.codegen.codegen.util.simpleNavHostLambda
 import com.freeletics.khonshu.codegen.codegen.util.stateMachine
-import com.freeletics.khonshu.codegen.codegen.util.viewRendererFactoryFqName
 import com.squareup.anvil.compiler.internal.reference.AnnotationReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionClassReference
 import com.squareup.anvil.compiler.internal.reference.AnvilCompilationExceptionFunctionReference
@@ -21,13 +22,15 @@ import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.TypeName
-import com.squareup.kotlinpoet.asClassName
 
 internal val AnnotationReference.scope: ClassName
     get() = optionalClassArgument("scope", 0) ?: activityScope
 
 internal val AnnotationReference.route: ClassName
-    get() = requireClassArgument("route", 0)
+    get() = routeReference.asClassName()
+
+internal val AnnotationReference.routeReference: ClassReference
+    get() = requireClassReferenceArgument("route", 0)
 
 internal val AnnotationReference.parentScope: ClassName
     get() = parentScopeReference?.asClassName() ?: appScope
@@ -40,9 +43,6 @@ internal val AnnotationReference.stateMachine: ClassName
 
 internal val AnnotationReference.stateMachineReference: ClassReference
     get() = requireClassReferenceArgument("stateMachine", 2)
-
-internal val AnnotationReference.destinationType: String
-    get() = optionalEnumArgument("destinationType", 3) ?: "SCREEN"
 
 internal val AnnotationReference.destinationScope: ClassName
     get() = optionalClassArgument("destinationScope", 4) ?: appScope
@@ -70,10 +70,10 @@ private fun ParameterReference.toComposableParameter(condition: (TypeName) -> Bo
 }
 
 internal fun TopLevelFunctionReference.navHostParameter(): ComposableParameter {
-    return getParameterWithType(navHostLambda)
+    return getParameterWithType(simpleNavHost) ?: getParameterWithType(simpleNavHostLambda)
         ?: throw AnvilCompilationExceptionFunctionReference(
             this,
-            "Could not find a NavHost parameter with type $navHostLambda",
+            "Could not find a NavHost parameter with type $simpleNavHostLambda",
         )
 }
 
@@ -90,21 +90,14 @@ internal fun ClassReference.stateMachineParameters(): Pair<TypeName, TypeName> {
     return stateParameter to actionParameter
 }
 
-internal fun ClassReference.findRendererFactory(): ClassName {
-    val factoryClass = innerClasses().find { innerClass ->
-        innerClass.allSuperTypeClassReferences().any { superType ->
-            superType.fqName == viewRendererFactoryFqName
-        }
-    }
-    return factoryClass?.asClassName()
-        ?: throw AnvilCompilationExceptionClassReference(
-            this,
-            "Couldn't find a ViewRender.Factory subclass nested inside $fqName",
-        )
-}
-
 internal fun ClassReference?.extendsBaseRoute(): Boolean {
     return this?.allSuperTypeClassReferences()?.any { superType ->
         superType.fqName == baseRouteFqName
+    } == true
+}
+
+internal fun ClassReference?.extendsOverlay(): Boolean {
+    return this?.allSuperTypeClassReferences()?.any { superType ->
+        superType.fqName == overlayFqName
     } == true
 }

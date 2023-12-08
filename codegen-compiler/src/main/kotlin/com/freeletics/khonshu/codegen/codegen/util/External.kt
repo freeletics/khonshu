@@ -9,8 +9,6 @@ import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.name.FqName
 
 // Codegen Public API
-internal val rendererFragmentDestination = ClassName("com.freeletics.khonshu.codegen.fragment", "RendererDestination")
-internal val rendererFragmentDestinationFqName = FqName(rendererFragmentDestination.canonicalName)
 internal val composeFragmentDestination =
     ClassName("com.freeletics.khonshu.codegen.fragment", "ComposeFragmentDestination")
 internal val composeFragmentDestinationFqName = FqName(composeFragmentDestination.canonicalName)
@@ -20,6 +18,8 @@ internal val navHostActivity = ClassName("com.freeletics.khonshu.codegen.compose
 internal val navHostActivityFqName = FqName(navHostActivity.canonicalName)
 internal val appScope = ClassName("com.freeletics.khonshu.codegen", "AppScope")
 internal val activityScope = ClassName("com.freeletics.khonshu.codegen", "ActivityScope")
+internal val overlay = ClassName("com.freeletics.khonshu.codegen", "Overlay")
+internal val overlayFqName = FqName(overlay.canonicalName)
 
 // Codegen Internal API
 internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.internal", "asComposeState")
@@ -52,9 +52,11 @@ internal val fragmentDialogDestination = MemberName("com.freeletics.khonshu.navi
 internal val fragmentRequireRoute = MemberName("com.freeletics.khonshu.navigation.fragment", "requireRoute")
 internal val internalNavigatorApi = ClassName("com.freeletics.khonshu.navigation.internal", "InternalNavigationApi")
 
-internal val navHostLambda = LambdaTypeName.get(
+internal val simpleNavHost = ClassName("com.freeletics.khonshu.codegen.compose", "SimpleNavHost")
+internal val simpleNavHostLambda = LambdaTypeName.get(
     null,
     NavRoot::class.asClassName(),
+    ClassName("androidx.compose.ui", "Modifier"),
     LambdaTypeName.get(null, baseRoute, returnType = UNIT).copy(nullable = true),
     returnType = UNIT,
 )
@@ -62,19 +64,18 @@ internal val navHostLambda = LambdaTypeName.get(
 // StateMachine
 internal val stateMachine = ClassName("com.freeletics.khonshu.statemachine", "StateMachine")
 
-// Renderer
-internal val viewRenderer = ClassName("com.gabrielittner.renderer", "ViewRenderer")
-internal val viewRendererFactory = viewRenderer.nestedClass("Factory")
-internal val viewRendererFactoryFqName = FqName(viewRendererFactory.canonicalName)
-internal val rendererConnect = MemberName("com.gabrielittner.renderer.connect", "connect")
-
 // Kotlin
 internal val optIn = ClassName("kotlin", "OptIn")
 internal val function1 = ClassName("kotlin", "Function1")
 internal val function2 = ClassName("kotlin", "Function2")
+internal val function3 = ClassName("kotlin", "Function3")
 
 // Coroutines
 internal val launch = MemberName("kotlinx.coroutines", "launch")
+
+// Collections Immutable
+internal val immutableSet = ClassName("kotlinx.collections.immutable", "ImmutableSet")
+internal val toImmutableSet = MemberName("kotlinx.collections.immutable", "toImmutableSet")
 
 // Dagger
 internal val provides = ClassName("dagger", "Provides")

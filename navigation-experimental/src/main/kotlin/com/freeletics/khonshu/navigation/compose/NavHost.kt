@@ -2,6 +2,7 @@ package com.freeletics.khonshu.navigation.compose
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -12,7 +13,9 @@ import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.compose.internal.MultiStackNavigationExecutor
 import com.freeletics.khonshu.navigation.compose.internal.StackEntry
@@ -22,6 +25,8 @@ import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import java.io.Closeable
 import java.lang.ref.WeakReference
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -36,15 +41,20 @@ import kotlinx.coroutines.flow.map
  * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
  * doesn't provide its own [DeepLinkHandler.prefixes].
  *
+ * If a [NavEventNavigator] is passed it will be automatically set up and can be used to
+ * navigate within the `NavHost`.
+ *
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
 @Composable
 public fun NavHost(
     startRoute: NavRoot,
-    destinations: Set<NavDestination>,
-    deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
-    deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
+    destinations: ImmutableSet<NavDestination>,
+    modifier: Modifier = Modifier,
+    deepLinkHandlers: ImmutableSet<DeepLinkHandler> = persistentSetOf(),
+    deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
+    navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
 ) {
     val executor = rememberNavigationExecutor(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
@@ -54,19 +64,15 @@ public fun NavHost(
 
     val saveableStateHolder = rememberSaveableStateHolder()
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
-        val entries = executor.visibleEntries.value
-        Show(entries, executor, saveableStateHolder)
-    }
-}
+        if (navEventNavigator != null) {
+            NavigationSetup(navEventNavigator)
+        }
 
-@Composable
-private fun Show(
-    entries: List<StackEntry<*>>,
-    executor: MultiStackNavigationExecutor,
-    saveableStateHolder: SaveableStateHolder,
-) {
-    entries.forEach { entry ->
-        Show(entry, executor, saveableStateHolder)
+        Box(modifier = modifier) {
+            executor.visibleEntries.value.forEach { entry ->
+                Show(entry, executor, saveableStateHolder)
+            }
+        }
     }
 }
 
