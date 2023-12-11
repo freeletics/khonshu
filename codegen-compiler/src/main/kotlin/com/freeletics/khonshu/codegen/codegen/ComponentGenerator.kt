@@ -4,13 +4,13 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.bindsInstanceParameter
-import com.freeletics.khonshu.codegen.util.composeDestination
 import com.freeletics.khonshu.codegen.util.contributesToAnnotation
 import com.freeletics.khonshu.codegen.util.deepLinkHandler
 import com.freeletics.khonshu.codegen.util.deepLinkPrefix
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.immutableSet
 import com.freeletics.khonshu.codegen.util.navEventNavigator
+import com.freeletics.khonshu.codegen.util.navigationDestination
 import com.freeletics.khonshu.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.scopeToAnnotation
@@ -76,7 +76,7 @@ internal class ComponentGenerator(
 
         if (data is NavHostActivityData) {
             properties += listOf(
-                PropertySpec.builder("destinations", immutableSet.parameterizedBy(composeDestination)).build(),
+                PropertySpec.builder("destinations", immutableSet.parameterizedBy(navigationDestination)).build(),
                 PropertySpec.builder("deepLinkHandlers", immutableSet.parameterizedBy(deepLinkHandler)).build(),
                 PropertySpec.builder("deepLinkPrefixes", immutableSet.parameterizedBy(deepLinkPrefix)).build(),
             )

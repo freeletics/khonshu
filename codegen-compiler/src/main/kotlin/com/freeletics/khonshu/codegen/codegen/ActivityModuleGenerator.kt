@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.util.composeDestination
 import com.freeletics.khonshu.codegen.util.contributesToAnnotation
 import com.freeletics.khonshu.codegen.util.deepLinkHandler
 import com.freeletics.khonshu.codegen.util.deepLinkPrefix
@@ -9,6 +8,7 @@ import com.freeletics.khonshu.codegen.util.immutableSet
 import com.freeletics.khonshu.codegen.util.jvmSuppressWildcards
 import com.freeletics.khonshu.codegen.util.module
 import com.freeletics.khonshu.codegen.util.multibinds
+import com.freeletics.khonshu.codegen.util.navigationDestination
 import com.freeletics.khonshu.codegen.util.provides
 import com.freeletics.khonshu.codegen.util.toImmutableSet
 import com.squareup.kotlinpoet.FunSpec
@@ -60,8 +60,8 @@ internal class ActivityModuleGenerator(
     private fun provideImmutableNavDestinationsFunction(): FunSpec {
         return FunSpec.builder("provideImmutableNavDestinations")
             .addAnnotation(provides)
-            .addParameter("destinations", SET.parameterizedBy(composeDestination).jvmSuppressWildcards())
-            .returns(immutableSet.parameterizedBy(composeDestination))
+            .addParameter("destinations", SET.parameterizedBy(navigationDestination).jvmSuppressWildcards())
+            .returns(immutableSet.parameterizedBy(navigationDestination))
             .addStatement("return destinations.%M()", toImmutableSet)
             .build()
     }

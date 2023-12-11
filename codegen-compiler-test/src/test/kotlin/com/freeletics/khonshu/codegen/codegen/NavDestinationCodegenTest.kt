@@ -52,7 +52,7 @@ internal class NavDestinationCodegenTest {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.NavDestination
+            import com.freeletics.khonshu.codegen.NavDestination
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 
@@ -227,7 +227,7 @@ internal class NavDestinationCodegenTest {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.NavDestination
+            import com.freeletics.khonshu.codegen.NavDestination
 
             @NavDestination(
               route = TestRoute::class,
@@ -396,7 +396,7 @@ internal class NavDestinationCodegenTest {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.NavDestination
+            import com.freeletics.khonshu.codegen.NavDestination
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 
@@ -585,7 +585,7 @@ internal class NavDestinationCodegenTest {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.NavDestination
+            import com.freeletics.khonshu.codegen.NavDestination
             import com.test.destination.TestDestinationScope
             import com.test.other.TestClass2
             import com.test.parent.TestParentRoute
@@ -779,7 +779,7 @@ internal class NavDestinationCodegenTest {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.NavDestination
+            import com.freeletics.khonshu.codegen.NavDestination
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 
@@ -943,7 +943,7 @@ internal class NavDestinationCodegenTest {
             package com.test
 
             import androidx.compose.runtime.Composable
-            import com.freeletics.khonshu.codegen.compose.NavDestination
+            import com.freeletics.khonshu.codegen.NavDestination
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
 

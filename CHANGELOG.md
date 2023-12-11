@@ -9,6 +9,8 @@ Change Log
 
 ### Codegen
 
+- **Breaking**: The `NavDestination` and `NavHostActivity` annotations as well as `SimpleNavHost`
+  have been moved to `com.freeletics.khonshu.codegen`.
 - **Removed**: `@ComposeFragmentDestination` and `Fragment` codegen support.
 
 

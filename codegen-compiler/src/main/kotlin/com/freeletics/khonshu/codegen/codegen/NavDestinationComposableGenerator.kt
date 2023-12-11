@@ -4,11 +4,11 @@ import com.freeletics.khonshu.codegen.NavDestinationData
 import com.freeletics.khonshu.codegen.util.InternalCodegenApi
 import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.composable
-import com.freeletics.khonshu.codegen.util.composeLocalNavigationExecutor
-import com.freeletics.khonshu.codegen.util.composeNavigationHandler
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.localContext
+import com.freeletics.khonshu.codegen.util.localNavigationExecutor
 import com.freeletics.khonshu.codegen.util.navEventNavigator
+import com.freeletics.khonshu.codegen.util.navigationSetup
 import com.freeletics.khonshu.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.remember
@@ -30,12 +30,12 @@ internal class NavDestinationComposableGenerator(
             .addAnnotation(optInAnnotation(InternalCodegenApi, internalNavigatorApi))
             .addParameter(parameter)
             .addStatement("val context = %M.current", localContext)
-            .addStatement("val executor = %M.current", composeLocalNavigationExecutor)
+            .addStatement("val executor = %M.current", localNavigationExecutor)
             .beginControlFlow("val component = %M(context, executor, %N)", remember, parameter)
             .addStatement("%T.provide(%N, executor, context)", componentProviderClassName, parameter)
             .endControlFlow()
             .addStatement("")
-            .addStatement("%M(component.%L)", composeNavigationHandler, navEventNavigator.propertyName)
+            .addStatement("%M(component.%L)", navigationSetup, navEventNavigator.propertyName)
             .addStatement("")
             .addStatement("%L(component)", composableName)
             .build()
