@@ -1,7 +1,10 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation.androidx.internal
 
 import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.internal.ActivityDestinationId
+import com.freeletics.khonshu.navigation.internal.DestinationId
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import kotlin.reflect.KClass
 
 @InternalNavigationApi

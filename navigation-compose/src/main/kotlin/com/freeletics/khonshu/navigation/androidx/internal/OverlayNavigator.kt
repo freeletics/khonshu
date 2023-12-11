@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.freeletics.khonshu.navigation.compose.internal
+package com.freeletics.khonshu.navigation.androidx.internal
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.FloatingWindow
@@ -22,7 +22,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
-import com.freeletics.khonshu.navigation.compose.internal.OverlayNavigator.Destination
+import com.freeletics.khonshu.navigation.androidx.internal.OverlayNavigator.Destination
 
 @Navigator.Name("overlay")
 internal class OverlayNavigator : Navigator<Destination>() {

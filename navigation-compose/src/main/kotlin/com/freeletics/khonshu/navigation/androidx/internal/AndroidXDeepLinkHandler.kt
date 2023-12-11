@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation.androidx.internal
 
 import android.app.Activity
 import android.content.Intent
@@ -14,6 +14,7 @@ import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.EXTRA_DEEPLINK_ROUTES
 import com.freeletics.khonshu.navigation.deeplinks.buildIntent
 import com.freeletics.khonshu.navigation.deeplinks.createDeepLinkIfMatching
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 
 /**
  * Handles 2 different kind of deep links:

@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation.androidx.internal
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
@@ -9,6 +9,9 @@ import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.internal.DestinationId
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import java.io.Serializable
 
 @InternalNavigationApi
