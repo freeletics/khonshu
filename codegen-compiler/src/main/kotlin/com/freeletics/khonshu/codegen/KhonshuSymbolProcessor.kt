@@ -49,13 +49,13 @@ public class KhonshuSymbolProcessor(
                     return@forEach
                 }
 
-                val annotation = it.annotations.first {
+                it.annotations.filter {
                     it.annotationType.resolve().declaration.qualifiedName?.asString() == A::class.qualifiedName
+                }.forEach annotation@{ annotation ->
+                    val data = parser(it, annotation) ?: return@annotation
+                    val file = fileGenerator.generate(data)
+                    file.writeTo(codeGenerator, aggregating = false, originatingKSFiles = listOf(it.containingFile!!))
                 }
-
-                val data = parser(it, annotation) ?: return@forEach
-                val file = fileGenerator.generate(data)
-                file.writeTo(codeGenerator, aggregating = false, originatingKSFiles = listOf(it.containingFile!!))
             }
     }
 }

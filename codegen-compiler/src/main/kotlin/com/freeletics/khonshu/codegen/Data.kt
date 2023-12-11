@@ -1,8 +1,11 @@
 package com.freeletics.khonshu.codegen
 
+import com.freeletics.khonshu.codegen.util.androidxNavHost
+import com.freeletics.khonshu.codegen.util.experimentalNavHost
 import com.freeletics.khonshu.codegen.util.navigationDestination
 import com.freeletics.khonshu.codegen.util.overlayDestination
 import com.freeletics.khonshu.codegen.util.screenDestination
+import com.squareup.anvil.compiler.internal.capitalize
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.TypeName
@@ -45,7 +48,7 @@ public data class NavDestinationData(
 ) : BaseData
 
 public data class NavHostActivityData(
-    override val baseName: String,
+    private val originalName: String,
     override val packageName: String,
 
     override val scope: ClassName,
@@ -55,12 +58,23 @@ public data class NavHostActivityData(
 
     public val activityBaseClass: ClassName,
 
+    val experimentalNavigation: Boolean,
     val navHostParameter: ComposableParameter,
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
 ) : BaseData {
     override val navigation: Navigation? = null
+
+    override val baseName: String = when (experimentalNavigation) {
+        false -> originalName
+        true -> "Experimental${originalName.capitalize()}"
+    }
+
+    val navHost: MemberName = when (experimentalNavigation) {
+        false -> androidxNavHost
+        true -> experimentalNavHost
+    }
 }
 
 public data class Navigation(
