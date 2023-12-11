@@ -1,8 +1,9 @@
 package com.freeletics.khonshu.codegen.parser.anvil
 
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.anvilCompilation
-import com.freeletics.khonshu.codegen.codegen.util.stateMachine
+import com.freeletics.khonshu.codegen.parser.allSuperTypes
 import com.freeletics.khonshu.codegen.simpleCodeGenerator
+import com.freeletics.khonshu.codegen.util.stateMachine
 import com.google.common.truth.Truth.assertThat
 import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.ClassName
