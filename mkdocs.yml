@@ -30,7 +30,6 @@ nav:
       - 'API':
           - 'Runtime': navigation/API/runtime/index.html
           - 'Compose': navigation/API/compose/index.html
-          - 'Fragment': navigation/API/fragment/index.html
           - 'Testing': navigation/API/testing/index.html
   - 'Codegen':
       - codegen/get-started.md
@@ -38,10 +37,7 @@ nav:
       - codegen/compose-injection.md
       - codegen/closeable-support.md
       - 'API':
-          - 'Scope': codegen/API/scope/index.html
           - 'Runtime': codegen/API/runtime/index.html
-          - 'Compose': codegen/API/compose/index.html
-          - 'Fragment': codegen/API/fragment/index.html
   - 'Helpers':
       - helpers.md
       - 'API':

@@ -1,7 +1,15 @@
 Change Log
 ==========
 
-## 0.21.1 **UNRELEASED**
+## 0.22.0 **UNRELEASED**
+
+### Navigation
+
+- **Removed**: `navigation-fragment` and `Fragment` navigation support.
+
+### Codegen
+
+- **Removed**: `@ComposeFragmentDestination` and `Fragment` codegen support.
 
 
 ## 0.21.0 *(2023-12-07)*

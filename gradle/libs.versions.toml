@@ -24,7 +24,6 @@ androidx-activity = "1.8.1"
 androidx-annotations = "1.5.0"
 androidx-core = "1.12.0"
 androidx-lifecycle = "2.6.2"
-androidx-fragment = "1.6.2"
 androidx-navigation = "2.7.5"
 androidx-savedstate = "1.2.1"
 
@@ -90,8 +89,6 @@ androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmod
 androidx-navigation-common = { module = "androidx.navigation:navigation-common", version.ref = "androidx-navigation" }
 androidx-navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "androidx-navigation" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
-androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "androidx-navigation" }
-androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidx-fragment" }
 androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }

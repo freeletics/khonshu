@@ -23,7 +23,6 @@ internal class AnvilCompilation internal constructor(
     private var anvilConfigured = false
 
     /** Configures this the Anvil behavior of this compilation. */
-    @Suppress("SuspiciousCollectionReassignment")
     @ExperimentalAnvilApi
     fun configureAnvil(
         enableDaggerAnnotationProcessor: Boolean = false,

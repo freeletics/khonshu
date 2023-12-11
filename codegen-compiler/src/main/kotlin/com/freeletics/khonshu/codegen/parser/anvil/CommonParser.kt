@@ -5,7 +5,6 @@ import com.freeletics.khonshu.codegen.codegen.util.activityScope
 import com.freeletics.khonshu.codegen.codegen.util.appScope
 import com.freeletics.khonshu.codegen.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.codegen.util.baseRouteFqName
-import com.freeletics.khonshu.codegen.codegen.util.fragment
 import com.freeletics.khonshu.codegen.codegen.util.functionToLambda
 import com.freeletics.khonshu.codegen.codegen.util.overlayFqName
 import com.freeletics.khonshu.codegen.codegen.util.simpleNavHost
@@ -46,9 +45,6 @@ internal val AnnotationReference.stateMachineReference: ClassReference
 
 internal val AnnotationReference.destinationScope: ClassName
     get() = optionalClassArgument("destinationScope", 4) ?: appScope
-
-internal val AnnotationReference.fragmentBaseClass: ClassName
-    get() = optionalClassArgument("fragmentBaseClass", 5) ?: fragment
 
 internal val AnnotationReference.activityBaseClass: ClassName
     get() = requireClassReferenceArgument("activityBaseClass", 3).asClassName()

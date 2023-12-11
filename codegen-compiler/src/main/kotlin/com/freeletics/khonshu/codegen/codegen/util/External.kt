@@ -9,9 +9,6 @@ import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.name.FqName
 
 // Codegen Public API
-internal val composeFragmentDestination =
-    ClassName("com.freeletics.khonshu.codegen.fragment", "ComposeFragmentDestination")
-internal val composeFragmentDestinationFqName = FqName(composeFragmentDestination.canonicalName)
 internal val navDestination = ClassName("com.freeletics.khonshu.codegen.compose", "NavDestination")
 internal val navDestinationFqName = FqName(navDestination.canonicalName)
 internal val navHostActivity = ClassName("com.freeletics.khonshu.codegen.compose", "NavHostActivity")
@@ -41,15 +38,8 @@ internal val composeScreenDestination = MemberName("com.freeletics.khonshu.navig
 internal val composeOverlayDestination = MemberName("com.freeletics.khonshu.navigation.compose", "OverlayDestination")
 internal val composeLocalNavigationExecutor =
     MemberName("com.freeletics.khonshu.navigation.compose", "LocalNavigationExecutor")
-internal val fragmentFindNavigationExecutor =
-    MemberName("com.freeletics.khonshu.navigation.fragment", "findNavigationExecutor")
 internal val deepLinkHandler = ClassName("com.freeletics.khonshu.navigation.deeplinks", "DeepLinkHandler")
 internal val deepLinkPrefix = deepLinkHandler.nestedClass("Prefix")
-internal val fragmentNavigationHandler = MemberName("com.freeletics.khonshu.navigation.fragment", "handleNavigation")
-internal val fragmentDestination = ClassName("com.freeletics.khonshu.navigation.fragment", "NavDestination")
-internal val fragmentScreenDestination = MemberName("com.freeletics.khonshu.navigation.fragment", "ScreenDestination")
-internal val fragmentDialogDestination = MemberName("com.freeletics.khonshu.navigation.fragment", "DialogDestination")
-internal val fragmentRequireRoute = MemberName("com.freeletics.khonshu.navigation.fragment", "requireRoute")
 internal val internalNavigatorApi = ClassName("com.freeletics.khonshu.navigation.internal", "InternalNavigationApi")
 
 internal val simpleNavHost = ClassName("com.freeletics.khonshu.codegen.compose", "SimpleNavHost")
@@ -85,7 +75,6 @@ internal val bindsInstance = ClassName("dagger", "BindsInstance")
 internal val module = ClassName("dagger", "Module")
 
 // AndroidX
-internal val fragment = ClassName("androidx.fragment.app", "Fragment")
 internal val setContent = MemberName("androidx.activity.compose", "setContent")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
 
@@ -94,14 +83,8 @@ internal val composable = ClassName("androidx.compose.runtime", "Composable")
 internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val remember = MemberName("androidx.compose.runtime", "remember")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
-internal val composeView = ClassName("androidx.compose.ui.platform", "ComposeView")
 internal val localContext = MemberName("androidx.compose.ui.platform", "LocalContext")
-internal val viewCompositionStrategy = ClassName("androidx.compose.ui.platform", "ViewCompositionStrategy")
-internal val disposeOnLifecycleDestroyed = viewCompositionStrategy.nestedClass("DisposeOnViewTreeLifecycleDestroyed")
 
 // Android
-internal val layoutInflater = ClassName("android.view", "LayoutInflater")
-internal val viewGroup = ClassName("android.view", "ViewGroup")
-internal val view = ClassName("android.view", "View")
 internal val bundle = ClassName("android.os", "Bundle")
 internal val context = ClassName("android.content", "Context")

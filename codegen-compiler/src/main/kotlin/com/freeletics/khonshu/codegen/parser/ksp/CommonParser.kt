@@ -42,9 +42,6 @@ internal val KSAnnotation.stateMachine: ClassName
 internal val KSAnnotation.destinationScope: ClassName
     get() = (findArgument("destinationScope").value as KSType).toClassName()
 
-internal val KSAnnotation.fragmentBaseClass: ClassName
-    get() = (findArgument("fragmentBaseClass").value as KSType).toClassName()
-
 internal val KSAnnotation.activityBaseClass: ClassName
     get() = (findArgument("activityBaseClass").value as KSType).toClassName()
 

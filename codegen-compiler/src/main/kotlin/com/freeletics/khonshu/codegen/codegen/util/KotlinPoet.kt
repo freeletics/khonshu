@@ -129,13 +129,6 @@ internal fun Navigation?.asParameter(): ParameterSpec {
     return ParameterSpec.builder("arguments", bundle).build()
 }
 
-internal fun Navigation.Fragment?.requireArguments(): CodeBlock {
-    if (this != null) {
-        return CodeBlock.of("%M<%T>()", fragmentRequireRoute, route)
-    }
-    return CodeBlock.of("requireArguments()")
-}
-
 internal fun TypeName.asLambdaParameter(): TypeName {
     return LambdaTypeName.get(null, this, returnType = UNIT)
 }

@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.ComposeFragmentData
 import com.freeletics.khonshu.codegen.ComposeScreenData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.codegen.common.ComponentGenerator
@@ -12,14 +11,12 @@ import com.freeletics.khonshu.codegen.codegen.common.NavDestinationModuleGenerat
 import com.freeletics.khonshu.codegen.codegen.compose.ActivityGenerator
 import com.freeletics.khonshu.codegen.codegen.compose.ActivityModuleGenerator
 import com.freeletics.khonshu.codegen.codegen.compose.OuterComposableGenerator
-import com.freeletics.khonshu.codegen.codegen.fragment.ComposeFragmentGenerator
 import com.squareup.kotlinpoet.FileSpec
 
 public class FileGenerator {
 
     public fun generate(data: BaseData): FileSpec {
         return when (data) {
-            is ComposeFragmentData -> generate(data)
             is ComposeScreenData -> generate(data)
             is NavHostActivityData -> generate(data)
         }
@@ -54,22 +51,6 @@ public class FileGenerator {
             .addType(activityModule.generate())
             .addType(activity.generate())
             .addFunction(innerComposable.generate())
-            .build()
-    }
-
-    public fun generate(data: ComposeFragmentData): FileSpec {
-        val component = ComponentGenerator(data)
-        val module = ModuleGenerator(data)
-        val fragment = ComposeFragmentGenerator(data)
-        val innerComposable = InnerComposableGenerator(data)
-
-        return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
-            .addType(component.generate())
-            .addComponentProviderType(data)
-            .addType(module.generate())
-            .addType(fragment.generate())
-            .addFunction(innerComposable.generate())
-            .addNavDestinationTypes(data)
             .build()
     }
 
