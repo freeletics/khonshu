@@ -44,8 +44,6 @@ import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.findActivity
 import com.freeletics.khonshu.navigation.internal.AndroidXNavigationExecutor
 import com.freeletics.khonshu.navigation.internal.CustomActivityNavigator
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
-import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import com.freeletics.khonshu.navigation.internal.destinationId
 import com.freeletics.khonshu.navigation.internal.getArguments
 import com.freeletics.khonshu.navigation.internal.handleDeepLink
