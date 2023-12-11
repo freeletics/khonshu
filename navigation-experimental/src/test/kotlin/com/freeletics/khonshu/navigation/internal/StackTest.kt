@@ -1,14 +1,14 @@
-package com.freeletics.khonshu.navigation.compose.internal
+package com.freeletics.khonshu.navigation.internal
 
-import com.freeletics.khonshu.navigation.compose.test.OtherRoute
-import com.freeletics.khonshu.navigation.compose.test.SimpleRoot
-import com.freeletics.khonshu.navigation.compose.test.SimpleRoute
-import com.freeletics.khonshu.navigation.compose.test.ThirdRoute
-import com.freeletics.khonshu.navigation.compose.test.destinations
-import com.freeletics.khonshu.navigation.compose.test.otherRouteDestination
-import com.freeletics.khonshu.navigation.compose.test.simpleRootDestination
-import com.freeletics.khonshu.navigation.compose.test.simpleRouteDestination
-import com.freeletics.khonshu.navigation.compose.test.thirdRouteDestination
+import com.freeletics.khonshu.navigation.test.OtherRoute
+import com.freeletics.khonshu.navigation.test.SimpleRoot
+import com.freeletics.khonshu.navigation.test.SimpleRoute
+import com.freeletics.khonshu.navigation.test.ThirdRoute
+import com.freeletics.khonshu.navigation.test.destinations
+import com.freeletics.khonshu.navigation.test.otherRouteDestination
+import com.freeletics.khonshu.navigation.test.simpleRootDestination
+import com.freeletics.khonshu.navigation.test.simpleRouteDestination
+import com.freeletics.khonshu.navigation.test.thirdRouteDestination
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.Test
@@ -363,7 +363,7 @@ internal class StackTest {
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo(
-                "Route class com.freeletics.khonshu.navigation.compose.test.OtherRoute (Kotlin " +
+                "Route class com.freeletics.khonshu.navigation.test.OtherRoute (Kotlin " +
                     "reflection is not available) not found on back stack",
             )
 

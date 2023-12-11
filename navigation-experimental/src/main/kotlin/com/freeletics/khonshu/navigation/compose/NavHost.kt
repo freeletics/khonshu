@@ -18,10 +18,10 @@ import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavigationSetup
-import com.freeletics.khonshu.navigation.compose.internal.MultiStackNavigationExecutor
-import com.freeletics.khonshu.navigation.compose.internal.StackEntry
-import com.freeletics.khonshu.navigation.compose.internal.rememberNavigationExecutor
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
+import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor
+import com.freeletics.khonshu.navigation.internal.StackEntry
+import com.freeletics.khonshu.navigation.internal.rememberNavigationExecutor
 import java.io.Closeable
 import java.lang.ref.WeakReference
 import kotlinx.collections.immutable.ImmutableSet

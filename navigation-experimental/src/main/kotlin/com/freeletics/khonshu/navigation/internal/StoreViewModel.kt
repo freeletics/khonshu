@@ -1,12 +1,10 @@
-package com.freeletics.khonshu.navigation.compose.internal
+package com.freeletics.khonshu.navigation.internal
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.freeletics.khonshu.navigation.internal.NavigationExecutor
-import com.freeletics.khonshu.navigation.internal.NavigationExecutorStore
 
 internal class StoreViewModel(
     internal val globalSavedStateHandle: SavedStateHandle,

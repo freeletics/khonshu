@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.compose.internal
+package com.freeletics.khonshu.navigation.internal
 
 import android.content.Context
 import android.os.Bundle
@@ -13,12 +13,12 @@ import com.freeletics.khonshu.navigation.ActivityDestination
 import com.freeletics.khonshu.navigation.ContentDestination
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
-import com.freeletics.khonshu.navigation.compose.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.EXTRA_DEEPLINK_ROUTES
 import com.freeletics.khonshu.navigation.deeplinks.buildIntent
 import com.freeletics.khonshu.navigation.deeplinks.createDeepLinkIfMatching
 import com.freeletics.khonshu.navigation.findActivity
+import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
 
 @Composable
 internal fun rememberNavigationExecutor(
