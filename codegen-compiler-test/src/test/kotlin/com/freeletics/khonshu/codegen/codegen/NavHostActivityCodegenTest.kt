@@ -28,7 +28,7 @@ internal class NavHostActivityCodegenTest {
         activityBaseClass = ClassName("androidx.activity", "ComponentActivity"),
         navHostParameter = ComposableParameter(
             "navHost",
-            ClassName("com.freeletics.khonshu.codegen.compose", "SimpleNavHost"),
+            ClassName("com.freeletics.khonshu.codegen", "SimpleNavHost"),
         ),
         stateParameter = ComposableParameter("state", ClassName("com.test", "TestState")),
         sendActionParameter = ComposableParameter(
@@ -50,8 +50,8 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.compose.NavHostActivity
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
+            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
 
@@ -83,10 +83,10 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
@@ -246,8 +246,8 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
             import com.freeletics.khonshu.codegen.ActivityScope
-            import com.freeletics.khonshu.codegen.compose.NavHostActivity
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
+            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
 
             @NavHostActivity(
@@ -278,10 +278,10 @@ internal class NavHostActivityCodegenTest {
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.AppScope
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
@@ -456,8 +456,8 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.compose.NavHostActivity
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
+            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.other.TestClass2
             import com.test.parent.TestParentScope
@@ -494,10 +494,10 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
@@ -675,8 +675,8 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.compose.NavHostActivity
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
+            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
 
@@ -706,10 +706,10 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.remember
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
@@ -864,8 +864,8 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.compose.NavHostActivity
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
+            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
 
@@ -896,10 +896,10 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
@@ -1055,8 +1055,8 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.compose.NavHostActivity
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
+            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.BaseRoute
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
@@ -1089,10 +1089,10 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
-            import com.freeletics.khonshu.codegen.compose.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost

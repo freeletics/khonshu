@@ -4,21 +4,21 @@ public abstract interface class com/freeletics/khonshu/codegen/ActivityScope {
 public abstract interface class com/freeletics/khonshu/codegen/AppScope {
 }
 
-public abstract interface class com/freeletics/khonshu/codegen/Overlay {
-}
-
-public abstract interface annotation class com/freeletics/khonshu/codegen/compose/NavDestination : java/lang/annotation/Annotation {
+public abstract interface annotation class com/freeletics/khonshu/codegen/NavDestination : java/lang/annotation/Annotation {
 	public abstract fun destinationScope ()Ljava/lang/Class;
 	public abstract fun parentScope ()Ljava/lang/Class;
 	public abstract fun route ()Ljava/lang/Class;
 	public abstract fun stateMachine ()Ljava/lang/Class;
 }
 
-public abstract interface annotation class com/freeletics/khonshu/codegen/compose/NavHostActivity : java/lang/annotation/Annotation {
+public abstract interface annotation class com/freeletics/khonshu/codegen/NavHostActivity : java/lang/annotation/Annotation {
 	public abstract fun activityBaseClass ()Ljava/lang/Class;
 	public abstract fun parentScope ()Ljava/lang/Class;
 	public abstract fun scope ()Ljava/lang/Class;
 	public abstract fun stateMachine ()Ljava/lang/Class;
+}
+
+public abstract interface class com/freeletics/khonshu/codegen/Overlay {
 }
 
 public final class com/freeletics/khonshu/codegen/internal/ActivityComponentLookupKt {

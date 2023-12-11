@@ -1,6 +1,5 @@
-package com.freeletics.khonshu.codegen.compose
+package com.freeletics.khonshu.codegen
 
-import com.freeletics.khonshu.codegen.AppScope
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.statemachine.StateMachine
 import kotlin.reflect.KClass

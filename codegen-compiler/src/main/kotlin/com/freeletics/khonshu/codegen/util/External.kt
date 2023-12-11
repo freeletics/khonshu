@@ -9,9 +9,9 @@ import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.name.FqName
 
 // Codegen Public API
-internal val navDestination = ClassName("com.freeletics.khonshu.codegen.compose", "NavDestination")
+internal val navDestination = ClassName("com.freeletics.khonshu.codegen", "NavDestination")
 internal val navDestinationFqName = FqName(navDestination.canonicalName)
-internal val navHostActivity = ClassName("com.freeletics.khonshu.codegen.compose", "NavHostActivity")
+internal val navHostActivity = ClassName("com.freeletics.khonshu.codegen", "NavHostActivity")
 internal val navHostActivityFqName = FqName(navHostActivity.canonicalName)
 internal val appScope = ClassName("com.freeletics.khonshu.codegen", "AppScope")
 internal val activityScope = ClassName("com.freeletics.khonshu.codegen", "ActivityScope")
@@ -32,17 +32,17 @@ internal val navEventNavigator = ClassName("com.freeletics.khonshu.navigation", 
 internal val navigationExecutor = ClassName("com.freeletics.khonshu.navigation.internal", "NavigationExecutor")
 internal val destinationId = MemberName("com.freeletics.khonshu.navigation.internal", "destinationId")
 internal val navHost = MemberName("com.freeletics.khonshu.navigation.compose", "NavHost")
-internal val composeNavigationHandler = MemberName("com.freeletics.khonshu.navigation.compose", "NavigationSetup")
-internal val composeDestination = ClassName("com.freeletics.khonshu.navigation.compose", "NavDestination")
-internal val composeScreenDestination = MemberName("com.freeletics.khonshu.navigation.compose", "ScreenDestination")
-internal val composeOverlayDestination = MemberName("com.freeletics.khonshu.navigation.compose", "OverlayDestination")
-internal val composeLocalNavigationExecutor =
+internal val navigationSetup = MemberName("com.freeletics.khonshu.navigation.compose", "NavigationSetup")
+internal val navigationDestination = ClassName("com.freeletics.khonshu.navigation.compose", "NavDestination")
+internal val screenDestination = MemberName("com.freeletics.khonshu.navigation.compose", "ScreenDestination")
+internal val overlayDestination = MemberName("com.freeletics.khonshu.navigation.compose", "OverlayDestination")
+internal val localNavigationExecutor =
     MemberName("com.freeletics.khonshu.navigation.compose", "LocalNavigationExecutor")
 internal val deepLinkHandler = ClassName("com.freeletics.khonshu.navigation.deeplinks", "DeepLinkHandler")
 internal val deepLinkPrefix = deepLinkHandler.nestedClass("Prefix")
 internal val internalNavigatorApi = ClassName("com.freeletics.khonshu.navigation.internal", "InternalNavigationApi")
 
-internal val simpleNavHost = ClassName("com.freeletics.khonshu.codegen.compose", "SimpleNavHost")
+internal val simpleNavHost = ClassName("com.freeletics.khonshu.codegen", "SimpleNavHost")
 internal val simpleNavHostLambda = LambdaTypeName.get(
     null,
     NavRoot::class.asClassName(),
