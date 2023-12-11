@@ -1,8 +1,8 @@
 package com.freeletics.khonshu.codegen
 
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
-import com.freeletics.khonshu.codegen.parser.anvil.toComposeScreenDestinationData
-import com.freeletics.khonshu.codegen.parser.anvil.toNavHostActivityData
+import com.freeletics.khonshu.codegen.parser.toComposeScreenDestinationData
+import com.freeletics.khonshu.codegen.parser.toNavHostActivityData
 import com.google.auto.service.AutoService
 import com.squareup.anvil.compiler.api.AnvilContext
 import com.squareup.anvil.compiler.api.CodeGenerator

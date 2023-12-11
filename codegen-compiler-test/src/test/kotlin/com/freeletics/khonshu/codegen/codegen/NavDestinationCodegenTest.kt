@@ -4,7 +4,7 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.AppScope
 import com.freeletics.khonshu.codegen.ComposableParameter
-import com.freeletics.khonshu.codegen.ComposeScreenData
+import com.freeletics.khonshu.codegen.NavDestinationData
 import com.freeletics.khonshu.codegen.Navigation
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
@@ -18,16 +18,16 @@ import com.test.TestOverlayRoute
 import org.intellij.lang.annotations.Language
 import org.junit.Test
 
-internal class FileGeneratorTestCompose {
+internal class NavDestinationCodegenTest {
 
-    private val navigation = Navigation.Compose(
+    private val navigation = Navigation(
         route = ClassName("com.test", "TestRoute"),
         parentScopeIsRoute = true,
         overlay = false,
         destinationScope = ClassName("com.test.destination", "TestDestinationScope"),
     )
 
-    private val data = ComposeScreenData(
+    private val data = NavDestinationData(
         baseName = "Test",
         packageName = "com.test",
         scope = navigation.route,

@@ -1,16 +1,15 @@
-package com.freeletics.khonshu.codegen.codegen.common
+package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.codegen.Generator
-import com.freeletics.khonshu.codegen.codegen.util.componentProvider
-import com.freeletics.khonshu.codegen.codegen.util.context
-import com.freeletics.khonshu.codegen.codegen.util.destinationId
-import com.freeletics.khonshu.codegen.codegen.util.getComponent
-import com.freeletics.khonshu.codegen.codegen.util.getComponentFromRoute
-import com.freeletics.khonshu.codegen.codegen.util.internalNavigatorApi
-import com.freeletics.khonshu.codegen.codegen.util.navigationExecutor
-import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.propertyName
+import com.freeletics.khonshu.codegen.util.componentProvider
+import com.freeletics.khonshu.codegen.util.context
+import com.freeletics.khonshu.codegen.util.destinationId
+import com.freeletics.khonshu.codegen.util.getComponent
+import com.freeletics.khonshu.codegen.util.getComponentFromRoute
+import com.freeletics.khonshu.codegen.util.internalNavigatorApi
+import com.freeletics.khonshu.codegen.util.navigationExecutor
+import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.propertyName
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -19,7 +18,7 @@ import com.squareup.kotlinpoet.TypeSpec
 internal val Generator<out BaseData>.componentProviderClassName
     get() = ClassName("Khonshu${data.baseName}ComponentProvider")
 
-internal class ComponentProviderGenerator(
+internal class NavDestinationComponentProviderGenerator(
     override val data: BaseData,
 ) : Generator<BaseData>() {
 

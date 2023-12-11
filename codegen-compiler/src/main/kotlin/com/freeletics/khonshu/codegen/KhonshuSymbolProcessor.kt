@@ -3,8 +3,8 @@ package com.freeletics.khonshu.codegen
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
 import com.freeletics.khonshu.codegen.compose.NavDestination
 import com.freeletics.khonshu.codegen.compose.NavHostActivity
-import com.freeletics.khonshu.codegen.parser.ksp.toComposeScreenDestinationData
-import com.freeletics.khonshu.codegen.parser.ksp.toNavHostActivityData
+import com.freeletics.khonshu.codegen.parser.toComposeScreenDestinationData
+import com.freeletics.khonshu.codegen.parser.toNavHostActivityData
 import com.google.auto.service.AutoService
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger

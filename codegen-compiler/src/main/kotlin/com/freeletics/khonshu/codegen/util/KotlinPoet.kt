@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.codegen.codegen.util
+package com.freeletics.khonshu.codegen.util
 
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.Navigation

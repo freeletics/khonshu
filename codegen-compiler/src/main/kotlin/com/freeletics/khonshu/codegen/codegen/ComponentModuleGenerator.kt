@@ -1,11 +1,10 @@
-package com.freeletics.khonshu.codegen.codegen.common
+package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.codegen.Generator
-import com.freeletics.khonshu.codegen.codegen.util.contributesToAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.forScope
-import com.freeletics.khonshu.codegen.codegen.util.module
-import com.freeletics.khonshu.codegen.codegen.util.multibinds
+import com.freeletics.khonshu.codegen.util.contributesToAnnotation
+import com.freeletics.khonshu.codegen.util.forScope
+import com.freeletics.khonshu.codegen.util.module
+import com.freeletics.khonshu.codegen.util.multibinds
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -14,7 +13,7 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
 import java.io.Closeable
 
-internal class ModuleGenerator(
+internal class ComponentModuleGenerator(
     override val data: BaseData,
 ) : Generator<BaseData>() {
 

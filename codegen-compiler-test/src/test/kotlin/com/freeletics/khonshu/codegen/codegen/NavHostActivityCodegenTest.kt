@@ -17,7 +17,7 @@ import com.squareup.kotlinpoet.asClassName
 import org.intellij.lang.annotations.Language
 import org.junit.Test
 
-internal class FileGeneratorTestNavHostActivity {
+internal class NavHostActivityCodegenTest {
 
     private val data = NavHostActivityData(
         baseName = "Test",
