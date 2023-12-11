@@ -1,20 +1,20 @@
-package com.freeletics.khonshu.navigation.compose.internal
+package com.freeletics.khonshu.navigation.internal
 
 import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.ActivityRoute
-import com.freeletics.khonshu.navigation.compose.test.OtherRoot
-import com.freeletics.khonshu.navigation.compose.test.OtherRoute
-import com.freeletics.khonshu.navigation.compose.test.SimpleActivity
-import com.freeletics.khonshu.navigation.compose.test.SimpleRoot
-import com.freeletics.khonshu.navigation.compose.test.SimpleRoute
-import com.freeletics.khonshu.navigation.compose.test.ThirdRoute
-import com.freeletics.khonshu.navigation.compose.test.destinations
-import com.freeletics.khonshu.navigation.compose.test.otherRootDestination
-import com.freeletics.khonshu.navigation.compose.test.otherRouteDestination
-import com.freeletics.khonshu.navigation.compose.test.simpleRootDestination
-import com.freeletics.khonshu.navigation.compose.test.simpleRouteDestination
-import com.freeletics.khonshu.navigation.compose.test.thirdRouteDestination
+import com.freeletics.khonshu.navigation.test.OtherRoot
+import com.freeletics.khonshu.navigation.test.OtherRoute
+import com.freeletics.khonshu.navigation.test.SimpleActivity
+import com.freeletics.khonshu.navigation.test.SimpleRoot
+import com.freeletics.khonshu.navigation.test.SimpleRoute
+import com.freeletics.khonshu.navigation.test.ThirdRoute
+import com.freeletics.khonshu.navigation.test.destinations
+import com.freeletics.khonshu.navigation.test.otherRootDestination
+import com.freeletics.khonshu.navigation.test.otherRouteDestination
+import com.freeletics.khonshu.navigation.test.simpleRootDestination
+import com.freeletics.khonshu.navigation.test.simpleRouteDestination
+import com.freeletics.khonshu.navigation.test.thirdRouteDestination
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.Test
@@ -894,7 +894,7 @@ internal class MultiStackNavigationExecutorTest {
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo(
-                "Route class com.freeletics.khonshu.navigation.compose.test.OtherRoute (Kotlin " +
+                "Route class com.freeletics.khonshu.navigation.test.OtherRoute (Kotlin " +
                     "reflection is not available) not found on back stack",
             )
 

@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.compose.test
+package com.freeletics.khonshu.navigation.test
 
 import android.os.Parcelable
 import com.freeletics.khonshu.navigation.ExternalActivityRoute

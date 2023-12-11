@@ -1,10 +1,9 @@
-package com.freeletics.khonshu.navigation.compose.internal
+package com.freeletics.khonshu.navigation.internal
 
 import android.content.Context
 import android.content.Intent
 import com.freeletics.khonshu.navigation.ActivityDestination
 import com.freeletics.khonshu.navigation.ActivityRoute
-import com.freeletics.khonshu.navigation.internal.ActivityDestinationId
 
 internal class ActivityStarter(
     private val context: Context,

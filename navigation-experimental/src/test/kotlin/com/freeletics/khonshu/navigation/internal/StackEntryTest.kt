@@ -1,9 +1,9 @@
-package com.freeletics.khonshu.navigation.compose.internal
+package com.freeletics.khonshu.navigation.internal
 
-import com.freeletics.khonshu.navigation.compose.test.SimpleRoot
-import com.freeletics.khonshu.navigation.compose.test.SimpleRoute
-import com.freeletics.khonshu.navigation.compose.test.simpleRootDestination
-import com.freeletics.khonshu.navigation.compose.test.simpleRouteDestination
+import com.freeletics.khonshu.navigation.test.SimpleRoot
+import com.freeletics.khonshu.navigation.test.SimpleRoute
+import com.freeletics.khonshu.navigation.test.simpleRootDestination
+import com.freeletics.khonshu.navigation.test.simpleRouteDestination
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

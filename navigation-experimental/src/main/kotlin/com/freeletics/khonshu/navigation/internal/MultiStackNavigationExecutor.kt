@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.compose.internal
+package com.freeletics.khonshu.navigation.internal
 
 import android.os.Parcelable
 import androidx.compose.runtime.State
@@ -7,9 +7,6 @@ import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
-import com.freeletics.khonshu.navigation.internal.DestinationId
-import com.freeletics.khonshu.navigation.internal.NavigationExecutor
-import com.freeletics.khonshu.navigation.internal.destinationId
 import java.io.Serializable
 import kotlinx.collections.immutable.ImmutableList
 
