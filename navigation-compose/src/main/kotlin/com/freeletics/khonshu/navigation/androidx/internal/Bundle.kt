@@ -1,9 +1,10 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation.androidx.internal
 
 import android.os.Bundle
 import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.EXTRA_ROUTE
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 
 @InternalNavigationApi
 public fun <T : BaseRoute> Bundle?.requireRoute(): T {

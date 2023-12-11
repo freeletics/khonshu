@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation.androidx.internal
 
 import android.app.Activity
 import android.content.Context
@@ -25,13 +25,13 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import androidx.navigation.NavigatorProvider
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 
 /**
  * ActivityNavigator implements cross-activity navigation.
  */
 @Navigator.Name("activity")
-@InternalNavigationApi
-public open class CustomActivityNavigator(
+internal class CustomActivityNavigator(
     private val context: Context,
 ) : Navigator<CustomActivityNavigator.Destination>() {
     private val hostActivity: Activity? = generateSequence(context) {
@@ -129,23 +129,22 @@ public open class CustomActivityNavigator(
      */
     @NavDestination.ClassType(Activity::class)
     @InternalNavigationApi
-    public open class Destination(
+    class Destination(
         activityNavigator: Navigator<out Destination>,
     ) : NavDestination(activityNavigator) {
         /**
          * The Intent associated with this destination.
          */
-        public var intent: Intent? = null
+        var intent: Intent? = null
 
         /**
          * Construct a new activity destination. This destination is not valid until you set the
          * Intent via [setIntent] or one or more of the other set method.
          *
-         *
          * @param navigatorProvider The [NavController] which this destination
          * will be associated with.
          */
-        public constructor(
+        constructor(
             navigatorProvider: NavigatorProvider,
         ) : this(navigatorProvider.getNavigator(CustomActivityNavigator::class.java))
 

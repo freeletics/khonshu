@@ -9,6 +9,7 @@ Change Log
   and `NavigationSetup` have been moved to the `com.freeletics.khonshu.navigation` package inside
   `navigation`. Previously these were duplicated between `navigation-compose` and `navigation-experimental`.
 - **Removed**: `navigation-fragment` and `Fragment` navigation support.
+- **Removed**: `navigation-androidx` has been inlined into `navigation-compose`.
 
 ### Codegen
 
