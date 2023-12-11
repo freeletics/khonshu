@@ -87,8 +87,8 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
@@ -282,8 +282,8 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
@@ -498,8 +498,8 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
@@ -710,8 +710,8 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
@@ -900,8 +900,8 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
@@ -1093,8 +1093,8 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.compose.NavDestination
             import com.freeletics.khonshu.navigation.compose.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent

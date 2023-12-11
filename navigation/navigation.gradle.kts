@@ -14,6 +14,8 @@ freeletics {
         addAndroidTarget()
     }
 
+    useCompose()
+
     extensions.configure(FreeleticsAndroidExtension::class) {
         enableParcelize()
         consumerProguardFiles("navigation.pro")
@@ -21,12 +23,15 @@ freeletics {
 }
 
 dependencies {
+    "commonMainApi"(libs.jetbrains.compose.runtime)
     "commonMainApi"(libs.uri)
 
     "androidMainApi"(libs.androidx.activity)
+    "androidMainApi"(libs.androidx.activity.compose)
     "androidMainApi"(libs.androidx.core)
     "androidMainApi"(libs.androidx.lifecycle.common)
     "androidMainApi"(libs.androidx.viewmodel.savedstate)
+    "androidMainApi"(libs.androidx.compose.ui)
     "androidMainApi"(libs.coroutines.core)
 
     "androidMainImplementation"(libs.androidx.lifecycle.runtime)

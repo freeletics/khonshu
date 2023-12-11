@@ -3,10 +3,10 @@ package com.freeletics.khonshu.navigation.compose.internal
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.ContentDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
-import com.freeletics.khonshu.navigation.compose.ContentDestination
-import com.freeletics.khonshu.navigation.compose.ScreenDestination
+import com.freeletics.khonshu.navigation.ScreenDestination
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.destinationId
 import java.util.UUID

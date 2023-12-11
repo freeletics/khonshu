@@ -18,8 +18,6 @@ dependencies {
 
     implementation(projects.navigationAndroidx)
     implementation(libs.coroutines.core)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.runtime.saveable)
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.lifecycle.common)

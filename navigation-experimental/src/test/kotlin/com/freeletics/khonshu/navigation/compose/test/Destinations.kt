@@ -1,9 +1,9 @@
 package com.freeletics.khonshu.navigation.compose.test
 
 import android.content.Intent
-import com.freeletics.khonshu.navigation.compose.ActivityDestination
-import com.freeletics.khonshu.navigation.compose.OverlayDestination
-import com.freeletics.khonshu.navigation.compose.ScreenDestination
+import com.freeletics.khonshu.navigation.ActivityDestination
+import com.freeletics.khonshu.navigation.OverlayDestination
+import com.freeletics.khonshu.navigation.ScreenDestination
 import com.freeletics.khonshu.navigation.internal.ActivityDestinationId
 import com.freeletics.khonshu.navigation.internal.DestinationId
 

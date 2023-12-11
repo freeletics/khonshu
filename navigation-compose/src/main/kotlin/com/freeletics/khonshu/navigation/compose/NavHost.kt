@@ -10,10 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.NonRestartableComposable
-import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -30,13 +28,20 @@ import androidx.navigation.compose.NavHost as AndroidXNavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.get
+import com.freeletics.khonshu.navigation.ActivityDestination
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.LocalNavigationExecutor
+import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.NavigationSetup
+import com.freeletics.khonshu.navigation.OverlayDestination
+import com.freeletics.khonshu.navigation.ScreenDestination
 import com.freeletics.khonshu.navigation.compose.internal.OverlayHost
 import com.freeletics.khonshu.navigation.compose.internal.OverlayNavigator
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
+import com.freeletics.khonshu.navigation.findActivity
 import com.freeletics.khonshu.navigation.internal.AndroidXNavigationExecutor
 import com.freeletics.khonshu.navigation.internal.CustomActivityNavigator
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
@@ -348,9 +353,4 @@ private fun ActivityDestination.toDestination(
         it.id = id.destinationId()
         it.intent = intent
     }
-}
-
-@InternalNavigationApi
-public val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecutor> = staticCompositionLocalOf {
-    throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
 }

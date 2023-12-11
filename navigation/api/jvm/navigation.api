@@ -8,6 +8,7 @@ public abstract interface class com/freeletics/khonshu/navigation/NavRoute : com
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLink {
+	public static final field $stable I
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;

@@ -5,6 +5,9 @@ Change Log
 
 ### Navigation
 
+- **Breaking**: `NavDestination`, `ScreenDestination`, `OverlayDestination`, `ActivityDestination`
+  and `NavigationSetup` have been moved to the `com.freeletics.khonshu.navigation` package inside
+  `navigation`. Previously these were duplicated between `navigation-compose` and `navigation-experimental`.
 - **Removed**: `navigation-fragment` and `Fragment` navigation support.
 
 ### Codegen

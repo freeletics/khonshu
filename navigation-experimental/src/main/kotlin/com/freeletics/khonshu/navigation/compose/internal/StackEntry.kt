@@ -2,9 +2,9 @@ package com.freeletics.khonshu.navigation.compose.internal
 
 import androidx.compose.runtime.Immutable
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.ContentDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
-import com.freeletics.khonshu.navigation.compose.ContentDestination
 import com.freeletics.khonshu.navigation.internal.destinationId
 import dev.drewhamilton.poko.Poko
 
