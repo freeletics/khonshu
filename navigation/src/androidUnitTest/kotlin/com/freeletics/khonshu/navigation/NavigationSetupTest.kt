@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation
 
 import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
@@ -7,9 +7,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.lifecycle.testing.TestLifecycleOwner
 import app.cash.turbine.test
-import com.freeletics.khonshu.navigation.ContractResultOwner
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
+import com.freeletics.khonshu.navigation.internal.DestinationId
+import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute

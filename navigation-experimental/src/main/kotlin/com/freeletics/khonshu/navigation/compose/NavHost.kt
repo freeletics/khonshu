@@ -7,22 +7,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.LocalNavigationExecutor
+import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.navigation.NavRoot
+import com.freeletics.khonshu.navigation.NavigationSetup
 import com.freeletics.khonshu.navigation.compose.internal.MultiStackNavigationExecutor
 import com.freeletics.khonshu.navigation.compose.internal.StackEntry
 import com.freeletics.khonshu.navigation.compose.internal.rememberNavigationExecutor
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
-import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import java.io.Closeable
 import java.lang.ref.WeakReference
 import kotlinx.collections.immutable.ImmutableSet
@@ -149,9 +148,4 @@ private fun DestinationChangedCallback(
                 .collect { destinationChangedCallback(it) }
         }
     }
-}
-
-@InternalNavigationApi
-public val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecutor> = staticCompositionLocalOf {
-    throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
 }

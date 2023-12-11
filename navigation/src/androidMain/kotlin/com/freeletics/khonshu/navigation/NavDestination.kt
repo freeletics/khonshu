@@ -1,24 +1,27 @@
-package com.freeletics.khonshu.navigation.compose
+package com.freeletics.khonshu.navigation
 
 import android.content.Intent
 import androidx.compose.runtime.Composable
-import com.freeletics.khonshu.navigation.ActivityRoute
-import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.internal.ActivityDestinationId
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import java.io.Serializable
 
 /**
- * A destination that can be navigated to. See [NavHost] for how to configure a `NavGraph` with it.
+ * A destination that can be navigated to. See `NavHost` for how to configure a `NavGraph` with it.
  */
 public sealed interface NavDestination
 
-internal sealed interface ContentDestination<T : BaseRoute> : NavDestination {
-    val id: DestinationId<T>
-    val extra: Serializable?
-    val content: @Composable (T) -> Unit
+@InternalNavigationApi
+public sealed interface ContentDestination<T : BaseRoute> : NavDestination {
+    @InternalNavigationApi
+    public val id: DestinationId<T>
+
+    @InternalNavigationApi
+    public val extra: Serializable?
+
+    @InternalNavigationApi
+    public val content: @Composable (T) -> Unit
 }
 
 /**
@@ -38,8 +41,8 @@ public inline fun <reified T : BaseRoute> ScreenDestination(
     noinline content: @Composable (T) -> Unit,
 ): NavDestination = ScreenDestination(DestinationId(T::class), extra, content)
 
-@PublishedApi
-internal class ScreenDestination<T : BaseRoute>(
+@InternalNavigationApi
+public class ScreenDestination<T : BaseRoute>(
     override val id: DestinationId<T>,
     override val extra: Serializable?,
     override val content: @Composable (T) -> Unit,
@@ -62,8 +65,8 @@ public inline fun <reified T : NavRoute> OverlayDestination(
     noinline content: @Composable (T) -> Unit,
 ): NavDestination = OverlayDestination(DestinationId(T::class), extra, content)
 
-@PublishedApi
-internal class OverlayDestination<T : NavRoute>(
+@InternalNavigationApi
+public class OverlayDestination<T : NavRoute>(
     override val id: DestinationId<T>,
     override val extra: Serializable?,
     override val content: @Composable (T) -> Unit,
@@ -79,8 +82,10 @@ public inline fun <reified T : ActivityRoute> ActivityDestination(
     intent: Intent,
 ): NavDestination = ActivityDestination(ActivityDestinationId(T::class), intent)
 
-@PublishedApi
-internal class ActivityDestination(
-    internal val id: ActivityDestinationId<out ActivityRoute>,
-    internal val intent: Intent,
+@InternalNavigationApi
+public class ActivityDestination(
+    @property:InternalNavigationApi
+    public val id: ActivityDestinationId<out ActivityRoute>,
+    @property:InternalNavigationApi
+    public val intent: Intent,
 ) : NavDestination
