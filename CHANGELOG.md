@@ -8,6 +8,10 @@ Change Log
 - **Breaking**: `NavDestination`, `ScreenDestination`, `OverlayDestination`, `ActivityDestination`
   and `NavigationSetup` have been moved to the `com.freeletics.khonshu.navigation` package inside
   `navigation`. Previously these were duplicated between `navigation-compose` and `navigation-experimental`.
+- **Breaking**: Moved `navigation-compose` `NavHost` to `com.freeletics.khonshu.navigation.androidx` and
+  `navigation-experimental` `NavHost` to `com.freeletics.khonshu.navigation`. This now allows to use
+  the AndroidX based and the experimental navigation implementation in the same app and switch between
+  them with a feature flag.
 - **Removed**: `navigation-fragment` and `Fragment` navigation support.
 - **Removed**: `navigation-androidx` has been inlined into `navigation-compose`.
 
@@ -15,6 +19,8 @@ Change Log
 
 - **Breaking**: The `NavDestination` and `NavHostActivity` annotations as well as `SimpleNavHost`
   have been moved to `com.freeletics.khonshu.codegen`.
+- **Added**: `NavHostActivity` has an `experimentalNavigation` boolean to generate code
+  with a `navigation-experimental` `NavHost`.
 - **Removed**: `@ComposeFragmentDestination` and `Fragment` codegen support.
 
 

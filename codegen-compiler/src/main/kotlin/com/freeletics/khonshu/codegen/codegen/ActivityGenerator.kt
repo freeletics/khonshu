@@ -5,7 +5,6 @@ import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.bundle
 import com.freeletics.khonshu.codegen.util.getComponent
 import com.freeletics.khonshu.codegen.util.lateinitPropertySpec
-import com.freeletics.khonshu.codegen.util.navHost
 import com.freeletics.khonshu.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.setContent
@@ -57,7 +56,7 @@ internal class ActivityGenerator(
                 composableName,
                 retainedComponentClassName.propertyName,
             )
-            .addStatement("%M(", navHost)
+            .addStatement("%M(", data.navHost)
             .addStatement("  startRoute = startRoute,")
             .addStatement("  destinations = %L.destinations,", retainedComponentClassName.propertyName)
             .addStatement("  modifier = modifier,")

@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.compose
+package com.freeletics.khonshu.navigation.androidx
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition

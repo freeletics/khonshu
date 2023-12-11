@@ -64,21 +64,26 @@ internal fun TopLevelFunctionReference.toComposeScreenDestinationData(): NavDest
     )
 }
 
-internal fun TopLevelFunctionReference.toNavHostActivityData(): NavHostActivityData? {
-    val annotation = findAnnotation(navHostActivityFqName) ?: return null
+internal fun TopLevelFunctionReference.toNavHostActivityData(): List<NavHostActivityData> {
+    return findAnnotations(navHostActivityFqName).map {
+        toNavHostActivityData(it)
+    }
+}
 
+internal fun TopLevelFunctionReference.toNavHostActivityData(annotation: AnnotationReference): NavHostActivityData {
     val stateMachine = annotation.stateMachineReference
     val (stateParameter, actionParameter) = stateMachine.stateMachineParameters()
 
     val navHostParameter = navHostParameter()
 
     return NavHostActivityData(
-        baseName = name,
+        originalName = name,
         packageName = packageName,
         scope = annotation.scope,
         parentScope = annotation.parentScope,
         stateMachine = stateMachine.asClassName(),
         activityBaseClass = annotation.activityBaseClass,
+        experimentalNavigation = annotation.experimentalNavigation,
         navHostParameter = navHostParameter,
         composableParameter = getInjectedParameters(stateParameter, actionParameter, navHostParameter.typeName),
         stateParameter = getParameterWithType(stateParameter),
@@ -101,9 +106,6 @@ private val AnnotationReference.parentScope: ClassName
 private val AnnotationReference.parentScopeReference: ClassReference?
     get() = optionalClassReferenceArgument("parentScope", 1)
 
-private val AnnotationReference.stateMachine: ClassName
-    get() = stateMachineReference.asClassName()
-
 private val AnnotationReference.stateMachineReference: ClassReference
     get() = requireClassReferenceArgument("stateMachine", 2)
 
@@ -112,6 +114,9 @@ private val AnnotationReference.destinationScope: ClassName
 
 private val AnnotationReference.activityBaseClass: ClassName
     get() = requireClassReferenceArgument("activityBaseClass", 3).asClassName()
+
+internal val AnnotationReference.experimentalNavigation: Boolean
+    get() = argumentAt("experimentalNavigation", 4)?.value() ?: false
 
 private fun TopLevelFunctionReference.getParameterWithType(expectedType: TypeName): ComposableParameter? {
     return parameters.firstNotNullOfOrNull { parameter ->
@@ -164,6 +169,10 @@ private fun ClassReference?.extendsOverlay(): Boolean {
 
 private fun AnnotatedReference.findAnnotation(fqName: FqName): AnnotationReference? {
     return annotations.find { it.fqName == fqName }
+}
+
+private fun AnnotatedReference.findAnnotations(fqName: FqName): List<AnnotationReference> {
+    return annotations.filter { it.fqName == fqName }
 }
 
 private fun AnnotationReference.optionalClassArgument(name: String, index: Int): ClassName? {
