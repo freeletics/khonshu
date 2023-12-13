@@ -21,7 +21,7 @@ jetbrains-compose = "1.5.11"
 jetbrains-compose-compiler = "1.5.4"
 
 androidx-activity = "1.8.1"
-androidx-annotations = "1.5.0"
+androidx-annotations = "1.7.1"
 androidx-core = "1.12.0"
 androidx-lifecycle = "2.6.2"
 androidx-fragment = "1.6.2"
