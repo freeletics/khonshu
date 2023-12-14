@@ -1,14 +1,12 @@
-package com.freeletics.khonshu.codegen.codegen.common
+package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.Navigation
-import com.freeletics.khonshu.codegen.codegen.Generator
-import com.freeletics.khonshu.codegen.codegen.util.contributesToAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.internalNavigatorApi
-import com.freeletics.khonshu.codegen.codegen.util.intoSet
-import com.freeletics.khonshu.codegen.codegen.util.module
-import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.provides
+import com.freeletics.khonshu.codegen.util.contributesToAnnotation
+import com.freeletics.khonshu.codegen.util.internalNavigatorApi
+import com.freeletics.khonshu.codegen.util.intoSet
+import com.freeletics.khonshu.codegen.util.module
+import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.provides
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
@@ -40,19 +38,15 @@ internal class NavDestinationModuleGenerator(
 
     private fun providesDestinationCode(): CodeBlock {
         val navigation = data.navigation!!
-        return when (data.navigation!!) {
-            is Navigation.Compose -> {
-                CodeBlock.builder()
-                    .beginControlFlow(
-                        "return %M<%T>(%T)",
-                        navigation.destinationMethod,
-                        navigation.route,
-                        componentProviderClassName,
-                    )
-                    .addStatement("%L(it)", composableName)
-                    .endControlFlow()
-                    .build()
-            }
-        }
+        return CodeBlock.builder()
+            .beginControlFlow(
+                "return %M<%T>(%T)",
+                navigation.destinationMethod,
+                navigation.route,
+                componentProviderClassName,
+            )
+            .addStatement("%L(it)", composableName)
+            .endControlFlow()
+            .build()
     }
 }

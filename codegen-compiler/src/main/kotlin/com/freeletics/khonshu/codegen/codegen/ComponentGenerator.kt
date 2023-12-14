@@ -1,24 +1,22 @@
-package com.freeletics.khonshu.codegen.codegen.common
+package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.ComposeData
 import com.freeletics.khonshu.codegen.NavHostActivityData
-import com.freeletics.khonshu.codegen.codegen.Generator
-import com.freeletics.khonshu.codegen.codegen.util.asParameter
-import com.freeletics.khonshu.codegen.codegen.util.bindsInstanceParameter
-import com.freeletics.khonshu.codegen.codegen.util.composeDestination
-import com.freeletics.khonshu.codegen.codegen.util.contributesToAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.deepLinkHandler
-import com.freeletics.khonshu.codegen.codegen.util.deepLinkPrefix
-import com.freeletics.khonshu.codegen.codegen.util.forScope
-import com.freeletics.khonshu.codegen.codegen.util.immutableSet
-import com.freeletics.khonshu.codegen.codegen.util.navEventNavigator
-import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.savedStateHandle
-import com.freeletics.khonshu.codegen.codegen.util.scopeToAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.simplePropertySpec
-import com.freeletics.khonshu.codegen.codegen.util.subcomponentAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.subcomponentFactoryAnnotation
+import com.freeletics.khonshu.codegen.util.asParameter
+import com.freeletics.khonshu.codegen.util.bindsInstanceParameter
+import com.freeletics.khonshu.codegen.util.composeDestination
+import com.freeletics.khonshu.codegen.util.contributesToAnnotation
+import com.freeletics.khonshu.codegen.util.deepLinkHandler
+import com.freeletics.khonshu.codegen.util.deepLinkPrefix
+import com.freeletics.khonshu.codegen.util.forScope
+import com.freeletics.khonshu.codegen.util.immutableSet
+import com.freeletics.khonshu.codegen.util.navEventNavigator
+import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.savedStateHandle
+import com.freeletics.khonshu.codegen.util.scopeToAnnotation
+import com.freeletics.khonshu.codegen.util.simplePropertySpec
+import com.freeletics.khonshu.codegen.util.subcomponentAnnotation
+import com.freeletics.khonshu.codegen.util.subcomponentFactoryAnnotation
 import com.squareup.anvil.compiler.internal.decapitalize
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget.GET
 import com.squareup.kotlinpoet.FunSpec
@@ -66,27 +64,22 @@ internal class ComponentGenerator(
 
     private fun componentProperties(): List<PropertySpec> {
         val properties = mutableListOf<PropertySpec>()
-        if (data.stateMachine != null) {
-            properties += simplePropertySpec(data.stateMachine!!)
+        properties += simplePropertySpec(data.stateMachine)
+
+        properties += simplePropertySpec(navEventNavigator).toBuilder()
+            .addAnnotation(forScope(data.scope, GET))
+            .build()
+
+        properties += data.composableParameter.map {
+            PropertySpec.builder(it.name, it.typeName).build()
         }
-        if (data.navigation != null || data is NavHostActivityData) {
-            properties += simplePropertySpec(navEventNavigator).toBuilder()
-                .addAnnotation(forScope(data.scope, GET))
-                .build()
-        }
-        when (data) {
-            is ComposeData -> {
-                properties += data.composableParameter.map {
-                    PropertySpec.builder(it.name, it.typeName).build()
-                }
-                if (data is NavHostActivityData) {
-                    properties += listOf(
-                        PropertySpec.builder("destinations", immutableSet.parameterizedBy(composeDestination)).build(),
-                        PropertySpec.builder("deepLinkHandlers", immutableSet.parameterizedBy(deepLinkHandler)).build(),
-                        PropertySpec.builder("deepLinkPrefixes", immutableSet.parameterizedBy(deepLinkPrefix)).build(),
-                    )
-                }
-            }
+
+        if (data is NavHostActivityData) {
+            properties += listOf(
+                PropertySpec.builder("destinations", immutableSet.parameterizedBy(composeDestination)).build(),
+                PropertySpec.builder("deepLinkHandlers", immutableSet.parameterizedBy(deepLinkHandler)).build(),
+                PropertySpec.builder("deepLinkPrefixes", immutableSet.parameterizedBy(deepLinkPrefix)).build(),
+            )
         }
         properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName()))
             .addAnnotation(forScope(data.scope, GET))

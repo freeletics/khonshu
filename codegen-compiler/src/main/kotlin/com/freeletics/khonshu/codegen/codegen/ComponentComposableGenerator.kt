@@ -1,17 +1,15 @@
-package com.freeletics.khonshu.codegen.codegen.common
+package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.ComposeData
 import com.freeletics.khonshu.codegen.NavHostActivityData
-import com.freeletics.khonshu.codegen.codegen.Generator
-import com.freeletics.khonshu.codegen.codegen.util.asComposeState
-import com.freeletics.khonshu.codegen.codegen.util.composable
-import com.freeletics.khonshu.codegen.codegen.util.launch
-import com.freeletics.khonshu.codegen.codegen.util.navHostParameter
-import com.freeletics.khonshu.codegen.codegen.util.optInAnnotation
-import com.freeletics.khonshu.codegen.codegen.util.propertyName
-import com.freeletics.khonshu.codegen.codegen.util.remember
-import com.freeletics.khonshu.codegen.codegen.util.rememberCoroutineScope
+import com.freeletics.khonshu.codegen.util.asComposeState
+import com.freeletics.khonshu.codegen.util.composable
+import com.freeletics.khonshu.codegen.util.launch
+import com.freeletics.khonshu.codegen.util.navHostParameter
+import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.propertyName
+import com.freeletics.khonshu.codegen.util.remember
+import com.freeletics.khonshu.codegen.util.rememberCoroutineScope
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.PRIVATE
@@ -24,9 +22,9 @@ internal val Generator<out BaseData>.composableName
  * Receives the component, will do the StateMachine set up and then calls
  * the annotated composable with all required parameters.
  */
-internal class InnerComposableGenerator(
-    override val data: ComposeData,
-) : Generator<ComposeData>() {
+internal class ComponentComposableGenerator(
+    override val data: BaseData,
+) : Generator<BaseData>() {
 
     internal fun generate(): FunSpec {
         return FunSpec.builder(composableName)

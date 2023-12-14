@@ -1,8 +1,8 @@
 package com.freeletics.khonshu.codegen
 
-import com.freeletics.khonshu.codegen.codegen.util.composeDestination
-import com.freeletics.khonshu.codegen.codegen.util.composeOverlayDestination
-import com.freeletics.khonshu.codegen.codegen.util.composeScreenDestination
+import com.freeletics.khonshu.codegen.util.composeDestination
+import com.freeletics.khonshu.codegen.util.composeOverlayDestination
+import com.freeletics.khonshu.codegen.util.composeScreenDestination
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.TypeName
@@ -14,12 +14,10 @@ public sealed interface BaseData {
     public val scope: ClassName
     public val parentScope: ClassName
 
-    public val stateMachine: ClassName?
-    public val navigation: Navigation?
-}
+    public val stateMachine: ClassName
 
-public sealed interface ComposeData : BaseData {
-    override val stateMachine: ClassName
+    public val navigation: Navigation?
+
     public val stateParameter: ComposableParameter?
     public val sendActionParameter: ComposableParameter?
     public val composableParameter: List<ComposableParameter>
@@ -30,7 +28,7 @@ public data class ComposableParameter(
     public val typeName: TypeName,
 )
 
-public data class ComposeScreenData(
+public data class NavDestinationData(
     override val baseName: String,
     override val packageName: String,
 
@@ -39,12 +37,12 @@ public data class ComposeScreenData(
 
     override val stateMachine: ClassName,
 
-    override val navigation: Navigation.Compose,
+    override val navigation: Navigation,
 
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
-) : ComposeData
+) : BaseData
 
 public data class NavHostActivityData(
     override val baseName: String,
@@ -61,28 +59,20 @@ public data class NavHostActivityData(
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
-) : ComposeData {
+) : BaseData {
     override val navigation: Navigation? = null
 }
 
-public sealed interface Navigation {
-    public val route: ClassName
-    public val parentScopeIsRoute: Boolean
-    public val destinationClass: ClassName
-    public val destinationScope: ClassName
-    public val destinationMethod: MemberName?
+public data class Navigation(
+    val route: ClassName,
+    val parentScopeIsRoute: Boolean,
+    private val overlay: Boolean,
+    val destinationScope: ClassName,
+) {
+    val destinationClass: ClassName = composeDestination
 
-    public data class Compose(
-        override val route: ClassName,
-        override val parentScopeIsRoute: Boolean,
-        private val overlay: Boolean,
-        override val destinationScope: ClassName,
-    ) : Navigation {
-        override val destinationClass: ClassName = composeDestination
-
-        override val destinationMethod: MemberName = when (overlay) {
-            false -> composeScreenDestination
-            true -> composeOverlayDestination
-        }
+    val destinationMethod: MemberName = when (overlay) {
+        false -> composeScreenDestination
+        true -> composeOverlayDestination
     }
 }
