@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.compose
+package com.freeletics.khonshu.navigation
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
@@ -12,16 +12,10 @@ import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.LocalNavigationExecutor
-import com.freeletics.khonshu.navigation.NavDestination
-import com.freeletics.khonshu.navigation.NavEventNavigator
-import com.freeletics.khonshu.navigation.NavRoot
-import com.freeletics.khonshu.navigation.NavigationSetup
-import com.freeletics.khonshu.navigation.compose.internal.MultiStackNavigationExecutor
-import com.freeletics.khonshu.navigation.compose.internal.StackEntry
-import com.freeletics.khonshu.navigation.compose.internal.rememberNavigationExecutor
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
+import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor
+import com.freeletics.khonshu.navigation.internal.StackEntry
+import com.freeletics.khonshu.navigation.internal.rememberNavigationExecutor
 import java.io.Closeable
 import java.lang.ref.WeakReference
 import kotlinx.collections.immutable.ImmutableSet

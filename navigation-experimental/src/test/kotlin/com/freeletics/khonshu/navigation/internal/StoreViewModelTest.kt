@@ -1,7 +1,7 @@
-package com.freeletics.khonshu.navigation.compose.internal
+package com.freeletics.khonshu.navigation.internal
 
 import androidx.lifecycle.SavedStateHandle
-import com.freeletics.khonshu.navigation.compose.test.FakeCloseable
+import com.freeletics.khonshu.navigation.test.FakeCloseable
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
