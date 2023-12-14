@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.codegen
 
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
-import com.freeletics.khonshu.codegen.parser.anvil.toComposeFragmentDestinationData
 import com.freeletics.khonshu.codegen.parser.anvil.toComposeScreenDestinationData
 import com.freeletics.khonshu.codegen.parser.anvil.toNavHostActivityData
 import com.google.auto.service.AutoService
@@ -29,7 +28,6 @@ public class KhonshuCodeGenerator : CodeGenerator {
             .flatMap {
                 listOfNotNull(
                     it.toComposeScreenDestinationData(),
-                    it.toComposeFragmentDestinationData(),
                     it.toNavHostActivityData(),
                 )
             }

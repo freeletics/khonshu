@@ -40,7 +40,6 @@ dependencyAnalysis {
                     ":codegen",
                     ":codegen-compiler",
                     ":navigation-compose",
-                    ":navigation-fragment",
                 )
             }
         }

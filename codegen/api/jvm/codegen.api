@@ -21,20 +21,7 @@ public abstract interface annotation class com/freeletics/khonshu/codegen/compos
 	public abstract fun stateMachine ()Ljava/lang/Class;
 }
 
-public abstract interface annotation class com/freeletics/khonshu/codegen/fragment/ComposeFragmentDestination : java/lang/annotation/Annotation {
-	public abstract fun destinationScope ()Ljava/lang/Class;
-	public abstract fun fragmentBaseClass ()Ljava/lang/Class;
-	public abstract fun parentScope ()Ljava/lang/Class;
-	public abstract fun route ()Ljava/lang/Class;
-	public abstract fun stateMachine ()Ljava/lang/Class;
-}
-
 public final class com/freeletics/khonshu/codegen/internal/CollectAsStateKt {
-}
-
-public final class com/freeletics/khonshu/codegen/internal/Fragment {
-	public static final field $stable I
-	public fun <init> ()V
 }
 
 public abstract interface annotation class com/freeletics/khonshu/codegen/internal/InternalCodegenApi : java/lang/annotation/Annotation {

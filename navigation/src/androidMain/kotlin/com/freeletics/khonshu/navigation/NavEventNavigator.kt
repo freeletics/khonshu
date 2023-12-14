@@ -164,8 +164,7 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
      *
      * For permission requests prefer using [registerForPermissionsResult] instead.
      *
-     * Note: This has to be called *before* this [NavEventNavigator] gets attached to a fragment.
-     *   In practice, this means it should usually be called during initialisation of your subclass.
+     * Note: You must call this before `NavigationSetup` is called with this navigator."
      */
     protected fun <I, O> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
@@ -188,8 +187,7 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
      * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
      * for more information.
      *
-     * Note: This has to be called *before* this [NavEventNavigator] gets attached to a fragment.
-     *   In practice, this means it should usually be called during initialisation of your subclass.
+     * Note: You must call this before `NavigationSetup` is called with this navigator."
      */
     protected fun registerForPermissionsResult(): PermissionsResultRequest {
         checkAllowedToAddRequests()
@@ -205,8 +203,7 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
      * The returned [NavigationResultRequest] has a [NavigationResultRequest.Key]. This `key` should
      * be passed to the target destination which can then use it to call [deliverNavigationResult].
      *
-     * Note: This has to be called *before* this [NavEventNavigator] gets attached to a fragment.
-     *   In practice, this means it should usually be called during initialisation of your subclass.
+     * Note: You must call this before `NavigationSetup` is called with this navigator."
      */
     protected inline fun <reified T : BaseRoute, reified O : Parcelable> registerForNavigationResult():
         NavigationResultRequest<O> {
@@ -393,8 +390,7 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
 
     private fun checkAllowedToAddRequests() {
         check(allowedToAddRequests) {
-            "Failed to register for result! You must call this before this navigator " +
-                "gets attached to a fragment, e.g. during initialisation of your navigator subclass."
+            "Failed to register for result! You must call this before NavigationSetup is called with this navigator."
         }
     }
 

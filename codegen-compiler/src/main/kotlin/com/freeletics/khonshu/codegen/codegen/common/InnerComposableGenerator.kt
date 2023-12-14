@@ -20,7 +20,7 @@ internal val Generator<out BaseData>.composableName
     get() = "Khonshu${data.baseName}"
 
 /**
- * The inner Composable is used for both Fragments and pure compose mode.
+ * The inner Composable is used for both NavDestinations and Activities.
  * Receives the component, will do the StateMachine set up and then calls
  * the annotated composable with all required parameters.
  */
@@ -59,7 +59,7 @@ internal class InnerComposableGenerator(
                     addStatement("val scope = %M()", rememberCoroutineScope)
                 }
             }
-            .addStatement("%L(", data.baseName.removePrefix("Fragment"))
+            .addStatement("%L(", data.baseName)
             .apply {
                 data.composableParameter.forEach { parameter ->
                     addStatement("  %L = %L,", parameter.name, parameter.name)

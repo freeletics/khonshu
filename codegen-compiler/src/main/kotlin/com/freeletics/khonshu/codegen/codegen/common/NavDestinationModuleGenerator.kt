@@ -3,7 +3,6 @@ package com.freeletics.khonshu.codegen.codegen.common
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.codegen.Generator
-import com.freeletics.khonshu.codegen.codegen.fragment.fragmentName
 import com.freeletics.khonshu.codegen.codegen.util.contributesToAnnotation
 import com.freeletics.khonshu.codegen.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.codegen.util.intoSet
@@ -53,15 +52,6 @@ internal class NavDestinationModuleGenerator(
                     .addStatement("%L(it)", composableName)
                     .endControlFlow()
                     .build()
-            }
-            is Navigation.Fragment -> {
-                CodeBlock.of(
-                    "return %M<%T, %T>(%T)",
-                    navigation.destinationMethod,
-                    navigation.route,
-                    ClassName(fragmentName),
-                    componentProviderClassName,
-                )
             }
         }
     }

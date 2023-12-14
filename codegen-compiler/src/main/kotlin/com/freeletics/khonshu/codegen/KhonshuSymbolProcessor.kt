@@ -3,7 +3,6 @@ package com.freeletics.khonshu.codegen
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
 import com.freeletics.khonshu.codegen.compose.NavDestination
 import com.freeletics.khonshu.codegen.compose.NavHostActivity
-import com.freeletics.khonshu.codegen.parser.ksp.toComposeFragmentDestinationData
 import com.freeletics.khonshu.codegen.parser.ksp.toComposeScreenDestinationData
 import com.freeletics.khonshu.codegen.parser.ksp.toNavHostActivityData
 import com.google.auto.service.AutoService
@@ -35,10 +34,6 @@ public class KhonshuSymbolProcessor(
     override fun process(resolver: Resolver): List<KSAnnotated> {
         resolver.generateCodeForAnnotation<NavDestination> {
             toComposeScreenDestinationData(it, resolver, logger)
-        }
-        @Suppress("DEPRECATION")
-        resolver.generateCodeForAnnotation<com.freeletics.khonshu.codegen.fragment.ComposeFragmentDestination> {
-            toComposeFragmentDestinationData(it, resolver, logger)
         }
         resolver.generateCodeForAnnotation<NavHostActivity> {
             toNavHostActivityData(it, resolver, logger)

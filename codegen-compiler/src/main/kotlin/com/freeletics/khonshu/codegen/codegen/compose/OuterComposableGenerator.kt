@@ -18,7 +18,7 @@ import com.freeletics.khonshu.codegen.codegen.util.remember
 import com.squareup.kotlinpoet.FunSpec
 
 /**
- * Generates the outer Composable when not using Fragments. This will obtain
+ * Generates the outer Composable for a NavDestination. This will obtain
  * the component, if needed call NavigationSetup and finally will call the
  * inner Composable.
  */
