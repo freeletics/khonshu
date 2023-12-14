@@ -26,10 +26,8 @@ public class KhonshuCodeGenerator : CodeGenerator {
         val compose = projectFiles
             .topLevelFunctionReferences(module)
             .flatMap {
-                listOfNotNull(
-                    it.toComposeScreenDestinationData(),
-                    it.toNavHostActivityData(),
-                )
+                listOfNotNull(it.toComposeScreenDestinationData()) +
+                    it.toNavHostActivityData()
             }
 
         return compose.map {
