@@ -1,3 +1,19 @@
+public final class com/freeletics/khonshu/navigation/androidx/internal/AndroidXDeepLinkHandlerKt {
+}
+
+public final class com/freeletics/khonshu/navigation/androidx/internal/BundleKt {
+}
+
+public final class com/freeletics/khonshu/navigation/androidx/internal/ComposableSingletons$OverlayNavigatorKt {
+	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/androidx/internal/ComposableSingletons$OverlayNavigatorKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$navigation_compose_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/freeletics/khonshu/navigation/androidx/internal/DestinationIdIntKt {
+}
+
 public final class com/freeletics/khonshu/navigation/compose/NavHostDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/compose/NavHostDefaults;
@@ -23,12 +39,5 @@ public final class com/freeletics/khonshu/navigation/compose/NavHostTransitionAn
 
 public final class com/freeletics/khonshu/navigation/compose/NavHostTransitionAnimations$Companion {
 	public final fun noAnimations ()Lcom/freeletics/khonshu/navigation/compose/NavHostTransitionAnimations;
-}
-
-public final class com/freeletics/khonshu/navigation/compose/internal/ComposableSingletons$OverlayNavigatorKt {
-	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/compose/internal/ComposableSingletons$OverlayNavigatorKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public fun <init> ()V
-	public final fun getLambda-1$navigation_compose_release ()Lkotlin/jvm/functions/Function3;
 }
 

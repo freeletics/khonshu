@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.freeletics.khonshu.navigation.compose.internal
+package com.freeletics.khonshu.navigation.androidx.internal
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
