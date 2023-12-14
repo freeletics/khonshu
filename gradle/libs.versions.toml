@@ -20,11 +20,11 @@ androidx-compose-animation = "1.5.4"
 jetbrains-compose = "1.5.11"
 jetbrains-compose-compiler = "1.5.4"
 
-androidx-activity = "1.8.1"
+androidx-activity = "1.8.2"
 androidx-annotations = "1.5.0"
 androidx-core = "1.12.0"
 androidx-lifecycle = "2.6.2"
-androidx-navigation = "2.7.5"
+androidx-navigation = "2.7.6"
 androidx-savedstate = "1.2.1"
 
 uri = "0.0.15"
@@ -47,7 +47,7 @@ publish = "0.25.3"
 dokka = "1.9.10"
 bestpractices = "0.10"
 binarycompatibility = "0.13.2"
-dependency-analysis = "1.27.0"
+dependency-analysis = "1.28.0"
 gr8 = "0.10"
 
 [libraries]
