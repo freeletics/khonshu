@@ -84,14 +84,14 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
+            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
+            import com.freeletics.khonshu.navigation.NavigationSetup
+            import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
             import com.freeletics.khonshu.navigation.`internal`.destinationId
-            import com.freeletics.khonshu.navigation.compose.LocalNavigationExecutor
-            import com.freeletics.khonshu.navigation.compose.NavDestination
-            import com.freeletics.khonshu.navigation.compose.NavigationSetup
-            import com.freeletics.khonshu.navigation.compose.ScreenDestination
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -256,14 +256,14 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
+            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
+            import com.freeletics.khonshu.navigation.NavigationSetup
+            import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
             import com.freeletics.khonshu.navigation.`internal`.destinationId
-            import com.freeletics.khonshu.navigation.compose.LocalNavigationExecutor
-            import com.freeletics.khonshu.navigation.compose.NavDestination
-            import com.freeletics.khonshu.navigation.compose.NavigationSetup
-            import com.freeletics.khonshu.navigation.compose.ScreenDestination
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -428,14 +428,14 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
+            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
+            import com.freeletics.khonshu.navigation.NavigationSetup
+            import com.freeletics.khonshu.navigation.OverlayDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
             import com.freeletics.khonshu.navigation.`internal`.destinationId
-            import com.freeletics.khonshu.navigation.compose.LocalNavigationExecutor
-            import com.freeletics.khonshu.navigation.compose.NavDestination
-            import com.freeletics.khonshu.navigation.compose.NavigationSetup
-            import com.freeletics.khonshu.navigation.compose.OverlayDestination
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -622,14 +622,14 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
+            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
+            import com.freeletics.khonshu.navigation.NavigationSetup
+            import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
             import com.freeletics.khonshu.navigation.`internal`.destinationId
-            import com.freeletics.khonshu.navigation.compose.LocalNavigationExecutor
-            import com.freeletics.khonshu.navigation.compose.NavDestination
-            import com.freeletics.khonshu.navigation.compose.NavigationSetup
-            import com.freeletics.khonshu.navigation.compose.ScreenDestination
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -809,14 +809,14 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
+            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
+            import com.freeletics.khonshu.navigation.NavigationSetup
+            import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
             import com.freeletics.khonshu.navigation.`internal`.destinationId
-            import com.freeletics.khonshu.navigation.compose.LocalNavigationExecutor
-            import com.freeletics.khonshu.navigation.compose.NavDestination
-            import com.freeletics.khonshu.navigation.compose.NavigationSetup
-            import com.freeletics.khonshu.navigation.compose.ScreenDestination
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -974,14 +974,14 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
+            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
+            import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
+            import com.freeletics.khonshu.navigation.NavigationSetup
+            import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationApi
             import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
             import com.freeletics.khonshu.navigation.`internal`.destinationId
-            import com.freeletics.khonshu.navigation.compose.LocalNavigationExecutor
-            import com.freeletics.khonshu.navigation.compose.NavDestination
-            import com.freeletics.khonshu.navigation.compose.NavigationSetup
-            import com.freeletics.khonshu.navigation.compose.ScreenDestination
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
