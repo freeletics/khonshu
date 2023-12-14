@@ -1,9 +1,7 @@
-package com.freeletics.khonshu.codegen.compose
+package com.freeletics.khonshu.codegen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.freeletics.khonshu.codegen.ActivityScope
-import com.freeletics.khonshu.codegen.AppScope
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.statemachine.StateMachine
