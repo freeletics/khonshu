@@ -30,7 +30,7 @@ androidx-savedstate = "1.2.1"
 uri = "0.0.15"
 
 inject = "1"
-dagger = "2.49"
+dagger = "2.50"
 anvil = "2.4.8"
 ksp = "1.9.21-1.0.16"
 kotlinpoet = "1.15.3"
