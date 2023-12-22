@@ -512,7 +512,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `replaceAll with start root from start executor`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(1))
+        executor.navigateTo(SimpleRoute(1))
         executor.replaceAll(SimpleRoot(2))
 
         assertThat(executor.visibleEntries.value)
@@ -536,7 +536,7 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `replaceAll with start root from other executor`() {
         val executor = underTest()
-        executor.navigate(OtherRoot(1), restoreRootState = true)
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
         executor.replaceAll(SimpleRoot(2))
 
         assertThat(executor.visibleEntries.value)
@@ -559,8 +559,8 @@ internal class MultiStackNavigationExecutorTest {
     @Test
     fun `replaceAll after navigating with root and without clearing the target executor from within back executor`() {
         val executor = underTest()
-        executor.navigate(SimpleRoute(1))
-        executor.navigate(OtherRoot(1), restoreRootState = true)
+        executor.navigateTo(SimpleRoute(1))
+        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
