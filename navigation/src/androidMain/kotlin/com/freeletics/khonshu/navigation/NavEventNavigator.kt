@@ -66,6 +66,14 @@ public interface Navigator {
      */
     public fun resetToRoot(root: NavRoot)
 
+    /**
+     * Replace the current back stack with the given [root].
+     * The current back stack will cleared and the given [root] will be recreated.
+     * After this call the back stack will only contain the given [root].
+     *
+     * This differs from [resetToRoot] in that [resetToRoot] does not pop the start route (exclusive)
+     * whereas this does.
+     */
     public fun replaceAll(root: NavRoot)
 
     public companion object {
@@ -297,14 +305,6 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
         sendNavEvent(event)
     }
 
-    /**
-     * Replace the current back stack with the given [root].
-     * The current back stack will cleared and the given [root] will be recreated.
-     * After this call the back stack will only contain the given [root].
-     *
-     * This differs from [resetToRoot] in that [resetToRoot] does not pop the start route (exclusive)
-     * whereas this does.
-     */
     public override fun replaceAll(root: NavRoot) {
         val event = NavEvent.ReplaceAll(root)
         sendNavEvent(event)
