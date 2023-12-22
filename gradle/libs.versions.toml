@@ -13,27 +13,26 @@ android-min = "21"
 android-target = "33"
 android-compile = "33"
 
-androidx-compose-compiler = "1.5.6"
+androidx-compose-compiler = "1.5.7"
 androidx-compose-runtime = "1.5.4"
 androidx-compose-ui = "1.5.4"
 androidx-compose-animation = "1.5.4"
 jetbrains-compose = "1.5.11"
 jetbrains-compose-compiler = "1.5.4"
 
-androidx-activity = "1.8.1"
+androidx-activity = "1.8.2"
 androidx-annotations = "1.5.0"
 androidx-core = "1.12.0"
 androidx-lifecycle = "2.6.2"
-androidx-fragment = "1.6.2"
-androidx-navigation = "2.7.5"
+androidx-navigation = "2.7.6"
 androidx-savedstate = "1.2.1"
 
 uri = "0.0.15"
 
 inject = "1"
-dagger = "2.49"
+dagger = "2.50"
 anvil = "2.4.8"
-ksp = "1.9.21-1.0.15"
+ksp = "1.9.21-1.0.16"
 kotlinpoet = "1.15.3"
 auto-service = "1.1.1"
 auto-service-ksp = "1.1.0"
@@ -48,7 +47,7 @@ publish = "0.25.3"
 dokka = "1.9.10"
 bestpractices = "0.10"
 binarycompatibility = "0.13.2"
-dependency-analysis = "1.27.0"
+dependency-analysis = "1.28.0"
 gr8 = "0.10"
 
 [libraries]
@@ -65,7 +64,7 @@ kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.3.6"}
+collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.3.7"}
 
 androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "androidx-compose-compiler" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "androidx-compose-runtime" }
@@ -90,8 +89,6 @@ androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmod
 androidx-navigation-common = { module = "androidx.navigation:navigation-common", version.ref = "androidx-navigation" }
 androidx-navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "androidx-navigation" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
-androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "androidx-navigation" }
-androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidx-fragment" }
 androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }

@@ -70,8 +70,6 @@ jobs:
           cp -R navigation/build/dokka/html/. docs/navigation/API/runtime
           mkdir -p docs/navigation/API/runtime-compose
           cp -R navigation-compose/build/dokka/html/. docs/navigation/API/compose/
-          mkdir -p docs/navigation/API/runtime-fragment
-          cp -R navigation-fragment/build/dokka/html/. docs/navigation/API/fragment/
           mkdir -p docs/navigation/API/testing
           cp -R navigation-testing/build/dokka/html/. docs/navigation/API/testing/
           mkdir -p docs/helpers/API/state-machine
@@ -87,10 +85,10 @@ jobs:
         run: mkdocs build
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v4

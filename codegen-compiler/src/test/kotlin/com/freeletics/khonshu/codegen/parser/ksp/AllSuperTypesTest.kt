@@ -1,8 +1,9 @@
 package com.freeletics.khonshu.codegen.parser.ksp
 
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.kspCompilation
-import com.freeletics.khonshu.codegen.codegen.util.stateMachine
+import com.freeletics.khonshu.codegen.parser.allSuperTypes
 import com.freeletics.khonshu.codegen.simpleSymbolProcessor
+import com.freeletics.khonshu.codegen.util.stateMachine
 import com.google.common.truth.Truth.assertThat
 import com.google.devtools.ksp.getClassDeclarationByName
 import com.squareup.kotlinpoet.BOOLEAN

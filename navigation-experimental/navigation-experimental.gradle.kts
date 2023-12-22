@@ -27,7 +27,6 @@ dependencies {
     implementation(libs.androidx.compose.runtime.saveable)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.core)
-    implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.viewmodel)
     implementation(libs.androidx.viewmodel.compose)
     implementation(libs.androidx.viewmodel.savedstate)

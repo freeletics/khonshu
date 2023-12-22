@@ -267,9 +267,7 @@ internal class NavEventNavigatorTest {
             navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
         }
         assertThat(exception).hasMessageThat().isEqualTo(
-            "Failed to register for " +
-                "result! You must call this before this navigator gets attached to a " +
-                "fragment, e.g. during initialisation of your navigator subclass.",
+            "Failed to register for result! You must call this before NavigationSetup is called with this navigator.",
         )
     }
 
@@ -283,9 +281,7 @@ internal class NavEventNavigatorTest {
             navigator.testRegisterForPermissionResult()
         }
         assertThat(exception).hasMessageThat().isEqualTo(
-            "Failed to register for " +
-                "result! You must call this before this navigator gets attached to a " +
-                "fragment, e.g. during initialisation of your navigator subclass.",
+            "Failed to register for result! You must call this before NavigationSetup is called with this navigator.",
         )
     }
 
@@ -299,9 +295,7 @@ internal class NavEventNavigatorTest {
             navigator.testRegisterForNavigationResult<SimpleRoute, TestParcelable>()
         }
         assertThat(exception).hasMessageThat().isEqualTo(
-            "Failed to register for " +
-                "result! You must call this before this navigator gets attached to a " +
-                "fragment, e.g. during initialisation of your navigator subclass.",
+            "Failed to register for result! You must call this before NavigationSetup is called with this navigator.",
         )
     }
 }

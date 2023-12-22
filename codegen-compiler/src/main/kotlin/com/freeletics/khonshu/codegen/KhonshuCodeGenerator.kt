@@ -1,9 +1,8 @@
 package com.freeletics.khonshu.codegen
 
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
-import com.freeletics.khonshu.codegen.parser.anvil.toComposeFragmentDestinationData
-import com.freeletics.khonshu.codegen.parser.anvil.toComposeScreenDestinationData
-import com.freeletics.khonshu.codegen.parser.anvil.toNavHostActivityData
+import com.freeletics.khonshu.codegen.parser.toComposeScreenDestinationData
+import com.freeletics.khonshu.codegen.parser.toNavHostActivityData
 import com.google.auto.service.AutoService
 import com.squareup.anvil.compiler.api.AnvilContext
 import com.squareup.anvil.compiler.api.CodeGenerator
@@ -27,11 +26,8 @@ public class KhonshuCodeGenerator : CodeGenerator {
         val compose = projectFiles
             .topLevelFunctionReferences(module)
             .flatMap {
-                listOfNotNull(
-                    it.toComposeScreenDestinationData(),
-                    it.toComposeFragmentDestinationData(),
-                    it.toNavHostActivityData(),
-                )
+                listOfNotNull(it.toComposeScreenDestinationData()) +
+                    it.toNavHostActivityData()
             }
 
         return compose.map {

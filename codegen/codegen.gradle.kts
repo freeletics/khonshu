@@ -29,6 +29,4 @@ dependencies {
     "androidMainApi"(projects.stateMachine)
 
     "androidMainImplementation"(libs.coroutines.core)
-
-    "androidMainCompileOnly"(libs.androidx.fragment)
 }

@@ -1,11 +1,8 @@
 package com.freeletics.khonshu.codegen
 
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
-import com.freeletics.khonshu.codegen.compose.NavDestination
-import com.freeletics.khonshu.codegen.compose.NavHostActivity
-import com.freeletics.khonshu.codegen.parser.ksp.toComposeFragmentDestinationData
-import com.freeletics.khonshu.codegen.parser.ksp.toComposeScreenDestinationData
-import com.freeletics.khonshu.codegen.parser.ksp.toNavHostActivityData
+import com.freeletics.khonshu.codegen.parser.toComposeScreenDestinationData
+import com.freeletics.khonshu.codegen.parser.toNavHostActivityData
 import com.google.auto.service.AutoService
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
@@ -36,10 +33,6 @@ public class KhonshuSymbolProcessor(
         resolver.generateCodeForAnnotation<NavDestination> {
             toComposeScreenDestinationData(it, resolver, logger)
         }
-        @Suppress("DEPRECATION")
-        resolver.generateCodeForAnnotation<com.freeletics.khonshu.codegen.fragment.ComposeFragmentDestination> {
-            toComposeFragmentDestinationData(it, resolver, logger)
-        }
         resolver.generateCodeForAnnotation<NavHostActivity> {
             toNavHostActivityData(it, resolver, logger)
         }
@@ -56,13 +49,13 @@ public class KhonshuSymbolProcessor(
                     return@forEach
                 }
 
-                val annotation = it.annotations.first {
+                it.annotations.filter {
                     it.annotationType.resolve().declaration.qualifiedName?.asString() == A::class.qualifiedName
+                }.forEach annotation@{ annotation ->
+                    val data = parser(it, annotation) ?: return@annotation
+                    val file = fileGenerator.generate(data)
+                    file.writeTo(codeGenerator, aggregating = false, originatingKSFiles = listOf(it.containingFile!!))
                 }
-
-                val data = parser(it, annotation) ?: return@forEach
-                val file = fileGenerator.generate(data)
-                file.writeTo(codeGenerator, aggregating = false, originatingKSFiles = listOf(it.containingFile!!))
             }
     }
 }
