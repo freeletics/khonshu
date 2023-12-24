@@ -177,7 +177,6 @@ private fun InternalNavHost(
         }
     }
 
-
     // This state is used to save the start route, so that we can update the start destination of the graph.
     // It is updated when NavEventNavigation#replaceAll is called or when the `startRoute` parameter changes.
     val savedStartRouteState = rememberSaveable { mutableStateOf(startRoute) }
