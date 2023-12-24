@@ -28,16 +28,28 @@ internal fun rememberNavigationExecutor(
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
 ): MultiStackNavigationExecutor {
     val context = LocalContext.current
+
     val viewModel = viewModel<StoreViewModel>(factory = SavedStateViewModelFactory())
+    viewModel.setInputStartRoot(startRoot)
+
     return remember(context, viewModel) {
         val contentDestinations = destinations.filterIsInstance<ContentDestination<*>>()
         val activityDestinations = destinations.filterIsInstance<ActivityDestination>()
 
         val navState = viewModel.globalSavedStateHandle.get<Bundle>(SAVED_STATE_STACK)
         val stack = if (navState == null) {
-            MultiStack.createWith(startRoot, contentDestinations, viewModel::removeEntry)
+            MultiStack.createWith(
+                root = viewModel.navRoot!!,
+                destinations = contentDestinations,
+                onStackEntryRemoved = viewModel::removeEntry,
+            )
         } else {
-            MultiStack.fromState(startRoot, navState, contentDestinations, viewModel::removeEntry)
+            MultiStack.fromState(
+                root = viewModel.navRoot!!,
+                bundle = navState,
+                destinations = contentDestinations,
+                onStackEntryRemoved = viewModel::removeEntry,
+            )
         }
 
         val starter = ActivityStarter(context, activityDestinations)
@@ -53,6 +65,7 @@ internal fun rememberNavigationExecutor(
             viewModel = viewModel,
             activityStarter = starter::start,
             deepLinkRoutes = deepLinkRoutes,
+            onRootChanged = viewModel::setStartRoot,
         )
     }
 }

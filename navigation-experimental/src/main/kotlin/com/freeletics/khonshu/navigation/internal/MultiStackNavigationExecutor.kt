@@ -14,6 +14,7 @@ internal class MultiStackNavigationExecutor(
     private val stack: MultiStack,
     private val viewModel: StoreViewModel,
     private val activityStarter: (ActivityRoute) -> Unit,
+    private val onRootChanged: (NavRoot) -> Unit,
     deepLinkRoutes: List<Parcelable>,
 ) : NavigationExecutor {
 
@@ -36,6 +37,7 @@ internal class MultiStackNavigationExecutor(
                         }
                         stack.push(route, clearTargetStack = true)
                     }
+
                     is NavRoute -> stack.push(route)
                     is ActivityRoute -> navigateTo(route)
                 }
@@ -83,6 +85,7 @@ internal class MultiStackNavigationExecutor(
 
     override fun replaceAll(root: NavRoot) {
         stack.replaceAll(root)
+        onRootChanged(root)
     }
 
     override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T {

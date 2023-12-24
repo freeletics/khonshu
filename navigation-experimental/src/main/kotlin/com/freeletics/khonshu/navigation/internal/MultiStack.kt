@@ -153,16 +153,12 @@ internal class MultiStack(
         val iterator = allStacks.listIterator(allStacks.size)
         while (iterator.hasPrevious()) {
             val stack = iterator.previous()
-            println(">>> Remove ${stack.id}")
 
             // Cannot use removeBackStack
             // because we're modifying the list while iterating
             stack.clear()
             iterator.remove()
             onStackEntryRemoved(stack.rootEntry.id)
-        }
-        check(allStacks.isEmpty()) {
-            "allStacks should be empty after removing all stacks"
         }
 
         // create new stack with the root
@@ -171,10 +167,6 @@ internal class MultiStack(
         currentStack = newStack
 
         updateVisibleDestinations()
-
-        check(allStacks.size == 1) {
-            "allStacks should contain exactly one stack after replacing the root"
-        }
     }
 
     fun saveState(): Bundle {

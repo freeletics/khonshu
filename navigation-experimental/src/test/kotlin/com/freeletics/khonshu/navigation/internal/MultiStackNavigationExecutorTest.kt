@@ -42,6 +42,7 @@ internal class MultiStackNavigationExecutorTest {
             viewModel = viewModel,
             stack = MultiStack.createWith(SimpleRoot(1), destinations, removedCallback, idGenerator),
             deepLinkRoutes = deepLinkRoutes,
+            onRootChanged = {}
         )
     }
 
