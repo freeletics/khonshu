@@ -10,11 +10,10 @@ import com.freeletics.khonshu.navigation.NavRoot
 internal class StoreViewModel(
     internal val globalSavedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    internal val navRoot: NavRoot? get() = globalSavedStateHandle[START_ROOT_KEY]
-    private val savedInputStartRoot: NavRoot? = globalSavedStateHandle[INPUT_START_ROOT_KEY]
-
     private val stores = mutableMapOf<StackEntry.Id, NavigationExecutorStore>()
     private val savedStateHandles = mutableMapOf<StackEntry.Id, SavedStateHandle>()
+
+    internal val savedNavRoot: NavRoot? get() = globalSavedStateHandle[SAVED_START_ROOT_KEY]
 
     fun provideStore(id: StackEntry.Id): NavigationExecutor.Store {
         return stores.getOrPut(id) { NavigationExecutorStore() }
@@ -54,19 +53,19 @@ internal class StoreViewModel(
     }
 
     internal fun setInputStartRoot(root: NavRoot) {
-        savedInputStartRoot.let { currentSavedInputStartRoot ->
+        globalSavedStateHandle.get<NavRoot?>(SAVED_INPUT_START_ROOT_KEY).let { currentSavedInputStartRoot ->
             when {
                 currentSavedInputStartRoot == null -> {
-                    globalSavedStateHandle[INPUT_START_ROOT_KEY] = root
-                    globalSavedStateHandle[START_ROOT_KEY] = root
+                    globalSavedStateHandle[SAVED_INPUT_START_ROOT_KEY] = root
+                    globalSavedStateHandle[SAVED_START_ROOT_KEY] = root
                 }
 
                 currentSavedInputStartRoot != root -> {
                     // Clear all saved state
                     onCleared()
 
-                    globalSavedStateHandle[INPUT_START_ROOT_KEY] = root
-                    globalSavedStateHandle[START_ROOT_KEY] = root
+                    globalSavedStateHandle[SAVED_INPUT_START_ROOT_KEY] = root
+                    globalSavedStateHandle[SAVED_START_ROOT_KEY] = root
                 }
 
                 else -> {
@@ -77,11 +76,11 @@ internal class StoreViewModel(
     }
 
     internal fun setStartRoot(root: NavRoot) {
-        globalSavedStateHandle[START_ROOT_KEY] = root
+        globalSavedStateHandle[SAVED_START_ROOT_KEY] = root
     }
 
     private companion object {
-        private const val START_ROOT_KEY = "startRoot"
-        private const val INPUT_START_ROOT_KEY = "inputStartRoot"
+        private const val SAVED_START_ROOT_KEY = "com.freeletics.khonshu.navigation.store.start_root"
+        private const val SAVED_INPUT_START_ROOT_KEY = "com.freeletics.khonshu.navigation.store.input_start_root"
     }
 }

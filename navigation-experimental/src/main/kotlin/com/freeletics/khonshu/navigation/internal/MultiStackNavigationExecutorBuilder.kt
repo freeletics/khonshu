@@ -39,13 +39,13 @@ internal fun rememberNavigationExecutor(
         val navState = viewModel.globalSavedStateHandle.get<Bundle>(SAVED_STATE_STACK)
         val stack = if (navState == null) {
             MultiStack.createWith(
-                root = viewModel.navRoot!!,
+                root = viewModel.savedNavRoot!!,
                 destinations = contentDestinations,
                 onStackEntryRemoved = viewModel::removeEntry,
             )
         } else {
             MultiStack.fromState(
-                root = viewModel.navRoot!!,
+                root = viewModel.savedNavRoot!!,
                 bundle = navState,
                 destinations = contentDestinations,
                 onStackEntryRemoved = viewModel::removeEntry,

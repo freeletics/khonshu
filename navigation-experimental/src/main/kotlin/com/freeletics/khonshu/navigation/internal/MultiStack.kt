@@ -154,8 +154,7 @@ internal class MultiStack(
         while (iterator.hasPrevious()) {
             val stack = iterator.previous()
 
-            // Cannot use removeBackStack
-            // because we're modifying the list while iterating
+            // Cannot use removeBackStack because we're modifying the list while iterating
             stack.clear()
             iterator.remove()
             onStackEntryRemoved(stack.rootEntry.id)
