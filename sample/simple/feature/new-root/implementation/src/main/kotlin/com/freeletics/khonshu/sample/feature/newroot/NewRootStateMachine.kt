@@ -11,7 +11,7 @@ sealed interface NewRootAction {
     data object ScreenButtonClicked : NewRootAction
     data object DialogButtonClicked : NewRootAction
     data object BottomSheetButtonClicked : NewRootAction
-    data object ReplaceAllButtonClicked: NewRootAction
+    data object ReplaceAllButtonClicked : NewRootAction
 }
 
 class NewRootStateMachine @Inject constructor(

@@ -6,20 +6,17 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.navigation.NavDestination as AndroidXNavDestination
-import androidx.navigation.compose.NavHost as AndroidXNavHost
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.NonRestartableComposable
-import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -27,10 +24,13 @@ import androidx.navigation.NavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
+import androidx.navigation.NavDestination as AndroidXNavDestination
+import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.Navigation
 import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.compose.NavHost as AndroidXNavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.get
@@ -215,20 +215,7 @@ private fun InternalNavHost(
         }
     }
 
-    // When the start route changes because NavEventNavigation#replaceAll was called,
-    // we need to update the start destination of the graph.
-    //
-    // This is really necessary, because after a configuration changes or a process death,
-    // the NavController restores the its state, but the created graph has the wrong start destination,
-    // since it was created with the `startRoute` parameter that was passed to this NavHost composable.
-    LaunchedEffect(savedStartRouteState, graph) {
-        snapshotFlow { savedStartRouteState.value }.collect {
-            // Call graph.setStartDestination(rootId) to make sure that
-            // other methods of AndroidXNavigationExecutor can access the correct start destination
-            // (via controller.graph.startDestinationId).
-            graph.setStartDestination(it.destinationId())
-        }
-    }
+    SetStartDestinationSideEffect(savedStartRouteState, graph)
 
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
         if (navEventNavigator != null) {
@@ -250,6 +237,29 @@ private fun InternalNavHost(
         )
     }
 }
+
+/*
+ * When the start route changes because NavEventNavigation#replaceAll was called,
+ * we need to update the start destination of the graph.
+ *
+ * This is really necessary, because after a configuration changes or a process death,
+ * the NavController restores the its state, but the created graph has the wrong start destination,
+ * since it was created with the `startRoute` parameter that was passed to this NavHost composable.
+*/
+@NonRestartableComposable
+@Composable
+private fun SetStartDestinationSideEffect(
+    savedStartRouteState: State<BaseRoute>,
+    graph: NavGraph,
+) =
+    LaunchedEffect(savedStartRouteState, graph) {
+        snapshotFlow { savedStartRouteState.value }.collect {
+            // Call graph.setStartDestination(rootId) to make sure that
+            // other methods of AndroidXNavigationExecutor can access the correct start destination
+            // (via controller.graph.startDestinationId).
+            graph.setStartDestination(it.destinationId())
+        }
+    }
 
 /**
  * Defaults used in [NavHost]
