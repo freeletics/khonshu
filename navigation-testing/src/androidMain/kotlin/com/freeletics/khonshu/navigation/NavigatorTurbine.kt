@@ -138,6 +138,16 @@ public interface NavigatorTurbine {
     )
 
     /**
+     * Assert that the next event received was a "replace all" navigation event with matching
+     * parameters. This function will suspend if no events have been received.
+     *
+     * @throws AssertionError - if the next event was not a matching event.
+     */
+    public suspend fun awaitReplaceAll(
+        root: NavRoot,
+    )
+
+    /**
      * Assert that the next event received was a navigate for result event to [request].
      * This function will suspend if no events have been received.
      *
@@ -255,6 +265,11 @@ internal class DefaultNavigatorTurbine(
         root: NavRoot,
     ) {
         val event = NavEvent.ResetToRoot(root)
+        Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
+    }
+
+    override suspend fun awaitReplaceAll(root: NavRoot) {
+        val event = NavEvent.ReplaceAll(root)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
