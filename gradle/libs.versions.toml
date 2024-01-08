@@ -31,7 +31,7 @@ uri = "0.0.15"
 
 inject = "1"
 dagger = "2.50"
-anvil = "2.4.9"
+anvil = "2.4.9-1-8"
 ksp = "1.9.21-1.0.16"
 kotlinpoet = "1.15.3"
 auto-service = "1.1.1"
