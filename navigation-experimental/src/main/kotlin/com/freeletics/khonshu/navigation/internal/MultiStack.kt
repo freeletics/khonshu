@@ -150,14 +150,8 @@ internal class MultiStack(
 
     fun replaceAll(root: NavRoot) {
         // remove all stacks
-        val iterator = allStacks.listIterator(allStacks.size)
-        while (iterator.hasPrevious()) {
-            val stack = iterator.previous()
-
-            // Cannot use removeBackStack because we're modifying the list while iterating
-            stack.clear()
-            iterator.remove()
-            onStackEntryRemoved(stack.rootEntry.id)
+        while (allStacks.isNotEmpty()) {
+            removeBackStack(allStacks.last())
         }
 
         // create new stack with the root
