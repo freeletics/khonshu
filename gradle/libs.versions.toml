@@ -8,7 +8,7 @@ java-toolchain = "19"
 fgp = "0.9.0"
 gradle-api = "8.4"
 
-android-gradle = "8.2.0"
+android-gradle = "8.2.1"
 android-min = "21"
 android-target = "33"
 android-compile = "33"
@@ -31,7 +31,7 @@ uri = "0.0.15"
 
 inject = "1"
 dagger = "2.50"
-anvil = "2.4.8"
+anvil = "2.4.9"
 ksp = "1.9.21-1.0.16"
 kotlinpoet = "1.15.3"
 auto-service = "1.1.1"
@@ -39,11 +39,11 @@ auto-service-ksp = "1.1.0"
 auto-value = "1.10.4"
 
 junit = "4.13.2"
-truth = "1.1.5"
+truth = "1.2.0"
 turbine = "1.0.0"
 kotlin-compile-testing = "0.4.0"
 
-publish = "0.25.3"
+publish = "0.27.0"
 dokka = "1.9.10"
 bestpractices = "0.10"
 binarycompatibility = "0.13.2"
@@ -109,7 +109,7 @@ kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlin
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service" }
 auto-service-compiler = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "auto-service-ksp" }
 auto-value = { module = "com.google.auto.value:auto-value", version.ref = "auto-value" }
-flowredux = { module = "com.freeletics.flowredux:flowredux", version = "1.2.0" }
+flowredux = { module = "com.freeletics.flowredux:flowredux", version = "1.2.1" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
@@ -140,4 +140,4 @@ binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validat
 bestpractices = { id = "com.autonomousapps.plugin-best-practices-plugin", version.ref = "bestpractices" }
 gr8 = { id = "com.gradleup.gr8", version.ref = "gr8" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
-poko = { id = "dev.drewhamilton.poko", version = "0.15.1" }
+poko = { id = "dev.drewhamilton.poko", version = "0.15.2" }
