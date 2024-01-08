@@ -43,7 +43,7 @@ truth = "1.2.0"
 turbine = "1.0.0"
 kotlin-compile-testing = "0.4.0"
 
-publish = "0.26.0"
+publish = "0.27.0"
 dokka = "1.9.10"
 bestpractices = "0.10"
 binarycompatibility = "0.13.2"
