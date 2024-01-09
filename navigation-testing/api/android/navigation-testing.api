@@ -9,6 +9,7 @@ public abstract interface class com/freeletics/khonshu/navigation/NavigatorTurbi
 	public abstract fun awaitNavigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateUp (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitReplaceAll (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;[Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitResetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
