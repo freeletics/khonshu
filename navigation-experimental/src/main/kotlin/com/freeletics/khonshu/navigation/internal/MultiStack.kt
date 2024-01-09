@@ -167,6 +167,7 @@ internal class MultiStack(
         return bundleOf(
             SAVED_STATE_ALL_STACKS to ArrayList(allStacks.map { it.saveState() }),
             SAVED_STATE_CURRENT_STACK to currentStack.id.route.java,
+            SAVED_STATE_START_STACK to startStack.id.route.java,
             SAVED_INPUT_ROOT to inputRoot,
         )
     }
@@ -210,12 +211,15 @@ internal class MultiStack(
             }
 
             val allStackBundles = bundle.getParcelableArrayList<Bundle>(SAVED_STATE_ALL_STACKS)!!
-            val currentStackId = bundle.getSerializable(SAVED_STATE_CURRENT_STACK)
+            val currentStackId = bundle.getSerializable(SAVED_STATE_CURRENT_STACK)!!
+            val startDestinationId = bundle.getSerializable(SAVED_STATE_START_STACK)!!
+
             val allStacks = allStackBundles.mapTo(ArrayList(allStackBundles.size)) {
                 Stack.fromState(it, destinations, onStackEntryRemoved, idGenerator)
             }
-            val startStack = allStacks.first { it.id == root.destinationId }
+            val startStack = allStacks.first { it.id.route.java == startDestinationId }
             val currentStack = allStacks.first { it.id.route.java == currentStackId }
+
             return MultiStack(
                 allStacks = allStacks,
                 startStack = startStack,
@@ -229,6 +233,7 @@ internal class MultiStack(
 
         private const val SAVED_STATE_ALL_STACKS = "com.freeletics.khonshu.navigation.stack.all_stacks"
         private const val SAVED_STATE_CURRENT_STACK = "com.freeletics.khonshu.navigation.stack.current_stack"
+        private const val SAVED_STATE_START_STACK = "com.freeletics.khonshu.navigation.stack.start_stack"
         private const val SAVED_INPUT_ROOT = "com.freeletics.khonshu.navigation.stack.input_root"
     }
 }

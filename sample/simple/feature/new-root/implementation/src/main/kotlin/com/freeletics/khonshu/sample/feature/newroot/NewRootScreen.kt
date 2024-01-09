@@ -53,8 +53,8 @@ fun NewRootScreen(
         Spacer(Modifier.height(12.dp))
 
         BasicText(
-            modifier = Modifier.clickable { sendAction(NewRootAction.ReplaceAllButtonClicked) },
-            text = "Replace all with Root",
+            modifier = Modifier.clickable { sendAction(NewRootAction.NavigateToRootButtonClicked) },
+            text = "Navigate to Root",
         )
     }
 }

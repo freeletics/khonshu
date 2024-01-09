@@ -22,5 +22,6 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(projects.feature.bottomSheet.nav)
     implementation(projects.feature.dialog.nav)
+    implementation(projects.feature.root.nav)
     implementation(projects.feature.screen.nav)
 }
