@@ -48,8 +48,4 @@ internal class StoreViewModel(
         }
         savedStateHandles.clear()
     }
-
-    private companion object {
-        private const val SAVED_START_ROOT_KEY = "com.freeletics.khonshu.navigation.store.start_root"
-    }
 }

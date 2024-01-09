@@ -116,6 +116,6 @@ internal class MultiStackNavigationExecutor(
 
     internal companion object {
         const val SAVED_STATE_STACK = "com.freeletics.khonshu.navigation.stack"
-        const val SAVED_STATE_HANDLED_DEEP_LINKS = "com.freeletics.khonshu.navigation.handled_deep_links"
+        private const val SAVED_STATE_HANDLED_DEEP_LINKS = "com.freeletics.khonshu.navigation.handled_deep_links"
     }
 }
