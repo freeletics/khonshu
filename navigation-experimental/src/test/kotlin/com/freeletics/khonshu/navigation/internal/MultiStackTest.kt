@@ -41,6 +41,7 @@ internal class MultiStackTest {
             destinations = destinations,
             idGenerator = idGenerator,
             onStackEntryRemoved = removedCallback,
+            inputRoot = startStack.rootEntry.route as NavRoot,
         )
     }
 
@@ -360,6 +361,82 @@ internal class MultiStackTest {
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo("OtherRoot(number=1) is not on the current back stack")
+    }
+
+    @Test
+    fun `replaceAll with start root from start executor`() {
+        val stack = underTest()
+        stack.push(SimpleRoute(1))
+        stack.replaceAll(SimpleRoot(2))
+
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(
+                    StackEntry.Id("102"),
+                    SimpleRoot(2),
+                    simpleRootDestination,
+                ),
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isFalse()
+
+        assertThat(removed)
+            .containsExactly(
+                StackEntry.Id("100"),
+                StackEntry.Id("101"),
+            )
+    }
+
+    @Test
+    fun `replaceAll with start root from other executor`() {
+        val stack = underTest()
+        stack.push(OtherRoot(1), clearTargetStack = false)
+        stack.replaceAll(SimpleRoot(2))
+
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(
+                    StackEntry.Id("102"),
+                    SimpleRoot(2),
+                    simpleRootDestination,
+                ),
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isFalse()
+
+        assertThat(removed).containsExactly(
+            StackEntry.Id("100"),
+            StackEntry.Id("101"),
+        )
+    }
+
+    @Test
+    fun `replaceAll after navigating with root and without clearing the target executor from within back executor`() {
+        val stack = underTest()
+        stack.push(SimpleRoute(1))
+        stack.push(OtherRoot(1), clearTargetStack = false)
+
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("102"), OtherRoot(1), otherRootDestination),
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(removed).isEmpty()
+
+        stack.replaceAll(SimpleRoot(1))
+        assertThat(stack.visibleEntries.value)
+            .containsExactly(
+                StackEntry(StackEntry.Id("103"), SimpleRoot(1), simpleRootDestination),
+            )
+            .inOrder()
+        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(removed)
+            .containsExactly(
+                StackEntry.Id("102"),
+                StackEntry.Id("101"),
+                StackEntry.Id("100"),
+            )
     }
 
     @Test
