@@ -34,6 +34,7 @@ public class FileGenerator {
 
     public fun generate(data: NavHostActivityData): FileSpec {
         val component = ComponentGenerator(data)
+        val componentProvider = ActivityComponentProviderGenerator(data)
         val module = ComponentModuleGenerator(data)
         val activityModule = ActivityModuleGenerator(data)
         val activity = ActivityGenerator(data)
@@ -41,6 +42,7 @@ public class FileGenerator {
 
         return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
             .addType(component.generate())
+            .addType(componentProvider.generate())
             .addType(module.generate())
             .addType(activityModule.generate())
             .addType(activity.generate())
