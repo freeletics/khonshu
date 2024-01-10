@@ -35,6 +35,9 @@ public fun Activity.handleDeepLink(
     deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
 ) {
+    if (intent.hasExtra(KEY_DEEP_LINK_IDS)) {
+        return
+    }
     val uri = intent.dataString
     if (uri != null) {
         val deepLink = deepLinkHandlers.createDeepLinkIfMatching(Uri.parse(uri), deepLinkPrefixes)

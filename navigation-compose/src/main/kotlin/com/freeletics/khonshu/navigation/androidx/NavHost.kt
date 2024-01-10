@@ -153,10 +153,7 @@ private fun InternalNavHost(
     val context = LocalContext.current
 
     // should be called before rememberNavController to fill intent data with deeplinks
-    DisposableEffect(context, deepLinkHandlers, deepLinkPrefixes) {
-        context.findActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
-        onDispose { }
-    }
+    context.findActivity().handleDeepLink(deepLinkHandlers, deepLinkPrefixes)
 
     val overlayNavigator = remember { OverlayNavigator() }
     val customActivityNavigator = remember(context) { CustomActivityNavigator(context) }
