@@ -24,7 +24,7 @@ internal class MultiStackTest {
     private val removed = mutableListOf<StackEntry.Id>()
     private val removedCallback: (StackEntry.Id) -> Unit = { removed.add(it) }
 
-    private val defaultStack = stack(SimpleRoot(1))
+    private val defaultStack get() = stack(SimpleRoot(1))
 
     private fun stack(root: NavRoot): Stack {
         return Stack.createWith(root, destinations, removedCallback, idGenerator)
@@ -32,10 +32,9 @@ internal class MultiStackTest {
 
     private fun underTest(
         startStack: Stack = defaultStack,
-        currentStack: Stack = defaultStack,
     ): MultiStack {
         return MultiStack(
-            allStacks = listOf(startStack, currentStack).filterNotNullTo(ArrayList()),
+            allStacks = arrayListOf(startStack),
             startStack = startStack,
             currentStack = startStack,
             destinations = destinations,
