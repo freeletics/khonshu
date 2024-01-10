@@ -18,6 +18,7 @@ import com.freeletics.khonshu.navigation.deeplinks.EXTRA_DEEPLINK_ROUTES
 import com.freeletics.khonshu.navigation.deeplinks.buildIntent
 import com.freeletics.khonshu.navigation.deeplinks.createDeepLinkIfMatching
 import com.freeletics.khonshu.navigation.findActivity
+import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_HANDLED_DEEP_LINKS
 import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
 import kotlinx.collections.immutable.ImmutableSet
 
@@ -60,7 +61,7 @@ internal fun rememberNavigationExecutor(
     val deepLinkRoutes = remember(viewModel, context, deepLinkHandlers, deepLinkPrefixes) {
         val navState = viewModel.globalSavedStateHandle.get<Bundle>(SAVED_STATE_STACK)
 
-        if (navState?.getBoolean(SAVED_STATE_STACK) != true) {
+        if (navState?.getBoolean(SAVED_STATE_HANDLED_DEEP_LINKS) != true) {
             deepLinkRoutes(context, deepLinkHandlers, deepLinkPrefixes)
         } else {
             emptyList()
