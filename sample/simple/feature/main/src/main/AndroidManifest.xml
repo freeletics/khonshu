@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity
-            android:name="com.freeletics.khonshu.sample.feature.main.KhonshuMainScreenActivity"
+            android:name="com.freeletics.khonshu.sample.feature.main.KhonshuExperimentalMainScreenActivity"
             android:taskAffinity=".MainActivity"
             android:configChanges="mcc|mnc|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:windowSoftInputMode="adjustResize"

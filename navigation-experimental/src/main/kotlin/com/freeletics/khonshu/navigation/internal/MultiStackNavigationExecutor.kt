@@ -36,6 +36,7 @@ internal class MultiStackNavigationExecutor(
                         }
                         stack.push(route, clearTargetStack = true)
                     }
+
                     is NavRoute -> stack.push(route)
                     is ActivityRoute -> navigateTo(route)
                 }
@@ -79,6 +80,10 @@ internal class MultiStackNavigationExecutor(
 
     override fun resetToRoot(root: NavRoot) {
         stack.resetToRoot(root)
+    }
+
+    override fun replaceAll(root: NavRoot) {
+        stack.replaceAll(root)
     }
 
     override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T {

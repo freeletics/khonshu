@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel
 internal class StoreViewModel(
     internal val globalSavedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
     private val stores = mutableMapOf<StackEntry.Id, NavigationExecutorStore>()
     private val savedStateHandles = mutableMapOf<StackEntry.Id, SavedStateHandle>()
 

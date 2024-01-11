@@ -47,6 +47,10 @@ internal class TestNavigationExecutor : NavigationExecutor {
         received.add(NavEvent.ResetToRoot(root))
     }
 
+    override fun replaceAll(root: NavRoot) {
+        received.add(NavEvent.ReplaceAll(root))
+    }
+
     override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T {
         throw UnsupportedOperationException()
     }

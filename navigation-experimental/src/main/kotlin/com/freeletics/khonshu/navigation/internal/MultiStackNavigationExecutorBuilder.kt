@@ -20,35 +20,55 @@ import com.freeletics.khonshu.navigation.deeplinks.createDeepLinkIfMatching
 import com.freeletics.khonshu.navigation.findActivity
 import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_HANDLED_DEEP_LINKS
 import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
+import kotlinx.collections.immutable.ImmutableSet
 
 @Composable
 internal fun rememberNavigationExecutor(
     startRoot: NavRoot,
-    destinations: Set<NavDestination>,
-    deepLinkHandlers: Set<DeepLinkHandler>,
-    deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
+    destinations: ImmutableSet<NavDestination>,
+    deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
+    deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
 ): MultiStackNavigationExecutor {
     val context = LocalContext.current
+
     val viewModel = viewModel<StoreViewModel>(factory = SavedStateViewModelFactory())
-    return remember(context, viewModel) {
-        val contentDestinations = destinations.filterIsInstance<ContentDestination<*>>()
+
+    val starter = remember(context, destinations) {
         val activityDestinations = destinations.filterIsInstance<ActivityDestination>()
+        ActivityStarter(context, activityDestinations)
+    }
 
+    val stack = remember(destinations, viewModel, startRoot) {
+        val contentDestinations = destinations.filterIsInstance<ContentDestination<*>>()
         val navState = viewModel.globalSavedStateHandle.get<Bundle>(SAVED_STATE_STACK)
-        val stack = if (navState == null) {
-            MultiStack.createWith(startRoot, contentDestinations, viewModel::removeEntry)
+
+        if (navState == null) {
+            MultiStack.createWith(
+                root = startRoot,
+                destinations = contentDestinations,
+                onStackEntryRemoved = viewModel::removeEntry,
+            )
         } else {
-            MultiStack.fromState(startRoot, navState, contentDestinations, viewModel::removeEntry)
+            MultiStack.fromState(
+                root = startRoot,
+                bundle = navState,
+                destinations = contentDestinations,
+                onStackEntryRemoved = viewModel::removeEntry,
+            )
         }
+    }
 
-        val starter = ActivityStarter(context, activityDestinations)
+    val deepLinkRoutes = remember(viewModel, context, deepLinkHandlers, deepLinkPrefixes) {
+        val navState = viewModel.globalSavedStateHandle.get<Bundle>(SAVED_STATE_STACK)
 
-        val deepLinkRoutes = if (navState?.getBoolean(SAVED_STATE_HANDLED_DEEP_LINKS) != true) {
+        if (navState?.getBoolean(SAVED_STATE_HANDLED_DEEP_LINKS) != true) {
             deepLinkRoutes(context, deepLinkHandlers, deepLinkPrefixes)
         } else {
             emptyList()
         }
+    }
 
+    return remember(stack, viewModel, starter, deepLinkRoutes) {
         MultiStackNavigationExecutor(
             stack = stack,
             viewModel = viewModel,

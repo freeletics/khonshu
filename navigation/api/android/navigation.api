@@ -68,6 +68,7 @@ public class com/freeletics/khonshu/navigation/NavEventNavigator : com/freeletic
 	protected final fun registerForActivityResult (Landroidx/activity/result/contract/ActivityResultContract;)Lcom/freeletics/khonshu/navigation/ActivityResultRequest;
 	public final fun registerForNavigationResult-UamjCxQ (Lkotlin/reflect/KClass;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest;
 	protected final fun registerForPermissionsResult ()Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;
+	public fun replaceAll (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 	public fun requestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/List;)V
 	public fun requestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;[Ljava/lang/String;)V
 	public fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
@@ -114,6 +115,7 @@ public abstract interface class com/freeletics/khonshu/navigation/Navigator {
 	public abstract fun navigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
 	public static synthetic fun navigateToRoot$default (Lcom/freeletics/khonshu/navigation/Navigator;Lcom/freeletics/khonshu/navigation/NavRoot;ZILjava/lang/Object;)V
 	public abstract fun navigateUp ()V
+	public abstract fun replaceAll (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 	public abstract fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 }
 

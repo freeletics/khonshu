@@ -46,4 +46,9 @@ internal class NavEventCollector : Navigator {
         val event = NavEvent.ResetToRoot(root)
         _navEvents.add(event)
     }
+
+    override fun replaceAll(root: NavRoot) {
+        val event = NavEvent.ReplaceAll(root)
+        _navEvents.add(event)
+    }
 }

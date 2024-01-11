@@ -16,12 +16,12 @@ dependencies {
     api(libs.khonshu.navigator.compose)
     api(libs.khonshu.statemachine)
     api(libs.khonshu.codegen)
-    api(projects.feature.root.nav)
+    api(projects.feature.newRoot.nav)
 
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.foundation)
     implementation(projects.feature.bottomSheet.nav)
     implementation(projects.feature.dialog.nav)
+    implementation(projects.feature.root.nav)
     implementation(projects.feature.screen.nav)
-    implementation(projects.feature.newRoot.nav)
 }

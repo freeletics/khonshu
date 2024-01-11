@@ -3,6 +3,7 @@ package com.freeletics.khonshu.sample.feature.root
 import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.sample.feature.bottomsheet.nav.BottomSheetRoute
 import com.freeletics.khonshu.sample.feature.dialog.nav.DialogRoute
+import com.freeletics.khonshu.sample.feature.newroot.nav.NewRootRoute
 import com.freeletics.khonshu.sample.feature.root.nav.RootRoute
 import com.freeletics.khonshu.sample.feature.screen.nav.ScreenRoute
 import com.squareup.anvil.annotations.ContributesBinding
@@ -24,5 +25,9 @@ class RootNavigator @Inject constructor() : NavEventNavigator() {
 
     fun navigateToBottomSheet() {
         navigateTo(BottomSheetRoute)
+    }
+
+    fun replaceAllWithNewRoot() {
+        replaceAll(NewRootRoute)
     }
 }

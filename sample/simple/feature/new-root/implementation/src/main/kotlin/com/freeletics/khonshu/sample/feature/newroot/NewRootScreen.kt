@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.sample.feature.root
+package com.freeletics.khonshu.sample.feature.newroot
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,49 +12,49 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.freeletics.khonshu.codegen.NavDestination
-import com.freeletics.khonshu.sample.feature.root.nav.RootRoute
+import com.freeletics.khonshu.sample.feature.newroot.nav.NewRootRoute
 
 @NavDestination(
-    route = RootRoute::class,
-    stateMachine = RootStateMachine::class,
+    route = NewRootRoute::class,
+    stateMachine = NewRootStateMachine::class,
 )
 @Composable
-fun RootScreen(
-    sendAction: (RootAction) -> Unit,
+fun NewRootScreen(
+    sendAction: (NewRootAction) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        BasicText("Feature Root")
+        BasicText("Feature New Root")
 
         Spacer(Modifier.height(12.dp))
 
         BasicText(
-            modifier = Modifier.clickable { sendAction(RootAction.ScreenButtonClicked) },
+            modifier = Modifier.clickable { sendAction(NewRootAction.ScreenButtonClicked) },
             text = "Open Screen",
         )
 
         Spacer(Modifier.height(12.dp))
 
         BasicText(
-            modifier = Modifier.clickable { sendAction(RootAction.DialogButtonClicked) },
+            modifier = Modifier.clickable { sendAction(NewRootAction.DialogButtonClicked) },
             text = "Open Dialog",
         )
 
         Spacer(Modifier.height(12.dp))
 
         BasicText(
-            modifier = Modifier.clickable { sendAction(RootAction.BottomSheetButtonClicked) },
+            modifier = Modifier.clickable { sendAction(NewRootAction.BottomSheetButtonClicked) },
             text = "Open Bottom Sheet",
         )
 
         Spacer(Modifier.height(12.dp))
 
         BasicText(
-            modifier = Modifier.clickable { sendAction(RootAction.ReplaceAllButtonClicked) },
-            text = "Replace all with New Root",
+            modifier = Modifier.clickable { sendAction(NewRootAction.NavigateToRootButtonClicked) },
+            text = "Navigate to Root",
         )
     }
 }

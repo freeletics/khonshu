@@ -13,12 +13,14 @@ import java.util.UUID
 import kotlinx.collections.immutable.ImmutableList
 
 internal class MultiStack(
-    private val allStacks: MutableList<Stack>,
+    // Use ArrayList to make sure it is a RandomAccess
+    private val allStacks: ArrayList<Stack>,
     private var startStack: Stack,
     private var currentStack: Stack,
     private val destinations: List<ContentDestination<*>>,
     private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
     private val idGenerator: () -> String,
+    private val inputRoot: NavRoot,
 ) {
 
     private val visibleEntryState: MutableState<ImmutableList<StackEntry<*>>> =
@@ -147,10 +149,26 @@ internal class MultiStack(
         updateVisibleDestinations()
     }
 
+    fun replaceAll(root: NavRoot) {
+        // remove all stacks
+        while (allStacks.isNotEmpty()) {
+            removeBackStack(allStacks.last())
+        }
+
+        // create new stack with the root
+        val newStack = createBackStack(root)
+        startStack = newStack
+        currentStack = newStack
+
+        updateVisibleDestinations()
+    }
+
     fun saveState(): Bundle {
         return bundleOf(
             SAVED_STATE_ALL_STACKS to ArrayList(allStacks.map { it.saveState() }),
             SAVED_STATE_CURRENT_STACK to currentStack.id.route.java,
+            SAVED_STATE_START_STACK to startStack.id.route.java,
+            SAVED_INPUT_ROOT to inputRoot,
         )
     }
 
@@ -163,12 +181,13 @@ internal class MultiStack(
         ): MultiStack {
             val startStack = Stack.createWith(root, destinations, onStackEntryRemoved, idGenerator)
             return MultiStack(
-                allStacks = mutableListOf(startStack),
+                allStacks = arrayListOf(startStack),
                 startStack = startStack,
                 currentStack = startStack,
                 destinations = destinations,
                 onStackEntryRemoved = onStackEntryRemoved,
                 idGenerator = idGenerator,
+                inputRoot = root,
             )
         }
 
@@ -180,13 +199,27 @@ internal class MultiStack(
             onStackEntryRemoved: (StackEntry.Id) -> Unit,
             idGenerator: () -> String = { UUID.randomUUID().toString() },
         ): MultiStack {
+            val inputRoot = bundle.getParcelable<NavRoot>(SAVED_INPUT_ROOT)!!
+
+            if (inputRoot != root) {
+                return createWith(
+                    root = root,
+                    destinations = destinations,
+                    onStackEntryRemoved = onStackEntryRemoved,
+                    idGenerator = idGenerator,
+                )
+            }
+
             val allStackBundles = bundle.getParcelableArrayList<Bundle>(SAVED_STATE_ALL_STACKS)!!
-            val currentStackId = bundle.getSerializable(SAVED_STATE_CURRENT_STACK)
+            val currentStackId = bundle.getSerializable(SAVED_STATE_CURRENT_STACK)!!
+            val startDestinationId = bundle.getSerializable(SAVED_STATE_START_STACK)!!
+
             val allStacks = allStackBundles.mapTo(ArrayList(allStackBundles.size)) {
                 Stack.fromState(it, destinations, onStackEntryRemoved, idGenerator)
             }
-            val startStack = allStacks.first { it.id == root.destinationId }
+            val startStack = allStacks.first { it.id.route.java == startDestinationId }
             val currentStack = allStacks.first { it.id.route.java == currentStackId }
+
             return MultiStack(
                 allStacks = allStacks,
                 startStack = startStack,
@@ -194,10 +227,13 @@ internal class MultiStack(
                 destinations = destinations,
                 onStackEntryRemoved = onStackEntryRemoved,
                 idGenerator = idGenerator,
+                inputRoot = inputRoot,
             )
         }
 
         private const val SAVED_STATE_ALL_STACKS = "com.freeletics.khonshu.navigation.stack.all_stacks"
         private const val SAVED_STATE_CURRENT_STACK = "com.freeletics.khonshu.navigation.stack.current_stack"
+        private const val SAVED_STATE_START_STACK = "com.freeletics.khonshu.navigation.stack.start_stack"
+        private const val SAVED_INPUT_ROOT = "com.freeletics.khonshu.navigation.stack.input_root"
     }
 }

@@ -9,9 +9,14 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -20,6 +25,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.NavDestination as AndroidXNavDestination
+import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.Navigation
@@ -168,7 +174,16 @@ private fun InternalNavHost(
         }
     }
 
-    val executor = remember(navController) { AndroidXNavigationExecutor(navController) }
+    // This state is used to save the start route, so that we can update the start destination of the graph.
+    // It is updated when NavEventNavigation#replaceAll is called or when the `startRoute` parameter changes.
+    val savedStartRouteState = rememberSaveable { mutableStateOf(startRoute) }
+
+    val executor = remember(navController, savedStartRouteState) {
+        AndroidXNavigationExecutor(
+            controller = navController,
+            onSaveStartRoute = { savedStartRouteState.value = it },
+        )
+    }
 
     if (destinationChangedCallback != null) {
         DisposableEffect(navController, destinationChangedCallback) {
@@ -190,8 +205,13 @@ private fun InternalNavHost(
             destinations.forEach { destination ->
                 addDestination(navController, destination, startRoute)
             }
+        }.also {
+            // Update the saved start route when a new graph is created.
+            savedStartRouteState.value = startRoute
         }
     }
+
+    SetStartDestinationSideEffect(savedStartRouteState, graph)
 
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
         if (navEventNavigator != null) {
@@ -213,6 +233,29 @@ private fun InternalNavHost(
         )
     }
 }
+
+/*
+ * When the start route changes because NavEventNavigation#replaceAll was called,
+ * we need to update the start destination of the graph.
+ *
+ * This is really necessary, because after a configuration changes or a process death,
+ * the NavController restores the its state, but the created graph has the wrong start destination,
+ * since it was created with the `startRoute` parameter that was passed to this NavHost composable.
+*/
+@NonRestartableComposable
+@Composable
+private fun SetStartDestinationSideEffect(
+    savedStartRouteState: State<BaseRoute>,
+    graph: NavGraph,
+) =
+    LaunchedEffect(savedStartRouteState, graph) {
+        snapshotFlow { savedStartRouteState.value }.collect {
+            // Call graph.setStartDestination(rootId) to make sure that
+            // other methods of AndroidXNavigationExecutor can access the correct start destination
+            // (via controller.graph.startDestinationId).
+            graph.setStartDestination(it.destinationId())
+        }
+    }
 
 /**
  * Defaults used in [NavHost]
