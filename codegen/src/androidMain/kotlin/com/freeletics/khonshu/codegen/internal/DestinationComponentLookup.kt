@@ -1,17 +1,17 @@
 package com.freeletics.khonshu.codegen.internal
 
-import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
+import com.freeletics.khonshu.navigation.internal.destinationId
 import java.io.Serializable
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
 public interface ComponentProvider<R : BaseRoute, T> : Serializable {
-    public fun provide(route: R, executor: NavigationExecutor, context: Context): T
+    public fun provide(route: R, executor: NavigationExecutor, provider: ActivityComponentProvider): T
 }
 
 /**
@@ -23,15 +23,15 @@ public interface ComponentProvider<R : BaseRoute, T> : Serializable {
  */
 @InternalCodegenApi
 public inline fun <reified C : Any, PC : Any, R : BaseRoute> component(
-    destinationId: DestinationId<out R>,
     route: R,
     executor: NavigationExecutor,
-    context: Context,
+    activityComponentProvider: ActivityComponentProvider,
     parentScope: KClass<*>,
     crossinline factory: (PC, SavedStateHandle, R) -> C,
 ): C {
+    val destinationId = route.destinationId
     return executor.storeFor(destinationId).getOrCreate(C::class) {
-        val parentComponent = context.findComponentByScope<PC>(parentScope)
+        val parentComponent = activityComponentProvider.provide<PC>(parentScope)
         val savedStateHandle = executor.savedStateHandleFor(destinationId)
         factory(parentComponent, savedStateHandle, route)
     }
@@ -46,20 +46,20 @@ public inline fun <reified C : Any, PC : Any, R : BaseRoute> component(
  */
 @InternalCodegenApi
 public inline fun <reified C : Any, PC : Any, R : BaseRoute, PR : BaseRoute> componentFromParentRoute(
-    destinationId: DestinationId<out R>,
     route: R,
     executor: NavigationExecutor,
-    context: Context,
+    activityComponentProvider: ActivityComponentProvider,
     parentScope: KClass<PR>,
     crossinline factory: (PC, SavedStateHandle, R) -> C,
 ): C {
+    val destinationId = route.destinationId
     return executor.storeFor(destinationId).getOrCreate(C::class) {
         val parentDestinationId = DestinationId((parentScope))
 
         @Suppress("UNCHECKED_CAST")
         val parentComponentProvider = executor.extra(parentDestinationId) as ComponentProvider<PR, PC>
         val parentRoute = executor.routeFor(parentDestinationId)
-        val parentComponent = parentComponentProvider.provide(parentRoute, executor, context)
+        val parentComponent = parentComponentProvider.provide(parentRoute, executor, activityComponentProvider)
         val savedStateHandle = executor.savedStateHandleFor(destinationId)
         factory(parentComponent, savedStateHandle, route)
     }

@@ -1,11 +1,9 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
+import com.freeletics.khonshu.codegen.NavDestinationData
+import com.freeletics.khonshu.codegen.util.activityComponentProvider
 import com.freeletics.khonshu.codegen.util.componentProvider
-import com.freeletics.khonshu.codegen.util.context
-import com.freeletics.khonshu.codegen.util.destinationId
-import com.freeletics.khonshu.codegen.util.getComponent
-import com.freeletics.khonshu.codegen.util.getComponentFromRoute
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.navigationExecutor
 import com.freeletics.khonshu.codegen.util.optInAnnotation
@@ -19,16 +17,13 @@ internal val Generator<out BaseData>.componentProviderClassName
     get() = ClassName("Khonshu${data.baseName}ComponentProvider")
 
 internal class NavDestinationComponentProviderGenerator(
-    override val data: BaseData,
-) : Generator<BaseData>() {
+    override val data: NavDestinationData,
+) : Generator<NavDestinationData>() {
 
     internal fun generate(): TypeSpec {
         return TypeSpec.objectBuilder(componentProviderClassName)
             .addAnnotation(optInAnnotation())
-            .addSuperinterface(
-                componentProvider
-                    .parameterizedBy(data.navigation!!.route, retainedComponentClassName),
-            )
+            .addSuperinterface(componentProvider.parameterizedBy(data.navigation.route, retainedComponentClassName))
             .addFunction(provideFunction())
             .build()
     }
@@ -37,38 +32,23 @@ internal class NavDestinationComponentProviderGenerator(
         return FunSpec.builder("provide")
             .addModifiers(OVERRIDE)
             .addAnnotation(optInAnnotation(internalNavigatorApi))
-            .addParameter("route", data.navigation!!.route)
+            .addParameter("route", data.navigation.route)
             .addParameter("executor", navigationExecutor)
-            .addParameter("context", context)
+            .addParameter("provider", activityComponentProvider)
             .returns(retainedComponentClassName)
-            .apply {
-                if (data.navigation?.parentScopeIsRoute == true) {
-                    beginControlFlow(
-                        "return %M(route.%M, route, executor, context, %T::class) " +
-                            "{ parentComponent: %T, savedStateHandle, %L ->",
-                        getComponentFromRoute,
-                        destinationId,
-                        data.parentScope,
-                        retainedParentComponentClassName,
-                        data.navigation!!.route.propertyName,
-                    )
-                } else {
-                    beginControlFlow(
-                        "return %M(route.%M, route, executor, context, %T::class) " +
-                            "{ parentComponent: %T, savedStateHandle, %L ->",
-                        getComponent,
-                        destinationId,
-                        data.parentScope,
-                        retainedParentComponentClassName,
-                        data.navigation!!.route.propertyName,
-                    )
-                }
-            }
+            .beginControlFlow(
+                "return %M(route, executor, provider, %T::class) " +
+                    "{ parentComponent: %T, savedStateHandle, %L ->",
+                data.navigation.parentComponentLookup,
+                data.parentScope,
+                retainedParentComponentClassName,
+                data.navigation.route.propertyName,
+            )
             .addStatement(
                 "parentComponent.%L().%L(savedStateHandle, %L)",
                 retainedParentComponentGetterName,
                 retainedComponentFactoryCreateName,
-                data.navigation!!.route.propertyName,
+                data.navigation.route.propertyName,
             )
             .endControlFlow()
             .build()
