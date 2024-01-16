@@ -27,7 +27,7 @@ androidx-lifecycle = "2.7.0"
 androidx-navigation = "2.7.6"
 androidx-savedstate = "1.2.1"
 
-uri = "0.0.15"
+uri = "0.0.16"
 
 inject = "1"
 dagger = "2.50"
