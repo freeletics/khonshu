@@ -81,11 +81,14 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
+            import com.freeletics.khonshu.codegen.`internal`.ActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
+            import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
@@ -105,6 +108,7 @@ internal class NavHostActivityCodegenTest {
             import kotlin.OptIn
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
+            import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
@@ -149,6 +153,18 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuTestComponentProvider(
+              private final val activity: ComponentActivity,
+            ) : ActivityComponentProvider {
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
+                  TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
+                  savedStateHandle ->
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
+                    Bundle.EMPTY)
+              }
+            }
+
             @Module
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestModule {
@@ -184,28 +200,27 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestActivity : ComponentActivity() {
-              private lateinit var khonshuTestComponent: KhonshuTestComponent
-
               override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
-                if (!::khonshuTestComponent.isInitialized) {
-                  khonshuTestComponent = component(this, this, TestParentScope::class, intent.extras) {
-                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle, extras ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle, extras)
-                  }
-                }
-
                 setContent {
-                  KhonshuTest(khonshuTestComponent) { startRoute, modifier, destinationChangedCallback ->
-                    NavHost(
-                      startRoute = startRoute,
-                      destinations = khonshuTestComponent.destinations,
-                      modifier = modifier,
-                      deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
-                      deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
-                      navEventNavigator = khonshuTestComponent.navEventNavigator,
-                      destinationChangedCallback = destinationChangedCallback,
-                    )
+                  val componentProvider = remember {
+                    KhonshuTestComponentProvider(this)
+                  }
+                  val component = remember(componentProvider) {
+                    componentProvider.provide<KhonshuTestComponent>(TestScreen::class)
+                  }
+                  KhonshuTest(component) { startRoute, modifier, destinationChangedCallback ->
+                    CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
+                      NavHost(
+                        startRoute = startRoute,
+                        destinations = component.destinations,
+                        modifier = modifier,
+                        deepLinkHandlers = component.deepLinkHandlers,
+                        deepLinkPrefixes = component.deepLinkPrefixes,
+                        navEventNavigator = component.navEventNavigator,
+                        destinationChangedCallback = destinationChangedCallback,
+                      )
+                    }
                   }
                 }
               }
@@ -274,13 +289,16 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.AppScope
             import com.freeletics.khonshu.codegen.SimpleNavHost
+            import com.freeletics.khonshu.codegen.`internal`.ActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
+            import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
@@ -299,6 +317,7 @@ internal class NavHostActivityCodegenTest {
             import kotlin.OptIn
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
+            import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
@@ -343,6 +362,17 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuTestComponentProvider(
+              private final val activity: ComponentActivity,
+            ) : ActivityComponentProvider {
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, ActivityScope::class,
+                  AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
+                    Bundle.EMPTY)
+              }
+            }
+
             @Module
             @ContributesTo(ActivityScope::class)
             public interface KhonshuTestModule {
@@ -378,28 +408,27 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestActivity : ComponentActivity() {
-              private lateinit var khonshuTestComponent: KhonshuTestComponent
-
               override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
-                if (!::khonshuTestComponent.isInitialized) {
-                  khonshuTestComponent = component(this, this, AppScope::class, intent.extras) {
-                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle, extras ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle, extras)
-                  }
-                }
-
                 setContent {
-                  KhonshuTest(khonshuTestComponent) { startRoute, modifier, destinationChangedCallback ->
-                    NavHost(
-                      startRoute = startRoute,
-                      destinations = khonshuTestComponent.destinations,
-                      modifier = modifier,
-                      deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
-                      deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
-                      navEventNavigator = khonshuTestComponent.navEventNavigator,
-                      destinationChangedCallback = destinationChangedCallback,
-                    )
+                  val componentProvider = remember {
+                    KhonshuTestComponentProvider(this)
+                  }
+                  val component = remember(componentProvider) {
+                    componentProvider.provide<KhonshuTestComponent>(ActivityScope::class)
+                  }
+                  KhonshuTest(component) { startRoute, modifier, destinationChangedCallback ->
+                    CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
+                      NavHost(
+                        startRoute = startRoute,
+                        destinations = component.destinations,
+                        modifier = modifier,
+                        deepLinkHandlers = component.deepLinkHandlers,
+                        deepLinkPrefixes = component.deepLinkPrefixes,
+                        navEventNavigator = component.navEventNavigator,
+                        destinationChangedCallback = destinationChangedCallback,
+                      )
+                    }
                   }
                 }
               }
@@ -492,11 +521,14 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
+            import com.freeletics.khonshu.codegen.`internal`.ActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
+            import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
@@ -520,6 +552,7 @@ internal class NavHostActivityCodegenTest {
             import kotlin.collections.Map
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
+            import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
@@ -572,6 +605,18 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuTest2ComponentProvider(
+              private final val activity: ComponentActivity,
+            ) : ActivityComponentProvider {
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
+                  TestParentScope::class) { parentComponent: KhonshuTest2Component.ParentComponent,
+                  savedStateHandle ->
+                parentComponent.khonshuTest2ComponentFactory().create(savedStateHandle, activity.intent.extras
+                    ?: Bundle.EMPTY)
+              }
+            }
+
             @Module
             @ContributesTo(TestScreen::class)
             public interface KhonshuTest2Module {
@@ -607,28 +652,27 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTest2Activity : ComponentActivity() {
-              private lateinit var khonshuTest2Component: KhonshuTest2Component
-
               override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
-                if (!::khonshuTest2Component.isInitialized) {
-                  khonshuTest2Component = component(this, this, TestParentScope::class, intent.extras) {
-                      parentComponent: KhonshuTest2Component.ParentComponent, savedStateHandle, extras ->
-                    parentComponent.khonshuTest2ComponentFactory().create(savedStateHandle, extras)
-                  }
-                }
-
                 setContent {
-                  KhonshuTest2(khonshuTest2Component) { startRoute, modifier, destinationChangedCallback ->
-                    NavHost(
-                      startRoute = startRoute,
-                      destinations = khonshuTest2Component.destinations,
-                      modifier = modifier,
-                      deepLinkHandlers = khonshuTest2Component.deepLinkHandlers,
-                      deepLinkPrefixes = khonshuTest2Component.deepLinkPrefixes,
-                      navEventNavigator = khonshuTest2Component.navEventNavigator,
-                      destinationChangedCallback = destinationChangedCallback,
-                    )
+                  val componentProvider = remember {
+                    KhonshuTest2ComponentProvider(this)
+                  }
+                  val component = remember(componentProvider) {
+                    componentProvider.provide<KhonshuTest2Component>(TestScreen::class)
+                  }
+                  KhonshuTest2(component) { startRoute, modifier, destinationChangedCallback ->
+                    CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
+                      NavHost(
+                        startRoute = startRoute,
+                        destinations = component.destinations,
+                        modifier = modifier,
+                        deepLinkHandlers = component.deepLinkHandlers,
+                        deepLinkPrefixes = component.deepLinkPrefixes,
+                        navEventNavigator = component.navEventNavigator,
+                        destinationChangedCallback = destinationChangedCallback,
+                      )
+                    }
                   }
                 }
               }
@@ -705,10 +749,13 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
+            import com.freeletics.khonshu.codegen.`internal`.ActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
+            import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
@@ -728,6 +775,7 @@ internal class NavHostActivityCodegenTest {
             import kotlin.OptIn
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
+            import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
 
@@ -771,6 +819,18 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuTestComponentProvider(
+              private final val activity: ComponentActivity,
+            ) : ActivityComponentProvider {
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
+                  TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
+                  savedStateHandle ->
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
+                    Bundle.EMPTY)
+              }
+            }
+
             @Module
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestModule {
@@ -806,28 +866,27 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestActivity : ComponentActivity() {
-              private lateinit var khonshuTestComponent: KhonshuTestComponent
-
               override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
-                if (!::khonshuTestComponent.isInitialized) {
-                  khonshuTestComponent = component(this, this, TestParentScope::class, intent.extras) {
-                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle, extras ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle, extras)
-                  }
-                }
-
                 setContent {
-                  KhonshuTest(khonshuTestComponent) { startRoute, modifier, destinationChangedCallback ->
-                    NavHost(
-                      startRoute = startRoute,
-                      destinations = khonshuTestComponent.destinations,
-                      modifier = modifier,
-                      deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
-                      deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
-                      navEventNavigator = khonshuTestComponent.navEventNavigator,
-                      destinationChangedCallback = destinationChangedCallback,
-                    )
+                  val componentProvider = remember {
+                    KhonshuTestComponentProvider(this)
+                  }
+                  val component = remember(componentProvider) {
+                    componentProvider.provide<KhonshuTestComponent>(TestScreen::class)
+                  }
+                  KhonshuTest(component) { startRoute, modifier, destinationChangedCallback ->
+                    CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
+                      NavHost(
+                        startRoute = startRoute,
+                        destinations = component.destinations,
+                        modifier = modifier,
+                        deepLinkHandlers = component.deepLinkHandlers,
+                        deepLinkPrefixes = component.deepLinkPrefixes,
+                        navEventNavigator = component.navEventNavigator,
+                        destinationChangedCallback = destinationChangedCallback,
+                      )
+                    }
                   }
                 }
               }
@@ -894,11 +953,14 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
+            import com.freeletics.khonshu.codegen.`internal`.ActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
+            import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
@@ -918,6 +980,7 @@ internal class NavHostActivityCodegenTest {
             import kotlin.OptIn
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
+            import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
@@ -962,6 +1025,18 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuTestComponentProvider(
+              private final val activity: ComponentActivity,
+            ) : ActivityComponentProvider {
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
+                  TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
+                  savedStateHandle ->
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
+                    Bundle.EMPTY)
+              }
+            }
+
             @Module
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestModule {
@@ -997,28 +1072,27 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestActivity : ComponentActivity() {
-              private lateinit var khonshuTestComponent: KhonshuTestComponent
-
               override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
-                if (!::khonshuTestComponent.isInitialized) {
-                  khonshuTestComponent = component(this, this, TestParentScope::class, intent.extras) {
-                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle, extras ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle, extras)
-                  }
-                }
-
                 setContent {
-                  KhonshuTest(khonshuTestComponent) { startRoute, modifier, destinationChangedCallback ->
-                    NavHost(
-                      startRoute = startRoute,
-                      destinations = khonshuTestComponent.destinations,
-                      modifier = modifier,
-                      deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
-                      deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
-                      navEventNavigator = khonshuTestComponent.navEventNavigator,
-                      destinationChangedCallback = destinationChangedCallback,
-                    )
+                  val componentProvider = remember {
+                    KhonshuTestComponentProvider(this)
+                  }
+                  val component = remember(componentProvider) {
+                    componentProvider.provide<KhonshuTestComponent>(TestScreen::class)
+                  }
+                  KhonshuTest(component) { startRoute, modifier, destinationChangedCallback ->
+                    CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
+                      NavHost(
+                        startRoute = startRoute,
+                        destinations = component.destinations,
+                        modifier = modifier,
+                        deepLinkHandlers = component.deepLinkHandlers,
+                        deepLinkPrefixes = component.deepLinkPrefixes,
+                        navEventNavigator = component.navEventNavigator,
+                        destinationChangedCallback = destinationChangedCallback,
+                      )
+                    }
                   }
                 }
               }
@@ -1087,11 +1161,14 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
+            import com.freeletics.khonshu.codegen.`internal`.ActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
+            import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
@@ -1111,6 +1188,7 @@ internal class NavHostActivityCodegenTest {
             import kotlin.OptIn
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
+            import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
@@ -1155,6 +1233,18 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuTestComponentProvider(
+              private final val activity: ComponentActivity,
+            ) : ActivityComponentProvider {
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
+                  TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
+                  savedStateHandle ->
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
+                    Bundle.EMPTY)
+              }
+            }
+
             @Module
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestModule {
@@ -1190,28 +1280,27 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             public class KhonshuTestActivity : ComponentActivity() {
-              private lateinit var khonshuTestComponent: KhonshuTestComponent
-
               override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
-                if (!::khonshuTestComponent.isInitialized) {
-                  khonshuTestComponent = component(this, this, TestParentScope::class, intent.extras) {
-                      parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle, extras ->
-                    parentComponent.khonshuTestComponentFactory().create(savedStateHandle, extras)
-                  }
-                }
-
                 setContent {
-                  KhonshuTest(khonshuTestComponent) { startRoute, modifier, destinationChangedCallback ->
-                    NavHost(
-                      startRoute = startRoute,
-                      destinations = khonshuTestComponent.destinations,
-                      modifier = modifier,
-                      deepLinkHandlers = khonshuTestComponent.deepLinkHandlers,
-                      deepLinkPrefixes = khonshuTestComponent.deepLinkPrefixes,
-                      navEventNavigator = khonshuTestComponent.navEventNavigator,
-                      destinationChangedCallback = destinationChangedCallback,
-                    )
+                  val componentProvider = remember {
+                    KhonshuTestComponentProvider(this)
+                  }
+                  val component = remember(componentProvider) {
+                    componentProvider.provide<KhonshuTestComponent>(TestScreen::class)
+                  }
+                  KhonshuTest(component) { startRoute, modifier, destinationChangedCallback ->
+                    CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
+                      NavHost(
+                        startRoute = startRoute,
+                        destinations = component.destinations,
+                        modifier = modifier,
+                        deepLinkHandlers = component.deepLinkHandlers,
+                        deepLinkPrefixes = component.deepLinkPrefixes,
+                        navEventNavigator = component.navEventNavigator,
+                        destinationChangedCallback = destinationChangedCallback,
+                      )
+                    }
                   }
                 }
               }
@@ -1283,11 +1372,14 @@ internal class NavHostActivityCodegenTest {
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
+            import com.freeletics.khonshu.codegen.`internal`.ActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
+            import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
@@ -1307,6 +1399,7 @@ internal class NavHostActivityCodegenTest {
             import kotlin.OptIn
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
+            import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
@@ -1351,6 +1444,18 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
+            @OptIn(InternalCodegenApi::class)
+            public class KhonshuExperimentalTestComponentProvider(
+              private final val activity: ComponentActivity,
+            ) : ActivityComponentProvider {
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
+                  TestParentScope::class) { parentComponent: KhonshuExperimentalTestComponent.ParentComponent,
+                  savedStateHandle ->
+                parentComponent.khonshuExperimentalTestComponentFactory().create(savedStateHandle,
+                    activity.intent.extras ?: Bundle.EMPTY)
+              }
+            }
+
             @Module
             @ContributesTo(TestScreen::class)
             public interface KhonshuExperimentalTestModule {
@@ -1386,30 +1491,27 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             public class KhonshuExperimentalTestActivity : ComponentActivity() {
-              private lateinit var khonshuExperimentalTestComponent: KhonshuExperimentalTestComponent
-
               override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
-                if (!::khonshuExperimentalTestComponent.isInitialized) {
-                  khonshuExperimentalTestComponent = component(this, this, TestParentScope::class,
-                      intent.extras) { parentComponent: KhonshuExperimentalTestComponent.ParentComponent,
-                      savedStateHandle, extras ->
-                    parentComponent.khonshuExperimentalTestComponentFactory().create(savedStateHandle, extras)
-                  }
-                }
-
                 setContent {
-                  KhonshuExperimentalTest(khonshuExperimentalTestComponent) { startRoute, modifier,
-                      destinationChangedCallback ->
-                    NavHost(
-                      startRoute = startRoute,
-                      destinations = khonshuExperimentalTestComponent.destinations,
-                      modifier = modifier,
-                      deepLinkHandlers = khonshuExperimentalTestComponent.deepLinkHandlers,
-                      deepLinkPrefixes = khonshuExperimentalTestComponent.deepLinkPrefixes,
-                      navEventNavigator = khonshuExperimentalTestComponent.navEventNavigator,
-                      destinationChangedCallback = destinationChangedCallback,
-                    )
+                  val componentProvider = remember {
+                    KhonshuExperimentalTestComponentProvider(this)
+                  }
+                  val component = remember(componentProvider) {
+                    componentProvider.provide<KhonshuExperimentalTestComponent>(TestScreen::class)
+                  }
+                  KhonshuExperimentalTest(component) { startRoute, modifier, destinationChangedCallback ->
+                    CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
+                      NavHost(
+                        startRoute = startRoute,
+                        destinations = component.destinations,
+                        modifier = modifier,
+                        deepLinkHandlers = component.deepLinkHandlers,
+                        deepLinkPrefixes = component.deepLinkPrefixes,
+                        navEventNavigator = component.navEventNavigator,
+                        destinationChangedCallback = destinationChangedCallback,
+                      )
+                    }
                   }
                 }
               }

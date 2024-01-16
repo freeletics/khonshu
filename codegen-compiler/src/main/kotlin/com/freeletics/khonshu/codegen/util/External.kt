@@ -24,6 +24,10 @@ internal val InternalCodegenApi = ClassName("com.freeletics.khonshu.codegen.inte
 internal val getComponent = MemberName("com.freeletics.khonshu.codegen.internal", "component")
 internal val getComponentFromRoute = MemberName("com.freeletics.khonshu.codegen.internal", "componentFromParentRoute")
 internal val componentProvider = ClassName("com.freeletics.khonshu.codegen.internal", "ComponentProvider")
+internal val activityComponentProvider =
+    ClassName("com.freeletics.khonshu.codegen.internal", "ActivityComponentProvider")
+internal val localActivityComponentProvider =
+    MemberName("com.freeletics.khonshu.codegen.internal", "LocalActivityComponentProvider")
 
 // Navigator
 internal val baseRoute = ClassName("com.freeletics.khonshu.navigation", "BaseRoute")
@@ -76,6 +80,7 @@ internal val bindsInstance = ClassName("dagger", "BindsInstance")
 internal val module = ClassName("dagger", "Module")
 
 // AndroidX
+internal val componentActivity = ClassName("androidx.activity", "ComponentActivity")
 internal val setContent = MemberName("androidx.activity.compose", "setContent")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
 
@@ -83,6 +88,7 @@ internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandl
 internal val composable = ClassName("androidx.compose.runtime", "Composable")
 internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val remember = MemberName("androidx.compose.runtime", "remember")
+internal val compositionLocalProvider = MemberName("androidx.compose.runtime", "CompositionLocalProvider")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 internal val localContext = MemberName("androidx.compose.ui.platform", "LocalContext")
 

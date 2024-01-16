@@ -1,33 +1,46 @@
 package com.freeletics.khonshu.codegen.internal
 
 import android.content.Context
-import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.compose.runtime.DisallowComposableCalls
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import java.io.Closeable
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
-public inline fun <reified C : Any, P : Any> component(
-    viewModelStoreOwner: ViewModelStoreOwner,
-    context: Context,
-    parentScope: KClass<*>,
-    arguments: Bundle?,
-    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle, Bundle) -> C,
-): C {
-    val store = ViewModelProvider(
-        viewModelStoreOwner,
-        SavedStateViewModelFactory(),
-    )[ActivityComponentViewModel::class.java]
-    return store.getOrCreate(C::class) {
-        val parentComponent = context.findComponentByScope<P>(parentScope)
-        val savedStateHandle = store.savedStateHandle
-        factory(parentComponent, savedStateHandle, arguments ?: Bundle.EMPTY)
+public interface ActivityComponentProvider {
+    public fun <T> provide(scope: KClass<*>): T
+}
+
+@InternalCodegenApi
+public val LocalActivityComponentProvider: ProvidableCompositionLocal<ActivityComponentProvider> =
+    staticCompositionLocalOf {
+        throw IllegalStateException("ActivityComponentProvider was not provided by Activity")
     }
+
+@InternalCodegenApi
+public inline fun <C : Any, reified AC : Any, P : Any> component(
+    activity: ComponentActivity,
+    requestedScope: KClass<*>,
+    activityScope: KClass<*>,
+    activityParentScope: KClass<*>,
+    crossinline factory: @DisallowComposableCalls (P, SavedStateHandle) -> AC,
+): C {
+    if (requestedScope != activityScope) {
+        return activity.findComponentByScope(requestedScope)
+    }
+    val store = ViewModelProvider(activity, SavedStateViewModelFactory())[ActivityComponentViewModel::class.java]
+    @Suppress("UNCHECKED_CAST")
+    return store.getOrCreate(AC::class) {
+        val parentComponent = activity.findComponentByScope<P>(activityParentScope)
+        val savedStateHandle = store.savedStateHandle
+        factory(parentComponent, savedStateHandle)
+    } as C
 }
 
 @PublishedApi
