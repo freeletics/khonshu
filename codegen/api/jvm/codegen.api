@@ -22,9 +22,6 @@ public abstract interface annotation class com/freeletics/khonshu/codegen/NavHos
 public abstract interface class com/freeletics/khonshu/codegen/Overlay {
 }
 
-public final class com/freeletics/khonshu/codegen/internal/CollectAsStateKt {
-}
-
 public abstract interface annotation class com/freeletics/khonshu/codegen/internal/InternalCodegenApi : java/lang/annotation/Annotation {
 }
 
