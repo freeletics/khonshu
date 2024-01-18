@@ -191,11 +191,8 @@ public val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecuto
 }
 
 @InternalNavigationApi
-public fun Context.findActivity(): Activity {
-    var context = this
-    while (context is ContextWrapper) {
-        if (context is Activity) return context
-        context = context.baseContext
-    }
-    throw IllegalStateException("Permissions should be requested in the context of an Activity")
+public tailrec fun Context.findActivity(): Activity = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> error("Could not find activity in Context chain.")
 }
