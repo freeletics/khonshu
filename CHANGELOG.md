@@ -21,6 +21,8 @@ Change Log
   have been moved to `com.freeletics.khonshu.codegen`.
 - **Added**: `NavHostActivity` has an `experimentalNavigation` boolean to generate code
   with a `navigation-experimental` `NavHost`.
+- **Added**: `ActivityScope` and custom `Activity` scopes can now be used as `parentScope` for
+  destinations.
 - **Removed**: `@ComposeFragmentDestination` and `Fragment` codegen support.
 
 

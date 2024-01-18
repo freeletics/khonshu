@@ -34,7 +34,6 @@ internal val baseRoute = ClassName("com.freeletics.khonshu.navigation", "BaseRou
 internal val baseRouteFqName = FqName(baseRoute.canonicalName)
 internal val navEventNavigator = ClassName("com.freeletics.khonshu.navigation", "NavEventNavigator")
 internal val navigationExecutor = ClassName("com.freeletics.khonshu.navigation.internal", "NavigationExecutor")
-internal val destinationId = MemberName("com.freeletics.khonshu.navigation.internal", "destinationId")
 internal val androidxNavHost = MemberName("com.freeletics.khonshu.navigation.androidx", "NavHost")
 internal val experimentalNavHost = MemberName("com.freeletics.khonshu.navigation", "NavHost")
 internal val navigationSetup = MemberName("com.freeletics.khonshu.navigation", "NavigationSetup")
@@ -90,8 +89,6 @@ internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val remember = MemberName("androidx.compose.runtime", "remember")
 internal val compositionLocalProvider = MemberName("androidx.compose.runtime", "CompositionLocalProvider")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
-internal val localContext = MemberName("androidx.compose.ui.platform", "LocalContext")
 
 // Android
 internal val bundle = ClassName("android.os", "Bundle")
-internal val context = ClassName("android.content", "Context")
