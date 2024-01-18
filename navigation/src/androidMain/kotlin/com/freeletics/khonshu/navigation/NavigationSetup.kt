@@ -192,7 +192,7 @@ public val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecuto
 
 @InternalNavigationApi
 public tailrec fun Context.findActivity(): Activity = when (this) {
-  is Activity -> this
-  is ContextWrapper -> baseContext.findActivity()
-  else -> error("Could not find activity in Context chain.")
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> error("Could not find activity in Context chain.")
 }
