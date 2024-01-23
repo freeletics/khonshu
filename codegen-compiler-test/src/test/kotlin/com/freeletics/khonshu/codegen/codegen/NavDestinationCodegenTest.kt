@@ -105,6 +105,7 @@ internal class NavDestinationCodegenTest {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -181,13 +182,16 @@ internal class NavDestinationCodegenTest {
             @OptIn(InternalCodegenApi::class)
             private fun KhonshuTest(component: KhonshuTestComponent) {
               val stateMachine = remember { component.testStateMachine }
+              val scope = rememberCoroutineScope()
+              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
+                { scope.launch { stateMachine.dispatch(it) } }
+              }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
-                val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  sendAction = sendAction,
                 )
               }
             }
@@ -275,6 +279,7 @@ internal class NavDestinationCodegenTest {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -351,13 +356,16 @@ internal class NavDestinationCodegenTest {
             @OptIn(InternalCodegenApi::class)
             private fun KhonshuTest(component: KhonshuTestComponent) {
               val stateMachine = remember { component.testStateMachine }
+              val scope = rememberCoroutineScope()
+              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
+                { scope.launch { stateMachine.dispatch(it) } }
+              }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
-                val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  sendAction = sendAction,
                 )
               }
             }
@@ -449,6 +457,7 @@ internal class NavDestinationCodegenTest {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -527,13 +536,16 @@ internal class NavDestinationCodegenTest {
             @OptIn(InternalCodegenApi::class)
             private fun KhonshuTest(component: KhonshuTestComponent) {
               val stateMachine = remember { component.testStateMachine }
+              val scope = rememberCoroutineScope()
+              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
+                { scope.launch { stateMachine.dispatch(it) } }
+              }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
-                val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  sendAction = sendAction,
                 )
               }
             }
@@ -646,6 +658,7 @@ internal class NavDestinationCodegenTest {
             import kotlin.Int
             import kotlin.OptIn
             import kotlin.String
+            import kotlin.Unit
             import kotlin.collections.Map
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
@@ -735,17 +748,20 @@ internal class NavDestinationCodegenTest {
               val testSet = remember { component.testSet }
               val testMap = remember { component.testMap }
               val stateMachine = remember { component.testStateMachine }
+              val scope = rememberCoroutineScope()
+              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
+                { scope.launch { stateMachine.dispatch(it) } }
+              }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
-                val scope = rememberCoroutineScope()
                 Test2(
                   testClass = testClass,
                   test = test,
                   testSet = testSet,
                   testMap = testMap,
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  sendAction = sendAction,
                 )
               }
             }
@@ -995,6 +1011,7 @@ internal class NavDestinationCodegenTest {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
@@ -1071,12 +1088,15 @@ internal class NavDestinationCodegenTest {
             @OptIn(InternalCodegenApi::class)
             private fun KhonshuTest(component: KhonshuTestComponent) {
               val stateMachine = remember { component.testStateMachine }
+              val scope = rememberCoroutineScope()
+              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
+                { scope.launch { stateMachine.dispatch(it) } }
+              }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
-                val scope = rememberCoroutineScope()
                 Test(
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  sendAction = sendAction,
                 )
               }
             }
