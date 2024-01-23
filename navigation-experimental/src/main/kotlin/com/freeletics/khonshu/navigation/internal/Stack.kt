@@ -9,6 +9,7 @@ import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.ScreenDestination
 import java.util.UUID
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.adapters.ImmutableListAdapter
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -33,7 +34,7 @@ internal class Stack private constructor(
 
     fun computeVisibleEntries(): ImmutableList<StackEntry<*>> {
         if (stack.size == 1) {
-            return persistentListOf(stack.single())
+            return ImmutableListAdapter(listOf(stack.single()))
         }
 
         // go through the stack from the top until reaching the first ScreenDestination
@@ -46,7 +47,7 @@ internal class Stack private constructor(
                     while (iterator.hasNext()) {
                         add(iterator.next())
                     }
-                }.toImmutableList()
+                }.let(::ImmutableListAdapter)
             }
         }
 
