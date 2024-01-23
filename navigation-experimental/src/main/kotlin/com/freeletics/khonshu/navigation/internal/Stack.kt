@@ -10,7 +10,6 @@ import com.freeletics.khonshu.navigation.ScreenDestination
 import java.util.UUID
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.adapters.ImmutableListAdapter
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 internal class Stack private constructor(
