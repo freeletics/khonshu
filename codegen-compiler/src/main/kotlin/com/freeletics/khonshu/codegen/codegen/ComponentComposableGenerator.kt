@@ -4,6 +4,7 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.asComposeState
 import com.freeletics.khonshu.codegen.util.composable
+import com.freeletics.khonshu.codegen.util.functionToLambda
 import com.freeletics.khonshu.codegen.util.launch
 import com.freeletics.khonshu.codegen.util.navHostParameter
 import com.freeletics.khonshu.codegen.util.optInAnnotation
@@ -49,14 +50,21 @@ internal class ComponentComposableGenerator(
                 }
             }
             .addStatement("val stateMachine = %M { component.%L }", remember, data.stateMachine.propertyName)
-            .addStatement("val state = stateMachine.%M()", asComposeState)
-            .addStatement("val currentState = state.value")
-            .beginControlFlow("if (currentState != null)")
             .apply {
                 if (data.sendActionParameter != null) {
                     addStatement("val scope = %M()", rememberCoroutineScope)
+                        .beginControlFlow(
+                            "val sendAction: %T = %M(stateMachine, scope)",
+                            data.sendActionParameter!!.typeName.functionToLambda(),
+                            remember,
+                        )
+                        .addStatement("{ scope.%M { stateMachine.dispatch(it) } }", launch)
+                        .endControlFlow()
                 }
             }
+            .addStatement("val state = stateMachine.%M()", asComposeState)
+            .addStatement("val currentState = state.value")
+            .beginControlFlow("if (currentState != null)")
             .addStatement("%L(", data.baseName.removePrefix("Experimental"))
             .apply {
                 data.composableParameter.forEach { parameter ->
@@ -66,12 +74,7 @@ internal class ComponentComposableGenerator(
                     addStatement("  %L = currentState,", data.stateParameter!!.name)
                 }
                 if (data.sendActionParameter != null) {
-                    // dispatch: external method
-                    addStatement(
-                        "  %L = { scope.%M { stateMachine.dispatch(it) } },",
-                        data.sendActionParameter!!.name,
-                        launch,
-                    )
+                    addStatement("  %L = sendAction,", data.sendActionParameter!!.name)
                 }
                 if (data is NavHostActivityData) {
                     addStatement(

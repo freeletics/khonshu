@@ -106,6 +106,7 @@ internal class NavHostActivityCodegenTest {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
             import kotlin.reflect.KClass
@@ -230,13 +231,16 @@ internal class NavHostActivityCodegenTest {
             @OptIn(InternalCodegenApi::class)
             private fun KhonshuTest(component: KhonshuTestComponent, navHost: SimpleNavHost) {
               val stateMachine = remember { component.testStateMachine }
+              val scope = rememberCoroutineScope()
+              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
+                { scope.launch { stateMachine.dispatch(it) } }
+              }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
-                val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  sendAction = sendAction,
                   navHost = navHost,
                 )
               }
@@ -315,6 +319,7 @@ internal class NavHostActivityCodegenTest {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
             import kotlin.reflect.KClass
@@ -438,13 +443,16 @@ internal class NavHostActivityCodegenTest {
             @OptIn(InternalCodegenApi::class)
             private fun KhonshuTest(component: KhonshuTestComponent, navHost: SimpleNavHost) {
               val stateMachine = remember { component.testStateMachine }
+              val scope = rememberCoroutineScope()
+              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
+                { scope.launch { stateMachine.dispatch(it) } }
+              }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
-                val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  sendAction = sendAction,
                   navHost = navHost,
                 )
               }
@@ -549,6 +557,7 @@ internal class NavHostActivityCodegenTest {
             import kotlin.Int
             import kotlin.OptIn
             import kotlin.String
+            import kotlin.Unit
             import kotlin.collections.Map
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
@@ -686,17 +695,20 @@ internal class NavHostActivityCodegenTest {
               val testSet = remember { component.testSet }
               val testMap = remember { component.testMap }
               val stateMachine = remember { component.testStateMachine }
+              val scope = rememberCoroutineScope()
+              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
+                { scope.launch { stateMachine.dispatch(it) } }
+              }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
-                val scope = rememberCoroutineScope()
                 Test2(
                   testClass = testClass,
                   test = test,
                   testSet = testSet,
                   testMap = testMap,
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  sendAction = sendAction,
                   navHost = navHost,
                 )
               }
@@ -978,6 +990,7 @@ internal class NavHostActivityCodegenTest {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
             import kotlin.reflect.KClass
@@ -1102,12 +1115,15 @@ internal class NavHostActivityCodegenTest {
             @OptIn(InternalCodegenApi::class)
             private fun KhonshuTest(component: KhonshuTestComponent, navHost: SimpleNavHost) {
               val stateMachine = remember { component.testStateMachine }
+              val scope = rememberCoroutineScope()
+              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
+                { scope.launch { stateMachine.dispatch(it) } }
+              }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
-                val scope = rememberCoroutineScope()
                 Test(
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  sendAction = sendAction,
                   navHost = navHost,
                 )
               }
@@ -1186,6 +1202,7 @@ internal class NavHostActivityCodegenTest {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
             import kotlin.reflect.KClass
@@ -1310,13 +1327,16 @@ internal class NavHostActivityCodegenTest {
             @OptIn(InternalCodegenApi::class)
             private fun KhonshuTest(component: KhonshuTestComponent, navHost: SimpleNavHost) {
               val stateMachine = remember { component.testStateMachine }
+              val scope = rememberCoroutineScope()
+              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
+                { scope.launch { stateMachine.dispatch(it) } }
+              }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
-                val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  sendAction = sendAction,
                   navHost = navHost,
                 )
               }
@@ -1397,6 +1417,7 @@ internal class NavHostActivityCodegenTest {
             import dagger.multibindings.Multibinds
             import java.io.Closeable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlin.jvm.JvmSuppressWildcards
             import kotlin.reflect.KClass
@@ -1522,13 +1543,16 @@ internal class NavHostActivityCodegenTest {
             private fun KhonshuExperimentalTest(component: KhonshuExperimentalTestComponent,
                 navHost: SimpleNavHost) {
               val stateMachine = remember { component.testStateMachine }
+              val scope = rememberCoroutineScope()
+              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
+                { scope.launch { stateMachine.dispatch(it) } }
+              }
               val state = stateMachine.asComposeState()
               val currentState = state.value
               if (currentState != null) {
-                val scope = rememberCoroutineScope()
                 Test(
                   state = currentState,
-                  sendAction = { scope.launch { stateMachine.dispatch(it) } },
+                  sendAction = sendAction,
                   navHost = navHost,
                 )
               }
