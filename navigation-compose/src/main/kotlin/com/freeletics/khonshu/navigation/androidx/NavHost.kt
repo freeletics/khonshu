@@ -86,7 +86,7 @@ public fun NavHost(
     deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
     navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
-    transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
+    transitionAnimations: NavHostTransitionAnimations = NavHostTransitionAnimations.noAnimations(),
 ) {
     val context = LocalContext.current
 

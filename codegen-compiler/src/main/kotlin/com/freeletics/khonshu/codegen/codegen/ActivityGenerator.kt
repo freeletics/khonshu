@@ -5,6 +5,7 @@ import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.bundle
 import com.freeletics.khonshu.codegen.util.compositionLocalProvider
 import com.freeletics.khonshu.codegen.util.localActivityComponentProvider
+import com.freeletics.khonshu.codegen.util.navHostTransitionAnimations
 import com.freeletics.khonshu.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.util.remember
 import com.freeletics.khonshu.codegen.util.setContent
@@ -53,6 +54,11 @@ internal class ActivityGenerator(
             .addStatement("  deepLinkPrefixes = component.deepLinkPrefixes,")
             .addStatement("  navEventNavigator = component.navEventNavigator,")
             .addStatement("  destinationChangedCallback = destinationChangedCallback,")
+            .apply {
+                if (!data.experimentalNavigation) {
+                    addStatement("  transitionAnimations = %T.noAnimations(),", navHostTransitionAnimations)
+                }
+            }
             .addStatement(")")
             .endControlFlow()
             .endControlFlow()
