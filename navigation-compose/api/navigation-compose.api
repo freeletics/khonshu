@@ -7,7 +7,6 @@ public final class com/freeletics/khonshu/navigation/androidx/NavHostDefaults {
 
 public final class com/freeletics/khonshu/navigation/androidx/NavHostKt {
 	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function1;Lcom/freeletics/khonshu/navigation/androidx/NavHostTransitionAnimations;Landroidx/compose/runtime/Composer;II)V
-	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function1;Lcom/freeletics/khonshu/navigation/androidx/NavHostTransitionAnimations;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/freeletics/khonshu/navigation/androidx/NavHostTransitionAnimations {
