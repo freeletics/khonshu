@@ -78,80 +78,12 @@ import kotlinx.collections.immutable.persistentSetOf
  * Optional [transitionAnimations] override default set of transition animations.
  */
 @Composable
-@NonRestartableComposable
 public fun NavHost(
     startRoute: NavRoot,
     destinations: ImmutableSet<NavDestination>,
     modifier: Modifier = Modifier,
     deepLinkHandlers: ImmutableSet<DeepLinkHandler> = persistentSetOf(),
     deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
-    navEventNavigator: NavEventNavigator? = null,
-    destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
-    transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
-) {
-    InternalNavHost(
-        startRoute = startRoute,
-        destinations = destinations,
-        modifier = modifier,
-        deepLinkHandlers = deepLinkHandlers,
-        deepLinkPrefixes = deepLinkPrefixes,
-        navEventNavigator = navEventNavigator,
-        destinationChangedCallback = destinationChangedCallback,
-        transitionAnimations = transitionAnimations,
-    )
-}
-
-/**
- * Create a new [androidx.navigation.compose.NavHost] with a [androidx.navigation.NavGraph]
- * containing all given [destinations]. [startRoute] will be used as the start destination
- * of the graph.
- *
- * To support deep links a set of [deepLinkHandlers] can be passed in optionally.
- * These will be used to build the correct back stack when the current `Activity` was launched with
- * an `ACTION_VIEW` `Intent` that contains an url in it's data. [deepLinkPrefixes] can be used to
- * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
- * doesn't provide its own [DeepLinkHandler.prefixes].
- *
- * If a [NavEventNavigator] is passed it will be automatically set up and can be used to
- * navigate within the `NavHost`.
- *
- * The [destinationChangedCallback] can be used to be notified when the current destination
- * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
- *
- * Optional [transitionAnimations] override default set of transition animations.
- */
-@Composable
-@NonRestartableComposable
-@Deprecated("Will eventually be removed. The start destination should use a NavRoot")
-public fun NavHost(
-    startRoute: NavRoute,
-    destinations: ImmutableSet<NavDestination>,
-    modifier: Modifier = Modifier,
-    deepLinkHandlers: ImmutableSet<DeepLinkHandler> = persistentSetOf(),
-    deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
-    navEventNavigator: NavEventNavigator? = null,
-    destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
-    transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
-) {
-    InternalNavHost(
-        startRoute = startRoute,
-        destinations = destinations,
-        modifier = modifier,
-        deepLinkHandlers = deepLinkHandlers,
-        deepLinkPrefixes = deepLinkPrefixes,
-        navEventNavigator = navEventNavigator,
-        destinationChangedCallback = destinationChangedCallback,
-        transitionAnimations = transitionAnimations,
-    )
-}
-
-@Composable
-private fun InternalNavHost(
-    startRoute: BaseRoute,
-    destinations: Set<NavDestination>,
-    modifier: Modifier = Modifier,
-    deepLinkHandlers: Set<DeepLinkHandler> = emptySet(),
-    deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = emptySet(),
     navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
     transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
