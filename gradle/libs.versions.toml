@@ -46,7 +46,7 @@ kotlin-compile-testing = "0.4.0"
 publish = "0.27.0"
 dokka = "1.9.10"
 bestpractices = "0.10"
-binarycompatibility = "0.13.2"
+binarycompatibility = "0.14.0"
 dependency-analysis = "1.28.0"
 gr8 = "0.10"
 
