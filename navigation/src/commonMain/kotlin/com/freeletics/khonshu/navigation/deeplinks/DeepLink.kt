@@ -3,6 +3,7 @@ package com.freeletics.khonshu.navigation.deeplinks
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.Parcelable
 import dev.drewhamilton.poko.Poko
 
@@ -41,5 +42,6 @@ public fun DeepLink(
 @Poko
 public class DeepLink internal constructor(
     internal val action: String?,
-    internal val routes: List<Parcelable>,
+    @property:InternalNavigationApi
+    public val routes: List<Parcelable>,
 )

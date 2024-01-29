@@ -8,14 +8,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.eygraber.uri.Uri
+import com.eygraber.uri.toUri
 import com.freeletics.khonshu.navigation.ActivityDestination
 import com.freeletics.khonshu.navigation.ContentDestination
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.EXTRA_DEEPLINK_ROUTES
-import com.freeletics.khonshu.navigation.deeplinks.buildIntent
 import com.freeletics.khonshu.navigation.deeplinks.createDeepLinkIfMatching
 import com.freeletics.khonshu.navigation.findActivity
 import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_HANDLED_DEEP_LINKS
@@ -83,15 +82,15 @@ private fun deepLinkRoutes(
     deepLinkHandlers: Set<DeepLinkHandler>,
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
 ): List<Parcelable> {
-    var intent = context.findActivity().intent
-    val uri = intent.dataString
-    if (uri != null) {
-        val deepLink = deepLinkHandlers.createDeepLinkIfMatching(Uri.parse(uri), deepLinkPrefixes)
-        val deepLinkIntent = deepLink?.buildIntent(context)
-        if (deepLinkIntent != null) {
-            intent = deepLinkIntent
-        }
+    val intent = context.findActivity().intent
+    if (intent.hasExtra(EXTRA_DEEPLINK_ROUTES)) {
+        @Suppress("DEPRECATION")
+        return intent.getParcelableArrayListExtra(EXTRA_DEEPLINK_ROUTES)!!
     }
-    @Suppress("DEPRECATION")
-    return intent.getParcelableArrayListExtra(EXTRA_DEEPLINK_ROUTES) ?: emptyList()
+    val uri = intent.data
+    if (uri != null) {
+        val deepLink = deepLinkHandlers.createDeepLinkIfMatching(uri.toUri(), deepLinkPrefixes)
+        return deepLink?.routes ?: emptyList()
+    }
+    return emptyList()
 }
