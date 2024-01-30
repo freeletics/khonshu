@@ -26,9 +26,6 @@ public final class com/freeletics/khonshu/codegen/internal/ActivityComponentLook
 	public static final fun findComponentByScope (Landroid/content/Context;Lkotlin/reflect/KClass;)Ljava/lang/Object;
 }
 
-public final class com/freeletics/khonshu/codegen/internal/CollectAsStateKt {
-}
-
 public abstract interface annotation class com/freeletics/khonshu/codegen/internal/InternalCodegenApi : java/lang/annotation/Annotation {
 }
 

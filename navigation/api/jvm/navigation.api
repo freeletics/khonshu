@@ -53,12 +53,6 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkKt {
 	public static synthetic fun DeepLink$default (Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
 }
 
-public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkMatcherKt {
-}
-
-public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkParserKt {
-}
-
 public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationApi : java/lang/annotation/Annotation {
 }
 
