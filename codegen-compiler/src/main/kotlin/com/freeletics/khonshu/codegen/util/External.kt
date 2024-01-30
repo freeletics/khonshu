@@ -35,6 +35,8 @@ internal val baseRouteFqName = FqName(baseRoute.canonicalName)
 internal val navEventNavigator = ClassName("com.freeletics.khonshu.navigation", "NavEventNavigator")
 internal val navigationExecutor = ClassName("com.freeletics.khonshu.navigation.internal", "NavigationExecutor")
 internal val androidxNavHost = MemberName("com.freeletics.khonshu.navigation.androidx", "NavHost")
+internal val navHostTransitionAnimations =
+    ClassName("com.freeletics.khonshu.navigation.androidx", "NavHostTransitionAnimations")
 internal val experimentalNavHost = MemberName("com.freeletics.khonshu.navigation", "NavHost")
 internal val navigationSetup = MemberName("com.freeletics.khonshu.navigation", "NavigationSetup")
 internal val navigationDestination = ClassName("com.freeletics.khonshu.navigation", "NavDestination")

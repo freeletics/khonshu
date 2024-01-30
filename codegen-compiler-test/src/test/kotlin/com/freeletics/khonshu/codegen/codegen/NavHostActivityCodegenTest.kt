@@ -94,6 +94,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.androidx.NavHost
+            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -220,6 +221,7 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = component.deepLinkPrefixes,
                         navEventNavigator = component.navEventNavigator,
                         destinationChangedCallback = destinationChangedCallback,
+                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
@@ -308,6 +310,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.androidx.NavHost
+            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -432,6 +435,7 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = component.deepLinkPrefixes,
                         navEventNavigator = component.navEventNavigator,
                         destinationChangedCallback = destinationChangedCallback,
+                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
@@ -542,6 +546,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.androidx.NavHost
+            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -680,6 +685,7 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = component.deepLinkPrefixes,
                         navEventNavigator = component.navEventNavigator,
                         destinationChangedCallback = destinationChangedCallback,
+                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
@@ -773,6 +779,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.androidx.NavHost
+            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -897,6 +904,7 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = component.deepLinkPrefixes,
                         navEventNavigator = component.navEventNavigator,
                         destinationChangedCallback = destinationChangedCallback,
+                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
@@ -978,6 +986,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.androidx.NavHost
+            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -1104,6 +1113,7 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = component.deepLinkPrefixes,
                         navEventNavigator = component.navEventNavigator,
                         destinationChangedCallback = destinationChangedCallback,
+                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
@@ -1190,6 +1200,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.androidx.NavHost
+            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -1316,6 +1327,7 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = component.deepLinkPrefixes,
                         navEventNavigator = component.navEventNavigator,
                         destinationChangedCallback = destinationChangedCallback,
+                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
