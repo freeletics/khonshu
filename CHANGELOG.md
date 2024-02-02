@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-## 0.22.0 **UNRELEASED**
+## 0.22.0 *(2024-02-02)*
 
 ### Navigation
 
@@ -12,6 +12,9 @@ Change Log
   `navigation-experimental` `NavHost` to `com.freeletics.khonshu.navigation`. This now allows to use
   the AndroidX based and the experimental navigation implementation in the same app and switch between
   them with a feature flag.
+- **New**: Added `replaceAll` to `NavEventNavigator` to replace the current back stack
+  including the start destination with the given `NavRoot`. Thanks to @hoc081098 for the contribution.
+- **Removed**: Deprecated overload of `NavHost` that allowed using `NavRoute` as start destination.
 - **Removed**: `navigation-fragment` and `Fragment` navigation support.
 - **Removed**: `navigation-androidx` has been inlined into `navigation-compose`.
 
@@ -23,6 +26,9 @@ Change Log
   with a `navigation-experimental` `NavHost`.
 - **Added**: `ActivityScope` and custom `Activity` scopes can now be used as `parentScope` for
   destinations.
+- Reduce the number of re-compositions in the generated code by remembering the
+  `sendAction` lambda.
+- Generated code for `NavHostActivity` is now using `NavHostTransitionAnimations.noAnimations()`.
 - **Removed**: `@ComposeFragmentDestination` and `Fragment` codegen support.
 
 
