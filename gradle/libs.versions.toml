@@ -5,7 +5,7 @@ coroutines = "1.7.3"
 java-target= "11"
 java-toolchain = "19"
 
-fgp = "0.9.0"
+fgp = "0.10.1"
 gradle-api = "8.4"
 
 android-gradle = "8.2.2"
