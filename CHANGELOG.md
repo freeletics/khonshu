@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+## 0.22.1 *(2024-02-16)*
+
+### Codegen
+
+- Update `StateMachine` collection to start immediately when the generated composable is
+  added to the composition. Previously this only happened in `onResume` for the `NavBackStackEntry`
+  that the composable is tied too which caused a visible delay in the content being shown.
+  Whenever the lifecycle is paused afterwards the collection is stopped until the next
+  resume.
+
+
 ## 0.22.0 *(2024-02-02)*
 
 ### Navigation
