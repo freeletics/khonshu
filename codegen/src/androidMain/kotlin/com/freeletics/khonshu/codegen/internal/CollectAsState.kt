@@ -6,10 +6,13 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleDestroyedException
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.withCreated
 import com.freeletics.khonshu.statemachine.StateMachine
+import kotlin.coroutines.cancellation.CancellationException
+import kotlinx.coroutines.channels.ClosedSendChannelException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 
@@ -29,7 +32,7 @@ public fun <S : Any> StateMachine<S, *>.asComposeState(): State<S?> {
     }
 }
 
-private fun <T> Flow<T>.runUntilDownEvent(
+internal fun <T> Flow<T>.runUntilDownEvent(
     lifecycle: Lifecycle,
     lifecycleState: Lifecycle.State,
 ): Flow<T> = channelFlow {
@@ -48,6 +51,13 @@ private fun <T> Flow<T>.runUntilDownEvent(
         lifecycle.withCreated {}
         lifecycle.addObserver(observer)
         collect { send(it) }
+    } catch (e: LifecycleDestroyedException) {
+        // close before re-throwing CancellationException so that flow completes
+        close()
+        throw e
+    } catch (e: ClosedSendChannelException) {
+        // channel is already closed so just throw CancellationException
+        throw CancellationException(e)
     } finally {
         lifecycle.removeObserver(observer)
     }
