@@ -29,4 +29,10 @@ dependencies {
     "androidMainApi"(projects.stateMachine)
 
     "androidMainImplementation"(libs.coroutines.core)
+
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.truth)
+    "androidUnitTestImplementation"(libs.coroutines.test)
+    "androidUnitTestImplementation"(libs.turbine)
+    "androidUnitTestImplementation"(libs.androidx.lifecycle.testing)
 }
