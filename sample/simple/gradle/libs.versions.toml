@@ -49,6 +49,7 @@ dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 khonshu-navigator = { module = "com.freeletics.khonshu:navigation", version.ref = "khonshu" }
+khonshu-navigator-experimental = { module = "com.freeletics.khonshu:navigation-experimental", version.ref = "khonshu" }
 khonshu-navigator-compose = { module = "com.freeletics.khonshu:navigation-compose", version.ref = "khonshu" }
 khonshu-codegen-compiler = { module = "com.freeletics.khonshu:codegen-compiler", version.ref = "khonshu" }
 khonshu-codegen = { module = "com.freeletics.khonshu:codegen-runtime", version.ref = "khonshu" }

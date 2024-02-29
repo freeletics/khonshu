@@ -19,6 +19,7 @@ import com.freeletics.khonshu.codegen.util.simplePropertySpec
 import com.freeletics.khonshu.codegen.util.subcomponentAnnotation
 import com.freeletics.khonshu.codegen.util.subcomponentFactoryAnnotation
 import com.squareup.anvil.compiler.internal.decapitalize
+import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget.GET
 import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.FunSpec
@@ -84,7 +85,7 @@ internal class ComponentGenerator(
             )
             if (data.experimentalNavigation) {
                 properties += PropertySpec.builder("useExperimentalNavigation", BOOLEAN)
-                    .addAnnotation(UseExperimentalNavigation::class)
+                    .addAnnotation(AnnotationSpec.builder(UseExperimentalNavigation::class).useSiteTarget(GET).build())
                     .build()
             }
         }

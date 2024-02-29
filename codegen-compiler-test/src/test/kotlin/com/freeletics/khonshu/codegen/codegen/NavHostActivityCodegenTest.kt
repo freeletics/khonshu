@@ -1459,7 +1459,7 @@ internal class NavHostActivityCodegenTest {
 
               public val deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>
 
-              @UseExperimentalNavigation
+              @get:UseExperimentalNavigation
               public val useExperimentalNavigation: Boolean
 
               @get:ForScope(TestScreen::class)

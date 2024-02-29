@@ -7,4 +7,5 @@ import javax.inject.Qualifier
  * enabled or not. Only considered if [NavHostActivity.experimentalNavigation] is `true`.
  */
 @Qualifier
+@Retention(AnnotationRetention.RUNTIME)
 public annotation class UseExperimentalNavigation
