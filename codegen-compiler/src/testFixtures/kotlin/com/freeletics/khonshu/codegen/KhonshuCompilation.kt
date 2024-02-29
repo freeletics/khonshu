@@ -8,9 +8,9 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.internal.reference.ClassReference
-import com.squareup.anvil.compiler.internal.testing.simpleCodeGenerator as anvilSimpleCodeGenerator
 import com.squareup.anvil.compiler.internal.testing.AnvilCompilation
 import com.squareup.anvil.compiler.internal.testing.AnvilCompilationMode
+import com.squareup.anvil.compiler.internal.testing.simpleCodeGenerator as anvilSimpleCodeGenerator
 import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
