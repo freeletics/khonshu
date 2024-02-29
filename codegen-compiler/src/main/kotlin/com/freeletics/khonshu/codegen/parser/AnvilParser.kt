@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.codegen.parser
 
+import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.NavDestinationData
 import com.freeletics.khonshu.codegen.NavHostActivityData
@@ -38,9 +39,17 @@ import org.jetbrains.annotations.VisibleForTesting
 import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.name.FqName
 
-internal fun TopLevelFunctionReference.toComposeScreenDestinationData(): NavDestinationData? {
-    val annotation = findAnnotation(navDestinationFqName) ?: return null
+internal fun TopLevelFunctionReference.toBaseData(): List<BaseData> {
+    return toNavDestinationData() + toNavHostActivityData()
+}
 
+internal fun TopLevelFunctionReference.toNavDestinationData(): List<NavDestinationData> {
+    return findAnnotations(navDestinationFqName).map {
+        toNavDestinationData(it)
+    }
+}
+
+internal fun TopLevelFunctionReference.toNavDestinationData(annotation: AnnotationReference): NavDestinationData {
     val stateMachine = annotation.stateMachineReference
     val (stateParameter, actionParameter) = stateMachine.stateMachineParameters()
 
