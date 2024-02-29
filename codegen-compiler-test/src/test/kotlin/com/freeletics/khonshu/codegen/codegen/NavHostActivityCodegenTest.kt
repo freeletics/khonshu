@@ -1409,6 +1409,7 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
+            import com.freeletics.khonshu.codegen.UseExperimentalNavigation
             import com.freeletics.khonshu.codegen.`internal`.ActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
@@ -1416,7 +1417,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.NavHost
+            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -1428,6 +1429,7 @@ internal class NavHostActivityCodegenTest {
             import dagger.Provides
             import dagger.multibindings.Multibinds
             import java.io.Closeable
+            import kotlin.Boolean
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
@@ -1436,6 +1438,8 @@ internal class NavHostActivityCodegenTest {
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
+            import com.freeletics.khonshu.navigation.NavHost as navigationNavHost
+            import com.freeletics.khonshu.navigation.androidx.NavHost as androidxNavHost
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
@@ -1454,6 +1458,9 @@ internal class NavHostActivityCodegenTest {
               public val deepLinkHandlers: ImmutableSet<DeepLinkHandler>
 
               public val deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>
+
+              @UseExperimentalNavigation
+              public val useExperimentalNavigation: Boolean
 
               @get:ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
@@ -1535,15 +1542,31 @@ internal class NavHostActivityCodegenTest {
                   }
                   KhonshuExperimentalTest(component) { startRoute, modifier, destinationChangedCallback ->
                     CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
-                      NavHost(
-                        startRoute = startRoute,
-                        destinations = component.destinations,
-                        modifier = modifier,
-                        deepLinkHandlers = component.deepLinkHandlers,
-                        deepLinkPrefixes = component.deepLinkPrefixes,
-                        navEventNavigator = component.navEventNavigator,
-                        destinationChangedCallback = destinationChangedCallback,
-                      )
+                      val useExperimentalNavigation = remember {
+                        component.useExperimentalNavigation
+                      }
+                      if (useExperimentalNavigation) {
+                        navigationNavHost(
+                          startRoute = startRoute,
+                          destinations = component.destinations,
+                          modifier = modifier,
+                          deepLinkHandlers = component.deepLinkHandlers,
+                          deepLinkPrefixes = component.deepLinkPrefixes,
+                          navEventNavigator = component.navEventNavigator,
+                          destinationChangedCallback = destinationChangedCallback,
+                        )
+                      } else {
+                        androidxNavHost(
+                          startRoute = startRoute,
+                          destinations = component.destinations,
+                          modifier = modifier,
+                          deepLinkHandlers = component.deepLinkHandlers,
+                          deepLinkPrefixes = component.deepLinkPrefixes,
+                          navEventNavigator = component.navEventNavigator,
+                          destinationChangedCallback = destinationChangedCallback,
+                          transitionAnimations = NavHostTransitionAnimations.noAnimations(),
+                        )
+                      }
                     }
                   }
                 }

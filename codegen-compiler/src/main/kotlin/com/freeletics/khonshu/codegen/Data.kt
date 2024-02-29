@@ -72,11 +72,6 @@ public data class NavHostActivityData(
         false -> originalName
         true -> "Experimental${originalName.capitalize()}"
     }
-
-    val navHost: MemberName = when (experimentalNavigation) {
-        false -> androidxNavHost
-        true -> experimentalNavHost
-    }
 }
 
 public data class Navigation(
