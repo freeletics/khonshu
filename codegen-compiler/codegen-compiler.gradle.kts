@@ -38,9 +38,6 @@ dependencies {
 
     testFixturesApi(libs.kotlin.compile.testing)
     testFixturesImplementation(libs.anvil.annotations)
-    testFixturesImplementation(libs.anvil.compiler)
     testFixturesImplementation(testFixtures(libs.anvil.compiler.utils))
     testFixturesImplementation(libs.kotlin.compile.testing.ksp)
-    testFixturesImplementation(libs.dagger.compiler)
-    testFixturesImplementation(libs.auto.value)
 }

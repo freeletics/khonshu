@@ -27,13 +27,11 @@ androidx-savedstate = "1.2.1"
 uri = "0.0.16"
 
 inject = "1"
-dagger = "2.50"
 anvil = "2.4.9"
 ksp = "1.9.22-1.0.17"
 kotlinpoet = "1.16.0"
 auto-service = "1.1.1"
 auto-service-ksp = "1.1.0"
-auto-value = "1.10.4"
 
 junit = "4.13.2"
 truth = "1.4.1"
@@ -49,12 +47,9 @@ dependency-analysis = "1.28.0"
 [libraries]
 android-gradle-api = { module = "com.android.tools.build:gradle-api", version.ref = "android-gradle" }
 
-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-parcelize = { module = "org.jetbrains.kotlin:kotlin-parcelize-runtime", version.ref = "kotlin" }
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
@@ -91,11 +86,8 @@ toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.3.7" }
 serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.6.3" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }
 anvil-annotations-optional = { module = "com.squareup.anvil:annotations-optional", version.ref = "anvil" }
-anvil-compiler = { module = "com.squareup.anvil:compiler", version.ref = "anvil" }
 anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "anvil" }
 anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvil" }
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
@@ -103,7 +95,6 @@ kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoet" }
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service" }
 auto-service-compiler = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "auto-service-ksp" }
-auto-value = { module = "com.google.auto.value:auto-value", version.ref = "auto-value" }
 flowredux = { module = "com.freeletics.flowredux:flowredux", version = "1.2.1" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
