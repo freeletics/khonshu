@@ -14,6 +14,7 @@ dependencies {
     api(libs.androidx.lifecycle.viewmodel.savedstate)
     api(libs.coroutines)
     api(libs.khonshu.navigator.compose)
+    api(libs.khonshu.navigator.experimental)
     api(libs.khonshu.statemachine)
 
     implementation(libs.androidx.activity.compose)

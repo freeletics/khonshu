@@ -2,6 +2,7 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
+import com.freeletics.khonshu.codegen.UseExperimentalNavigation
 import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.bindsInstanceParameter
 import com.freeletics.khonshu.codegen.util.contributesToAnnotation
@@ -18,7 +19,9 @@ import com.freeletics.khonshu.codegen.util.simplePropertySpec
 import com.freeletics.khonshu.codegen.util.subcomponentAnnotation
 import com.freeletics.khonshu.codegen.util.subcomponentFactoryAnnotation
 import com.squareup.anvil.compiler.internal.decapitalize
+import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget.GET
+import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
@@ -80,6 +83,11 @@ internal class ComponentGenerator(
                 PropertySpec.builder("deepLinkHandlers", immutableSet.parameterizedBy(deepLinkHandler)).build(),
                 PropertySpec.builder("deepLinkPrefixes", immutableSet.parameterizedBy(deepLinkPrefix)).build(),
             )
+            if (data.experimentalNavigation) {
+                properties += PropertySpec.builder("useExperimentalNavigation", BOOLEAN)
+                    .addAnnotation(AnnotationSpec.builder(UseExperimentalNavigation::class).useSiteTarget(GET).build())
+                    .build()
+            }
         }
         properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName()))
             .addAnnotation(forScope(data.scope, GET))

@@ -1,7 +1,5 @@
 package com.freeletics.khonshu.codegen
 
-import com.freeletics.khonshu.codegen.util.androidxNavHost
-import com.freeletics.khonshu.codegen.util.experimentalNavHost
 import com.freeletics.khonshu.codegen.util.getComponent
 import com.freeletics.khonshu.codegen.util.getComponentFromRoute
 import com.freeletics.khonshu.codegen.util.navigationDestination
@@ -71,11 +69,6 @@ public data class NavHostActivityData(
     override val baseName: String = when (experimentalNavigation) {
         false -> originalName
         true -> "Experimental${originalName.capitalize()}"
-    }
-
-    val navHost: MemberName = when (experimentalNavigation) {
-        false -> androidxNavHost
-        true -> experimentalNavHost
     }
 }
 
