@@ -22,6 +22,9 @@ public abstract interface annotation class com/freeletics/khonshu/codegen/NavHos
 public abstract interface class com/freeletics/khonshu/codegen/Overlay {
 }
 
+public abstract interface annotation class com/freeletics/khonshu/codegen/UseExperimentalNavigation : java/lang/annotation/Annotation {
+}
+
 public abstract interface annotation class com/freeletics/khonshu/codegen/internal/InternalCodegenApi : java/lang/annotation/Annotation {
 }
 
