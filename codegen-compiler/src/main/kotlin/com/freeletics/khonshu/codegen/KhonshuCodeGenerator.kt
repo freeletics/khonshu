@@ -1,13 +1,13 @@
 package com.freeletics.khonshu.codegen
 
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
-import com.freeletics.khonshu.codegen.parser.toComposeScreenDestinationData
-import com.freeletics.khonshu.codegen.parser.toNavHostActivityData
+import com.freeletics.khonshu.codegen.parser.toBaseData
 import com.google.auto.service.AutoService
 import com.squareup.anvil.compiler.api.AnvilContext
 import com.squareup.anvil.compiler.api.CodeGenerator
-import com.squareup.anvil.compiler.api.GeneratedFile
+import com.squareup.anvil.compiler.api.GeneratedFileWithSources
 import com.squareup.anvil.compiler.api.createGeneratedFile
+import com.squareup.anvil.compiler.internal.containingFileAsJavaFile
 import com.squareup.anvil.compiler.internal.reference.topLevelFunctionReferences
 import java.io.File
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
@@ -17,27 +17,31 @@ import org.jetbrains.kotlin.psi.KtFile
 public class KhonshuCodeGenerator : CodeGenerator {
 
     override fun isApplicable(context: AnvilContext): Boolean = true
-
     override fun generateCode(
         codeGenDir: File,
         module: ModuleDescriptor,
         projectFiles: Collection<KtFile>,
-    ): Collection<GeneratedFile> {
-        val compose = projectFiles
+    ): Collection<GeneratedFileWithSources> {
+        val generator = FileGenerator()
+        return projectFiles
             .topLevelFunctionReferences(module)
             .flatMap {
-                listOfNotNull(it.toComposeScreenDestinationData()) +
-                    it.toNavHostActivityData()
+                val sourceFile by lazy(LazyThreadSafetyMode.NONE) {
+                    it.function.containingFileAsJavaFile()
+                }
+                it.toBaseData().map { generator.generate(it, codeGenDir, sourceFile) }
             }
+            .toList()
+    }
 
-        return compose.map {
-            val file = FileGenerator().generate(it)
-            createGeneratedFile(
-                codeGenDir = codeGenDir,
-                packageName = file.packageName,
-                fileName = file.name,
-                content = file.toString(),
-            )
-        }.toList()
+    private fun FileGenerator.generate(data: BaseData, codeGenDir: File, sourceFile: File): GeneratedFileWithSources {
+        val fileSpec = generate(data)
+        return createGeneratedFile(
+            codeGenDir = codeGenDir,
+            packageName = fileSpec.packageName,
+            fileName = fileSpec.name,
+            content = fileSpec.toString(),
+            sourceFile = sourceFile,
+        )
     }
 }
