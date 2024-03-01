@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.CommonExtension
+
 plugins {
     alias(libs.plugins.fgp.android)
     alias(libs.plugins.poko)
@@ -11,6 +13,12 @@ freeletics {
 
     android {
         enableParcelize()
+    }
+}
+
+extensions.configure(CommonExtension::class.java) {
+    lint {
+        disable.add("UnsafeOptInUsageError")
     }
 }
 

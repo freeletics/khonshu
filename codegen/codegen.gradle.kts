@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.CommonExtension
+
 plugins {
     alias(libs.plugins.fgp.multiplatform)
     alias(libs.plugins.fgp.publish)
@@ -15,6 +17,12 @@ freeletics {
     }
 
     useCompose()
+}
+
+extensions.configure(CommonExtension::class.java) {
+    lint {
+        disable.add("UnsafeOptInUsageError")
+    }
 }
 
 dependencies {
