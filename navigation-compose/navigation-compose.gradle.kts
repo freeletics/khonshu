@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.CommonExtension
+
 plugins {
     alias(libs.plugins.fgp.android)
     alias(libs.plugins.fgp.publish)
@@ -7,6 +9,12 @@ freeletics {
     optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationApi")
 
     useCompose()
+}
+
+extensions.configure(CommonExtension::class.java) {
+    lint {
+        disable.add("UnsafeOptInUsageError")
+    }
 }
 
 dependencies {
