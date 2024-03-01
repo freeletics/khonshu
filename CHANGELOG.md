@@ -1,6 +1,24 @@
 Change Log
 ==========
 
+## 0.23.0 *(2024-03-01)*
+
+- Update Compose to 1.6.0
+
+### Codegen
+
+- Update to Anvil 2.5.0-beta03 and use new `GeneratedFileWithSources` to support incremental
+  compilation.
+- When setting `experimentalNavigation` in `@NavHostActivity`  to `true` the generated code
+  will contain both the setup for androidx.navigation and experimental navigation. This allows
+  switching between them at runtime. For this it's required to provide a boolean to the
+  `NavHostActivity.scope` that uses `@UseExperimentalNavigation` as qualifier.
+
+### StateMachine
+
+- Add `wasmJs` target.
+
+
 ## 0.22.2 *(2024-02-19)*
 
 ### Codegen
