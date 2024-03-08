@@ -80,11 +80,12 @@ private fun <T : BaseRoute> Show(
     //   it is available when the destination is cleared. Which, because of animations,
     //   only happens after this leaves composition. Which means we can't rely on
     //   DisposableEffect to clean up this reference (as it'll be cleaned up too early)
-    remember(entry, executor, saveableStateHolder) {
+    val saveableCloseable = remember(entry, executor, saveableStateHolder) {
         executor.storeFor(entry.id).getOrCreate(SaveableCloseable::class) {
-            SaveableCloseable(entry.id.value, WeakReference(saveableStateHolder))
+            SaveableCloseable(entry.id.value)
         }
     }
+    saveableCloseable.saveableStateHolderRef = WeakReference(saveableStateHolder)
 
     saveableStateHolder.SaveableStateProvider(entry.id.value) {
         entry.destination.content(entry.route)
@@ -93,8 +94,9 @@ private fun <T : BaseRoute> Show(
 
 internal class SaveableCloseable(
     private val id: String,
-    private val saveableStateHolderRef: WeakReference<SaveableStateHolder>,
 ) : Closeable {
+    internal lateinit var saveableStateHolderRef: WeakReference<SaveableStateHolder>
+
     override fun close() {
         saveableStateHolderRef.get()?.removeState(id)
         saveableStateHolderRef.clear()
