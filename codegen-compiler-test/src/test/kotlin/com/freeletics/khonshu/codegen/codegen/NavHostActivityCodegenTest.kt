@@ -1447,7 +1447,7 @@ internal class NavHostActivityCodegenTest {
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
             )
-            public interface KhonshuExperimentalTestComponent : Closeable {
+            public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               @get:ForScope(TestScreen::class)
@@ -1475,30 +1475,30 @@ internal class NavHostActivityCodegenTest {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestScreen::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuExperimentalTestComponent
+                    arguments: Bundle): KhonshuTestComponent
               }
 
               @ContributesTo(TestParentScope::class)
               public interface ParentComponent {
-                public fun khonshuExperimentalTestComponentFactory(): Factory
+                public fun khonshuTestComponentFactory(): Factory
               }
             }
 
             @OptIn(InternalCodegenApi::class)
-            public class KhonshuExperimentalTestComponentProvider(
+            public class KhonshuTestComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
               override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
-                  TestParentScope::class) { parentComponent: KhonshuExperimentalTestComponent.ParentComponent,
+                  TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
                   savedStateHandle ->
-                parentComponent.khonshuExperimentalTestComponentFactory().create(savedStateHandle,
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
                     activity.intent.extras ?: Bundle.EMPTY)
               }
             }
 
             @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuExperimentalTestModule {
+            public interface KhonshuTestModule {
               @Multibinds
               @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<Closeable>
@@ -1506,7 +1506,7 @@ internal class NavHostActivityCodegenTest {
 
             @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuExperimentalTestActivityModule {
+            public interface KhonshuTestActivityModule {
               @Multibinds
               public fun bindDeepLinkHandler(): Set<DeepLinkHandler>
 
@@ -1530,17 +1530,17 @@ internal class NavHostActivityCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class)
-            public class KhonshuExperimentalTestActivity : ComponentActivity() {
+            public class KhonshuTestActivity : ComponentActivity() {
               override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
                 setContent {
                   val componentProvider = remember {
-                    KhonshuExperimentalTestComponentProvider(this)
+                    KhonshuTestComponentProvider(this)
                   }
                   val component = remember(componentProvider) {
-                    componentProvider.provide<KhonshuExperimentalTestComponent>(TestScreen::class)
+                    componentProvider.provide<KhonshuTestComponent>(TestScreen::class)
                   }
-                  KhonshuExperimentalTest(component) { startRoute, modifier, destinationChangedCallback ->
+                  KhonshuTest(component) { startRoute, modifier, destinationChangedCallback ->
                     CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
                       val useExperimentalNavigation = remember(component) {
                         component.useExperimentalNavigation
@@ -1575,7 +1575,7 @@ internal class NavHostActivityCodegenTest {
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuExperimentalTest(component: KhonshuExperimentalTestComponent,
+            private fun KhonshuTest(component: KhonshuTestComponent,
                 navHost: SimpleNavHost) {
               val stateMachine = remember { component.testStateMachine }
               val scope = rememberCoroutineScope()
@@ -1595,6 +1595,6 @@ internal class NavHostActivityCodegenTest {
 
         """.trimIndent()
 
-        test(withExperimentalNavigation, "com/test/ExperimentalTest.kt", source, expected)
+        test(withExperimentalNavigation, "com/test/Test.kt", source, expected)
     }
 }

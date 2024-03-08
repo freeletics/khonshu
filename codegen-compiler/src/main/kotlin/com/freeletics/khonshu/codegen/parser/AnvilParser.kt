@@ -86,7 +86,7 @@ internal fun TopLevelFunctionReference.toNavHostActivityData(annotation: Annotat
     val navHostParameter = navHostParameter()
 
     return NavHostActivityData(
-        originalName = name,
+        baseName = name,
         packageName = packageName,
         scope = annotation.scope,
         parentScope = annotation.parentScope,
