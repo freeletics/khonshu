@@ -65,7 +65,7 @@ internal class ComponentComposableGenerator(
             .addStatement("val state = stateMachine.%M()", asComposeState)
             .addStatement("val currentState = state.value")
             .beginControlFlow("if (currentState != null)")
-            .addStatement("%L(", data.baseName.removePrefix("Experimental"))
+            .addStatement("%L(", data.baseName)
             .apply {
                 data.composableParameter.forEach { parameter ->
                     addStatement("  %L = %L,", parameter.name, parameter.name)

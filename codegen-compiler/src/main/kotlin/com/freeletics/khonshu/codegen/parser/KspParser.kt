@@ -69,7 +69,7 @@ internal fun KSFunctionDeclaration.toNavHostActivityData(
     val navHostParameter = navHostParameter(logger) ?: return null
 
     return NavHostActivityData(
-        originalName = simpleName.asString(),
+        baseName = simpleName.asString(),
         packageName = packageName.asString(),
         scope = annotation.scope,
         parentScope = annotation.parentScope,
