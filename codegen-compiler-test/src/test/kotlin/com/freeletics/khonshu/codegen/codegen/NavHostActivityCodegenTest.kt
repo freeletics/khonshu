@@ -20,7 +20,7 @@ import org.junit.Test
 internal class NavHostActivityCodegenTest {
 
     private val data = NavHostActivityData(
-        originalName = "Test",
+        baseName = "Test",
         packageName = "com.test",
         scope = ClassName("com.test", "TestScreen"),
         parentScope = ClassName("com.test.parent", "TestParentScope"),
@@ -470,7 +470,7 @@ internal class NavHostActivityCodegenTest {
     @Test
     fun `generates code for NavHostActivityData with Composable Dependencies`() {
         val withInjectedParameters = data.copy(
-            originalName = "Test2",
+            baseName = "Test2",
             composableParameter = listOf(
                 ComposableParameter(
                     name = "testClass",
@@ -1491,8 +1491,8 @@ internal class NavHostActivityCodegenTest {
               override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
                   TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
                   savedStateHandle ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle,
-                    activity.intent.extras ?: Bundle.EMPTY)
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
+                    Bundle.EMPTY)
               }
             }
 
@@ -1575,8 +1575,7 @@ internal class NavHostActivityCodegenTest {
 
             @Composable
             @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent,
-                navHost: SimpleNavHost) {
+            private fun KhonshuTest(component: KhonshuTestComponent, navHost: SimpleNavHost) {
               val stateMachine = remember { component.testStateMachine }
               val scope = rememberCoroutineScope()
               val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
