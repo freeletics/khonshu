@@ -215,11 +215,11 @@ internal class NavHostActivityCodegenTest {
                     CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
                       NavHost(
                         startRoute = startRoute,
-                        destinations = component.destinations,
+                        destinations = remember(component) { component.destinations },
                         modifier = modifier,
-                        deepLinkHandlers = component.deepLinkHandlers,
-                        deepLinkPrefixes = component.deepLinkPrefixes,
-                        navEventNavigator = component.navEventNavigator,
+                        deepLinkHandlers = remember(component) { component.deepLinkHandlers },
+                        deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
+                        navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
                         transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
@@ -429,11 +429,11 @@ internal class NavHostActivityCodegenTest {
                     CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
                       NavHost(
                         startRoute = startRoute,
-                        destinations = component.destinations,
+                        destinations = remember(component) { component.destinations },
                         modifier = modifier,
-                        deepLinkHandlers = component.deepLinkHandlers,
-                        deepLinkPrefixes = component.deepLinkPrefixes,
-                        navEventNavigator = component.navEventNavigator,
+                        deepLinkHandlers = remember(component) { component.deepLinkHandlers },
+                        deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
+                        navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
                         transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
@@ -679,11 +679,11 @@ internal class NavHostActivityCodegenTest {
                     CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
                       NavHost(
                         startRoute = startRoute,
-                        destinations = component.destinations,
+                        destinations = remember(component) { component.destinations },
                         modifier = modifier,
-                        deepLinkHandlers = component.deepLinkHandlers,
-                        deepLinkPrefixes = component.deepLinkPrefixes,
-                        navEventNavigator = component.navEventNavigator,
+                        deepLinkHandlers = remember(component) { component.deepLinkHandlers },
+                        deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
+                        navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
                         transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
@@ -898,11 +898,11 @@ internal class NavHostActivityCodegenTest {
                     CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
                       NavHost(
                         startRoute = startRoute,
-                        destinations = component.destinations,
+                        destinations = remember(component) { component.destinations },
                         modifier = modifier,
-                        deepLinkHandlers = component.deepLinkHandlers,
-                        deepLinkPrefixes = component.deepLinkPrefixes,
-                        navEventNavigator = component.navEventNavigator,
+                        deepLinkHandlers = remember(component) { component.deepLinkHandlers },
+                        deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
+                        navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
                         transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
@@ -1107,11 +1107,11 @@ internal class NavHostActivityCodegenTest {
                     CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
                       NavHost(
                         startRoute = startRoute,
-                        destinations = component.destinations,
+                        destinations = remember(component) { component.destinations },
                         modifier = modifier,
-                        deepLinkHandlers = component.deepLinkHandlers,
-                        deepLinkPrefixes = component.deepLinkPrefixes,
-                        navEventNavigator = component.navEventNavigator,
+                        deepLinkHandlers = remember(component) { component.deepLinkHandlers },
+                        deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
+                        navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
                         transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
@@ -1321,11 +1321,11 @@ internal class NavHostActivityCodegenTest {
                     CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
                       NavHost(
                         startRoute = startRoute,
-                        destinations = component.destinations,
+                        destinations = remember(component) { component.destinations },
                         modifier = modifier,
-                        deepLinkHandlers = component.deepLinkHandlers,
-                        deepLinkPrefixes = component.deepLinkPrefixes,
-                        navEventNavigator = component.navEventNavigator,
+                        deepLinkHandlers = remember(component) { component.deepLinkHandlers },
+                        deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
+                        navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
                         transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
@@ -1542,27 +1542,27 @@ internal class NavHostActivityCodegenTest {
                   }
                   KhonshuExperimentalTest(component) { startRoute, modifier, destinationChangedCallback ->
                     CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
-                      val useExperimentalNavigation = remember {
+                      val useExperimentalNavigation = remember(component) {
                         component.useExperimentalNavigation
                       }
                       if (useExperimentalNavigation) {
                         navigationNavHost(
                           startRoute = startRoute,
-                          destinations = component.destinations,
+                          destinations = remember(component) { component.destinations },
                           modifier = modifier,
-                          deepLinkHandlers = component.deepLinkHandlers,
-                          deepLinkPrefixes = component.deepLinkPrefixes,
-                          navEventNavigator = component.navEventNavigator,
+                          deepLinkHandlers = remember(component) { component.deepLinkHandlers },
+                          deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
+                          navEventNavigator = remember(component) { component.navEventNavigator },
                           destinationChangedCallback = destinationChangedCallback,
                         )
                       } else {
                         androidxNavHost(
                           startRoute = startRoute,
-                          destinations = component.destinations,
+                          destinations = remember(component) { component.destinations },
                           modifier = modifier,
-                          deepLinkHandlers = component.deepLinkHandlers,
-                          deepLinkPrefixes = component.deepLinkPrefixes,
-                          navEventNavigator = component.navEventNavigator,
+                          deepLinkHandlers = remember(component) { component.deepLinkHandlers },
+                          deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
+                          navEventNavigator = remember(component) { component.navEventNavigator },
                           destinationChangedCallback = destinationChangedCallback,
                           transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                         )
