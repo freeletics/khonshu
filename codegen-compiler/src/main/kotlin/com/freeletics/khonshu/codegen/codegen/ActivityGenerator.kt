@@ -51,7 +51,7 @@ internal class ActivityGenerator(
             )
             .apply {
                 if (data.experimentalNavigation) {
-                    beginControlFlow("val useExperimentalNavigation = %M", remember)
+                    beginControlFlow("val useExperimentalNavigation = %M(component)", remember)
                         .addStatement("component.useExperimentalNavigation")
                         .endControlFlow()
                         .beginControlFlow("if (useExperimentalNavigation)")
@@ -79,11 +79,11 @@ internal class ActivityGenerator(
                 }
             }
             .addStatement("  startRoute = startRoute,")
-            .addStatement("  destinations = component.destinations,")
+            .addStatement("  destinations = %M(component) { component.destinations },", remember)
             .addStatement("  modifier = modifier,")
-            .addStatement("  deepLinkHandlers = component.deepLinkHandlers,")
-            .addStatement("  deepLinkPrefixes = component.deepLinkPrefixes,")
-            .addStatement("  navEventNavigator = component.navEventNavigator,")
+            .addStatement("  deepLinkHandlers = %M(component) { component.deepLinkHandlers },", remember)
+            .addStatement("  deepLinkPrefixes = %M(component) { component.deepLinkPrefixes },", remember)
+            .addStatement("  navEventNavigator = %M(component) { component.navEventNavigator },", remember)
             .addStatement("  destinationChangedCallback = destinationChangedCallback,")
             .apply {
                 if (!experimental) {
