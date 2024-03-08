@@ -1,6 +1,20 @@
 Change Log
 ==========
 
+## 0.23.1 *(2024-03-08)*
+
+### Navigation
+
+- Fix an issue where `SaveableStateHolder` would not be properly cleared when the destination
+  is removed from the back stack after configuration changes. Thanks to @hoc081098 for the contribution.
+
+### Codegen
+
+- Add `remember` for the set of destinations, deep link handlers and deep link prefixes obtained
+  from the generated component, to avoid creating a new `NavigationExecutor` on re-compositions.
+- Remove `Experimental` prefix from generated code when `experimentalNavigation` is `true.
+
+
 ## 0.23.0 *(2024-03-01)*
 
 - Update Compose to 1.6.0
