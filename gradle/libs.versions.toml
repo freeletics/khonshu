@@ -24,7 +24,7 @@ androidx-lifecycle = "2.7.0"
 androidx-navigation = "2.7.7"
 androidx-savedstate = "1.2.1"
 
-uri = "0.0.17"
+uri = "0.0.18"
 
 inject = "1"
 anvil = "2.5.0-beta04"
