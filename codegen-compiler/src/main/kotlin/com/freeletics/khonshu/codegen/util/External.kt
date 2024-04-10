@@ -43,7 +43,8 @@ internal val localNavigationExecutor =
     MemberName("com.freeletics.khonshu.navigation", "LocalNavigationExecutor")
 internal val deepLinkHandler = ClassName("com.freeletics.khonshu.navigation.deeplinks", "DeepLinkHandler")
 internal val deepLinkPrefix = deepLinkHandler.nestedClass("Prefix")
-internal val internalNavigatorApi = ClassName("com.freeletics.khonshu.navigation.internal", "InternalNavigationApi")
+internal val internalNavigatorApi =
+    ClassName("com.freeletics.khonshu.navigation.internal", "InternalNavigationCodegenApi")
 
 internal val simpleNavHost = ClassName("com.freeletics.khonshu.codegen", "SimpleNavHost")
 internal val simpleNavHostLambda = LambdaTypeName.get(

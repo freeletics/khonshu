@@ -56,6 +56,12 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkKt {
 public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationApi : java/lang/annotation/Annotation {
 }
 
+public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationCodegenApi : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationTestingApi : java/lang/annotation/Annotation {
+}
+
 public abstract interface class com/freeletics/khonshu/navigation/internal/Parcelable {
 }
 

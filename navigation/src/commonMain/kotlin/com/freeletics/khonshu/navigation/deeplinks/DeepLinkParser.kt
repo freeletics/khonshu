@@ -4,6 +4,7 @@ import com.eygraber.uri.Uri
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Pattern
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import org.jetbrains.annotations.VisibleForTesting
 
 /**
@@ -63,7 +64,7 @@ private fun Pattern.replacePlaceholders(replacement: String = PARAM_VALUE): Stri
     return value.replace(PARAM_REGEX, "$1$replacement$3")
 }
 
-@InternalNavigationApi
+@InternalNavigationTestingApi
 public fun Pattern.replacePlaceholders(replacement: (String) -> String): String {
     // $1 and $3 will add the optional leading and trailing slashes if needed
     return value.replace(PARAM_REGEX) { "${it.groupValues[1]}${replacement(it.groupValues[2])}${it.groupValues[3]}" }

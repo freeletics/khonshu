@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.TaskStackBuilder
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 
 /**
  * Creates an [Intent] that can be used to launch this deep link.
@@ -46,8 +45,7 @@ public fun DeepLink.buildPendingIntent(
     return buildTaskStack(context).getPendingIntent(requestCode, flags)!!
 }
 
-@property:InternalNavigationApi
-public const val EXTRA_DEEPLINK_ROUTES: String = "com.freeletics.khonshu.navigation.DEEPLINK_ROUTES"
+internal const val EXTRA_DEEPLINK_ROUTES: String = "com.freeletics.khonshu.navigation.DEEPLINK_ROUTES"
 
 private fun defaultFlag(): Int {
     return if (Build.VERSION.SDK_INT >= 23) {

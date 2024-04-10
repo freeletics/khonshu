@@ -3,8 +3,7 @@ package com.freeletics.khonshu.navigation.internal
 import java.io.Closeable
 import kotlin.reflect.KClass
 
-@InternalNavigationApi
-public class NavigationExecutorStore : NavigationExecutor.Store, Closeable {
+internal class NavigationExecutorStore : NavigationExecutor.Store, Closeable {
     private val storedObjects = mutableMapOf<KClass<*>, Any>()
 
     override fun <T : Any> getOrCreate(key: KClass<T>, factory: () -> T): T {

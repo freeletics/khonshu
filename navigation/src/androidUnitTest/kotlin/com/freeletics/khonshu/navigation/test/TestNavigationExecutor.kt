@@ -10,6 +10,7 @@ import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import java.io.Serializable
+import kotlin.reflect.KClass
 
 internal class TestNavigationExecutor : NavigationExecutor {
 
@@ -36,8 +37,8 @@ internal class TestNavigationExecutor : NavigationExecutor {
         received.add(NavEvent.BackEvent)
     }
 
-    override fun <T : BaseRoute> navigateBackToInternal(
-        popUpTo: DestinationId<T>,
+    override fun <T : BaseRoute> navigateBackTo(
+        popUpTo: KClass<T>,
         inclusive: Boolean,
     ) {
         received.add(NavEvent.BackToEvent(popUpTo, inclusive))

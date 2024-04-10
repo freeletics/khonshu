@@ -5,7 +5,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContract
 import com.freeletics.khonshu.navigation.internal.DelegatingOnBackPressedCallback
 import com.freeletics.khonshu.navigation.internal.DestinationId
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.ActivityResultEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.BackEvent
@@ -15,6 +15,7 @@ import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToActivityEve
 import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.UpEvent
 import com.freeletics.khonshu.navigation.internal.NavEventCollector
+import kotlin.reflect.KClass
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -57,8 +58,7 @@ public interface Navigator {
      * Removes all entries from the backstack until [T]. If [inclusive] is
      * `true` [T] itself will also be removed.
      */
-    @InternalNavigationApi
-    public fun <T : BaseRoute> navigateBackToInternal(popUpTo: DestinationId<T>, inclusive: Boolean = false)
+    public fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean = false)
 
     /**
      * Reset the back stack to the given [root]. The current back stack will cleared and if
@@ -82,7 +82,7 @@ public interface Navigator {
          * `true` [T] itself will also be removed.
          */
         public inline fun <reified T : NavRoute> Navigator.navigateBackTo(inclusive: Boolean = false) {
-            navigateBackToInternal(DestinationId(T::class), inclusive)
+            navigateBackTo(T::class, inclusive)
         }
     }
 }
@@ -158,7 +158,7 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
 
     private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     public val navEvents: Flow<NavEvent> = _navEvents.receiveAsFlow()
 
     private val _activityResultRequests = mutableListOf<ContractResultOwner<*, *, *>>()
@@ -290,8 +290,7 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
         sendNavEvent(MultiNavEvent(navEvents))
     }
 
-    @InternalNavigationApi
-    override fun <T : BaseRoute> navigateBackToInternal(popUpTo: DestinationId<T>, inclusive: Boolean) {
+    override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean) {
         val event = BackToEvent(popUpTo, inclusive)
         sendNavEvent(event)
     }
@@ -409,20 +408,20 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
         }
     }
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     public val activityResultRequests: List<ContractResultOwner<*, *, *>>
         get() {
             allowedToAddRequests = false
             return _activityResultRequests.toList()
         }
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     public val navigationResultRequests: List<NavigationResultRequest<*>>
         get() {
             allowedToAddRequests = false
             return _navigationResultRequests.toList()
         }
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     public val onBackPressedCallback: OnBackPressedCallback get() = _onBackPressedCallback
 }

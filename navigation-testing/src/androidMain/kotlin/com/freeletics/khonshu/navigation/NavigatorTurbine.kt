@@ -4,7 +4,6 @@ import android.os.Parcelable
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import app.cash.turbine.testIn
-import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.google.common.truth.Truth
 import kotlin.reflect.KClass
@@ -257,7 +256,7 @@ internal class DefaultNavigatorTurbine(
         popUpTo: KClass<T>,
         inclusive: Boolean,
     ) {
-        val event = NavEvent.BackToEvent(DestinationId(popUpTo), inclusive)
+        val event = NavEvent.BackToEvent(popUpTo, inclusive)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 

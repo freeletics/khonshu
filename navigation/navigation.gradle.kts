@@ -8,7 +8,11 @@ plugins {
 }
 
 freeletics {
-    optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationApi")
+    optIn(
+        "com.freeletics.khonshu.navigation.internal.InternalNavigationApi",
+        "com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi",
+        "com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi",
+    )
 
     multiplatform {
         addJvmTarget()
