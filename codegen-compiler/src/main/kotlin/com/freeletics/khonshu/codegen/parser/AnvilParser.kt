@@ -92,7 +92,6 @@ internal fun TopLevelFunctionReference.toNavHostActivityData(annotation: Annotat
         parentScope = annotation.parentScope,
         stateMachine = stateMachine.asClassName(),
         activityBaseClass = annotation.activityBaseClass,
-        experimentalNavigation = annotation.experimentalNavigation,
         navHostParameter = navHostParameter,
         composableParameter = getInjectedParameters(stateParameter, actionParameter, navHostParameter.typeName),
         stateParameter = getParameterWithType(stateParameter),
@@ -123,9 +122,6 @@ private val AnnotationReference.destinationScope: ClassName
 
 private val AnnotationReference.activityBaseClass: ClassName
     get() = requireClassReferenceArgument("activityBaseClass", 3).asClassName()
-
-internal val AnnotationReference.experimentalNavigation: Boolean
-    get() = argumentAt("experimentalNavigation", 4)?.value() ?: false
 
 private fun TopLevelFunctionReference.getParameterWithType(expectedType: TypeName): ComposableParameter? {
     return parameters.firstNotNullOfOrNull { parameter ->

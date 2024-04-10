@@ -26,7 +26,6 @@ internal class NavHostActivityCodegenTest {
         parentScope = ClassName("com.test.parent", "TestParentScope"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
         activityBaseClass = ClassName("androidx.activity", "ComponentActivity"),
-        experimentalNavigation = false,
         navHostParameter = ComposableParameter(
             "navHost",
             ClassName("com.freeletics.khonshu.codegen", "SimpleNavHost"),
@@ -93,8 +92,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.androidx.NavHost
-            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
+            import com.freeletics.khonshu.navigation.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -221,7 +219,6 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
                         navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
-                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
@@ -309,8 +306,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.androidx.NavHost
-            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
+            import com.freeletics.khonshu.navigation.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -435,7 +431,6 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
                         navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
-                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
@@ -545,8 +540,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.androidx.NavHost
-            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
+            import com.freeletics.khonshu.navigation.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -685,7 +679,6 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
                         navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
-                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
@@ -778,8 +771,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.androidx.NavHost
-            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
+            import com.freeletics.khonshu.navigation.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -904,7 +896,6 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
                         navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
-                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
@@ -985,8 +976,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.androidx.NavHost
-            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
+            import com.freeletics.khonshu.navigation.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -1113,7 +1103,6 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
                         navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
-                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
@@ -1199,8 +1188,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.component
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.androidx.NavHost
-            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
+            import com.freeletics.khonshu.navigation.NavHost
             import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
@@ -1327,7 +1315,6 @@ internal class NavHostActivityCodegenTest {
                         deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
                         navEventNavigator = remember(component) { component.navEventNavigator },
                         destinationChangedCallback = destinationChangedCallback,
-                        transitionAnimations = NavHostTransitionAnimations.noAnimations(),
                       )
                     }
                   }
@@ -1357,243 +1344,5 @@ internal class NavHostActivityCodegenTest {
         """.trimIndent()
 
         test(withLambdaParameter, "com/test/Test.kt", source, expected)
-    }
-
-    @Test
-    fun `generates code for experimental navigation`() {
-        val withExperimentalNavigation = data.copy(experimentalNavigation = true)
-
-        @Language("kotlin")
-        val source = """
-            package com.test
-
-            import androidx.activity.ComponentActivity
-            import androidx.compose.runtime.Composable
-            import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.NavHostActivity
-            import com.freeletics.khonshu.codegen.SimpleNavHost
-            import com.freeletics.khonshu.navigation.BaseRoute
-            import com.freeletics.khonshu.navigation.NavRoot
-            import com.freeletics.khonshu.navigation.NavDestination
-            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
-            import com.test.parent.TestParentScope
-
-            @NavHostActivity(
-              scope = TestScreen::class,
-              parentScope = TestParentScope::class,
-              stateMachine = TestStateMachine::class,
-              activityBaseClass = ComponentActivity::class,
-              experimentalNavigation = true,
-            )
-            @Composable
-            @Suppress("unused_parameter")
-            public fun Test(
-              state: TestState,
-              sendAction: (TestAction) -> Unit,
-              navHost: SimpleNavHost,
-            ) {
-                navHost(TestRoot(), Modifier) {}
-            }
-        """.trimIndent()
-
-        @Language("kotlin")
-        val expected = """
-            package com.test
-
-            import android.os.Bundle
-            import androidx.activity.ComponentActivity
-            import androidx.activity.compose.setContent
-            import androidx.compose.runtime.Composable
-            import androidx.compose.runtime.CompositionLocalProvider
-            import androidx.compose.runtime.remember
-            import androidx.compose.runtime.rememberCoroutineScope
-            import androidx.lifecycle.SavedStateHandle
-            import com.freeletics.khonshu.codegen.SimpleNavHost
-            import com.freeletics.khonshu.codegen.UseExperimentalNavigation
-            import com.freeletics.khonshu.codegen.`internal`.ActivityComponentProvider
-            import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
-            import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
-            import com.freeletics.khonshu.codegen.`internal`.asComposeState
-            import com.freeletics.khonshu.codegen.`internal`.component
-            import com.freeletics.khonshu.navigation.NavDestination
-            import com.freeletics.khonshu.navigation.NavEventNavigator
-            import com.freeletics.khonshu.navigation.androidx.NavHostTransitionAnimations
-            import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
-            import com.squareup.anvil.annotations.ContributesSubcomponent
-            import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.optional.ForScope
-            import com.squareup.anvil.annotations.optional.SingleIn
-            import com.test.parent.TestParentScope
-            import dagger.BindsInstance
-            import dagger.Module
-            import dagger.Provides
-            import dagger.multibindings.Multibinds
-            import java.io.Closeable
-            import kotlin.Boolean
-            import kotlin.OptIn
-            import kotlin.Unit
-            import kotlin.collections.Set
-            import kotlin.jvm.JvmSuppressWildcards
-            import kotlin.reflect.KClass
-            import kotlinx.collections.immutable.ImmutableSet
-            import kotlinx.collections.immutable.toImmutableSet
-            import kotlinx.coroutines.launch
-            import com.freeletics.khonshu.navigation.NavHost as navigationNavHost
-            import com.freeletics.khonshu.navigation.androidx.NavHost as androidxNavHost
-
-            @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestScreen::class)
-            @ContributesSubcomponent(
-              scope = TestScreen::class,
-              parentScope = TestParentScope::class,
-            )
-            public interface KhonshuTestComponent : Closeable {
-              public val testStateMachine: TestStateMachine
-
-              @get:ForScope(TestScreen::class)
-              public val navEventNavigator: NavEventNavigator
-
-              public val destinations: ImmutableSet<NavDestination>
-
-              public val deepLinkHandlers: ImmutableSet<DeepLinkHandler>
-
-              public val deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>
-
-              @get:UseExperimentalNavigation
-              public val useExperimentalNavigation: Boolean
-
-              @get:ForScope(TestScreen::class)
-              public val closeables: Set<Closeable>
-
-              override fun close() {
-                closeables.forEach {
-                  it.close()
-                }
-              }
-
-              @ContributesSubcomponent.Factory
-              public interface Factory {
-                public fun create(@BindsInstance @ForScope(TestScreen::class)
-                    savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuTestComponent
-              }
-
-              @ContributesTo(TestParentScope::class)
-              public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
-              }
-            }
-
-            @OptIn(InternalCodegenApi::class)
-            public class KhonshuTestComponentProvider(
-              private final val activity: ComponentActivity,
-            ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
-                  TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                  savedStateHandle ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
-                    Bundle.EMPTY)
-              }
-            }
-
-            @Module
-            @ContributesTo(TestScreen::class)
-            public interface KhonshuTestModule {
-              @Multibinds
-              @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
-            }
-
-            @Module
-            @ContributesTo(TestScreen::class)
-            public interface KhonshuTestActivityModule {
-              @Multibinds
-              public fun bindDeepLinkHandler(): Set<DeepLinkHandler>
-
-              @Multibinds
-              public fun bindDeepLinkPrefix(): Set<DeepLinkHandler.Prefix>
-
-              public companion object {
-                @Provides
-                public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
-                    Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
-
-                @Provides
-                public fun provideImmutableDeepLinkHandlers(handlers: @JvmSuppressWildcards
-                    Set<DeepLinkHandler>): ImmutableSet<DeepLinkHandler> = handlers.toImmutableSet()
-
-                @Provides
-                public fun provideImmutableDeepLinkPrefixes(prefixes: @JvmSuppressWildcards
-                    Set<DeepLinkHandler.Prefix>): ImmutableSet<DeepLinkHandler.Prefix> =
-                    prefixes.toImmutableSet()
-              }
-            }
-
-            @OptIn(InternalCodegenApi::class)
-            public class KhonshuTestActivity : ComponentActivity() {
-              override fun onCreate(savedInstanceState: Bundle?) {
-                super.onCreate(savedInstanceState)
-                setContent {
-                  val componentProvider = remember {
-                    KhonshuTestComponentProvider(this)
-                  }
-                  val component = remember(componentProvider) {
-                    componentProvider.provide<KhonshuTestComponent>(TestScreen::class)
-                  }
-                  KhonshuTest(component) { startRoute, modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalActivityComponentProvider provides componentProvider) {
-                      val useExperimentalNavigation = remember(component) {
-                        component.useExperimentalNavigation
-                      }
-                      if (useExperimentalNavigation) {
-                        navigationNavHost(
-                          startRoute = startRoute,
-                          destinations = remember(component) { component.destinations },
-                          modifier = modifier,
-                          deepLinkHandlers = remember(component) { component.deepLinkHandlers },
-                          deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
-                          navEventNavigator = remember(component) { component.navEventNavigator },
-                          destinationChangedCallback = destinationChangedCallback,
-                        )
-                      } else {
-                        androidxNavHost(
-                          startRoute = startRoute,
-                          destinations = remember(component) { component.destinations },
-                          modifier = modifier,
-                          deepLinkHandlers = remember(component) { component.deepLinkHandlers },
-                          deepLinkPrefixes = remember(component) { component.deepLinkPrefixes },
-                          navEventNavigator = remember(component) { component.navEventNavigator },
-                          destinationChangedCallback = destinationChangedCallback,
-                          transitionAnimations = NavHostTransitionAnimations.noAnimations(),
-                        )
-                      }
-                    }
-                  }
-                }
-              }
-            }
-
-            @Composable
-            @OptIn(InternalCodegenApi::class)
-            private fun KhonshuTest(component: KhonshuTestComponent, navHost: SimpleNavHost) {
-              val stateMachine = remember { component.testStateMachine }
-              val scope = rememberCoroutineScope()
-              val sendAction: (TestAction) -> Unit = remember(stateMachine, scope) {
-                { scope.launch { stateMachine.dispatch(it) } }
-              }
-              val state = stateMachine.asComposeState()
-              val currentState = state.value
-              if (currentState != null) {
-                Test(
-                  state = currentState,
-                  sendAction = sendAction,
-                  navHost = navHost,
-                )
-              }
-            }
-
-        """.trimIndent()
-
-        test(withExperimentalNavigation, "com/test/Test.kt", source, expected)
     }
 }

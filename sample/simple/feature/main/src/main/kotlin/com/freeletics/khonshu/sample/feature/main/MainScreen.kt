@@ -11,7 +11,6 @@ import com.freeletics.khonshu.sample.feature.root.nav.RootRoute
 @NavHostActivity(
     stateMachine = MainStateMachine::class,
     activityBaseClass = ComponentActivity::class,
-    experimentalNavigation = true,
 )
 @Composable
 internal fun MainScreen(
