@@ -3,6 +3,11 @@ Change Log
 
 ## 0.24.0 **UNRELEASED**
 
+### Navigation
+
+- Khonshu's own navigation implementation has been moved from `navigation-experimental`
+  into the main `navigation` artifact.
+
 ### Codegen
 
 - Removed `experimentalNavigation` option and `@UseExperimentalNavigation`. The generated

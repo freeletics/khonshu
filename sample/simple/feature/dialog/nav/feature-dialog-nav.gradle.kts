@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(libs.khonshu.codegen)
-    api(libs.khonshu.navigator)
+    api(libs.khonshu.navigation)
 }
