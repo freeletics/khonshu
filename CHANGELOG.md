@@ -7,6 +7,7 @@ Change Log
 
 - Khonshu's own navigation implementation has been moved from `navigation-experimental`
   into the main `navigation` artifact.
+- Removed `navigation-compose` artifact that was based on androidx.navigation.
 
 ### Codegen
 
