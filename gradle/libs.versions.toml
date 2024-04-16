@@ -27,7 +27,7 @@ androidx-savedstate = "1.2.1"
 uri = "0.0.18"
 
 inject = "1"
-anvil = "2.5.0-beta06"
+anvil = "2.5.0-beta07"
 ksp = "1.9.23-1.0.20"
 kotlinpoet = "1.16.0"
 auto-service = "1.1.1"
