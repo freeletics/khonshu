@@ -9,15 +9,14 @@ internal class TestActivityResultLauncher : ActivityResultLauncher<Any>() {
 
     val launched = Turbine<Any?>()
 
-    override fun launch(input: Any?, options: ActivityOptionsCompat?) {
+    override val contract: ActivityResultContract<Any, *>
+        get() = throw UnsupportedOperationException()
+
+    override fun launch(input: Any, options: ActivityOptionsCompat?) {
         launched.add(input)
     }
 
     override fun unregister() {
-        throw UnsupportedOperationException()
-    }
-
-    override fun getContract(): ActivityResultContract<Any, *> {
         throw UnsupportedOperationException()
     }
 }
