@@ -4,8 +4,8 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.bundle
 import com.freeletics.khonshu.codegen.util.compositionLocalProvider
-import com.freeletics.khonshu.codegen.util.navHost
 import com.freeletics.khonshu.codegen.util.localActivityComponentProvider
+import com.freeletics.khonshu.codegen.util.navHost
 import com.freeletics.khonshu.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.util.remember
 import com.freeletics.khonshu.codegen.util.setContent
