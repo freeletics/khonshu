@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(libs.khonshu.navigator)
+    api(libs.khonshu.navigation)
 }

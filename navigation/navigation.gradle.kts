@@ -31,12 +31,15 @@ extensions.configure(CommonExtension::class.java) {
 
 dependencies {
     "commonMainApi"(libs.jetbrains.compose.runtime)
+    "commonMainApi"(libs.collections.immutable)
     "commonMainApi"(libs.uri)
 
+    "androidMainApi"(libs.androidx.compose.foundation)
     "androidMainApi"(libs.androidx.activity)
     "androidMainApi"(libs.androidx.activity.compose)
     "androidMainApi"(libs.androidx.core)
     "androidMainApi"(libs.androidx.lifecycle.common)
+    "androidMainApi"(libs.androidx.viewmodel.compose)
     "androidMainApi"(libs.androidx.viewmodel.savedstate)
     "androidMainApi"(libs.androidx.compose.ui)
     "androidMainApi"(libs.coroutines.core)

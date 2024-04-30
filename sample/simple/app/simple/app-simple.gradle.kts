@@ -12,8 +12,7 @@ freeletics {
 
 dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
-    implementation(libs.khonshu.navigator)
-    implementation(libs.khonshu.navigator.compose)
+    implementation(libs.khonshu.navigation)
     implementation(projects.feature.bottomSheet.implementation)
     implementation(projects.feature.bottomSheet.nav)
     implementation(projects.feature.dialog.implementation)

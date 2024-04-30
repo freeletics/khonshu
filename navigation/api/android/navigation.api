@@ -74,6 +74,10 @@ public class com/freeletics/khonshu/navigation/NavEventNavigator : com/freeletic
 	public fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 }
 
+public final class com/freeletics/khonshu/navigation/NavHostKt {
+	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
 public abstract interface class com/freeletics/khonshu/navigation/NavRoot : com/freeletics/khonshu/navigation/BaseRoute {
 }
 

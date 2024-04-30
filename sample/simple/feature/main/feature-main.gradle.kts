@@ -13,8 +13,7 @@ dependencies {
     api(libs.androidx.lifecycle.viewmodel.compose)
     api(libs.androidx.lifecycle.viewmodel.savedstate)
     api(libs.coroutines)
-    api(libs.khonshu.navigator.compose)
-    api(libs.khonshu.navigator.experimental)
+    api(libs.khonshu.navigation)
     api(libs.khonshu.statemachine)
 
     implementation(libs.androidx.activity.compose)
@@ -22,7 +21,7 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.lifecycle.viewmodel)
-    implementation(libs.khonshu.navigator)
+    implementation(libs.khonshu.navigation)
     implementation(libs.khonshu.codegen)
     implementation(projects.feature.root.nav)
 }
