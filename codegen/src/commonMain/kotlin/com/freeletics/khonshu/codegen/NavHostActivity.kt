@@ -25,7 +25,6 @@ public annotation class NavHostActivity(
     val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,
     val activityBaseClass: KClass<*>,
-    val experimentalNavigation: Boolean = false,
 )
 
 /**

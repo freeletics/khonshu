@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## 0.24.0 **UNRELEASED**
+
+### Codegen
+
+- Removed `experimentalNavigation` option and `@UseExperimentalNavigation`. The generated
+  code will now always use Khonshu's built-in navigation instead of androidx.navigation.
+
+
 ## 0.23.1 *(2024-03-08)*
 
 ### Navigation

@@ -75,7 +75,6 @@ internal fun KSFunctionDeclaration.toNavHostActivityData(
         parentScope = annotation.parentScope,
         stateMachine = annotation.stateMachine,
         activityBaseClass = annotation.activityBaseClass,
-        experimentalNavigation = annotation.experimentalNavigation,
         navHostParameter = navHostParameter,
         composableParameter = getInjectedParameters(stateParameter, actionParameter, navHostParameter.typeName),
         stateParameter = getParameterWithType(stateParameter),
@@ -100,9 +99,6 @@ private val KSAnnotation.destinationScope: ClassName
 
 private val KSAnnotation.activityBaseClass: ClassName
     get() = (findArgument("activityBaseClass").value as KSType).toClassName()
-
-internal val KSAnnotation.experimentalNavigation: Boolean
-    get() = findArgument("experimentalNavigation").value as Boolean
 
 private fun KSAnnotation.findArgument(name: String): KSValueArgument {
     return arguments.find { it.name?.asString() == name }
