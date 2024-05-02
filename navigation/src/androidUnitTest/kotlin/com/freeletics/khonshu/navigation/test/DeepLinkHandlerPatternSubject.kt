@@ -10,8 +10,8 @@ import com.google.common.truth.Truth.assertAbout
 
 internal class DeepLinkHandlerPatternSubject private constructor(
     failureMetadata: FailureMetadata,
-    private val handler: DeepLinkHandler.Pattern,
-) : Subject(failureMetadata, handler) {
+    private val pattern: DeepLinkHandler.Pattern,
+) : Subject(failureMetadata, pattern) {
 
     companion object {
         private val SUBJECT_FACTORY: Factory<DeepLinkHandlerPatternSubject, DeepLinkHandler.Pattern> =
@@ -33,6 +33,6 @@ internal class DeepLinkHandlerPatternSubject private constructor(
     }
 
     fun extractPathParameters(uri: Uri): MapSubject {
-        return check("extractPathParameters()").that(handler.extractPathParameters(uri))
+        return check("extractPathParameters()").that(pattern.extractPathParameters(uri))
     }
 }
