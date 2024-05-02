@@ -1,37 +1,8 @@
 package com.freeletics.khonshu.navigation.deeplinks
 
-import com.eygraber.uri.Uri
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Pattern
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
-
-/**
- * Checks if any of the given [uri] matches one of [DeepLinkHandler.patterns] and returns `true`
- * if that is the case.
- *
- * [defaultPrefixes] will be used as base url if [DeepLinkHandler.prefixes] is empty.
- */
-@InternalNavigationApi
-public fun Set<DeepLinkHandler>.matchesPattern(
-    uri: Uri,
-    defaultPrefixes: Set<Prefix>,
-): Boolean {
-    return any { it.matchesPattern(uri, defaultPrefixes) }
-}
-
-/**
- * Checks if the given [uri] matches one of [DeepLinkHandler.patterns] and returns `true` if that
- * is the case.
- *
- * [defaultPrefixes] will be used as base url if [DeepLinkHandler.prefixes] is empty.
- */
-@InternalNavigationApi
-public fun DeepLinkHandler.matchesPattern(
-    uri: Uri,
-    defaultPrefixes: Set<Prefix>,
-): Boolean {
-    return findMatchingPattern(uri.toString(), defaultPrefixes) != null
-}
 
 internal fun DeepLinkHandler.findMatchingPattern(
     uriString: String,
