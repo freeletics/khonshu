@@ -3,6 +3,7 @@ package com.freeletics.khonshu.navigation.deeplinks
 import com.eygraber.uri.Uri
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import org.jetbrains.annotations.VisibleForTesting
 
 /**
  * Checks if the given [uri] matches one of the [DeepLinkHandler] in the `Set` and if yes
@@ -16,30 +17,17 @@ public fun Set<DeepLinkHandler>.createDeepLinkIfMatching(
     defaultPrefixes: Set<Prefix>,
 ): DeepLink? {
     forEach {
-        val result = it.createDeepLinkIfMatching(uri, defaultPrefixes)
-        if (result != null) {
-            return result
+        val matchingPattern = it.findMatchingPattern(uri.toString(), defaultPrefixes)
+        if (matchingPattern != null) {
+            return it.deepLink(matchingPattern.extractPathParameters(uri), uri.queryParameters)
         }
     }
 
     return null
 }
 
-/**
- * Checks if the given [uri] matches one of [DeepLinkHandler.patterns] and if yes
- * create a [DeepLink]. Otherwise `null` is returned.
- *
- * [defaultPrefixes] will be used as base url if [DeepLinkHandler.prefixes] is empty.
- */
-@InternalNavigationApi
-public fun DeepLinkHandler.createDeepLinkIfMatching(
-    uri: Uri,
-    defaultPrefixes: Set<Prefix>,
-): DeepLink? {
-    val matchingPattern = findMatchingPattern(uri.toString(), defaultPrefixes) ?: return null
-    return deepLink(matchingPattern.extractPathParameters(uri), uri.queryParameters)
-}
 
+@VisibleForTesting
 internal fun DeepLinkHandler.Pattern.extractPathParameters(uri: Uri): MutableMap<String, String> {
     // create a Uri with the pattern so that we can get the placeholder names and their indices
     // the prefix (domain) does not matter so we use a hardcoded one
@@ -61,7 +49,7 @@ internal fun DeepLinkHandler.Pattern.extractPathParameters(uri: Uri): MutableMap
     return pathParameters
 }
 
-internal val Uri.queryParameters: Map<String, String>
+private val Uri.queryParameters: Map<String, String>
     get() = getQueryParameterNames().associateWith { queryParam ->
         getQueryParameter(queryParam)!!
     }
