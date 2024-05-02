@@ -26,7 +26,6 @@ public fun Set<DeepLinkHandler>.createDeepLinkIfMatching(
     return null
 }
 
-
 @VisibleForTesting
 internal fun DeepLinkHandler.Pattern.extractPathParameters(uri: Uri): MutableMap<String, String> {
     // create a Uri with the pattern so that we can get the placeholder names and their indices
