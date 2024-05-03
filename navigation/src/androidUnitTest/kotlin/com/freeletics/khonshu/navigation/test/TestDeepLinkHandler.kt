@@ -8,9 +8,6 @@ import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix
 internal class TestDeepLinkHandler(
     override val patterns: Set<Pattern>,
     override val prefixes: Set<Prefix> = emptySet(),
-    private val deepLinkFactory: (Map<String, String>, Map<String, String>) -> DeepLink = { _, _ ->
-        throw AssertionError("Should never be called")
-    },
 ) : DeepLinkHandler {
 
     constructor(vararg patterns: String) : this(patterns.map { Pattern(it) }.toSet())
@@ -19,6 +16,6 @@ internal class TestDeepLinkHandler(
         pathParameters: Map<String, String>,
         queryParameters: Map<String, String>,
     ): DeepLink {
-        return deepLinkFactory(pathParameters, queryParameters)
+        return DeepLink("test", listOf(DeepLinkRoute(pathParameters, queryParameters)))
     }
 }

@@ -7,7 +7,7 @@ import com.freeletics.khonshu.navigation.test.TestDeepLinkHandler
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
-internal class DeepLinkParserTest {
+internal class DeepLinkParseParametersTest {
     @Test
     fun `when the pattern is home`() {
         val pattern = DeepLinkHandler.Pattern("home")
@@ -100,14 +100,13 @@ internal class DeepLinkParserTest {
             TestDeepLinkHandler(
                 patterns = setOf(DeepLinkHandler.Pattern("home")),
                 prefixes = setOf(DeepLinkHandler.Prefix("https://a.com")),
-                deepLinkFactory = { _, _ -> DeepLink("test", listOf()) },
             ),
             TestDeepLinkHandler(""),
         )
 
         val uri = Uri.parse("https://a.com/home")
         assertThat(handlers.createDeepLinkIfMatching(uri, emptySet())).isEqualTo(
-            DeepLink("test", listOf()),
+            DeepLink("test", listOf(DeepLinkRoute(emptyMap(), emptyMap()))),
         )
     }
 
@@ -117,9 +116,6 @@ internal class DeepLinkParserTest {
             TestDeepLinkHandler(
                 patterns = setOf(DeepLinkHandler.Pattern("{path}")),
                 prefixes = setOf(DeepLinkHandler.Prefix("https://a.com")),
-                deepLinkFactory = { path, query ->
-                    DeepLink("test", listOf(DeepLinkRoute(path, query)))
-                },
             ),
             TestDeepLinkHandler(""),
         )
