@@ -9,7 +9,6 @@ import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
-import java.io.Serializable
 import kotlin.reflect.KClass
 
 internal class TestNavigationExecutor : NavigationExecutor {
@@ -64,7 +63,7 @@ internal class TestNavigationExecutor : NavigationExecutor {
         throw UnsupportedOperationException()
     }
 
-    override fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Serializable {
+    override fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Any {
         throw UnsupportedOperationException()
     }
 }

@@ -7,7 +7,6 @@ import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
-import java.io.Serializable
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
 
@@ -101,7 +100,7 @@ internal class MultiStackNavigationExecutor(
         return storeFor(entry.id)
     }
 
-    override fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Serializable {
+    override fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Any {
         val entry = entryFor(destinationId)
         return entry.destination.extra!!
     }
