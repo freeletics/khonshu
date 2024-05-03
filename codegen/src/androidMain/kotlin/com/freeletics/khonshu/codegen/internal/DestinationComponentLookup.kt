@@ -6,11 +6,10 @@ import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import com.freeletics.khonshu.navigation.internal.destinationId
-import java.io.Serializable
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
-public interface ComponentProvider<R : BaseRoute, T> : Serializable {
+public interface ComponentProvider<R : BaseRoute, T> {
     public fun provide(route: R, executor: NavigationExecutor, provider: ActivityComponentProvider): T
 }
 

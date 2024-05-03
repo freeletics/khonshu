@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import com.freeletics.khonshu.navigation.internal.ActivityDestinationId
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
-import java.io.Serializable
 
 /**
  * A destination that can be navigated to. See `NavHost` for how to configure a `NavGraph` with it.
@@ -14,7 +13,7 @@ public sealed interface NavDestination
 
 internal sealed class ContentDestination<T : BaseRoute> : NavDestination {
     internal abstract val id: DestinationId<T>
-    internal abstract val extra: Serializable?
+    internal abstract val extra: Any?
     internal abstract val content: @Composable (T) -> Unit
 }
 
@@ -31,14 +30,14 @@ public inline fun <reified T : BaseRoute> ScreenDestination(
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute> ScreenDestination(
-    extra: Serializable,
+    extra: Any,
     noinline content: @Composable (T) -> Unit,
 ): NavDestination = ScreenDestination(DestinationId(T::class), extra, content)
 
 @PublishedApi
 internal class ScreenDestination<T : BaseRoute>(
     override val id: DestinationId<T>,
-    override val extra: Serializable?,
+    override val extra: Any?,
     override val content: @Composable (T) -> Unit,
 ) : ContentDestination<T>()
 
@@ -55,14 +54,14 @@ public inline fun <reified T : NavRoute> OverlayDestination(
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> OverlayDestination(
-    extra: Serializable,
+    extra: Any,
     noinline content: @Composable (T) -> Unit,
 ): NavDestination = OverlayDestination(DestinationId(T::class), extra, content)
 
 @PublishedApi
 internal class OverlayDestination<T : NavRoute>(
     override val id: DestinationId<T>,
-    override val extra: Serializable?,
+    override val extra: Any?,
     override val content: @Composable (T) -> Unit,
 ) : ContentDestination<T>()
 
