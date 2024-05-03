@@ -23,7 +23,7 @@ khonshu = "0.23.1"
 ksp = "1.9.23-1.0.20"
 inject = "1"
 java-target = "11"
-java-toolchain = "17"
+java-toolchain = "21"
 kotlin = "1.9.23"
 timber = "5.0.1"
 

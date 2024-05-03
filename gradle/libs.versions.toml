@@ -3,7 +3,7 @@ kotlin = "1.9.23"
 coroutines = "1.8.0"
 
 java-target= "11"
-java-toolchain = "19"
+java-toolchain = "21"
 
 android-gradle = "8.4.0"
 android-min = "21"

@@ -5,7 +5,7 @@ ROOT_DIR="$(dirname $0)"
 
 JDK_VERSION="$(grep -s 'java-gradle' $ROOT_DIR/gradle/libs.versions.toml | cut -d'"' -f2)"
 if [ -z "$JDK_VERSION" ]; then
-  JDK_VERSION="19"
+  JDK_VERSION="21"
 fi
 
 KOTLIN_VERSION="1.9.0"
@@ -21,7 +21,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     JAVA_HOME="/usr/lib/jvm/zulu-$JDK_VERSION-amd64/"
   elif [ -d "/usr/lib/jvm/zulu$JDK_VERSION-ca-amd64" ]; then
     JAVA_HOME="/usr/lib/jvm/zulu$JDK_VERSION-ca-amd64/"
-  else 
+  else
     java --version
   fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
