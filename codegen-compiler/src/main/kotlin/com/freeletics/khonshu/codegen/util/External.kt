@@ -32,6 +32,7 @@ internal val localActivityComponentProvider =
 // Navigator
 internal val baseRoute = ClassName("com.freeletics.khonshu.navigation", "BaseRoute")
 internal val baseRouteFqName = FqName(baseRoute.canonicalName)
+internal val navRoot = ClassName("com.freeletics.khonshu.navigation", "NavRoot")
 internal val navEventNavigator = ClassName("com.freeletics.khonshu.navigation", "NavEventNavigator")
 internal val navigationExecutor = ClassName("com.freeletics.khonshu.navigation.internal", "NavigationExecutor")
 internal val navHost = MemberName("com.freeletics.khonshu.navigation", "NavHost")
@@ -49,9 +50,9 @@ internal val internalNavigatorApi =
 internal val simpleNavHost = ClassName("com.freeletics.khonshu.codegen", "SimpleNavHost")
 internal val simpleNavHostLambda = LambdaTypeName.get(
     null,
-    NavRoot::class.asClassName(),
+    navRoot,
     ClassName("androidx.compose.ui", "Modifier"),
-    LambdaTypeName.get(null, baseRoute, returnType = UNIT).copy(nullable = true),
+    LambdaTypeName.get(null, navRoot, baseRoute, returnType = UNIT).copy(nullable = true),
     returnType = UNIT,
 )
 

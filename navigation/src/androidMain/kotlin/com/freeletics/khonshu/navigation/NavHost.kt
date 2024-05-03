@@ -47,7 +47,7 @@ public fun NavHost(
     deepLinkHandlers: ImmutableSet<DeepLinkHandler> = persistentSetOf(),
     deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
     navEventNavigator: NavEventNavigator? = null,
-    destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
+    destinationChangedCallback: ((NavRoot, BaseRoute) -> Unit)? = null,
 ) {
     val executor = rememberNavigationExecutor(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
     val snapshot by executor.snapshot
@@ -134,12 +134,13 @@ private fun SystemBackHandling(snapshot: StackSnapshot, executor: MultiStackNavi
 @Composable
 private fun DestinationChangedCallback(
     snapshot: StackSnapshot,
-    destinationChangedCallback: ((BaseRoute) -> Unit)?,
+    destinationChangedCallback: ((NavRoot, BaseRoute) -> Unit)?,
 ) {
     if (destinationChangedCallback != null) {
+        val root = snapshot.root
         val current = snapshot.current
-        DisposableEffect(current) {
-            destinationChangedCallback(current.route)
+        DisposableEffect(root, current) {
+            destinationChangedCallback(root.route as NavRoot, current.route)
             onDispose {}
         }
     }
