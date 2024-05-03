@@ -8,7 +8,6 @@ import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import kotlin.reflect.KClass
-import kotlinx.collections.immutable.ImmutableList
 
 internal class MultiStackNavigationExecutor(
     private val stack: MultiStack,
@@ -17,11 +16,8 @@ internal class MultiStackNavigationExecutor(
     deepLinkRoutes: List<Parcelable>,
 ) : NavigationExecutor {
 
-    val visibleEntries: State<ImmutableList<StackEntry<*>>>
-        get() = stack.visibleEntries
-
-    val canNavigateBack: State<Boolean>
-        get() = stack.canNavigateBack
+    val snapshot: State<StackSnapshot>
+        get() = stack.snapshot
 
     init {
         if (deepLinkRoutes.isNotEmpty()) {

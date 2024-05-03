@@ -9,12 +9,14 @@ import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.ThirdRoute
+import com.freeletics.khonshu.navigation.test.canNavigateBack
 import com.freeletics.khonshu.navigation.test.destinations
 import com.freeletics.khonshu.navigation.test.otherRootDestination
 import com.freeletics.khonshu.navigation.test.otherRouteDestination
 import com.freeletics.khonshu.navigation.test.simpleRootDestination
 import com.freeletics.khonshu.navigation.test.simpleRouteDestination
 import com.freeletics.khonshu.navigation.test.thirdRouteDestination
+import com.freeletics.khonshu.navigation.test.visibleEntries
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.Test

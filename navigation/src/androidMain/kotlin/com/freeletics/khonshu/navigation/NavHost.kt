@@ -6,22 +6,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor
 import com.freeletics.khonshu.navigation.internal.StackEntry
+import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.internal.rememberNavigationExecutor
 import java.io.Closeable
 import java.lang.ref.WeakReference
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 
 /**
  * Create a new `NavHost` containing all given [destinations]. [startRoute] will be used as the
@@ -51,9 +50,10 @@ public fun NavHost(
     destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
 ) {
     val executor = rememberNavigationExecutor(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
+    val snapshot by executor.snapshot
 
-    SystemBackHandling(executor)
-    DestinationChangedCallback(executor, destinationChangedCallback)
+    SystemBackHandling(snapshot, executor)
+    DestinationChangedCallback(snapshot, destinationChangedCallback)
 
     val saveableStateHolder = rememberSaveableStateHolder()
     CompositionLocalProvider(LocalNavigationExecutor provides executor) {
@@ -62,8 +62,8 @@ public fun NavHost(
         }
 
         Box(modifier = modifier) {
-            executor.visibleEntries.value.forEach { entry ->
-                Show(entry, executor, saveableStateHolder)
+            snapshot.forEachVisibleDestination {
+                Show(it, executor, saveableStateHolder)
             }
         }
     }
@@ -104,22 +104,22 @@ internal class SaveableCloseable(
 }
 
 @Composable
-private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
+private fun SystemBackHandling(snapshot: StackSnapshot, executor: MultiStackNavigationExecutor) {
     val backPressedDispatcher = requireNotNull(LocalOnBackPressedDispatcherOwner.current) {
         "No OnBackPressedDispatcher available"
     }
 
     val callback = remember(executor) {
-        object : OnBackPressedCallback(executor.canNavigateBack.value) {
+        // will be enabled below if needed
+        object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
                 executor.navigateBack()
             }
         }
     }
 
-    LaunchedEffect(executor, callback) {
-        snapshotFlow { executor.canNavigateBack.value }
-            .collect { callback.isEnabled = it }
+    SideEffect {
+        callback.isEnabled = snapshot.canNavigateBack
     }
 
     DisposableEffect(backPressedDispatcher, callback) {
@@ -133,15 +133,14 @@ private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
 
 @Composable
 private fun DestinationChangedCallback(
-    executor: MultiStackNavigationExecutor,
+    snapshot: StackSnapshot,
     destinationChangedCallback: ((BaseRoute) -> Unit)?,
 ) {
     if (destinationChangedCallback != null) {
-        LaunchedEffect(executor, destinationChangedCallback) {
-            snapshotFlow { executor.visibleEntries.value }
-                .map { it.last().route }
-                .distinctUntilChanged()
-                .collect { destinationChangedCallback(it) }
+        val current = snapshot.current
+        DisposableEffect(current) {
+            destinationChangedCallback(current.route)
+            onDispose {}
         }
     }
 }
