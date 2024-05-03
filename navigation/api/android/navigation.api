@@ -139,7 +139,7 @@ public final class com/freeletics/khonshu/navigation/Navigator$Companion {
 public final class com/freeletics/khonshu/navigation/OverlayDestination {
 	public static final field $stable I
 	public static final field $stable I
-	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/io/Serializable;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
 public final class com/freeletics/khonshu/navigation/PermissionsResultRequest : com/freeletics/khonshu/navigation/ContractResultOwner {
@@ -179,7 +179,7 @@ public abstract class com/freeletics/khonshu/navigation/ResultOwner {
 public final class com/freeletics/khonshu/navigation/ScreenDestination {
 	public static final field $stable I
 	public static final field $stable I
-	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/io/Serializable;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/ActivityRouteDeepLinkKt {
