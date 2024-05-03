@@ -5,9 +5,10 @@ import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
 import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
 import com.freeletics.khonshu.navigation.internal.DestinationId
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.RequestPermissionsContract
 import dev.drewhamilton.poko.Poko
+import kotlin.reflect.KClass
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -33,7 +34,7 @@ public sealed class ResultOwner<R> {
      * Deliver a new [result] to [results]. This method should be called by a
      * `NavEventNavigationHandler`.
      */
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     public fun onResult(result: R) {
         val channelResult = _results.trySendBlocking(result)
         check(channelResult.isSuccess)
@@ -41,8 +42,7 @@ public sealed class ResultOwner<R> {
 }
 
 public sealed class ContractResultOwner<I, O, R> : ResultOwner<R>() {
-    @InternalNavigationApi
-    public abstract val contract: ActivityResultContract<I, O>
+    internal abstract val contract: ActivityResultContract<I, O>
 }
 
 /**
@@ -54,7 +54,7 @@ public sealed class ContractResultOwner<I, O, R> : ResultOwner<R>() {
  *    request
  */
 public class ActivityResultRequest<I, O> internal constructor(
-    @property:InternalNavigationApi override val contract: ActivityResultContract<I, O>,
+    override val contract: ActivityResultContract<I, O>,
 ) : ContractResultOwner<I, O, O>()
 
 /**
@@ -73,7 +73,6 @@ public class ActivityResultRequest<I, O> internal constructor(
 public class PermissionsResultRequest internal constructor() :
     ContractResultOwner<List<String>, Map<String, Boolean>, Map<String, PermissionResult>>() {
 
-    @property:InternalNavigationApi
     override val contract: RequestPermissionsContract = RequestPermissionsContract()
 
     /**
@@ -128,7 +127,7 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
      */
     @Poko
     @Parcelize
-    public class Key<R : Parcelable> @InternalNavigationApi constructor(
+    public class Key<R : Parcelable> internal constructor(
         internal val destinationId: DestinationId<*>,
         internal val requestKey: String,
     ) : Parcelable {
@@ -144,5 +143,14 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
                 return Key<Parcelable>(DestinationId(cls), parcel.readString()!!)
             }
         }
+    }
+
+    @InternalNavigationTestingApi
+    public companion object {
+        @InternalNavigationTestingApi
+        public fun <R : Parcelable> Key(
+            destinationId: KClass<out BaseRoute>,
+            requestKey: String,
+        ): Key<R> = Key(DestinationId(destinationId), requestKey)
     }
 }

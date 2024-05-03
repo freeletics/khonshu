@@ -7,7 +7,7 @@ plugins {
 
 freeletics {
     optIn(
-        "com.freeletics.khonshu.navigation.internal.InternalNavigationApi",
+        "com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi",
         "com.freeletics.khonshu.codegen.internal.InternalCodegenApi",
     )
 

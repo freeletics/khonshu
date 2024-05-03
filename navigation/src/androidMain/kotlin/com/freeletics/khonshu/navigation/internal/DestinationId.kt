@@ -4,14 +4,14 @@ import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import kotlin.reflect.KClass
 
-@InternalNavigationApi
+@InternalNavigationCodegenApi
 @JvmInline
 public value class DestinationId<T : BaseRoute>(public val route: KClass<T>)
 
-@InternalNavigationApi
+@InternalNavigationCodegenApi
 public val <T : BaseRoute> T.destinationId: DestinationId<out T>
     get() = DestinationId(this::class)
 
-@InternalNavigationApi
+@InternalNavigationCodegenApi
 @JvmInline
 public value class ActivityDestinationId<T : ActivityRoute>(public val route: KClass<T>)

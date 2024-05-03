@@ -6,14 +6,14 @@ import com.freeletics.khonshu.navigation.Navigator
 import java.io.Serializable
 import kotlin.reflect.KClass
 
-@InternalNavigationApi
+@InternalNavigationCodegenApi
 public interface NavigationExecutor : Navigator {
     public fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T
     public fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle
     public fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): Store
     public fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Serializable
 
-    @InternalNavigationApi
+    @InternalNavigationCodegenApi
     public interface Store {
         public fun <T : Any> getOrCreate(key: KClass<T>, factory: () -> T): T
     }

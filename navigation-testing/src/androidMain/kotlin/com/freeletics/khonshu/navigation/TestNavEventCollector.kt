@@ -1,7 +1,7 @@
 package com.freeletics.khonshu.navigation
 
-import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavEvent
+import kotlin.reflect.KClass
 
 public class TestNavEventCollector internal constructor() {
 
@@ -29,11 +29,11 @@ public class TestNavEventCollector internal constructor() {
     }
 
     public inline fun <reified T : NavRoute> awaitNavigateBackTo(inclusive: Boolean) {
-        awaitNavigateBackTo(DestinationId(T::class), inclusive)
+        awaitNavigateBackTo(T::class, inclusive)
     }
 
     @PublishedApi
-    internal fun <T : NavRoute> awaitNavigateBackTo(destination: DestinationId<T>, inclusive: Boolean) {
+    internal fun <T : NavRoute> awaitNavigateBackTo(destination: KClass<T>, inclusive: Boolean) {
         val event = NavEvent.BackToEvent(destination, inclusive)
         _navEvents.add(event)
     }

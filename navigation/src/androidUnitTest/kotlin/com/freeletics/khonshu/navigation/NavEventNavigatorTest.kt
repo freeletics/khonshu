@@ -3,7 +3,6 @@ package com.freeletics.khonshu.navigation
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
-import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToActivityEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToEvent
@@ -119,7 +118,7 @@ internal class NavEventNavigatorTest {
             navigator.navigateBackTo<SimpleRoute>(true)
 
             assertThat(awaitItem()).isEqualTo(
-                NavEvent.BackToEvent(DestinationId(SimpleRoute::class), true),
+                NavEvent.BackToEvent(SimpleRoute::class, true),
             )
 
             cancel()
@@ -223,7 +222,7 @@ internal class NavEventNavigatorTest {
             assertThat(awaitItem()).isEqualTo(
                 NavEvent.MultiNavEvent(
                     listOf(
-                        NavEvent.BackToEvent(DestinationId(SimpleRoute::class), true),
+                        NavEvent.BackToEvent(SimpleRoute::class, true),
                         NavigateToEvent(SimpleRoute(1)),
                         NavEvent.BackEvent,
                     ),

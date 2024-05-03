@@ -10,8 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
  * as input instead of [Array]. The reason for this is that [Array.equals] does not compare
  * the contents which makes testing [NavEvent.ActivityResultEvent] painful.
  */
-@InternalNavigationApi
-public class RequestPermissionsContract :
+internal class RequestPermissionsContract :
     ActivityResultContract<List<String>, Map<String, Boolean>>() {
 
     private val contract = ActivityResultContracts.RequestMultiplePermissions()

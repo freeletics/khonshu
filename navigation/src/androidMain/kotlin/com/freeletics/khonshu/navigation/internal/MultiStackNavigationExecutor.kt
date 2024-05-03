@@ -8,6 +8,7 @@ import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import java.io.Serializable
+import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
 
 internal class MultiStackNavigationExecutor(
@@ -71,11 +72,11 @@ internal class MultiStackNavigationExecutor(
         stack.pop()
     }
 
-    override fun <T : BaseRoute> navigateBackToInternal(
-        popUpTo: DestinationId<T>,
+    override fun <T : BaseRoute> navigateBackTo(
+        popUpTo: KClass<T>,
         inclusive: Boolean,
     ) {
-        stack.popUpTo(popUpTo, inclusive)
+        stack.popUpTo(DestinationId(popUpTo), inclusive)
     }
 
     override fun resetToRoot(root: NavRoot) {

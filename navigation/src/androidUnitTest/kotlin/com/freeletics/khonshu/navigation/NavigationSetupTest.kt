@@ -9,7 +9,6 @@ import androidx.lifecycle.testing.TestLifecycleOwner
 import app.cash.turbine.test
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
-import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
@@ -162,7 +161,7 @@ internal class NavigationSetupTest {
 
         navigator.navigateBackTo<SimpleRoute>(inclusive = true)
         assertThat(executor.received.awaitItem())
-            .isEqualTo(NavEvent.BackToEvent(DestinationId(SimpleRoute::class), inclusive = true))
+            .isEqualTo(NavEvent.BackToEvent(SimpleRoute::class, inclusive = true))
     }
 
     @Test
@@ -194,7 +193,7 @@ internal class NavigationSetupTest {
         }
 
         assertThat(executor.received.awaitItem())
-            .isEqualTo(NavEvent.BackToEvent(DestinationId(SimpleRoute::class), inclusive = true))
+            .isEqualTo(NavEvent.BackToEvent(SimpleRoute::class, inclusive = true))
 
         assertThat(executor.received.awaitItem())
             .isEqualTo(NavEvent.NavigateToEvent(SimpleRoute(1)))

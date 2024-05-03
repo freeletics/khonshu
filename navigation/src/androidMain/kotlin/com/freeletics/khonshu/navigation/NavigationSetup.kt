@@ -17,7 +17,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import kotlinx.coroutines.Dispatchers
@@ -114,7 +114,7 @@ private fun NavigationExecutor.navigateTo(
             navigateBack()
         }
         is NavEvent.BackToEvent -> {
-            navigateBackToInternal(event.popUpTo, event.inclusive)
+            navigateBackTo(event.popUpTo, event.inclusive)
         }
         is NavEvent.ResetToRoot -> {
             resetToRoot(event.root)
@@ -185,13 +185,12 @@ internal suspend fun <R : Parcelable> NavigationExecutor.collectAndHandleNavigat
 @Parcelize
 private object InitialValue : Parcelable
 
-@InternalNavigationApi
+@InternalNavigationCodegenApi
 public val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecutor> = staticCompositionLocalOf {
     throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
 }
 
-@InternalNavigationApi
-public tailrec fun Context.findActivity(): Activity = when (this) {
+internal tailrec fun Context.findActivity(): Activity = when (this) {
     is Activity -> this
     is ContextWrapper -> baseContext.findActivity()
     else -> error("Could not find activity in Context chain.")

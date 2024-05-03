@@ -5,6 +5,7 @@ import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.Navigator
+import kotlin.reflect.KClass
 
 internal class NavEventCollector : Navigator {
 
@@ -36,8 +37,7 @@ internal class NavEventCollector : Navigator {
         _navEvents.add(event)
     }
 
-    @InternalNavigationApi
-    override fun <T : BaseRoute> navigateBackToInternal(popUpTo: DestinationId<T>, inclusive: Boolean) {
+    override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean) {
         val event = NavEvent.BackToEvent(popUpTo, inclusive)
         _navEvents.add(event)
     }

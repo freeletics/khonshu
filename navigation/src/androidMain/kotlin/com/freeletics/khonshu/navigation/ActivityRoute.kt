@@ -3,7 +3,6 @@ package com.freeletics.khonshu.navigation
 import android.app.Activity
 import android.content.Intent
 import android.os.Parcelable
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 
 /**
  * Represents the route to an `Activity`. Should be used through []
@@ -51,5 +50,4 @@ public fun <T : InternalActivityRoute> Activity.getRoute(): T? {
     return intent.extras?.getParcelable(EXTRA_ROUTE)
 }
 
-@InternalNavigationApi
-public const val EXTRA_ROUTE: String = "com.freeletics.khonshu.navigation.ROUTE"
+private const val EXTRA_ROUTE: String = "com.freeletics.khonshu.navigation.ROUTE"

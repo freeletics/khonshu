@@ -36,7 +36,7 @@ public final class com/freeletics/khonshu/navigation/ResultOwnerTestingKt {
 
 public final class com/freeletics/khonshu/navigation/TestNavEventCollector {
 	public final fun awaitNavigateBack ()V
-	public final fun awaitNavigateBackTo-UamjCxQ (Lkotlin/reflect/KClass;Z)V
+	public final fun awaitNavigateBackTo (Lkotlin/reflect/KClass;Z)V
 	public final fun awaitNavigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
 	public final fun awaitNavigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
 	public final fun awaitNavigateUp ()V

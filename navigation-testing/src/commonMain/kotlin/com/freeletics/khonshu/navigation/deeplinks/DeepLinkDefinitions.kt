@@ -1,6 +1,6 @@
 package com.freeletics.khonshu.navigation.deeplinks
 
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import net.peanuuutz.tomlkt.Toml
@@ -36,7 +36,7 @@ public value class PatternDefinition(
         DeepLinkHandler.Pattern(value)
     }
 
-    @OptIn(InternalNavigationApi::class)
+    @OptIn(InternalNavigationTestingApi::class)
     public fun replacePlaceholders(replacement: (String) -> String): String {
         return DeepLinkHandler.Pattern(value).replacePlaceholders(replacement)
     }

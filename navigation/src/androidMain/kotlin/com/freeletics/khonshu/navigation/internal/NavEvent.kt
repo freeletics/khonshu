@@ -8,69 +8,70 @@ import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.NavigationResultRequest
 import dev.drewhamilton.poko.Poko
+import kotlin.reflect.KClass
 
-@InternalNavigationApi
+@InternalNavigationTestingApi
 public sealed interface NavEvent {
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     @Poko
     public class NavigateToEvent(
         internal val route: NavRoute,
     ) : NavEvent
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     @Poko
     public class NavigateToRootEvent(
         internal val root: NavRoot,
         internal val restoreRootState: Boolean,
     ) : NavEvent
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     @Poko
     public class NavigateToActivityEvent(
         internal val route: ActivityRoute,
     ) : NavEvent
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     public data object UpEvent : NavEvent
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     public data object BackEvent : NavEvent
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     @Poko
     public class BackToEvent(
-        internal val popUpTo: DestinationId<out BaseRoute>,
+        internal val popUpTo: KClass<out BaseRoute>,
         internal val inclusive: Boolean,
     ) : NavEvent
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     @Poko
     public class ResetToRoot(
         internal val root: NavRoot,
     ) : NavEvent
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     @Poko
     public class ReplaceAll(
         internal val root: NavRoot,
     ) : NavEvent
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     @Poko
     public class ActivityResultEvent<I>(
         internal val request: ContractResultOwner<I, *, *>,
         internal val input: I,
     ) : NavEvent
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     @Poko
     public class DestinationResultEvent<O : Parcelable>(
         internal val key: NavigationResultRequest.Key<O>,
         internal val result: O,
     ) : NavEvent
 
-    @InternalNavigationApi
+    @InternalNavigationTestingApi
     @Poko
     public class MultiNavEvent(
         internal val navEvents: List<NavEvent>,

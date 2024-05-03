@@ -831,7 +831,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value).hasSize(6)
 
-        executor.navigateBackToInternal(simpleRouteDestination.id, inclusive = false)
+        executor.navigateBackTo(simpleRouteDestination.id.route, inclusive = false)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -864,7 +864,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value).hasSize(6)
 
-        executor.navigateBackToInternal(simpleRouteDestination.id, inclusive = true)
+        executor.navigateBackTo(simpleRouteDestination.id.route, inclusive = true)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -898,7 +898,7 @@ internal class MultiStackNavigationExecutorTest {
 
         assertThat(executor.visibleEntries.value).hasSize(6)
 
-        executor.navigateBackToInternal(simpleRootDestination.id, inclusive = false)
+        executor.navigateBackTo(simpleRootDestination.id.route, inclusive = false)
 
         assertThat(executor.visibleEntries.value)
             .containsExactly(
@@ -936,7 +936,7 @@ internal class MultiStackNavigationExecutorTest {
         assertThat(executor.visibleEntries.value).hasSize(6)
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.navigateBackToInternal(simpleRootDestination.id, inclusive = true)
+            executor.navigateBackTo(simpleRootDestination.id.route, inclusive = true)
         }
         assertThat(exception).hasMessageThat().isEqualTo("Can't pop the root of the back stack")
 
@@ -966,7 +966,7 @@ internal class MultiStackNavigationExecutorTest {
         assertThat(executor.visibleEntries.value).hasSize(3)
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.navigateBackToInternal(otherRouteDestination.id, inclusive = false)
+            executor.navigateBackTo(otherRouteDestination.id.route, inclusive = false)
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo(
