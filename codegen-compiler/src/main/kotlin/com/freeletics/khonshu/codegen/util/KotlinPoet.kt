@@ -126,7 +126,7 @@ internal fun Navigation?.asParameter(): ParameterSpec {
     if (this != null) {
         return ParameterSpec.builder(route.propertyName, route).build()
     }
-    return ParameterSpec.builder("arguments", bundle).build()
+    return ParameterSpec.builder("intent", intent).build()
 }
 
 internal fun TypeName.asLambdaParameter(): TypeName {
