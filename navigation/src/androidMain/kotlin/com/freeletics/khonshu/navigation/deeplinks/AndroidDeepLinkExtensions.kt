@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.TaskStackBuilder
+import com.eygraber.uri.toUri
+import com.freeletics.khonshu.navigation.internal.Parcelable
 
 /**
  * Creates an [Intent] that can be used to launch this deep link.
@@ -45,7 +47,7 @@ public fun DeepLink.buildPendingIntent(
     return buildTaskStack(context).getPendingIntent(requestCode, flags)!!
 }
 
-internal const val EXTRA_DEEPLINK_ROUTES: String = "com.freeletics.khonshu.navigation.DEEPLINK_ROUTES"
+private const val EXTRA_DEEPLINK_ROUTES: String = "com.freeletics.khonshu.navigation.DEEPLINK_ROUTES"
 
 private fun defaultFlag(): Int {
     return if (Build.VERSION.SDK_INT >= 23) {
@@ -53,4 +55,20 @@ private fun defaultFlag(): Int {
     } else {
         FLAG_UPDATE_CURRENT
     }
+}
+
+internal fun Intent.extractDeepLinkRoutes(
+    deepLinkHandlers: Set<DeepLinkHandler>,
+    deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
+): List<Parcelable> {
+    if (hasExtra(EXTRA_DEEPLINK_ROUTES)) {
+        @Suppress("DEPRECATION")
+        return getParcelableArrayListExtra(EXTRA_DEEPLINK_ROUTES)!!
+    }
+    val uri = data
+    if (uri != null) {
+        val deepLink = deepLinkHandlers.createDeepLinkIfMatching(uri.toUri(), deepLinkPrefixes)
+        return deepLink?.routes ?: emptyList()
+    }
+    return emptyList()
 }

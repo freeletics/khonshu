@@ -1,49 +1,64 @@
 package com.freeletics.khonshu.navigation.internal
 
-import android.os.Parcelable
+import android.content.Intent
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.State
 import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
+import com.freeletics.khonshu.navigation.deeplinks.extractDeepLinkRoutes
 import kotlin.reflect.KClass
+import kotlinx.collections.immutable.ImmutableSet
 
 internal class MultiStackHostNavigator(
     private val stack: MultiStack,
     private val activityStarter: (ActivityRoute) -> Unit,
     viewModel: StackEntryStoreViewModel,
-    deepLinkRoutes: List<Parcelable>,
 ) : HostNavigator() {
 
     override val snapshot: State<StackSnapshot>
         get() = stack.snapshot
 
     init {
-        if (deepLinkRoutes.isNotEmpty()) {
-            stack.resetToRoot(stack.startRoot)
-            deepLinkRoutes.forEachIndexed { index, route ->
-                when (route) {
-                    is NavRoot -> {
-                        require(index == 0) { "NavRoot can only be the first element of a deep link" }
-                        require(route.destinationId != stack.startRoot.destinationId) {
-                            "$route is the start root which is not allowed to be part of a deep " +
-                                "link because it will always be on the back stack"
-                        }
-                        stack.push(route, clearTargetStack = true)
-                    }
+        viewModel.globalSavedStateHandle.setSavedStateProvider(SAVED_STATE_STACK) {
+            stack.saveState()
+        }
+    }
 
-                    is NavRoute -> stack.push(route)
-                    is ActivityRoute -> navigateTo(route)
-                }
-            }
+    override fun handleDeepLink(
+        intent: Intent,
+        deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
+        deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
+    ) {
+        val deepLinkRoutes = intent.extractDeepLinkRoutes(deepLinkHandlers, deepLinkPrefixes)
+        handleDeepLink(deepLinkRoutes)
+    }
+
+    @VisibleForTesting
+    internal fun handleDeepLink(deepLinkRoutes: List<Parcelable>) {
+        if (deepLinkRoutes.isEmpty()) {
+            return
         }
 
-        viewModel.globalSavedStateHandle.setSavedStateProvider(SAVED_STATE_STACK) {
-            val stackState = stack.saveState()
-            // if this line is reached the stackState contains the deep links already
-            stackState.putBoolean(SAVED_STATE_HANDLED_DEEP_LINKS, true)
-            stackState
+        stack.resetToRoot(stack.startRoot)
+
+        deepLinkRoutes.forEachIndexed { index, route ->
+            when (route) {
+                is NavRoot -> {
+                    require(index == 0) { "NavRoot can only be the first element of a deep link" }
+                    require(route.destinationId != stack.startRoot.destinationId) {
+                        "$route is the start root which is not allowed to be part of a deep " +
+                            "link because it will always be on the back stack"
+                    }
+                    stack.push(route, clearTargetStack = true)
+                }
+
+                is NavRoute -> stack.push(route)
+                is ActivityRoute -> navigateTo(route)
+            }
         }
     }
 
@@ -84,6 +99,5 @@ internal class MultiStackHostNavigator(
 
     internal companion object {
         const val SAVED_STATE_STACK = "com.freeletics.khonshu.navigation.stack"
-        const val SAVED_STATE_HANDLED_DEEP_LINKS = "com.freeletics.khonshu.navigation.handled_deep_links"
     }
 }
