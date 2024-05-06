@@ -92,8 +92,8 @@ public class com/freeletics/khonshu/navigation/NavEventNavigator : com/freeletic
 }
 
 public final class com/freeletics/khonshu/navigation/NavHostKt {
-	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/HostNavigator;Landroidx/compose/ui/Modifier;Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/HostNavigator;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public abstract interface class com/freeletics/khonshu/navigation/NavRoot : com/freeletics/khonshu/navigation/BaseRoute {
@@ -261,5 +261,11 @@ public abstract interface annotation class com/freeletics/khonshu/navigation/int
 }
 
 public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationTestingApi : java/lang/annotation/Annotation {
+}
+
+public final class com/freeletics/khonshu/navigation/internal/StackEntryStoreViewModel : androidx/lifecycle/ViewModel {
+	public static final field $stable I
+	public fun <init> (Landroidx/lifecycle/SavedStateHandle;)V
+	public fun onCleared ()V
 }
 

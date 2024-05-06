@@ -31,9 +31,6 @@ import kotlinx.collections.immutable.persistentSetOf
  * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
  * doesn't provide its own [DeepLinkHandler.prefixes].
  *
- * If a [NavEventNavigator] is passed it will be automatically set up and can be used to
- * navigate within the `NavHost`.
- *
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
@@ -44,11 +41,10 @@ public fun NavHost(
     modifier: Modifier = Modifier,
     deepLinkHandlers: ImmutableSet<DeepLinkHandler> = persistentSetOf(),
     deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
-    navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((NavRoot, BaseRoute) -> Unit)? = null,
 ) {
     val navigator = rememberHostNavigator(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
-    NavHost(navigator, modifier, navEventNavigator, destinationChangedCallback)
+    NavHost(navigator, modifier, destinationChangedCallback)
 }
 
 /**
@@ -66,7 +62,6 @@ public fun NavHost(
 public fun NavHost(
     navigator: HostNavigator,
     modifier: Modifier = Modifier,
-    navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((NavRoot, BaseRoute) -> Unit)? = null,
 ) {
     val snapshot by navigator.snapshot
@@ -76,10 +71,6 @@ public fun NavHost(
 
     val saveableStateHolder = rememberSaveableStateHolder()
     CompositionLocalProvider(LocalHostNavigator provides navigator) {
-        if (navEventNavigator != null) {
-            NavigationSetup(navEventNavigator)
-        }
-
         Box(modifier = modifier) {
             snapshot.forEachVisibleDestination {
                 Show(snapshot, it, saveableStateHolder)
