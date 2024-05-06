@@ -3,6 +3,7 @@ package com.freeletics.khonshu.navigation
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
@@ -12,6 +13,7 @@ import kotlin.reflect.KClass
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
@@ -20,7 +22,12 @@ import kotlinx.parcelize.Parcelize
  * A base class for anything that exposes a [Flow] of [results]. Results will only be delivered
  * to one collector at a time.
  */
-public sealed class ResultOwner<R> {
+public sealed interface ResultOwner<R> {
+    public val results: Flow<R>
+}
+
+@InternalNavigationTestingApi
+public sealed class ManagedResultOwner<R> : ResultOwner<R> {
 
     /**
      * Emits any result passed to [onResult]. Results will only be delivered
@@ -28,11 +35,10 @@ public sealed class ResultOwner<R> {
      */
     private val _results = Channel<R>(capacity = Channel.UNLIMITED)
 
-    public val results: Flow<R> = _results.receiveAsFlow()
+    override val results: Flow<R> = _results.receiveAsFlow()
 
     /**
-     * Deliver a new [result] to [results]. This method should be called by a
-     * `NavEventNavigationHandler`.
+     * Deliver a new [result] to [results]. This method should be called by [NavigationSetup].
      */
     @InternalNavigationTestingApi
     public fun onResult(result: R) {
@@ -41,7 +47,7 @@ public sealed class ResultOwner<R> {
     }
 }
 
-public sealed class ContractResultOwner<I, O, R> : ResultOwner<R>() {
+public sealed class ContractResultOwner<I, O, R> : ManagedResultOwner<R>() {
     internal abstract val contract: ActivityResultContract<I, O>
 }
 
@@ -116,11 +122,10 @@ public class PermissionsResultRequest internal constructor() :
  * Class that exposes a [results] [Flow] that can be used to observe results for
  * the given [key].
  *
- * See [ResultOwner] and [NavEventNavigator.registerForNavigationResult].
+ * See [ResultOwner] and [ResultNavigator.registerForNavigationResult].
  */
-public class NavigationResultRequest<R : Parcelable> internal constructor(
-    public val key: Key<R>,
-) : ResultOwner<R>() {
+public sealed interface NavigationResultRequest<R : Parcelable> : ResultOwner<R> {
+    public val key: Key<R>
 
     /**
      * Use to identify where the result should be delivered to.
@@ -129,7 +134,8 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
     @Parcelize
     public class Key<R : Parcelable> internal constructor(
         internal val destinationId: DestinationId<*>,
-        internal val requestKey: String,
+        @property:InternalNavigationTestingApi
+        public val requestKey: String,
     ) : Parcelable {
         private companion object : Parceler<Key<*>> {
             override fun Key<*>.write(parcel: Parcel, flags: Int) {
@@ -154,3 +160,28 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
         ): Key<R> = Key(DestinationId(destinationId), requestKey)
     }
 }
+
+@InternalNavigationTestingApi
+public class StandaloneNavigationResultRequest<R : Parcelable> internal constructor(
+    override val key: NavigationResultRequest.Key<R>,
+    @property:InternalNavigationTestingApi
+    public val savedStateHandle: SavedStateHandle,
+) : NavigationResultRequest<R> {
+
+    override val results: Flow<R>
+        get() = savedStateHandle.getStateFlow<Parcelable>(key.requestKey, InitialValue)
+            .mapNotNull {
+                if (it != InitialValue) {
+                    savedStateHandle[key.requestKey] = InitialValue
+                    @Suppress("UNCHECKED_CAST")
+                    it as R
+                } else {
+                    null
+                }
+            }
+}
+
+@InternalNavigationTestingApi
+public class EventNavigationResultRequest<R : Parcelable> internal constructor(
+    override val key: NavigationResultRequest.Key<R>,
+) : ManagedResultOwner<R>(), NavigationResultRequest<R>

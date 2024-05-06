@@ -170,7 +170,7 @@ internal inline fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(
 
 @VisibleForTesting
 internal suspend fun <R : Parcelable> HostNavigator.collectAndHandleNavigationResults(
-    request: NavigationResultRequest<R>,
+    request: EventNavigationResultRequest<R>,
 ) {
     val savedStateHandle = snapshot.value.entryFor(request.key.destinationId).savedStateHandle
     savedStateHandle.getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
@@ -184,7 +184,7 @@ internal suspend fun <R : Parcelable> HostNavigator.collectAndHandleNavigationRe
 }
 
 @Parcelize
-private object InitialValue : Parcelable
+internal object InitialValue : Parcelable
 
 @InternalNavigationCodegenApi
 public val LocalHostNavigator: ProvidableCompositionLocal<HostNavigator> = staticCompositionLocalOf {

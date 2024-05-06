@@ -37,7 +37,7 @@ public abstract interface class com/freeletics/khonshu/navigation/BackIntercepto
 public abstract interface class com/freeletics/khonshu/navigation/BaseRoute : android/os/Parcelable {
 }
 
-public abstract class com/freeletics/khonshu/navigation/ContractResultOwner : com/freeletics/khonshu/navigation/ResultOwner {
+public abstract class com/freeletics/khonshu/navigation/ContractResultOwner : com/freeletics/khonshu/navigation/ManagedResultOwner {
 	public static final field $stable I
 }
 
@@ -45,7 +45,7 @@ public abstract interface class com/freeletics/khonshu/navigation/ExternalActivi
 	public fun fillInIntent ()Landroid/content/Intent;
 }
 
-public abstract class com/freeletics/khonshu/navigation/HostNavigator : com/freeletics/khonshu/navigation/Navigator {
+public abstract class com/freeletics/khonshu/navigation/HostNavigator : com/freeletics/khonshu/navigation/Navigator, com/freeletics/khonshu/navigation/ResultNavigator {
 	public static final field $stable I
 	public abstract fun handleDeepLink (Landroid/content/Intent;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)V
 }
@@ -84,7 +84,6 @@ public class com/freeletics/khonshu/navigation/NavEventNavigator : com/freeletic
 	public fun navigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
 	public fun navigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
 	public fun navigateUp ()V
-	public final fun registerForNavigationResult-UamjCxQ (Lkotlin/reflect/KClass;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest;
 	public fun replaceAll (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 	public fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 }
@@ -100,9 +99,8 @@ public abstract interface class com/freeletics/khonshu/navigation/NavRoot : com/
 public abstract interface class com/freeletics/khonshu/navigation/NavRoute : com/freeletics/khonshu/navigation/BaseRoute {
 }
 
-public final class com/freeletics/khonshu/navigation/NavigationResultRequest : com/freeletics/khonshu/navigation/ResultOwner {
-	public static final field $stable I
-	public final fun getKey ()Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;
+public abstract interface class com/freeletics/khonshu/navigation/NavigationResultRequest : com/freeletics/khonshu/navigation/ResultOwner {
+	public abstract fun getKey ()Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;
 }
 
 public final class com/freeletics/khonshu/navigation/NavigationResultRequest$Key : android/os/Parcelable {
@@ -176,12 +174,15 @@ public final class com/freeletics/khonshu/navigation/PermissionsResultRequest$Pe
 }
 
 public abstract interface class com/freeletics/khonshu/navigation/ResultNavigator {
+	public static final field Companion Lcom/freeletics/khonshu/navigation/ResultNavigator$Companion;
 	public abstract fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
 }
 
-public abstract class com/freeletics/khonshu/navigation/ResultOwner {
-	public static final field $stable I
-	public final fun getResults ()Lkotlinx/coroutines/flow/Flow;
+public final class com/freeletics/khonshu/navigation/ResultNavigator$Companion {
+}
+
+public abstract interface class com/freeletics/khonshu/navigation/ResultOwner {
+	public abstract fun getResults ()Lkotlinx/coroutines/flow/Flow;
 }
 
 public final class com/freeletics/khonshu/navigation/ScreenDestination {

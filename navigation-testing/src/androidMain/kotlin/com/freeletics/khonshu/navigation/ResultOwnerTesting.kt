@@ -39,8 +39,19 @@ public fun PermissionsResultRequest.sendResult(result: Map<String, PermissionRes
  * Send a fake result to collectors of this request. Can be used to test the result handling
  * logic.
  */
-public fun <R : Parcelable> NavigationResultRequest<R>.sendResult(result: R) {
+public fun <R : Parcelable> ManagedResultOwner<R>.sendResult(result: R) {
     onResult(result)
+}
+
+/**
+ * Send a fake result to collectors of this request. Can be used to test the result handling
+ * logic.
+ */
+public fun <R : Parcelable> NavigationResultRequest<R>.sendResult(result: R) {
+    when (this) {
+        is EventNavigationResultRequest -> onResult(result)
+        is StandaloneNavigationResultRequest -> savedStateHandle[key.requestKey] = result
+    }
 }
 
 /**
@@ -48,7 +59,7 @@ public fun <R : Parcelable> NavigationResultRequest<R>.sendResult(result: R) {
  * testing the result sender that retrieves a key as part of its argument.
  *
  * To test the result receiver use a real key from a request obtained by
- * [NavEventNavigator.registerForNavigationResult].
+ * [ResultNavigator.registerForNavigationResult].
  */
 public inline fun <reified R : Parcelable> fakeNavigationResultKey(): NavigationResultRequest.Key<R> {
     return NavigationResultRequest.Key(NavRoute::class, R::class.qualifiedName!!)
