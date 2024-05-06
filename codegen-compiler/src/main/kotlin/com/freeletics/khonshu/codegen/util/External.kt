@@ -91,4 +91,5 @@ internal val compositionLocalProvider = MemberName("androidx.compose.runtime", "
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 
 // Android
+internal val intent = ClassName("android.content", "Intent")
 internal val bundle = ClassName("android.os", "Bundle")

@@ -76,6 +76,7 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -144,7 +145,7 @@ internal class NavHostActivityCodegenTest {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestScreen::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuTestComponent
+                    intent: Intent): KhonshuTestComponent
               }
 
               @ContributesTo(TestParentScope::class)
@@ -160,8 +161,7 @@ internal class NavHostActivityCodegenTest {
               override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
                   TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
                   savedStateHandle ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
-                    Bundle.EMPTY)
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent)
               }
             }
 
@@ -288,6 +288,7 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -357,7 +358,7 @@ internal class NavHostActivityCodegenTest {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(ActivityScope::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(ActivityScope::class)
-                    arguments: Bundle): KhonshuTestComponent
+                    intent: Intent): KhonshuTestComponent
               }
 
               @ContributesTo(AppScope::class)
@@ -372,8 +373,7 @@ internal class NavHostActivityCodegenTest {
             ) : ActivityComponentProvider {
               override fun <C> provide(scope: KClass<*>): C = component(activity, scope, ActivityScope::class,
                   AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
-                    Bundle.EMPTY)
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent)
               }
             }
 
@@ -524,6 +524,7 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -604,7 +605,7 @@ internal class NavHostActivityCodegenTest {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestScreen::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuTest2Component
+                    intent: Intent): KhonshuTest2Component
               }
 
               @ContributesTo(TestParentScope::class)
@@ -620,8 +621,7 @@ internal class NavHostActivityCodegenTest {
               override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
                   TestParentScope::class) { parentComponent: KhonshuTest2Component.ParentComponent,
                   savedStateHandle ->
-                parentComponent.khonshuTest2ComponentFactory().create(savedStateHandle, activity.intent.extras
-                    ?: Bundle.EMPTY)
+                parentComponent.khonshuTest2ComponentFactory().create(savedStateHandle, activity.intent)
               }
             }
 
@@ -756,6 +756,7 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -821,7 +822,7 @@ internal class NavHostActivityCodegenTest {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestScreen::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuTestComponent
+                    intent: Intent): KhonshuTestComponent
               }
 
               @ContributesTo(TestParentScope::class)
@@ -837,8 +838,7 @@ internal class NavHostActivityCodegenTest {
               override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
                   TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
                   savedStateHandle ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
-                    Bundle.EMPTY)
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent)
               }
             }
 
@@ -960,6 +960,7 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -1028,7 +1029,7 @@ internal class NavHostActivityCodegenTest {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestScreen::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuTestComponent
+                    intent: Intent): KhonshuTestComponent
               }
 
               @ContributesTo(TestParentScope::class)
@@ -1044,8 +1045,7 @@ internal class NavHostActivityCodegenTest {
               override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
                   TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
                   savedStateHandle ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
-                    Bundle.EMPTY)
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent)
               }
             }
 
@@ -1172,6 +1172,7 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -1240,7 +1241,7 @@ internal class NavHostActivityCodegenTest {
               public interface Factory {
                 public fun create(@BindsInstance @ForScope(TestScreen::class)
                     savedStateHandle: SavedStateHandle, @BindsInstance @ForScope(TestScreen::class)
-                    arguments: Bundle): KhonshuTestComponent
+                    intent: Intent): KhonshuTestComponent
               }
 
               @ContributesTo(TestParentScope::class)
@@ -1256,8 +1257,7 @@ internal class NavHostActivityCodegenTest {
               override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
                   TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
                   savedStateHandle ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent.extras ?:
-                    Bundle.EMPTY)
+                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, activity.intent)
               }
             }
 

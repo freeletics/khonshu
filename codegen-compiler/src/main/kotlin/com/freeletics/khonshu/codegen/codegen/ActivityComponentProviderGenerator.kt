@@ -2,7 +2,6 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.activityComponentProvider
-import com.freeletics.khonshu.codegen.util.bundle
 import com.freeletics.khonshu.codegen.util.componentActivity
 import com.freeletics.khonshu.codegen.util.getComponent
 import com.freeletics.khonshu.codegen.util.optInAnnotation
@@ -60,10 +59,9 @@ internal class ActivityComponentProviderGenerator(
                 retainedParentComponentClassName,
             )
             .addStatement(
-                "parentComponent.%L().%L(savedStateHandle, activity.intent.extras ?: %T.EMPTY)",
+                "parentComponent.%L().%L(savedStateHandle, activity.intent)",
                 retainedParentComponentGetterName,
                 retainedComponentFactoryCreateName,
-                bundle,
             )
             .endControlFlow()
             .build()
