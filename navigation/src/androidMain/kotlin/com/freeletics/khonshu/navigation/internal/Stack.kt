@@ -3,16 +3,13 @@ package com.freeletics.khonshu.navigation.internal
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.ContentDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
-import java.util.UUID
 
 internal class Stack private constructor(
     initialStack: List<StackEntry<*>>,
-    private val destinations: List<ContentDestination<*>>,
+    private val createEntry: (BaseRoute) -> StackEntry<*>,
     private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
-    private val idGenerator: () -> String,
 ) {
     private val stack = ArrayDeque<StackEntry<*>>(20).also {
         it.addAll(initialStack)
@@ -32,7 +29,7 @@ internal class Stack private constructor(
     }
 
     fun push(route: NavRoute) {
-        stack.add(entry(route, destinations, idGenerator))
+        stack.add(createEntry(route))
     }
 
     fun pop() {
@@ -79,38 +76,27 @@ internal class Stack private constructor(
     companion object {
         fun createWith(
             root: NavRoot,
-            destinations: List<ContentDestination<*>>,
+            createEntry: (BaseRoute) -> StackEntry<*>,
             onStackEntryRemoved: (StackEntry.Id) -> Unit,
-            idGenerator: () -> String = { UUID.randomUUID().toString() },
         ): Stack {
-            val rootEntry = entry(root, destinations, idGenerator)
-            return Stack(listOf(rootEntry), destinations, onStackEntryRemoved, idGenerator)
+            val rootEntry = createEntry(root)
+            return Stack(listOf(rootEntry), createEntry, onStackEntryRemoved)
         }
 
         fun fromState(
             bundle: Bundle,
-            destinations: List<ContentDestination<*>>,
+            createEntry: (BaseRoute) -> StackEntry<*>,
+            createRestoredEntry: (BaseRoute, StackEntry.Id) -> StackEntry<*>,
             onStackEntryRemoved: (StackEntry.Id) -> Unit,
-            idGenerator: () -> String = { UUID.randomUUID().toString() },
         ): Stack {
             val ids = bundle.getStringArrayList(SAVED_STATE_IDS)!!
 
             @Suppress("DEPRECATION")
             val routes = bundle.getParcelableArrayList<BaseRoute>(SAVED_STATE_ROUTES)!!
             val entries = ids.mapIndexed { index, id ->
-                entry(routes[index], destinations) { id }
+                createRestoredEntry(routes[index], StackEntry.Id(id))
             }
-            return Stack(entries, destinations, onStackEntryRemoved, idGenerator)
-        }
-
-        private inline fun <T : BaseRoute> entry(
-            route: T,
-            destinations: List<ContentDestination<*>>,
-            idGenerator: () -> String,
-        ): StackEntry<T> {
-            @Suppress("UNCHECKED_CAST")
-            val destination = destinations.find { it.id == route.destinationId } as ContentDestination<T>
-            return StackEntry(StackEntry.Id(idGenerator()), route, destination)
+            return Stack(entries, createEntry, onStackEntryRemoved)
         }
 
         private const val SAVED_STATE_IDS = "com.freeletics.khonshu.navigation.stack.ids"
