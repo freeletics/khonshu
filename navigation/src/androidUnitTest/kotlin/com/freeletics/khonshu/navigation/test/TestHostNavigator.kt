@@ -2,6 +2,7 @@ package com.freeletics.khonshu.navigation.test
 
 import android.content.Intent
 import android.os.Parcelable
+import androidx.activity.OnBackPressedCallback
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import app.cash.turbine.Turbine
@@ -20,6 +21,7 @@ import com.freeletics.khonshu.navigation.internal.NavEventCollector
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.coroutines.flow.Flow
 
 internal class TestHostNavigator : HostNavigator() {
 
@@ -84,6 +86,17 @@ internal class TestHostNavigator : HostNavigator() {
         id: DestinationId<T>,
         resultType: String,
     ): NavigationResultRequest<O> {
+        throw UnsupportedOperationException()
+    }
+
+    override val onBackPressedCallback: OnBackPressedCallback
+        get() = throw UnsupportedOperationException()
+
+    override fun backPresses(): Flow<Unit> {
+        throw UnsupportedOperationException()
+    }
+
+    override fun <T> backPresses(value: T): Flow<T> {
         throw UnsupportedOperationException()
     }
 }

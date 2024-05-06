@@ -132,16 +132,6 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
     }
 
     /**
-     * Returns a [Flow] that will emit [Unit] on every back press. While this Flow is being collected
-     * all back presses will be intercepted and none of the default back press handling happens.
-     *
-     * When this is called multiple times only the latest caller will receive emissions.
-     */
-    override fun backPresses(): Flow<Unit> {
-        return backPresses(Unit)
-    }
-
-    /**
      * Returns a [Flow] that will emit [value] on every back press. While this Flow is being collected
      * all back presses will be intercepted and none of the default back press handling happens.
      *

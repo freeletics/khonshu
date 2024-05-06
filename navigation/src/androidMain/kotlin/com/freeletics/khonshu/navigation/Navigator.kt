@@ -111,7 +111,7 @@ public interface BackInterceptor {
      *
      * When this is called multiple times only the latest caller will receive emissions.
      */
-    public fun backPresses(): Flow<Unit>
+    public fun backPresses(): Flow<Unit> = backPresses(Unit)
 
     /**
      * Returns a [Flow] that will emit [value] on every back press. While this Flow is being collected
