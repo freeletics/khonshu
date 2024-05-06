@@ -196,7 +196,7 @@ internal class ExampleStateMachine @Inject constructor(
 // make ExampleNavigator available as NavEventNavigator so that the generated code can automatically
 // set up the navigation handling
 @ContributesBinding(ExampleRoute::class, ActivityResultNavigator::class)
-class ExampleNavigator @Inject constructor() : NavEventNavigator() {
+class ExampleNavigator @Inject constructor(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
     // ...
 }
 ```
