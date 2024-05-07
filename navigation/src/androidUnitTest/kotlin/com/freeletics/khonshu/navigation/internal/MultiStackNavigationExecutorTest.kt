@@ -9,7 +9,6 @@ import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.ThirdRoute
-import com.freeletics.khonshu.navigation.test.canNavigateBack
 import com.freeletics.khonshu.navigation.test.destinations
 import com.freeletics.khonshu.navigation.test.otherRootDestination
 import com.freeletics.khonshu.navigation.test.otherRouteDestination
@@ -94,21 +93,21 @@ internal class MultiStackNavigationExecutorTest {
             listOf(SimpleRoute(2)),
         )
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateBack()
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
     }
 
     @Test
@@ -117,21 +116,21 @@ internal class MultiStackNavigationExecutorTest {
             listOf(OtherRoot(2)),
         )
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateBack()
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
     }
 
     @Test
@@ -140,30 +139,30 @@ internal class MultiStackNavigationExecutorTest {
             listOf(OtherRoot(2), SimpleRoute(3)),
         )
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("103"), SimpleRoute(3), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateBack()
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateBack()
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
     }
 
     @Test
@@ -172,14 +171,14 @@ internal class MultiStackNavigationExecutorTest {
             listOf(SimpleRoute(2), SimpleRoute(3), OtherRoute(4), ThirdRoute(5)),
         )
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("103"), SimpleRoute(3), simpleRouteDestination),
                 StackEntry(StackEntry.Id("104"), OtherRoute(4), otherRouteDestination),
                 StackEntry(StackEntry.Id("105"), ThirdRoute(5), thirdRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
     }
 
     @Test
@@ -188,12 +187,12 @@ internal class MultiStackNavigationExecutorTest {
             listOf(SimpleActivity(2)),
         )
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(started).containsExactly(SimpleActivity(2))
     }
@@ -204,12 +203,12 @@ internal class MultiStackNavigationExecutorTest {
             listOf(SimpleRoute(2), SimpleActivity(3)),
         )
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(started).containsExactly(SimpleActivity(3))
     }
@@ -218,12 +217,12 @@ internal class MultiStackNavigationExecutorTest {
     fun `visibleEntries contains entry for given root at the beginning`() {
         val executor = underTest()
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
     }
 
     @Test
@@ -231,12 +230,12 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -246,13 +245,13 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateTo(OtherRoute(3))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
                 StackEntry(StackEntry.Id("101"), OtherRoute(3), otherRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -262,13 +261,13 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateTo(ThirdRoute(4))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
                 StackEntry(StackEntry.Id("101"), ThirdRoute(4), thirdRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -286,7 +285,7 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateTo(OtherRoute(9))
         executor.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("104"), SimpleRoute(5), simpleRouteDestination),
                 StackEntry(StackEntry.Id("105"), OtherRoute(6), otherRouteDestination),
@@ -296,7 +295,7 @@ internal class MultiStackNavigationExecutorTest {
                 StackEntry(StackEntry.Id("109"), ThirdRoute(10), thirdRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -314,7 +313,7 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateTo(OtherRoute(9))
         executor.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("106"), SimpleRoute(7), simpleRouteDestination),
                 StackEntry(StackEntry.Id("107"), OtherRoute(8), otherRouteDestination),
@@ -322,7 +321,7 @@ internal class MultiStackNavigationExecutorTest {
                 StackEntry(StackEntry.Id("109"), ThirdRoute(10), thirdRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -332,12 +331,12 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -359,30 +358,30 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateToRoot(SimpleRoot(1), restoreRootState = true)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
 
         executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -392,12 +391,12 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateToRoot(OtherRoot(1), restoreRootState = false)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -407,30 +406,30 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateToRoot(OtherRoot(1), restoreRootState = false)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateToRoot(SimpleRoot(1), restoreRootState = false)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
 
         executor.navigateToRoot(OtherRoot(1), restoreRootState = false)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("103"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
@@ -441,12 +440,12 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateTo(SimpleRoute(1))
         executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -458,12 +457,12 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
         executor.navigateToRoot(SimpleRoot(1), restoreRootState = true)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoute(1), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -474,12 +473,12 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateTo(SimpleRoute(1))
         executor.resetToRoot(SimpleRoot(2))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoot(2), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
@@ -490,12 +489,12 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
         executor.resetToRoot(SimpleRoot(2))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoot(2), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
@@ -517,7 +516,7 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateTo(SimpleRoute(1))
         executor.replaceAll(SimpleRoot(2))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(
                     StackEntry.Id("102"),
@@ -526,7 +525,7 @@ internal class MultiStackNavigationExecutorTest {
                 ),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed)
             .containsExactly(
@@ -541,7 +540,7 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
         executor.replaceAll(SimpleRoot(2))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(
                     StackEntry.Id("102"),
@@ -550,7 +549,7 @@ internal class MultiStackNavigationExecutorTest {
                 ),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("100"),
@@ -564,21 +563,21 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateTo(SimpleRoute(1))
         executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
         assertThat(removed).isEmpty()
 
         executor.replaceAll(SimpleRoot(1))
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("103"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
         assertThat(removed)
             .containsExactly(
                 StackEntry.Id("102"),
@@ -604,21 +603,21 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateUp()
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -628,22 +627,22 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateUp()
         executor.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -666,21 +665,21 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
         executor.navigateTo(SimpleRoute(3))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoute(3), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateUp()
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
     }
 
     @Test
@@ -700,21 +699,21 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateBack()
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -724,22 +723,22 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateBack()
         executor.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -749,21 +748,21 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateBack()
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -773,22 +772,22 @@ internal class MultiStackNavigationExecutorTest {
         val executor = underTest()
         executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateBack()
         executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -799,21 +798,21 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
         executor.navigateTo(SimpleRoute(3))
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoute(3), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         executor.navigateBack()
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("102"))
     }
@@ -831,16 +830,16 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateTo(OtherRoute(9))
         executor.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.visibleEntries.value).hasSize(6)
+        assertThat(executor.snapshot.value.visibleEntries).hasSize(6)
 
         executor.navigateBackTo(simpleRouteDestination.id.route, inclusive = false)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("104"), SimpleRoute(5), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("109"),
@@ -864,16 +863,16 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateTo(OtherRoute(9))
         executor.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.visibleEntries.value).hasSize(6)
+        assertThat(executor.snapshot.value.visibleEntries).hasSize(6)
 
         executor.navigateBackTo(simpleRouteDestination.id.route, inclusive = true)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("103"), SimpleRoute(4), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isTrue()
+        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("109"),
@@ -898,16 +897,16 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateTo(OtherRoute(9))
         executor.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.visibleEntries.value).hasSize(6)
+        assertThat(executor.snapshot.value.visibleEntries).hasSize(6)
 
         executor.navigateBackTo(simpleRootDestination.id.route, inclusive = false)
 
-        assertThat(executor.visibleEntries.value)
+        assertThat(executor.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(executor.canNavigateBack.value).isFalse()
+        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("109"),
@@ -935,7 +934,7 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateTo(OtherRoute(9))
         executor.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.visibleEntries.value).hasSize(6)
+        assertThat(executor.snapshot.value.visibleEntries).hasSize(6)
 
         val exception = assertThrows(IllegalStateException::class.java) {
             executor.navigateBackTo(simpleRootDestination.id.route, inclusive = true)
@@ -965,7 +964,7 @@ internal class MultiStackNavigationExecutorTest {
         executor.navigateTo(ThirdRoute(6))
         executor.navigateTo(ThirdRoute(7))
 
-        assertThat(executor.visibleEntries.value).hasSize(3)
+        assertThat(executor.snapshot.value.visibleEntries).hasSize(3)
 
         val exception = assertThrows(IllegalStateException::class.java) {
             executor.navigateBackTo(otherRouteDestination.id.route, inclusive = false)
