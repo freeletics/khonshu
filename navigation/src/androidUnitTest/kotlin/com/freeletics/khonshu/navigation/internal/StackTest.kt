@@ -3,6 +3,7 @@ package com.freeletics.khonshu.navigation.internal
 import com.freeletics.khonshu.navigation.test.OtherRoute
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
+import com.freeletics.khonshu.navigation.test.TestStackEntryFactory
 import com.freeletics.khonshu.navigation.test.ThirdRoute
 import com.freeletics.khonshu.navigation.test.destinations
 import com.freeletics.khonshu.navigation.test.otherRouteDestination
@@ -16,13 +17,10 @@ import org.junit.Test
 
 internal class StackTest {
 
-    private var nextId = 100
-    private val idGenerator = { StackEntry.Id((nextId++).toString()) }
-
     private val removed = mutableListOf<StackEntry.Id>()
     private val removedCallback: (StackEntry.Id) -> Unit = { removed.add(it) }
 
-    private val factory = StackEntryFactory(destinations, idGenerator)
+    private val factory = TestStackEntryFactory()
 
     @Test
     fun id() {
@@ -36,7 +34,7 @@ internal class StackTest {
         val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
 
         assertThat(stack.rootEntry)
-            .isEqualTo(StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination))
+            .isEqualTo(factory.create(StackEntry.Id("100"), SimpleRoot(1)))
     }
 
     @Test
@@ -59,7 +57,7 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
+                factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
             .inOrder()
     }
@@ -71,7 +69,7 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
+                factory.create(StackEntry.Id("101"), SimpleRoute(2)),
             )
             .inOrder()
 
@@ -85,8 +83,8 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
-                StackEntry(StackEntry.Id("101"), OtherRoute(3), otherRouteDestination),
+                factory.create(StackEntry.Id("100"), SimpleRoot(1)),
+                factory.create(StackEntry.Id("101"), OtherRoute(3)),
             )
             .inOrder()
 
@@ -100,8 +98,8 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
-                StackEntry(StackEntry.Id("101"), ThirdRoute(4), thirdRouteDestination),
+                factory.create(StackEntry.Id("100"), SimpleRoot(1)),
+                factory.create(StackEntry.Id("101"), ThirdRoute(4)),
             )
             .inOrder()
 
@@ -123,12 +121,12 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("104"), SimpleRoute(5), simpleRouteDestination),
-                StackEntry(StackEntry.Id("105"), OtherRoute(6), otherRouteDestination),
-                StackEntry(StackEntry.Id("106"), ThirdRoute(7), thirdRouteDestination),
-                StackEntry(StackEntry.Id("107"), OtherRoute(8), otherRouteDestination),
-                StackEntry(StackEntry.Id("108"), OtherRoute(9), otherRouteDestination),
-                StackEntry(StackEntry.Id("109"), ThirdRoute(10), thirdRouteDestination),
+                factory.create(StackEntry.Id("104"), SimpleRoute(5)),
+                factory.create(StackEntry.Id("105"), OtherRoute(6)),
+                factory.create(StackEntry.Id("106"), ThirdRoute(7)),
+                factory.create(StackEntry.Id("107"), OtherRoute(8)),
+                factory.create(StackEntry.Id("108"), OtherRoute(9)),
+                factory.create(StackEntry.Id("109"), ThirdRoute(10)),
             )
             .inOrder()
 
@@ -150,10 +148,10 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("106"), SimpleRoute(7), simpleRouteDestination),
-                StackEntry(StackEntry.Id("107"), OtherRoute(8), otherRouteDestination),
-                StackEntry(StackEntry.Id("108"), OtherRoute(9), otherRouteDestination),
-                StackEntry(StackEntry.Id("109"), ThirdRoute(10), thirdRouteDestination),
+                factory.create(StackEntry.Id("106"), SimpleRoute(7)),
+                factory.create(StackEntry.Id("107"), OtherRoute(8)),
+                factory.create(StackEntry.Id("108"), OtherRoute(9)),
+                factory.create(StackEntry.Id("109"), ThirdRoute(10)),
             )
             .inOrder()
 
@@ -177,7 +175,7 @@ internal class StackTest {
         stack.push(SimpleRoute(2))
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
+                factory.create(StackEntry.Id("101"), SimpleRoute(2)),
             )
             .inOrder()
 
@@ -185,7 +183,7 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
+                factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
             .inOrder()
 
@@ -199,7 +197,7 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
+                factory.create(StackEntry.Id("101"), SimpleRoute(2)),
             )
             .inOrder()
 
@@ -208,7 +206,7 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("102"), SimpleRoute(2), simpleRouteDestination),
+                factory.create(StackEntry.Id("102"), SimpleRoute(2)),
             )
             .inOrder()
 
@@ -234,7 +232,7 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("104"), SimpleRoute(5), simpleRouteDestination),
+                factory.create(StackEntry.Id("104"), SimpleRoute(5)),
             )
             .inOrder()
 
@@ -266,7 +264,7 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("103"), SimpleRoute(4), simpleRouteDestination),
+                factory.create(StackEntry.Id("103"), SimpleRoute(4)),
             )
             .inOrder()
 
@@ -299,7 +297,7 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
+                factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
             .inOrder()
 
@@ -396,7 +394,7 @@ internal class StackTest {
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
-                StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
+                factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
             .inOrder()
 

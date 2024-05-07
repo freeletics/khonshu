@@ -5,10 +5,10 @@ import com.freeletics.khonshu.navigation.test.FakeCloseable
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
-internal class StoreViewModelTest {
+internal class StackEntryStoreViewModelTest {
 
     private val savedStateHandle = SavedStateHandle()
-    private val underTest = StoreViewModel(savedStateHandle)
+    private val underTest = StackEntryStoreViewModel(savedStateHandle)
 
     @Test
     fun `StoreViewModel returns same store for same id`() {
@@ -73,43 +73,5 @@ internal class StoreViewModelTest {
         valueA.getOrCreate(FakeCloseable::class) { closeable }
         underTest.onCleared()
         assertThat(closeable.closed).isTrue()
-    }
-
-    @Test
-    fun `StoreViewModel returns same handle for same id`() {
-        val valueA = underTest.provideSavedStateHandle(StackEntry.Id("1"))
-        val valueB = underTest.provideSavedStateHandle(StackEntry.Id("1"))
-        assertThat(valueA).isSameInstanceAs(valueB)
-    }
-
-    @Test
-    fun `StoreViewModel returns different handles for different ids`() {
-        val valueA = underTest.provideSavedStateHandle(StackEntry.Id("1"))
-        val valueB = underTest.provideSavedStateHandle(StackEntry.Id("2"))
-        assertThat(valueA).isNotSameInstanceAs(valueB)
-    }
-
-    @Test
-    fun `StoreViewModel returns different handle for same id after removeEntry`() {
-        val valueA = underTest.provideSavedStateHandle(StackEntry.Id("1"))
-        underTest.removeEntry(StackEntry.Id("1"))
-        val valueB = underTest.provideSavedStateHandle(StackEntry.Id("1"))
-        assertThat(valueA).isNotSameInstanceAs(valueB)
-    }
-
-    @Test
-    fun `StoreViewModel returns same handle for same id after removeEntry for different id`() {
-        val valueA = underTest.provideSavedStateHandle(StackEntry.Id("1"))
-        underTest.removeEntry(StackEntry.Id("2"))
-        val valueB = underTest.provideSavedStateHandle(StackEntry.Id("1"))
-        assertThat(valueA).isSameInstanceAs(valueB)
-    }
-
-    @Test
-    fun `StoreViewModel returns different handle for same id after onCleared`() {
-        val valueA = underTest.provideSavedStateHandle(StackEntry.Id("1"))
-        underTest.onCleared()
-        val valueB = underTest.provideSavedStateHandle(StackEntry.Id("1"))
-        assertThat(valueA).isNotSameInstanceAs(valueB)
     }
 }

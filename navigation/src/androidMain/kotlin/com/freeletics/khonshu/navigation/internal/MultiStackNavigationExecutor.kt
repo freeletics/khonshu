@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
 
 internal class MultiStackNavigationExecutor(
     private val stack: MultiStack,
-    private val viewModel: StoreViewModel,
+    private val viewModel: StackEntryStoreViewModel,
     private val activityStarter: (ActivityRoute) -> Unit,
     deepLinkRoutes: List<Parcelable>,
 ) : NavigationExecutor {
@@ -87,22 +87,15 @@ internal class MultiStackNavigationExecutor(
     }
 
     override fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle {
-        val entry = entryFor(destinationId)
-        return viewModel.provideSavedStateHandle(entry.id)
+        return entryFor(destinationId).savedStateHandle
     }
 
-    override fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): NavigationExecutor.Store {
-        val entry = entryFor(destinationId)
-        return storeFor(entry.id)
+    override fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): StackEntryStore {
+        return entryFor(destinationId).store
     }
 
     override fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Any {
-        val entry = entryFor(destinationId)
-        return entry.destination.extra!!
-    }
-
-    internal fun storeFor(entryId: StackEntry.Id): NavigationExecutor.Store {
-        return viewModel.provideStore(entryId)
+        return entryFor(destinationId).destination.extra!!
     }
 
     private fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T> {

@@ -30,7 +30,7 @@ internal fun rememberNavigationExecutor(
 ): MultiStackNavigationExecutor {
     val context = LocalContext.current
 
-    val viewModel = viewModel<StoreViewModel>(factory = SavedStateViewModelFactory())
+    val viewModel = viewModel<StackEntryStoreViewModel>(factory = SavedStateViewModelFactory())
 
     val starter = remember(context, destinations) {
         val activityDestinations = destinations.filterIsInstance<ActivityDestination>()
@@ -39,7 +39,7 @@ internal fun rememberNavigationExecutor(
 
     val stack = remember(destinations, viewModel, startRoot) {
         val contentDestinations = destinations.filterIsInstance<ContentDestination<*>>()
-        val factory = StackEntryFactory(contentDestinations)
+        val factory = StackEntryFactory(contentDestinations, viewModel)
 
         val navState = viewModel.globalSavedStateHandle.get<Bundle>(SAVED_STATE_STACK)
         if (navState == null) {
