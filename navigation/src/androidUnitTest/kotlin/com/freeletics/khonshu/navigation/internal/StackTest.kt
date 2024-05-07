@@ -4,6 +4,7 @@ import com.freeletics.khonshu.navigation.test.OtherRoute
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.ThirdRoute
+import com.freeletics.khonshu.navigation.test.computeVisibleEntries
 import com.freeletics.khonshu.navigation.test.destinations
 import com.freeletics.khonshu.navigation.test.otherRouteDestination
 import com.freeletics.khonshu.navigation.test.simpleRootDestination

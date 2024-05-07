@@ -6,10 +6,7 @@ import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.ContentDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
-import com.freeletics.khonshu.navigation.ScreenDestination
 import java.util.UUID
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.adapters.ImmutableListAdapter
 
 internal class Stack private constructor(
     initialStack: List<StackEntry<*>>,
@@ -30,26 +27,8 @@ internal class Stack private constructor(
         return stack.findLast { it.destinationId == destinationId } as StackEntry<T>?
     }
 
-    fun computeVisibleEntries(): ImmutableList<StackEntry<*>> {
-        if (stack.size == 1) {
-            return ImmutableListAdapter(listOf(stack.single()))
-        }
-
-        // go through the stack from the top until reaching the first ScreenDestination
-        // then create a List of the elements starting from there
-        val iterator = stack.listIterator(stack.size)
-        while (iterator.hasPrevious()) {
-            if (iterator.previous().destination is ScreenDestination<*>) {
-                val expectedSize = stack.size - iterator.nextIndex()
-                return ArrayList<StackEntry<*>>(expectedSize).apply {
-                    while (iterator.hasNext()) {
-                        add(iterator.next())
-                    }
-                }.let(::ImmutableListAdapter)
-            }
-        }
-
-        error("Stack did not contain a ScreenDestination $stack")
+    fun snapshot(startStackId: DestinationId<*>): StackSnapshot {
+        return StackSnapshot(stack.toList(), startStackId == id)
     }
 
     fun push(route: NavRoute) {

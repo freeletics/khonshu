@@ -10,7 +10,6 @@ import com.freeletics.khonshu.navigation.ContentDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import java.util.UUID
-import kotlinx.collections.immutable.ImmutableList
 
 internal class MultiStack(
     // Use ArrayList to make sure it is a RandomAccess
@@ -23,15 +22,10 @@ internal class MultiStack(
     private val inputRoot: NavRoot,
 ) {
 
-    private val visibleEntryState: MutableState<ImmutableList<StackEntry<*>>> =
-        mutableStateOf(currentStack.computeVisibleEntries())
-    val visibleEntries: State<ImmutableList<StackEntry<*>>>
-        get() = visibleEntryState
-
-    private val canNavigateBackState: MutableState<Boolean> =
-        mutableStateOf(canNavigateBack())
-    val canNavigateBack: State<Boolean>
-        get() = canNavigateBackState
+    private val snapshotState: MutableState<StackSnapshot> =
+        mutableStateOf(currentStack.snapshot(startStack.id))
+    val snapshot: State<StackSnapshot>
+        get() = snapshotState
 
     val startRoot = startStack.rootEntry.route as NavRoot
 
@@ -67,12 +61,7 @@ internal class MultiStack(
     }
 
     private fun updateVisibleDestinations() {
-        visibleEntryState.value = currentStack.computeVisibleEntries()
-        canNavigateBackState.value = canNavigateBack()
-    }
-
-    private fun canNavigateBack(): Boolean {
-        return currentStack.id != startStack.id || !currentStack.isAtRoot
+        snapshotState.value = currentStack.snapshot(startStack.id)
     }
 
     fun push(route: NavRoute) {
