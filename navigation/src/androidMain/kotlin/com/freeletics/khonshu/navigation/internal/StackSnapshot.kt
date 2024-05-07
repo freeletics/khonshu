@@ -30,7 +30,7 @@ public class StackSnapshot internal constructor(
     }
 
     private fun computeFirstVisibleDestination() {
-        entries.indexOfLast {
+        firstVisibleIndex = entries.indexOfLast {
             it.destination !is OverlayDestination<*>
         }
     }
