@@ -16,5 +16,5 @@ import com.freeletics.khonshu.sample.feature.root.nav.RootRoute
 internal fun MainScreen(
     navHost: SimpleNavHost,
 ) {
-    navHost(RootRoute, Modifier.fillMaxSize()) {}
+    navHost(RootRoute, Modifier.fillMaxSize()) { _, _ -> }
 }
