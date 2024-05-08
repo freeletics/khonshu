@@ -139,7 +139,7 @@ private fun DestinationChangedCallback(
     if (destinationChangedCallback != null) {
         val root = snapshot.root
         val current = snapshot.current
-        DisposableEffect(root, current) {
+        DisposableEffect(destinationChangedCallback, root, current) {
             destinationChangedCallback(root.route as NavRoot, current.route)
             onDispose {}
         }
