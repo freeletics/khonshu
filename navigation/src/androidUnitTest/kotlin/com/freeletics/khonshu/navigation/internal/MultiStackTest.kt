@@ -6,7 +6,6 @@ import com.freeletics.khonshu.navigation.test.OtherRoute
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.ThirdRoute
-import com.freeletics.khonshu.navigation.test.canNavigateBack
 import com.freeletics.khonshu.navigation.test.destinations
 import com.freeletics.khonshu.navigation.test.otherRootDestination
 import com.freeletics.khonshu.navigation.test.otherRouteDestination
@@ -64,19 +63,19 @@ internal class MultiStackTest {
     fun `canNavigateBack after construction`() {
         val stack = underTest()
 
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
     }
 
     @Test
     fun `visibleEntries after construction`() {
         val stack = underTest()
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
     }
 
     @Test
@@ -84,12 +83,12 @@ internal class MultiStackTest {
         val stack = underTest()
         stack.push(SimpleRoute(2))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -99,13 +98,13 @@ internal class MultiStackTest {
         val stack = underTest()
         stack.push(OtherRoute(3))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
                 StackEntry(StackEntry.Id("101"), OtherRoute(3), otherRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -115,13 +114,13 @@ internal class MultiStackTest {
         val stack = underTest()
         stack.push(ThirdRoute(4))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
                 StackEntry(StackEntry.Id("101"), ThirdRoute(4), thirdRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -139,7 +138,7 @@ internal class MultiStackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("104"), SimpleRoute(5), simpleRouteDestination),
                 StackEntry(StackEntry.Id("105"), OtherRoute(6), otherRouteDestination),
@@ -149,7 +148,7 @@ internal class MultiStackTest {
                 StackEntry(StackEntry.Id("109"), ThirdRoute(10), thirdRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -167,7 +166,7 @@ internal class MultiStackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("106"), SimpleRoute(7), simpleRouteDestination),
                 StackEntry(StackEntry.Id("107"), OtherRoute(8), otherRouteDestination),
@@ -175,7 +174,7 @@ internal class MultiStackTest {
                 StackEntry(StackEntry.Id("109"), ThirdRoute(10), thirdRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -185,12 +184,12 @@ internal class MultiStackTest {
         val stack = underTest()
         stack.push(OtherRoot(1), clearTargetStack = false)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -212,30 +211,30 @@ internal class MultiStackTest {
         val stack = underTest()
         stack.push(OtherRoot(1), clearTargetStack = false)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         stack.push(SimpleRoot(1), clearTargetStack = false)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
         stack.push(OtherRoot(1), clearTargetStack = false)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -245,12 +244,12 @@ internal class MultiStackTest {
         val stack = underTest()
         stack.push(OtherRoot(1), clearTargetStack = true)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -260,30 +259,30 @@ internal class MultiStackTest {
         val stack = underTest()
         stack.push(OtherRoot(1), clearTargetStack = true)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         stack.push(SimpleRoot(1), clearTargetStack = true)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
         stack.push(OtherRoot(1), clearTargetStack = true)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("103"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
@@ -294,12 +293,12 @@ internal class MultiStackTest {
         stack.push(SimpleRoute(1))
         stack.push(OtherRoot(1), clearTargetStack = false)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -311,12 +310,12 @@ internal class MultiStackTest {
         stack.push(OtherRoot(1), clearTargetStack = false)
         stack.push(SimpleRoot(1), clearTargetStack = false)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), SimpleRoute(1), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
@@ -327,12 +326,12 @@ internal class MultiStackTest {
         stack.push(SimpleRoute(1))
         stack.resetToRoot(SimpleRoot(2))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoot(2), simpleRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
@@ -343,12 +342,12 @@ internal class MultiStackTest {
         stack.push(OtherRoot(1), clearTargetStack = false)
         stack.resetToRoot(SimpleRoot(2))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoot(2), simpleRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
@@ -370,7 +369,7 @@ internal class MultiStackTest {
         stack.push(SimpleRoute(1))
         stack.replaceAll(SimpleRoot(2))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(
                     StackEntry.Id("102"),
@@ -379,7 +378,7 @@ internal class MultiStackTest {
                 ),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed)
             .containsExactly(
@@ -394,7 +393,7 @@ internal class MultiStackTest {
         stack.push(OtherRoot(1), clearTargetStack = false)
         stack.replaceAll(SimpleRoot(2))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(
                     StackEntry.Id("102"),
@@ -403,7 +402,7 @@ internal class MultiStackTest {
                 ),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("100"),
@@ -417,21 +416,21 @@ internal class MultiStackTest {
         stack.push(SimpleRoute(1))
         stack.push(OtherRoot(1), clearTargetStack = false)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), OtherRoot(1), otherRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
         assertThat(removed).isEmpty()
 
         stack.replaceAll(SimpleRoot(1))
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("103"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
         assertThat(removed)
             .containsExactly(
                 StackEntry.Id("102"),
@@ -458,12 +457,12 @@ internal class MultiStackTest {
         stack.push(SimpleRoute(2))
         stack.popCurrentStack()
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -475,12 +474,12 @@ internal class MultiStackTest {
         stack.popCurrentStack()
         stack.push(SimpleRoute(2))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -504,12 +503,12 @@ internal class MultiStackTest {
         stack.push(SimpleRoute(3))
         stack.popCurrentStack()
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("102"))
     }
@@ -522,12 +521,12 @@ internal class MultiStackTest {
         stack.popCurrentStack()
         stack.push(SimpleRoute(3))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("103"), SimpleRoute(3), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("102"))
     }
@@ -550,12 +549,12 @@ internal class MultiStackTest {
         stack.push(SimpleRoute(2))
         stack.pop()
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -567,12 +566,12 @@ internal class MultiStackTest {
         stack.pop()
         stack.push(SimpleRoute(2))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), SimpleRoute(2), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -583,12 +582,12 @@ internal class MultiStackTest {
         stack.push(OtherRoot(2), clearTargetStack = false)
         stack.pop()
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -600,12 +599,12 @@ internal class MultiStackTest {
         stack.pop()
         stack.push(OtherRoot(2), clearTargetStack = false)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("102"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
@@ -617,12 +616,12 @@ internal class MultiStackTest {
         stack.push(SimpleRoute(3))
         stack.pop()
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("101"), OtherRoot(2), otherRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("102"))
     }
@@ -635,12 +634,12 @@ internal class MultiStackTest {
         stack.pop()
         stack.push(SimpleRoute(3))
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("103"), SimpleRoute(3), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("102"))
     }
@@ -658,16 +657,16 @@ internal class MultiStackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.visibleEntries.value).hasSize(6)
+        assertThat(stack.snapshot.value.visibleEntries).hasSize(6)
 
         stack.popUpTo(simpleRouteDestination.id, isInclusive = false)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("104"), SimpleRoute(5), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("109"),
@@ -691,16 +690,16 @@ internal class MultiStackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.visibleEntries.value).hasSize(6)
+        assertThat(stack.snapshot.value.visibleEntries).hasSize(6)
 
         stack.popUpTo(simpleRouteDestination.id, isInclusive = true)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("103"), SimpleRoute(4), simpleRouteDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isTrue()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("109"),
@@ -725,16 +724,16 @@ internal class MultiStackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.visibleEntries.value).hasSize(6)
+        assertThat(stack.snapshot.value.visibleEntries).hasSize(6)
 
         stack.popUpTo(simpleRootDestination.id, isInclusive = false)
 
-        assertThat(stack.visibleEntries.value)
+        assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
                 StackEntry(StackEntry.Id("100"), SimpleRoot(1), simpleRootDestination),
             )
             .inOrder()
-        assertThat(stack.canNavigateBack.value).isFalse()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("109"),
@@ -762,7 +761,7 @@ internal class MultiStackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.visibleEntries.value).hasSize(6)
+        assertThat(stack.snapshot.value.visibleEntries).hasSize(6)
 
         val exception = assertThrows(IllegalStateException::class.java) {
             stack.popUpTo(simpleRootDestination.id, isInclusive = true)
@@ -792,7 +791,7 @@ internal class MultiStackTest {
         stack.push(ThirdRoute(6))
         stack.push(ThirdRoute(7))
 
-        assertThat(stack.visibleEntries.value).hasSize(3)
+        assertThat(stack.snapshot.value.visibleEntries).hasSize(3)
 
         val exception = assertThrows(IllegalStateException::class.java) {
             stack.popUpTo(otherRouteDestination.id, isInclusive = false)

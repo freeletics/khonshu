@@ -23,7 +23,7 @@ internal class StackSnapshotTest {
             startStack = false,
         )
 
-        assertThat(stackSnapshot.visibleEntries()).containsExactly(
+        assertThat(stackSnapshot.visibleEntries).containsExactly(
             StackEntry(StackEntry.Id("a"), SimpleRoot(0), simpleRootDestination),
         )
         assertThat(stackSnapshot.canNavigateBack).isTrue()
@@ -38,7 +38,7 @@ internal class StackSnapshotTest {
             startStack = true,
         )
 
-        assertThat(stackSnapshot.visibleEntries()).containsExactly(
+        assertThat(stackSnapshot.visibleEntries).containsExactly(
             StackEntry(StackEntry.Id("a"), SimpleRoot(0), simpleRootDestination),
         )
         assertThat(stackSnapshot.canNavigateBack).isFalse()
@@ -54,7 +54,7 @@ internal class StackSnapshotTest {
             startStack = false,
         )
 
-        assertThat(stackSnapshot.visibleEntries()).containsExactly(
+        assertThat(stackSnapshot.visibleEntries).containsExactly(
             StackEntry(StackEntry.Id("b"), SimpleRoute(0), simpleRouteDestination),
         )
         assertThat(stackSnapshot.canNavigateBack).isTrue()
@@ -72,7 +72,7 @@ internal class StackSnapshotTest {
             startStack = false,
         )
 
-        assertThat(stackSnapshot.visibleEntries()).containsExactly(
+        assertThat(stackSnapshot.visibleEntries).containsExactly(
             StackEntry(StackEntry.Id("d"), SimpleRoute(2), simpleRouteDestination),
         )
         assertThat(stackSnapshot.canNavigateBack).isTrue()
@@ -88,7 +88,7 @@ internal class StackSnapshotTest {
             startStack = false,
         )
 
-        assertThat(stackSnapshot.visibleEntries()).containsExactly(
+        assertThat(stackSnapshot.visibleEntries).containsExactly(
             StackEntry(StackEntry.Id("a"), SimpleRoot(0), simpleRootDestination),
             StackEntry(StackEntry.Id("b"), OtherRoute(0), otherRouteDestination),
         )
@@ -107,7 +107,7 @@ internal class StackSnapshotTest {
             startStack = false,
         )
 
-        assertThat(stackSnapshot.visibleEntries()).containsExactly(
+        assertThat(stackSnapshot.visibleEntries).containsExactly(
             StackEntry(StackEntry.Id("a"), SimpleRoot(0), simpleRootDestination),
             StackEntry(StackEntry.Id("b"), OtherRoute(0), otherRouteDestination),
             StackEntry(StackEntry.Id("c"), ThirdRoute(0), thirdRouteDestination),
@@ -127,7 +127,7 @@ internal class StackSnapshotTest {
             startStack = false,
         )
 
-        assertThat(stackSnapshot.visibleEntries()).containsExactly(
+        assertThat(stackSnapshot.visibleEntries).containsExactly(
             StackEntry(StackEntry.Id("b"), SimpleRoute(0), simpleRouteDestination),
             StackEntry(StackEntry.Id("c"), OtherRoute(0), otherRouteDestination),
         )
@@ -147,7 +147,7 @@ internal class StackSnapshotTest {
             startStack = false,
         )
 
-        assertThat(stackSnapshot.visibleEntries()).containsExactly(
+        assertThat(stackSnapshot.visibleEntries).containsExactly(
             StackEntry(StackEntry.Id("b"), SimpleRoute(0), simpleRouteDestination),
             StackEntry(StackEntry.Id("c"), OtherRoute(0), otherRouteDestination),
             StackEntry(StackEntry.Id("d"), ThirdRoute(0), thirdRouteDestination),
