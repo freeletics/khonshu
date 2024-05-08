@@ -2,17 +2,18 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.NavDestinationData
 import com.freeletics.khonshu.codegen.util.InternalCodegenApi
-import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.composable
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.localActivityComponentProvider
-import com.freeletics.khonshu.codegen.util.localNavigationExecutor
 import com.freeletics.khonshu.codegen.util.navEventNavigator
 import com.freeletics.khonshu.codegen.util.navigationSetup
 import com.freeletics.khonshu.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.remember
+import com.freeletics.khonshu.codegen.util.stackEntry
+import com.freeletics.khonshu.codegen.util.stackSnapshot
 import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 
 /**
  * Generates the outer Composable for a NavDestination. This will obtain
@@ -24,15 +25,14 @@ internal class NavDestinationComposableGenerator(
 ) : Generator<NavDestinationData>() {
 
     internal fun generate(): FunSpec {
-        val parameter = data.navigation.asParameter()
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
             .addAnnotation(optInAnnotation(InternalCodegenApi, internalNavigatorApi))
-            .addParameter(parameter)
-            .addStatement("val executor = %M.current", localNavigationExecutor)
+            .addParameter("snapshot", stackSnapshot)
+            .addParameter("entry", stackEntry.parameterizedBy(data.navigation.route))
             .addStatement("val provider = %M.current", localActivityComponentProvider)
-            .beginControlFlow("val component = %M(%N, executor, provider)", remember, parameter)
-            .addStatement("%T.provide(%N, executor, provider)", componentProviderClassName, parameter)
+            .beginControlFlow("val component = %M(entry, snapshot, provider)", remember)
+            .addStatement("%T.provide(entry, snapshot, provider)", componentProviderClassName)
             .endControlFlow()
             .addStatement("")
             .addStatement("%M(component.%L)", navigationSetup, navEventNavigator.propertyName)

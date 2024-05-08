@@ -4,13 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.internal.DestinationId
-import com.freeletics.khonshu.navigation.internal.NavigationExecutor
+import com.freeletics.khonshu.navigation.internal.StackEntry
+import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.internal.destinationId
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
 public interface ComponentProvider<R : BaseRoute, T> {
-    public fun provide(route: R, executor: NavigationExecutor, provider: ActivityComponentProvider): T
+    public fun provide(entry: StackEntry<R>, snapshot: StackSnapshot, provider: ActivityComponentProvider): T
 }
 
 /**
@@ -22,18 +23,14 @@ public interface ComponentProvider<R : BaseRoute, T> {
  */
 @InternalCodegenApi
 public inline fun <reified C : Any, PC : Any, R : BaseRoute> component(
-    route: R,
-    executor: NavigationExecutor,
+    entry: StackEntry<R>,
     activityComponentProvider: ActivityComponentProvider,
     parentScope: KClass<*>,
-    crossinline factory: (PC, SavedStateHandle, R) -> C,
+    crossinline factory: (PC) -> C,
 ): C {
-    val snapshot = executor.snapshot.value
-    val entry = snapshot.entryFor(route.destinationId)
     return entry.store.getOrCreate(C::class) {
         val parentComponent = activityComponentProvider.provide<PC>(parentScope)
-        val savedStateHandle = entry.savedStateHandle
-        factory(parentComponent, savedStateHandle, route)
+        factory(parentComponent)
     }
 }
 
@@ -46,22 +43,18 @@ public inline fun <reified C : Any, PC : Any, R : BaseRoute> component(
  */
 @InternalCodegenApi
 public inline fun <reified C : Any, PC : Any, R : BaseRoute, PR : BaseRoute> componentFromParentRoute(
-    route: R,
-    executor: NavigationExecutor,
+    entry: StackEntry<R>,
+    snapshot: StackSnapshot,
     activityComponentProvider: ActivityComponentProvider,
     parentScope: KClass<PR>,
-    crossinline factory: (PC, SavedStateHandle, R) -> C,
+    crossinline factory: (PC) -> C,
 ): C {
-    val snapshot = executor.snapshot.value
-    val entry = snapshot.entryFor(route.destinationId)
     return entry.store.getOrCreate(C::class) {
         val parentEntry = snapshot.entryFor(DestinationId(parentScope))
 
         @Suppress("UNCHECKED_CAST")
         val parentComponentProvider = parentEntry.extra as ComponentProvider<PR, PC>
-        val parentRoute = parentEntry.route
-        val parentComponent = parentComponentProvider.provide(parentRoute, executor, activityComponentProvider)
-        val savedStateHandle = entry.savedStateHandle
-        factory(parentComponent, savedStateHandle, route)
+        val parentComponent = parentComponentProvider.provide(parentEntry, snapshot, activityComponentProvider)
+        factory(parentComponent)
     }
 }

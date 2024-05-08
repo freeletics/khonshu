@@ -63,7 +63,7 @@ public fun NavHost(
 
         Box(modifier = modifier) {
             snapshot.forEachVisibleDestination {
-                Show(it, saveableStateHolder)
+                Show(snapshot, it, saveableStateHolder)
             }
         }
     }
@@ -71,6 +71,7 @@ public fun NavHost(
 
 @Composable
 private fun <T : BaseRoute> Show(
+    snapshot: StackSnapshot,
     entry: StackEntry<T>,
     saveableStateHolder: SaveableStateHolder,
 ) {
@@ -87,7 +88,7 @@ private fun <T : BaseRoute> Show(
     saveableCloseable.saveableStateHolderRef = WeakReference(saveableStateHolder)
 
     saveableStateHolder.SaveableStateProvider(entry.id.value) {
-        entry.destination.content(entry.route)
+        entry.destination.content(snapshot, entry)
     }
 }
 

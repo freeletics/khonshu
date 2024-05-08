@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import com.freeletics.khonshu.navigation.internal.ActivityDestinationId
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
+import com.freeletics.khonshu.navigation.internal.StackEntry
+import com.freeletics.khonshu.navigation.internal.StackSnapshot
 
 /**
  * A destination that can be navigated to. See `NavHost` for how to configure a `NavGraph` with it.
@@ -14,7 +16,7 @@ public sealed interface NavDestination
 internal sealed class ContentDestination<T : BaseRoute> : NavDestination {
     internal abstract val id: DestinationId<T>
     internal abstract val extra: Any?
-    internal abstract val content: @Composable (T) -> Unit
+    internal abstract val content: @Composable (StackSnapshot, StackEntry<T>) -> Unit
 }
 
 /**
@@ -25,20 +27,20 @@ internal sealed class ContentDestination<T : BaseRoute> : NavDestination {
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute> ScreenDestination(
     noinline content: @Composable (T) -> Unit,
-): NavDestination = ScreenDestination(DestinationId(T::class), null, content)
+): NavDestination = ScreenDestination(DestinationId(T::class), null) { _, entry -> content(entry.route) }
 
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute> ScreenDestination(
     extra: Any,
-    noinline content: @Composable (T) -> Unit,
+    noinline content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
 ): NavDestination = ScreenDestination(DestinationId(T::class), extra, content)
 
 @PublishedApi
 internal class ScreenDestination<T : BaseRoute>(
     override val id: DestinationId<T>,
     override val extra: Any?,
-    override val content: @Composable (T) -> Unit,
+    override val content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
 ) : ContentDestination<T>()
 
 /**
@@ -49,20 +51,20 @@ internal class ScreenDestination<T : BaseRoute>(
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> OverlayDestination(
     noinline content: @Composable (T) -> Unit,
-): NavDestination = OverlayDestination(DestinationId(T::class), null, content)
+): NavDestination = OverlayDestination(DestinationId(T::class), null) { _, entry -> content(entry.route) }
 
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> OverlayDestination(
     extra: Any,
-    noinline content: @Composable (T) -> Unit,
+    noinline content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
 ): NavDestination = OverlayDestination(DestinationId(T::class), extra, content)
 
 @PublishedApi
 internal class OverlayDestination<T : NavRoute>(
     override val id: DestinationId<T>,
     override val extra: Any?,
-    override val content: @Composable (T) -> Unit,
+    override val content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
 ) : ContentDestination<T>()
 
 /**

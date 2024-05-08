@@ -1,7 +1,5 @@
 package com.freeletics.khonshu.codegen
 
-import com.freeletics.khonshu.codegen.util.getComponent
-import com.freeletics.khonshu.codegen.util.getComponentFromRoute
 import com.freeletics.khonshu.codegen.util.navigationDestination
 import com.freeletics.khonshu.codegen.util.overlayDestination
 import com.freeletics.khonshu.codegen.util.screenDestination
@@ -67,16 +65,11 @@ public data class NavHostActivityData(
 
 public data class Navigation(
     val route: ClassName,
-    private val parentScopeIsRoute: Boolean,
+    val parentScopeIsRoute: Boolean,
     private val overlay: Boolean,
     val destinationScope: ClassName,
 ) {
     val destinationClass: ClassName = navigationDestination
-
-    val parentComponentLookup: MemberName = when (parentScopeIsRoute) {
-        false -> getComponent
-        true -> getComponentFromRoute
-    }
 
     val destinationMethod: MemberName = when (overlay) {
         false -> screenDestination
