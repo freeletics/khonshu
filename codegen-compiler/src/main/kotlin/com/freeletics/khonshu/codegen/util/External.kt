@@ -1,11 +1,9 @@
 package com.freeletics.khonshu.codegen.util
 
-import com.freeletics.khonshu.navigation.NavRoot
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.UNIT
-import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.kotlin.name.FqName
 
 // Codegen Public API
