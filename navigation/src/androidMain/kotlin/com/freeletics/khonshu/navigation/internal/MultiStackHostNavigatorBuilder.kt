@@ -17,17 +17,17 @@ import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.EXTRA_DEEPLINK_ROUTES
 import com.freeletics.khonshu.navigation.deeplinks.createDeepLinkIfMatching
 import com.freeletics.khonshu.navigation.findActivity
-import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_HANDLED_DEEP_LINKS
-import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
+import com.freeletics.khonshu.navigation.internal.MultiStackHostNavigator.Companion.SAVED_STATE_HANDLED_DEEP_LINKS
+import com.freeletics.khonshu.navigation.internal.MultiStackHostNavigator.Companion.SAVED_STATE_STACK
 import kotlinx.collections.immutable.ImmutableSet
 
 @Composable
-internal fun rememberNavigationExecutor(
+internal fun rememberHostNavigator(
     startRoot: NavRoot,
     destinations: ImmutableSet<NavDestination>,
     deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
     deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
-): MultiStackNavigationExecutor {
+): MultiStackHostNavigator {
     val context = LocalContext.current
 
     val viewModel = viewModel<StackEntryStoreViewModel>(factory = SavedStateViewModelFactory())
@@ -68,7 +68,7 @@ internal fun rememberNavigationExecutor(
     }
 
     return remember(stack, viewModel, starter, deepLinkRoutes) {
-        MultiStackNavigationExecutor(
+        MultiStackHostNavigator(
             stack = stack,
             activityStarter = starter::start,
             viewModel = viewModel,

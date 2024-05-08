@@ -4,16 +4,17 @@ import android.os.Parcelable
 import androidx.compose.runtime.State
 import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import kotlin.reflect.KClass
 
-internal class MultiStackNavigationExecutor(
+internal class MultiStackHostNavigator(
     private val stack: MultiStack,
     private val activityStarter: (ActivityRoute) -> Unit,
     viewModel: StackEntryStoreViewModel,
     deepLinkRoutes: List<Parcelable>,
-) : NavigationExecutor {
+) : HostNavigator() {
 
     override val snapshot: State<StackSnapshot>
         get() = stack.snapshot

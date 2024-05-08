@@ -41,6 +41,10 @@ public abstract interface class com/freeletics/khonshu/navigation/ExternalActivi
 	public fun fillInIntent ()Landroid/content/Intent;
 }
 
+public abstract class com/freeletics/khonshu/navigation/HostNavigator : com/freeletics/khonshu/navigation/Navigator {
+	public static final field $stable I
+}
+
 public final class com/freeletics/khonshu/navigation/InitialValue$Creator : android/os/Parcelable$Creator {
 	public fun <init> ()V
 	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/khonshu/navigation/InitialValue;

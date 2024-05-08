@@ -18,7 +18,7 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
-internal class MultiStackNavigationExecutorTest {
+internal class MultiStackHostNavigatorTest {
 
     private val started = mutableListOf<ActivityRoute>()
     private val starter: (ActivityRoute) -> Unit = { route ->
@@ -32,8 +32,8 @@ internal class MultiStackNavigationExecutorTest {
 
     private fun underTest(
         deepLinkRoutes: List<Parcelable> = emptyList(),
-    ): MultiStackNavigationExecutor {
-        return MultiStackNavigationExecutor(
+    ): MultiStackHostNavigator {
+        return MultiStackHostNavigator(
             stack = MultiStack.createWith(SimpleRoot(1), factory::create),
             activityStarter = starter,
             viewModel = viewModel,
@@ -84,203 +84,203 @@ internal class MultiStackNavigationExecutorTest {
 
     @Test
     fun `deep links passed with a NavRoute`() {
-        val executor = underTest(
+        val hostNavigator = underTest(
             listOf(SimpleRoute(2)),
         )
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoute(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateBack()
+        hostNavigator.navigateBack()
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
     }
 
     @Test
     fun `deep links passed with a NavRoot`() {
-        val executor = underTest(
+        val hostNavigator = underTest(
             listOf(OtherRoot(2)),
         )
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), OtherRoot(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateBack()
+        hostNavigator.navigateBack()
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
     }
 
     @Test
     fun `deep links passed with NavRoot and NavRoute`() {
-        val executor = underTest(
+        val hostNavigator = underTest(
             listOf(OtherRoot(2), SimpleRoute(3)),
         )
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("103"), SimpleRoute(3)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateBack()
+        hostNavigator.navigateBack()
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), OtherRoot(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateBack()
+        hostNavigator.navigateBack()
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
     }
 
     @Test
     fun `deep links passed with multiple NavRoutes`() {
-        val executor = underTest(
+        val hostNavigator = underTest(
             listOf(SimpleRoute(2), SimpleRoute(3), OtherRoute(4), ThirdRoute(5)),
         )
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("103"), SimpleRoute(3)),
                 factory.create(StackEntry.Id("104"), OtherRoute(4)),
                 factory.create(StackEntry.Id("105"), ThirdRoute(5)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
     }
 
     @Test
     fun `deep links passed with an ActivityRoute`() {
-        val executor = underTest(
+        val hostNavigator = underTest(
             listOf(SimpleActivity(2)),
         )
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(started).containsExactly(SimpleActivity(2))
     }
 
     @Test
     fun `deep links passed with a NavRoute and an ActivityRoute`() {
-        val executor = underTest(
+        val hostNavigator = underTest(
             listOf(SimpleRoute(2), SimpleActivity(3)),
         )
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoute(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(started).containsExactly(SimpleActivity(3))
     }
 
     @Test
     fun `visibleEntries contains entry for given root at the beginning`() {
-        val executor = underTest()
+        val hostNavigator = underTest()
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
     }
 
     @Test
     fun `visibleEntries contains new entry after navigating to screen destination`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoute(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
 
     @Test
     fun `visibleEntries contains original and new entry after navigating to dialog destination`() {
-        val executor = underTest()
-        executor.navigateTo(OtherRoute(3))
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(OtherRoute(3))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
                 factory.create(StackEntry.Id("101"), OtherRoute(3)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
 
     @Test
     fun `visibleEntries contains original and new entry after navigating to bottom sheet destination`() {
-        val executor = underTest()
-        executor.navigateTo(ThirdRoute(4))
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(ThirdRoute(4))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
                 factory.create(StackEntry.Id("101"), ThirdRoute(4)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
 
     @Test
     fun `visibleEntries contains all entries starting from last screen`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
-        executor.navigateTo(SimpleRoute(3))
-        executor.navigateTo(SimpleRoute(4))
-        executor.navigateTo(SimpleRoute(5))
-        executor.navigateTo(OtherRoute(6))
-        executor.navigateTo(ThirdRoute(7))
-        executor.navigateTo(OtherRoute(8))
-        executor.navigateTo(OtherRoute(9))
-        executor.navigateTo(ThirdRoute(10))
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        hostNavigator.navigateTo(SimpleRoute(3))
+        hostNavigator.navigateTo(SimpleRoute(4))
+        hostNavigator.navigateTo(SimpleRoute(5))
+        hostNavigator.navigateTo(OtherRoute(6))
+        hostNavigator.navigateTo(ThirdRoute(7))
+        hostNavigator.navigateTo(OtherRoute(8))
+        hostNavigator.navigateTo(OtherRoute(9))
+        hostNavigator.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("104"), SimpleRoute(5)),
                 factory.create(StackEntry.Id("105"), OtherRoute(6)),
@@ -290,25 +290,25 @@ internal class MultiStackNavigationExecutorTest {
                 factory.create(StackEntry.Id("109"), ThirdRoute(10)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
 
     @Test
     fun `visibleEntries contains all entries starting from last screen 2`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
-        executor.navigateTo(SimpleRoute(3))
-        executor.navigateTo(SimpleRoute(4))
-        executor.navigateTo(OtherRoute(5))
-        executor.navigateTo(ThirdRoute(6))
-        executor.navigateTo(SimpleRoute(7))
-        executor.navigateTo(OtherRoute(8))
-        executor.navigateTo(OtherRoute(9))
-        executor.navigateTo(ThirdRoute(10))
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        hostNavigator.navigateTo(SimpleRoute(3))
+        hostNavigator.navigateTo(SimpleRoute(4))
+        hostNavigator.navigateTo(OtherRoute(5))
+        hostNavigator.navigateTo(ThirdRoute(6))
+        hostNavigator.navigateTo(SimpleRoute(7))
+        hostNavigator.navigateTo(OtherRoute(8))
+        hostNavigator.navigateTo(OtherRoute(9))
+        hostNavigator.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("106"), SimpleRoute(7)),
                 factory.create(StackEntry.Id("107"), OtherRoute(8)),
@@ -316,32 +316,32 @@ internal class MultiStackNavigationExecutorTest {
                 factory.create(StackEntry.Id("109"), ThirdRoute(10)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
 
     @Test
-    fun `navigate with root and without clearing the target executor`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
+    fun `navigate with root and without clearing the target hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), OtherRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
 
     @Test
     fun `navigate with same root twice`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
+            hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
         }
 
         assertThat(exception).hasMessageThat()
@@ -349,174 +349,174 @@ internal class MultiStackNavigationExecutorTest {
     }
 
     @Test
-    fun `navigate with root multiple times without clearing the target executor`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
+    fun `navigate with root multiple times without clearing the target hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), OtherRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateToRoot(SimpleRoot(1), restoreRootState = true)
+        hostNavigator.navigateToRoot(SimpleRoot(1), restoreRootState = true)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), OtherRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
 
     @Test
-    fun `navigate with root multiple times with clearing the target executor`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = false)
+    fun `navigate with root multiple times with clearing the target hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = false)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), OtherRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
 
     @Test
-    fun `navigate with root and clearing the target executor`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = false)
+    fun `navigate with root and clearing the target hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = false)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), OtherRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateToRoot(SimpleRoot(1), restoreRootState = false)
+        hostNavigator.navigateToRoot(SimpleRoot(1), restoreRootState = false)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = false)
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = false)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("103"), OtherRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
 
     @Test
-    fun `navigate with root and without clearing the target executor from within back executor`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(1))
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
+    fun `navigate with root and without clearing the target hostNavigator from within back hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(1))
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), OtherRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
 
     @Test
-    fun `navigate with root multiple times and without clearing the target executor from within back executor`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(1))
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
-        executor.navigateToRoot(SimpleRoot(1), restoreRootState = true)
+    fun `navigate with root multiple times and without clearing the target hostNavigator from within back hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(1))
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
+        hostNavigator.navigateToRoot(SimpleRoot(1), restoreRootState = true)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoute(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).isEmpty()
     }
 
     @Test
-    fun `resetToRoot with start root from start executor`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(1))
-        executor.resetToRoot(SimpleRoot(2))
+    fun `resetToRoot with start root from start hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(1))
+        hostNavigator.resetToRoot(SimpleRoot(2))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoot(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
 
     @Test
-    fun `resetToRoot with start root from other executor`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
-        executor.resetToRoot(SimpleRoot(2))
+    fun `resetToRoot with start root from other hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
+        hostNavigator.resetToRoot(SimpleRoot(2))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoot(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
     }
 
     @Test
-    fun `resetToRoot fails throws exception when root not on back executor`() {
-        val executor = underTest()
+    fun `resetToRoot fails throws exception when root not on back hostNavigator`() {
+        val hostNavigator = underTest()
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.resetToRoot(OtherRoot(1))
+            hostNavigator.resetToRoot(OtherRoot(1))
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo("OtherRoot(number=1) is not on the current back stack")
     }
 
     @Test
-    fun `replaceAll with start root from start executor`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(1))
-        executor.replaceAll(SimpleRoot(2))
+    fun `replaceAll with start root from start hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(1))
+        hostNavigator.replaceAll(SimpleRoot(2))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoot(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed)
             .containsExactly(
@@ -526,17 +526,17 @@ internal class MultiStackNavigationExecutorTest {
     }
 
     @Test
-    fun `replaceAll with start root from other executor`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
-        executor.replaceAll(SimpleRoot(2))
+    fun `replaceAll with start root from other hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
+        hostNavigator.replaceAll(SimpleRoot(2))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoot(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("100"),
@@ -545,26 +545,26 @@ internal class MultiStackNavigationExecutorTest {
     }
 
     @Test
-    fun `replaceAll after navigating with root and without clearing the target executor from within back executor`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(1))
-        executor.navigateToRoot(OtherRoot(1), restoreRootState = true)
+    fun `replaceAll after navigating with root and without clearing the target hostNavigator from within back hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(1))
+        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), OtherRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
         assertThat(removed).isEmpty()
 
-        executor.replaceAll(SimpleRoot(1))
-        assertThat(executor.snapshot.value.visibleEntries)
+        hostNavigator.replaceAll(SimpleRoot(1))
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("103"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
         assertThat(removed)
             .containsExactly(
                 StackEntry.Id("102"),
@@ -574,10 +574,10 @@ internal class MultiStackNavigationExecutorTest {
     }
 
     @Test
-    fun `navigateUp throws exception when start executor is at root`() {
-        val executor = underTest()
+    fun `navigateUp throws exception when start hostNavigator is at root`() {
+        val hostNavigator = underTest()
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.navigateUp()
+            hostNavigator.navigateUp()
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo("Can't pop the root of the back stack")
@@ -587,93 +587,93 @@ internal class MultiStackNavigationExecutorTest {
 
     @Test
     fun `visibleEntries contains root entry after navigateUp`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoute(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateUp()
+        hostNavigator.navigateUp()
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
 
     @Test
-    fun `navigating the same route again after navigateUp will result in different executor entries`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
+    fun `navigating the same route again after navigateUp will result in different hostNavigator entries`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoute(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateUp()
-        executor.navigateTo(SimpleRoute(2))
+        hostNavigator.navigateUp()
+        hostNavigator.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoute(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
 
     @Test
-    fun `navigateUp from the root of a second executor`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
+    fun `navigateUp from the root of a second hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.navigateUp()
+            hostNavigator.navigateUp()
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo("Can't pop the root of the back stack")
     }
 
     @Test
-    fun `navigateUp in a second executor`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
-        executor.navigateTo(SimpleRoute(3))
+    fun `navigateUp in a second hostNavigator`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        hostNavigator.navigateTo(SimpleRoute(3))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoute(3)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateUp()
+        hostNavigator.navigateUp()
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), OtherRoot(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
     }
 
     @Test
-    fun `pop throws exception when the current executor only contains the root`() {
-        val executor = underTest()
+    fun `pop throws exception when the current hostNavigator only contains the root`() {
+        val hostNavigator = underTest()
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.navigateBack()
+            hostNavigator.navigateBack()
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo("Can't navigate back from the root of the start back stack")
@@ -683,150 +683,150 @@ internal class MultiStackNavigationExecutorTest {
 
     @Test
     fun `visibleEntries contains root entry after pop`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoute(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateBack()
+        hostNavigator.navigateBack()
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
 
     @Test
-    fun `navigating the same route again after pop will result in different executor entries`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
+    fun `navigating the same route again after pop will result in different hostNavigator entries`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoute(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateBack()
-        executor.navigateTo(SimpleRoute(2))
+        hostNavigator.navigateBack()
+        hostNavigator.navigateTo(SimpleRoute(2))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoute(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
 
     @Test
     fun `navigateBack from a second root`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), OtherRoot(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateBack()
+        hostNavigator.navigateBack()
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
 
     @Test
     fun `navigateBack from a second root and navigating there again`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), OtherRoot(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateBack()
-        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        hostNavigator.navigateBack()
+        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), OtherRoot(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
     }
 
     @Test
     fun `navigateBack in a second root`() {
-        val executor = underTest()
-        executor.navigateToRoot(OtherRoot(2), restoreRootState = false)
-        executor.navigateTo(SimpleRoute(3))
+        val hostNavigator = underTest()
+        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        hostNavigator.navigateTo(SimpleRoute(3))
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoute(3)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        executor.navigateBack()
+        hostNavigator.navigateBack()
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), OtherRoot(2)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("102"))
     }
 
     @Test
     fun `popUpTo removes all destinations until first matching entry, inclusive false`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
-        executor.navigateTo(SimpleRoute(3))
-        executor.navigateTo(SimpleRoute(4))
-        executor.navigateTo(SimpleRoute(5))
-        executor.navigateTo(OtherRoute(6))
-        executor.navigateTo(ThirdRoute(7))
-        executor.navigateTo(OtherRoute(8))
-        executor.navigateTo(OtherRoute(9))
-        executor.navigateTo(ThirdRoute(10))
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        hostNavigator.navigateTo(SimpleRoute(3))
+        hostNavigator.navigateTo(SimpleRoute(4))
+        hostNavigator.navigateTo(SimpleRoute(5))
+        hostNavigator.navigateTo(OtherRoute(6))
+        hostNavigator.navigateTo(ThirdRoute(7))
+        hostNavigator.navigateTo(OtherRoute(8))
+        hostNavigator.navigateTo(OtherRoute(9))
+        hostNavigator.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.snapshot.value.visibleEntries).hasSize(6)
+        assertThat(hostNavigator.snapshot.value.visibleEntries).hasSize(6)
 
-        executor.navigateBackTo(simpleRouteDestination.id.route, inclusive = false)
+        hostNavigator.navigateBackTo(simpleRouteDestination.id.route, inclusive = false)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("104"), SimpleRoute(5)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("109"),
@@ -839,27 +839,27 @@ internal class MultiStackNavigationExecutorTest {
 
     @Test
     fun `popUpTo removes all destinations until first matching entry, inclusive true`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
-        executor.navigateTo(SimpleRoute(3))
-        executor.navigateTo(SimpleRoute(4))
-        executor.navigateTo(SimpleRoute(5))
-        executor.navigateTo(OtherRoute(6))
-        executor.navigateTo(ThirdRoute(7))
-        executor.navigateTo(OtherRoute(8))
-        executor.navigateTo(OtherRoute(9))
-        executor.navigateTo(ThirdRoute(10))
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        hostNavigator.navigateTo(SimpleRoute(3))
+        hostNavigator.navigateTo(SimpleRoute(4))
+        hostNavigator.navigateTo(SimpleRoute(5))
+        hostNavigator.navigateTo(OtherRoute(6))
+        hostNavigator.navigateTo(ThirdRoute(7))
+        hostNavigator.navigateTo(OtherRoute(8))
+        hostNavigator.navigateTo(OtherRoute(9))
+        hostNavigator.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.snapshot.value.visibleEntries).hasSize(6)
+        assertThat(hostNavigator.snapshot.value.visibleEntries).hasSize(6)
 
-        executor.navigateBackTo(simpleRouteDestination.id.route, inclusive = true)
+        hostNavigator.navigateBackTo(simpleRouteDestination.id.route, inclusive = true)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("103"), SimpleRoute(4)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isTrue()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("109"),
@@ -873,27 +873,27 @@ internal class MultiStackNavigationExecutorTest {
 
     @Test
     fun `popUpTo with root and inclusive false removes all destinations`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
-        executor.navigateTo(SimpleRoute(3))
-        executor.navigateTo(SimpleRoute(4))
-        executor.navigateTo(SimpleRoute(5))
-        executor.navigateTo(OtherRoute(6))
-        executor.navigateTo(ThirdRoute(7))
-        executor.navigateTo(OtherRoute(8))
-        executor.navigateTo(OtherRoute(9))
-        executor.navigateTo(ThirdRoute(10))
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        hostNavigator.navigateTo(SimpleRoute(3))
+        hostNavigator.navigateTo(SimpleRoute(4))
+        hostNavigator.navigateTo(SimpleRoute(5))
+        hostNavigator.navigateTo(OtherRoute(6))
+        hostNavigator.navigateTo(ThirdRoute(7))
+        hostNavigator.navigateTo(OtherRoute(8))
+        hostNavigator.navigateTo(OtherRoute(9))
+        hostNavigator.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.snapshot.value.visibleEntries).hasSize(6)
+        assertThat(hostNavigator.snapshot.value.visibleEntries).hasSize(6)
 
-        executor.navigateBackTo(simpleRootDestination.id.route, inclusive = false)
+        hostNavigator.navigateBackTo(simpleRootDestination.id.route, inclusive = false)
 
-        assertThat(executor.snapshot.value.visibleEntries)
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
             .inOrder()
-        assertThat(executor.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(
             StackEntry.Id("109"),
@@ -910,21 +910,21 @@ internal class MultiStackNavigationExecutorTest {
 
     @Test
     fun `popUpTo with root and inclusive true throws exception`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
-        executor.navigateTo(SimpleRoute(3))
-        executor.navigateTo(SimpleRoute(4))
-        executor.navigateTo(SimpleRoute(5))
-        executor.navigateTo(OtherRoute(6))
-        executor.navigateTo(ThirdRoute(7))
-        executor.navigateTo(OtherRoute(8))
-        executor.navigateTo(OtherRoute(9))
-        executor.navigateTo(ThirdRoute(10))
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        hostNavigator.navigateTo(SimpleRoute(3))
+        hostNavigator.navigateTo(SimpleRoute(4))
+        hostNavigator.navigateTo(SimpleRoute(5))
+        hostNavigator.navigateTo(OtherRoute(6))
+        hostNavigator.navigateTo(ThirdRoute(7))
+        hostNavigator.navigateTo(OtherRoute(8))
+        hostNavigator.navigateTo(OtherRoute(9))
+        hostNavigator.navigateTo(ThirdRoute(10))
 
-        assertThat(executor.snapshot.value.visibleEntries).hasSize(6)
+        assertThat(hostNavigator.snapshot.value.visibleEntries).hasSize(6)
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.navigateBackTo(simpleRootDestination.id.route, inclusive = true)
+            hostNavigator.navigateBackTo(simpleRootDestination.id.route, inclusive = true)
         }
         assertThat(exception).hasMessageThat().isEqualTo("Can't pop the root of the back stack")
 
@@ -942,19 +942,19 @@ internal class MultiStackNavigationExecutorTest {
     }
 
     @Test
-    fun `popUpTo with route not present on the executor throws exception`() {
-        val executor = underTest()
-        executor.navigateTo(SimpleRoute(2))
-        executor.navigateTo(SimpleRoute(3))
-        executor.navigateTo(SimpleRoute(4))
-        executor.navigateTo(SimpleRoute(5))
-        executor.navigateTo(ThirdRoute(6))
-        executor.navigateTo(ThirdRoute(7))
+    fun `popUpTo with route not present on the hostNavigator throws exception`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        hostNavigator.navigateTo(SimpleRoute(3))
+        hostNavigator.navigateTo(SimpleRoute(4))
+        hostNavigator.navigateTo(SimpleRoute(5))
+        hostNavigator.navigateTo(ThirdRoute(6))
+        hostNavigator.navigateTo(ThirdRoute(7))
 
-        assertThat(executor.snapshot.value.visibleEntries).hasSize(3)
+        assertThat(hostNavigator.snapshot.value.visibleEntries).hasSize(3)
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            executor.navigateBackTo(otherRouteDestination.id.route, inclusive = false)
+            hostNavigator.navigateBackTo(otherRouteDestination.id.route, inclusive = false)
         }
         assertThat(exception).hasMessageThat()
             .isEqualTo(

@@ -13,10 +13,9 @@ import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
-import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
-import com.freeletics.khonshu.navigation.internal.rememberNavigationExecutor
+import com.freeletics.khonshu.navigation.internal.rememberHostNavigator
 import java.io.Closeable
 import java.lang.ref.WeakReference
 import kotlinx.collections.immutable.ImmutableSet
@@ -49,14 +48,14 @@ public fun NavHost(
     navEventNavigator: NavEventNavigator? = null,
     destinationChangedCallback: ((NavRoot, BaseRoute) -> Unit)? = null,
 ) {
-    val executor = rememberNavigationExecutor(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
-    val snapshot by executor.snapshot
+    val navigator = rememberHostNavigator(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
+    val snapshot by navigator.snapshot
 
-    SystemBackHandling(snapshot, executor)
+    SystemBackHandling(snapshot, navigator)
     DestinationChangedCallback(snapshot, destinationChangedCallback)
 
     val saveableStateHolder = rememberSaveableStateHolder()
-    CompositionLocalProvider(LocalNavigationExecutor provides executor) {
+    CompositionLocalProvider(LocalHostNavigator provides navigator) {
         if (navEventNavigator != null) {
             NavigationSetup(navEventNavigator)
         }
@@ -104,16 +103,16 @@ internal class SaveableCloseable(
 }
 
 @Composable
-private fun SystemBackHandling(snapshot: StackSnapshot, executor: MultiStackNavigationExecutor) {
+private fun SystemBackHandling(snapshot: StackSnapshot, navigator: Navigator) {
     val backPressedDispatcher = requireNotNull(LocalOnBackPressedDispatcherOwner.current) {
         "No OnBackPressedDispatcher available"
     }
 
-    val callback = remember(executor) {
+    val callback = remember(navigator) {
         // will be enabled below if needed
         object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
-                executor.navigateBack()
+                navigator.navigateBack()
             }
         }
     }

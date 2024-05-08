@@ -19,7 +19,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.NavEvent
-import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
@@ -31,7 +30,7 @@ import org.jetbrains.annotations.VisibleForTesting
  */
 @Composable
 public fun NavigationSetup(navigator: NavEventNavigator) {
-    val executor = LocalNavigationExecutor.current
+    val hostNavigator = LocalHostNavigator.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -40,8 +39,8 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
     }
 
     navigator.navigationResultRequests.forEach {
-        LaunchedEffect(executor, it) {
-            executor.collectAndHandleNavigationResults(it)
+        LaunchedEffect(hostNavigator, it) {
+            hostNavigator.collectAndHandleNavigationResults(it)
         }
     }
 
@@ -54,8 +53,8 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
         }
     }
 
-    LaunchedEffect(lifecycleOwner, executor, navigator) {
-        navigator.collectAndHandleNavEvents(lifecycleOwner.lifecycle, executor, activityLaunchers)
+    LaunchedEffect(lifecycleOwner, hostNavigator, navigator) {
+        navigator.collectAndHandleNavEvents(lifecycleOwner.lifecycle, hostNavigator, activityLaunchers)
     }
 }
 
@@ -72,7 +71,7 @@ private fun <I, O> rememberResultLaunchers(
 @VisibleForTesting
 internal suspend fun NavEventNavigator.collectAndHandleNavEvents(
     lifecycle: Lifecycle,
-    executor: NavigationExecutor,
+    hostNavigator: HostNavigator,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
 ) {
     // Following comment https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295,
@@ -88,12 +87,12 @@ internal suspend fun NavEventNavigator.collectAndHandleNavEvents(
     withContext(Dispatchers.Main.immediate) {
         navEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
             .collect { event ->
-                executor.navigateTo(event, activityLaunchers)
+                hostNavigator.navigateTo(event, activityLaunchers)
             }
     }
 }
 
-private fun NavigationExecutor.navigateTo(
+private fun HostNavigator.navigateTo(
     event: NavEvent,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
 ) {
@@ -168,7 +167,7 @@ internal inline fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(
 }
 
 @VisibleForTesting
-internal suspend fun <R : Parcelable> NavigationExecutor.collectAndHandleNavigationResults(
+internal suspend fun <R : Parcelable> HostNavigator.collectAndHandleNavigationResults(
     request: NavigationResultRequest<R>,
 ) {
     val savedStateHandle = snapshot.value.entryFor(request.key.destinationId).savedStateHandle
@@ -186,8 +185,8 @@ internal suspend fun <R : Parcelable> NavigationExecutor.collectAndHandleNavigat
 private object InitialValue : Parcelable
 
 @InternalNavigationCodegenApi
-public val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecutor> = staticCompositionLocalOf {
-    throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
+public val LocalHostNavigator: ProvidableCompositionLocal<HostNavigator> = staticCompositionLocalOf {
+    throw IllegalStateException("Can't access HostNavigator outside of a NavHost")
 }
 
 internal tailrec fun Context.findActivity(): Activity = when (this) {
