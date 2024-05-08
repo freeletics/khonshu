@@ -15,21 +15,19 @@ import org.junit.Test
 
 internal class StackTest {
 
-    private val removed = mutableListOf<StackEntry.Id>()
-    private val removedCallback: (StackEntry.Id) -> Unit = { removed.add(it) }
-
     private val factory = TestStackEntryFactory()
+    private val removed get() = factory.closedEntries
 
     @Test
     fun id() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
 
         assertThat(stack.id).isEqualTo(simpleRootDestination.id)
     }
 
     @Test
     fun rootEntry() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
 
         assertThat(stack.rootEntry)
             .isEqualTo(factory.create(StackEntry.Id("100"), SimpleRoot(1)))
@@ -37,21 +35,21 @@ internal class StackTest {
 
     @Test
     fun `isAtRoot after construction`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
 
         assertThat(stack.isAtRoot).isTrue()
     }
 
     @Test
     fun `removed after construction`() {
-        Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        Stack.createWith(SimpleRoot(1), factory::create)
 
         assertThat(removed).isEmpty()
     }
 
     @Test
     fun `computeVisibleEntries after construction`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
@@ -62,7 +60,7 @@ internal class StackTest {
 
     @Test
     fun `push with a screen destination`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
@@ -76,7 +74,7 @@ internal class StackTest {
 
     @Test
     fun `push with a dialog destination`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(OtherRoute(3))
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
@@ -91,7 +89,7 @@ internal class StackTest {
 
     @Test
     fun `push with a bottom sheet destination`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(ThirdRoute(4))
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
@@ -106,7 +104,7 @@ internal class StackTest {
 
     @Test
     fun `computeVisibleEntries with multiple screens, dialogs and bottom sheets`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
         stack.push(SimpleRoute(4))
@@ -133,7 +131,7 @@ internal class StackTest {
 
     @Test
     fun `computeVisibleEntries with multiple screens, dialogs and bottom sheets 2`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
         stack.push(SimpleRoute(4))
@@ -158,7 +156,7 @@ internal class StackTest {
 
     @Test
     fun `pop from the root`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         val exception = assertThrows(IllegalStateException::class.java) {
             stack.pop()
         }
@@ -169,7 +167,7 @@ internal class StackTest {
 
     @Test
     fun `pop from a screen`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
         assertThat(stack.snapshot(stack.id).visibleEntries)
             .containsExactly(
@@ -190,7 +188,7 @@ internal class StackTest {
 
     @Test
     fun `pop from a screen and then opening that screen again`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
 
         assertThat(stack.snapshot(stack.id).visibleEntries)
@@ -213,7 +211,7 @@ internal class StackTest {
 
     @Test
     fun `popUpTo with inclusive false`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
         stack.push(SimpleRoute(4))
@@ -245,7 +243,7 @@ internal class StackTest {
 
     @Test
     fun `popUpTo with inclusive true`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
         stack.push(SimpleRoute(4))
@@ -278,7 +276,7 @@ internal class StackTest {
 
     @Test
     fun `popUpTo with root and inclusive false`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
         stack.push(SimpleRoute(4))
@@ -314,7 +312,7 @@ internal class StackTest {
 
     @Test
     fun `popUpTo with root and inclusive true`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
         stack.push(SimpleRoute(4))
@@ -347,7 +345,7 @@ internal class StackTest {
 
     @Test
     fun `popUpTo with route not present on the stack`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
         stack.push(SimpleRoute(4))
@@ -378,7 +376,7 @@ internal class StackTest {
 
     @Test
     fun `clear removes everything except for the root`() {
-        val stack = Stack.createWith(SimpleRoot(1), factory::create, removedCallback)
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
         stack.push(SimpleRoute(3))
         stack.push(SimpleRoute(4))

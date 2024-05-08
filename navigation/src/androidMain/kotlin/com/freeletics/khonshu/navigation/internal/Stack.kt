@@ -11,7 +11,6 @@ import com.freeletics.khonshu.navigation.NavRoute
 internal class Stack private constructor(
     initialStack: List<StackEntry<*>>,
     private val createEntry: (BaseRoute) -> StackEntry<*>,
-    private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
 ) {
     private val stack = ArrayDeque<StackEntry<*>>(20).also {
         it.addAll(initialStack)
@@ -20,6 +19,10 @@ internal class Stack private constructor(
     val id: DestinationId<*> get() = rootEntry.destinationId
     val rootEntry: StackEntry<*> get() = stack.first()
     val isAtRoot: Boolean get() = !stack.last().removable
+
+    fun findEntry(id: StackEntry.Id): StackEntry<*>? {
+        return stack.findLast { it.id == id }
+    }
 
     @Suppress("UNCHECKED_CAST")
     fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
@@ -41,7 +44,7 @@ internal class Stack private constructor(
 
     private fun popInternal() {
         val entry = stack.removeLast()
-        onStackEntryRemoved(entry.id)
+        entry.close()
     }
 
     fun popUpTo(destinationId: DestinationId<*>, isInclusive: Boolean) {
@@ -83,10 +86,9 @@ internal class Stack private constructor(
         fun createWith(
             root: NavRoot,
             createEntry: (BaseRoute) -> StackEntry<*>,
-            onStackEntryRemoved: (StackEntry.Id) -> Unit,
         ): Stack {
             val rootEntry = createEntry(root)
-            return Stack(listOf(rootEntry), createEntry, onStackEntryRemoved)
+            return Stack(listOf(rootEntry), createEntry)
         }
 
         @SuppressLint("RestrictedApi")
@@ -94,7 +96,6 @@ internal class Stack private constructor(
             bundle: Bundle,
             createEntry: (BaseRoute) -> StackEntry<*>,
             createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
-            onStackEntryRemoved: (StackEntry.Id) -> Unit,
         ): Stack {
             val ids = bundle.getStringArrayList(SAVED_STATE_IDS)!!
 
@@ -110,7 +111,7 @@ internal class Stack private constructor(
                     SavedStateHandle.createHandle(states[index], null),
                 )
             }
-            return Stack(entries, createEntry, onStackEntryRemoved)
+            return Stack(entries, createEntry)
         }
 
         private const val SAVED_STATE_IDS = "com.freeletics.khonshu.navigation.stack.ids"
