@@ -16,7 +16,7 @@ internal class MultiStackNavigationExecutor(
     deepLinkRoutes: List<Parcelable>,
 ) : NavigationExecutor {
 
-    val snapshot: State<StackSnapshot>
+    override val snapshot: State<StackSnapshot>
         get() = stack.snapshot
 
     init {
@@ -80,27 +80,6 @@ internal class MultiStackNavigationExecutor(
 
     override fun replaceAll(root: NavRoot) {
         stack.replaceAll(root)
-    }
-
-    override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T {
-        return entryFor(destinationId).route
-    }
-
-    override fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle {
-        return entryFor(destinationId).savedStateHandle
-    }
-
-    override fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): StackEntryStore {
-        return entryFor(destinationId).store
-    }
-
-    override fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Any {
-        return entryFor(destinationId).destination.extra!!
-    }
-
-    private fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T> {
-        return stack.entryFor(destinationId)
-            ?: throw IllegalStateException("Route $destinationId not found on back stack")
     }
 
     internal companion object {

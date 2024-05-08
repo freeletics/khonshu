@@ -132,7 +132,7 @@ private fun NavigationExecutor.navigateTo(
             (launcher as ActivityResultLauncher<Any?>).launch(event.input)
         }
         is NavEvent.DestinationResultEvent<*> -> {
-            savedStateHandleFor(event.key.destinationId)[event.key.requestKey] = event.result
+            snapshot.value.entryFor(event.key.destinationId).savedStateHandle[event.key.requestKey] = event.result
         }
         is NavEvent.MultiNavEvent -> {
             event.navEvents.forEach { navigateTo(it, activityLaunchers) }
@@ -171,7 +171,7 @@ internal inline fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(
 internal suspend fun <R : Parcelable> NavigationExecutor.collectAndHandleNavigationResults(
     request: NavigationResultRequest<R>,
 ) {
-    val savedStateHandle = savedStateHandleFor(request.key.destinationId)
+    val savedStateHandle = snapshot.value.entryFor(request.key.destinationId).savedStateHandle
     savedStateHandle.getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
         .collect {
             if (it != InitialValue) {
