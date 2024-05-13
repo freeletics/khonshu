@@ -3,7 +3,6 @@ package com.freeletics.khonshu.navigation.internal
 import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.Navigator
-import kotlin.reflect.KClass
 
 @InternalNavigationCodegenApi
 public interface NavigationExecutor : Navigator {

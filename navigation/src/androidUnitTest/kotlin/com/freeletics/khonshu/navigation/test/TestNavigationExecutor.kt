@@ -10,7 +10,6 @@ import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import com.freeletics.khonshu.navigation.internal.StackEntryStore
-import com.freeletics.khonshu.navigation.internal.StackEntryStoreViewModel
 import kotlin.reflect.KClass
 
 internal class TestNavigationExecutor : NavigationExecutor {

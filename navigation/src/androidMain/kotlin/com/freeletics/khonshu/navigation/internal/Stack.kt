@@ -100,10 +100,15 @@ internal class Stack private constructor(
 
             @Suppress("DEPRECATION")
             val routes = bundle.getParcelableArrayList<BaseRoute>(SAVED_STATE_ROUTES)!!
+
             @Suppress("DEPRECATION")
             val states = bundle.getParcelableArrayList<Bundle>(SAVED_STATE_STATES)!!
             val entries = ids.mapIndexed { index, id ->
-                createRestoredEntry(routes[index], StackEntry.Id(id), SavedStateHandle.createHandle(states[index], null))
+                createRestoredEntry(
+                    routes[index],
+                    StackEntry.Id(id),
+                    SavedStateHandle.createHandle(states[index], null),
+                )
             }
             return Stack(entries, createEntry, onStackEntryRemoved)
         }

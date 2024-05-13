@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation.internal
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
