@@ -35,4 +35,4 @@ public annotation class NavHostActivity(
  * - [Modifier]: passed to `NavHost`
  * - an optional destination changed callback
  */
-public typealias SimpleNavHost = @Composable (NavRoot, Modifier, ((BaseRoute) -> Unit)?) -> Unit
+public typealias SimpleNavHost = @Composable (NavRoot, Modifier, ((NavRoot, BaseRoute) -> Unit)?) -> Unit

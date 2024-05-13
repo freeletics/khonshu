@@ -13,6 +13,9 @@ public class StackSnapshot internal constructor(
 ) {
     private var firstVisibleIndex: Int = -1
 
+    internal val root: StackEntry<*>
+        get() = entries.first()
+
     internal val current: StackEntry<*>
         get() = entries.last()
 

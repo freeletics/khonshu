@@ -68,7 +68,7 @@ internal class NavHostActivityCodegenTest {
               sendAction: (TestAction) -> Unit,
               navHost: SimpleNavHost,
             ) {
-                navHost(TestRoot(), Modifier) {}
+                navHost(TestRoot(), Modifier) { _, _ -> }
             }
         """.trimIndent()
 
@@ -280,7 +280,7 @@ internal class NavHostActivityCodegenTest {
               sendAction: (TestAction) -> Unit,
               navHost: SimpleNavHost,
             ) {
-                navHost(TestRoot(), Modifier) {}
+                navHost(TestRoot(), Modifier) { _, _ -> }
             }
         """.trimIndent()
 
@@ -516,7 +516,7 @@ internal class NavHostActivityCodegenTest {
                 testMap: Map<String, Int>,
                 navHost: SimpleNavHost,
             ) {
-                navHost(TestRoot(), Modifier) {}
+                navHost(TestRoot(), Modifier) { _, _ -> }
             }
         """.trimIndent()
 
@@ -748,7 +748,7 @@ internal class NavHostActivityCodegenTest {
               state: TestState,
               navHost: SimpleNavHost,
             ) {
-                navHost(TestRoot(), Modifier) {}
+                navHost(TestRoot(), Modifier) { _, _ -> }
             }
         """.trimIndent()
 
@@ -952,7 +952,7 @@ internal class NavHostActivityCodegenTest {
               sendAction: (TestAction) -> Unit,
               navHost: SimpleNavHost,
             ) {
-                navHost(TestRoot(), Modifier) {}
+                navHost(TestRoot(), Modifier) { _, _ -> }
             }
         """.trimIndent()
 
@@ -1162,9 +1162,9 @@ internal class NavHostActivityCodegenTest {
             public fun Test(
               state: TestState,
               sendAction: (TestAction) -> Unit,
-              navHost: @Composable (NavRoot, Modifier, ((BaseRoute) -> Unit)?) -> Unit,
+              navHost: @Composable (NavRoot, Modifier, ((NavRoot, BaseRoute) -> Unit)?) -> Unit,
             ) {
-                navHost(TestRoot(), Modifier) {}
+                navHost(TestRoot(), Modifier) { _, _ -> }
             }
         """.trimIndent()
 
