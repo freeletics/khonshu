@@ -6,19 +6,16 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.os.bundleOf
 import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.ContentDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
-import java.util.UUID
 
 internal class MultiStack(
     // Use ArrayList to make sure it is a RandomAccess
     private val allStacks: ArrayList<Stack>,
     private var startStack: Stack,
     private var currentStack: Stack,
-    private val destinations: List<ContentDestination<*>>,
+    private val createEntry: (BaseRoute) -> StackEntry<*>,
     private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
-    private val idGenerator: () -> String,
     private val inputRoot: NavRoot,
 ) {
 
@@ -49,7 +46,7 @@ internal class MultiStack(
     }
 
     private fun createBackStack(root: NavRoot): Stack {
-        val newStack = Stack.createWith(root, destinations, onStackEntryRemoved, idGenerator)
+        val newStack = Stack.createWith(root, createEntry, onStackEntryRemoved)
         allStacks.add(newStack)
         return newStack
     }
@@ -164,18 +161,16 @@ internal class MultiStack(
     companion object {
         fun createWith(
             root: NavRoot,
-            destinations: List<ContentDestination<*>>,
+            createEntry: (BaseRoute) -> StackEntry<*>,
             onStackEntryRemoved: (StackEntry.Id) -> Unit,
-            idGenerator: () -> String = { UUID.randomUUID().toString() },
         ): MultiStack {
-            val startStack = Stack.createWith(root, destinations, onStackEntryRemoved, idGenerator)
+            val startStack = Stack.createWith(root, createEntry, onStackEntryRemoved)
             return MultiStack(
                 allStacks = arrayListOf(startStack),
                 startStack = startStack,
                 currentStack = startStack,
-                destinations = destinations,
+                createEntry = createEntry,
                 onStackEntryRemoved = onStackEntryRemoved,
-                idGenerator = idGenerator,
                 inputRoot = root,
             )
         }
@@ -184,18 +179,17 @@ internal class MultiStack(
         fun fromState(
             root: NavRoot,
             bundle: Bundle,
-            destinations: List<ContentDestination<*>>,
+            createEntry: (BaseRoute) -> StackEntry<*>,
+            createRestoredEntry: (BaseRoute, StackEntry.Id) -> StackEntry<*>,
             onStackEntryRemoved: (StackEntry.Id) -> Unit,
-            idGenerator: () -> String = { UUID.randomUUID().toString() },
         ): MultiStack {
             val inputRoot = bundle.getParcelable<NavRoot>(SAVED_INPUT_ROOT)!!
 
             if (inputRoot != root) {
                 return createWith(
                     root = root,
-                    destinations = destinations,
+                    createEntry = createEntry,
                     onStackEntryRemoved = onStackEntryRemoved,
-                    idGenerator = idGenerator,
                 )
             }
 
@@ -204,7 +198,7 @@ internal class MultiStack(
             val startDestinationId = bundle.getSerializable(SAVED_STATE_START_STACK)!!
 
             val allStacks = allStackBundles.mapTo(ArrayList(allStackBundles.size)) {
-                Stack.fromState(it, destinations, onStackEntryRemoved, idGenerator)
+                Stack.fromState(it, createEntry, createRestoredEntry, onStackEntryRemoved)
             }
             val startStack = allStacks.first { it.id.route.java == startDestinationId }
             val currentStack = allStacks.first { it.id.route.java == currentStackId }
@@ -213,9 +207,8 @@ internal class MultiStack(
                 allStacks = allStacks,
                 startStack = startStack,
                 currentStack = currentStack,
-                destinations = destinations,
+                createEntry = createEntry,
                 onStackEntryRemoved = onStackEntryRemoved,
-                idGenerator = idGenerator,
                 inputRoot = inputRoot,
             )
         }

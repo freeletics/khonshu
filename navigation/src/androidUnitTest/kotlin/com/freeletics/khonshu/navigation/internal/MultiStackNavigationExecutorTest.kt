@@ -23,7 +23,7 @@ import org.junit.Test
 internal class MultiStackNavigationExecutorTest {
 
     private var nextId = 100
-    private val idGenerator = { (nextId++).toString() }
+    private val idGenerator = { StackEntry.Id((nextId++).toString()) }
 
     private val removed = mutableListOf<StackEntry.Id>()
     private val removedCallback: (StackEntry.Id) -> Unit = { removed.add(it) }
@@ -33,6 +33,8 @@ internal class MultiStackNavigationExecutorTest {
         started.add(route)
     }
 
+    private val factory = StackEntryFactory(destinations, idGenerator)
+
     private val viewModel = StoreViewModel(SavedStateHandle())
 
     private fun underTest(
@@ -41,7 +43,7 @@ internal class MultiStackNavigationExecutorTest {
         return MultiStackNavigationExecutor(
             activityStarter = starter,
             viewModel = viewModel,
-            stack = MultiStack.createWith(SimpleRoot(1), destinations, removedCallback, idGenerator),
+            stack = MultiStack.createWith(SimpleRoot(1), factory::create, removedCallback),
             deepLinkRoutes = deepLinkRoutes,
         )
     }
