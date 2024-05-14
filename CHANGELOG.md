@@ -1,18 +1,24 @@
 Change Log
 ==========
 
-## 0.24.0 **UNRELEASED**
+## 0.24.0 *(2024-05-15)*
 
 ### Navigation
 
+- The `destinationChangedCallback` parameter of `NavHost` now has `(NavRoot, BaseRoute) -> Unit`
+  signature, where `NavRoot` is the current root. If that root is the current destination both
+  parameters are the same.
 - Khonshu's own navigation implementation has been moved from `navigation-experimental`
   into the main `navigation` artifact.
 - Removed `navigation-compose` artifact that was based on androidx.navigation.
 
 ### Codegen
 
+- The generated component for `@NavHostActivity` now contains the Activity's `Intent` instead of
+  a `Bundle`.
 - Removed `experimentalNavigation` option and `@UseExperimentalNavigation`. The generated
   code will now always use Khonshu's built-in navigation instead of androidx.navigation.
+- Updated Anvil to v2.5.0-beta09.
 
 
 ## 0.23.1 *(2024-03-08)*
