@@ -13,8 +13,6 @@ dependencies {
     testImplementation(projects.codegenCompiler)
     testImplementation(projects.codegen)
     testImplementation(projects.navigation)
-    testImplementation(projects.navigationCompose)
-    testImplementation(projects.navigationExperimental)
     testImplementation(projects.stateMachine)
     testImplementation(libs.anvil.annotations)
     testImplementation(libs.anvil.annotations.optional)
