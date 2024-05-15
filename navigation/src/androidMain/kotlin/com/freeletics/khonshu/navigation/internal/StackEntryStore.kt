@@ -5,7 +5,7 @@ import kotlin.reflect.KClass
 
 @InternalNavigationCodegenApi
 public class StackEntryStore(
-    private val onClose: () -> Unit
+    private val onClose: () -> Unit,
 ) : Closeable {
     private val storedObjects = mutableMapOf<KClass<*>, Any>()
 
