@@ -2,7 +2,6 @@ package com.freeletics.khonshu.navigation.internal
 
 import android.os.Parcelable
 import androidx.compose.runtime.State
-import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
