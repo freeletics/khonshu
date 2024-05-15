@@ -68,8 +68,6 @@ jobs:
           # Copy Dokka files
           mkdir -p docs/navigation/API/runtime
           cp -R navigation/build/dokka/html/. docs/navigation/API/runtime
-          mkdir -p docs/navigation/API/runtime-compose
-          cp -R navigation-compose/build/dokka/html/. docs/navigation/API/compose/
           mkdir -p docs/navigation/API/testing
           cp -R navigation-testing/build/dokka/html/. docs/navigation/API/testing/
           mkdir -p docs/helpers/API/state-machine
