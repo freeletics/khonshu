@@ -1,7 +1,9 @@
 package com.freeletics.khonshu.navigation.internal
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
@@ -60,16 +62,20 @@ internal class Stack private constructor(
         }
     }
 
+    @SuppressLint("RestrictedApi")
     fun saveState(): Bundle {
         val ids = ArrayList<String>(stack.size)
         val routes = ArrayList<BaseRoute>(stack.size)
+        val states = ArrayList<Bundle>(stack.size)
         stack.forEach {
             ids.add(it.id.value)
             routes.add(it.route)
+            states.add(it.savedStateHandle.savedStateProvider().saveState())
         }
         return bundleOf(
             SAVED_STATE_IDS to ids,
             SAVED_STATE_ROUTES to routes,
+            SAVED_STATE_STATES to states,
         )
     }
 
@@ -83,23 +89,32 @@ internal class Stack private constructor(
             return Stack(listOf(rootEntry), createEntry, onStackEntryRemoved)
         }
 
+        @SuppressLint("RestrictedApi")
         fun fromState(
             bundle: Bundle,
             createEntry: (BaseRoute) -> StackEntry<*>,
-            createRestoredEntry: (BaseRoute, StackEntry.Id) -> StackEntry<*>,
+            createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
             onStackEntryRemoved: (StackEntry.Id) -> Unit,
         ): Stack {
             val ids = bundle.getStringArrayList(SAVED_STATE_IDS)!!
 
             @Suppress("DEPRECATION")
             val routes = bundle.getParcelableArrayList<BaseRoute>(SAVED_STATE_ROUTES)!!
+
+            @Suppress("DEPRECATION")
+            val states = bundle.getParcelableArrayList<Bundle>(SAVED_STATE_STATES)!!
             val entries = ids.mapIndexed { index, id ->
-                createRestoredEntry(routes[index], StackEntry.Id(id))
+                createRestoredEntry(
+                    routes[index],
+                    StackEntry.Id(id),
+                    SavedStateHandle.createHandle(states[index], null),
+                )
             }
             return Stack(entries, createEntry, onStackEntryRemoved)
         }
 
         private const val SAVED_STATE_IDS = "com.freeletics.khonshu.navigation.stack.ids"
         private const val SAVED_STATE_ROUTES = "com.freeletics.khonshu.navigation.stack.routes"
+        private const val SAVED_STATE_STATES = "com.freeletics.khonshu.navigation.stack.states"
     }
 }

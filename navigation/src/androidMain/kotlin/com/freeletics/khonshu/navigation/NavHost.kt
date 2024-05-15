@@ -63,7 +63,7 @@ public fun NavHost(
 
         Box(modifier = modifier) {
             snapshot.forEachVisibleDestination {
-                Show(it, executor, saveableStateHolder)
+                Show(it, saveableStateHolder)
             }
         }
     }
@@ -72,7 +72,6 @@ public fun NavHost(
 @Composable
 private fun <T : BaseRoute> Show(
     entry: StackEntry<T>,
-    executor: MultiStackNavigationExecutor,
     saveableStateHolder: SaveableStateHolder,
 ) {
     // From AndroidX Navigation:
@@ -80,8 +79,8 @@ private fun <T : BaseRoute> Show(
     //   it is available when the destination is cleared. Which, because of animations,
     //   only happens after this leaves composition. Which means we can't rely on
     //   DisposableEffect to clean up this reference (as it'll be cleaned up too early)
-    val saveableCloseable = remember(entry, executor, saveableStateHolder) {
-        executor.storeFor(entry.id).getOrCreate(SaveableCloseable::class) {
+    val saveableCloseable = remember(entry, saveableStateHolder) {
+        entry.store.getOrCreate(SaveableCloseable::class) {
             SaveableCloseable(entry.id.value)
         }
     }

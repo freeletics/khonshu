@@ -3,10 +3,11 @@ package com.freeletics.khonshu.navigation.internal
 import java.io.Closeable
 import kotlin.reflect.KClass
 
-internal class NavigationExecutorStore : NavigationExecutor.Store, Closeable {
+@InternalNavigationCodegenApi
+public class StackEntryStore : Closeable {
     private val storedObjects = mutableMapOf<KClass<*>, Any>()
 
-    override fun <T : Any> getOrCreate(key: KClass<T>, factory: () -> T): T {
+    public fun <T : Any> getOrCreate(key: KClass<T>, factory: () -> T): T {
         @Suppress("UNCHECKED_CAST")
         var storedObject = storedObjects[key] as T?
         if (storedObject == null) {

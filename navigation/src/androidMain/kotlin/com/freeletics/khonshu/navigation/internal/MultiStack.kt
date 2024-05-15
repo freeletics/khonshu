@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.os.bundleOf
+import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
@@ -180,7 +181,7 @@ internal class MultiStack(
             root: NavRoot,
             bundle: Bundle,
             createEntry: (BaseRoute) -> StackEntry<*>,
-            createRestoredEntry: (BaseRoute, StackEntry.Id) -> StackEntry<*>,
+            createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
             onStackEntryRemoved: (StackEntry.Id) -> Unit,
         ): MultiStack {
             val inputRoot = bundle.getParcelable<NavRoot>(SAVED_INPUT_ROOT)!!

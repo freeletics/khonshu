@@ -9,6 +9,7 @@ import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
+import com.freeletics.khonshu.navigation.internal.StackEntryStore
 import kotlin.reflect.KClass
 
 internal class TestNavigationExecutor : NavigationExecutor {
@@ -59,7 +60,7 @@ internal class TestNavigationExecutor : NavigationExecutor {
         return savedStateHandle
     }
 
-    override fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): NavigationExecutor.Store {
+    override fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): StackEntryStore {
         throw UnsupportedOperationException()
     }
 
