@@ -16,7 +16,6 @@ internal class MultiStack(
     private var startStack: Stack,
     private var currentStack: Stack,
     private val createEntry: (BaseRoute) -> StackEntry<*>,
-    private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
     private val inputRoot: NavRoot,
 ) {
 
@@ -47,7 +46,7 @@ internal class MultiStack(
     }
 
     private fun createBackStack(root: NavRoot): Stack {
-        val newStack = Stack.createWith(root, createEntry, onStackEntryRemoved)
+        val newStack = Stack.createWith(root, createEntry)
         allStacks.add(newStack)
         return newStack
     }
@@ -55,7 +54,7 @@ internal class MultiStack(
     private fun removeBackStack(stack: Stack) {
         stack.clear()
         allStacks.remove(stack)
-        onStackEntryRemoved(stack.rootEntry.id)
+        stack.rootEntry.close()
     }
 
     private fun updateVisibleDestinations() {
@@ -163,15 +162,13 @@ internal class MultiStack(
         fun createWith(
             root: NavRoot,
             createEntry: (BaseRoute) -> StackEntry<*>,
-            onStackEntryRemoved: (StackEntry.Id) -> Unit,
         ): MultiStack {
-            val startStack = Stack.createWith(root, createEntry, onStackEntryRemoved)
+            val startStack = Stack.createWith(root, createEntry)
             return MultiStack(
                 allStacks = arrayListOf(startStack),
                 startStack = startStack,
                 currentStack = startStack,
                 createEntry = createEntry,
-                onStackEntryRemoved = onStackEntryRemoved,
                 inputRoot = root,
             )
         }
@@ -182,7 +179,6 @@ internal class MultiStack(
             bundle: Bundle,
             createEntry: (BaseRoute) -> StackEntry<*>,
             createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
-            onStackEntryRemoved: (StackEntry.Id) -> Unit,
         ): MultiStack {
             val inputRoot = bundle.getParcelable<NavRoot>(SAVED_INPUT_ROOT)!!
 
@@ -190,7 +186,6 @@ internal class MultiStack(
                 return createWith(
                     root = root,
                     createEntry = createEntry,
-                    onStackEntryRemoved = onStackEntryRemoved,
                 )
             }
 
@@ -199,7 +194,7 @@ internal class MultiStack(
             val startDestinationId = bundle.getSerializable(SAVED_STATE_START_STACK)!!
 
             val allStacks = allStackBundles.mapTo(ArrayList(allStackBundles.size)) {
-                Stack.fromState(it, createEntry, createRestoredEntry, onStackEntryRemoved)
+                Stack.fromState(it, createEntry, createRestoredEntry)
             }
             val startStack = allStacks.first { it.id.route.java == startDestinationId }
             val currentStack = allStacks.first { it.id.route.java == currentStackId }
@@ -209,7 +204,6 @@ internal class MultiStack(
                 startStack = startStack,
                 currentStack = currentStack,
                 createEntry = createEntry,
-                onStackEntryRemoved = onStackEntryRemoved,
                 inputRoot = inputRoot,
             )
         }

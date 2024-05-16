@@ -46,7 +46,6 @@ internal fun rememberNavigationExecutor(
             MultiStack.createWith(
                 root = startRoot,
                 createEntry = factory::create,
-                onStackEntryRemoved = viewModel::removeEntry,
             )
         } else {
             MultiStack.fromState(
@@ -54,7 +53,6 @@ internal fun rememberNavigationExecutor(
                 bundle = navState,
                 createEntry = factory::create,
                 createRestoredEntry = factory::create,
-                onStackEntryRemoved = viewModel::removeEntry,
             )
         }
     }
@@ -72,8 +70,8 @@ internal fun rememberNavigationExecutor(
     return remember(stack, viewModel, starter, deepLinkRoutes) {
         MultiStackNavigationExecutor(
             stack = stack,
-            viewModel = viewModel,
             activityStarter = starter::start,
+            viewModel = viewModel,
             deepLinkRoutes = deepLinkRoutes,
         )
     }

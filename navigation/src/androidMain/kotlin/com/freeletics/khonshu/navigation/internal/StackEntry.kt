@@ -28,6 +28,10 @@ internal class StackEntry<T : BaseRoute>(
             is NavRoot -> false
         }
 
+    fun close() {
+        store.close()
+    }
+
     @JvmInline
     value class Id(val value: String)
 }
