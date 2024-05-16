@@ -33,7 +33,7 @@ public class StackEntry<T : BaseRoute> internal constructor(
             is NavRoot -> false
         }
 
-    fun close() {
+    internal fun close() {
         store.close()
     }
 
