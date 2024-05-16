@@ -40,12 +40,12 @@ internal class NavDestinationModuleGenerator(
         val navigation = data.navigation!!
         return CodeBlock.builder()
             .beginControlFlow(
-                "return %M<%T>(%T)",
+                "return %M<%T>(%T) { snapshot, route ->",
                 navigation.destinationMethod,
                 navigation.route,
                 componentProviderClassName,
             )
-            .addStatement("%L(it)", composableName)
+            .addStatement("%L(snapshot, route)", composableName)
             .endControlFlow()
             .build()
     }

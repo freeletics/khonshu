@@ -84,13 +84,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
-            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
-            import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
+            import com.freeletics.khonshu.navigation.`internal`.StackEntry
+            import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -145,13 +145,12 @@ internal class NavDestinationCodegenTest {
             public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
               @OptIn(InternalNavigationCodegenApi::class)
               override fun provide(
-                route: TestRoute,
-                executor: NavigationExecutor,
+                entry: StackEntry<TestRoute>,
+                snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTestComponent = componentFromParentRoute(route, executor, provider,
-                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                  savedStateHandle, testRoute ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider,
+                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
+                parentComponent.khonshuTestComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
 
@@ -165,11 +164,10 @@ internal class NavDestinationCodegenTest {
 
             @Composable
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public fun KhonshuTest(testRoute: TestRoute) {
-              val executor = LocalNavigationExecutor.current
+            public fun KhonshuTest(snapshot: StackSnapshot, entry: StackEntry<TestRoute>) {
               val provider = LocalActivityComponentProvider.current
-              val component = remember(testRoute, executor, provider) {
-                KhonshuTestComponentProvider.provide(testRoute, executor, provider)
+              val component = remember(entry, snapshot, provider) {
+                KhonshuTestComponentProvider.provide(entry, snapshot, provider)
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -203,8 +201,8 @@ internal class NavDestinationCodegenTest {
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideNavDestination(): NavDestination =
-                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) {
-                KhonshuTest(it)
+                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
+                KhonshuTest(snapshot, route)
               }
             }
 
@@ -259,13 +257,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.component
-            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
-            import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
+            import com.freeletics.khonshu.navigation.`internal`.StackEntry
+            import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -318,12 +316,12 @@ internal class NavDestinationCodegenTest {
             public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
               @OptIn(InternalNavigationCodegenApi::class)
               override fun provide(
-                route: TestRoute,
-                executor: NavigationExecutor,
+                entry: StackEntry<TestRoute>,
+                snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTestComponent = component(route, executor, provider, AppScope::class) { parentComponent:
-                  KhonshuTestComponent.ParentComponent, savedStateHandle, testRoute ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              ): KhonshuTestComponent = component(entry, provider, AppScope::class) { parentComponent:
+                  KhonshuTestComponent.ParentComponent ->
+                parentComponent.khonshuTestComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
 
@@ -337,11 +335,10 @@ internal class NavDestinationCodegenTest {
 
             @Composable
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public fun KhonshuTest(testRoute: TestRoute) {
-              val executor = LocalNavigationExecutor.current
+            public fun KhonshuTest(snapshot: StackSnapshot, entry: StackEntry<TestRoute>) {
               val provider = LocalActivityComponentProvider.current
-              val component = remember(testRoute, executor, provider) {
-                KhonshuTestComponentProvider.provide(testRoute, executor, provider)
+              val component = remember(entry, snapshot, provider) {
+                KhonshuTestComponentProvider.provide(entry, snapshot, provider)
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -375,8 +372,8 @@ internal class NavDestinationCodegenTest {
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideNavDestination(): NavDestination =
-                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) {
-                KhonshuTest(it)
+                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
+                KhonshuTest(snapshot, route)
               }
             }
 
@@ -433,13 +430,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
-            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.OverlayDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
-            import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
+            import com.freeletics.khonshu.navigation.`internal`.StackEntry
+            import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -496,13 +493,12 @@ internal class NavDestinationCodegenTest {
                 ComponentProvider<TestOverlayRoute, KhonshuTestComponent> {
               @OptIn(InternalNavigationCodegenApi::class)
               override fun provide(
-                route: TestOverlayRoute,
-                executor: NavigationExecutor,
+                entry: StackEntry<TestOverlayRoute>,
+                snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTestComponent = componentFromParentRoute(route, executor, provider,
-                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                  savedStateHandle, testOverlayRoute ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testOverlayRoute)
+              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider,
+                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
+                parentComponent.khonshuTestComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
 
@@ -516,11 +512,10 @@ internal class NavDestinationCodegenTest {
 
             @Composable
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public fun KhonshuTest(testOverlayRoute: TestOverlayRoute) {
-              val executor = LocalNavigationExecutor.current
+            public fun KhonshuTest(snapshot: StackSnapshot, entry: StackEntry<TestOverlayRoute>) {
               val provider = LocalActivityComponentProvider.current
-              val component = remember(testOverlayRoute, executor, provider) {
-                KhonshuTestComponentProvider.provide(testOverlayRoute, executor, provider)
+              val component = remember(entry, snapshot, provider) {
+                KhonshuTestComponentProvider.provide(entry, snapshot, provider)
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -554,8 +549,8 @@ internal class NavDestinationCodegenTest {
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideNavDestination(): NavDestination =
-                  OverlayDestination<TestOverlayRoute>(KhonshuTestComponentProvider) {
-                KhonshuTest(it)
+                  OverlayDestination<TestOverlayRoute>(KhonshuTestComponentProvider) { snapshot, route ->
+                KhonshuTest(snapshot, route)
               }
             }
 
@@ -630,13 +625,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
-            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
-            import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
+            import com.freeletics.khonshu.navigation.`internal`.StackEntry
+            import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -703,13 +698,12 @@ internal class NavDestinationCodegenTest {
             public object KhonshuTest2ComponentProvider : ComponentProvider<TestRoute, KhonshuTest2Component> {
               @OptIn(InternalNavigationCodegenApi::class)
               override fun provide(
-                route: TestRoute,
-                executor: NavigationExecutor,
+                entry: StackEntry<TestRoute>,
+                snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTest2Component = componentFromParentRoute(route, executor, provider,
-                  TestParentRoute::class) { parentComponent: KhonshuTest2Component.ParentComponent,
-                  savedStateHandle, testRoute ->
-                parentComponent.khonshuTest2ComponentFactory().create(savedStateHandle, testRoute)
+              ): KhonshuTest2Component = componentFromParentRoute(entry, snapshot, provider,
+                  TestParentRoute::class) { parentComponent: KhonshuTest2Component.ParentComponent ->
+                parentComponent.khonshuTest2ComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
 
@@ -723,11 +717,10 @@ internal class NavDestinationCodegenTest {
 
             @Composable
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public fun KhonshuTest2(testRoute: TestRoute) {
-              val executor = LocalNavigationExecutor.current
+            public fun KhonshuTest2(snapshot: StackSnapshot, entry: StackEntry<TestRoute>) {
               val provider = LocalActivityComponentProvider.current
-              val component = remember(testRoute, executor, provider) {
-                KhonshuTest2ComponentProvider.provide(testRoute, executor, provider)
+              val component = remember(entry, snapshot, provider) {
+                KhonshuTest2ComponentProvider.provide(entry, snapshot, provider)
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -769,8 +762,8 @@ internal class NavDestinationCodegenTest {
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideNavDestination(): NavDestination =
-                  ScreenDestination<TestRoute>(KhonshuTest2ComponentProvider) {
-                KhonshuTest2(it)
+                  ScreenDestination<TestRoute>(KhonshuTest2ComponentProvider) { snapshot, route ->
+                KhonshuTest2(snapshot, route)
               }
             }
 
@@ -820,13 +813,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
-            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
-            import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
+            import com.freeletics.khonshu.navigation.`internal`.StackEntry
+            import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -879,13 +872,12 @@ internal class NavDestinationCodegenTest {
             public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
               @OptIn(InternalNavigationCodegenApi::class)
               override fun provide(
-                route: TestRoute,
-                executor: NavigationExecutor,
+                entry: StackEntry<TestRoute>,
+                snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTestComponent = componentFromParentRoute(route, executor, provider,
-                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                  savedStateHandle, testRoute ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider,
+                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
+                parentComponent.khonshuTestComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
 
@@ -899,11 +891,10 @@ internal class NavDestinationCodegenTest {
 
             @Composable
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public fun KhonshuTest(testRoute: TestRoute) {
-              val executor = LocalNavigationExecutor.current
+            public fun KhonshuTest(snapshot: StackSnapshot, entry: StackEntry<TestRoute>) {
               val provider = LocalActivityComponentProvider.current
-              val component = remember(testRoute, executor, provider) {
-                KhonshuTestComponentProvider.provide(testRoute, executor, provider)
+              val component = remember(entry, snapshot, provider) {
+                KhonshuTestComponentProvider.provide(entry, snapshot, provider)
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -932,8 +923,8 @@ internal class NavDestinationCodegenTest {
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideNavDestination(): NavDestination =
-                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) {
-                KhonshuTest(it)
+                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
+                KhonshuTest(snapshot, route)
               }
             }
 
@@ -984,13 +975,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.componentFromParentRoute
-            import com.freeletics.khonshu.navigation.LocalNavigationExecutor
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavEventNavigator
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
-            import com.freeletics.khonshu.navigation.`internal`.NavigationExecutor
+            import com.freeletics.khonshu.navigation.`internal`.StackEntry
+            import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
             import com.squareup.anvil.annotations.ContributesSubcomponent
             import com.squareup.anvil.annotations.ContributesTo
             import com.squareup.anvil.annotations.optional.ForScope
@@ -1045,13 +1036,12 @@ internal class NavDestinationCodegenTest {
             public object KhonshuTestComponentProvider : ComponentProvider<TestRoute, KhonshuTestComponent> {
               @OptIn(InternalNavigationCodegenApi::class)
               override fun provide(
-                route: TestRoute,
-                executor: NavigationExecutor,
+                entry: StackEntry<TestRoute>,
+                snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTestComponent = componentFromParentRoute(route, executor, provider,
-                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                  savedStateHandle, testRoute ->
-                parentComponent.khonshuTestComponentFactory().create(savedStateHandle, testRoute)
+              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider,
+                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
+                parentComponent.khonshuTestComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
 
@@ -1065,11 +1055,10 @@ internal class NavDestinationCodegenTest {
 
             @Composable
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public fun KhonshuTest(testRoute: TestRoute) {
-              val executor = LocalNavigationExecutor.current
+            public fun KhonshuTest(snapshot: StackSnapshot, entry: StackEntry<TestRoute>) {
               val provider = LocalActivityComponentProvider.current
-              val component = remember(testRoute, executor, provider) {
-                KhonshuTestComponentProvider.provide(testRoute, executor, provider)
+              val component = remember(entry, snapshot, provider) {
+                KhonshuTestComponentProvider.provide(entry, snapshot, provider)
               }
 
               NavigationSetup(component.navEventNavigator)
@@ -1102,8 +1091,8 @@ internal class NavDestinationCodegenTest {
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideNavDestination(): NavDestination =
-                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) {
-                KhonshuTest(it)
+                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
+                KhonshuTest(snapshot, route)
               }
             }
 

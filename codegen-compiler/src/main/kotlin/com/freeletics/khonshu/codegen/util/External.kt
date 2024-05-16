@@ -28,18 +28,17 @@ internal val localActivityComponentProvider =
     MemberName("com.freeletics.khonshu.codegen.internal", "LocalActivityComponentProvider")
 
 // Navigator
+internal val stackSnapshot = ClassName("com.freeletics.khonshu.navigation.internal", "StackSnapshot")
+internal val stackEntry = ClassName("com.freeletics.khonshu.navigation.internal", "StackEntry")
 internal val baseRoute = ClassName("com.freeletics.khonshu.navigation", "BaseRoute")
 internal val baseRouteFqName = FqName(baseRoute.canonicalName)
 internal val navRoot = ClassName("com.freeletics.khonshu.navigation", "NavRoot")
 internal val navEventNavigator = ClassName("com.freeletics.khonshu.navigation", "NavEventNavigator")
-internal val navigationExecutor = ClassName("com.freeletics.khonshu.navigation.internal", "NavigationExecutor")
 internal val navHost = MemberName("com.freeletics.khonshu.navigation", "NavHost")
 internal val navigationSetup = MemberName("com.freeletics.khonshu.navigation", "NavigationSetup")
 internal val navigationDestination = ClassName("com.freeletics.khonshu.navigation", "NavDestination")
 internal val screenDestination = MemberName("com.freeletics.khonshu.navigation", "ScreenDestination")
 internal val overlayDestination = MemberName("com.freeletics.khonshu.navigation", "OverlayDestination")
-internal val localNavigationExecutor =
-    MemberName("com.freeletics.khonshu.navigation", "LocalNavigationExecutor")
 internal val deepLinkHandler = ClassName("com.freeletics.khonshu.navigation.deeplinks", "DeepLinkHandler")
 internal val deepLinkPrefix = deepLinkHandler.nestedClass("Prefix")
 internal val internalNavigatorApi =
