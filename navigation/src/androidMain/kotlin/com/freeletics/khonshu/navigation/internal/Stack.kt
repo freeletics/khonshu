@@ -20,11 +20,6 @@ internal class Stack private constructor(
     val rootEntry: StackEntry<*> get() = stack.first()
     val isAtRoot: Boolean get() = !stack.last().removable
 
-    @Suppress("UNCHECKED_CAST")
-    fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
-        return stack.findLast { it.destinationId == destinationId } as StackEntry<T>?
-    }
-
     fun snapshot(startStackId: DestinationId<*>): StackSnapshot {
         return StackSnapshot(stack.toList(), startStackId == id)
     }

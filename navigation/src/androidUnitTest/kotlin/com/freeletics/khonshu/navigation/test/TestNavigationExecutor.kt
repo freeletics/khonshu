@@ -1,21 +1,22 @@
 package com.freeletics.khonshu.navigation.test
 
-import androidx.lifecycle.SavedStateHandle
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import app.cash.turbine.Turbine
 import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
-import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavigationExecutor
-import com.freeletics.khonshu.navigation.internal.StackEntryStore
+import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
 
 internal class TestNavigationExecutor : NavigationExecutor {
 
     val received = Turbine<NavEvent>()
-    val savedStateHandle = SavedStateHandle()
+
+    override val snapshot: MutableState<StackSnapshot> = mutableStateOf(StackSnapshot(emptyList(), false))
 
     override fun navigateTo(route: NavRoute) {
         received.add(NavEvent.NavigateToEvent(route))
@@ -50,21 +51,5 @@ internal class TestNavigationExecutor : NavigationExecutor {
 
     override fun replaceAll(root: NavRoot) {
         received.add(NavEvent.ReplaceAll(root))
-    }
-
-    override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T {
-        throw UnsupportedOperationException()
-    }
-
-    override fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle {
-        return savedStateHandle
-    }
-
-    override fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): StackEntryStore {
-        throw UnsupportedOperationException()
-    }
-
-    override fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Any {
-        throw UnsupportedOperationException()
     }
 }

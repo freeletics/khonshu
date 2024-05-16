@@ -10,17 +10,22 @@ import dev.drewhamilton.poko.Poko
 
 @Poko
 @Immutable
-internal class StackEntry<T : BaseRoute>(
-    val id: Id,
-    val route: T,
-    val destination: ContentDestination<T>,
-    val savedStateHandle: SavedStateHandle,
-    val store: StackEntryStore,
+@InternalNavigationCodegenApi
+public class StackEntry<T : BaseRoute> internal constructor(
+    internal val id: Id,
+    public val route: T,
+    internal val destination: ContentDestination<T>,
+    public val savedStateHandle: SavedStateHandle,
+    public val store: StackEntryStore,
 ) {
-    val destinationId
+    internal val destinationId
         get() = route.destinationId
 
-    val removable
+    @InternalNavigationCodegenApi
+    public val extra: Any?
+        get() = destination.extra
+
+    internal val removable
         // cast is needed for the compiler to recognize that the when is exhaustive
         @Suppress("USELESS_CAST")
         get() = when (route as BaseRoute) {
@@ -28,10 +33,10 @@ internal class StackEntry<T : BaseRoute>(
             is NavRoot -> false
         }
 
-    fun close() {
+    internal fun close() {
         store.close()
     }
 
     @JvmInline
-    value class Id(val value: String)
+    internal value class Id(internal val value: String)
 }

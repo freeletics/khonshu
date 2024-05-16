@@ -10,6 +10,7 @@ import app.cash.turbine.test
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
 import com.freeletics.khonshu.navigation.internal.NavEvent
+import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
@@ -17,6 +18,7 @@ import com.freeletics.khonshu.navigation.test.TestActivityResultLauncher
 import com.freeletics.khonshu.navigation.test.TestNavigationExecutor
 import com.freeletics.khonshu.navigation.test.TestNavigator
 import com.freeletics.khonshu.navigation.test.TestParcelable
+import com.freeletics.khonshu.navigation.test.TestStackEntryFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -51,6 +53,8 @@ internal class NavigationSetupTest {
     private val dispatcher: CoroutineDispatcher = UnconfinedTestDispatcher()
     private val testLifecycleOwner = TestLifecycleOwner(RESUMED, dispatcher)
     private val lifecyle = testLifecycleOwner.lifecycle
+
+    private val factory = TestStackEntryFactory()
 
     @Before
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -206,7 +210,9 @@ internal class NavigationSetupTest {
     fun `DestinationResultEvent is forwarded to executor`() = runBlocking {
         setup()
 
-        executor.savedStateHandle.getStateFlow<Parcelable?>(resultRequest.key.requestKey, null).test {
+        val entry = factory.create(SimpleRoute(0))
+        executor.snapshot.value = StackSnapshot(listOf(entry), true)
+        entry.savedStateHandle.getStateFlow<Parcelable?>(resultRequest.key.requestKey, null).test {
             assertThat(awaitItem()).isEqualTo(null)
 
             navigator.deliverNavigationResult(resultRequest.key, TestParcelable(9))
@@ -299,23 +305,27 @@ internal class NavigationSetupTest {
 
     @Test
     fun `collectAndHandleNavigationResults forwards results`() = runBlocking {
+        val entry = factory.create(SimpleRoute(0))
+        executor.snapshot.value = StackSnapshot(listOf(entry), true)
         CoroutineScope(dispatcher).launch {
             executor.collectAndHandleNavigationResults(resultRequest)
         }
 
         resultRequest.results.test {
-            executor.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(3)
+            entry.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(3)
             assertThat(awaitItem()).isEqualTo(TestParcelable(3))
         }
     }
 
     @Test
     fun `collectAndHandleNavigationResults forwards initial value if set`() = runBlocking {
+        val entry = factory.create(SimpleRoute(0))
+        executor.snapshot.value = StackSnapshot(listOf(entry), true)
         CoroutineScope(dispatcher).launch {
             executor.collectAndHandleNavigationResults(resultRequest)
         }
 
-        executor.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(5)
+        entry.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(5)
         resultRequest.results.test {
             assertThat(awaitItem()).isEqualTo(TestParcelable(5))
         }
@@ -323,11 +333,13 @@ internal class NavigationSetupTest {
 
     @Test
     fun `collectAndHandleNavigationResults does not forward same result twice`() = runBlocking {
+        val entry = factory.create(SimpleRoute(0))
+        executor.snapshot.value = StackSnapshot(listOf(entry), true)
         val job = CoroutineScope(dispatcher).launch {
             executor.collectAndHandleNavigationResults(resultRequest)
         }
 
-        executor.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(5)
+        entry.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(5)
         resultRequest.results.test {
             assertThat(awaitItem()).isEqualTo(TestParcelable(5))
 
@@ -347,7 +359,7 @@ internal class NavigationSetupTest {
             }
 
             // new value
-            executor.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(7)
+            entry.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(7)
             assertThat(awaitItem()).isEqualTo(TestParcelable(7))
         }
     }

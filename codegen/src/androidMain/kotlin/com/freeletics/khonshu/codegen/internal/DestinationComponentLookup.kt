@@ -28,10 +28,11 @@ public inline fun <reified C : Any, PC : Any, R : BaseRoute> component(
     parentScope: KClass<*>,
     crossinline factory: (PC, SavedStateHandle, R) -> C,
 ): C {
-    val destinationId = route.destinationId
-    return executor.storeFor(destinationId).getOrCreate(C::class) {
+    val snapshot = executor.snapshot.value
+    val entry = snapshot.entryFor(route.destinationId)
+    return entry.store.getOrCreate(C::class) {
         val parentComponent = activityComponentProvider.provide<PC>(parentScope)
-        val savedStateHandle = executor.savedStateHandleFor(destinationId)
+        val savedStateHandle = entry.savedStateHandle
         factory(parentComponent, savedStateHandle, route)
     }
 }
@@ -51,15 +52,16 @@ public inline fun <reified C : Any, PC : Any, R : BaseRoute, PR : BaseRoute> com
     parentScope: KClass<PR>,
     crossinline factory: (PC, SavedStateHandle, R) -> C,
 ): C {
-    val destinationId = route.destinationId
-    return executor.storeFor(destinationId).getOrCreate(C::class) {
-        val parentDestinationId = DestinationId((parentScope))
+    val snapshot = executor.snapshot.value
+    val entry = snapshot.entryFor(route.destinationId)
+    return entry.store.getOrCreate(C::class) {
+        val parentEntry = snapshot.entryFor(DestinationId(parentScope))
 
         @Suppress("UNCHECKED_CAST")
-        val parentComponentProvider = executor.extra(parentDestinationId) as ComponentProvider<PR, PC>
-        val parentRoute = executor.routeFor(parentDestinationId)
+        val parentComponentProvider = parentEntry.extra as ComponentProvider<PR, PC>
+        val parentRoute = parentEntry.route
         val parentComponent = parentComponentProvider.provide(parentRoute, executor, activityComponentProvider)
-        val savedStateHandle = executor.savedStateHandleFor(destinationId)
+        val savedStateHandle = entry.savedStateHandle
         factory(parentComponent, savedStateHandle, route)
     }
 }

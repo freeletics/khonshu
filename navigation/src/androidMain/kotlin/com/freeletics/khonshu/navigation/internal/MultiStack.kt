@@ -26,21 +26,6 @@ internal class MultiStack(
 
     val startRoot = startStack.rootEntry.route as NavRoot
 
-    fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
-        val entry = currentStack.entryFor(destinationId)
-        if (entry != null) {
-            return entry
-        }
-
-        // the root of the default back stack is always on the back stack
-        if (startStack.rootEntry.destinationId == destinationId) {
-            @Suppress("UNCHECKED_CAST")
-            return startStack.rootEntry as StackEntry<T>
-        }
-
-        return null
-    }
-
     private fun getBackStack(root: NavRoot): Stack? {
         return allStacks.find { it.id == root.destinationId }
     }

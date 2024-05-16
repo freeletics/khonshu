@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation.internal
 
 import androidx.compose.runtime.Immutable
+import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.OverlayDestination
 import dev.drewhamilton.poko.Poko
 
@@ -36,5 +37,12 @@ public class StackSnapshot internal constructor(
         firstVisibleIndex = entries.indexOfLast {
             it.destination !is OverlayDestination<*>
         }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @InternalNavigationCodegenApi
+    public fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T> {
+        return entries.lastOrNull { it.destinationId == destinationId } as StackEntry<T>?
+            ?: throw IllegalStateException("Route $destinationId not found on back stack")
     }
 }
