@@ -6,7 +6,7 @@ import org.junit.Test
 
 internal class NavgationExecutorStoreTest {
 
-    private val underTest = StackEntryStore()
+    private val underTest = StackEntryStore {}
 
     @Test
     fun `store returns value from factory`() {

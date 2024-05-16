@@ -9,12 +9,13 @@ internal class StackEntryStoreViewModel(
     private val stores = mutableMapOf<StackEntry.Id, StackEntryStore>()
 
     fun provideStore(id: StackEntry.Id): StackEntryStore {
-        return stores.getOrPut(id) { StackEntryStore() }
+        return stores.getOrPut(id) {
+            StackEntryStore { stores.remove(id) }
+        }
     }
 
-    fun removeEntry(id: StackEntry.Id) {
-        val store = stores.remove(id)
-        store?.close()
+    private fun removeStore(id: StackEntry.Id) {
+        stores.remove(id)
     }
 
     public override fun onCleared() {

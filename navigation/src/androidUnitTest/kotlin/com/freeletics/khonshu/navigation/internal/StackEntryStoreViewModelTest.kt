@@ -25,36 +25,38 @@ internal class StackEntryStoreViewModelTest {
     }
 
     @Test
-    fun `StoreViewModel returns different store for same id after removeEntry`() {
+    fun `StoreViewModel returns different store for same id after store was closed`() {
         val valueA = underTest.provideStore(StackEntry.Id("1"))
-        underTest.removeEntry(StackEntry.Id("1"))
+        valueA.close()
         val valueB = underTest.provideStore(StackEntry.Id("1"))
         assertThat(valueA).isNotSameInstanceAs(valueB)
     }
 
     @Test
-    fun `StoreViewModel closes store after removeEntry`() {
+    fun `StoreViewModel closes store after store was closed`() {
         val closeable = FakeCloseable()
         val valueA = underTest.provideStore(StackEntry.Id("1"))
         valueA.getOrCreate(FakeCloseable::class) { closeable }
-        underTest.removeEntry(StackEntry.Id("1"))
+        valueA.close()
         assertThat(closeable.closed).isTrue()
     }
 
     @Test
-    fun `StoreViewModel returns same store for same id after removeEntry for different id`() {
+    fun `StoreViewModel returns same store for same id after store was closed for same id`() {
         val valueA = underTest.provideStore(StackEntry.Id("1"))
-        underTest.removeEntry(StackEntry.Id("2"))
-        val valueB = underTest.provideStore(StackEntry.Id("1"))
-        assertThat(valueA).isSameInstanceAs(valueB)
+        val valueB = underTest.provideStore(StackEntry.Id("2"))
+        valueB.close()
+        val valueC = underTest.provideStore(StackEntry.Id("1"))
+        assertThat(valueA).isSameInstanceAs(valueC)
     }
 
     @Test
-    fun `StoreViewModel does not close store after removeEntry for different id`() {
+    fun `StoreViewModel does not close store after closing store for different id`() {
         val closeable = FakeCloseable()
         val valueA = underTest.provideStore(StackEntry.Id("1"))
         valueA.getOrCreate(FakeCloseable::class) { closeable }
-        underTest.removeEntry(StackEntry.Id("2"))
+        val valueB = underTest.provideStore(StackEntry.Id("2"))
+        valueB.close()
         assertThat(closeable.closed).isFalse()
     }
 

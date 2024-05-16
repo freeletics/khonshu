@@ -10,8 +10,8 @@ import kotlin.reflect.KClass
 
 internal class MultiStackNavigationExecutor(
     private val stack: MultiStack,
-    private val viewModel: StackEntryStoreViewModel,
     private val activityStarter: (ActivityRoute) -> Unit,
+    viewModel: StackEntryStoreViewModel,
     deepLinkRoutes: List<Parcelable>,
 ) : NavigationExecutor {
 

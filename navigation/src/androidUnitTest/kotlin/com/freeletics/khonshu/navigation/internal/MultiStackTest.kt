@@ -17,18 +17,13 @@ import org.junit.Test
 
 internal class MultiStackTest {
 
-    private var nextId = 100
-    private val idGenerator = { StackEntry.Id((nextId++).toString()) }
-
-    private val removed = mutableListOf<StackEntry.Id>()
-    private val removedCallback: (StackEntry.Id) -> Unit = { removed.add(it) }
-
     private val defaultStack get() = stack(SimpleRoot(1))
 
     private val factory = TestStackEntryFactory()
+    private val removed get() = factory.closedEntries
 
     private fun stack(root: NavRoot): Stack {
-        return Stack.createWith(root, factory::create, removedCallback)
+        return Stack.createWith(root, factory::create)
     }
 
     private fun underTest(
@@ -39,7 +34,6 @@ internal class MultiStackTest {
             startStack = startStack,
             currentStack = startStack,
             createEntry = factory::create,
-            onStackEntryRemoved = removedCallback,
             inputRoot = startStack.rootEntry.route as NavRoot,
         )
     }
