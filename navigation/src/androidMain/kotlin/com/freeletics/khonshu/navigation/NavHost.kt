@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
-import com.freeletics.khonshu.navigation.internal.rememberHostNavigator
 import java.io.Closeable
 import java.lang.ref.WeakReference
 import kotlinx.collections.immutable.ImmutableSet
@@ -49,6 +48,27 @@ public fun NavHost(
     destinationChangedCallback: ((NavRoot, BaseRoute) -> Unit)? = null,
 ) {
     val navigator = rememberHostNavigator(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
+    NavHost(navigator, modifier, navEventNavigator, destinationChangedCallback)
+}
+
+/**
+ * Create a new `NavHost` with the given [HostNavigator]. The start [NavRoot], available
+ * destinations and deep link handling are all dependent on the `navigator`. For more see
+ * [rememberHostNavigator].
+ *
+ * If a [NavEventNavigator] is passed it will be automatically set up and can be used to
+ * navigate within the `NavHost`.
+ *
+ * The [destinationChangedCallback] can be used to be notified when the current destination
+ * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
+ */
+@Composable
+public fun NavHost(
+    navigator: HostNavigator,
+    modifier: Modifier = Modifier,
+    navEventNavigator: NavEventNavigator? = null,
+    destinationChangedCallback: ((NavRoot, BaseRoute) -> Unit)? = null,
+) {
     val snapshot by navigator.snapshot
 
     SystemBackHandling(snapshot, navigator)
