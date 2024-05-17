@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.navigation
 
 import androidx.compose.runtime.State
-import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 
 /**
