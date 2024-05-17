@@ -40,19 +40,15 @@ internal class ActivityGenerator(
             .beginControlFlow("val component = %M(componentProvider)", remember)
             .addStatement("componentProvider.provide<%T>(%T::class)", retainedComponentClassName, data.scope)
             .endControlFlow()
-            .beginControlFlow("%L(component) { startRoute, modifier, destinationChangedCallback ->", composableName)
+            .beginControlFlow("%L(component) { modifier, destinationChangedCallback ->", composableName)
             .beginControlFlow(
                 "%M(%M provides componentProvider)",
                 compositionLocalProvider,
                 localActivityComponentProvider,
             )
             .addStatement("%M(", navHost)
-            .addStatement("  startRoute = startRoute,")
-            .addStatement("  destinations = %M(component) { component.destinations },", remember)
+            .addStatement("  navigator = %M(component) { component.hostNavigator },", remember)
             .addStatement("  modifier = modifier,")
-            .addStatement("  deepLinkHandlers = %M(component) { component.deepLinkHandlers },", remember)
-            .addStatement("  deepLinkPrefixes = %M(component) { component.deepLinkPrefixes },", remember)
-            .addStatement("  navEventNavigator = %M(component) { component.navEventNavigator },", remember)
             .addStatement("  destinationChangedCallback = destinationChangedCallback,")
             .addStatement(")")
             .endControlFlow()

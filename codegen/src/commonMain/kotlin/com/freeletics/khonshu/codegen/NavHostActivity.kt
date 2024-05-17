@@ -31,8 +31,7 @@ public annotation class NavHostActivity(
  * A simplified wrapper around `NavHost`
  *
  * Parameters:
- * - [NavRoot]: the start destination of the `NavHost`
  * - [Modifier]: passed to `NavHost`
  * - an optional destination changed callback
  */
-public typealias SimpleNavHost = @Composable (NavRoot, Modifier, ((NavRoot, BaseRoute) -> Unit)?) -> Unit
+public typealias SimpleNavHost = @Composable (Modifier, ((NavRoot, BaseRoute) -> Unit)?) -> Unit

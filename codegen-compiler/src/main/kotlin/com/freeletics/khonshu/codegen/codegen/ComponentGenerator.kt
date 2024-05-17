@@ -5,12 +5,10 @@ import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.bindsInstanceParameter
 import com.freeletics.khonshu.codegen.util.contributesToAnnotation
-import com.freeletics.khonshu.codegen.util.deepLinkHandler
-import com.freeletics.khonshu.codegen.util.deepLinkPrefix
 import com.freeletics.khonshu.codegen.util.forScope
-import com.freeletics.khonshu.codegen.util.immutableSet
+import com.freeletics.khonshu.codegen.util.hostNavigator
+import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
 import com.freeletics.khonshu.codegen.util.navEventNavigator
-import com.freeletics.khonshu.codegen.util.navigationDestination
 import com.freeletics.khonshu.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.scopeToAnnotation
@@ -66,24 +64,22 @@ internal class ComponentGenerator(
         val properties = mutableListOf<PropertySpec>()
         properties += simplePropertySpec(data.stateMachine)
 
-        properties += simplePropertySpec(navEventNavigator).toBuilder()
-            .addAnnotation(forScope(data.scope, GET))
-            .build()
+        if (data is NavHostActivityData) {
+            properties += simplePropertySpec(hostNavigator)
+        } else {
+            properties += simplePropertySpec(navEventNavigator).toBuilder()
+                .addAnnotation(forScope(data.scope, GET))
+                .build()
+        }
 
         properties += data.composableParameter.map {
             PropertySpec.builder(it.name, it.typeName).build()
         }
 
-        if (data is NavHostActivityData) {
-            properties += listOf(
-                PropertySpec.builder("destinations", immutableSet.parameterizedBy(navigationDestination)).build(),
-                PropertySpec.builder("deepLinkHandlers", immutableSet.parameterizedBy(deepLinkHandler)).build(),
-                PropertySpec.builder("deepLinkPrefixes", immutableSet.parameterizedBy(deepLinkPrefix)).build(),
-            )
-        }
         properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName()))
             .addAnnotation(forScope(data.scope, GET))
             .build()
+
         return properties
     }
 
@@ -99,13 +95,13 @@ internal class ComponentGenerator(
     private fun retainedComponentFactory(): TypeSpec {
         val createFun = FunSpec.builder(retainedComponentFactoryCreateName)
             .addModifiers(ABSTRACT)
+            .apply {
+                if (data is NavHostActivityData) {
+                    addParameter(bindsInstanceParameter("viewModel", multiStackHostNavigatorViewModel))
+                }
+            }
             .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
-            .addParameter(
-                bindsInstanceParameter(
-                    data.navigation.asParameter(),
-                    forScope(data.scope).takeIf { data.navigation == null },
-                ),
-            )
+            .addParameter(bindsInstanceParameter(data.navigation.asParameter()))
             .returns(retainedComponentClassName)
             .build()
         return TypeSpec.interfaceBuilder(retainedComponentFactoryClassName)

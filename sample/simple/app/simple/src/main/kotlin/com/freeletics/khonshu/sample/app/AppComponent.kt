@@ -1,6 +1,6 @@
 package com.freeletics.khonshu.sample.app
 
-import android.app.Application
+import android.content.Context
 import com.freeletics.khonshu.codegen.AppScope
 import com.squareup.anvil.annotations.MergeComponent
 import com.squareup.anvil.annotations.optional.SingleIn
@@ -13,7 +13,7 @@ interface AppComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance application: Application): AppComponent
+        fun create(@BindsInstance context: Context): AppComponent
     }
 
     companion object {

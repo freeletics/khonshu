@@ -4,17 +4,19 @@ import android.content.Context
 import android.os.Bundle
 import com.freeletics.khonshu.navigation.ActivityDestination
 import com.freeletics.khonshu.navigation.ContentDestination
+import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.internal.MultiStackHostNavigator.Companion.SAVED_STATE_STACK
 import kotlinx.collections.immutable.ImmutableSet
 
-internal fun createHostNavigator(
+@InternalNavigationCodegenApi
+public fun createHostNavigator(
     context: Context,
     viewModel: StackEntryStoreViewModel,
     startRoot: NavRoot,
     destinations: ImmutableSet<NavDestination>,
-): MultiStackHostNavigator {
+): HostNavigator {
     val activityDestinations = destinations.filterIsInstance<ActivityDestination>()
     val starter = ActivityStarter(context.applicationContext, activityDestinations)
 

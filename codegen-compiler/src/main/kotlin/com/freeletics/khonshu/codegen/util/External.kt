@@ -34,20 +34,21 @@ internal val baseRoute = ClassName("com.freeletics.khonshu.navigation", "BaseRou
 internal val baseRouteFqName = FqName(baseRoute.canonicalName)
 internal val navRoot = ClassName("com.freeletics.khonshu.navigation", "NavRoot")
 internal val navEventNavigator = ClassName("com.freeletics.khonshu.navigation", "NavEventNavigator")
+internal val hostNavigator = ClassName("com.freeletics.khonshu.navigation", "HostNavigator")
+internal val createHostNavigator = MemberName("com.freeletics.khonshu.navigation.internal", "createHostNavigator")
+internal val multiStackHostNavigatorViewModel =
+    ClassName("com.freeletics.khonshu.navigation.internal", "StackEntryStoreViewModel")
 internal val navHost = MemberName("com.freeletics.khonshu.navigation", "NavHost")
 internal val navigationSetup = MemberName("com.freeletics.khonshu.navigation", "NavigationSetup")
 internal val navigationDestination = ClassName("com.freeletics.khonshu.navigation", "NavDestination")
 internal val screenDestination = MemberName("com.freeletics.khonshu.navigation", "ScreenDestination")
 internal val overlayDestination = MemberName("com.freeletics.khonshu.navigation", "OverlayDestination")
-internal val deepLinkHandler = ClassName("com.freeletics.khonshu.navigation.deeplinks", "DeepLinkHandler")
-internal val deepLinkPrefix = deepLinkHandler.nestedClass("Prefix")
 internal val internalNavigatorApi =
     ClassName("com.freeletics.khonshu.navigation.internal", "InternalNavigationCodegenApi")
 
 internal val simpleNavHost = ClassName("com.freeletics.khonshu.codegen", "SimpleNavHost")
 internal val simpleNavHostLambda = LambdaTypeName.get(
     null,
-    navRoot,
     ClassName("androidx.compose.ui", "Modifier"),
     LambdaTypeName.get(null, navRoot, baseRoute, returnType = UNIT).copy(nullable = true),
     returnType = UNIT,
@@ -80,6 +81,8 @@ internal val module = ClassName("dagger", "Module")
 internal val componentActivity = ClassName("androidx.activity", "ComponentActivity")
 internal val setContent = MemberName("androidx.activity.compose", "setContent")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
+internal val savedStateViewModelFactory = ClassName("androidx.lifecycle", "SavedStateViewModelFactory")
+internal val viewModelProvider = ClassName("androidx.lifecycle", "ViewModelProvider")
 
 // Compose
 internal val composable = ClassName("androidx.compose.runtime", "Composable")
@@ -89,5 +92,6 @@ internal val compositionLocalProvider = MemberName("androidx.compose.runtime", "
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 
 // Android
+internal val context = ClassName("android.content", "Context")
 internal val intent = ClassName("android.content", "Intent")
 internal val bundle = ClassName("android.os", "Bundle")
