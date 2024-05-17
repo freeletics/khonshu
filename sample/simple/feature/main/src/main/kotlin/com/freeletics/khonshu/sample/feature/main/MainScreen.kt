@@ -21,7 +21,7 @@ import dagger.Provides
 internal fun MainScreen(
     navHost: SimpleNavHost,
 ) {
-    navHost(RootRoute, Modifier.fillMaxSize()) { _, _ -> }
+    navHost(Modifier.fillMaxSize()) { _, _ -> }
 }
 
 @ContributesTo(ActivityScope::class)
