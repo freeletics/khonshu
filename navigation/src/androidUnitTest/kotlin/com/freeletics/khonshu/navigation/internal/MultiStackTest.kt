@@ -357,7 +357,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `replaceAll with start root from start executor`() {
+    fun `replaceAll with start root from start hostNavigator`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
         stack.replaceAll(SimpleRoot(2))
@@ -377,7 +377,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `replaceAll with start root from other executor`() {
+    fun `replaceAll with start root from other hostNavigator`() {
         val stack = underTest()
         stack.push(OtherRoot(1), clearTargetStack = false)
         stack.replaceAll(SimpleRoot(2))
@@ -396,7 +396,7 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `replaceAll after navigating with root and without clearing the target executor from within back executor`() {
+    fun `replaceAll after navigating with root and without clearing the target hostNavigator from within back hostNavigator`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
         stack.push(OtherRoot(1), clearTargetStack = false)

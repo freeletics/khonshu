@@ -5,14 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import app.cash.turbine.Turbine
 import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.internal.NavEvent
-import com.freeletics.khonshu.navigation.internal.NavigationExecutor
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
 
-internal class TestNavigationExecutor : NavigationExecutor {
+internal class TestHostNavigator : HostNavigator() {
 
     val received = Turbine<NavEvent>()
 

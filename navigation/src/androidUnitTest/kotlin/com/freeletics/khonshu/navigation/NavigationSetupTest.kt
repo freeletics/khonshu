@@ -15,7 +15,7 @@ import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestActivityResultLauncher
-import com.freeletics.khonshu.navigation.test.TestNavigationExecutor
+import com.freeletics.khonshu.navigation.test.TestHostNavigator
 import com.freeletics.khonshu.navigation.test.TestNavigator
 import com.freeletics.khonshu.navigation.test.TestParcelable
 import com.freeletics.khonshu.navigation.test.TestStackEntryFactory
@@ -37,7 +37,7 @@ import org.junit.Test
 internal class NavigationSetupTest {
 
     private val navigator = TestNavigator()
-    private val executor = TestNavigationExecutor()
+    private val hostNavigator = TestHostNavigator()
     private val resultRequest = navigator.testRegisterForNavigationResult<SimpleRoute, TestParcelable>()
     private val activityRequest = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
     private val activityRequest2 = navigator.testRegisterForActivityResult(ActivityResultContracts.TakePicture())
@@ -64,14 +64,14 @@ internal class NavigationSetupTest {
 
     private fun setup() {
         CoroutineScope(dispatcher).launch {
-            navigator.collectAndHandleNavEvents(lifecyle, executor, launchers)
+            navigator.collectAndHandleNavEvents(lifecyle, hostNavigator, launchers)
         }
     }
 
     @After
     @OptIn(ExperimentalCoroutinesApi::class)
     fun tearDown() = runBlocking {
-        executor.received.cancel()
+        hostNavigator.received.cancel()
         activityLauncher.launched.cancel()
         permissionLauncher.launched.cancel()
         Dispatchers.resetMain()
@@ -89,7 +89,7 @@ internal class NavigationSetupTest {
 
         // receive events on resume
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        assertThat(List(1000) { executor.received.awaitItem() })
+        assertThat(List(1000) { hostNavigator.received.awaitItem() })
             .containsExactlyElementsIn(List(1000) { NavEvent.NavigateToEvent(SimpleRoute(it)) })
             .inOrder()
 
@@ -101,29 +101,29 @@ internal class NavigationSetupTest {
 
         // receive events on resume
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        assertThat(List(1000) { executor.received.awaitItem() })
+        assertThat(List(1000) { hostNavigator.received.awaitItem() })
             .containsExactlyElementsIn(List(1000) { NavEvent.NavigateToEvent(SimpleRoute(1000 + it)) })
             .inOrder()
     }
 
     @Test
-    fun `NavigateToEvent is forwarded to executor`() = runBlocking {
+    fun `NavigateToEvent is forwarded to hostNavigator`() = runBlocking {
         setup()
 
         navigator.navigateTo(SimpleRoute(1))
-        assertThat(executor.received.awaitItem())
+        assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(NavEvent.NavigateToEvent(SimpleRoute(1)))
     }
 
     @Test
-    fun `NavigateToRootEvent is forwarded to executor`() = runBlocking {
+    fun `NavigateToRootEvent is forwarded to hostNavigator`() = runBlocking {
         setup()
 
         navigator.navigateToRoot(
             root = SimpleRoot(2),
             restoreRootState = false,
         )
-        assertThat(executor.received.awaitItem())
+        assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(
                 NavEvent.NavigateToRootEvent(
                     root = SimpleRoot(2),
@@ -133,61 +133,61 @@ internal class NavigationSetupTest {
     }
 
     @Test
-    fun `NavigateToActivityEvent is forwarded to executor`() = runBlocking {
+    fun `NavigateToActivityEvent is forwarded to hostNavigator`() = runBlocking {
         setup()
 
         navigator.navigateTo(SimpleActivity(1))
-        assertThat(executor.received.awaitItem())
+        assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(NavEvent.NavigateToActivityEvent(SimpleActivity(1)))
     }
 
     @Test
-    fun `UpEvent is forwarded to executor`() = runBlocking {
+    fun `UpEvent is forwarded to hostNavigator`() = runBlocking {
         setup()
 
         navigator.navigateUp()
-        assertThat(executor.received.awaitItem())
+        assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(NavEvent.UpEvent)
     }
 
     @Test
-    fun `BackEvent is forwarded to executor`() = runBlocking {
+    fun `BackEvent is forwarded to hostNavigator`() = runBlocking {
         setup()
 
         navigator.navigateBack()
-        assertThat(executor.received.awaitItem())
+        assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(NavEvent.BackEvent)
     }
 
     @Test
-    fun `BackToEvent is forwarded to executor`() = runBlocking {
+    fun `BackToEvent is forwarded to hostNavigator`() = runBlocking {
         setup()
 
         navigator.navigateBackTo<SimpleRoute>(inclusive = true)
-        assertThat(executor.received.awaitItem())
+        assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(NavEvent.BackToEvent(SimpleRoute::class, inclusive = true))
     }
 
     @Test
-    fun `ResetToRoot is forwarded to executor`() = runBlocking {
+    fun `ResetToRoot is forwarded to hostNavigator`() = runBlocking {
         setup()
 
         navigator.resetToRoot(SimpleRoot(2))
-        assertThat(executor.received.awaitItem())
+        assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(NavEvent.ResetToRoot(SimpleRoot(2)))
     }
 
     @Test
-    fun `ReplaceAll is forwarded to executor`() = runBlocking {
+    fun `ReplaceAll is forwarded to hostNavigator`() = runBlocking {
         setup()
 
         navigator.replaceAll(SimpleRoot(2))
-        assertThat(executor.received.awaitItem())
+        assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(NavEvent.ReplaceAll(SimpleRoot(2)))
     }
 
     @Test
-    fun `MultiNavEvent is handled properly and events are forwarded to executor`() = runBlocking {
+    fun `MultiNavEvent is handled properly and events are forwarded to hostNavigator`() = runBlocking {
         setup()
 
         navigator.navigate {
@@ -196,22 +196,22 @@ internal class NavigationSetupTest {
             navigateBack()
         }
 
-        assertThat(executor.received.awaitItem())
+        assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(NavEvent.BackToEvent(SimpleRoute::class, inclusive = true))
 
-        assertThat(executor.received.awaitItem())
+        assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(NavEvent.NavigateToEvent(SimpleRoute(1)))
 
-        assertThat(executor.received.awaitItem())
+        assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(NavEvent.BackEvent)
     }
 
     @Test
-    fun `DestinationResultEvent is forwarded to executor`() = runBlocking {
+    fun `DestinationResultEvent is forwarded to hostNavigator`() = runBlocking {
         setup()
 
         val entry = factory.create(SimpleRoute(0))
-        executor.snapshot.value = StackSnapshot(listOf(entry), true)
+        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), true)
         entry.savedStateHandle.getStateFlow<Parcelable?>(resultRequest.key.requestKey, null).test {
             assertThat(awaitItem()).isEqualTo(null)
 
@@ -244,7 +244,7 @@ internal class NavigationSetupTest {
                 val launchers = mapOf<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>(
                     permissionRequest to permissionLauncher,
                 )
-                navigator.collectAndHandleNavEvents(lifecyle, executor, launchers)
+                navigator.collectAndHandleNavEvents(lifecyle, hostNavigator, launchers)
             }
         }
         assertThat(exception).hasMessageThat().isEqualTo(
@@ -306,9 +306,9 @@ internal class NavigationSetupTest {
     @Test
     fun `collectAndHandleNavigationResults forwards results`() = runBlocking {
         val entry = factory.create(SimpleRoute(0))
-        executor.snapshot.value = StackSnapshot(listOf(entry), true)
+        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), true)
         CoroutineScope(dispatcher).launch {
-            executor.collectAndHandleNavigationResults(resultRequest)
+            hostNavigator.collectAndHandleNavigationResults(resultRequest)
         }
 
         resultRequest.results.test {
@@ -320,9 +320,9 @@ internal class NavigationSetupTest {
     @Test
     fun `collectAndHandleNavigationResults forwards initial value if set`() = runBlocking {
         val entry = factory.create(SimpleRoute(0))
-        executor.snapshot.value = StackSnapshot(listOf(entry), true)
+        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), true)
         CoroutineScope(dispatcher).launch {
-            executor.collectAndHandleNavigationResults(resultRequest)
+            hostNavigator.collectAndHandleNavigationResults(resultRequest)
         }
 
         entry.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(5)
@@ -334,9 +334,9 @@ internal class NavigationSetupTest {
     @Test
     fun `collectAndHandleNavigationResults does not forward same result twice`() = runBlocking {
         val entry = factory.create(SimpleRoute(0))
-        executor.snapshot.value = StackSnapshot(listOf(entry), true)
+        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), true)
         val job = CoroutineScope(dispatcher).launch {
-            executor.collectAndHandleNavigationResults(resultRequest)
+            hostNavigator.collectAndHandleNavigationResults(resultRequest)
         }
 
         entry.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(5)
@@ -346,7 +346,7 @@ internal class NavigationSetupTest {
             // restart the collection of navigation results
             job.cancel()
             CoroutineScope(dispatcher).launch {
-                executor.collectAndHandleNavigationResults(resultRequest)
+                hostNavigator.collectAndHandleNavigationResults(resultRequest)
             }
 
             // waiting for an item fails
