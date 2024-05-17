@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
-import com.freeletics.khonshu.navigation.internal.createHostNavigator
 import java.io.Closeable
 import java.lang.ref.WeakReference
 import kotlinx.collections.immutable.ImmutableSet
