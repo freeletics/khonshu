@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+## 0.25.0 *(2024-05-17)*
+
+### Navigation
+
+- Internal improvements on how the back stack is managed.
+
+### Codegen
+
+- Remove the need to do a lookup for the current destination on the back stack.
+- Improve reliability of finding the parent scope on the back stack.
+
+
 ## 0.24.0 *(2024-05-15)*
 
 ### Navigation
