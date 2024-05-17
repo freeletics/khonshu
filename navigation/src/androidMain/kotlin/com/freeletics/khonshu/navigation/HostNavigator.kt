@@ -1,10 +1,12 @@
 package com.freeletics.khonshu.navigation
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.freeletics.khonshu.navigation.deeplinks.DeepLink
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.StackEntryStoreViewModel
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
@@ -19,6 +21,17 @@ import kotlinx.collections.immutable.persistentSetOf
  */
 public abstract class HostNavigator internal constructor() : Navigator {
     internal abstract val snapshot: State<StackSnapshot>
+
+    /**
+     * If the given [Intent] was created from a [DeepLink] or the `Uri` returned by [Intent.getData]
+     * can be handled using [deepLinkHandlers] and [deepLinkPrefixes] then the navigator will
+     * clear the current back stack and navigate to the required destinations.
+     */
+    public abstract fun handleDeepLink(
+        intent: Intent,
+        deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
+        deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
+    )
 }
 
 /**
@@ -43,12 +56,21 @@ public fun rememberHostNavigator(
     return remember(context, viewModel, startRoot, destinations, deepLinkHandlers, deepLinkPrefixes) {
         createHostNavigator(
             context = context.applicationContext,
-            intent = context.findActivity().intent,
             viewModel = viewModel,
             startRoot = startRoot,
             destinations = destinations,
-            deepLinkHandlers = deepLinkHandlers,
-            deepLinkPrefixes = deepLinkPrefixes,
-        )
+        ).also {
+            val handledDeepLinks = viewModel.globalSavedStateHandle.get<Boolean>(SAVED_STATE_HANDLED_DEEP_LINKS)
+            if (handledDeepLinks != true) {
+                it.handleDeepLink(
+                    intent = context.findActivity().intent,
+                    deepLinkHandlers = deepLinkHandlers,
+                    deepLinkPrefixes = deepLinkPrefixes,
+                )
+                viewModel.globalSavedStateHandle[SAVED_STATE_HANDLED_DEEP_LINKS] = true
+            }
+        }
     }
 }
+
+private const val SAVED_STATE_HANDLED_DEEP_LINKS = "com.freeletics.khonshu.navigation.handled_deep_links"

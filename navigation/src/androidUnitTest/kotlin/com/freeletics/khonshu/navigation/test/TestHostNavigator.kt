@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.navigation.test
 
+import android.content.Intent
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import app.cash.turbine.Turbine
@@ -8,9 +9,11 @@ import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
+import kotlinx.collections.immutable.ImmutableSet
 
 internal class TestHostNavigator : HostNavigator() {
 
@@ -51,5 +54,13 @@ internal class TestHostNavigator : HostNavigator() {
 
     override fun replaceAll(root: NavRoot) {
         received.add(NavEvent.ReplaceAll(root))
+    }
+
+    override fun handleDeepLink(
+        intent: Intent,
+        deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
+        deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
+    ) {
+        throw UnsupportedOperationException()
     }
 }

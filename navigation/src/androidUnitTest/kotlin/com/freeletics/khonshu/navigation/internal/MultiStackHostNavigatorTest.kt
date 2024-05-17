@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation.internal
 
-import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.test.OtherRoot
@@ -30,14 +29,11 @@ internal class MultiStackHostNavigatorTest {
 
     private val viewModel = StackEntryStoreViewModel(SavedStateHandle())
 
-    private fun underTest(
-        deepLinkRoutes: List<Parcelable> = emptyList(),
-    ): MultiStackHostNavigator {
+    private fun underTest(): MultiStackHostNavigator {
         return MultiStackHostNavigator(
             stack = MultiStack.createWith(SimpleRoot(1), factory::create),
             activityStarter = starter,
             viewModel = viewModel,
-            deepLinkRoutes = deepLinkRoutes,
         )
     }
 
@@ -57,10 +53,9 @@ internal class MultiStackHostNavigatorTest {
 
     @Test
     fun `deep link with start root`() {
+        val hostNavigator = underTest()
         val exception = assertThrows(IllegalArgumentException::class.java) {
-            underTest(
-                listOf(SimpleRoot(3)),
-            )
+            hostNavigator.handleDeepLink(listOf(SimpleRoot(3)))
         }
 
         assertThat(exception).hasMessageThat().isEqualTo(
@@ -72,10 +67,9 @@ internal class MultiStackHostNavigatorTest {
 
     @Test
     fun `deep links passed with a root at an index other than the first`() {
+        val hostNavigator = underTest()
         val exception = assertThrows(IllegalArgumentException::class.java) {
-            underTest(
-                listOf(SimpleRoute(1), SimpleRoot(3)),
-            )
+            hostNavigator.handleDeepLink(listOf(SimpleRoute(1), SimpleRoot(3)))
         }
 
         assertThat(exception).hasMessageThat()
@@ -84,9 +78,8 @@ internal class MultiStackHostNavigatorTest {
 
     @Test
     fun `deep links passed with a NavRoute`() {
-        val hostNavigator = underTest(
-            listOf(SimpleRoute(2)),
-        )
+        val hostNavigator = underTest()
+        hostNavigator.handleDeepLink(listOf(SimpleRoute(2)))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -107,9 +100,8 @@ internal class MultiStackHostNavigatorTest {
 
     @Test
     fun `deep links passed with a NavRoot`() {
-        val hostNavigator = underTest(
-            listOf(OtherRoot(2)),
-        )
+        val hostNavigator = underTest()
+        hostNavigator.handleDeepLink(listOf(OtherRoot(2)))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -130,9 +122,8 @@ internal class MultiStackHostNavigatorTest {
 
     @Test
     fun `deep links passed with NavRoot and NavRoute`() {
-        val hostNavigator = underTest(
-            listOf(OtherRoot(2), SimpleRoute(3)),
-        )
+        val hostNavigator = underTest()
+        hostNavigator.handleDeepLink(listOf(OtherRoot(2), SimpleRoute(3)))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -162,9 +153,8 @@ internal class MultiStackHostNavigatorTest {
 
     @Test
     fun `deep links passed with multiple NavRoutes`() {
-        val hostNavigator = underTest(
-            listOf(SimpleRoute(2), SimpleRoute(3), OtherRoute(4), ThirdRoute(5)),
-        )
+        val hostNavigator = underTest()
+        hostNavigator.handleDeepLink(listOf(SimpleRoute(2), SimpleRoute(3), OtherRoute(4), ThirdRoute(5)))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -178,9 +168,8 @@ internal class MultiStackHostNavigatorTest {
 
     @Test
     fun `deep links passed with an ActivityRoute`() {
-        val hostNavigator = underTest(
-            listOf(SimpleActivity(2)),
-        )
+        val hostNavigator = underTest()
+        hostNavigator.handleDeepLink(listOf(SimpleActivity(2)))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -194,9 +183,8 @@ internal class MultiStackHostNavigatorTest {
 
     @Test
     fun `deep links passed with a NavRoute and an ActivityRoute`() {
-        val hostNavigator = underTest(
-            listOf(SimpleRoute(2), SimpleActivity(3)),
-        )
+        val hostNavigator = underTest()
+        hostNavigator.handleDeepLink(listOf(SimpleRoute(2), SimpleActivity(3)))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
