@@ -23,6 +23,5 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.truth)
     testImplementation(libs.kotlin.compile.testing)
-    testImplementation(libs.androidx.compose.compiler)
     testImplementation(testFixtures(projects.codegenCompiler))
 }
