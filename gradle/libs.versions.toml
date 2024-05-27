@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.23"
+kotlin = "1.9.24"
 coroutines = "1.8.1"
 
 java-target= "11"
@@ -10,12 +10,12 @@ android-min = "21"
 android-target = "33"
 android-compile = "33"
 
-androidx-compose-compiler = "1.5.13"
+androidx-compose-compiler = "1.5.14"
 androidx-compose-runtime = "1.6.7"
 androidx-compose-ui = "1.6.7"
 androidx-compose-animation = "1.6.6"
 jetbrains-compose = "1.6.2"
-jetbrains-compose-compiler = "1.5.10.2"
+jetbrains-compose-compiler = "1.5.14"
 
 androidx-activity = "1.9.0"
 androidx-annotations = "1.5.0"
@@ -26,7 +26,7 @@ uri = "0.0.18"
 
 inject = "1"
 anvil = "2.5.0-beta09"
-ksp = "1.9.23-1.0.20"
+ksp = "1.9.24-1.0.20"
 kotlinpoet = "1.17.0"
 auto-service = "1.1.1"
 auto-service-ksp = "1.1.0"
