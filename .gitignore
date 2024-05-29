@@ -4,6 +4,7 @@ local.properties
 .DS_Store
 build/
 kotlin-js-store/
+.kotlin/
 
 docs/index.md
 docs/changelog.md

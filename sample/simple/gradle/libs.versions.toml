@@ -7,7 +7,6 @@ android-min = "26"
 android-target = "33"
 androidx-activity = "1.9.0"
 androidx-annotations = "1.6.0"
-androidx-compose-compiler = "1.5.13"
 androidx-compose-runtime = "1.6.7"
 androidx-compose-ui = "1.6.7"
 androidx-compose-foundation = "1.6.7"
@@ -20,11 +19,11 @@ dagger = "2.51.1"
 dependency-analysis-gradle = "1.32.0"
 fgp = "0.12.2"
 khonshu = "0.25.1"
-ksp = "1.9.23-1.0.20"
+ksp = "2.0.0-1.0.21"
 inject = "1"
 java-target = "11"
 java-toolchain = "21"
-kotlin = "1.9.23"
+kotlin = "2.0.0"
 timber = "5.0.1"
 
 [libraries]
@@ -32,7 +31,6 @@ android-desugarjdklibs = { module = "com.android.tools:desugar_jdk_libs", versio
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidx-annotations" }
-androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "androidx-compose-compiler" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "androidx-compose-runtime" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose-ui" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose-foundation" }
@@ -63,4 +61,5 @@ fgp-feature = { id = "com.freeletics.gradle.feature", version.ref = "fgp" }
 fgp-nav = { id = "com.freeletics.gradle.nav", version.ref = "fgp" }
 fgp-root = { id = "com.freeletics.gradle.root", version.ref = "fgp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

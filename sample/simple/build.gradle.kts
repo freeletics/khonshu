@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.anvil).apply(false)
     alias(libs.plugins.dependency.analysis).apply(false)
     alias(libs.plugins.kotlin.android).apply(false)
+    alias(libs.plugins.compose).apply(false)
     alias(libs.plugins.ksp).apply(false)
 
     alias(libs.plugins.fgp.root)

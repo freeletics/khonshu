@@ -126,7 +126,7 @@ private class KspKhonshuCompilation(
     warningsAsErrors: Boolean,
 ) : KhonshuCompilation {
     val compilation = KotlinCompilation().apply {
-        symbolProcessorProviders = symbolProcessors
+        symbolProcessorProviders = symbolProcessors.toMutableList()
         configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors)
     }
 
@@ -149,6 +149,7 @@ private fun KotlinCompilation.configure(
     componentRegistrars += legacyCompilerPlugins
     compilerPluginRegistrars += compilerPlugins
     jvmTarget = "11"
+    languageVersion = "1.9"
     inheritClassPath = true
     messageOutputStream = System.out // see diagnostics in real time
     allWarningsAsErrors = warningsAsErrors
