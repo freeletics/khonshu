@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.sample.feature.root
 
+import com.freeletics.khonshu.navigation.ActivityResultNavigator
 import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.sample.feature.bottomsheet.nav.BottomSheetRoute
 import com.freeletics.khonshu.sample.feature.dialog.nav.DialogRoute
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 @ForScope(RootRoute::class)
 @SingleIn(RootRoute::class)
-@ContributesBinding(RootRoute::class, NavEventNavigator::class)
+@ContributesBinding(RootRoute::class, ActivityResultNavigator::class)
 class RootNavigator @Inject constructor() : NavEventNavigator() {
     fun navigateToScreen() {
         navigateTo(ScreenRoute(1))
