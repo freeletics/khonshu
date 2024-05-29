@@ -46,11 +46,11 @@ public sealed class ContractResultOwner<I, O, R> : ResultOwner<R>() {
 }
 
 /**
- * Class returned from [NavEventNavigator.registerForActivityResult].
+ * Class returned from [ActivityResultNavigator.registerForActivityResult].
  *
  * This class has two purposes:
  *  - It exposes a [results] `Flow` that can be used to observe incoming results
- *  - It can be passed to [NavEventNavigator.navigateForResult] to trigger the execution of a result
+ *  - It can be passed to [ActivityResultNavigator.navigateForResult] to trigger the execution of a result
  *    request
  */
 public class ActivityResultRequest<I, O> internal constructor(
@@ -58,11 +58,11 @@ public class ActivityResultRequest<I, O> internal constructor(
 ) : ContractResultOwner<I, O, O>()
 
 /**
- * Class returned from [NavEventNavigator.registerForPermissionsResult].
+ * Class returned from [ActivityResultNavigator.registerForPermissionsResult].
  *
  * This class has two purposes:
  *  - It exposes a `results` `Flow` that can be used to observe incoming permission results
- *  - It can be passed to [NavEventNavigator.requestPermissions] to trigger the execution of a
+ *  - It can be passed to [ActivityResultNavigator.requestPermissions] to trigger the execution of a
  *    permissions request
  *
  *  This provides extra functionality over [ActivityResultRequest] by also checking

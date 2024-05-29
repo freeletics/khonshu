@@ -11,7 +11,7 @@ import com.freeletics.khonshu.navigation.test.OtherRoute
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
-import com.freeletics.khonshu.navigation.test.TestNavigator
+import com.freeletics.khonshu.navigation.test.TestNavEventNavigator
 import com.freeletics.khonshu.navigation.test.TestParcelable
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
@@ -22,7 +22,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `navigateTo event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             navigator.navigateTo(SimpleRoute(1))
@@ -35,7 +35,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `multiple navigateTo event are received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             navigator.navigateTo(SimpleRoute(1))
@@ -52,7 +52,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `navigateToRoot event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             navigator.navigateToRoot(
@@ -73,7 +73,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `navigateTo Activity event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             navigator.navigateTo(SimpleActivity(1))
@@ -86,7 +86,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `navigateUp event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             navigator.navigateUp()
@@ -99,7 +99,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `navigateBack event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             navigator.navigateBack()
@@ -112,7 +112,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `navigateBackTo event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             navigator.navigateBackTo<SimpleRoute>(true)
@@ -127,7 +127,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `resetToRoot event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             navigator.resetToRoot(
@@ -146,7 +146,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `replaceAll event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             navigator.replaceAll(
@@ -165,7 +165,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `navigateForResult event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             val launcher = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
@@ -179,7 +179,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `requestPermissions event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             val launcher = navigator.testRegisterForPermissionResult()
@@ -194,7 +194,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `deliverResult event is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             val launcher = navigator.testRegisterForNavigationResult<SimpleRoute, TestParcelable>()
@@ -210,7 +210,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `navigate event with multiple nav directions is received`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
             navigator.navigate {
@@ -235,7 +235,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `backPresses sends out events`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         assertThat(navigator.onBackPressedCallback.isEnabled).isFalse()
 
@@ -258,7 +258,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `registerForActivityResult after read is disallowed`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.activityResultRequests
 
@@ -272,7 +272,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `registerForPermissionsResult after read is disallowed`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.activityResultRequests
 
@@ -286,7 +286,7 @@ internal class NavEventNavigatorTest {
 
     @Test
     fun `registerForNavigationResult after read is disallowed`(): Unit = runBlocking {
-        val navigator = TestNavigator()
+        val navigator = TestNavEventNavigator()
 
         navigator.navigationResultRequests
 

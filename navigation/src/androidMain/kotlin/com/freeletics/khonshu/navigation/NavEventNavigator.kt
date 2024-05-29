@@ -2,12 +2,10 @@ package com.freeletics.khonshu.navigation
 
 import android.os.Parcelable
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.contract.ActivityResultContract
 import com.freeletics.khonshu.navigation.internal.DelegatingOnBackPressedCallback
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.NavEvent
-import com.freeletics.khonshu.navigation.internal.NavEvent.ActivityResultEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.BackEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.BackToEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.MultiNavEvent
@@ -16,12 +14,10 @@ import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.UpEvent
 import com.freeletics.khonshu.navigation.internal.NavEventCollector
 import kotlin.reflect.KClass
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
  * This allows to trigger navigation actions from outside the view layer
@@ -33,57 +29,10 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * permission requests can be handled through [registerForActivityResult]/[navigateForResult]
  * and [registerForPermissionsResult]/[requestPermissions] respectively.
  */
-public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResultNavigator, BackInterceptor {
+public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResultNavigator(), BackInterceptor {
 
-    private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
-
-    @InternalNavigationTestingApi
-    public val navEvents: Flow<NavEvent> = _navEvents.receiveAsFlow()
-
-    private val _activityResultRequests = mutableListOf<ContractResultOwner<*, *, *>>()
     private val _navigationResultRequests = mutableListOf<NavigationResultRequest<*>>()
     private val _onBackPressedCallback = DelegatingOnBackPressedCallback()
-
-    /**
-     * Register for receiving activity results for the given [contract].
-     *
-     * The returned [ActivityResultRequest] can be used to collect incoming results (via
-     * [ActivityResultRequest.results]) and to launch the actual activity result call via
-     * [NavEventNavigator.navigateForResult].
-     *
-     * For permission requests prefer using [registerForPermissionsResult] instead.
-     *
-     * Note: You must call this before [NavigationSetup] is called with this navigator."
-     */
-    protected fun <I, O> registerForActivityResult(
-        contract: ActivityResultContract<I, O>,
-    ): ActivityResultRequest<I, O> {
-        checkAllowedToAddRequests()
-        val request = ActivityResultRequest(contract)
-        _activityResultRequests.add(request)
-        return request
-    }
-
-    /**
-     * Register for receiving permission results.
-     *
-     * The returned [PermissionsResultRequest] can be used to collect incoming permission results (via
-     * [PermissionsResultRequest.results]) and to launch the actual permission result call via
-     * [NavEventNavigator.requestPermissions].
-     *
-     * Compared to using [registerForActivityResult] with
-     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
-     * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
-     * for more information.
-     *
-     * Note: You must call this before [NavigationSetup] is called with this navigator."
-     */
-    protected fun registerForPermissionsResult(): PermissionsResultRequest {
-        checkAllowedToAddRequests()
-        val request = PermissionsResultRequest()
-        _activityResultRequests.add(request)
-        return request
-    }
 
     /**
      * Register for receiving navigation results that were delivered through
@@ -189,64 +138,11 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
     }
 
     /**
-     * Triggers a new [NavEvent] that launches the given [request].
-     *
-     * The [request] can be obtained by calling [registerForActivityResult].
-     */
-    override fun navigateForResult(request: ActivityResultRequest<Void?, *>) {
-        navigateForResult(request, null)
-    }
-
-    /**
-     * Triggers a new [NavEvent] that launches the given [request] with the given [input].
-     *
-     * The [request] can be obtained by calling [registerForActivityResult].
-     */
-    override fun <I> navigateForResult(request: ActivityResultRequest<I, *>, input: I) {
-        val event = ActivityResultEvent(request, input)
-        sendNavEvent(event)
-    }
-
-    /**
-     * Triggers a new [NavEvent] that requests the given [permissions].
-     *
-     * Compared to using [registerForActivityResult] with
-     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
-     * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
-     * for more information.
-     *
-     * The [request] can be obtained by calling [registerForPermissionsResult].
-     */
-    override fun requestPermissions(request: PermissionsResultRequest, vararg permissions: String) {
-        requestPermissions(request, permissions.toList())
-    }
-
-    /**
-     * Triggers a new [NavEvent] that requests the given [permissions].
-     *
-     * Compared to using [registerForActivityResult] with
-     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
-     * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
-     * for more information.
-     *
-     * The [request] can be obtained by calling [registerForPermissionsResult].
-     */
-    override fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>) {
-        val event = ActivityResultEvent(request, permissions)
-        sendNavEvent(event)
-    }
-
-    /**
      * Delivers the [result] to the destination that created [key].
      */
     override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
         val event = NavEvent.DestinationResultEvent(key, result)
         sendNavEvent(event)
-    }
-
-    private fun sendNavEvent(event: NavEvent) {
-        val result = _navEvents.trySendBlocking(event)
-        check(result.isSuccess)
     }
 
     /**
@@ -278,21 +174,6 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
             }
         }
     }
-
-    private var allowedToAddRequests = true
-
-    private fun checkAllowedToAddRequests() {
-        check(allowedToAddRequests) {
-            "Failed to register for result! You must call this before NavigationSetup is called with this navigator."
-        }
-    }
-
-    @InternalNavigationTestingApi
-    public val activityResultRequests: List<ContractResultOwner<*, *, *>>
-        get() {
-            allowedToAddRequests = false
-            return _activityResultRequests.toList()
-        }
 
     @InternalNavigationTestingApi
     public val navigationResultRequests: List<NavigationResultRequest<*>>

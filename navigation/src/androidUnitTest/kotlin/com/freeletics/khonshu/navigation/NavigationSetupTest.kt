@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation
 
-import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Lifecycle
@@ -10,13 +9,14 @@ import app.cash.turbine.test
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
 import com.freeletics.khonshu.navigation.internal.NavEvent
+import com.freeletics.khonshu.navigation.internal.Parcelable
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestActivityResultLauncher
 import com.freeletics.khonshu.navigation.test.TestHostNavigator
-import com.freeletics.khonshu.navigation.test.TestNavigator
+import com.freeletics.khonshu.navigation.test.TestNavEventNavigator
 import com.freeletics.khonshu.navigation.test.TestParcelable
 import com.freeletics.khonshu.navigation.test.TestStackEntryFactory
 import com.google.common.truth.Truth.assertThat
@@ -36,7 +36,7 @@ import org.junit.Test
 
 internal class NavigationSetupTest {
 
-    private val navigator = TestNavigator()
+    private val navigator = TestNavEventNavigator()
     private val hostNavigator = TestHostNavigator()
     private val resultRequest = navigator.testRegisterForNavigationResult<SimpleRoute, TestParcelable>()
     private val activityRequest = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
@@ -237,7 +237,7 @@ internal class NavigationSetupTest {
     }
 
     @Test
-    fun `ActivityResultEvent throws exception if `() = runBlocking {
+    fun `ActivityResultEvent throws exception if no launcher was registered`() = runBlocking {
         navigator.navigateForResult(activityRequest, "")
         val exception = assertThrows(IllegalStateException::class.java) {
             runBlocking {

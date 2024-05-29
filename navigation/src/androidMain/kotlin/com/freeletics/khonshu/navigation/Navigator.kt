@@ -75,38 +75,6 @@ public interface ResultNavigator {
     public fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O)
 }
 
-public interface ActivityResultNavigator {
-    /**
-     * Launches the given [request].
-     */
-    public fun navigateForResult(request: ActivityResultRequest<Void?, *>)
-
-    /**
-     * Launches the given [request] with the given [input].
-     */
-    public fun <I> navigateForResult(request: ActivityResultRequest<I, *>, input: I)
-
-    /**
-     * Launches the [request] for the given [permissions].
-     *
-     * Compared to using [navigateForResult] with
-     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
-     * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
-     * for more information.
-     */
-    public fun requestPermissions(request: PermissionsResultRequest, vararg permissions: String)
-
-    /**
-     * Launches the [request] for the given [permissions].
-     *
-     * Compared to using [navigateForResult] with
-     * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
-     * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
-     * for more information.
-     */
-    public fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>)
-}
-
 public interface BackInterceptor {
     /**
      * Returns a [Flow] that will emit [Unit] on every back press. While this Flow is being collected

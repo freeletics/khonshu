@@ -25,11 +25,11 @@ import kotlinx.parcelize.Parcelize
 import org.jetbrains.annotations.VisibleForTesting
 
 /**
- * Sets up the [NavEventNavigator] inside the current composition so that it's events
+ * Sets up the [ActivityResultNavigator] and [NavEventNavigator] inside the current composition so that it's events
  * are handled while the composition is active.
  */
 @Composable
-public fun NavigationSetup(navigator: NavEventNavigator) {
+public fun NavigationSetup(navigator: ActivityResultNavigator) {
     val hostNavigator = LocalHostNavigator.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -38,18 +38,20 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
         rememberResultLaunchers(it, context)
     }
 
-    navigator.navigationResultRequests.forEach {
-        LaunchedEffect(hostNavigator, it) {
-            hostNavigator.collectAndHandleNavigationResults(it)
+    if (navigator is NavEventNavigator) {
+        navigator.navigationResultRequests.forEach {
+            LaunchedEffect(hostNavigator, it) {
+                hostNavigator.collectAndHandleNavigationResults(it)
+            }
         }
-    }
 
-    val backDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
-    DisposableEffect(backDispatcher, navigator) {
-        backDispatcher.addCallback(navigator.onBackPressedCallback)
+        val backDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
+        DisposableEffect(backDispatcher, navigator) {
+            backDispatcher.addCallback(navigator.onBackPressedCallback)
 
-        onDispose {
-            navigator.onBackPressedCallback.remove()
+            onDispose {
+                navigator.onBackPressedCallback.remove()
+            }
         }
     }
 
@@ -69,7 +71,7 @@ private fun <I, O> rememberResultLaunchers(
 }
 
 @VisibleForTesting
-internal suspend fun NavEventNavigator.collectAndHandleNavEvents(
+internal suspend fun ActivityResultNavigator.collectAndHandleNavEvents(
     lifecycle: Lifecycle,
     hostNavigator: HostNavigator,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,

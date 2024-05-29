@@ -52,9 +52,6 @@ public fun NavHost(
  * destinations and deep link handling are all dependent on the `navigator`. For more see
  * [rememberHostNavigator].
  *
- * If a [NavEventNavigator] is passed it will be automatically set up and can be used to
- * navigate within the `NavHost`.
- *
  * The [destinationChangedCallback] can be used to be notified when the current destination
  * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
  */
