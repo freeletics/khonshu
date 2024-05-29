@@ -17,8 +17,8 @@ internal fun test(
     expectedCode: String,
     warningsAsErrors: Boolean = true,
 ) {
-    // compile(fileName = fileName, source = source, data = data, expectedCode = expectedCode, warningsAsErrors)
-    // compileWithAnvil(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors)
+    compile(fileName = fileName, source = source, data = data, expectedCode = expectedCode, warningsAsErrors)
+    compileWithAnvil(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors)
     compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors)
 }
 
