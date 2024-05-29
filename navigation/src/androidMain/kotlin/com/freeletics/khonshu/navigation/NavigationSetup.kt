@@ -87,39 +87,41 @@ internal suspend fun NavEventNavigator.collectAndHandleNavEvents(
     withContext(Dispatchers.Main.immediate) {
         navEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
             .collect { event ->
-                hostNavigator.navigateTo(event, activityLaunchers)
+                navigateTo(hostNavigator, hostNavigator, event, activityLaunchers)
             }
     }
 }
 
-private fun HostNavigator.navigateTo(
+private fun navigateTo(
+    hostNavigator: HostNavigator,
+    navigator: Navigator,
     event: NavEvent,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
 ) {
     when (event) {
         is NavEvent.NavigateToEvent -> {
-            navigateTo(event.route)
+            navigator.navigateTo(event.route)
         }
         is NavEvent.NavigateToRootEvent -> {
-            navigateToRoot(event.root, event.restoreRootState)
+            navigator.navigateToRoot(event.root, event.restoreRootState)
         }
         is NavEvent.NavigateToActivityEvent -> {
-            navigateTo(event.route)
+            navigator.navigateTo(event.route)
         }
         is NavEvent.UpEvent -> {
-            navigateUp()
+            navigator.navigateUp()
         }
         is NavEvent.BackEvent -> {
-            navigateBack()
+            navigator.navigateBack()
         }
         is NavEvent.BackToEvent -> {
-            navigateBackTo(event.popUpTo, event.inclusive)
+            navigator.navigateBackTo(event.popUpTo, event.inclusive)
         }
         is NavEvent.ResetToRoot -> {
-            resetToRoot(event.root)
+            navigator.resetToRoot(event.root)
         }
         is NavEvent.ReplaceAll -> {
-            replaceAll(event.root)
+            navigator.replaceAll(event.root)
         }
         is NavEvent.ActivityResultEvent<*> -> {
             val request = event.request
@@ -131,10 +133,15 @@ private fun HostNavigator.navigateTo(
             (launcher as ActivityResultLauncher<Any?>).launch(event.input)
         }
         is NavEvent.DestinationResultEvent<*> -> {
-            snapshot.value.entryFor(event.key.destinationId).savedStateHandle[event.key.requestKey] = event.result
+            val entry = hostNavigator.snapshot.value.entryFor(event.key.destinationId)
+            entry.savedStateHandle[event.key.requestKey] = event.result
         }
         is NavEvent.MultiNavEvent -> {
-            event.navEvents.forEach { navigateTo(it, activityLaunchers) }
+            hostNavigator.navigate {
+                event.navEvents.forEach {
+                    navigateTo(hostNavigator, this@navigate, it, activityLaunchers)
+                }
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package com.freeletics.khonshu.navigation.internal
 
 import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.ActivityRoute
+import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.test.OtherRoot
 import com.freeletics.khonshu.navigation.test.OtherRoute
 import com.freeletics.khonshu.navigation.test.SimpleActivity
@@ -958,5 +959,42 @@ internal class MultiStackHostNavigatorTest {
             StackEntry.Id("102"),
             StackEntry.Id("101"),
         ).inOrder()
+    }
+
+    @Test
+    fun `navigate with block only updates state at the end`() {
+        val hostNavigator = underTest()
+
+        assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
+
+        hostNavigator.navigate {
+            navigateTo(SimpleRoute(2))
+            assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
+            navigateTo(OtherRoute(3))
+            assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
+            navigateTo(ThirdRoute(4))
+            assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
+            navigateTo(ThirdRoute(5))
+            assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
+            navigateTo(ThirdRoute(6))
+
+            navigateTo(SimpleActivity(7))
+            assertThat(started).isEmpty()
+
+            assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
+            navigateBack()
+            assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
+            navigateUp()
+            assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
+
+            navigateBackTo<OtherRoute>(inclusive = true)
+            assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
+
+            navigateTo(SimpleActivity(8))
+            assertThat(started).isEmpty()
+        }
+
+        assertThat(hostNavigator.snapshot.value.entries).hasSize(2)
+        assertThat(started).containsExactly(SimpleActivity(7), SimpleActivity(8))
     }
 }
