@@ -40,3 +40,10 @@ dependencies {
     testFixturesImplementation(testFixtures(libs.anvil.compiler.utils))
     testFixturesImplementation(libs.kotlin.compile.testing.ksp)
 }
+
+// TODO remove when kotlin-compile-testing 0.5.0 is stable
+configurations.configureEach {
+    resolutionStrategy {
+        force("org.jetbrains.kotlin:kotlin-stdlib:${libs.versions.kotlin.asProvider().get()}")
+    }
+}
