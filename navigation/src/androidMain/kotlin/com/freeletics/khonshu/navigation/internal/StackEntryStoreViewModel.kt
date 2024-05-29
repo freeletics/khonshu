@@ -15,9 +15,9 @@ public class StackEntryStoreViewModel(
     }
 
     public override fun onCleared() {
-        for (store in stores.values) {
-            store.close()
+        while (stores.isNotEmpty()) {
+            val key = stores.firstNotNullOf { it.key }
+            stores.remove(key)?.close()
         }
-        stores.clear()
     }
 }
