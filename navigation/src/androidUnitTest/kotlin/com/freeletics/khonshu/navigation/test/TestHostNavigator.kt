@@ -11,10 +11,12 @@ import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.NavigationResultRequest
+import com.freeletics.khonshu.navigation.Navigator
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.NavEvent
+import com.freeletics.khonshu.navigation.internal.NavEventCollector
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableSet
@@ -58,6 +60,11 @@ internal class TestHostNavigator : HostNavigator() {
 
     override fun replaceAll(root: NavRoot) {
         received.add(NavEvent.ReplaceAll(root))
+    }
+
+    override fun navigate(block: Navigator.() -> Unit) {
+        val events = NavEventCollector().apply(block).navEvents
+        received.add(NavEvent.MultiNavEvent(events))
     }
 
     override fun handleDeepLink(

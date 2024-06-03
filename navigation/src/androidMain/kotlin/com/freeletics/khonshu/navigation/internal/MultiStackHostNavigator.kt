@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation.internal
 
 import android.content.Intent
+import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.State
 import com.freeletics.khonshu.navigation.ActivityRoute
@@ -9,6 +10,7 @@ import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.NavigationResultRequest
+import com.freeletics.khonshu.navigation.Navigator
 import com.freeletics.khonshu.navigation.StandaloneNavigationResultRequest
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.extractDeepLinkRoutes
@@ -99,11 +101,11 @@ internal class MultiStackHostNavigator(
         stack.replaceAll(root)
     }
 
-    override fun <O : android.os.Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
+    override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
         snapshot.value.entryFor(key.destinationId).savedStateHandle[key.requestKey] = result
     }
 
-    override fun <T : BaseRoute, O : android.os.Parcelable> registerForNavigationResultInternal(
+    override fun <T : BaseRoute, O : Parcelable> registerForNavigationResultInternal(
         id: DestinationId<T>,
         resultType: String,
     ): NavigationResultRequest<O> {
@@ -112,7 +114,50 @@ internal class MultiStackHostNavigator(
         return StandaloneNavigationResultRequest(key, snapshot.value.entryFor(key.destinationId).savedStateHandle)
     }
 
+    override fun navigate(block: Navigator.() -> Unit) {
+        val nonNotifyingNavigator = NonNotifyingNavigator()
+        nonNotifyingNavigator.apply(block)
+        stack.updateVisibleDestinations(true)
+        nonNotifyingNavigator.activityRoutes.forEach { activityStarter(it) }
+    }
+
     internal companion object {
         const val SAVED_STATE_STACK = "com.freeletics.khonshu.navigation.stack"
+    }
+
+    private inner class NonNotifyingNavigator : Navigator {
+        val activityRoutes = mutableListOf<ActivityRoute>()
+
+        override fun navigateTo(route: NavRoute) {
+            stack.push(route, notify = false)
+        }
+
+        override fun navigateTo(route: ActivityRoute) {
+            activityRoutes += route
+        }
+
+        override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
+            stack.push(root, clearTargetStack = !restoreRootState, notify = false)
+        }
+
+        override fun navigateUp() {
+            stack.popCurrentStack(notify = false)
+        }
+
+        override fun navigateBack() {
+            stack.pop(notify = false)
+        }
+
+        override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean) {
+            stack.popUpTo(DestinationId(popUpTo), inclusive, notify = false)
+        }
+
+        override fun resetToRoot(root: NavRoot) {
+            stack.resetToRoot(root, notify = false)
+        }
+
+        override fun replaceAll(root: NavRoot) {
+            stack.replaceAll(root, notify = false)
+        }
     }
 }

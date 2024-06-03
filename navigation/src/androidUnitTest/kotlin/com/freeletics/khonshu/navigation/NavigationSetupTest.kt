@@ -197,13 +197,15 @@ internal class NavigationSetupTest {
         }
 
         assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.BackToEvent(SimpleRoute::class, inclusive = true))
-
-        assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.NavigateToEvent(SimpleRoute(1)))
-
-        assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.BackEvent)
+            .isEqualTo(
+                NavEvent.MultiNavEvent(
+                    listOf(
+                        NavEvent.BackToEvent(SimpleRoute::class, inclusive = true),
+                        NavEvent.NavigateToEvent(SimpleRoute(1)),
+                        NavEvent.BackEvent,
+                    ),
+                ),
+            )
     }
 
     @Test

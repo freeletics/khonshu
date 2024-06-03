@@ -32,6 +32,13 @@ public abstract class HostNavigator internal constructor() : Navigator, ResultNa
         deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
         deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
     )
+
+    /**
+     * Allows to group multiple navigation actions and execute them atomically. The state of this [HostNavigator] will
+     * only be updated after running all actions. This should be used when navigating multiple times, for example
+     * calling `navigateBackTo` followed by `navigateTo`.
+     */
+    public abstract fun navigate(block: Navigator.() -> Unit)
 }
 
 /**
