@@ -42,21 +42,23 @@ internal class MultiStack(
         stack.rootEntry.close()
     }
 
-    private fun updateVisibleDestinations() {
-        snapshotState.value = currentStack.snapshot(startStack.id)
+    internal fun updateVisibleDestinations(notify: Boolean) {
+        if (notify) {
+            snapshotState.value = currentStack.snapshot(startStack.id)
+        }
     }
 
-    fun push(route: NavRoute) {
+    fun push(route: NavRoute, notify: Boolean = true) {
         currentStack.push(route)
-        updateVisibleDestinations()
+        updateVisibleDestinations(notify)
     }
 
-    fun popCurrentStack() {
+    fun popCurrentStack(notify: Boolean = true) {
         currentStack.pop()
-        updateVisibleDestinations()
+        updateVisibleDestinations(notify)
     }
 
-    fun pop() {
+    fun pop(notify: Boolean = true) {
         if (currentStack.isAtRoot) {
             check(currentStack.id != startStack.id) {
                 "Can't navigate back from the root of the start back stack"
@@ -69,18 +71,19 @@ internal class MultiStack(
         } else {
             currentStack.pop()
         }
-        updateVisibleDestinations()
+        updateVisibleDestinations(notify)
     }
 
     fun <T : BaseRoute> popUpTo(
         destinationId: DestinationId<T>,
         isInclusive: Boolean,
+        notify: Boolean = true,
     ) {
         currentStack.popUpTo(destinationId, isInclusive)
-        updateVisibleDestinations()
+        updateVisibleDestinations(notify)
     }
 
-    fun push(root: NavRoot, clearTargetStack: Boolean) {
+    fun push(root: NavRoot, clearTargetStack: Boolean, notify: Boolean = true) {
         val stack = getBackStack(root)
         currentStack = if (stack != null) {
             check(currentStack.id != stack.id) {
@@ -98,10 +101,10 @@ internal class MultiStack(
         if (stack?.id == startStack.id) {
             startStack = currentStack
         }
-        updateVisibleDestinations()
+        updateVisibleDestinations(notify)
     }
 
-    fun resetToRoot(root: NavRoot) {
+    fun resetToRoot(root: NavRoot, notify: Boolean = true) {
         if (root.destinationId == startStack.id) {
             if (currentStack.id != startStack.id) {
                 removeBackStack(currentStack)
@@ -117,10 +120,10 @@ internal class MultiStack(
         } else {
             error("$root is not on the current back stack")
         }
-        updateVisibleDestinations()
+        updateVisibleDestinations(notify)
     }
 
-    fun replaceAll(root: NavRoot) {
+    fun replaceAll(root: NavRoot, notify: Boolean = true) {
         // remove all stacks
         while (allStacks.isNotEmpty()) {
             removeBackStack(allStacks.last())
@@ -131,7 +134,7 @@ internal class MultiStack(
         startStack = newStack
         currentStack = newStack
 
-        updateVisibleDestinations()
+        updateVisibleDestinations(notify)
     }
 
     fun saveState(): Bundle {

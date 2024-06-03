@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.navigation.internal
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Immutable
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.OverlayDestination
@@ -9,7 +10,8 @@ import dev.drewhamilton.poko.Poko
 @Immutable
 @InternalNavigationCodegenApi
 public class StackSnapshot internal constructor(
-    private val entries: List<StackEntry<*>>,
+    @get:VisibleForTesting
+    internal val entries: List<StackEntry<*>>,
     private val startStack: Boolean,
 ) {
     private var firstVisibleIndex: Int = -1
