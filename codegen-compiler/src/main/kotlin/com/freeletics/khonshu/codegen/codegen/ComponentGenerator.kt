@@ -2,13 +2,13 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
+import com.freeletics.khonshu.codegen.util.activityResultNavigator
 import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.bindsInstanceParameter
 import com.freeletics.khonshu.codegen.util.contributesToAnnotation
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
-import com.freeletics.khonshu.codegen.util.navEventNavigator
 import com.freeletics.khonshu.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.scopeToAnnotation
@@ -67,7 +67,7 @@ internal class ComponentGenerator(
         if (data is NavHostActivityData) {
             properties += simplePropertySpec(hostNavigator)
         } else {
-            properties += simplePropertySpec(navEventNavigator).toBuilder()
+            properties += simplePropertySpec(activityResultNavigator).toBuilder()
                 .addAnnotation(forScope(data.scope, GET))
                 .build()
         }
