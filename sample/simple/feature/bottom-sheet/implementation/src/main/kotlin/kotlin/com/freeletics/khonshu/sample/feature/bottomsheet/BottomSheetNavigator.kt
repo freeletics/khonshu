@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.sample.feature.bottomsheet
 
+import com.freeletics.khonshu.navigation.ActivityResultNavigator
 import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.sample.feature.bottomsheet.nav.BottomSheetRoute
 import com.squareup.anvil.annotations.ContributesBinding
@@ -9,5 +10,5 @@ import javax.inject.Inject
 
 @ForScope(BottomSheetRoute::class)
 @SingleIn(BottomSheetRoute::class)
-@ContributesBinding(BottomSheetRoute::class, NavEventNavigator::class)
+@ContributesBinding(BottomSheetRoute::class, ActivityResultNavigator::class)
 class BottomSheetNavigator @Inject constructor() : NavEventNavigator()
