@@ -19,7 +19,7 @@ import kotlinx.collections.immutable.persistentSetOf
  *
  * An instance can be created by calling [createHostNavigator].
  */
-public abstract class HostNavigator internal constructor() : Navigator {
+public abstract class HostNavigator internal constructor() : Navigator, ResultNavigator {
     internal abstract val snapshot: State<StackSnapshot>
 
     /**

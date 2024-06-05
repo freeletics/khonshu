@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation.internal
 
 import android.content.Intent
+import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.State
 import com.freeletics.khonshu.navigation.ActivityRoute
@@ -8,7 +9,9 @@ import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.NavigationResultRequest
 import com.freeletics.khonshu.navigation.Navigator
+import com.freeletics.khonshu.navigation.StandaloneNavigationResultRequest
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.extractDeepLinkRoutes
 import kotlin.reflect.KClass
@@ -96,6 +99,19 @@ internal class MultiStackHostNavigator(
 
     override fun replaceAll(root: NavRoot) {
         stack.replaceAll(root)
+    }
+
+    override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
+        snapshot.value.entryFor(key.destinationId).savedStateHandle[key.requestKey] = result
+    }
+
+    override fun <T : BaseRoute, O : Parcelable> registerForNavigationResultInternal(
+        id: DestinationId<T>,
+        resultType: String,
+    ): NavigationResultRequest<O> {
+        val requestKey = "${id.route.qualifiedName!!}-$resultType"
+        val key = NavigationResultRequest.Key<O>(id, requestKey)
+        return StandaloneNavigationResultRequest(key, snapshot.value.entryFor(key.destinationId).savedStateHandle)
     }
 
     override fun navigate(block: Navigator.() -> Unit) {

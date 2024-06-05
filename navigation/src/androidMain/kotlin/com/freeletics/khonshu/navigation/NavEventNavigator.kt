@@ -31,32 +31,18 @@ import kotlinx.coroutines.flow.callbackFlow
  */
 public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResultNavigator(), BackInterceptor {
 
-    private val _navigationResultRequests = mutableListOf<NavigationResultRequest<*>>()
+    private val _navigationResultRequests = mutableListOf<EventNavigationResultRequest<*>>()
     private val _onBackPressedCallback = DelegatingOnBackPressedCallback()
 
-    /**
-     * Register for receiving navigation results that were delivered through
-     * [deliverNavigationResult]. [T] is expected to be the [BaseRoute] to the current destination.
-     *
-     * The returned [NavigationResultRequest] has a [NavigationResultRequest.Key]. This `key` should
-     * be passed to the target destination which can then use it to call [deliverNavigationResult].
-     *
-     * Note: You must call this before [NavigationSetup] is called with this navigator."
-     */
-    protected inline fun <reified T : BaseRoute, reified O : Parcelable> registerForNavigationResult():
-        NavigationResultRequest<O> {
-        return registerForNavigationResult(DestinationId(T::class), O::class.qualifiedName!!)
-    }
-
-    @PublishedApi
-    internal fun <T : BaseRoute, O : Parcelable> registerForNavigationResult(
+    @InternalNavigationTestingApi
+    override fun <T : BaseRoute, O : Parcelable> registerForNavigationResultInternal(
         id: DestinationId<T>,
         resultType: String,
     ): NavigationResultRequest<O> {
         checkAllowedToAddRequests()
         val requestKey = "${id.route.qualifiedName!!}-$resultType"
         val key = NavigationResultRequest.Key<O>(id, requestKey)
-        val request = NavigationResultRequest(key)
+        val request = EventNavigationResultRequest(key)
         _navigationResultRequests.add(request)
         return request
     }
@@ -176,7 +162,7 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
     }
 
     @InternalNavigationTestingApi
-    public val navigationResultRequests: List<NavigationResultRequest<*>>
+    public val navigationResultRequests: List<EventNavigationResultRequest<*>>
         get() {
             allowedToAddRequests = false
             return _navigationResultRequests.toList()

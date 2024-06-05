@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation.test
 
 import android.content.Intent
+import android.os.Parcelable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import app.cash.turbine.Turbine
@@ -9,8 +10,11 @@ import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.NavigationResultRequest
 import com.freeletics.khonshu.navigation.Navigator
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
+import com.freeletics.khonshu.navigation.internal.DestinationId
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavEventCollector
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
@@ -68,6 +72,18 @@ internal class TestHostNavigator : HostNavigator() {
         deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
         deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
     ) {
+        throw UnsupportedOperationException()
+    }
+
+    override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
+        throw UnsupportedOperationException()
+    }
+
+    @InternalNavigationApi
+    override fun <T : BaseRoute, O : Parcelable> registerForNavigationResultInternal(
+        id: DestinationId<T>,
+        resultType: String,
+    ): NavigationResultRequest<O> {
         throw UnsupportedOperationException()
     }
 }

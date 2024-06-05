@@ -28,6 +28,7 @@ public final class com/freeletics/khonshu/navigation/NavigatorTurbineKt {
 
 public final class com/freeletics/khonshu/navigation/ResultOwnerTestingKt {
 	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/ActivityResultRequest;Ljava/lang/Object;)V
+	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/ManagedResultOwner;Landroid/os/Parcelable;)V
 	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest;Landroid/os/Parcelable;)V
 	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/lang/String;Lcom/freeletics/khonshu/navigation/PermissionsResultRequest$PermissionResult;)V
 	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/Map;)V
