@@ -111,7 +111,7 @@ internal class SaveableCloseable(
 }
 
 @Composable
-private fun SystemBackHandling(snapshot: StackSnapshot, navigator: Navigator) {
+private fun SystemBackHandling(snapshot: StackSnapshot, navigator: HostNavigator) {
     val backPressedDispatcher = requireNotNull(LocalOnBackPressedDispatcherOwner.current) {
         "No OnBackPressedDispatcher available"
     }
@@ -131,9 +131,11 @@ private fun SystemBackHandling(snapshot: StackSnapshot, navigator: Navigator) {
 
     DisposableEffect(backPressedDispatcher, callback) {
         backPressedDispatcher.onBackPressedDispatcher.addCallback(callback)
+        backPressedDispatcher.onBackPressedDispatcher.addCallback(navigator.onBackPressedCallback)
 
         onDispose {
             callback.remove()
+            navigator.onBackPressedCallback.remove()
         }
     }
 }

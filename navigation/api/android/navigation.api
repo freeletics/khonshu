@@ -30,7 +30,7 @@ public final class com/freeletics/khonshu/navigation/ActivityRouteKt {
 }
 
 public abstract interface class com/freeletics/khonshu/navigation/BackInterceptor {
-	public abstract fun backPresses ()Lkotlinx/coroutines/flow/Flow;
+	public fun backPresses ()Lkotlinx/coroutines/flow/Flow;
 	public abstract fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 }
 
@@ -45,7 +45,7 @@ public abstract interface class com/freeletics/khonshu/navigation/ExternalActivi
 	public fun fillInIntent ()Landroid/content/Intent;
 }
 
-public abstract class com/freeletics/khonshu/navigation/HostNavigator : com/freeletics/khonshu/navigation/Navigator, com/freeletics/khonshu/navigation/ResultNavigator {
+public abstract class com/freeletics/khonshu/navigation/HostNavigator : com/freeletics/khonshu/navigation/BackInterceptor, com/freeletics/khonshu/navigation/Navigator, com/freeletics/khonshu/navigation/ResultNavigator {
 	public static final field $stable I
 	public abstract fun handleDeepLink (Landroid/content/Intent;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)V
 	public abstract fun navigate (Lkotlin/jvm/functions/Function1;)V
@@ -75,7 +75,6 @@ public abstract interface class com/freeletics/khonshu/navigation/NavDestination
 public class com/freeletics/khonshu/navigation/NavEventNavigator : com/freeletics/khonshu/navigation/ActivityResultNavigator, com/freeletics/khonshu/navigation/BackInterceptor, com/freeletics/khonshu/navigation/Navigator, com/freeletics/khonshu/navigation/ResultNavigator {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun backPresses ()Lkotlinx/coroutines/flow/Flow;
 	public fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 	public fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
 	public final fun navigate (Lkotlin/jvm/functions/Function1;)V

@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation
 
 import android.content.Intent
+import androidx.activity.OnBackPressedCallback
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
@@ -19,8 +20,9 @@ import kotlinx.collections.immutable.persistentSetOf
  *
  * An instance can be created by calling [createHostNavigator].
  */
-public abstract class HostNavigator internal constructor() : Navigator, ResultNavigator {
+public abstract class HostNavigator internal constructor() : Navigator, ResultNavigator, BackInterceptor {
     internal abstract val snapshot: State<StackSnapshot>
+    internal abstract val onBackPressedCallback: OnBackPressedCallback
 
     /**
      * If the given [Intent] was created from a [DeepLink] or the `Uri` returned by [Intent.getData]

@@ -16,6 +16,10 @@ import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.extractDeepLinkRoutes
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 
 internal class MultiStackHostNavigator(
     private val stack: MultiStack,
@@ -112,6 +116,22 @@ internal class MultiStackHostNavigator(
         val requestKey = "${id.route.qualifiedName!!}-$resultType"
         val key = NavigationResultRequest.Key<O>(id, requestKey)
         return StandaloneNavigationResultRequest(key, snapshot.value.entryFor(key.destinationId).savedStateHandle)
+    }
+
+    override val onBackPressedCallback = DelegatingOnBackPressedCallback()
+
+    override fun <T> backPresses(value: T): Flow<T> {
+        return callbackFlow {
+            val onBackPressed = {
+                check(trySendBlocking(value).isSuccess)
+            }
+
+            onBackPressedCallback.addCallback(onBackPressed)
+
+            awaitClose {
+                onBackPressedCallback.removeCallback(onBackPressed)
+            }
+        }
     }
 
     override fun navigate(block: Navigator.() -> Unit) {
