@@ -133,7 +133,7 @@ internal class MultiStackHostNavigator(
             }
         }
     }
-    
+
     override fun navigate(block: Navigator.() -> Unit) {
         val nonNotifyingNavigator = NonNotifyingNavigator()
         nonNotifyingNavigator.apply(block)
