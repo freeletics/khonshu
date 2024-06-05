@@ -18,7 +18,7 @@ import kotlinx.collections.immutable.persistentSetOf
 /**
  * An implementation of [Navigator] that is meant to be used at the [NavHost] level.
  *
- * An instance can be created by calling [createHostNavigator].
+ * An instance can be created by calling [rememberHostNavigator].
  */
 public abstract class HostNavigator internal constructor() : Navigator, ResultNavigator, BackInterceptor {
     internal abstract val snapshot: State<StackSnapshot>

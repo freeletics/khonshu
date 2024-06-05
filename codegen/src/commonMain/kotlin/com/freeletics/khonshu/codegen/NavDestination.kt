@@ -19,7 +19,7 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class NavDestination(
     val route: KClass<out BaseRoute>,
-    val parentScope: KClass<*> = AppScope::class,
+    val parentScope: KClass<*> = ActivityScope::class,
     val stateMachine: KClass<out StateMachine<*, *>>,
     val destinationScope: KClass<*> = AppScope::class,
 )
