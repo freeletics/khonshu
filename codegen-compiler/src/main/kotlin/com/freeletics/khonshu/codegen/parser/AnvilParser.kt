@@ -64,7 +64,7 @@ internal fun TopLevelFunctionReference.toNavDestinationData(annotation: Annotati
         baseName = name,
         packageName = packageName,
         scope = annotation.route,
-        parentScope = annotation.parentScope,
+        parentScope = annotation.getParentScope(activityScope),
         stateMachine = stateMachine.asClassName(),
         navigation = navigation,
         composableParameter = getInjectedParameters(stateParameter, actionParameter),
@@ -89,7 +89,7 @@ internal fun TopLevelFunctionReference.toNavHostActivityData(annotation: Annotat
         baseName = name,
         packageName = packageName,
         scope = annotation.scope,
-        parentScope = annotation.parentScope,
+        parentScope = annotation.getParentScope(appScope),
         stateMachine = stateMachine.asClassName(),
         activityBaseClass = annotation.activityBaseClass,
         navHostParameter = navHostParameter,
@@ -108,8 +108,9 @@ private val AnnotationReference.route: ClassName
 private val AnnotationReference.routeReference: ClassReference
     get() = requireClassReferenceArgument("route", 0)
 
-private val AnnotationReference.parentScope: ClassName
-    get() = parentScopeReference?.asClassName() ?: appScope
+private fun AnnotationReference.getParentScope(default: ClassName): ClassName {
+    return parentScopeReference?.asClassName() ?: default
+}
 
 private val AnnotationReference.parentScopeReference: ClassReference?
     get() = optionalClassReferenceArgument("parentScope", 1)

@@ -2,6 +2,7 @@
 
 package com.freeletics.khonshu.codegen.codegen
 
+import com.freeletics.khonshu.codegen.ActivityScope
 import com.freeletics.khonshu.codegen.AppScope
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.NavDestinationData
@@ -219,7 +220,7 @@ internal class NavDestinationCodegenTest {
         )
         val withDefaultValues = data.copy(
             scope = navigation.route,
-            parentScope = AppScope::class.asClassName(),
+            parentScope = ActivityScope::class.asClassName(),
             navigation = navigation,
         )
 
@@ -250,6 +251,7 @@ internal class NavDestinationCodegenTest {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.AppScope
             import com.freeletics.khonshu.codegen.`internal`.ActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.ComponentProvider
@@ -283,7 +285,7 @@ internal class NavDestinationCodegenTest {
             @SingleIn(TestRoute::class)
             @ContributesSubcomponent(
               scope = TestRoute::class,
-              parentScope = AppScope::class,
+              parentScope = ActivityScope::class,
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
@@ -306,7 +308,7 @@ internal class NavDestinationCodegenTest {
                     @BindsInstance testRoute: TestRoute): KhonshuTestComponent
               }
 
-              @ContributesTo(AppScope::class)
+              @ContributesTo(ActivityScope::class)
               public interface ParentComponent {
                 public fun khonshuTestComponentFactory(): Factory
               }
@@ -319,7 +321,7 @@ internal class NavDestinationCodegenTest {
                 entry: StackEntry<TestRoute>,
                 snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTestComponent = component(entry, provider, AppScope::class) { parentComponent:
+              ): KhonshuTestComponent = component(entry, provider, ActivityScope::class) { parentComponent:
                   KhonshuTestComponent.ParentComponent ->
                 parentComponent.khonshuTestComponentFactory().create(entry.savedStateHandle, entry.route)
               }
