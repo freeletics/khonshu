@@ -26,10 +26,3 @@ dependencies {
     testImplementation(libs.compose.compiler)
     testImplementation(testFixtures(projects.codegenCompiler))
 }
-
-// TODO remove when kotlin-compile-testing 0.5.0 is stable
-configurations.configureEach {
-    resolutionStrategy {
-        force("org.jetbrains.kotlin:kotlin-stdlib:${libs.versions.kotlin.asProvider().get()}")
-    }
-}
