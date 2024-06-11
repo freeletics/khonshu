@@ -20,10 +20,15 @@ public abstract interface class com/freeletics/khonshu/navigation/NavigatorTurbi
 
 public final class com/freeletics/khonshu/navigation/NavigatorTurbineKt {
 	public static final fun dispatchBackPress (Lcom/freeletics/khonshu/navigation/NavEventNavigator;)V
+	public static final fun dispatchBackPress (Lcom/freeletics/khonshu/navigation/TestHostNavigator;)V
 	public static final fun test-C2H2yOE (Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlin/time/Duration;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun test-C2H2yOE (Lcom/freeletics/khonshu/navigation/TestHostNavigator;Lkotlin/time/Duration;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun test-C2H2yOE$default (Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlin/time/Duration;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun test-C2H2yOE$default (Lcom/freeletics/khonshu/navigation/TestHostNavigator;Lkotlin/time/Duration;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun testIn-5_5nbZA (Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/NavigatorTurbine;
+	public static final fun testIn-5_5nbZA (Lcom/freeletics/khonshu/navigation/TestHostNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/NavigatorTurbine;
 	public static synthetic fun testIn-5_5nbZA$default (Lcom/freeletics/khonshu/navigation/NavEventNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/NavigatorTurbine;
+	public static synthetic fun testIn-5_5nbZA$default (Lcom/freeletics/khonshu/navigation/TestHostNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/NavigatorTurbine;
 }
 
 public final class com/freeletics/khonshu/navigation/ResultOwnerTestingKt {
@@ -33,6 +38,27 @@ public final class com/freeletics/khonshu/navigation/ResultOwnerTestingKt {
 	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/lang/String;Lcom/freeletics/khonshu/navigation/PermissionsResultRequest$PermissionResult;)V
 	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/Map;)V
 	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;[Lkotlin/Pair;)V
+}
+
+public final class com/freeletics/khonshu/navigation/TestHostNavigator : com/freeletics/khonshu/navigation/HostNavigator {
+	public fun <init> ()V
+	public fun <init> (Lcom/freeletics/khonshu/navigation/NavRoute;)V
+	public synthetic fun <init> (Lcom/freeletics/khonshu/navigation/NavRoute;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun backPresses ()Lkotlinx/coroutines/flow/Flow;
+	public fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
+	public final fun getHandleDeepLinkRoute ()Lcom/freeletics/khonshu/navigation/NavRoute;
+	public fun handleDeepLink (Landroid/content/Intent;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)Z
+	public fun navigate (Lkotlin/jvm/functions/Function1;)V
+	public fun navigateBack ()V
+	public fun navigateBackTo (Lkotlin/reflect/KClass;Z)V
+	public fun navigateTo (Lcom/freeletics/khonshu/navigation/ActivityRoute;)V
+	public fun navigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
+	public fun navigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
+	public fun navigateUp ()V
+	public fun replaceAll (Lcom/freeletics/khonshu/navigation/NavRoot;)V
+	public fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
+	public final fun setHandleDeepLinkRoute (Lcom/freeletics/khonshu/navigation/NavRoute;)V
 }
 
 public final class com/freeletics/khonshu/navigation/TestNavEventCollector {
