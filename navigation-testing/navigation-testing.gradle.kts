@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.CommonExtension
+import com.freeletics.gradle.plugin.FreeleticsAndroidExtension
 
 plugins {
     alias(libs.plugins.fgp.multiplatform)
@@ -12,6 +13,10 @@ freeletics {
     multiplatform {
         addJvmTarget()
         addAndroidTarget()
+    }
+
+    extensions.configure(FreeleticsAndroidExtension::class) {
+        enableParcelize()
     }
 }
 
