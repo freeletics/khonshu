@@ -9,6 +9,7 @@ import com.google.common.truth.Truth
 import kotlin.reflect.KClass
 import kotlin.time.Duration
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.merge
 
 /**
  * Collects events from [TestHostNavigator] and and allows the [validate] lambda to consume
@@ -29,11 +30,32 @@ public suspend fun TestHostNavigator.test(
 }
 
 /**
+ * Collects events from [DestinationNavigator] and and allows the [validate] lambda to consume
+ * and assert properties on them in order. If any exception occurs during validation the
+ * exception is rethrown from this method.
+ *
+ * Note: This requires passing [TestHostNavigator] to [DestinationNavigator].
+ *
+ * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
+ */
+public suspend fun DestinationNavigator.test(
+    timeout: Duration? = null,
+    name: String? = null,
+    validate: suspend NavigatorTurbine.() -> Unit,
+) {
+    val navEventNavigator = (hostNavigator as TestHostNavigator).navEventNavigator
+    merge(navEvents, navEventNavigator.navEvents).test(timeout, name) {
+        val turbine = DefaultNavigatorTurbine(navEventNavigator, this)
+        validate(turbine)
+    }
+}
+
+/**
  * Collects events from [TestHostNavigator] and returns a [NavigatorTurbine] for consuming
  * and asserting properties on them in order. If any exception occurs during validation the
  * exception is rethrown from this method.
  *
- * Unlike test which automatically cancels the flow at the end of the lambda, the returned
+ * Unlike [test] which automatically cancels the flow at the end of the lambda, the returned
  * NavigatorTurbine be explicitly canceled.
  *
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
@@ -48,11 +70,43 @@ public fun TestHostNavigator.testIn(
 }
 
 /**
+ * Collects events from [DestinationNavigator] and returns a [NavigatorTurbine] for consuming
+ * and asserting properties on them in order. If any exception occurs during validation the
+ * exception is rethrown from this method.
+ *
+ * Unlike [test] which automatically cancels the flow at the end of the lambda, the returned
+ * NavigatorTurbine be explicitly canceled.
+ *
+ * Note: This requires passing [TestHostNavigator] to [DestinationNavigator].
+ *
+ * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
+ */
+public fun DestinationNavigator.testIn(
+    scope: CoroutineScope,
+    timeout: Duration? = null,
+    name: String? = null,
+): NavigatorTurbine {
+    val navEventNavigator = (hostNavigator as TestHostNavigator).navEventNavigator
+    val turbine = merge(navEvents, navEventNavigator.navEvents).testIn(scope, timeout, name)
+    return DefaultNavigatorTurbine(navEventNavigator, turbine)
+}
+
+/**
  * Causes an emission to the current [TestHostNavigator.backPresses] collector to make it possible
  * to simulate a back press in tests that check custom back press logic.
  */
 public fun TestHostNavigator.dispatchBackPress() {
     onBackPressedCallback.handleOnBackPressed()
+}
+
+/**
+ * Causes an emission to the current [DestinationNavigator.backPresses] collector to make it possible
+ * to simulate a back press in tests that check custom back press logic.
+ *
+ * Note: This requires passing [TestHostNavigator] to [DestinationNavigator].
+ */
+public fun DestinationNavigator.dispatchBackPress() {
+    (hostNavigator as TestHostNavigator).onBackPressedCallback.handleOnBackPressed()
 }
 
 /**
