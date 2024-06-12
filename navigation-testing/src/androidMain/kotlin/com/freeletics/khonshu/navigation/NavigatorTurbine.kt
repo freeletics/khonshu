@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.merge
 
 /**
- * Collects events from [TestHostNavigator] and and allows the [validate] lambda to consume
+ * Collects events from [TestHostNavigator] and allows the [validate] lambda to consume
  * and assert properties on them in order. If any exception occurs during validation the
  * exception is rethrown from this method.
  *
