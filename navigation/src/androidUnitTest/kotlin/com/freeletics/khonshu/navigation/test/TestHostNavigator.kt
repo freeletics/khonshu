@@ -73,7 +73,7 @@ internal class TestHostNavigator : HostNavigator() {
         intent: Intent,
         deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
         deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
-    ) {
+    ): Boolean {
         throw UnsupportedOperationException()
     }
 

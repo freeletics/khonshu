@@ -40,15 +40,15 @@ internal class MultiStackHostNavigator(
         intent: Intent,
         deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
         deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
-    ) {
+    ): Boolean {
         val deepLinkRoutes = intent.extractDeepLinkRoutes(deepLinkHandlers, deepLinkPrefixes)
-        handleDeepLink(deepLinkRoutes)
+        return handleDeepLink(deepLinkRoutes)
     }
 
     @VisibleForTesting
-    internal fun handleDeepLink(deepLinkRoutes: List<Parcelable>) {
+    internal fun handleDeepLink(deepLinkRoutes: List<Parcelable>): Boolean {
         if (deepLinkRoutes.isEmpty()) {
-            return
+            return false
         }
 
         stack.resetToRoot(stack.startRoot)
@@ -68,6 +68,8 @@ internal class MultiStackHostNavigator(
                 is ActivityRoute -> navigateTo(route)
             }
         }
+
+        return true
     }
 
     override fun navigateTo(route: NavRoute) {
