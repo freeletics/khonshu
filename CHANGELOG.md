@@ -1,6 +1,31 @@
 Change Log
 ==========
 
+## 0.26.0 *(2024-06-12)*
+
+### Navigation
+
+- Introduces `HostNavigator`. This was previously an internal type used within
+  `NavHost` to execute navigation events. It's now possible to create a
+  `HostNavigator` with `rememberHostNavigator(...)`, pass that instance to `NavHost`
+  and use it to navigate directly without the use of navigation events. It is safe
+  to reference `HostNavigator` outside the UI layer.
+- `DestinationNavigator` is a replacement for `NavEventNavigator` that delegates
+  to `HostNavigator`, which means it also works without navigation events. The 
+  advantage of using this over using `HostNavigator` directly is that 
+  `DestinationNavigator` supports activity results, which `HostNavigator` doesn't.
+- The `navigate {}` function that allows grouping multiple navigation events
+  is now more efficient. The `NavHost` will only be updated once at the end and 
+  not between the actions of such a group.
+- `NavEventNavigator` will be removed in one of the next releases.
+ 
+### Codegen
+
+- A `HostNavigator` is automatically created in the `NavHostActivity` component.
+- It's required that a `NavRoot` is provided into the scope of a `NavHostActivity`.
+- Each `NavDestination` now requires an `ActivityResultNavigator` to be provided into 
+  the scope (previously `NavEventNavigator` was required).
+
 ## 0.25.0 *(2024-05-17)*
 
 ### Navigation
