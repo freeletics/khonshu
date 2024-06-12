@@ -16,6 +16,7 @@ public fun createHostNavigator(
     viewModel: StackEntryStoreViewModel,
     startRoot: NavRoot,
     destinations: ImmutableSet<NavDestination>,
+    startRootOverridesSavedRoot: Boolean = false,
 ): HostNavigator {
     val activityDestinations = destinations.filterIsInstance<ActivityDestination>()
     val starter = ActivityStarter(context.applicationContext, activityDestinations)
@@ -31,7 +32,7 @@ public fun createHostNavigator(
         )
     } else {
         MultiStack.fromState(
-            root = startRoot,
+            root = startRoot.takeIf { startRootOverridesSavedRoot },
             bundle = navState,
             createEntry = factory::create,
             createRestoredEntry = factory::create,

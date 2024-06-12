@@ -360,7 +360,11 @@ internal class MultiStackTest {
     fun `replaceAll with start root from start hostNavigator`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
+        assertThat(stack.startRoot).isEqualTo(SimpleRoot(1))
+
         stack.replaceAll(SimpleRoot(2))
+
+        assertThat(stack.startRoot).isEqualTo(SimpleRoot(2))
 
         assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
