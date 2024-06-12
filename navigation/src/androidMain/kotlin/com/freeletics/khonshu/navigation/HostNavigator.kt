@@ -68,6 +68,7 @@ public fun rememberHostNavigator(
             viewModel = viewModel,
             startRoot = startRoot,
             destinations = destinations,
+            startRootOverridesSavedRoot = true,
         ).also {
             val handledDeepLinks = viewModel.globalSavedStateHandle.get<Boolean>(SAVED_STATE_HANDLED_DEEP_LINKS)
             if (handledDeepLinks != true) {

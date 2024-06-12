@@ -24,7 +24,8 @@ internal class MultiStack(
     val snapshot: State<StackSnapshot>
         get() = snapshotState
 
-    val startRoot = startStack.rootEntry.route as NavRoot
+    val startRoot
+        get() = startStack.rootEntry.route as NavRoot
 
     private fun getBackStack(root: NavRoot): Stack? {
         return allStacks.find { it.id == root.destinationId }
@@ -163,14 +164,14 @@ internal class MultiStack(
 
         @Suppress("DEPRECATION")
         fun fromState(
-            root: NavRoot,
+            root: NavRoot?,
             bundle: Bundle,
             createEntry: (BaseRoute) -> StackEntry<*>,
             createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
         ): MultiStack {
             val inputRoot = bundle.getParcelable<NavRoot>(SAVED_INPUT_ROOT)!!
 
-            if (inputRoot != root) {
+            if (root != null && inputRoot != root) {
                 return createWith(
                     root = root,
                     createEntry = createEntry,
