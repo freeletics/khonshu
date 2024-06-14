@@ -167,7 +167,7 @@ public final class com/freeletics/khonshu/navigation/OverlayDestination {
 
 public final class com/freeletics/khonshu/navigation/PermissionsResultRequest : com/freeletics/khonshu/navigation/ContractResultOwner {
 	public static final field $stable I
-	public synthetic fun getContract$navigation ()Landroidx/activity/result/contract/ActivityResultContract;
+	public synthetic fun getContract$navigation_release ()Landroidx/activity/result/contract/ActivityResultContract;
 }
 
 public abstract interface class com/freeletics/khonshu/navigation/PermissionsResultRequest$PermissionResult {
