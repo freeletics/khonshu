@@ -1,8 +1,8 @@
 # Testing
 
 The library has an optional test artifact that provides an additional test artifact that makes
-it possible to test navigation logic through `NavEventNavigator` without running on an Android 
-device or emulator. The test artifact is heavily inspired by the 
+it possible to test navigation logic through `HostNavigator` without running on an Android
+device or emulator. The test artifact is heavily inspired by the
 [Turbine library](https://github.com/cashapp/turbine) and is also using it internally.
 
 
@@ -15,7 +15,7 @@ testImplementation("com.freeletics.khonshu:navigation-testing:<latest-version>")
 
 ## Standalone navigation tests
 
-When testing a `NavEventNavigator` on its own call the `test` extension function on it
+When testing a `HostNavigator` on its own call the `test` extension function on it
 
 ```kotlin
 
@@ -24,7 +24,7 @@ navigator.test {
 }
 ```
 
-This will start collecting events from the navigator and then calls the given block with 
+This will start collecting events from the navigator and then calls the given block with
 `NavigatorTurbine` as a receiver:
 
 ```kotlin
@@ -49,7 +49,7 @@ runTest {
     val navigatorTurbine = navigator.testIn(this)
     assertEquals(newState, otherTurbine.awaitItem())
     navigatorTurbine.awaitNavigateTo(ExampleRoute("1"))
-    
+
     otherTurbine.cancel()
     navigatorTurbine.cancel()
 }
@@ -60,7 +60,7 @@ is required to manually call `cancel` at the end of the test.
 
 ## Cancellation
 
-While `test` and `testIn` have different ways of cancellation, both will validate that all 
+While `test` and `testIn` have different ways of cancellation, both will validate that all
 navigation events have been consumed upon cancellation. If there are any unconsumed events
 that were not handled through one of the `await...` functions an `AssertionError` will be thrown
 during the cancellation.
@@ -68,8 +68,8 @@ during the cancellation.
 
 ## Back presses
 
-For tests of classes or functions that collect `NavEventNavigator.backPresses()` it is possible
-to manually trigger a back press emission by calling the `NavEventNavigator.dispatchBackPress()`
+For tests of classes or functions that collect `HostNavigator.backPresses()` it is possible
+to manually trigger a back press emission by calling the `HostNavigator.dispatchBackPress()`
 function.
 
 `NavigatorTurbine` also has a `dispatchBackPress()` function which can be directly called from
@@ -79,19 +79,19 @@ within a `test` block.
 ## Result receivers
 
 When testing code that deals with `Activity`, permission or navigation results it is often needed
-to send fake results to the collector. The library provides a `sendResult` extension function for 
+to send fake results to the collector. The library provides a `sendResult` extension function for
 each request type to do that.
 
 For example if there would be the following navigator:
 
 ```kotlin
-class MyNavigator : NavEventNavigator() {
+class MyNavigator : ActivityNavigator() {
     val permissionRequest = registerForPermissionsResult()
 }
 ```
 
-If the code under test collects `permissionRequest.results`, it would be possible to call 
-`navigator.permissionRequest.sendResult("permission", PermissionResult.GRANTED)` to simulate 
+If the code under test collects `permissionRequest.results`, it would be possible to call
+`navigator.permissionRequest.sendResult("permission", PermissionResult.GRANTED)` to simulate
 the request succeeding.
 
 

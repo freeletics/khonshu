@@ -33,7 +33,7 @@ When using multiple back stacks the start route of the nav host should be a `Nav
 
 ## Navigation
 
-Starting a new back stack is then as simple as calling `NavEventNavigator.navigateToRoot(LibraryTab)`.
+Starting a new back stack is then as simple as calling `HostNavigator.navigateToRoot(LibraryTab)`.
 This will save the state of the current back stack and remove it and then create a new one for
 `LibraryTab`. Note that the nav hosts start route/destination will always remain on the back stack.
 If `HomeTab` was used as start route, then calling `navigateToRoot(LibraryTab)` would always result

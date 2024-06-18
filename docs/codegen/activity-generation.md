@@ -5,6 +5,7 @@ an `Activity` and the set up that is required for it. To do that add the
 `@NavHostActivity` annotation to a `@Composable` function. The composable will then
 be shown in the generated `Activity`.
 
+
 ```kotlin
  // a scope marker used to represent the `Activity`.
 sealed interface ExampleActivityScope
@@ -19,10 +20,10 @@ sealed interface ExampleActivityScope
 internal fun ExampleUi(
   state: ExampleState,
   sendAction: (ExampleAction) -> Unit,
-  navHost: @Composable (NavRoot, ((BaseRoute) -> Unit)?) -> Unit,
+  navHost: SimpleNavHost,
 ) {
     // place the given NavHost composable
-    navHost(StartRoute) { route -> /* route changed listener */ }
+    navHost(Modifier.fillMaxSize()) { root, route -> /* route changed listener */ }
 }
 ```
 
@@ -33,9 +34,13 @@ it and can use `sendAction` to talk to the state machine.
 A new parameter is the `navHost` composable. This composable is a pre-configured `NavHost` that
 already has all destinations and deep links added to it. This leaves 2 parameters when calling
 the composable:
-- A `NavRoot` which represents the start destination.
-- A `(BaseRoute) -> Unit)` function that will be called whenever the currently shown destination
+- A `Modifier` to influence how the `NavHost` is shown on screen
+- A `(NavRoot, BaseRoute) -> Unit)` function that will be called whenever the currently shown destination
   changes. This is optional and null can be passed instead.
+
+The code generation will automatically take care of creating a `HostNavigator` and
+makes it available in the `scope`. This means any screen can simply inject `HostNavigator` to
+use it.
 
 One requirement is that the `destinationScope` used by other screens is either the `scope` or
 `parentScope` (or a parent of the parent if there are deeper scope hierarchies) used for
