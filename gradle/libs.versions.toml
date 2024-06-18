@@ -72,8 +72,8 @@ androidx-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-
 androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
-toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.3.7" }
-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.7.0" }
+toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.4.0" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.7.0" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }
