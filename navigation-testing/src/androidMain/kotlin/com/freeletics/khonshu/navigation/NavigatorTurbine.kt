@@ -188,7 +188,7 @@ public interface NavigatorTurbine {
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun awaitNavigateTo(route: ActivityRoute)
+    public suspend fun awaitNavigateTo(route: ActivityRoute, fallbackRoute: NavRoute? = null)
 
     /**
      * Assert that all the events in the [block] are received. This function
@@ -330,8 +330,8 @@ internal class DefaultNavigatorTurbine(
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun awaitNavigateTo(route: ActivityRoute) {
-        val event = NavEvent.NavigateToActivityEvent(route)
+    override suspend fun awaitNavigateTo(route: ActivityRoute, fallbackRoute: NavRoute?) {
+        val event = NavEvent.NavigateToActivityEvent(route, fallbackRoute)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 

@@ -2,7 +2,6 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
-import com.freeletics.khonshu.codegen.util.context
 import com.freeletics.khonshu.codegen.util.contributesToAnnotation
 import com.freeletics.khonshu.codegen.util.createHostNavigator
 import com.freeletics.khonshu.codegen.util.hostNavigator
@@ -51,13 +50,12 @@ internal class ActivityModuleGenerator(
             .addAnnotation(provides)
             .addAnnotation(scopeToAnnotation(data.scope))
             .addAnnotation(optInAnnotation(internalNavigatorApi))
-            .addParameter("context", context)
             .addParameter("viewModel", multiStackHostNavigatorViewModel)
             .addParameter("startRoot", navRoot)
             .addParameter("destinations", immutableSet.parameterizedBy(navigationDestination).jvmSuppressWildcards())
             .returns(hostNavigator)
             .addStatement(
-                "return %M(context, viewModel, startRoot, destinations)",
+                "return %M(viewModel, startRoot, destinations)",
                 createHostNavigator,
             )
             .build()

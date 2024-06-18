@@ -2,7 +2,7 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
-import com.freeletics.khonshu.codegen.util.activityResultNavigator
+import com.freeletics.khonshu.codegen.util.activityNavigator
 import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.bindsInstanceParameter
 import com.freeletics.khonshu.codegen.util.contributesToAnnotation
@@ -67,7 +67,7 @@ internal class ComponentGenerator(
         if (data is NavHostActivityData) {
             properties += simplePropertySpec(hostNavigator)
         } else {
-            properties += simplePropertySpec(activityResultNavigator).toBuilder()
+            properties += simplePropertySpec(activityNavigator).toBuilder()
                 .addAnnotation(forScope(data.scope, GET))
                 .build()
         }

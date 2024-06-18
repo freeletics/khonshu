@@ -30,6 +30,7 @@ public sealed interface NavEvent {
     @Poko
     public class NavigateToActivityEvent(
         internal val route: ActivityRoute,
+        internal val fallbackRoute: NavRoute?,
     ) : NavEvent
 
     @InternalNavigationTestingApi

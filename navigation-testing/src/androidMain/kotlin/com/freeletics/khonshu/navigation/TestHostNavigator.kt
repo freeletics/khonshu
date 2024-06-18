@@ -53,10 +53,6 @@ public class TestHostNavigator(
         navEventNavigator.navigateTo(route)
     }
 
-    override fun navigateTo(route: ActivityRoute) {
-        navEventNavigator.navigateTo(route)
-    }
-
     override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
         navEventNavigator.navigateToRoot(root, restoreRootState)
     }

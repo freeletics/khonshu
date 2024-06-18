@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.sample.feature.bottomsheet
 
-import com.freeletics.khonshu.navigation.ActivityResultNavigator
 import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.sample.feature.bottomsheet.nav.BottomSheetRoute

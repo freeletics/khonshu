@@ -3,17 +3,17 @@ package com.freeletics.khonshu.navigation
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
 import com.freeletics.khonshu.navigation.internal.NavEvent
-import com.freeletics.khonshu.navigation.test.TestActivityResultNavigator
+import com.freeletics.khonshu.navigation.test.TestActivityNavigator
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
-internal class ActivityResultNavigatorTest {
+internal class ActivityNavigatorTest {
 
     @Test
     fun `navigateForResult event is received`(): Unit = runBlocking {
-        val navigator = TestActivityResultNavigator()
+        val navigator = TestActivityNavigator()
 
         navigator.navEvents.test {
             val launcher = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
@@ -27,7 +27,7 @@ internal class ActivityResultNavigatorTest {
 
     @Test
     fun `requestPermissions event is received`(): Unit = runBlocking {
-        val navigator = TestActivityResultNavigator()
+        val navigator = TestActivityNavigator()
 
         navigator.navEvents.test {
             val launcher = navigator.testRegisterForPermissionResult()
@@ -42,7 +42,7 @@ internal class ActivityResultNavigatorTest {
 
     @Test
     fun `registerForActivityResult after read is disallowed`(): Unit = runBlocking {
-        val navigator = TestActivityResultNavigator()
+        val navigator = TestActivityNavigator()
 
         navigator.activityResultRequests
 
@@ -56,7 +56,7 @@ internal class ActivityResultNavigatorTest {
 
     @Test
     fun `registerForPermissionsResult after read is disallowed`(): Unit = runBlocking {
-        val navigator = TestActivityResultNavigator()
+        val navigator = TestActivityNavigator()
 
         navigator.activityResultRequests
 

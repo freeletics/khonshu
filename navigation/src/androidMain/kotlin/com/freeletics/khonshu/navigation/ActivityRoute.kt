@@ -5,32 +5,26 @@ import android.content.Intent
 import android.os.Parcelable
 
 /**
- * Represents the route to an `Activity`. Should be used through []
+ * Represents the route to an `Activity`. Should be used through [InternalActivityRoute]
+ * and [ExternalActivityRoute].
  */
 public sealed interface ActivityRoute : Parcelable {
-    public fun fillInIntent(): Intent
+    public fun buildIntent(): Intent
 }
 
 /**
  * Represents the route to an `Activity` within the current app. The instance of this route
  * will be added to the resulting `Intent` and can be accessed in the launched `Activity` by calling
- * [getRoute] or [requireRoute].
+ * [getRoute] or [requireRoute]. The navigator will also ensure that the [Intent] will only target the
+ * current app.
  */
-public abstract class InternalActivityRoute : ActivityRoute {
-    final override fun fillInIntent(): Intent {
-        return Intent().putExtra(EXTRA_ROUTE, this)
-    }
-}
+public abstract class InternalActivityRoute : ActivityRoute
 
 /**
- * Represents the route to an `Activity` in another app. [fillInIntent] can be used to dynamically
+ * Represents the route to an `Activity` in another app. [buildIntent] can be used to dynamically
  * add extras to the resulting `Intent`.
  */
-public interface ExternalActivityRoute : ActivityRoute {
-    override fun fillInIntent(): Intent {
-        return Intent()
-    }
-}
+public interface ExternalActivityRoute : ActivityRoute
 
 /**
  * Returns the [ActivityRoute] that was used to navigate to this [Activity].
@@ -48,6 +42,10 @@ public fun <T : InternalActivityRoute> Activity.requireRoute(): T {
 public fun <T : InternalActivityRoute> Activity.getRoute(): T? {
     @Suppress("DEPRECATION")
     return intent.extras?.getParcelable(EXTRA_ROUTE)
+}
+
+internal fun Intent.putRoute(route: ActivityRoute): Intent {
+    return putExtra(EXTRA_ROUTE, this)
 }
 
 private const val EXTRA_ROUTE: String = "com.freeletics.khonshu.navigation.ROUTE"

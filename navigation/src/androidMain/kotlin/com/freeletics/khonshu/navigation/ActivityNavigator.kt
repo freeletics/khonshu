@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
  *
  * For this work [NavigationSetup] needs to be called.
  */
-public abstract class ActivityResultNavigator {
+public abstract class ActivityNavigator {
 
     private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
 
@@ -32,6 +32,14 @@ public abstract class ActivityResultNavigator {
             allowedToAddRequests = false
             return _activityResultRequests.toList()
         }
+
+    /**
+     * Triggers navigation to the given [route].
+     */
+    public fun navigateTo(route: ActivityRoute, fallbackRoute: NavRoute? = null) {
+        val event = NavEvent.NavigateToActivityEvent(route, fallbackRoute)
+        sendNavEvent(event)
+    }
 
     /**
      * Register for receiving activity results for the given [contract].

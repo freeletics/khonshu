@@ -23,11 +23,6 @@ public interface Navigator {
     )
 
     /**
-     * Triggers navigation to the given [route].
-     */
-    public fun navigateTo(route: ActivityRoute)
-
-    /**
      * Triggers up navigation.
      */
     public fun navigateUp()
