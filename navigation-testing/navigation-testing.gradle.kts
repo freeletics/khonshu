@@ -3,11 +3,11 @@ import com.android.build.api.dsl.CommonExtension
 plugins {
     alias(libs.plugins.fgp.multiplatform)
     alias(libs.plugins.fgp.publish)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 freeletics {
     optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi")
+    useSerialization()
 
     multiplatform {
         addJvmTarget()
@@ -23,7 +23,6 @@ extensions.configure(CommonExtension::class.java) {
 
 dependencies {
     "commonMainApi"(projects.navigation)
-    "commonMainApi"(libs.serialization)
     "commonMainApi"(libs.kotlin.test)
 
     "commonMainImplementation"(libs.toml)
