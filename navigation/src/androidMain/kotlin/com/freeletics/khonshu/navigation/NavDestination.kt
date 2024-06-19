@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation
 
-import android.content.Intent
 import androidx.compose.runtime.Composable
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi

@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation.internal
 
-import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import kotlin.reflect.KClass
 
