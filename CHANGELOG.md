@@ -23,7 +23,7 @@ Change Log
 
 - A `HostNavigator` is automatically created in the `NavHostActivity` component.
 - It's required that a `NavRoot` is provided into the scope of a `NavHostActivity`.
-- Each `NavDestination` now requires an `ActivityNavigator` to be provided into
+- Each `NavDestination` now requires an `ActivityResultNavigator` to be provided into
   the scope (previously `NavEventNavigator` was required).
 
 ## 0.25.0 *(2024-05-17)*
