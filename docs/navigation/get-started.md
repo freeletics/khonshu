@@ -5,7 +5,7 @@ separated from the UI layer and becomes easily testable in isolation without hav
 actually navigate inside a running app.
 
 Originally this library was a wrapper around AndroidX navigation which was eventually
-removed from the internals.The initial XML based definitions of destinations
+removed from the internals. The initial XML based definitions of destinations
 and safe-args code generation did not scale well in a modularized code base where each
 screen is its own module and where those modules shouldn't depend on each other. The
 String based routes that were introduced with AndroidX navigation for Compose solved
