@@ -75,7 +75,7 @@ For the uri based deep link handling to work regular `intent-filter`s need to be
 in the `AndroidManifest`. To automate this process there is a Gradle plugin that reads
 deep link definitions from a `toml` file and automatically generates the `Intent` filters
 in the `AndroidManifest`. There is then a test helper that allows writing a unit test
-verify that the `toml` file and the defined `DeepLinkHandler` classes handle the same
+to verify that the `toml` file and the defined `DeepLinkHandler` classes handle the same
 patterns and are not out of sync.
 
 ```toml
