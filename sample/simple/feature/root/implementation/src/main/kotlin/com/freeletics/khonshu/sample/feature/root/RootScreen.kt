@@ -10,6 +10,8 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.freeletics.khonshu.codegen.NavDestination
 import com.freeletics.khonshu.sample.feature.root.nav.RootRoute
@@ -27,7 +29,12 @@ fun RootScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        BasicText("Feature Root")
+        BasicText(
+            "Feature Root",
+            style = TextStyle.Default.copy(
+                fontWeight = FontWeight.Bold,
+            ),
+        )
 
         Spacer(Modifier.height(12.dp))
 

@@ -10,6 +10,8 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.freeletics.khonshu.codegen.NavDestination
 import com.freeletics.khonshu.sample.feature.screen.nav.ScreenRoute
@@ -28,7 +30,12 @@ fun ScreenScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        BasicText("Feature Screen ${state.number}")
+        BasicText(
+            "Feature Screen ${state.number}",
+            style = TextStyle.Default.copy(
+                fontWeight = FontWeight.Bold,
+            ),
+        )
 
         Spacer(Modifier.height(12.dp))
 
@@ -36,6 +43,19 @@ fun ScreenScreen(
             modifier = Modifier.clickable { sendAction(ScreenAction.ScreenButtonClicked) },
             text = "Open Screen",
         )
+
+        Spacer(Modifier.height(12.dp))
+
+        BasicText(
+            modifier = Modifier.clickable { sendAction(ScreenAction.ScreenForResultButtonClicked) },
+            text = "Open Screen for Result",
+        )
+
+        if (state.result != null) {
+            BasicText(
+                text = "Result received: ${state.result}",
+            )
+        }
 
         Spacer(Modifier.height(12.dp))
 
