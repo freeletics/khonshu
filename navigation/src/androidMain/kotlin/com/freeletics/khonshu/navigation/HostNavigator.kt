@@ -71,9 +71,8 @@ public fun rememberHostNavigator(
 ): HostNavigator {
     val context = LocalContext.current
     val viewModel = viewModel<StackEntryStoreViewModel>()
-    return remember(context, viewModel, startRoot, destinations, deepLinkHandlers, deepLinkPrefixes) {
+    return remember(viewModel, startRoot, destinations, deepLinkHandlers, deepLinkPrefixes) {
         createHostNavigator(
-            context = context.applicationContext,
             viewModel = viewModel,
             startRoot = startRoot,
             destinations = destinations,

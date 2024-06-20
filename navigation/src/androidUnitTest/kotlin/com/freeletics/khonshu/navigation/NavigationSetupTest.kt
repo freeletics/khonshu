@@ -49,6 +49,11 @@ internal class NavigationSetupTest {
         permissionRequest to permissionLauncher,
     )
 
+    private val started = mutableListOf<Pair<ActivityRoute, NavRoute?>>()
+    private val activityStarter: (ActivityRoute, NavRoute?) -> Unit = { route, fallback ->
+        started.add(route to fallback)
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher: CoroutineDispatcher = UnconfinedTestDispatcher()
     private val testLifecycleOwner = TestLifecycleOwner(RESUMED, dispatcher)
@@ -64,7 +69,7 @@ internal class NavigationSetupTest {
 
     private fun setup() {
         CoroutineScope(dispatcher).launch {
-            navigator.collectAndHandleNavEvents(lifecyle, hostNavigator, launchers)
+            navigator.collectAndHandleNavEvents(lifecyle, hostNavigator, activityStarter, launchers)
         }
     }
 
@@ -133,12 +138,11 @@ internal class NavigationSetupTest {
     }
 
     @Test
-    fun `NavigateToActivityEvent is forwarded to hostNavigator`() = runBlocking {
+    fun `NavigateToActivityEvent is forwarded to activity starter`() = runBlocking {
         setup()
 
-        navigator.navigateTo(SimpleActivity(1))
-        assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.NavigateToActivityEvent(SimpleActivity(1)))
+        navigator.navigateTo(SimpleActivity(1), SimpleRoute(1))
+        assertThat(started).containsExactly(SimpleActivity(1) to SimpleRoute(1)).inOrder()
     }
 
     @Test
@@ -246,7 +250,7 @@ internal class NavigationSetupTest {
                 val launchers = mapOf<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>(
                     permissionRequest to permissionLauncher,
                 )
-                navigator.collectAndHandleNavEvents(lifecyle, hostNavigator, launchers)
+                navigator.collectAndHandleNavEvents(lifecyle, hostNavigator, activityStarter, launchers)
             }
         }
         assertThat(exception).hasMessageThat().isEqualTo(

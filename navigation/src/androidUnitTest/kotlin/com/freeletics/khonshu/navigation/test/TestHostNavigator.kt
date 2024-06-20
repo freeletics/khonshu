@@ -6,7 +6,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import app.cash.turbine.Turbine
-import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
@@ -35,10 +34,6 @@ internal class TestHostNavigator : HostNavigator() {
 
     override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
         received.add(NavEvent.NavigateToRootEvent(root, restoreRootState))
-    }
-
-    override fun navigateTo(route: ActivityRoute) {
-        received.add(NavEvent.NavigateToActivityEvent(route))
     }
 
     override fun navigateUp() {

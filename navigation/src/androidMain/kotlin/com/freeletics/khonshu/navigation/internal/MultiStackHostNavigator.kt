@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.State
-import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
@@ -23,7 +22,6 @@ import kotlinx.coroutines.flow.callbackFlow
 
 internal class MultiStackHostNavigator(
     private val stack: MultiStack,
-    private val activityStarter: (ActivityRoute) -> Unit,
     viewModel: StackEntryStoreViewModel,
 ) : HostNavigator() {
 
@@ -46,7 +44,7 @@ internal class MultiStackHostNavigator(
     }
 
     @VisibleForTesting
-    internal fun handleDeepLink(deepLinkRoutes: List<Parcelable>): Boolean {
+    internal fun handleDeepLink(deepLinkRoutes: List<BaseRoute>): Boolean {
         if (deepLinkRoutes.isEmpty()) {
             return false
         }
@@ -63,9 +61,7 @@ internal class MultiStackHostNavigator(
                     }
                     stack.push(route, clearTargetStack = true)
                 }
-
                 is NavRoute -> stack.push(route)
-                is ActivityRoute -> navigateTo(route)
             }
         }
 
@@ -78,10 +74,6 @@ internal class MultiStackHostNavigator(
 
     override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
         stack.push(root, clearTargetStack = !restoreRootState)
-    }
-
-    override fun navigateTo(route: ActivityRoute) {
-        activityStarter(route)
     }
 
     override fun navigateUp() {
@@ -140,7 +132,6 @@ internal class MultiStackHostNavigator(
         val nonNotifyingNavigator = NonNotifyingNavigator()
         nonNotifyingNavigator.apply(block)
         stack.updateVisibleDestinations(true)
-        nonNotifyingNavigator.activityRoutes.forEach { activityStarter(it) }
     }
 
     internal companion object {
@@ -148,14 +139,8 @@ internal class MultiStackHostNavigator(
     }
 
     private inner class NonNotifyingNavigator : Navigator {
-        val activityRoutes = mutableListOf<ActivityRoute>()
-
         override fun navigateTo(route: NavRoute) {
             stack.push(route, notify = false)
-        }
-
-        override fun navigateTo(route: ActivityRoute) {
-            activityRoutes += route
         }
 
         override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {

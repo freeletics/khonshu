@@ -8,7 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.TaskStackBuilder
 import com.eygraber.uri.toUri
-import com.freeletics.khonshu.navigation.internal.Parcelable
+import com.freeletics.khonshu.navigation.BaseRoute
 
 /**
  * Creates an [Intent] that can be used to launch this deep link.
@@ -60,7 +60,7 @@ private fun defaultFlag(): Int {
 internal fun Intent.extractDeepLinkRoutes(
     deepLinkHandlers: Set<DeepLinkHandler>,
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
-): List<Parcelable> {
+): List<BaseRoute> {
     if (hasExtra(EXTRA_DEEPLINK_ROUTES)) {
         @Suppress("DEPRECATION")
         return getParcelableArrayListExtra(EXTRA_DEEPLINK_ROUTES)!!

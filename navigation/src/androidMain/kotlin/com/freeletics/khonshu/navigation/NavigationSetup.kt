@@ -11,12 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.freeletics.khonshu.navigation.internal.ActivityStarter
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.NavEvent
 import kotlinx.coroutines.Dispatchers
@@ -25,14 +27,18 @@ import kotlinx.parcelize.Parcelize
 import org.jetbrains.annotations.VisibleForTesting
 
 /**
- * Sets up the [ActivityResultNavigator] and [NavEventNavigator] inside the current composition so that it's events
+ * Sets up the [ActivityNavigator] and [NavEventNavigator] inside the current composition so that it's events
  * are handled while the composition is active.
  */
 @Composable
-public fun NavigationSetup(navigator: ActivityResultNavigator) {
+public fun NavigationSetup(navigator: ActivityNavigator) {
     val hostNavigator = LocalHostNavigator.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+
+    val activityStarter = remember(context, hostNavigator) {
+        ActivityStarter(context, hostNavigator)
+    }
 
     val activityLaunchers = navigator.activityResultRequests.associateWith {
         rememberResultLaunchers(it, context)
@@ -55,8 +61,13 @@ public fun NavigationSetup(navigator: ActivityResultNavigator) {
         }
     }
 
-    LaunchedEffect(lifecycleOwner, hostNavigator, navigator) {
-        navigator.collectAndHandleNavEvents(lifecycleOwner.lifecycle, hostNavigator, activityLaunchers)
+    LaunchedEffect(lifecycleOwner, hostNavigator, activityStarter, navigator) {
+        navigator.collectAndHandleNavEvents(
+            lifecycleOwner.lifecycle,
+            hostNavigator,
+            activityStarter::start,
+            activityLaunchers,
+        )
     }
 }
 
@@ -71,9 +82,10 @@ private fun <I, O> rememberResultLaunchers(
 }
 
 @VisibleForTesting
-internal suspend fun ActivityResultNavigator.collectAndHandleNavEvents(
+internal suspend fun ActivityNavigator.collectAndHandleNavEvents(
     lifecycle: Lifecycle,
     hostNavigator: HostNavigator,
+    activityStarter: (ActivityRoute, NavRoute?) -> Unit,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
 ) {
     // Following comment https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295,
@@ -89,13 +101,14 @@ internal suspend fun ActivityResultNavigator.collectAndHandleNavEvents(
     withContext(Dispatchers.Main.immediate) {
         navEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
             .collect { event ->
-                navigateTo(hostNavigator, hostNavigator, event, activityLaunchers)
+                navigateTo(hostNavigator, activityStarter, hostNavigator, event, activityLaunchers)
             }
     }
 }
 
 private fun navigateTo(
     hostNavigator: HostNavigator,
+    activityStarter: (ActivityRoute, NavRoute?) -> Unit,
     navigator: Navigator,
     event: NavEvent,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
@@ -108,7 +121,7 @@ private fun navigateTo(
             navigator.navigateToRoot(event.root, event.restoreRootState)
         }
         is NavEvent.NavigateToActivityEvent -> {
-            navigator.navigateTo(event.route)
+            activityStarter(event.route, event.fallbackRoute)
         }
         is NavEvent.UpEvent -> {
             navigator.navigateUp()
@@ -141,7 +154,7 @@ private fun navigateTo(
         is NavEvent.MultiNavEvent -> {
             hostNavigator.navigate {
                 event.navEvents.forEach {
-                    navigateTo(hostNavigator, this@navigate, it, activityLaunchers)
+                    navigateTo(hostNavigator, activityStarter, this@navigate, it, activityLaunchers)
                 }
             }
         }

@@ -2,7 +2,7 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.NavDestinationData
 import com.freeletics.khonshu.codegen.util.InternalCodegenApi
-import com.freeletics.khonshu.codegen.util.activityResultNavigator
+import com.freeletics.khonshu.codegen.util.activityNavigator
 import com.freeletics.khonshu.codegen.util.composable
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.localActivityComponentProvider
@@ -35,7 +35,7 @@ internal class NavDestinationComposableGenerator(
             .addStatement("%T.provide(entry, snapshot, provider)", componentProviderClassName)
             .endControlFlow()
             .addStatement("")
-            .addStatement("%M(component.%L)", navigationSetup, activityResultNavigator.propertyName)
+            .addStatement("%M(component.%L)", navigationSetup, activityNavigator.propertyName)
             .addStatement("")
             .addStatement("%L(component)", composableName)
             .build()

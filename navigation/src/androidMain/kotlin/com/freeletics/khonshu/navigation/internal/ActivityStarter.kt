@@ -1,21 +1,32 @@
 package com.freeletics.khonshu.navigation.internal
 
+import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
-import com.freeletics.khonshu.navigation.ActivityDestination
 import com.freeletics.khonshu.navigation.ActivityRoute
+import com.freeletics.khonshu.navigation.InternalActivityRoute
+import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.Navigator
+import com.freeletics.khonshu.navigation.putRoute
 
 internal class ActivityStarter(
     private val context: Context,
-    private val activityDestinations: List<ActivityDestination>,
+    private val navigator: Navigator,
 ) {
-    fun start(route: ActivityRoute) {
-        val destination = activityDestinations.find {
-            it.id == ActivityDestinationId(route::class)
+    fun start(route: ActivityRoute, fallbackRoute: NavRoute?) {
+        val intent = route.buildIntent()
+        if (route is InternalActivityRoute) {
+            intent
+                .setPackage(context.packageName)
+                .putRoute(route)
         }
-        requireNotNull(destination) { "Did not find destination for $route" }
-        val intent = Intent(destination.intent)
-        intent.fillIn(route.fillInIntent(), 0)
-        context.startActivity(intent)
+        try {
+            context.startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            if (fallbackRoute != null) {
+                navigator.navigateTo(fallbackRoute)
+            } else {
+                throw e
+            }
+        }
     }
 }

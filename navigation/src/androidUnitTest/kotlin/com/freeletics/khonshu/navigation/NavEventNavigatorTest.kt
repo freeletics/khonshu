@@ -76,9 +76,14 @@ internal class NavEventNavigatorTest {
         val navigator = TestNavEventNavigator()
 
         navigator.navEvents.test {
-            navigator.navigateTo(SimpleActivity(1))
+            navigator.navigateTo(SimpleActivity(1), SimpleRoute(2))
 
-            assertThat(awaitItem()).isEqualTo(NavigateToActivityEvent(SimpleActivity(1)))
+            assertThat(awaitItem()).isEqualTo(
+                NavigateToActivityEvent(
+                    SimpleActivity(1),
+                    SimpleRoute(2),
+                ),
+            )
 
             cancel()
         }

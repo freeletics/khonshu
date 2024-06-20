@@ -1,8 +1,6 @@
 package com.freeletics.khonshu.navigation
 
-import android.content.Intent
 import androidx.compose.runtime.Composable
-import com.freeletics.khonshu.navigation.internal.ActivityDestinationId
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
@@ -66,19 +64,3 @@ internal class OverlayDestination<T : NavRoute>(
     override val extra: Any?,
     override val content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
 ) : ContentDestination<T>()
-
-/**
- * Creates a new [NavDestination] that represents an `Activity`. The class of [T] will be used
- * as a unique identifier. The given [intent] will be used to launch the `Activity` when using an
- * instance of [T] for navigation.
- */
-@Suppress("FunctionName")
-public inline fun <reified T : ActivityRoute> ActivityDestination(
-    intent: Intent,
-): NavDestination = ActivityDestination(ActivityDestinationId(T::class), intent)
-
-@PublishedApi
-internal class ActivityDestination(
-    val id: ActivityDestinationId<out ActivityRoute>,
-    val intent: Intent,
-) : NavDestination

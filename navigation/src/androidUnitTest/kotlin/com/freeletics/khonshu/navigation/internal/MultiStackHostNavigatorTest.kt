@@ -1,11 +1,9 @@
 package com.freeletics.khonshu.navigation.internal
 
 import androidx.lifecycle.SavedStateHandle
-import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.test.OtherRoot
 import com.freeletics.khonshu.navigation.test.OtherRoute
-import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestStackEntryFactory
@@ -20,11 +18,6 @@ import org.junit.Test
 
 internal class MultiStackHostNavigatorTest {
 
-    private val started = mutableListOf<ActivityRoute>()
-    private val starter: (ActivityRoute) -> Unit = { route ->
-        started.add(route)
-    }
-
     private val factory = TestStackEntryFactory()
     private val removed get() = factory.closedEntries
 
@@ -33,7 +26,6 @@ internal class MultiStackHostNavigatorTest {
     private fun underTest(): MultiStackHostNavigator {
         return MultiStackHostNavigator(
             stack = MultiStack.createWith(SimpleRoot(1), factory::create),
-            activityStarter = starter,
             viewModel = viewModel,
         )
     }
@@ -43,13 +35,6 @@ internal class MultiStackHostNavigatorTest {
         underTest()
 
         assertThat(removed).isEmpty()
-    }
-
-    @Test
-    fun `started is empty at the beginning`() {
-        underTest()
-
-        assertThat(started).isEmpty()
     }
 
     @Test
@@ -165,36 +150,6 @@ internal class MultiStackHostNavigatorTest {
             )
             .inOrder()
         assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
-    }
-
-    @Test
-    fun `deep links passed with an ActivityRoute`() {
-        val hostNavigator = underTest()
-        hostNavigator.handleDeepLink(listOf(SimpleActivity(2)))
-
-        assertThat(hostNavigator.snapshot.value.visibleEntries)
-            .containsExactly(
-                factory.create(StackEntry.Id("101"), SimpleRoot(1)),
-            )
-            .inOrder()
-        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
-
-        assertThat(started).containsExactly(SimpleActivity(2))
-    }
-
-    @Test
-    fun `deep links passed with a NavRoute and an ActivityRoute`() {
-        val hostNavigator = underTest()
-        hostNavigator.handleDeepLink(listOf(SimpleRoute(2), SimpleActivity(3)))
-
-        assertThat(hostNavigator.snapshot.value.visibleEntries)
-            .containsExactly(
-                factory.create(StackEntry.Id("102"), SimpleRoute(2)),
-            )
-            .inOrder()
-        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
-
-        assertThat(started).containsExactly(SimpleActivity(3))
     }
 
     @Test
@@ -977,10 +932,6 @@ internal class MultiStackHostNavigatorTest {
             navigateTo(ThirdRoute(5))
             assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
             navigateTo(ThirdRoute(6))
-
-            navigateTo(SimpleActivity(7))
-            assertThat(started).isEmpty()
-
             assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
             navigateBack()
             assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
@@ -989,12 +940,8 @@ internal class MultiStackHostNavigatorTest {
 
             navigateBackTo<OtherRoute>(inclusive = true)
             assertThat(hostNavigator.snapshot.value.entries).hasSize(1)
-
-            navigateTo(SimpleActivity(8))
-            assertThat(started).isEmpty()
         }
 
         assertThat(hostNavigator.snapshot.value.entries).hasSize(2)
-        assertThat(started).containsExactly(SimpleActivity(7), SimpleActivity(8))
     }
 }

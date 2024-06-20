@@ -76,7 +76,6 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
-            import android.content.Context
             import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
@@ -188,11 +187,10 @@ internal class NavHostActivityCodegenTest {
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideHostNavigator(
-                context: Context,
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
                 destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
-              ): HostNavigator = createHostNavigator(context, viewModel, startRoot, destinations)
+              ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -281,7 +279,6 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
-            import android.content.Context
             import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
@@ -393,11 +390,10 @@ internal class NavHostActivityCodegenTest {
               @SingleIn(ActivityScope::class)
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideHostNavigator(
-                context: Context,
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
                 destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
-              ): HostNavigator = createHostNavigator(context, viewModel, startRoot, destinations)
+              ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -510,7 +506,6 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
-            import android.content.Context
             import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
@@ -634,11 +629,10 @@ internal class NavHostActivityCodegenTest {
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideHostNavigator(
-                context: Context,
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
                 destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
-              ): HostNavigator = createHostNavigator(context, viewModel, startRoot, destinations)
+              ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -735,7 +729,6 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
-            import android.content.Context
             import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
@@ -844,11 +837,10 @@ internal class NavHostActivityCodegenTest {
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideHostNavigator(
-                context: Context,
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
                 destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
-              ): HostNavigator = createHostNavigator(context, viewModel, startRoot, destinations)
+              ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -932,7 +924,6 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
-            import android.content.Context
             import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
@@ -1044,11 +1035,10 @@ internal class NavHostActivityCodegenTest {
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideHostNavigator(
-                context: Context,
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
                 destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
-              ): HostNavigator = createHostNavigator(context, viewModel, startRoot, destinations)
+              ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
             @OptIn(InternalCodegenApi::class)
@@ -1137,7 +1127,6 @@ internal class NavHostActivityCodegenTest {
         val expected = """
             package com.test
 
-            import android.content.Context
             import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
@@ -1249,11 +1238,10 @@ internal class NavHostActivityCodegenTest {
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideHostNavigator(
-                context: Context,
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
                 destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
-              ): HostNavigator = createHostNavigator(context, viewModel, startRoot, destinations)
+              ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
             @OptIn(InternalCodegenApi::class)

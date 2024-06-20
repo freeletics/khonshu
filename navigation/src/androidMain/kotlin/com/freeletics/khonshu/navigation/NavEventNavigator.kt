@@ -9,7 +9,6 @@ import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.BackEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.BackToEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.MultiNavEvent
-import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToActivityEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.UpEvent
 import com.freeletics.khonshu.navigation.internal.NavEventCollector
@@ -29,7 +28,7 @@ import kotlinx.coroutines.flow.callbackFlow
  * permission requests can be handled through [registerForActivityResult]/[navigateForResult]
  * and [registerForPermissionsResult]/[requestPermissions] respectively.
  */
-public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResultNavigator(), BackInterceptor {
+public open class NavEventNavigator : Navigator, ResultNavigator, ActivityNavigator(), BackInterceptor {
 
     private val _navigationResultRequests = mutableListOf<EventNavigationResultRequest<*>>()
     private val _onBackPressedCallback = DelegatingOnBackPressedCallback()
@@ -65,14 +64,6 @@ public open class NavEventNavigator : Navigator, ResultNavigator, ActivityResult
         restoreRootState: Boolean,
     ) {
         val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
-        sendNavEvent(event)
-    }
-
-    /**
-     * Triggers a new [NavEvent] to navigate to the given [route].
-     */
-    override fun navigateTo(route: ActivityRoute) {
-        val event = NavigateToActivityEvent(route)
         sendNavEvent(event)
     }
 

@@ -3,7 +3,7 @@ package com.freeletics.khonshu.navigation
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 
 /**
- * A combination of [Navigator] and [ActivityResultNavigator] that can
+ * A combination of [Navigator] and [ActivityNavigator] that can
  * be used as base class for navigators of individual screens.
  */
 public abstract class DestinationNavigator(
@@ -12,7 +12,7 @@ public abstract class DestinationNavigator(
 ) : Navigator by hostNavigator,
     ResultNavigator by hostNavigator,
     BackInterceptor by hostNavigator,
-    ActivityResultNavigator() {
+    ActivityNavigator() {
 
     /**
      * See [HostNavigator.navigate].
