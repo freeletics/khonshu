@@ -1,6 +1,23 @@
 Change Log
 ==========
 
+## 0.27.0 *(2024-06-20)*
+
+The [documentation](https://freeletics.github.io/khonshu/) has been updated. 
+
+### Navigation
+
+- Renamed `ActivityResultNavigator` base class to `ActivityNavigator` and moved
+  `navigateTo(ActivityRoute)` to it. With this change the limitation that any
+  `Intent` needs to use `FLAG_ACTIVITY_NEW_TASK` is removed.
+- Removed `ActivityDestination`. Instead `ActivityRoute` implementations now
+  are building the full `Intent`. For `InternalActivityRoute` the route is still
+  `Intent` automatically added to the `Intent` and the `Intent` is automatically
+  limited to the current package to prevent hijacking of actions.
+- Removed the ability to add `ActivityRoute` to a `DeepLink`. The same can be achieved
+  by just launching 2 intents or using `TaskStackBuilder`.
+
+
 ## 0.26.0 *(2024-06-12)*
 
 ### Navigation
@@ -25,6 +42,7 @@ Change Log
 - It's required that a `NavRoot` is provided into the scope of a `NavHostActivity`.
 - Each `NavDestination` now requires an `ActivityResultNavigator` to be provided into
   the scope (previously `NavEventNavigator` was required).
+
 
 ## 0.25.0 *(2024-05-17)*
 
