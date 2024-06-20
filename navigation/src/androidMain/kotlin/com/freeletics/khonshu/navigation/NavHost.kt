@@ -120,7 +120,18 @@ private fun SystemBackHandling(snapshot: StackSnapshot, navigator: HostNavigator
         // will be enabled below if needed
         object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
-                navigator.navigateBack()
+                try {
+                    navigator.navigateBack()
+                } catch (e: IllegalStateException) {
+                    // The exception is thrown when navigateBack is called while the backstack is at the root. If the
+                    // system back is triggered twice very quickly after each other there is a short time window
+                    // after the first where the OnBackPressedCallback is not yet updated and would then also handle the
+                    // second. This suppresses the crash in that case.
+                    // TODO: see if we can improve this when starting to support predictive back
+                    if (navigator.snapshot.value.canNavigateBack) {
+                        throw e
+                    }
+                }
             }
         }
     }
