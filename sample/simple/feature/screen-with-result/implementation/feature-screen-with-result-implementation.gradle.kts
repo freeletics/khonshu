@@ -15,12 +15,9 @@ dependencies {
     api(libs.khonshu.navigation)
     api(libs.khonshu.statemachine)
     api(libs.khonshu.codegen)
-    api(projects.feature.screen.nav)
+    api(projects.feature.screenWithResult.nav)
 
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.foundation)
-    implementation(projects.feature.bottomSheet.nav)
-    implementation(projects.feature.dialog.nav)
-    implementation(projects.feature.newRoot.nav)
-    implementation(projects.feature.screenWithResult.nav)
+    implementation(libs.androidx.compose.material)
 }
