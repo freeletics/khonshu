@@ -93,7 +93,7 @@ and receiving results there.
 
 To use the API `registerForActivityResult` needs to be called with an instance of the wanted
 `ActivityResultContract`. This needs to happen before `NavigationSetup` is called for the navigator,
-so it is recommended to do this during the construction of the navigator. The method returns an
+so it needs to be called during the construction of the navigator. The method returns an
 `ActivityResultRequest` object that can be then used for two things. It can be passed to
 `navigateForResult(request)` to launch the contract. It also has a `results` property that returns
 a `Flow<O>`, where `O` is the contract's output type, to make it
