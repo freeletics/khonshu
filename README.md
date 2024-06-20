@@ -6,16 +6,15 @@ and common pitfalls we wanted to avoid.
 
 ## Navigation
 
-The navigation library is a wrapper around AndroidX navigation that allows to separate navigation
-logic from the UI layer and provides a scalable approach to type safe navigation in a highly
-modularized code base.
+A navigation library that allows to separate navigation logic from the UI layer and provides
+a scalable approach to type safe navigation in a highly modularized code base.
 
 For more information check out the [docs][4].
 
 
 ## Codegen
 
-Codegen provides a plugin for [Anvil][5] that helps with generating dependency injection 
+Codegen provides a plugin for [Anvil][5] that helps with generating dependency injection
 related code and common boilerplate for screens as well as handling most of the set up
 of the navigation library.
 

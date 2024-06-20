@@ -9,14 +9,6 @@ generating dependency injection related code and common boilerplate for screens.
 - optional integration with Navigator to simplify its setup
 - easily let objects survive configuration changes
 
-One other general advantage is around Fragments. If an app uses them or has to use them for legacy
-reasons, Codegen will mostly hide them from the developers because it generates the Fragment
-for each screen it's used in. This way logic is kept out of them and the actual components like
-UI and state machine (presenter/view model) can be tested more easily in isolation. It also makes
-a migration away from Fragments easier since generated code can be easily replaced by other
-generated code. In fact migrating an app where each screen uses Codegen from Fragments to
-just using Compose is as easy as replacing a single annotation on each screen.
-
 
 ## Dependency
 
@@ -33,76 +25,36 @@ The library provides 2 different runtime implementations. One for `Fragment` bas
 for pure `Compose` apps. If an app uses Compose but the composables are hosted inside fragments
 it falls into the `Fragment` category.
 
-=== "Compose"
+The `@NavDestination` annotation is added to the top level composable of a screen. This function
+can have 2 parameters: the state that should be rendered and a lambda that allows
+the composable to send actions for user interactions. Adding the annotation will then generate
+another Composable function called `KhonshuExampleUi`, a Dagger component and a `NavDestination`
+that uses the given `route` and the generated composable.
 
-    The `@NavDestination` annotation is added to the top level composable of a screen. This function
-    can have 2 parameters: the state that should be rendered and a lambda that allows
-    the composable to send actions for user interactions. Adding the annotation will then generate
-    another Composable function called `KhonshuExampleUi`, a Dagger component and a `NavDestination`
-    that uses the given `route` and the generated composable.
+```kotlin
+@NavDestination(
+    route = ExampleRoute::class,
+    parentScope = ActivityScope::class, // ActivityScope is the default value and can be omitted
+    stateMachine = ExampleStateMachine::class,
+    destinationScope = AppScope::class, // AppScope is the default value and can be omitted
+)
+@Composable
+internal fun ExampleUi(
+  state: ExampleState,
+  sendAction: (ExampleAction) -> Unit
+) {
+  // composable logic ...
+}
+```
+*`scope`, `parentScope` and `destinationScope` are described in the next sections*
 
-    ```kotlin
-    @NavDestination(
-        route = ExampleRoute::class,
-        parentScope = AppScope::class, // AppScope is the default value and can be omitted
-        stateMachine = ExampleStateMachine::class,
-        destinationScope = AppScope::class, // AppScope is the default value and can be omitted
-    )
-    @Composable
-    internal fun ExampleUi(
-      state: ExampleState,
-      sendAction: (ExampleAction) -> Unit
-    ) {
-      // composable logic ...
-    }
-    ```
-    *`scope`, `parentScope` and destionationScope` are described in the next sections*
-
-    The generated `KhonshuExampleUi` function will use the generated component, the
-    annotated composable as well as the `stateMachine` parameter from the
-    annotation. It will automatically hook up the
-    state machine with the composable so that the state from the state machine
-    is passed to the composable and actions from the latter are sent back to the
-    state machine. The generated composable will use the generated component
-    to obtain the state machine.
-
-=== "Compose with Fragments"
-
-    The `@ComposeFragmentDestination` annotation is added to the top level composable of a screen. This function
-    can have 2 parameters: the state that should be rendered and a lambda that allows
-    the composable to send actions for user interactions. Adding the annotation will then generate
-    a `Fragment` called `KhonshuExampleUiFragment`, a Dagger component and a `NavDestination`
-    that uses the given `route` and the generated Fragment.
-
-    ```kotlin
-    @ComposeFragmentDestination(
-        route = ExampleRoute::class,
-        parentScope = AppScope::class, // AppScope is the default value and can be omitted
-        stateMachine = ExampleStateMachine::class,
-        destinationScope = AppScope::class, // AppScope is the default value and can be omitted
-    )
-    @Composable
-    internal fun ExampleUi(
-      state: ExampleState,
-      sendAction: (ExampleAction) -> Unit
-    ) {
-      // composable logic ...
-    }
-    ```
-    *`scope`, `parentScope` and destionationScope` are described in the next sections*
-
-    The generated `KhonshuExampleUiFragment` will use the generated component, the
-    annotated composable as well as the `stateMachine` parameter from the
-    annotation. It will use the composable as its view and automatically hook up the
-    state machine with the composable so that the state from the state machine
-    is passed to the composable and actions from the latter are sent back to the
-    state machine. The generated fragment will use the generated component
-    to obtain the state machine.
-
-    The annotation has an optional `fragmentBaseClass` parameter that allows to
-    specify a class other than `Fragment` to be used as super class for the
-    generated Fragment. This allows using `DialogFragment` or `BottomSheetDialogFragment`
-    for example.
+The generated `KhonshuExampleUi` function will use the generated component, the
+annotated composable as well as the `stateMachine` parameter from the
+annotation. It will automatically hook up the
+state machine with the composable so that the state from the state machine
+is passed to the composable and actions from the latter are sent back to the
+state machine. The generated composable will use the generated component
+to obtain the state machine.
 
 
 ## Generated component
@@ -137,11 +89,11 @@ qualifier needs to be added.
 ## NavDestination
 
 A `NavDestination` is automatically generated for each annotated screen. The type of the generated
-destination is based on the used `NavRoute`. To get an `OverlayDestination` (`DialogDestination` for
-Fragments) the route class needs to implement the `Overlay` marker interface.
+destination is based on the used `NavRoute`. To get an `OverlayDestination` the route class needs
+to implement the `Overlay` marker interface.
 
 To avoid having to access any generated code the destination is directly contributed to
-a `Set<NavDestination>` which can then be injected where the `NavHost` or `NavHostFragment` is
+a `Set<NavDestination>` which can then be injected where the `NavHost` is
 created. By default this set lives in the `AppScope` component, but this can be changed
 by setting a different scope marker class to `destinationScope`. It's also possible to use
 `destinationScope` to create distinct sets of destinations. For example if an app has a logged in
@@ -151,7 +103,7 @@ a screen is shown in the logged in or logged out state.
 
 ## Navigation set up
 
-The integration of Khonshu's Codegen and Navigation libraries also expects a `NavEventNavigator`
+The integration of Khonshu's Codegen and Navigation libraries also expects an `ActivityNavigator`
 to be injectable. This can be easily achieved by adding `@SingleIn(ExampleScope::class)
 @ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, ActivityNavigator::class)`
 to a subclass of it. The generated code will automatically take care of setting up
@@ -193,49 +145,28 @@ internal class ExampleStateMachine @Inject constructor(
 // scope the navigator so that everything interacts with the same instance
 @SingleIn(ExampleRoute::class)
 @ForScope(ExampleRoute::class)
-// make ExampleNavigator available as NavEventNavigator so that the generated code can automatically
+// make ExampleNavigator available as ActivityNavigator so that the generated code can automatically
 // set up the navigation handling
 @ContributesBinding(ExampleRoute::class, ActivityNavigator::class)
 class ExampleNavigator @Inject constructor(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
     // ...
 }
+
+
+@NavDestination(
+    route = ExampleRoute::class, // the route used to navigate to ExampleUi
+    parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
+    stateMachine = ExampleStateMachine::class, // the state machine used for this ui
+    destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted
+)
+@Composable
+internal fun ExampleUi(
+    state: ExampleState,
+    sendAction: (ExampleAction) -> Unit,
+) {
+    // render the ui for ExampleState
+}
 ```
-
-=== "Compose"
-
-    ```kotlin
-    @NavDestination(
-        route = ExampleRoute::class, // the route used to navigate to ExampleUi
-        parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
-        stateMachine = ExampleStateMachine::class, // the state machine used for this ui
-        destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted
-    )
-    @Composable
-    internal fun ExampleUi(
-        state: ExampleState,
-        sendAction: (ExampleAction) -> Unit,
-    ) {
-        // render the ui for ExampleState
-    }
-    ```
-
-=== "Compose with Fragments"
-
-    ```kotlin
-    @ComposeFragmentDestination(
-        route = ExampleRoute::class, // the route used to navigate to ExampleUi
-        parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
-        stateMachine = ExampleStateMachine::class, // the state machine used for this ui
-        destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted
-    )
-    @Composable
-    internal fun ExampleUi(
-        state: ExampleState,
-        sendAction: (ExampleAction) -> Unit,
-    ) {
-        // render the ui for ExampleState
-    }
-    ```
 
 
 Using this would require a one time setup in the app so that the screens can look up the `AppScope`
