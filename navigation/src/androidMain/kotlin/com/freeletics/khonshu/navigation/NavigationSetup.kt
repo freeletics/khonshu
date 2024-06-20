@@ -61,7 +61,7 @@ public fun NavigationSetup(navigator: ActivityNavigator) {
         }
     }
 
-    LaunchedEffect(lifecycleOwner, hostNavigator, context, navigator) {
+    LaunchedEffect(lifecycleOwner, hostNavigator, activityStarter, navigator) {
         navigator.collectAndHandleNavEvents(
             lifecycleOwner.lifecycle,
             hostNavigator,
