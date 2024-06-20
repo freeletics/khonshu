@@ -36,7 +36,7 @@ manually put the `id` into it. `SettingsActivity` can then obtain an instance of
 to navigate to it by calling `Activity.getRoute()` or `Activity.requireRoute()` and access the
 argument through it.
 
-To avoid having to reference a specific `Activity` `class` it's possible to use customt `Intent` actions.
+To avoid having to reference a specific `Activity` `class` it's possible to use custom `Intent` actions.
 Khonshu will automatically make sure that the created `Intent` is always routed to the current app
 and can not be hijacked.
 
