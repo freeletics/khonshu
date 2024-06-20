@@ -88,7 +88,7 @@ class BrowserRoute(
 
 External SDKs and the framework often provide an `Activity` that is supposed to be used with
 `startActivityForResult`. AndroidX already introduced `ActivityResultContract` to simplify handling
-this and `ActivityNavigator` uses them to also enable starting them from outside the UI layer
+this and `ActivityNavigator` uses it to also enable starting Activities from outside the UI layer
 and receiving results there.
 
 To use the API `registerForActivityResult` needs to be called with an instance of the wanted
