@@ -12,7 +12,7 @@ The navigation to the screen from which the result should be returned is a regul
 `NavigationResultRequest.Key<Result>` as a parameter. An instance of such a `Key` can be obtained
 from the `key` property of the request object.
 
-The target screen can then simply call `devliverNavigationResult(route.key, result)` on its own
+The target screen can then simply call `deliverNavigationResult(route.key, result)` on its own
 navigator to send the result and afterwards remove itself from the back stack with `navigateBack`.
 
 The logic for a hypothetical `FooScreen` that wants to receive a result from `BarScreen` would look
