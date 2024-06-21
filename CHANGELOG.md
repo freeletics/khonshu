@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## 0.27.1 *(2024-06-21)*
+
+- `ActivityRoute.buildIntent()` has been changed to 
+  `ActivityRoute.buildIntent(context: Context)` to make using it easier.
+
+
 ## 0.27.0 *(2024-06-20)*
 
 The [documentation](https://freeletics.github.io/khonshu/) has been updated. 
