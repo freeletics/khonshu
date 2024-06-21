@@ -85,7 +85,7 @@ kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoet" }
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service" }
 auto-service-compiler = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "auto-service-ksp" }
-flowredux = { module = "com.freeletics.flowredux:flowredux", version = "1.2.1" }
+flowredux = { module = "com.freeletics.flowredux:flowredux", version = "1.2.2" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
