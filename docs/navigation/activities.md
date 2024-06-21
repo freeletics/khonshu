@@ -27,7 +27,7 @@ This is example shows the route for a `SettingsActivity`:
 data class SettingsActivityRoute(
     val id: String,
 ) : InternalActivityRoute() {
-    override fun buildIntent() = Intent("com.example.SETTINGS")
+    override fun buildIntent(context: Context) = Intent("com.example.SETTINGS")
 }
 ```
 
@@ -51,7 +51,7 @@ A very simple route would just be an object without any parameters:
 ```kotlin
 @Parcelize
 data object SystemLocationSettings : ExternalActivityRoute {
-    override fun buildIntent() = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+    override fun buildIntent(context: Context) = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
 }
 ```
 
@@ -64,7 +64,7 @@ class ShareRoute(
     private val title: String,
     private val message: String
 ) : ExternalActivityRoute {
-    override fun fillInIntent() = Intent(Intent.ACTION_CHOOSER)
+    override fun buildIntent(context: Context) = Intent(Intent.ACTION_CHOOSER)
         .putExtra(Intent.EXTRA_TITLE, title)
         .putExtra(Intent.EXTRA_INTENT, Intent().apply {
             action = Intent.ACTION_SEND
@@ -78,9 +78,7 @@ class ShareRoute(
 class BrowserRoute(
     private val uri: Uri,
 ) : ExternalActivityRoute {
-    // the returned Intent is filled into the Intent of the destination by calling
-    // destinationIntent.fillIn(fillInIntent())
-    override fun fillInIntent() = Intent(Intent.ACTION_VIEW).setData(uri)
+    override fun buildIntent(context: Context) = Intent(Intent.ACTION_VIEW).setData(uri)
 }
 ```
 

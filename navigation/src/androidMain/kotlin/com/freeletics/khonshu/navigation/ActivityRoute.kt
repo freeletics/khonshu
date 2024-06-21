@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
 
@@ -9,7 +10,7 @@ import android.os.Parcelable
  * and [ExternalActivityRoute].
  */
 public sealed interface ActivityRoute : Parcelable {
-    public fun buildIntent(): Intent
+    public fun buildIntent(context: Context): Intent
 }
 
 /**

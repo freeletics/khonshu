@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.navigation.test
 
+import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
 import com.freeletics.khonshu.navigation.ExternalActivityRoute
@@ -39,13 +40,13 @@ internal class OtherRoot(val number: Int) : NavRoot, Parcelable
 @Poko
 @Parcelize
 internal class SimpleActivity(val number: Int) : InternalActivityRoute() {
-    override fun buildIntent(): Intent = Intent()
+    override fun buildIntent(context: Context): Intent = Intent()
 }
 
 @Poko
 @Parcelize
 internal class OtherActivity(val number: Int) : ExternalActivityRoute {
-    override fun buildIntent(): Intent = Intent()
+    override fun buildIntent(context: Context): Intent = Intent()
 }
 
 @Poko
