@@ -16,7 +16,7 @@ public final class com/freeletics/khonshu/navigation/ActivityResultRequest : com
 }
 
 public abstract interface class com/freeletics/khonshu/navigation/ActivityRoute : android/os/Parcelable {
-	public abstract fun buildIntent ()Landroid/content/Intent;
+	public abstract fun buildIntent (Landroid/content/Context;)Landroid/content/Intent;
 }
 
 public final class com/freeletics/khonshu/navigation/ActivityRouteKt {

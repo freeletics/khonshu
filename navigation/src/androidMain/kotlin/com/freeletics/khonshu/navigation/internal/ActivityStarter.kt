@@ -13,7 +13,7 @@ internal class ActivityStarter(
     private val navigator: Navigator,
 ) {
     fun start(route: ActivityRoute, fallbackRoute: NavRoute?) {
-        val intent = route.buildIntent()
+        val intent = route.buildIntent(context)
         if (route is InternalActivityRoute) {
             intent
                 .setPackage(context.packageName)
