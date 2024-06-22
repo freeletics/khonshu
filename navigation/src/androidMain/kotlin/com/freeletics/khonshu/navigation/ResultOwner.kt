@@ -27,7 +27,9 @@ public sealed interface ResultOwner<R> {
 }
 
 @InternalNavigationTestingApi
-public sealed class ManagedResultOwner<R> : ResultOwner<R> {
+public sealed class ContractResultOwner<I, O, R> : ResultOwner<R> {
+    internal abstract val contract: ActivityResultContract<I, O>
+
     /**
      * Emits any result passed to [onResult]. Results will only be delivered
      * to one collector at a time.
@@ -44,10 +46,6 @@ public sealed class ManagedResultOwner<R> : ResultOwner<R> {
         val channelResult = _results.trySendBlocking(result)
         check(channelResult.isSuccess)
     }
-}
-
-public sealed class ContractResultOwner<I, O, R> : ManagedResultOwner<R>() {
-    internal abstract val contract: ActivityResultContract<I, O>
 }
 
 /**
@@ -122,8 +120,26 @@ public class PermissionsResultRequest internal constructor() :
  *
  * See [ResultOwner] and [ResultNavigator.registerForNavigationResult].
  */
-public sealed interface NavigationResultRequest<R : Parcelable> : ResultOwner<R> {
-    public val key: Key<R>
+public class NavigationResultRequest<R : Parcelable> @InternalNavigationTestingApi constructor(
+    public val key: Key<R>,
+    @property:InternalNavigationTestingApi
+    public val savedStateHandle: SavedStateHandle,
+): ResultOwner<R> {
+
+    override val results: Flow<R>
+        get() = savedStateHandle.getStateFlow<Parcelable>(key.requestKey, InitialValue)
+            .mapNotNull {
+                if (it != InitialValue) {
+                    savedStateHandle[key.requestKey] = InitialValue
+                    @Suppress("UNCHECKED_CAST")
+                    it as R
+                } else {
+                    null
+                }
+            }
+
+    @Parcelize
+    private object InitialValue : Parcelable
 
     /**
      * Use to identify where the result should be delivered to.
@@ -148,40 +164,4 @@ public sealed interface NavigationResultRequest<R : Parcelable> : ResultOwner<R>
             }
         }
     }
-
-    @InternalNavigationTestingApi
-    public companion object {
-        @InternalNavigationTestingApi
-        public fun <R : Parcelable> Key(
-            destinationId: KClass<out BaseRoute>,
-            requestKey: String,
-        ): Key<R> = Key(DestinationId(destinationId), requestKey)
-    }
 }
-
-@InternalNavigationTestingApi
-public class StandaloneNavigationResultRequest<R : Parcelable> @InternalNavigationTestingApi constructor(
-    override val key: NavigationResultRequest.Key<R>,
-    @property:InternalNavigationTestingApi
-    public val savedStateHandle: SavedStateHandle,
-) : NavigationResultRequest<R> {
-    override val results: Flow<R>
-        get() = savedStateHandle.getStateFlow<Parcelable>(key.requestKey, InitialValue)
-            .mapNotNull {
-                if (it != InitialValue) {
-                    savedStateHandle[key.requestKey] = InitialValue
-                    @Suppress("UNCHECKED_CAST")
-                    it as R
-                } else {
-                    null
-                }
-            }
-
-    @Parcelize
-    private object InitialValue : Parcelable
-}
-
-@InternalNavigationTestingApi
-public class EventNavigationResultRequest<R : Parcelable> internal constructor(
-    override val key: NavigationResultRequest.Key<R>,
-) : ManagedResultOwner<R>(), NavigationResultRequest<R>
