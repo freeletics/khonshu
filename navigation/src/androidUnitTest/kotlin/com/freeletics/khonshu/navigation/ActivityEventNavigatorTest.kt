@@ -3,22 +3,20 @@ package com.freeletics.khonshu.navigation
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
-import com.freeletics.khonshu.navigation.internal.NavEvent
-import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToActivityEvent
-import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToEvent
-import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToRootEvent
+import com.freeletics.khonshu.navigation.internal.ActivityEvent
+import com.freeletics.khonshu.navigation.internal.ActivityEvent.NavigateTo
 import com.freeletics.khonshu.navigation.test.OtherRoute
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
-import com.freeletics.khonshu.navigation.test.TestNavEventNavigator
 import com.freeletics.khonshu.navigation.test.TestParcelable
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
-internal class NavEventNavigatorTest {
+internal class ActivityEventNavigatorTest {
+
     @Test
     fun `navigateTo event is received`(): Unit = runBlocking {
         val navigator = TestNavEventNavigator()
@@ -78,7 +76,7 @@ internal class NavEventNavigatorTest {
             navigator.navigateTo(SimpleActivity(1), SimpleRoute(2))
 
             assertThat(awaitItem()).isEqualTo(
-                NavigateToActivityEvent(
+                NavigateTo(
                     SimpleActivity(1),
                     SimpleRoute(2),
                 ),
@@ -95,7 +93,7 @@ internal class NavEventNavigatorTest {
         navigator.navEvents.test {
             navigator.navigateUp()
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.UpEvent)
+            assertThat(awaitItem()).isEqualTo(ActivityEvent.UpEvent)
 
             cancel()
         }
@@ -108,7 +106,7 @@ internal class NavEventNavigatorTest {
         navigator.navEvents.test {
             navigator.navigateBack()
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.BackEvent)
+            assertThat(awaitItem()).isEqualTo(ActivityEvent.BackEvent)
 
             cancel()
         }
@@ -122,7 +120,7 @@ internal class NavEventNavigatorTest {
             navigator.navigateBackTo<SimpleRoute>(true)
 
             assertThat(awaitItem()).isEqualTo(
-                NavEvent.BackToEvent(SimpleRoute::class, true),
+                ActivityEvent.BackToEvent(SimpleRoute::class, true),
             )
 
             cancel()
@@ -139,7 +137,7 @@ internal class NavEventNavigatorTest {
             )
 
             assertThat(awaitItem()).isEqualTo(
-                NavEvent.ResetToRoot(
+                ActivityEvent.ResetToRoot(
                     root = SimpleRoot(1),
                 ),
             )
@@ -158,7 +156,7 @@ internal class NavEventNavigatorTest {
             )
 
             assertThat(awaitItem()).isEqualTo(
-                NavEvent.ReplaceAll(
+                ActivityEvent.ReplaceAll(
                     root = SimpleRoot(1),
                 ),
             )
@@ -175,7 +173,7 @@ internal class NavEventNavigatorTest {
             val launcher = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
             navigator.navigateForResult(launcher, "image/*")
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.ActivityResultEvent(launcher, "image/*"))
+            assertThat(awaitItem()).isEqualTo(ActivityEvent.NavigateForResult(launcher, "image/*"))
 
             cancel()
         }
@@ -190,7 +188,7 @@ internal class NavEventNavigatorTest {
             val permission = "android.permission.READ_CALENDAR"
             navigator.requestPermissions(launcher, permission)
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.ActivityResultEvent(launcher, listOf(permission)))
+            assertThat(awaitItem()).isEqualTo(ActivityEvent.NavigateForResult(launcher, listOf(permission)))
 
             cancel()
         }
@@ -205,7 +203,7 @@ internal class NavEventNavigatorTest {
             navigator.deliverNavigationResult(launcher.key, TestParcelable(1))
 
             assertThat(awaitItem()).isEqualTo(
-                NavEvent.DestinationResultEvent(launcher.key, TestParcelable(1)),
+                ActivityEvent.DestinationResultEvent(launcher.key, TestParcelable(1)),
             )
 
             cancel()
@@ -224,11 +222,11 @@ internal class NavEventNavigatorTest {
             }
 
             assertThat(awaitItem()).isEqualTo(
-                NavEvent.MultiNavEvent(
+                ActivityEvent.MultiNavEvent(
                     listOf(
-                        NavEvent.BackToEvent(SimpleRoute::class, true),
+                        ActivityEvent.BackToEvent(SimpleRoute::class, true),
                         NavigateToEvent(SimpleRoute(1)),
-                        NavEvent.BackEvent,
+                        ActivityEvent.BackEvent,
                     ),
                 ),
             )

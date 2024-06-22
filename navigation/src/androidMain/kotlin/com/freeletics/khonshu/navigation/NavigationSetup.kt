@@ -3,12 +3,9 @@ package com.freeletics.khonshu.navigation
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.os.Parcelable
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
@@ -20,71 +17,39 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.freeletics.khonshu.navigation.internal.ActivityStarter
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
-import com.freeletics.khonshu.navigation.internal.NavEvent
+import com.freeletics.khonshu.navigation.internal.ActivityEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.parcelize.Parcelize
 import org.jetbrains.annotations.VisibleForTesting
 
 /**
- * Sets up the [ActivityNavigator] and [NavEventNavigator] inside the current composition so that it's events
+ * Sets up the [ActivityNavigator] inside the current composition so that it's events
  * are handled while the composition is active.
  */
 @Composable
 public fun NavigationSetup(navigator: ActivityNavigator) {
-    val hostNavigator = LocalHostNavigator.current
-    val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
-
+    val hostNavigator = LocalHostNavigator.current
     val activityStarter = remember(context, hostNavigator) {
         ActivityStarter(context, hostNavigator)
     }
 
+    val lifecycleOwner = LocalLifecycleOwner.current
     val activityLaunchers = navigator.activityResultRequests.associateWith {
         rememberResultLaunchers(it, context)
     }
-
-    if (navigator is NavEventNavigator) {
-        navigator.navigationResultRequests.forEach {
-            LaunchedEffect(hostNavigator, it) {
-                hostNavigator.collectAndHandleNavigationResults(it)
-            }
-        }
-
-        val backDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
-        DisposableEffect(backDispatcher, navigator) {
-            backDispatcher.addCallback(navigator.onBackPressedCallback)
-
-            onDispose {
-                navigator.onBackPressedCallback.remove()
-            }
-        }
-    }
-
-    LaunchedEffect(lifecycleOwner, hostNavigator, activityStarter, navigator) {
+    LaunchedEffect(lifecycleOwner, activityStarter, activityLaunchers) {
         navigator.collectAndHandleNavEvents(
             lifecycleOwner.lifecycle,
-            hostNavigator,
             activityStarter::start,
             activityLaunchers,
         )
     }
 }
 
-@Composable
-private fun <I, O> rememberResultLaunchers(
-    request: ContractResultOwner<I, O, *>,
-    context: Context,
-): ActivityResultLauncher<*> {
-    return rememberLauncherForActivityResult(request.contract) {
-        request.deliverResult(context.findActivity(), it)
-    }
-}
-
 @VisibleForTesting
 internal suspend fun ActivityNavigator.collectAndHandleNavEvents(
     lifecycle: Lifecycle,
-    hostNavigator: HostNavigator,
     activityStarter: (ActivityRoute, NavRoute?) -> Unit,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
 ) {
@@ -101,63 +66,31 @@ internal suspend fun ActivityNavigator.collectAndHandleNavEvents(
     withContext(Dispatchers.Main.immediate) {
         navEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
             .collect { event ->
-                navigateTo(hostNavigator, activityStarter, hostNavigator, event, activityLaunchers)
+                when (event) {
+                    is ActivityEvent.NavigateTo -> {
+                        activityStarter(event.route, event.fallbackRoute)
+                    }
+                    is ActivityEvent.NavigateForResult<*> -> {
+                        val request = event.request
+                        val launcher = activityLaunchers[request] ?: throw IllegalStateException(
+                            "No launcher registered for request with contract ${request.contract}!" +
+                                "\nMake sure you called the appropriate NavEventNavigator.registerFor... method",
+                        )
+                        @Suppress("UNCHECKED_CAST")
+                        (launcher as ActivityResultLauncher<Any?>).launch(event.input)
+                    }
+                }
             }
     }
 }
 
-private fun navigateTo(
-    hostNavigator: HostNavigator,
-    activityStarter: (ActivityRoute, NavRoute?) -> Unit,
-    navigator: Navigator,
-    event: NavEvent,
-    activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
-) {
-    when (event) {
-        is NavEvent.NavigateToEvent -> {
-            navigator.navigateTo(event.route)
-        }
-        is NavEvent.NavigateToRootEvent -> {
-            navigator.navigateToRoot(event.root, event.restoreRootState)
-        }
-        is NavEvent.NavigateToActivityEvent -> {
-            activityStarter(event.route, event.fallbackRoute)
-        }
-        is NavEvent.UpEvent -> {
-            navigator.navigateUp()
-        }
-        is NavEvent.BackEvent -> {
-            navigator.navigateBack()
-        }
-        is NavEvent.BackToEvent -> {
-            navigator.navigateBackTo(event.popUpTo, event.inclusive)
-        }
-        is NavEvent.ResetToRoot -> {
-            navigator.resetToRoot(event.root)
-        }
-        is NavEvent.ReplaceAll -> {
-            navigator.replaceAll(event.root)
-        }
-        is NavEvent.ActivityResultEvent<*> -> {
-            val request = event.request
-            val launcher = activityLaunchers[request] ?: throw IllegalStateException(
-                "No launcher registered for request with contract ${request.contract}!" +
-                    "\nMake sure you called the appropriate NavEventNavigator.registerFor... method",
-            )
-            @Suppress("UNCHECKED_CAST")
-            (launcher as ActivityResultLauncher<Any?>).launch(event.input)
-        }
-        is NavEvent.DestinationResultEvent<*> -> {
-            val entry = hostNavigator.snapshot.value.entryFor(event.key.destinationId)
-            entry.savedStateHandle[event.key.requestKey] = event.result
-        }
-        is NavEvent.MultiNavEvent -> {
-            hostNavigator.navigate {
-                event.navEvents.forEach {
-                    navigateTo(hostNavigator, activityStarter, this@navigate, it, activityLaunchers)
-                }
-            }
-        }
+@Composable
+private fun <I, O> rememberResultLaunchers(
+    request: ContractResultOwner<I, O, *>,
+    context: Context,
+): ActivityResultLauncher<*> {
+    return rememberLauncherForActivityResult(request.contract) {
+        request.deliverResult(context.findActivity(), it)
     }
 }
 
@@ -187,24 +120,6 @@ internal inline fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(
         )
     }
 }
-
-@VisibleForTesting
-internal suspend fun <R : Parcelable> HostNavigator.collectAndHandleNavigationResults(
-    request: EventNavigationResultRequest<R>,
-) {
-    val savedStateHandle = snapshot.value.entryFor(request.key.destinationId).savedStateHandle
-    savedStateHandle.getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
-        .collect {
-            if (it != InitialValue) {
-                @Suppress("UNCHECKED_CAST")
-                request.onResult(it as R)
-                savedStateHandle[request.key.requestKey] = InitialValue
-            }
-        }
-}
-
-@Parcelize
-internal object InitialValue : Parcelable
 
 @InternalNavigationCodegenApi
 public val LocalHostNavigator: ProvidableCompositionLocal<HostNavigator> = staticCompositionLocalOf {

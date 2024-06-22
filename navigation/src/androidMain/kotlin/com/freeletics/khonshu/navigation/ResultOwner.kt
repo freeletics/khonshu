@@ -176,6 +176,9 @@ public class StandaloneNavigationResultRequest<R : Parcelable> @InternalNavigati
                     null
                 }
             }
+
+    @Parcelize
+    private object InitialValue : Parcelable
 }
 
 @InternalNavigationTestingApi

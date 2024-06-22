@@ -2,13 +2,15 @@ package com.freeletics.khonshu.navigation
 
 import android.os.Parcelable
 import app.cash.turbine.ReceiveTurbine
+import app.cash.turbine.Turbine
 import app.cash.turbine.test
 import app.cash.turbine.testIn
-import com.freeletics.khonshu.navigation.internal.NavEvent
+import com.freeletics.khonshu.navigation.internal.ActivityEvent
 import com.google.common.truth.Truth
 import kotlin.reflect.KClass
 import kotlin.time.Duration
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.receiveAsFlow
 
@@ -45,7 +47,8 @@ public suspend fun DestinationNavigator.test(
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
     val hostEvents = (hostNavigator as TestHostNavigator).events
-    merge(navEvents, hostEvents.asChannel().receiveAsFlow()).test(timeout, name) {
+    val activityEvents = navEvents.map(::fromNavEvent)
+    merge(activityEvents, hostEvents.asChannel().receiveAsFlow()).test(timeout, name) {
         val turbine = DefaultNavigatorTurbine(this, ::dispatchBackPress)
         validate(turbine)
     }
@@ -88,7 +91,8 @@ public fun DestinationNavigator.testIn(
     name: String? = null,
 ): NavigatorTurbine {
     val hostEvents = (hostNavigator as TestHostNavigator).events
-    val turbine = merge(navEvents, hostEvents.asChannel().receiveAsFlow()).testIn(scope, timeout, name)
+    val activityEvents = navEvents.map(::fromNavEvent)
+    val turbine = merge(activityEvents, hostEvents.asChannel().receiveAsFlow()).testIn(scope, timeout, name)
     return DefaultNavigatorTurbine(turbine, ::dispatchBackPress)
 }
 
@@ -110,58 +114,7 @@ public fun DestinationNavigator.dispatchBackPress() {
     (hostNavigator as TestHostNavigator).onBackPressedCallback.handleOnBackPressed()
 }
 
-/**
- * Collects events from [NavEventNavigator] and and allows the [validate] lambda to consume
- * and assert properties on them in order. If any exception occurs during validation the
- * exception is rethrown from this method.
- *
- * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
- */
-public suspend fun NavEventNavigator.test(
-    timeout: Duration? = null,
-    name: String? = null,
-    validate: suspend NavigatorTurbine.() -> Unit,
-) {
-    val navigator = this
-    navEvents.test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(this, ::dispatchBackPress)
-        validate(turbine)
-    }
-}
-
-/**
- * Collects events from [NavEventNavigator] and returns a [NavigatorTurbine] for consuming
- * and asserting properties on them in order. If any exception occurs during validation the
- * exception is rethrown from this method.
- *
- * Unlike test which automatically cancels the flow at the end of the lambda, the returned
- * NavigatorTurbine be explicitly canceled.
- *
- * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
- */
-public fun NavEventNavigator.testIn(
-    scope: CoroutineScope,
-    timeout: Duration? = null,
-    name: String? = null,
-): NavigatorTurbine {
-    val turbine = navEvents.testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(turbine, ::dispatchBackPress)
-}
-
-/**
- * Causes an emission to the current [NavEventNavigator.backPresses] collector to make it possible
- * to simulate a back press in tests that check custom back press logic.
- */
-public fun NavEventNavigator.dispatchBackPress() {
-    onBackPressedCallback.handleOnBackPressed()
-}
-
-public interface NavigatorTurbine {
-    /**
-     * Causes an emission to the current [NavEventNavigator.backPresses] collector to make it possible
-     * to simulate a back press in tests that check custom back press logic.
-     */
-    public fun dispatchBackPress()
+public interface BaseNavigatorTurbine {
 
     /**
      * Assert that the next event received was a navigation event to the given [route]. This function
@@ -189,14 +142,6 @@ public interface NavigatorTurbine {
      * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitNavigateTo(route: ActivityRoute, fallbackRoute: NavRoute? = null)
-
-    /**
-     * Assert that all the events in the [block] are received. This function
-     * will suspend if no events have been received.
-     *
-     * @throws AssertionError - if the next event is not a MultiNavEvent followed by the events contained in the block
-     */
-    public suspend fun awaitNavigate(block: TestNavEventCollector.() -> Unit)
 
     /**
      * Assert that the next event received was an "up" navigation event. This function
@@ -244,6 +189,22 @@ public interface NavigatorTurbine {
     public suspend fun awaitReplaceAll(
         root: NavRoot,
     )
+}
+
+public interface NavigatorTurbine : BaseNavigatorTurbine {
+    /**
+     * Causes an emission to the current [BackInterceptor.backPresses] collector to make it possible
+     * to simulate a back press in tests that check custom back press logic.
+     */
+    public fun dispatchBackPress()
+
+    /**
+     * Assert that all the events in the [block] are received. This function
+     * will suspend if no events have been received.
+     *
+     * @throws AssertionError - if the next event is not a MultiNavEvent followed by the events contained in the block
+     */
+    public suspend fun awaitNavigate(block: BaseNavigatorTurbine.() -> Unit)
 
     /**
      * Assert that the next event received was a navigate for result event to [request].
@@ -309,7 +270,7 @@ public interface NavigatorTurbine {
 }
 
 internal class DefaultNavigatorTurbine(
-    private val turbine: ReceiveTurbine<NavEvent>,
+    private val turbine: ReceiveTurbine<TestNavEvent>,
     private val dispatchBackPress: () -> Unit,
 ) : NavigatorTurbine {
     override fun dispatchBackPress() {
@@ -317,7 +278,7 @@ internal class DefaultNavigatorTurbine(
     }
 
     override suspend fun awaitNavigateTo(route: NavRoute) {
-        val event = NavEvent.NavigateToEvent(route)
+        val event = NavigateToEvent(route)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
@@ -325,28 +286,29 @@ internal class DefaultNavigatorTurbine(
         root: NavRoot,
         restoreRootState: Boolean,
     ) {
-        val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
+        val event = NavigateToRootEvent(root, restoreRootState)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
     override suspend fun awaitNavigateTo(route: ActivityRoute, fallbackRoute: NavRoute?) {
-        val event = NavEvent.NavigateToActivityEvent(route, fallbackRoute)
+        val event = NavigateToActivityEvent(ActivityEvent.NavigateTo(route, fallbackRoute))
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun awaitNavigate(block: TestNavEventCollector.() -> Unit) {
-        val navEvents = TestNavEventCollector().apply(block).navEvents
-        val multiNavEvent = NavEvent.MultiNavEvent(navEvents)
+    override suspend fun awaitNavigate(block: BaseNavigatorTurbine.() -> Unit) {
+        val nestedTurbine = Turbine<TestNavEvent>()
+        DefaultNavigatorTurbine(nestedTurbine, dispatchBackPress).apply(block)
+        val multiNavEvent = nestedTurbine.toTestNavEvent()
         Truth.assertThat(turbine.awaitItem()).isEqualTo(multiNavEvent)
     }
 
     override suspend fun awaitNavigateUp() {
-        val event = NavEvent.UpEvent
+        val event = UpEvent
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
     override suspend fun awaitNavigateBack() {
-        val event = NavEvent.BackEvent
+        val event = BackEvent
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
@@ -354,19 +316,19 @@ internal class DefaultNavigatorTurbine(
         popUpTo: KClass<T>,
         inclusive: Boolean,
     ) {
-        val event = NavEvent.BackToEvent(popUpTo, inclusive)
+        val event = BackToEvent(popUpTo, inclusive)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
     override suspend fun awaitResetToRoot(
         root: NavRoot,
     ) {
-        val event = NavEvent.ResetToRoot(root)
+        val event = ResetToRoot(root)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
     override suspend fun awaitReplaceAll(root: NavRoot) {
-        val event = NavEvent.ReplaceAll(root)
+        val event = ReplaceAll(root)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
@@ -378,7 +340,7 @@ internal class DefaultNavigatorTurbine(
         request: ActivityResultRequest<I, *>,
         input: I,
     ) {
-        val event = NavEvent.ActivityResultEvent(request, input)
+        val event = ActivityResultEvent(ActivityEvent.NavigateForResult(request, input))
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
@@ -393,7 +355,7 @@ internal class DefaultNavigatorTurbine(
         request: PermissionsResultRequest,
         permissions: List<String>,
     ) {
-        val event = NavEvent.ActivityResultEvent(request, permissions)
+        val event = ActivityResultEvent(ActivityEvent.NavigateForResult(request, permissions))
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
@@ -401,7 +363,7 @@ internal class DefaultNavigatorTurbine(
         key: NavigationResultRequest.Key<O>,
         result: O,
     ) {
-        val event = NavEvent.DestinationResultEvent(key, result)
+        val event = DestinationResultEvent(key, result)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 

@@ -2,7 +2,7 @@ package com.freeletics.khonshu.navigation
 
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
-import com.freeletics.khonshu.navigation.internal.NavEvent
+import com.freeletics.khonshu.navigation.internal.ActivityEvent
 import com.freeletics.khonshu.navigation.test.TestActivityNavigator
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
@@ -18,7 +18,7 @@ internal class ActivityNavigatorTest {
             val launcher = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
             navigator.navigateForResult(launcher, "image/*")
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.ActivityResultEvent(launcher, "image/*"))
+            assertThat(awaitItem()).isEqualTo(ActivityEvent.NavigateForResult(launcher, "image/*"))
 
             cancel()
         }
@@ -33,7 +33,7 @@ internal class ActivityNavigatorTest {
             val permission = "android.permission.READ_CALENDAR"
             navigator.requestPermissions(launcher, permission)
 
-            assertThat(awaitItem()).isEqualTo(NavEvent.ActivityResultEvent(launcher, listOf(permission)))
+            assertThat(awaitItem()).isEqualTo(ActivityEvent.NavigateForResult(launcher, listOf(permission)))
 
             cancel()
         }

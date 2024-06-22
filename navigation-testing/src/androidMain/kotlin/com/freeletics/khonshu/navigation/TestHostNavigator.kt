@@ -13,12 +13,6 @@ import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
-import com.freeletics.khonshu.navigation.internal.NavEvent
-import com.freeletics.khonshu.navigation.internal.NavEvent.BackEvent
-import com.freeletics.khonshu.navigation.internal.NavEvent.BackToEvent
-import com.freeletics.khonshu.navigation.internal.NavEvent.MultiNavEvent
-import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToEvent
-import com.freeletics.khonshu.navigation.internal.NavEvent.UpEvent
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableSet
@@ -29,7 +23,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 public class TestHostNavigator(
     public var handleDeepLinkRoute: NavRoute? = null,
 ) : HostNavigator() {
-    internal val events = Turbine<NavEvent>()
+    internal val events = Turbine<TestNavEvent>()
     internal val backPresses = Turbine<Unit>()
 
     @InternalNavigationCodegenApi
@@ -61,7 +55,7 @@ public class TestHostNavigator(
     }
 
     override fun navigate(block: Navigator.() -> Unit) {
-        events += MultiNavEvent(TestHostNavigator().apply(block).events.toList())
+        events += TestHostNavigator().apply(block).events.toTestNavEvent()
     }
 
     override fun navigateTo(route: NavRoute) {
@@ -69,7 +63,7 @@ public class TestHostNavigator(
     }
 
     override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
-        events += NavEvent.NavigateToRootEvent(root, restoreRootState)
+        events += NavigateToRootEvent(root, restoreRootState)
     }
 
     override fun navigateUp() {
@@ -85,15 +79,15 @@ public class TestHostNavigator(
     }
 
     override fun resetToRoot(root: NavRoot) {
-        events += NavEvent.ResetToRoot(root)
+        events += ResetToRoot(root)
     }
 
     override fun replaceAll(root: NavRoot) {
-        events += NavEvent.ReplaceAll(root)
+        events += ReplaceAll(root)
     }
 
     override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
-        events += NavEvent.DestinationResultEvent(key, result)
+        events += DestinationResultEvent(key, result)
     }
 
     @InternalNavigationApi
@@ -113,17 +107,5 @@ public class TestHostNavigator(
 
     override fun <T> backPresses(value: T): Flow<T> {
         return backPresses.asChannel().receiveAsFlow().map { value }
-    }
-
-    private fun <T> Turbine<T>.toList(): List<T> {
-        close()
-        return buildList {
-            do {
-                val event = takeEvent()
-                if (event is Event.Item) {
-                    add(event.value)
-                }
-            } while (event is Event.Item)
-        }
     }
 }

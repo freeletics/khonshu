@@ -8,15 +8,13 @@ import androidx.lifecycle.testing.TestLifecycleOwner
 import app.cash.turbine.test
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
-import com.freeletics.khonshu.navigation.internal.NavEvent
+import com.freeletics.khonshu.navigation.internal.ActivityEvent
 import com.freeletics.khonshu.navigation.internal.Parcelable
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestActivityResultLauncher
-import com.freeletics.khonshu.navigation.test.TestHostNavigator
-import com.freeletics.khonshu.navigation.test.TestNavEventNavigator
 import com.freeletics.khonshu.navigation.test.TestParcelable
 import com.freeletics.khonshu.navigation.test.TestStackEntryFactory
 import com.google.common.truth.Truth.assertThat
@@ -94,7 +92,7 @@ internal class NavigationSetupTest {
         // receive events on resume
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
         assertThat(List(1000) { hostNavigator.received.awaitItem() })
-            .containsExactlyElementsIn(List(1000) { NavEvent.NavigateToEvent(SimpleRoute(it)) })
+            .containsExactlyElementsIn(List(1000) { ActivityEvent.NavigateToEvent(SimpleRoute(it)) })
             .inOrder()
 
         // send events on paused
@@ -106,7 +104,7 @@ internal class NavigationSetupTest {
         // receive events on resume
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
         assertThat(List(1000) { hostNavigator.received.awaitItem() })
-            .containsExactlyElementsIn(List(1000) { NavEvent.NavigateToEvent(SimpleRoute(1000 + it)) })
+            .containsExactlyElementsIn(List(1000) { ActivityEvent.NavigateToEvent(SimpleRoute(1000 + it)) })
             .inOrder()
     }
 
@@ -116,7 +114,7 @@ internal class NavigationSetupTest {
 
         navigator.navigateTo(SimpleRoute(1))
         assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.NavigateToEvent(SimpleRoute(1)))
+            .isEqualTo(ActivityEvent.NavigateToEvent(SimpleRoute(1)))
     }
 
     @Test
@@ -129,7 +127,7 @@ internal class NavigationSetupTest {
         )
         assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(
-                NavEvent.NavigateToRootEvent(
+                ActivityEvent.NavigateToRootEvent(
                     root = SimpleRoot(2),
                     restoreRootState = false,
                 ),
@@ -150,7 +148,7 @@ internal class NavigationSetupTest {
 
         navigator.navigateUp()
         assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.UpEvent)
+            .isEqualTo(ActivityEvent.UpEvent)
     }
 
     @Test
@@ -159,7 +157,7 @@ internal class NavigationSetupTest {
 
         navigator.navigateBack()
         assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.BackEvent)
+            .isEqualTo(ActivityEvent.BackEvent)
     }
 
     @Test
@@ -168,7 +166,7 @@ internal class NavigationSetupTest {
 
         navigator.navigateBackTo<SimpleRoute>(inclusive = true)
         assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.BackToEvent(SimpleRoute::class, inclusive = true))
+            .isEqualTo(ActivityEvent.BackToEvent(SimpleRoute::class, inclusive = true))
     }
 
     @Test
@@ -177,7 +175,7 @@ internal class NavigationSetupTest {
 
         navigator.resetToRoot(SimpleRoot(2))
         assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.ResetToRoot(SimpleRoot(2)))
+            .isEqualTo(ActivityEvent.ResetToRoot(SimpleRoot(2)))
     }
 
     @Test
@@ -186,7 +184,7 @@ internal class NavigationSetupTest {
 
         navigator.replaceAll(SimpleRoot(2))
         assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.ReplaceAll(SimpleRoot(2)))
+            .isEqualTo(ActivityEvent.ReplaceAll(SimpleRoot(2)))
     }
 
     @Test
@@ -201,11 +199,11 @@ internal class NavigationSetupTest {
 
         assertThat(hostNavigator.received.awaitItem())
             .isEqualTo(
-                NavEvent.MultiNavEvent(
+                ActivityEvent.MultiNavEvent(
                     listOf(
-                        NavEvent.BackToEvent(SimpleRoute::class, inclusive = true),
-                        NavEvent.NavigateToEvent(SimpleRoute(1)),
-                        NavEvent.BackEvent,
+                        ActivityEvent.BackToEvent(SimpleRoute::class, inclusive = true),
+                        ActivityEvent.NavigateToEvent(SimpleRoute(1)),
+                        ActivityEvent.BackEvent,
                     ),
                 ),
             )

@@ -56,4 +56,5 @@ dependencies {
     "androidUnitTestImplementation"(libs.turbine)
     "androidUnitTestImplementation"(libs.androidx.lifecycle.testing)
     "androidUnitTestImplementation"(libs.coroutines.test)
+    "androidUnitTestImplementation"(projects.navigationTesting)
 }
