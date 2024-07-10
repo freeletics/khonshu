@@ -1,22 +1,30 @@
+import com.freeletics.gradle.plugin.FreeleticsAndroidExtension
+
 plugins {
-    alias(libs.plugins.fgp.android)
+    alias(libs.plugins.fgp.multiplatform)
     alias(libs.plugins.poko)
     alias(libs.plugins.fgp.publish)
 }
 
 freeletics {
+    multiplatform {
+        addAndroidTarget()
+        addIosTargets()
+    }
+
     useCompose()
 
-    android {
+    extensions.configure(FreeleticsAndroidExtension::class.java) {
         enableParcelize()
     }
 }
 
 dependencies {
-    api(libs.androidx.compose.runtime)
+    "commonMainApi"(libs.jetbrains.compose.runtime)
+    "commonMainApi"(libs.jetbrains.compose.resources)
 
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.kotlin.parcelize)
+    "commonMainImplementation"(libs.androidx.annotations)
+    "commonMainImplementation"(libs.jetbrains.compose.ui)
 
-    compileOnly(libs.androidx.annotations)
+    "androidMainImplementation"(libs.kotlin.parcelize)
 }

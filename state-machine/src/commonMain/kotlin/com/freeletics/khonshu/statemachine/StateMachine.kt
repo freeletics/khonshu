@@ -17,5 +17,5 @@ public interface StateMachine<State : Any, Action : Any> {
      * An an [Action] to the [StateMachine]. The implementation can mutate the [State] based on
      * these actions or trigger side effects.
      */
-    public suspend fun dispatch(action: Action)
+    public fun dispatch(action: Action)
 }

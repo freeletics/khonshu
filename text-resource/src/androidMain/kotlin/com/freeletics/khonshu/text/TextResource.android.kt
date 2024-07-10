@@ -8,10 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import dev.drewhamilton.poko.ArrayContentBased
 import dev.drewhamilton.poko.Poko
-import java.util.IllegalFormatException
+import kotlinx.coroutines.runBlocking
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
+import org.jetbrains.compose.resources.PluralStringResource
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.getPluralString
+import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * A simple text representation that allows you to model text without the need
@@ -20,7 +26,7 @@ import kotlinx.parcelize.RawValue
  * Use the various factory methods to create a new instance.
  * Use [format] with an Android context to get the proper formatted text.
  */
-public sealed class TextResource : Parcelable {
+public actual sealed class TextResource : Parcelable {
 
     /**
      * Returns the formatted [String] represented by this `TextResource`.
@@ -31,13 +37,13 @@ public sealed class TextResource : Parcelable {
     @ReadOnlyComposable
     public abstract fun format(): String
 
-    public companion object {
+    public actual companion object {
         /**
          * Create a `TextResource` for the given [String]. A common use case for this is
          * a string sent by the backend that is already localized and formatted.
          */
         @JvmName("fromString")
-        public operator fun invoke(text: String): TextResource {
+        public actual operator fun invoke(text: String): TextResource {
             return SimpleTextResource(text)
         }
 
@@ -45,7 +51,7 @@ public sealed class TextResource : Parcelable {
          * Returns a `TextResource` for the given [String] or `null` if [text] was `null`.
          */
         @JvmName("fromNullableString")
-        public operator fun invoke(text: String?): TextResource? {
+        public actual operator fun invoke(text: String?): TextResource? {
             if (text == null) {
                 return null
             }
@@ -81,10 +87,9 @@ public sealed class TextResource : Parcelable {
          */
         @JvmStatic
         @JvmOverloads
-        public fun join(
-            resources: List<TextResource>,
-            separator: String = ", ",
-        ): TextResource = CompositeTextResource(resources, separator)
+        public actual fun join(resources: List<TextResource>, separator: String): TextResource {
+            return CompositeTextResource(resources, separator)
+        }
     }
 }
 
@@ -93,7 +98,7 @@ public sealed class TextResource : Parcelable {
  * and is meant as a marker to for example show a placeholder graphic.
  */
 @Parcelize
-public data object LoadingTextResource : TextResource() {
+public actual data object LoadingTextResource  : TextResource() {
     override fun format(context: Context): Nothing {
         throw UnsupportedOperationException("LoadingTextResource can not be formatted.")
     }
@@ -107,7 +112,7 @@ public data object LoadingTextResource : TextResource() {
 
 @Poko
 @Parcelize
-internal class SimpleTextResource(val text: String) : TextResource() {
+internal actual class SimpleTextResource actual constructor(val text: String) : TextResource() {
     override fun format(context: Context): String {
         return text
     }
@@ -123,6 +128,7 @@ internal class SimpleTextResource(val text: String) : TextResource() {
 @Parcelize
 internal class StringTextResource(
     @StringRes val id: Int,
+    @ArrayContentBased
     val args: @RawValue Array<out Any>,
 ) : TextResource() {
 
@@ -135,24 +141,6 @@ internal class StringTextResource(
     override fun format(): String {
         return stringResource(id, *args.formatRecursively())
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as StringTextResource
-
-        if (id != other.id) return false
-        if (!args.contentEquals(other.args)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + args.contentHashCode()
-        return result
-    }
 }
 
 @Poko
@@ -160,6 +148,7 @@ internal class StringTextResource(
 internal class PluralTextResource(
     @PluralsRes val id: Int,
     val quantity: Int,
+    @ArrayContentBased
     val args: @RawValue Array<out Any>,
 ) : TextResource() {
 
@@ -172,31 +161,47 @@ internal class PluralTextResource(
     override fun format(): String {
         return LocalContext.current.resources.getQuantityString(id, quantity, *args.formatRecursively())
     }
+}
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as PluralTextResource
-
-        if (id != other.id) return false
-        if (quantity != other.quantity) return false
-        if (!args.contentEquals(other.args)) return false
-
-        return true
+@Poko
+@Parcelize
+internal actual class ComposeStringResource actual constructor(
+    val key: StringResource,
+    @ArrayContentBased
+    val args: @RawValue Array<out Any>,
+) : TextResource() {
+    override fun format(context: Context): String {
+        return runBlocking { org.jetbrains.compose.resources.getString(key, *args) }
     }
 
-    override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + quantity
-        result = 31 * result + args.contentHashCode()
-        return result
+    @Composable
+    override fun format(): String {
+        return stringResource(key, *args)
+    }
+}
+
+
+@Poko
+@Parcelize
+internal actual class ComposePluralStringResource actual constructor(
+    val key: PluralStringResource,
+    val quantity: Int,
+    @ArrayContentBased
+    val args: @RawValue Array<out Any>,
+) : TextResource() {
+    override fun format(context: Context): String {
+        return runBlocking { getPluralString(key, quantity, *args) }
+    }
+
+    @Composable
+    override fun format(): String {
+        return pluralStringResource(key, quantity, args)
     }
 }
 
 @Poko
 @Parcelize
-internal class CompositeTextResource(
+internal actual class CompositeTextResource actual constructor(
     val elements: List<TextResource>,
     val separator: String,
 ) : TextResource() {
@@ -208,12 +213,8 @@ internal class CompositeTextResource(
     @Composable
     @ReadOnlyComposable
     override fun format(): String {
-        val builder = StringBuilder()
-        for ((count, element) in elements.withIndex()) {
-            if (count + 1 > 1) builder.append(separator)
-            builder.append(element.format())
-        }
-        return builder.toString()
+        val context = LocalContext.current
+        return format(context)
     }
 }
 
@@ -233,7 +234,7 @@ private fun Array<out Any>.formatRecursively(): Array<out Any> {
 
 private inline fun TextResource.tryFormat(context: Context, format: () -> String): String = try {
     format()
-} catch (e: IllegalFormatException) {
+} catch (e: IllegalArgumentException) {
     // wrap the original exception to get some better debug info
     throw TextResourceFormatException(this, context, e)
 }

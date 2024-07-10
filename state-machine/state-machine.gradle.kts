@@ -4,7 +4,6 @@ plugins {
 }
 
 freeletics {
-
     multiplatform {
         addCommonTargets()
     }

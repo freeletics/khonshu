@@ -1,7 +1,5 @@
 package com.freeletics.khonshu.text
 
-import android.widget.TextView
-
 /**
  * An extension method to join TextResources mimicking the behavior of [joinToString] from
  * the Kotlin Standard Library.
@@ -26,13 +24,6 @@ public operator fun TextResource.plus(other: TextResource): TextResource {
  */
 public operator fun TextResource.plus(other: String): TextResource {
     return CompositeTextResource(listOf(this, TextResource(other)), separator = "")
-}
-
-/**
- * Set the [textResource] as the [TextView]'s text.
- */
-public fun TextView.setText(textResource: TextResource?) {
-    text = textResource?.format(context)
 }
 
 public fun String.toTextResource(): TextResource = TextResource(this)
