@@ -52,7 +52,13 @@ private fun compileWithAnvil(fileName: String, source: String, expectedCode: Str
     }
 }
 
-private fun compileWithKsp(fileName: String, source: String, expectedCode: String, warningsAsErrors: Boolean, ksp2: Boolean) {
+private fun compileWithKsp(
+    fileName: String,
+    source: String,
+    expectedCode: String,
+    warningsAsErrors: Boolean,
+    ksp2: Boolean,
+) {
     kspCompilation(
         source = source,
         fileName = fileName,

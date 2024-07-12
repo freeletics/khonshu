@@ -4,7 +4,6 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.asComposeState
 import com.freeletics.khonshu.codegen.util.composable
-import com.freeletics.khonshu.codegen.util.functionToLambda
 import com.freeletics.khonshu.codegen.util.launch
 import com.freeletics.khonshu.codegen.util.navHostParameter
 import com.freeletics.khonshu.codegen.util.optInAnnotation

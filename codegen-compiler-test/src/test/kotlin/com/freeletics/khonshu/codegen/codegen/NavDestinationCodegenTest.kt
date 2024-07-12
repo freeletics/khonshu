@@ -40,7 +40,7 @@ internal class NavDestinationCodegenTest {
         stateParameter = ComposableParameter("state", ClassName("com.test", "TestState")),
         sendActionParameter = ComposableParameter(
             "sendAction",
-            LambdaTypeName.get(null, ClassName("com.test", "TestAction"), returnType = UNIT)
+            LambdaTypeName.get(null, ClassName("com.test", "TestAction"), returnType = UNIT),
         ),
     )
 
