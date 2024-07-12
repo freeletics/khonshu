@@ -16,6 +16,7 @@ import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.kspSourcesDir
 import com.tschuchort.compiletesting.symbolProcessorProviders
+import com.tschuchort.compiletesting.useKsp2
 import java.io.File
 import java.nio.file.Files
 import org.intellij.lang.annotations.Language
@@ -65,6 +66,7 @@ interface KhonshuCompilation {
             legacyCompilerPlugins: List<ComponentRegistrar> = emptyList(),
             symbolProcessors: List<SymbolProcessorProvider> = emptyList(),
             warningsAsErrors: Boolean = true,
+            ksp2: Boolean = false,
         ): KhonshuCompilation {
             return KspKhonshuCompilation(
                 sources = listOf(fileName to source),
@@ -72,6 +74,7 @@ interface KhonshuCompilation {
                 legacyCompilerPlugins = legacyCompilerPlugins,
                 symbolProcessors = symbolProcessors,
                 warningsAsErrors = warningsAsErrors,
+                ksp2 = ksp2,
             )
         }
     }
@@ -124,8 +127,12 @@ private class KspKhonshuCompilation(
     legacyCompilerPlugins: List<ComponentRegistrar>,
     symbolProcessors: List<SymbolProcessorProvider>,
     warningsAsErrors: Boolean,
+    ksp2: Boolean,
 ) : KhonshuCompilation {
     val compilation = KotlinCompilation().apply {
+        if (ksp2) {
+            useKsp2()
+        }
         symbolProcessorProviders = symbolProcessors.toMutableList()
         configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors)
     }

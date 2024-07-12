@@ -8,6 +8,7 @@ import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
+import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.MAP
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.SET
@@ -33,10 +34,7 @@ internal class NavHostActivityCodegenTest {
         stateParameter = ComposableParameter("state", ClassName("com.test", "TestState")),
         sendActionParameter = ComposableParameter(
             "sendAction",
-            Function1::class.asClassName().parameterizedBy(
-                ClassName("com.test", "TestAction"),
-                UNIT,
-            ),
+            LambdaTypeName.get(null, ClassName("com.test", "TestAction"), returnType = UNIT),
         ),
         composableParameter = emptyList(),
     )

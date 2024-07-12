@@ -9,6 +9,7 @@ import com.freeletics.khonshu.codegen.NavDestinationData
 import com.freeletics.khonshu.codegen.Navigation
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
+import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.MAP
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.SET
@@ -39,10 +40,7 @@ internal class NavDestinationCodegenTest {
         stateParameter = ComposableParameter("state", ClassName("com.test", "TestState")),
         sendActionParameter = ComposableParameter(
             "sendAction",
-            Function1::class.asClassName().parameterizedBy(
-                ClassName("com.test", "TestAction"),
-                UNIT,
-            ),
+            LambdaTypeName.get(null, ClassName("com.test", "TestAction"), returnType = UNIT)
         ),
     )
 

@@ -137,7 +137,10 @@ private fun TopLevelFunctionReference.getInjectedParameters(vararg exclude: Type
 }
 
 private fun ParameterReference.toComposableParameter(condition: (TypeName) -> Boolean): ComposableParameter? {
-    return type().asTypeName().functionToLambda().takeIf(condition)?.let { ComposableParameter(name, it) }
+    return type().asTypeName()
+        .functionToLambda()
+        .takeIf(condition)
+        ?.let { ComposableParameter(name, it) }
 }
 
 private fun TopLevelFunctionReference.navHostParameter(): ComposableParameter {

@@ -55,7 +55,7 @@ internal class ComponentComposableGenerator(
                     addStatement("val scope = %M()", rememberCoroutineScope)
                         .beginControlFlow(
                             "val sendAction: %T = %M(stateMachine, scope)",
-                            data.sendActionParameter!!.typeName.functionToLambda(),
+                            data.sendActionParameter!!.typeName,
                             remember,
                         )
                         .addStatement("{ scope.%M { stateMachine.dispatch(it) } }", launch)
