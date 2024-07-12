@@ -6,6 +6,7 @@ import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.util.baseRoute
+import com.freeletics.khonshu.codegen.util.functionToLambda
 import com.freeletics.khonshu.codegen.util.overlay
 import com.freeletics.khonshu.codegen.util.simpleNavHost
 import com.freeletics.khonshu.codegen.util.simpleNavHostLambda
@@ -118,12 +119,10 @@ private fun KSFunctionDeclaration.getInjectedParameters(vararg exclude: TypeName
 }
 
 private fun KSValueParameter.toComposableParameter(condition: (TypeName) -> Boolean): ComposableParameter? {
-    val type = type.toTypeName()
-    return if (condition(type)) {
-        ComposableParameter(name!!.asString(), type)
-    } else {
-        null
-    }
+    return type.toTypeName()
+        .functionToLambda()
+        .takeIf(condition)
+        ?.let { ComposableParameter(name!!.asString(), it) }
 }
 
 private fun KSFunctionDeclaration.navHostParameter(logger: KSPLogger): ComposableParameter? {

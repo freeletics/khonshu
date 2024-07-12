@@ -19,7 +19,8 @@ internal fun test(
 ) {
     compile(fileName = fileName, source = source, data = data, expectedCode = expectedCode, warningsAsErrors)
     compileWithAnvil(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors)
-    compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors)
+    compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors, ksp2 = false)
+    compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors, ksp2 = true)
 }
 
 private fun compile(fileName: String, source: String, data: BaseData, expectedCode: String, warningsAsErrors: Boolean) {
@@ -51,13 +52,20 @@ private fun compileWithAnvil(fileName: String, source: String, expectedCode: Str
     }
 }
 
-private fun compileWithKsp(fileName: String, source: String, expectedCode: String, warningsAsErrors: Boolean) {
+private fun compileWithKsp(
+    fileName: String,
+    source: String,
+    expectedCode: String,
+    warningsAsErrors: Boolean,
+    ksp2: Boolean,
+) {
     kspCompilation(
         source = source,
         fileName = fileName,
         legacyCompilerPlugins = listOf(ComposePluginRegistrar()),
         symbolProcessors = listOf(KhonshuSymbolProcessorProvider()),
         warningsAsErrors = warningsAsErrors,
+        ksp2 = ksp2,
     ).compile {
         assertThat(it.exitCode).isEqualTo(ExitCode.OK)
         assertThat(generatedFileFor(fileName)).isEqualTo(expectedCode)

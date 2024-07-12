@@ -136,6 +136,11 @@ internal fun TypeName.asLambdaParameter(): TypeName {
 // KSP and Anvil don't have the same behavior for returning lambdas
 // this turns all Function1 and Function2 types into lambdas
 internal fun TypeName.functionToLambda(): TypeName {
+    if (this is LambdaTypeName) {
+        val parameters = parameters.map { it.toBuilder(type = it.type.functionToLambda()).build() }
+        return LambdaTypeName.get(receiver, parameters, returnType.functionToLambda())
+            .copy(nullable = isNullable)
+    }
     if (this is ParameterizedTypeName && (rawType == function1 || rawType == function2 || rawType == function3)) {
         val parameters = typeArguments.dropLast(1).map { it.functionToLambda() }.toTypedArray()
         return LambdaTypeName.get(null, *parameters, returnType = typeArguments.last())
