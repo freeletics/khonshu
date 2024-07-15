@@ -25,7 +25,7 @@ uri = "0.0.18"
 inject = "1"
 anvil = "2.5.0-beta09"
 ksp = "2.0.0-1.0.23"
-kotlinpoet = "1.18.0"
+kotlinpoet = "1.18.1"
 auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
 
