@@ -70,6 +70,10 @@ public fun NavHost(
 ) {
     val snapshot by navigator.snapshot
 
+    // `backProgress` should not directly be accessed in the composition to avoid a re-composition on every small
+    // progress update during the gesture. To achieve that `showPreviousEntry` uses `derivedStateOf` which will
+    // limit re-compositions to when the boolean changes. For the animation the value is only accessed from within
+    // the `graphicsLayer {}` block.
     val backProgress by systemBackHandling(snapshot, navigator)
     val showPreviousEntry by remember(snapshot) {
         derivedStateOf { backProgress > 0 }
