@@ -3,7 +3,8 @@
     <application
         android:name="com.freeletics.khonshu.sample.app.App"
         android:icon="@mipmap/ic_launcher"
-        android:label="Khonshu Example">
+        android:label="Khonshu Example"
+        android:enableOnBackInvokedCallback="true">
     </application>
 
 </manifest>
