@@ -26,7 +26,8 @@ internal class TestHostNavigator : HostNavigator() {
 
     val received = Turbine<NavEvent>()
 
-    override val snapshot: MutableState<StackSnapshot> = mutableStateOf(StackSnapshot(emptyList(), false))
+    private val entry = TestStackEntryFactory().create(SimpleRoot(0))
+    override val snapshot: MutableState<StackSnapshot> = mutableStateOf(StackSnapshot(listOf(entry), entry))
 
     override fun navigateTo(route: NavRoute) {
         received.add(NavEvent.NavigateToEvent(route))
