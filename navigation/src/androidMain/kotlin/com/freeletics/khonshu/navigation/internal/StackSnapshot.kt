@@ -23,7 +23,7 @@ public class StackSnapshot internal constructor(
         get() = entries.last()
 
     internal val previous: StackEntry<*>
-        get() = entries.getOrNull(entries.size - 2) ?: startStackRootEntry
+        get() = entries.getOrNull(entries.lastIndex - 1) ?: startStackRootEntry
 
     internal val canNavigateBack
         get() = entries.last().removable || startStackRootEntry.destinationId != root.destinationId
