@@ -1,6 +1,20 @@
 Change Log
 ==========
 
+## 0.28.0 *(2024-07-17)*
+
+### Navigation
+
+- Implement predictive back support. When predictive back is enabled by setting
+  `android:enableOnBackInvokedCallback="true"` in the AndroidManifest, Khonshu
+  will automatically handle back presses with the predictive back animation 
+  to the previous destination. 
+
+### Codegen
+
+- Support for KSP2.
+
+
 ## 0.27.1 *(2024-06-21)*
 
 - `ActivityRoute.buildIntent()` has been changed to 
