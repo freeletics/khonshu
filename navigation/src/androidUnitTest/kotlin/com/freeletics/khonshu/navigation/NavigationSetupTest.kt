@@ -217,7 +217,7 @@ internal class NavigationSetupTest {
         setup()
 
         val entry = factory.create(SimpleRoute(0))
-        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), true)
+        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), entry)
         entry.savedStateHandle.getStateFlow<Parcelable?>(resultRequest.key.requestKey, null).test {
             assertThat(awaitItem()).isEqualTo(null)
 
@@ -312,7 +312,7 @@ internal class NavigationSetupTest {
     @Test
     fun `collectAndHandleNavigationResults forwards results`() = runBlocking {
         val entry = factory.create(SimpleRoute(0))
-        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), true)
+        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), entry)
         CoroutineScope(dispatcher).launch {
             hostNavigator.collectAndHandleNavigationResults(resultRequest)
         }
@@ -326,7 +326,7 @@ internal class NavigationSetupTest {
     @Test
     fun `collectAndHandleNavigationResults forwards initial value if set`() = runBlocking {
         val entry = factory.create(SimpleRoute(0))
-        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), true)
+        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), entry)
         CoroutineScope(dispatcher).launch {
             hostNavigator.collectAndHandleNavigationResults(resultRequest)
         }
@@ -340,7 +340,7 @@ internal class NavigationSetupTest {
     @Test
     fun `collectAndHandleNavigationResults does not forward same result twice`() = runBlocking {
         val entry = factory.create(SimpleRoute(0))
-        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), true)
+        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), entry)
         val job = CoroutineScope(dispatcher).launch {
             hostNavigator.collectAndHandleNavigationResults(resultRequest)
         }

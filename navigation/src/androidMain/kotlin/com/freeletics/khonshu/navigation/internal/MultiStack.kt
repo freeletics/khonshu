@@ -20,7 +20,7 @@ internal class MultiStack(
 ) {
 
     private val snapshotState: MutableState<StackSnapshot> =
-        mutableStateOf(currentStack.snapshot(startStack.id))
+        mutableStateOf(currentStack.snapshot(startStack.rootEntry))
     val snapshot: State<StackSnapshot>
         get() = snapshotState
 
@@ -45,7 +45,7 @@ internal class MultiStack(
 
     internal fun updateVisibleDestinations(notify: Boolean) {
         if (notify) {
-            snapshotState.value = currentStack.snapshot(startStack.id)
+            snapshotState.value = currentStack.snapshot(startStack.rootEntry)
         }
     }
 

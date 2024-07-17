@@ -12,7 +12,7 @@ import dev.drewhamilton.poko.Poko
 public class StackSnapshot internal constructor(
     @get:VisibleForTesting
     internal val entries: List<StackEntry<*>>,
-    private val startStack: Boolean,
+    private val startStackRootEntry: StackEntry<*>,
 ) {
     private var firstVisibleIndex: Int = -1
 
@@ -22,8 +22,11 @@ public class StackSnapshot internal constructor(
     internal val current: StackEntry<*>
         get() = entries.last()
 
+    internal val previous: StackEntry<*>
+        get() = entries.getOrNull(entries.lastIndex - 1) ?: startStackRootEntry
+
     internal val canNavigateBack
-        get() = !startStack || entries.last().removable
+        get() = entries.last().removable || startStackRootEntry.destinationId != root.destinationId
 
     internal inline fun forEachVisibleDestination(block: (StackEntry<*>) -> Unit) {
         if (firstVisibleIndex < 0) {

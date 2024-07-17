@@ -51,7 +51,7 @@ internal class StackTest {
     fun `computeVisibleEntries after construction`() {
         val stack = Stack.createWith(SimpleRoot(1), factory::create)
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
@@ -63,7 +63,7 @@ internal class StackTest {
         val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoute(2)),
             )
@@ -77,7 +77,7 @@ internal class StackTest {
         val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(OtherRoute(3))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
                 factory.create(StackEntry.Id("101"), OtherRoute(3)),
@@ -92,7 +92,7 @@ internal class StackTest {
         val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(ThirdRoute(4))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
                 factory.create(StackEntry.Id("101"), ThirdRoute(4)),
@@ -115,7 +115,7 @@ internal class StackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("104"), SimpleRoute(5)),
                 factory.create(StackEntry.Id("105"), OtherRoute(6)),
@@ -142,7 +142,7 @@ internal class StackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("106"), SimpleRoute(7)),
                 factory.create(StackEntry.Id("107"), OtherRoute(8)),
@@ -169,7 +169,7 @@ internal class StackTest {
     fun `pop from a screen`() {
         val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoute(2)),
             )
@@ -177,7 +177,7 @@ internal class StackTest {
 
         stack.pop()
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
@@ -191,7 +191,7 @@ internal class StackTest {
         val stack = Stack.createWith(SimpleRoot(1), factory::create)
         stack.push(SimpleRoute(2))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("101"), SimpleRoute(2)),
             )
@@ -200,7 +200,7 @@ internal class StackTest {
         stack.pop()
         stack.push(SimpleRoute(2))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("102"), SimpleRoute(2)),
             )
@@ -222,11 +222,11 @@ internal class StackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries).hasSize(6)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries).hasSize(6)
 
         stack.popUpTo(simpleRouteDestination.id, isInclusive = false)
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("104"), SimpleRoute(5)),
             )
@@ -254,11 +254,11 @@ internal class StackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries).hasSize(6)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries).hasSize(6)
 
         stack.popUpTo(simpleRouteDestination.id, isInclusive = true)
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("103"), SimpleRoute(4)),
             )
@@ -287,11 +287,11 @@ internal class StackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries).hasSize(6)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries).hasSize(6)
 
         stack.popUpTo(simpleRootDestination.id, isInclusive = false)
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
@@ -323,7 +323,7 @@ internal class StackTest {
         stack.push(OtherRoute(9))
         stack.push(ThirdRoute(10))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries).hasSize(6)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries).hasSize(6)
 
         val exception = assertThrows(IllegalStateException::class.java) {
             stack.popUpTo(simpleRootDestination.id, isInclusive = true)
@@ -353,7 +353,7 @@ internal class StackTest {
         stack.push(ThirdRoute(6))
         stack.push(ThirdRoute(7))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries).hasSize(3)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries).hasSize(3)
 
         val exception = assertThrows(IllegalStateException::class.java) {
             stack.popUpTo(otherRouteDestination.id, isInclusive = false)
@@ -384,11 +384,11 @@ internal class StackTest {
         stack.push(ThirdRoute(6))
         stack.push(ThirdRoute(7))
 
-        assertThat(stack.snapshot(stack.id).visibleEntries).hasSize(3)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries).hasSize(3)
 
         stack.clear()
 
-        assertThat(stack.snapshot(stack.id).visibleEntries)
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )

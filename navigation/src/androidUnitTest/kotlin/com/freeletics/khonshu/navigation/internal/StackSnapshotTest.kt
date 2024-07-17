@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.navigation.internal
 
+import com.freeletics.khonshu.navigation.test.OtherRoot
 import com.freeletics.khonshu.navigation.test.OtherRoute
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
@@ -19,7 +20,7 @@ internal class StackSnapshotTest {
             listOf(
                 factory.create(StackEntry.Id("a"), SimpleRoot(0)),
             ),
-            startStack = false,
+            factory.create(StackEntry.Id("z"), OtherRoot(0)),
         )
 
         assertThat(stackSnapshot.visibleEntries).containsExactly(
@@ -34,7 +35,7 @@ internal class StackSnapshotTest {
             listOf(
                 factory.create(StackEntry.Id("a"), SimpleRoot(0)),
             ),
-            startStack = true,
+            factory.create(StackEntry.Id("a"), SimpleRoot(0)),
         )
 
         assertThat(stackSnapshot.visibleEntries).containsExactly(
@@ -50,7 +51,7 @@ internal class StackSnapshotTest {
                 factory.create(StackEntry.Id("a"), SimpleRoot(0)),
                 factory.create(StackEntry.Id("b"), SimpleRoute(0)),
             ),
-            startStack = false,
+            factory.create(StackEntry.Id("z"), OtherRoot(0)),
         )
 
         assertThat(stackSnapshot.visibleEntries).containsExactly(
@@ -68,7 +69,7 @@ internal class StackSnapshotTest {
                 factory.create(StackEntry.Id("c"), SimpleRoute(1)),
                 factory.create(StackEntry.Id("d"), SimpleRoute(2)),
             ),
-            startStack = false,
+            factory.create(StackEntry.Id("z"), OtherRoot(0)),
         )
 
         assertThat(stackSnapshot.visibleEntries).containsExactly(
@@ -84,7 +85,7 @@ internal class StackSnapshotTest {
                 factory.create(StackEntry.Id("a"), SimpleRoot(0)),
                 factory.create(StackEntry.Id("b"), OtherRoute(0)),
             ),
-            startStack = false,
+            factory.create(StackEntry.Id("z"), OtherRoot(0)),
         )
 
         assertThat(stackSnapshot.visibleEntries).containsExactly(
@@ -103,7 +104,7 @@ internal class StackSnapshotTest {
                 factory.create(StackEntry.Id("c"), ThirdRoute(0)),
                 factory.create(StackEntry.Id("d"), OtherRoute(1)),
             ),
-            startStack = false,
+            factory.create(StackEntry.Id("z"), OtherRoot(0)),
         )
 
         assertThat(stackSnapshot.visibleEntries).containsExactly(
@@ -123,7 +124,7 @@ internal class StackSnapshotTest {
                 factory.create(StackEntry.Id("b"), SimpleRoute(0)),
                 factory.create(StackEntry.Id("c"), OtherRoute(0)),
             ),
-            startStack = false,
+            factory.create(StackEntry.Id("z"), OtherRoot(0)),
         )
 
         assertThat(stackSnapshot.visibleEntries).containsExactly(
@@ -143,7 +144,7 @@ internal class StackSnapshotTest {
                 factory.create(StackEntry.Id("d"), ThirdRoute(0)),
                 factory.create(StackEntry.Id("e"), OtherRoute(1)),
             ),
-            startStack = false,
+            factory.create(StackEntry.Id("z"), OtherRoot(0)),
         )
 
         assertThat(stackSnapshot.visibleEntries).containsExactly(

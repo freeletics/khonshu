@@ -20,8 +20,8 @@ internal class Stack private constructor(
     val rootEntry: StackEntry<*> get() = stack.first()
     val isAtRoot: Boolean get() = !stack.last().removable
 
-    fun snapshot(startStackId: DestinationId<*>): StackSnapshot {
-        return StackSnapshot(stack.toList(), startStackId == id)
+    fun snapshot(startStackRootEntry: StackEntry<*>): StackSnapshot {
+        return StackSnapshot(stack.toList(), startStackRootEntry)
     }
 
     fun push(route: NavRoute) {
