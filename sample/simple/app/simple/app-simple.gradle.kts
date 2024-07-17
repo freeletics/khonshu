@@ -7,6 +7,7 @@ freeletics {
 
     app {
         applicationId("com.freeletics.khonshu.sample.simple")
+        minify()
     }
 }
 

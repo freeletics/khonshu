@@ -1,17 +1,23 @@
 package com.freeletics.khonshu.navigation
 
-import androidx.activity.OnBackPressedCallback
+import android.view.animation.PathInterpolator
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.activity.compose.PredictiveBackHandler
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
@@ -19,6 +25,7 @@ import java.io.Closeable
 import java.lang.ref.WeakReference
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.coroutines.CancellationException
 
 /**
  * Create a new `NavHost` containing all given [destinations]. [startRoute] will be used as the
@@ -32,7 +39,7 @@ import kotlinx.collections.immutable.persistentSetOf
  * doesn't provide its own [DeepLinkHandler.prefixes].
  *
  * The [destinationChangedCallback] can be used to be notified when the current destination
- * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
+ * changes. Note that this will not be invoked when navigating to a [ActivityRoute].
  */
 @Composable
 public fun NavHost(
@@ -53,7 +60,7 @@ public fun NavHost(
  * [rememberHostNavigator].
  *
  * The [destinationChangedCallback] can be used to be notified when the current destination
- * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
+ * changes. Note that this will not be invoked when navigating to a [ActivityRoute].
  */
 @Composable
 public fun NavHost(
@@ -63,14 +70,30 @@ public fun NavHost(
 ) {
     val snapshot by navigator.snapshot
 
-    SystemBackHandling(snapshot, navigator)
+    // `backProgress` should not directly be accessed in the composition to avoid a re-composition on every small
+    // progress update during the gesture. To achieve that `showPreviousEntry` uses `derivedStateOf` which will
+    // limit re-compositions to when the boolean changes. For the animation the value is only accessed from within
+    // the `graphicsLayer {}` block.
+    val backProgress by systemBackHandling(snapshot, navigator)
+    val showPreviousEntry by remember(snapshot) {
+        derivedStateOf { backProgress > 0 }
+    }
     DestinationChangedCallback(snapshot, destinationChangedCallback)
 
     val saveableStateHolder = rememberSaveableStateHolder()
     CompositionLocalProvider(LocalHostNavigator provides navigator) {
         Box(modifier = modifier) {
+            // only add previous to composition while a back gesture is ongoing
+            if (showPreviousEntry) {
+                Box(modifier = Modifier.inTransition { backProgress }) {
+                    Show(snapshot, snapshot.previous, saveableStateHolder)
+                }
+            }
+
             snapshot.forEachVisibleDestination {
-                Show(snapshot, it, saveableStateHolder)
+                Box(modifier = Modifier.outTransition { backProgress }) {
+                    Show(snapshot, it, saveableStateHolder)
+                }
             }
         }
     }
@@ -110,45 +133,106 @@ internal class SaveableCloseable(
     }
 }
 
+/**
+ * Animation for transitioning out the screen currently on top of the back stack. The specs are
+ * following the "Full screen surfaces" section of the
+ * [predictive back design guide](https://developer.android.com/design/ui/mobile/guides/patterns/predictive-back#full-screen-surfaces)
+ * with 2 differences:
+ *
+ * - Horizontal translation was added for a better feeling.
+ * - The spec uses the 35% mark as the transition point between the screens where none of them is visible, while this
+ *   implementation uses 3.5% (0.035f). With the original 35% value it was easily possible to have situations where
+ *   the current screen is still shown but stopping the gesture would already navigate back, which results in a very
+ *   weird user experience.
+ */
+private fun Modifier.outTransition(progress: () -> Float): Modifier = graphicsLayer {
+    val interpolatedProgress = interpolator.getInterpolation(progress())
+    // the current screen is only shown until the transition point is reached
+    val clippedProgress = if (interpolatedProgress <= TRANSITION_POINT) {
+        interpolatedProgress / TRANSITION_POINT
+    } else {
+        1f
+    }
+    // scale from 100% to 90%
+    this.scaleX = lerp(1f, 0.9f, clippedProgress)
+    this.scaleY = lerp(1f, 0.9f, clippedProgress)
+    // fade from 100% to 0%
+    this.alpha = lerp(1f, 0f, clippedProgress)
+    // offset from 0dp to 24dp
+    val offset = offset.toPx()
+    this.translationX = lerp(0f, offset, clippedProgress)
+}
+
+/**
+ * Animation for transitioning in the screen previous back stack entry that is being navigated back to. The specs are
+ * following the "Full screen surfaces" section of the
+ * [predictive back design guide](https://developer.android.com/design/ui/mobile/guides/patterns/predictive-back#full-screen-surfaces)
+ * with 2 differences:
+ *
+ * - Horizontal translation was added for a better feeling.
+ * - The spec uses the 35% mark as the transition point between the screens where none of them is visible, while this
+ *   implementation uses 3.5% (0.035f). With the original 35% value it was easily possible to have situations where
+ *   the current screen is still shown but stopping the gesture would already navigate back, which results in a very
+ *   weird user experience.
+ */
+private fun Modifier.inTransition(progress: () -> Float): Modifier = graphicsLayer {
+    val interpolatedProgress = interpolator.getInterpolation(progress())
+    // the previous screen is shown from the transition point on
+    val clippedProgress = if (interpolatedProgress >= TRANSITION_POINT) {
+        (interpolatedProgress - TRANSITION_POINT) / (1f - TRANSITION_POINT)
+    } else {
+        0f
+    }
+    // scale from 110% to 100%
+    this.scaleX = lerp(1.1f, 1f, clippedProgress)
+    this.scaleY = lerp(1.1f, 1f, clippedProgress)
+    // fade from 0 to 100%
+    this.alpha = lerp(0f, 1f, clippedProgress)
+    // offset from -24dp to 0dp
+    val offset = (-offset).toPx()
+    this.translationX = lerp(offset, 0f, clippedProgress)
+}
+
+private val offset = 24.dp
+private val interpolator = PathInterpolator(0.1f, 0.1f, 0f, 1f)
+private const val TRANSITION_POINT = 0.035f
+private const val VISIBILITY_THRESHOLD = 0.000000001f
+
 @Composable
-private fun SystemBackHandling(snapshot: StackSnapshot, navigator: HostNavigator) {
+private fun systemBackHandling(snapshot: StackSnapshot, navigator: HostNavigator): State<Float> {
+    val backProgress = remember(snapshot) {
+        Animatable(0f, visibilityThreshold = VISIBILITY_THRESHOLD)
+    }
+    PredictiveBackHandler(enabled = snapshot.canNavigateBack) { progressFlow ->
+        var finalValue = 0f
+        try {
+            progressFlow.collect { backEvent ->
+                backProgress.snapTo(backEvent.progress)
+            }
+            finalValue = 1f
+            backProgress.animateTo(1f)
+            navigator.navigateBack()
+        } catch (e: CancellationException) {
+            backProgress.animateTo(0f)
+        } finally {
+            // make sure that the animation is not stuck at intermediate value in case animateTo gets cancelled
+            backProgress.snapTo(finalValue)
+        }
+    }
+
+    // needs to be called after PredictiveBackHandler because the navigator has precedence
     val backPressedDispatcher = requireNotNull(LocalOnBackPressedDispatcherOwner.current) {
         "No OnBackPressedDispatcher available"
     }
-
-    val callback = remember(navigator) {
-        // will be enabled below if needed
-        object : OnBackPressedCallback(false) {
-            override fun handleOnBackPressed() {
-                try {
-                    navigator.navigateBack()
-                } catch (e: IllegalStateException) {
-                    // The exception is thrown when navigateBack is called while the backstack is at the root. If the
-                    // system back is triggered twice very quickly after each other there is a short time window
-                    // after the first where the OnBackPressedCallback is not yet updated and would then also handle the
-                    // second. This suppresses the crash in that case.
-                    // TODO: see if we can improve this when starting to support predictive back
-                    if (navigator.snapshot.value.canNavigateBack) {
-                        throw e
-                    }
-                }
-            }
-        }
-    }
-
-    SideEffect {
-        callback.isEnabled = snapshot.canNavigateBack
-    }
-
-    DisposableEffect(backPressedDispatcher, callback) {
-        backPressedDispatcher.onBackPressedDispatcher.addCallback(callback)
+    DisposableEffect(backPressedDispatcher) {
         backPressedDispatcher.onBackPressedDispatcher.addCallback(navigator.onBackPressedCallback)
 
         onDispose {
-            callback.remove()
             navigator.onBackPressedCallback.remove()
         }
     }
+
+    return backProgress.asState()
 }
 
 @Composable
