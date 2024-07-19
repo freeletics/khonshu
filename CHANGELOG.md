@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## 0.28.1 *(2024-07-19)*
+
+### Navigation
+
+- Fix race condition that would cause custom back handling to sometimes not work.
+
+
 ## 0.28.0 *(2024-07-17)*
 
 ### Navigation
