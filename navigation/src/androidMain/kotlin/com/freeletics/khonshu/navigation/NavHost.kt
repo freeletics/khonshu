@@ -1,8 +1,6 @@
 package com.freeletics.khonshu.navigation
 
 import android.view.animation.PathInterpolator
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
@@ -19,6 +17,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
+import com.freeletics.khonshu.navigation.internal.PredictiveBackHandler
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import java.io.Closeable
@@ -203,36 +202,45 @@ private fun systemBackHandling(snapshot: StackSnapshot, navigator: HostNavigator
     val backProgress = remember(snapshot) {
         Animatable(0f, visibilityThreshold = VISIBILITY_THRESHOLD)
     }
-    PredictiveBackHandler(enabled = snapshot.canNavigateBack) { progressFlow ->
-        var finalValue = 0f
+    PredictiveBackHandler(
+        enabled = snapshot.canNavigateBack,
+        extraCallback = navigator.onBackPressedCallback,
+    ) { progressFlow ->
         try {
             progressFlow.collect { backEvent ->
                 backProgress.snapTo(backEvent.progress)
             }
-            finalValue = 1f
-            backProgress.animateTo(1f)
-            navigator.navigateBack()
+            backProgress.tryAnimateTo(1f)
+            navigator.tryNavigateBack()
         } catch (e: CancellationException) {
-            backProgress.animateTo(0f)
-        } finally {
-            // make sure that the animation is not stuck at intermediate value in case animateTo gets cancelled
-            backProgress.snapTo(finalValue)
-        }
-    }
-
-    // needs to be called after PredictiveBackHandler because the navigator has precedence
-    val backPressedDispatcher = requireNotNull(LocalOnBackPressedDispatcherOwner.current) {
-        "No OnBackPressedDispatcher available"
-    }
-    DisposableEffect(backPressedDispatcher) {
-        backPressedDispatcher.onBackPressedDispatcher.addCallback(navigator.onBackPressedCallback)
-
-        onDispose {
-            navigator.onBackPressedCallback.remove()
+            backProgress.tryAnimateTo(0f)
         }
     }
 
     return backProgress.asState()
+}
+
+private fun HostNavigator.tryNavigateBack() {
+    try {
+        navigateBack()
+    } catch (e: IllegalStateException) {
+        // The exception is thrown when navigateBack is called while the backstack is at the root. If the
+        // system back is triggered twice very quickly after each other there is a short time window
+        // after the first where the OnBackPressedCallback is not yet updated and would then also handle the
+        // second. This suppresses the crash in that case.
+        if (snapshot.value.canNavigateBack) {
+            throw e
+        }
+    }
+}
+
+private suspend fun Animatable<Float, *>.tryAnimateTo(value: Float) {
+    try {
+        animateTo(value)
+    } catch (e: CancellationException) {
+        // make sure that the animation is not stuck at intermediate value in case animateTo gets cancelled
+        snapTo(value)
+    }
 }
 
 @Composable
