@@ -3,7 +3,6 @@ package com.freeletics.khonshu.navigation.internal
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Immutable
 import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.OverlayDestination
 import dev.drewhamilton.poko.Poko
 
 @Poko
@@ -22,8 +21,9 @@ public class StackSnapshot internal constructor(
     internal val current: StackEntry<*>
         get() = entries.last()
 
-    internal val previous: StackEntry<*>
-        get() = entries.getOrNull(entries.lastIndex - 1) ?: startStackRootEntry
+    internal val previous: StackEntry<*>?
+        get() = entries.getOrNull(entries.lastIndex - 1)
+            ?: startStackRootEntry.takeIf { current.id != it.id }
 
     internal val canNavigateBack
         get() = entries.last().removable || startStackRootEntry.destinationId != root.destinationId
@@ -40,7 +40,7 @@ public class StackSnapshot internal constructor(
 
     private fun computeFirstVisibleDestination() {
         firstVisibleIndex = entries.indexOfLast {
-            it.destination !is OverlayDestination<*>
+            !it.isOverlay
         }
     }
 
