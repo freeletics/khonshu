@@ -1,11 +1,14 @@
 package com.freeletics.khonshu.navigation.internal
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.movableContentOf
 import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.ContentDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.OverlayDestination
 import dev.drewhamilton.poko.Poko
 
 @Poko
@@ -14,12 +17,15 @@ import dev.drewhamilton.poko.Poko
 public class StackEntry<T : BaseRoute> internal constructor(
     internal val id: Id,
     public val route: T,
-    internal val destination: ContentDestination<T>,
+    private val destination: ContentDestination<T>,
     public val savedStateHandle: SavedStateHandle,
     public val store: StackEntryStore,
 ) {
     internal val destinationId
         get() = route.destinationId
+
+    internal val isOverlay
+        get() = destination is OverlayDestination<*>
 
     @InternalNavigationCodegenApi
     public val extra: Any?
@@ -32,6 +38,10 @@ public class StackEntry<T : BaseRoute> internal constructor(
             is NavRoute -> true
             is NavRoot -> false
         }
+
+    internal fun content(snapshot: StackSnapshot): @Composable () -> Unit = movableContentOf {
+        destination.content(snapshot, this)
+    }
 
     internal fun close() {
         store.close()

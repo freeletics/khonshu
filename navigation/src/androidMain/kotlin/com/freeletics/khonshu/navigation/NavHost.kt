@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -22,8 +23,10 @@ import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import java.io.Closeable
 import java.lang.ref.WeakReference
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CancellationException
 
 /**
@@ -79,29 +82,70 @@ public fun NavHost(
     }
     DestinationChangedCallback(snapshot, destinationChangedCallback)
 
+    // Remember the movableContent functions from the individual entries so that we avoid blinking at the end of
+    // the predictive back animations.
+    val entryComposables = remember { mutableMapOf<StackEntry.Id, @Composable () -> Unit>() }
+    // build list of show-able entries that are visible in this composition
+    val entries = snapshot.getShowableEntries(
+        entryComposables,
+        showPreviousEntry,
+        Modifier.inTransition { backProgress },
+        Modifier.outTransition { backProgress },
+    )
+
     val saveableStateHolder = rememberSaveableStateHolder()
     CompositionLocalProvider(LocalHostNavigator provides navigator) {
         Box(modifier = modifier) {
-            // only add previous to composition while a back gesture is ongoing
-            if (showPreviousEntry) {
-                Box(modifier = Modifier.inTransition { backProgress }) {
-                    Show(snapshot, snapshot.previous, saveableStateHolder)
-                }
-            }
-
-            snapshot.forEachVisibleDestination {
-                Box(modifier = Modifier.outTransition { backProgress }) {
-                    Show(snapshot, it, saveableStateHolder)
-                }
+            entries.forEach {
+                Show(it, saveableStateHolder)
             }
         }
     }
 }
 
+private fun StackSnapshot.getShowableEntries(
+    entryComposables: MutableMap<StackEntry.Id, @Composable () -> Unit>,
+    showPreviousEntry: Boolean,
+    inTransition: Modifier,
+    outTransition: Modifier,
+): ImmutableList<ShowableStackEntry<*>> {
+    val entries = mutableListOf<ShowableStackEntry<*>>()
+    val previous = previous
+    // only add previous to composition while a back gesture is ongoing
+    if (showPreviousEntry && previous != null) {
+        entries += ShowableStackEntry(
+            entry = previous,
+            modifier = inTransition,
+            content = entryComposables.getOrPut(previous.id) { previous.content(this) },
+        )
+    }
+    forEachVisibleDestination {
+        entries += ShowableStackEntry(
+            entry = it,
+            modifier = outTransition,
+            content = entryComposables.getOrPut(it.id) { it.content(this) },
+        )
+    }
+
+    // update entryComposables to remove any entry that left the composition
+    entryComposables.clear()
+    entries.forEach {
+        entryComposables.put(it.entry.id, it.content)
+    }
+
+    return entries.toImmutableList()
+}
+
+@Immutable
+private data class ShowableStackEntry<T : BaseRoute>(
+    val entry: StackEntry<T>,
+    val modifier: Modifier,
+    val content: @Composable () -> Unit,
+)
+
 @Composable
 private fun <T : BaseRoute> Show(
-    snapshot: StackSnapshot,
-    entry: StackEntry<T>,
+    entry: ShowableStackEntry<T>,
     saveableStateHolder: SaveableStateHolder,
 ) {
     // From AndroidX Navigation:
@@ -110,14 +154,16 @@ private fun <T : BaseRoute> Show(
     //   only happens after this leaves composition. Which means we can't rely on
     //   DisposableEffect to clean up this reference (as it'll be cleaned up too early)
     val saveableCloseable = remember(entry, saveableStateHolder) {
-        entry.store.getOrCreate(SaveableCloseable::class) {
-            SaveableCloseable(entry.id.value)
+        entry.entry.store.getOrCreate(SaveableCloseable::class) {
+            SaveableCloseable(entry.entry.id.value)
         }
     }
     saveableCloseable.saveableStateHolderRef = WeakReference(saveableStateHolder)
 
-    saveableStateHolder.SaveableStateProvider(entry.id.value) {
-        entry.destination.content(snapshot, entry)
+    saveableStateHolder.SaveableStateProvider(entry.entry.id.value) {
+        Box(modifier = entry.modifier) {
+            entry.content()
+        }
     }
 }
 
