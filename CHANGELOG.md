@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+## 0.28.2 *(2024-07-22)*
+
+### Navigation
+
+- Avoid composable of previous being re-created at the end of the predictive back
+  animation. This was causing a visible blinking in the UI.
+- Fix part of the predictive back animation being run when using 3 button navigation.
+
+
 ## 0.28.1 *(2024-07-19)*
 
 ### Navigation
@@ -14,8 +23,8 @@ Change Log
 
 - Implement predictive back support. When predictive back is enabled by setting
   `android:enableOnBackInvokedCallback="true"` in the AndroidManifest, Khonshu
-  will automatically handle back presses with the predictive back animation 
-  to the previous destination. 
+  will automatically handle back presses with the predictive back animation
+  to the previous destination.
 
 ### Codegen
 
@@ -24,13 +33,13 @@ Change Log
 
 ## 0.27.1 *(2024-06-21)*
 
-- `ActivityRoute.buildIntent()` has been changed to 
+- `ActivityRoute.buildIntent()` has been changed to
   `ActivityRoute.buildIntent(context: Context)` to make using it easier.
 
 
 ## 0.27.0 *(2024-06-20)*
 
-The [documentation](https://freeletics.github.io/khonshu/) has been updated. 
+The [documentation](https://freeletics.github.io/khonshu/) has been updated.
 
 ### Navigation
 
