@@ -210,7 +210,12 @@ private fun systemBackHandling(snapshot: StackSnapshot, navigator: HostNavigator
             progressFlow.collect { backEvent ->
                 backProgress.snapTo(backEvent.progress)
             }
-            backProgress.tryAnimateTo(1f)
+            // For 3 button navigation progressFlow completes without any
+            // emission, so backProgress is still 0 and the animation should
+            // not be started here.
+            if (backProgress.value > 0) {
+                backProgress.tryAnimateTo(1f)
+            }
             navigator.tryNavigateBack()
         } catch (e: CancellationException) {
             backProgress.tryAnimateTo(0f)
