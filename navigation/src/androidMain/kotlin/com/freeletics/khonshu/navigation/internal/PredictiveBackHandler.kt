@@ -118,12 +118,14 @@ internal fun PredictiveBackHandler(
                 // finally, we close the channel to ensure no more events can be sent
                 // but let the job complete normally
                 onBackInstance?.close()
+                onBackInstance?.isPredictiveBack = false
             }
 
             override fun handleOnBackCancelled() {
                 super.handleOnBackCancelled()
                 // cancel will purge the channel of any sent events that are yet to be received
                 onBackInstance?.cancel()
+                onBackInstance?.isPredictiveBack = false
             }
         }
     }
@@ -149,7 +151,7 @@ internal fun PredictiveBackHandler(
 
 private class OnBackInstance(
     scope: CoroutineScope,
-    val isPredictiveBack: Boolean,
+    var isPredictiveBack: Boolean,
     onBack: suspend (progress: Flow<BackEventCompat>) -> Unit,
 ) {
     val channel = Channel<BackEventCompat>(capacity = BUFFERED, onBufferOverflow = SUSPEND)
