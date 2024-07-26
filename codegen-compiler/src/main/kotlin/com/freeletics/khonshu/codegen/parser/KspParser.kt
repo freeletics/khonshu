@@ -127,9 +127,9 @@ private fun KSValueParameter.toComposableParameter(condition: (TypeName) -> Bool
 }
 
 private fun KSFunctionDeclaration.navHostParameter(logger: KSPLogger): ComposableParameter? {
-    val parameter = getParameterWithType(simpleNavHost) ?:
-        getParameterWithType(simpleNavHostParameterized) ?:
-        getParameterWithType(simpleNavHostLambda)
+    val parameter = getParameterWithType(simpleNavHost)
+        ?: getParameterWithType(simpleNavHostParameterized)
+        ?: getParameterWithType(simpleNavHostLambda)
     if (parameter == null) {
         logger.error("Could not find a NavHost parameter with type $simpleNavHost")
     }
