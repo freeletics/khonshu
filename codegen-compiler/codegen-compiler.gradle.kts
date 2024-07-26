@@ -40,7 +40,7 @@ dependencies {
     testFixturesImplementation(testFixtures(libs.anvil.compiler.utils))
     testFixturesImplementation(libs.kotlin.compile.testing.ksp)
     // explicitly depend on ksp to force the version to a newer one than compile testing uses
-    testFixturesImplementation(libs.ksp)
-    testFixturesImplementation(libs.ksp.deps)
-    testFixturesImplementation(libs.ksp.embeddable)
+    testFixturesRuntimeOnly(libs.ksp)
+    testFixturesRuntimeOnly(libs.ksp.deps)
+    testFixturesRuntimeOnly(libs.ksp.embeddable)
 }
