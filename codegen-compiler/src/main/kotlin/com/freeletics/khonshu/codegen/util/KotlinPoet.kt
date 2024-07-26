@@ -15,6 +15,7 @@ import com.squareup.kotlinpoet.KModifier.PRIVATE
 import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.UNIT
@@ -144,6 +145,10 @@ internal fun TypeName.functionToLambda(): TypeName {
     if (this is ParameterizedTypeName && (rawType == function1 || rawType == function2 || rawType == function3)) {
         val parameters = typeArguments.dropLast(1).map { it.functionToLambda() }.toTypedArray()
         return LambdaTypeName.get(null, *parameters, returnType = typeArguments.last())
+            .copy(nullable = isNullable)
+    }
+    if (this is ParameterizedTypeName) {
+        return rawType.parameterizedBy(typeArguments.map { it.functionToLambda() })
             .copy(nullable = isNullable)
     }
     return this

@@ -108,7 +108,7 @@ private class AnvilKhonshuCompilation(
 ) : KhonshuCompilation {
     val compilation = AnvilCompilation().apply {
         configureAnvil(mode = AnvilCompilationMode.Embedded(codeGenerators = codeGenerators))
-        kotlinCompilation.configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors)
+        kotlinCompilation.configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors, "1.9")
     }
 
     override fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit) {
@@ -130,11 +130,12 @@ private class KspKhonshuCompilation(
     ksp2: Boolean,
 ) : KhonshuCompilation {
     val compilation = KotlinCompilation().apply {
+        val languageVersion = "1.9".takeUnless { ksp2 }
+        configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors, languageVersion)
         if (ksp2) {
             useKsp2()
         }
         symbolProcessorProviders = symbolProcessors.toMutableList()
-        configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors)
     }
 
     override fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit) {
@@ -152,11 +153,12 @@ private fun KotlinCompilation.configure(
     compilerPlugins: List<CompilerPluginRegistrar>,
     legacyCompilerPlugins: List<ComponentRegistrar>,
     warningsAsErrors: Boolean,
+    kotlinLanguageVersion: String? = null,
 ) {
     componentRegistrars += legacyCompilerPlugins
     compilerPluginRegistrars += compilerPlugins
     jvmTarget = "11"
-    languageVersion = "1.9"
+    languageVersion = kotlinLanguageVersion
     inheritClassPath = true
     messageOutputStream = System.out // see diagnostics in real time
     allWarningsAsErrors = warningsAsErrors
