@@ -3,6 +3,7 @@ package com.freeletics.khonshu.codegen.util
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.MemberName
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.UNIT
 import org.jetbrains.kotlin.name.FqName
 
@@ -47,6 +48,11 @@ internal val internalNavigatorApi =
     ClassName("com.freeletics.khonshu.navigation.internal", "InternalNavigationCodegenApi")
 
 internal val simpleNavHost = ClassName("com.freeletics.khonshu.codegen", "SimpleNavHost")
+internal val simpleNavHostParameterized = simpleNavHost.parameterizedBy(
+    ClassName("androidx.compose.ui", "Modifier"),
+    LambdaTypeName.get(null, navRoot, baseRoute, returnType = UNIT).copy(nullable = true),
+    UNIT,
+)
 internal val simpleNavHostLambda = LambdaTypeName.get(
     null,
     ClassName("androidx.compose.ui", "Modifier"),
