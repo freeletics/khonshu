@@ -48,6 +48,7 @@ public class StackSnapshot internal constructor(
     @InternalNavigationCodegenApi
     public fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T> {
         return entries.lastOrNull { it.destinationId == destinationId } as StackEntry<T>?
+            ?: startStackRootEntry.takeIf { it.destinationId == destinationId } as StackEntry<T>?
             ?: throw IllegalStateException("Route $destinationId not found on back stack")
     }
 }
