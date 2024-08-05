@@ -37,7 +37,7 @@ kotlin-compile-testing = "0.5.1"
 fgp = "0.14.0"
 publish = "0.29.0"
 dokka = "1.9.20"
-binarycompatibility = "0.16.2"
+binarycompatibility = "0.16.3"
 dependency-analysis = "1.28.0"
 
 [libraries]
