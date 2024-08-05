@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+## 0.28.3 *(2024-08-05)*
+
+### Codegen
+
+- Fix crash when `StackSnapshot.entryFor` is called for the start destination while being
+  on a different back stack.
+- Fix KSP2 support for version 2.0.0-1.0.23 and newer.
+
+
 ## 0.28.2 *(2024-07-22)*
 
 ### Navigation
