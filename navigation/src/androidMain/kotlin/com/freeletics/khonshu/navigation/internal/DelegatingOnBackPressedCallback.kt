@@ -4,7 +4,6 @@ import androidx.activity.OnBackPressedCallback
 
 @InternalNavigationApi
 public class DelegatingOnBackPressedCallback : OnBackPressedCallback(false) {
-
     private val callbacks = mutableListOf<() -> Unit>()
 
     @InternalNavigationApi

@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.Flow
 public class TestHostNavigator(
     public var handleDeepLinkRoute: NavRoute? = null,
 ) : HostNavigator() {
-
     internal val navEventNavigator = NavEventNavigator()
 
     @InternalNavigationCodegenApi

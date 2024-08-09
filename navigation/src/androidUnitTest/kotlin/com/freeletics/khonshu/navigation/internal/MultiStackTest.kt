@@ -16,7 +16,6 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 
 internal class MultiStackTest {
-
     private val defaultStack get() = stack(SimpleRoot(1))
 
     private val factory = TestStackEntryFactory()

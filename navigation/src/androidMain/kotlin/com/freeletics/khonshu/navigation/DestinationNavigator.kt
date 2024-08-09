@@ -13,7 +13,6 @@ public abstract class DestinationNavigator(
     ResultNavigator by hostNavigator,
     BackInterceptor by hostNavigator,
     ActivityNavigator() {
-
     /**
      * See [HostNavigator.navigate].
      */

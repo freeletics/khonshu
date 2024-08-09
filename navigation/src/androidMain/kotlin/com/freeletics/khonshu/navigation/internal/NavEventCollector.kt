@@ -7,42 +7,41 @@ import com.freeletics.khonshu.navigation.Navigator
 import kotlin.reflect.KClass
 
 internal class NavEventCollector : Navigator {
-
-    private val _navEvents = mutableListOf<NavEvent>()
-    internal val navEvents: List<NavEvent> = _navEvents
+    private val navEventList = mutableListOf<NavEvent>()
+    internal val navEvents: List<NavEvent> = navEventList
 
     override fun navigateTo(route: NavRoute) {
         val event = NavEvent.NavigateToEvent(route)
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 
     override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
         val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 
     override fun navigateUp() {
         val event = NavEvent.UpEvent
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 
     override fun navigateBack() {
         val event = NavEvent.BackEvent
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 
     override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean) {
         val event = NavEvent.BackToEvent(popUpTo, inclusive)
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 
     override fun resetToRoot(root: NavRoot) {
         val event = NavEvent.ResetToRoot(root)
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 
     override fun replaceAll(root: NavRoot) {
         val event = NavEvent.ReplaceAll(root)
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 }

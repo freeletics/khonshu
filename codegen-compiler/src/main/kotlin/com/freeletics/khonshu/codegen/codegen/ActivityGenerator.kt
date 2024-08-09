@@ -19,7 +19,6 @@ internal val Generator<out BaseData>.activityName
 internal class ActivityGenerator(
     override val data: NavHostActivityData,
 ) : Generator<NavHostActivityData>() {
-
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(activityName)
             .addAnnotation(optInAnnotation())

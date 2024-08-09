@@ -24,7 +24,6 @@ internal class MultiStackHostNavigator(
     private val stack: MultiStack,
     viewModel: StackEntryStoreViewModel,
 ) : HostNavigator() {
-
     override val snapshot: State<StackSnapshot>
         get() = stack.snapshot
 

@@ -5,7 +5,6 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 
 class DeepLinkHandlerTest {
-
     @Test
     fun `fails on invalid prefix values`() {
         listOf(

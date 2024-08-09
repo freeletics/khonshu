@@ -28,7 +28,6 @@ public sealed interface ResultOwner<R> {
 
 @InternalNavigationTestingApi
 public sealed class ManagedResultOwner<R> : ResultOwner<R> {
-
     /**
      * Emits any result passed to [onResult]. Results will only be delivered
      * to one collector at a time.
@@ -78,45 +77,44 @@ public class ActivityResultRequest<I, O> internal constructor(
  */
 public class PermissionsResultRequest internal constructor() :
     ContractResultOwner<List<String>, Map<String, Boolean>, Map<String, PermissionResult>>() {
-
-    override val contract: RequestPermissionsContract = RequestPermissionsContract()
-
-    /**
-     * The status of the requested permission.
-     */
-    public sealed interface PermissionResult {
-        /**
-         * The app has access to the requested permission.
-         */
-        public data object Granted : PermissionResult
+        override val contract: RequestPermissionsContract = RequestPermissionsContract()
 
         /**
-         * The app doesn't have access to the requested permission for one of the reasons requested
-         * below. The provided [shouldShowRationale] will be `true` if the system suggests showing
-         * the user an explanation of why the permission is requested before attempting to request
-         * again.
-         *
-         * **Reasons:**
-         * - the user denied the request
-         *     - `shouldShowRationale` is `true`
-         * - Android 10 and below: the user selected to not be asked again
-         *     - `shouldShowRationale` is `false`
-         * - Android 11+: the user denied the request twice already and the system won't ask again
-         *     - `shouldShowRationale` is `false`
-         * - Android 11+: the user dismissed the notification request without making a choice
-         *     - `shouldShowRationale` is `false` if the user did not deny the permission before
-         *     - `shouldShowRationale` is `true` if the user denied the permission before
-         *
-         * Until Android 11 `shouldShowRationale` being `false` can be interpreted as the permission
-         * being denied forever. However on Android 11+ there is the edge case the user can dismiss
-         * the prompt without making a choice.
+         * The status of the requested permission.
          */
-        @Poko
-        public class Denied(
-            public val shouldShowRationale: Boolean,
-        ) : PermissionResult
+        public sealed interface PermissionResult {
+            /**
+             * The app has access to the requested permission.
+             */
+            public data object Granted : PermissionResult
+
+            /**
+             * The app doesn't have access to the requested permission for one of the reasons requested
+             * below. The provided [shouldShowRationale] will be `true` if the system suggests showing
+             * the user an explanation of why the permission is requested before attempting to request
+             * again.
+             *
+             * **Reasons:**
+             * - the user denied the request
+             *     - `shouldShowRationale` is `true`
+             * - Android 10 and below: the user selected to not be asked again
+             *     - `shouldShowRationale` is `false`
+             * - Android 11+: the user denied the request twice already and the system won't ask again
+             *     - `shouldShowRationale` is `false`
+             * - Android 11+: the user dismissed the notification request without making a choice
+             *     - `shouldShowRationale` is `false` if the user did not deny the permission before
+             *     - `shouldShowRationale` is `true` if the user denied the permission before
+             *
+             * Until Android 11 `shouldShowRationale` being `false` can be interpreted as the permission
+             * being denied forever. However on Android 11+ there is the edge case the user can dismiss
+             * the prompt without making a choice.
+             */
+            @Poko
+            public class Denied(
+                public val shouldShowRationale: Boolean,
+            ) : PermissionResult
+        }
     }
-}
 
 /**
  * Class that exposes a [results] [Flow] that can be used to observe results for
@@ -167,7 +165,6 @@ public class StandaloneNavigationResultRequest<R : Parcelable> internal construc
     @property:InternalNavigationTestingApi
     public val savedStateHandle: SavedStateHandle,
 ) : NavigationResultRequest<R> {
-
     override val results: Flow<R>
         get() = savedStateHandle.getStateFlow<Parcelable>(key.requestKey, InitialValue)
             .mapNotNull {

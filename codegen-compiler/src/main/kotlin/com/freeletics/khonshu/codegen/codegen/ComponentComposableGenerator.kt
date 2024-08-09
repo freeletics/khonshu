@@ -25,7 +25,6 @@ internal val Generator<out BaseData>.composableName
 internal class ComponentComposableGenerator(
     override val data: BaseData,
 ) : Generator<BaseData>() {
-
     internal fun generate(): FunSpec {
         return FunSpec.builder(composableName)
             .addAnnotation(composable)

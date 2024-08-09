@@ -29,7 +29,6 @@ import kotlinx.coroutines.flow.callbackFlow
  * and [registerForPermissionsResult]/[requestPermissions] respectively.
  */
 public open class NavEventNavigator : Navigator, ResultNavigator, ActivityNavigator(), BackInterceptor {
-
     private val _navigationResultRequests = mutableListOf<EventNavigationResultRequest<*>>()
     private val _onBackPressedCallback = DelegatingOnBackPressedCallback()
 

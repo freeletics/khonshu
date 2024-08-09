@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * For this work [NavigationSetup] needs to be called.
  */
 public abstract class ActivityNavigator {
-
     private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
 
     @InternalNavigationTestingApi

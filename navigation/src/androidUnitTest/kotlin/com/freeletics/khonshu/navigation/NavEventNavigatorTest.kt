@@ -19,7 +19,6 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 
 internal class NavEventNavigatorTest {
-
     @Test
     fun `navigateTo event is received`(): Unit = runBlocking {
         val navigator = TestNavEventNavigator()

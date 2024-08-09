@@ -156,7 +156,6 @@ public fun NavEventNavigator.dispatchBackPress() {
 }
 
 public interface NavigatorTurbine {
-
     /**
      * Causes an emission to the current [NavEventNavigator.backPresses] collector to make it possible
      * to simulate a back press in tests that check custom back press logic.
@@ -312,7 +311,6 @@ internal class DefaultNavigatorTurbine(
     private val navigator: NavEventNavigator,
     private val turbine: ReceiveTurbine<NavEvent>,
 ) : NavigatorTurbine {
-
     override fun dispatchBackPress() {
         navigator.onBackPressedCallback.handleOnBackPressed()
     }

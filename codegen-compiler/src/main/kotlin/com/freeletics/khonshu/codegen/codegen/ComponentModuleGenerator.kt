@@ -16,7 +16,6 @@ import java.io.Closeable
 internal class ComponentModuleGenerator(
     override val data: BaseData,
 ) : Generator<BaseData>() {
-
     private val moduleClassName = ClassName("Khonshu${data.baseName}Module")
 
     internal fun generate(): TypeSpec {

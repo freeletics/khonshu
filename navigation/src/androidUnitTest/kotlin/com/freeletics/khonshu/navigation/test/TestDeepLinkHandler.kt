@@ -9,7 +9,6 @@ internal class TestDeepLinkHandler(
     override val patterns: Set<Pattern>,
     override val prefixes: Set<Prefix> = emptySet(),
 ) : DeepLinkHandler {
-
     constructor(vararg patterns: String) : this(patterns.map { Pattern(it) }.toSet())
 
     override fun deepLink(

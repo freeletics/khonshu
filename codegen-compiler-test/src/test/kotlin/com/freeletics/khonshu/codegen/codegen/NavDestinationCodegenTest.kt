@@ -21,7 +21,6 @@ import org.intellij.lang.annotations.Language
 import org.junit.Test
 
 internal class NavDestinationCodegenTest {
-
     private val navigation = Navigation(
         route = ClassName("com.test", "TestRoute"),
         parentScopeIsRoute = true,
@@ -47,7 +46,8 @@ internal class NavDestinationCodegenTest {
     @Test
     fun `generates code for ComposeScreenData`() {
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -67,10 +67,11 @@ internal class NavDestinationCodegenTest {
               state: TestState,
               sendAction: (TestAction) -> Unit
             ) {}
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -205,7 +206,7 @@ internal class NavDestinationCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(data, "com/test/Test.kt", source, expected)
     }
@@ -223,7 +224,8 @@ internal class NavDestinationCodegenTest {
         )
 
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -239,10 +241,11 @@ internal class NavDestinationCodegenTest {
               state: TestState,
               sendAction: (TestAction) -> Unit
             ) {}
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -377,7 +380,7 @@ internal class NavDestinationCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(withDefaultValues, "com/test/Test.kt", source, expected)
     }
@@ -394,7 +397,8 @@ internal class NavDestinationCodegenTest {
         )
 
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -414,10 +418,11 @@ internal class NavDestinationCodegenTest {
               state: TestState,
               sendAction: (TestAction) -> Unit
             ) {}
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -554,7 +559,7 @@ internal class NavDestinationCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(dialogData, "com/test/Test.kt", source, expected)
     }
@@ -584,7 +589,8 @@ internal class NavDestinationCodegenTest {
         )
 
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -609,10 +615,11 @@ internal class NavDestinationCodegenTest {
                 testSet: Set<String>,
                 testMap: Map<String, Int>,
             ) {}
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -767,7 +774,7 @@ internal class NavDestinationCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(withInjectedParameters, "com/test/Test2.kt", source, expected)
     }
@@ -779,7 +786,8 @@ internal class NavDestinationCodegenTest {
         )
 
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -798,10 +806,11 @@ internal class NavDestinationCodegenTest {
             public fun Test(
               state: TestState,
             ) {}
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -928,7 +937,7 @@ internal class NavDestinationCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(withoutSendAction, "com/test/Test.kt", source, expected)
     }
@@ -940,7 +949,8 @@ internal class NavDestinationCodegenTest {
         )
 
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -959,10 +969,11 @@ internal class NavDestinationCodegenTest {
             public fun Test(
               sendAction: (TestAction) -> Unit
             ) {}
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -1096,7 +1107,7 @@ internal class NavDestinationCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(withoutSendAction, "com/test/Test.kt", source, expected)
     }

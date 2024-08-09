@@ -21,7 +21,6 @@ internal val Generator<out BaseData>.componentProviderClassName
 internal class NavDestinationComponentProviderGenerator(
     override val data: NavDestinationData,
 ) : Generator<NavDestinationData>() {
-
     internal fun generate(): TypeSpec {
         return TypeSpec.objectBuilder(componentProviderClassName)
             .addAnnotation(optInAnnotation())
@@ -58,7 +57,7 @@ internal class NavDestinationComponentProviderGenerator(
             .addStatement(
                 "parentComponent.%L().%L(entry.savedStateHandle, entry.route)",
                 retainedParentComponentGetterName,
-                retainedComponentFactoryCreateName,
+                RETAINED_COMPONENT_FACTORY_CREATE_NAME,
             )
             .endControlFlow()
             .build()

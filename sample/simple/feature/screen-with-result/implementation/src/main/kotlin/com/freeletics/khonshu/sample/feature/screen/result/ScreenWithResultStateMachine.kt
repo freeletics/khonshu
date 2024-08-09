@@ -9,6 +9,7 @@ data class ScreenWithResultState(val data: String)
 
 sealed interface ScreenWithResultAction {
     data class UpdateResult(val data: String) : ScreenWithResultAction
+
     data object DeliverResult : ScreenWithResultAction
 }
 

@@ -10,7 +10,6 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 
 internal class ActivityNavigatorTest {
-
     @Test
     fun `navigateForResult event is received`(): Unit = runBlocking {
         val navigator = TestActivityNavigator()

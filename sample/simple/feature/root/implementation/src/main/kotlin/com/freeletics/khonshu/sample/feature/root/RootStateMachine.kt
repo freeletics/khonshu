@@ -9,8 +9,11 @@ object RootState
 
 sealed interface RootAction {
     data object ScreenButtonClicked : RootAction
+
     data object DialogButtonClicked : RootAction
+
     data object BottomSheetButtonClicked : RootAction
+
     data object ReplaceAllButtonClicked : RootAction
 }
 

@@ -24,7 +24,6 @@ import org.junit.Before
 import org.junit.Test
 
 class CollectAsStateTest {
-
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher: CoroutineDispatcher = UnconfinedTestDispatcher()
 

@@ -12,7 +12,6 @@ import kotlin.reflect.KClass
 
 @InternalNavigationTestingApi
 public sealed interface NavEvent {
-
     @InternalNavigationTestingApi
     @Poko
     public class NavigateToEvent(

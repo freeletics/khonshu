@@ -21,7 +21,6 @@ import kotlinx.parcelize.RawValue
  * Use [format] with an Android context to get the proper formatted text.
  */
 public sealed class TextResource : Parcelable {
-
     /**
      * Returns the formatted [String] represented by this `TextResource`.
      */
@@ -125,7 +124,6 @@ internal class StringTextResource(
     @StringRes val id: Int,
     val args: @RawValue Array<out Any>,
 ) : TextResource() {
-
     override fun format(context: Context): String = tryFormat(context) {
         return context.resources.getString(id, *args.formatRecursively(context))
     }
@@ -162,7 +160,6 @@ internal class PluralTextResource(
     val quantity: Int,
     val args: @RawValue Array<out Any>,
 ) : TextResource() {
-
     override fun format(context: Context): String = tryFormat(context) {
         return context.resources.getQuantityString(id, quantity, *args.formatRecursively(context))
     }
@@ -200,7 +197,6 @@ internal class CompositeTextResource(
     val elements: List<TextResource>,
     val separator: String,
 ) : TextResource() {
-
     override fun format(context: Context): String {
         return elements.joinToString(separator = separator) { it.format(context) }
     }
@@ -243,7 +239,6 @@ private class TextResourceFormatException(
     private val context: Context,
     cause: Throwable,
 ) : Exception(cause) {
-
     override val message: String
         get() = "Failed to format TextResource! See exception cause for the original exception.\n\t" +
             "TextResource was: $textResource \n\t" +

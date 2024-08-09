@@ -17,7 +17,6 @@ class ScreenWithResultNavigator @Inject constructor(
     hostNavigator: HostNavigator,
     private val route: ScreenWithResultRoute,
 ) : DestinationNavigator(hostNavigator) {
-
     fun deliverResult(data: String) {
         deliverNavigationResult(route.key, Result(data))
         navigateBack()

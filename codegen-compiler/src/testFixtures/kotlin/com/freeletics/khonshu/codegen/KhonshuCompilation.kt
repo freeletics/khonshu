@@ -25,6 +25,7 @@ import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 
 interface KhonshuCompilation {
     fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit)
+
     fun generatedFileFor(name: String): String
 
     companion object {

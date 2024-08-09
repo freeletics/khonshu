@@ -22,7 +22,6 @@ class ScreenNavigator @Inject constructor(
     hostNavigator: HostNavigator,
     private val route: ScreenRoute,
 ) : DestinationNavigator(hostNavigator) {
-
     val destinationResult = registerForNavigationResult<ScreenRoute, Result>()
 
     fun navigateToScreen() {

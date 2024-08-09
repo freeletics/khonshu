@@ -8,11 +8,11 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 class DeeplinksManifestConfiguratorTest {
-
     @get:Rule
     var tmpFolder: TemporaryFolder = TemporaryFolder()
 
-    private val tomlHeader = """
+    private val tomlHeader =
+        """
         [[prefixes]]
         scheme = "https"
         host = "www.example.com"
@@ -31,243 +31,249 @@ class DeeplinksManifestConfiguratorTest {
         key = "user_id"
         exampleValues = [ "113748745" ]
 
-    """.trimIndent()
+        """.trimIndent()
 
-    private val simpleDeepLink = """
+    private val simpleDeepLink =
+        """
         [deepLinks.home]
         patterns = [ "home" ]
-    """.trimIndent()
+        """.trimIndent()
 
     @Test
     fun `simple deep link`() = test(tomlHeader + simpleDeepLink) {
         assertThat(runTest()).isEqualTo(
             """
-                pre content
-                <intent-filter android:autoVerify="true">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/home"
-                        />
-                </intent-filter>
-                <intent-filter android:autoVerify="false">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/home"
-                        />
-                </intent-filter>
-                post content
+            pre content
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/home"
+                    />
+            </intent-filter>
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/home"
+                    />
+            </intent-filter>
+            post content
             """.trimIndent(),
         )
     }
 
-    private val deepLinkWithPlaceholder = """
+    private val deepLinkWithPlaceholder =
+        """
         [deepLinks.plans]
         patterns = [ "{locale}/plans" ]
-    """.trimIndent()
+        """.trimIndent()
 
     @Test
     fun `deep link with placeholder`() = test(tomlHeader + deepLinkWithPlaceholder) {
         assertThat(runTest()).isEqualTo(
             """
-                pre content
-                <intent-filter android:autoVerify="true">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/.*/plans"
-                        />
-                </intent-filter>
-                <intent-filter android:autoVerify="false">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/.*/plans"
-                        />
-                </intent-filter>
-                post content
+            pre content
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/.*/plans"
+                    />
+            </intent-filter>
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/.*/plans"
+                    />
+            </intent-filter>
+            post content
             """.trimIndent(),
         )
     }
 
-    private val deepLinkWithMultiplePlaceholders = """
+    private val deepLinkWithMultiplePlaceholders =
+        """
         [deepLinks.user_profile]
         patterns = [ "{locale}/users/{user_id}" ]
 
-    """.trimIndent()
+        """.trimIndent()
 
     @Test
     fun `deep link with multiple placeholders`() = test(tomlHeader + deepLinkWithMultiplePlaceholders) {
         assertThat(runTest()).isEqualTo(
             """
-                pre content
-                <intent-filter android:autoVerify="true">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/.*/users/.*"
-                        />
-                </intent-filter>
-                <intent-filter android:autoVerify="false">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/.*/users/.*"
-                        />
-                </intent-filter>
-                post content
+            pre content
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/.*/users/.*"
+                    />
+            </intent-filter>
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/.*/users/.*"
+                    />
+            </intent-filter>
+            post content
             """.trimIndent(),
         )
     }
 
-    private val deepLinkWithMultiplePatterns = """
+    private val deepLinkWithMultiplePatterns =
+        """
         [deepLinks.user_profile_2]
         patterns = [ "users/{user_id}", "profiles/{user_id}" ]
 
-    """.trimIndent()
+        """.trimIndent()
 
     @Test
     fun `deep link with multiple patterns`() = test(tomlHeader + deepLinkWithMultiplePatterns) {
         assertThat(runTest()).isEqualTo(
             """
-                pre content
-                <intent-filter android:autoVerify="true">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/users/.*"
-                        />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/profiles/.*"
-                        />
-                </intent-filter>
-                <intent-filter android:autoVerify="false">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/users/.*"
-                        />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/profiles/.*"
-                        />
-                </intent-filter>
-                post content
+            pre content
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/users/.*"
+                    />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/profiles/.*"
+                    />
+            </intent-filter>
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/users/.*"
+                    />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/profiles/.*"
+                    />
+            </intent-filter>
+            post content
             """.trimIndent(),
         )
     }
 
-    private val deepLinkWithCustomPlaceholder = """
+    private val deepLinkWithCustomPlaceholder =
+        """
         [deepLinks.plan_by_slug]
         patterns = [ "{locale}/plans/{slug}" ]
         placeholders = [
           { key = "slug", exampleValues = [ "plan-foo", "plan-bar" ] },
         ]
-    """.trimIndent()
+        """.trimIndent()
 
     @Test
     fun `deep link with custom placeholder`() = test(tomlHeader + deepLinkWithCustomPlaceholder) {
         assertThat(runTest()).isEqualTo(
             """
-                pre content
-                <intent-filter android:autoVerify="true">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/.*/plans/.*"
-                        />
-                </intent-filter>
-                <intent-filter android:autoVerify="false">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/.*/plans/.*"
-                        />
-                </intent-filter>
-                post content
+            pre content
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/.*/plans/.*"
+                    />
+            </intent-filter>
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/.*/plans/.*"
+                    />
+            </intent-filter>
+            post content
             """.trimIndent(),
         )
     }
 
-    private val deepLinkWithCustomPrefixes = """
+    private val deepLinkWithCustomPrefixes =
+        """
         [deepLinks.user_profile_short]
         patterns = [ "users/{user_id}", "profiles/{user_id}" ]
         prefixes = [
           { scheme = "https", host = "xmpl.com", autoVerified = true },
           { scheme = "exampleapp", host = "xmpl.com", autoVerified = false },
         ]
-    """.trimIndent()
+        """.trimIndent()
 
     @Test
     fun `deep link with custom prefixes`() = test(tomlHeader + deepLinkWithCustomPrefixes) {
         assertThat(runTest()).isEqualTo(
             """
-                pre content
-                <intent-filter android:autoVerify="true">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="https"
-                        android:host="xmpl.com"
-                        android:pathPattern="/users/.*"
-                        />
-                    <data
-                        android:scheme="https"
-                        android:host="xmpl.com"
-                        android:pathPattern="/profiles/.*"
-                        />
-                </intent-filter>
-                <intent-filter android:autoVerify="false">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="xmpl.com"
-                        android:pathPattern="/users/.*"
-                        />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="xmpl.com"
-                        android:pathPattern="/profiles/.*"
-                        />
-                </intent-filter>
-                post content
+            pre content
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="xmpl.com"
+                    android:pathPattern="/users/.*"
+                    />
+                <data
+                    android:scheme="https"
+                    android:host="xmpl.com"
+                    android:pathPattern="/profiles/.*"
+                    />
+            </intent-filter>
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="xmpl.com"
+                    android:pathPattern="/users/.*"
+                    />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="xmpl.com"
+                    android:pathPattern="/profiles/.*"
+                    />
+            </intent-filter>
+            post content
             """.trimIndent(),
         )
     }
@@ -285,108 +291,108 @@ class DeeplinksManifestConfiguratorTest {
     fun `multiple deep links`() = test(tomlHeader + multipleDeepLinks) {
         assertThat(runTest()).isEqualTo(
             """
-                pre content
-                <intent-filter android:autoVerify="true">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/home"
-                        />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/.*/plans"
-                        />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/.*/users/.*"
-                        />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/users/.*"
-                        />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/profiles/.*"
-                        />
-                    <data
-                        android:scheme="https"
-                        android:host="www.example.com"
-                        android:pathPattern="/.*/plans/.*"
-                        />
-                </intent-filter>
-                <intent-filter android:autoVerify="false">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/home"
-                        />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/.*/plans"
-                        />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/.*/users/.*"
-                        />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/users/.*"
-                        />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/profiles/.*"
-                        />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="example.com"
-                        android:pathPattern="/.*/plans/.*"
-                        />
-                </intent-filter>
-                <intent-filter android:autoVerify="true">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="https"
-                        android:host="xmpl.com"
-                        android:pathPattern="/users/.*"
-                        />
-                    <data
-                        android:scheme="https"
-                        android:host="xmpl.com"
-                        android:pathPattern="/profiles/.*"
-                        />
-                </intent-filter>
-                <intent-filter android:autoVerify="false">
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="xmpl.com"
-                        android:pathPattern="/users/.*"
-                        />
-                    <data
-                        android:scheme="exampleapp"
-                        android:host="xmpl.com"
-                        android:pathPattern="/profiles/.*"
-                        />
-                </intent-filter>
-                post content
+            pre content
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/home"
+                    />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/.*/plans"
+                    />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/.*/users/.*"
+                    />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/users/.*"
+                    />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/profiles/.*"
+                    />
+                <data
+                    android:scheme="https"
+                    android:host="www.example.com"
+                    android:pathPattern="/.*/plans/.*"
+                    />
+            </intent-filter>
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/home"
+                    />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/.*/plans"
+                    />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/.*/users/.*"
+                    />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/users/.*"
+                    />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/profiles/.*"
+                    />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="example.com"
+                    android:pathPattern="/.*/plans/.*"
+                    />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="xmpl.com"
+                    android:pathPattern="/users/.*"
+                    />
+                <data
+                    android:scheme="https"
+                    android:host="xmpl.com"
+                    android:pathPattern="/profiles/.*"
+                    />
+            </intent-filter>
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="xmpl.com"
+                    android:pathPattern="/users/.*"
+                    />
+                <data
+                    android:scheme="exampleapp"
+                    android:host="xmpl.com"
+                    android:pathPattern="/profiles/.*"
+                    />
+            </intent-filter>
+            post content
             """.trimIndent(),
         )
     }
@@ -441,7 +447,6 @@ private class TestScope(
     configurationContent: String,
     inputManifestContent: String,
 ) {
-
     private val configFile: File
     private val inputManifestFile: File
     private val outputManifestFile: File

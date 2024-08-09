@@ -30,12 +30,12 @@ import java.io.Closeable
 internal val Generator<out BaseData>.retainedComponentClassName
     get() = ClassName("Khonshu${data.baseName}Component")
 
-internal const val retainedComponentFactoryCreateName = "create"
+internal const val RETAINED_COMPONENT_FACTORY_CREATE_NAME = "create"
 
 internal val Generator<out BaseData>.retainedComponentFactoryClassName
     get() = retainedComponentClassName.nestedClass("Factory")
 
-internal const val closeableSetPropertyName = "closeables"
+internal const val CLOSEABLE_SET_PROPERTY_NAME = "closeables"
 
 internal val Generator<out BaseData>.retainedParentComponentClassName
     get() = retainedComponentClassName.nestedClass("ParentComponent")
@@ -46,7 +46,6 @@ internal val Generator<out BaseData>.retainedParentComponentGetterName
 internal class ComponentGenerator(
     override val data: BaseData,
 ) : Generator<BaseData>() {
-
     fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(retainedComponentClassName)
             .addAnnotation(optInAnnotation())
@@ -76,7 +75,10 @@ internal class ComponentGenerator(
             PropertySpec.builder(it.name, it.typeName).build()
         }
 
-        properties += PropertySpec.builder(closeableSetPropertyName, SET.parameterizedBy(Closeable::class.asTypeName()))
+        properties += PropertySpec.builder(
+            CLOSEABLE_SET_PROPERTY_NAME,
+            SET.parameterizedBy(Closeable::class.asTypeName()),
+        )
             .addAnnotation(forScope(data.scope, GET))
             .build()
 
@@ -86,14 +88,14 @@ internal class ComponentGenerator(
     private fun closeFunction(): FunSpec {
         return FunSpec.builder("close")
             .addModifiers(OVERRIDE)
-            .beginControlFlow("%L.forEach {", closeableSetPropertyName)
+            .beginControlFlow("%L.forEach {", CLOSEABLE_SET_PROPERTY_NAME)
             .addStatement("it.close()")
             .endControlFlow()
             .build()
     }
 
     private fun retainedComponentFactory(): TypeSpec {
-        val createFun = FunSpec.builder(retainedComponentFactoryCreateName)
+        val createFun = FunSpec.builder(RETAINED_COMPONENT_FACTORY_CREATE_NAME)
             .addModifiers(ABSTRACT)
             .apply {
                 if (data is NavHostActivityData) {

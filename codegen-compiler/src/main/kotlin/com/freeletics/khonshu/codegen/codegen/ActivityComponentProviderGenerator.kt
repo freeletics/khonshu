@@ -23,7 +23,6 @@ import kotlin.reflect.KClass
 internal class ActivityComponentProviderGenerator(
     override val data: NavHostActivityData,
 ) : Generator<NavHostActivityData>() {
-
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(componentProviderClassName)
             .addAnnotation(optInAnnotation())
@@ -70,7 +69,7 @@ internal class ActivityComponentProviderGenerator(
             .addStatement(
                 "parentComponent.%L().%L(viewModel, savedStateHandle, activity.intent)",
                 retainedParentComponentGetterName,
-                retainedComponentFactoryCreateName,
+                RETAINED_COMPONENT_FACTORY_CREATE_NAME,
             )
             .endControlFlow()
             .build()

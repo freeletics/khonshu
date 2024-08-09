@@ -18,7 +18,6 @@ internal class MultiStack(
     private val createEntry: (BaseRoute) -> StackEntry<*>,
     private val inputRoot: NavRoot,
 ) {
-
     private val snapshotState: MutableState<StackSnapshot> =
         mutableStateOf(currentStack.snapshot(startStack.rootEntry))
     val snapshot: State<StackSnapshot>

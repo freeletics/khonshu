@@ -45,7 +45,6 @@ public fun <State : Any, Action : Any> StateMachine<State, Action>.testIn(
 }
 
 public interface StateMachineTurbine<State : Any, Action : Any> {
-
     /**
      * Dispatch an [action] to the [StateMachine] under test.
      */
@@ -77,7 +76,6 @@ internal class DefaultStateMachineTurbine<State : Any, Action : Any>(
     private val stateMachine: StateMachine<State, Action>,
     private val turbine: ReceiveTurbine<State>,
 ) : StateMachineTurbine<State, Action> {
-
     override suspend fun dispatch(action: Action) {
         stateMachine.dispatch(action)
     }

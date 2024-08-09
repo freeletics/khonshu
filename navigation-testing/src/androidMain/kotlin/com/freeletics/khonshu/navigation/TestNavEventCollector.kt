@@ -4,28 +4,27 @@ import com.freeletics.khonshu.navigation.internal.NavEvent
 import kotlin.reflect.KClass
 
 public class TestNavEventCollector internal constructor() {
-
-    private val _navEvents = mutableListOf<NavEvent>()
-    internal val navEvents: List<NavEvent> = _navEvents
+    private val navEventList = mutableListOf<NavEvent>()
+    internal val navEvents: List<NavEvent> = navEventList
 
     public fun awaitNavigateTo(route: NavRoute) {
         val event = NavEvent.NavigateToEvent(route)
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 
     public fun awaitNavigateToRoot(root: NavRoot, restoreRootState: Boolean) {
         val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 
     public fun awaitNavigateUp() {
         val event = NavEvent.UpEvent
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 
     public fun awaitNavigateBack() {
         val event = NavEvent.BackEvent
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 
     public inline fun <reified T : NavRoute> awaitNavigateBackTo(inclusive: Boolean) {
@@ -35,11 +34,11 @@ public class TestNavEventCollector internal constructor() {
     @PublishedApi
     internal fun <T : NavRoute> awaitNavigateBackTo(destination: KClass<T>, inclusive: Boolean) {
         val event = NavEvent.BackToEvent(destination, inclusive)
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 
     public fun awaitResetToRoot(root: NavRoot) {
         val event = NavEvent.ResetToRoot(root)
-        _navEvents.add(event)
+        navEventList.add(event)
     }
 }
