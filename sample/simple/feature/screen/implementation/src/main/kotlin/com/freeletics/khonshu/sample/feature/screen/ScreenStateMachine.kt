@@ -12,9 +12,13 @@ data class ScreenState(val number: Int, val result: String? = null)
 
 sealed interface ScreenAction {
     data object ScreenButtonClicked : ScreenAction
+
     data object DialogButtonClicked : ScreenAction
+
     data object BottomSheetButtonClicked : ScreenAction
+
     data object ReplaceAllButtonClicked : ScreenAction
+
     data object ScreenForResultButtonClicked : ScreenAction
 }
 

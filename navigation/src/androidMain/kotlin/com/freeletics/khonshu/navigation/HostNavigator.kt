@@ -25,32 +25,32 @@ public abstract class HostNavigator @InternalNavigationTestingApi constructor() 
     Navigator,
     ResultNavigator,
     BackInterceptor {
-    @InternalNavigationTestingApi
-    public abstract val snapshot: State<StackSnapshot>
+        @InternalNavigationTestingApi
+        public abstract val snapshot: State<StackSnapshot>
 
-    @InternalNavigationTestingApi
-    public abstract val onBackPressedCallback: OnBackPressedCallback
+        @InternalNavigationTestingApi
+        public abstract val onBackPressedCallback: OnBackPressedCallback
 
-    /**
-     * If the given [Intent] was created from a [DeepLink] or the `Uri` returned by [Intent.getData]
-     * can be handled using [deepLinkHandlers] and [deepLinkPrefixes] then the navigator will
-     * clear the current back stack and navigate to the required destinations.
-     *
-     * Returns `true` if the `Intent` contained a deeplink that was handled.
-     */
-    public abstract fun handleDeepLink(
-        intent: Intent,
-        deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
-        deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
-    ): Boolean
+        /**
+         * If the given [Intent] was created from a [DeepLink] or the `Uri` returned by [Intent.getData]
+         * can be handled using [deepLinkHandlers] and [deepLinkPrefixes] then the navigator will
+         * clear the current back stack and navigate to the required destinations.
+         *
+         * Returns `true` if the `Intent` contained a deeplink that was handled.
+         */
+        public abstract fun handleDeepLink(
+            intent: Intent,
+            deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
+            deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
+        ): Boolean
 
-    /**
-     * Allows to group multiple navigation actions and execute them atomically. The state of this [HostNavigator] will
-     * only be updated after running all actions. This should be used when navigating multiple times, for example
-     * calling `navigateBackTo` followed by `navigateTo`.
-     */
-    public abstract fun navigate(block: Navigator.() -> Unit)
-}
+        /**
+         * Allows to group multiple navigation actions and execute them atomically. The state of this [HostNavigator] will
+         * only be updated after running all actions. This should be used when navigating multiple times, for example
+         * calling `navigateBackTo` followed by `navigateTo`.
+         */
+        public abstract fun navigate(block: Navigator.() -> Unit)
+    }
 
 /**
  * Returns an instance of [HostNavigator] with the given [destinations] and

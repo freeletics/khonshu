@@ -19,7 +19,6 @@ public class KhonshuSymbolProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
 ) : SymbolProcessor {
-
     @AutoService(SymbolProcessorProvider::class)
     public class KhonshuSymbolProcessorProvider : SymbolProcessorProvider {
         override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {

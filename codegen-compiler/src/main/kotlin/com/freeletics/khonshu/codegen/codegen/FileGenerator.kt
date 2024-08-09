@@ -6,7 +6,6 @@ import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.squareup.kotlinpoet.FileSpec
 
 public class FileGenerator {
-
     public fun generate(data: BaseData): FileSpec {
         return when (data) {
             is NavDestinationData -> generate(data)

@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
  * can be mutated through actions passed to [dispatch].
  */
 public interface StateMachine<State : Any, Action : Any> {
-
     /**
      * A [Flow] that emits the current state as well as all changes to the state.
      */

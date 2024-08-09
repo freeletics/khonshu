@@ -9,8 +9,11 @@ object NewRootState
 
 sealed interface NewRootAction {
     data object ScreenButtonClicked : NewRootAction
+
     data object DialogButtonClicked : NewRootAction
+
     data object BottomSheetButtonClicked : NewRootAction
+
     data object NavigateToRootButtonClicked : NewRootAction
 }
 

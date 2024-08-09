@@ -12,7 +12,6 @@ internal class DeepLinkHandlerPatternSubject private constructor(
     failureMetadata: FailureMetadata,
     private val pattern: DeepLinkHandler.Pattern,
 ) : Subject(failureMetadata, pattern) {
-
     companion object {
         private val SUBJECT_FACTORY: Factory<DeepLinkHandlerPatternSubject, DeepLinkHandler.Pattern> =
             Factory { metadata, actual -> DeepLinkHandlerPatternSubject(metadata, actual!!) }

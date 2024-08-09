@@ -31,14 +31,10 @@ public data class ComposableParameter(
 public data class NavDestinationData(
     override val baseName: String,
     override val packageName: String,
-
     override val scope: ClassName,
     override val parentScope: ClassName,
-
     override val stateMachine: ClassName,
-
     override val navigation: Navigation,
-
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
@@ -47,14 +43,10 @@ public data class NavDestinationData(
 public data class NavHostActivityData(
     override val baseName: String,
     override val packageName: String,
-
     override val scope: ClassName,
     override val parentScope: ClassName,
-
     override val stateMachine: ClassName,
-
     public val activityBaseClass: ClassName,
-
     val navHostParameter: ComposableParameter,
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,

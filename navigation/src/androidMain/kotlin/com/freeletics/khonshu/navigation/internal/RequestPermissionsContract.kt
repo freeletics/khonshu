@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
  */
 internal class RequestPermissionsContract :
     ActivityResultContract<List<String>, Map<String, Boolean>>() {
-
     private val contract = ActivityResultContracts.RequestMultiplePermissions()
 
     override fun createIntent(context: Context, input: List<String>): Intent {

@@ -19,7 +19,6 @@ import org.intellij.lang.annotations.Language
 import org.junit.Test
 
 internal class NavHostActivityCodegenTest {
-
     private val data = NavHostActivityData(
         baseName = "Test",
         packageName = "com.test",
@@ -42,7 +41,8 @@ internal class NavHostActivityCodegenTest {
     @Test
     fun `generates code for NavHostActivityData`() {
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.activity.ComponentActivity
@@ -68,10 +68,11 @@ internal class NavHostActivityCodegenTest {
             ) {
                 navHost(Modifier) { _, _ -> }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import android.content.Intent
@@ -234,7 +235,7 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(data, "com/test/Test.kt", source, expected)
     }
@@ -247,7 +248,8 @@ internal class NavHostActivityCodegenTest {
         )
 
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.activity.ComponentActivity
@@ -271,10 +273,11 @@ internal class NavHostActivityCodegenTest {
             ) {
                 navHost(Modifier) { _, _ -> }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import android.content.Intent
@@ -437,7 +440,7 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(withDefaultValues, "com/test/Test.kt", source, expected)
     }
@@ -467,7 +470,8 @@ internal class NavHostActivityCodegenTest {
         )
 
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.activity.ComponentActivity
@@ -498,10 +502,11 @@ internal class NavHostActivityCodegenTest {
             ) {
                 navHost(Modifier) { _, _ -> }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import android.content.Intent
@@ -684,7 +689,7 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(withInjectedParameters, "com/test/Test2.kt", source, expected)
     }
@@ -696,7 +701,8 @@ internal class NavHostActivityCodegenTest {
         )
 
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.activity.ComponentActivity
@@ -721,10 +727,11 @@ internal class NavHostActivityCodegenTest {
             ) {
                 navHost(Modifier) { _, _ -> }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import android.content.Intent
@@ -879,7 +886,7 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(withoutSendAction, "com/test/Test.kt", source, expected)
     }
@@ -891,7 +898,8 @@ internal class NavHostActivityCodegenTest {
         )
 
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.activity.ComponentActivity
@@ -916,10 +924,11 @@ internal class NavHostActivityCodegenTest {
             ) {
                 navHost(Modifier) { _, _ -> }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import android.content.Intent
@@ -1081,7 +1090,7 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(withoutSendAction, "com/test/Test.kt", source, expected)
     }
@@ -1092,7 +1101,8 @@ internal class NavHostActivityCodegenTest {
         val withLambdaParameter = data
 
         @Language("kotlin")
-        val source = """
+        val source =
+            """
             package com.test
 
             import androidx.activity.ComponentActivity
@@ -1119,10 +1129,11 @@ internal class NavHostActivityCodegenTest {
             ) {
                 navHost(Modifier)  { _, _ -> }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         @Language("kotlin")
-        val expected = """
+        val expected =
+            """
             package com.test
 
             import android.content.Intent
@@ -1285,7 +1296,7 @@ internal class NavHostActivityCodegenTest {
               }
             }
 
-        """.trimIndent()
+            """.trimIndent()
 
         test(withLambdaParameter, "com/test/Test.kt", source, expected)
     }

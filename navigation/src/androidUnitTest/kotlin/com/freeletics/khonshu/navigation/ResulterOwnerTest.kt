@@ -7,7 +7,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 internal class ResulterOwnerTest {
-
     @Test
     fun `ResultOwner emits events`(): Unit = runBlocking {
         val owner = PermissionsResultRequest()

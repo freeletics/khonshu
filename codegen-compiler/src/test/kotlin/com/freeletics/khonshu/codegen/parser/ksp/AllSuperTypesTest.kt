@@ -18,7 +18,6 @@ import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import org.junit.Test
 
 internal class AllSuperTypesTest {
-
     private fun Sequence<TypeName>.find(expected: TypeName): ParameterizedTypeName? {
         return firstNotNullOfOrNull {
             (it as? ParameterizedTypeName)?.takeIf { it.rawType == expected }
@@ -29,23 +28,23 @@ internal class AllSuperTypesTest {
     fun `type parameters are resolved`() {
         kspCompilation(
             """
-                package com.freeletics.test
+            package com.freeletics.test
 
-                interface StateMachine<State, Action>
-                class Implementation : StateMachine<String, Int>
+            interface StateMachine<State, Action>
+            class Implementation : StateMachine<String, Int>
 
-                interface StateMachineWithShortTypeParameters<S, A> : StateMachine<S, A>
-                class ImplementationWithShortTypeParameters : StateMachineWithShortTypeParameters<Long, Boolean>
+            interface StateMachineWithShortTypeParameters<S, A> : StateMachine<S, A>
+            class ImplementationWithShortTypeParameters : StateMachineWithShortTypeParameters<Long, Boolean>
 
-                interface StateMachineWithSwappedParameters<A2, S2> : StateMachine<S2, A2>
-                class ImplementationWithWithSwappedParameters : StateMachineWithSwappedParameters<Int, String>
+            interface StateMachineWithSwappedParameters<A2, S2> : StateMachine<S2, A2>
+            class ImplementationWithWithSwappedParameters : StateMachineWithSwappedParameters<Int, String>
 
-                interface StateMachineWithExtraParameters<T1, T2, S3, A3, T3> : StateMachine<S3, A3>
-                class ImplementationWithWithExtraParameters : StateMachineWithExtraParameters<Boolean, Long, Short, String, Int>
+            interface StateMachineWithExtraParameters<T1, T2, S3, A3, T3> : StateMachine<S3, A3>
+            class ImplementationWithWithExtraParameters : StateMachineWithExtraParameters<Boolean, Long, Short, String, Int>
 
-                abstract class Hierarchy1<A4, S4>: StateMachineWithShortTypeParameters<S4, A4>
-                abstract class Hierarchy2<T1, T2, S5, A5, T3>: Hierarchy1<A5, S5>()
-                class HierarchyImplementation : Hierarchy2<Boolean, Long, Short, String, Int>()
+            abstract class Hierarchy1<A4, S4>: StateMachineWithShortTypeParameters<S4, A4>
+            abstract class Hierarchy2<T1, T2, S5, A5, T3>: Hierarchy1<A5, S5>()
+            class HierarchyImplementation : Hierarchy2<Boolean, Long, Short, String, Int>()
             """.trimIndent(),
             symbolProcessors = listOf(
                 simpleSymbolProcessor { resolver ->
@@ -96,18 +95,18 @@ internal class AllSuperTypesTest {
     fun `type parameters are resolved for external classes`() {
         kspCompilation(
             """
-                package com.freeletics.test
+            package com.freeletics.test
 
-                import com.freeletics.khonshu.codegen.parser.TestStateMachine
+            import com.freeletics.khonshu.codegen.parser.TestStateMachine
 
-                class CreateCustomActivityStateMachine :
-                    TestStateMachine<CreateCustomActivityState, CreateCustomActivityAction>(
-                        DefaultCreateCustomActivityLoadingState,
-                    )
+            class CreateCustomActivityStateMachine :
+                TestStateMachine<CreateCustomActivityState, CreateCustomActivityAction>(
+                    DefaultCreateCustomActivityLoadingState,
+                )
 
-                sealed interface CreateCustomActivityState
-                object DefaultCreateCustomActivityLoadingState : CreateCustomActivityState
-                sealed interface CreateCustomActivityAction
+            sealed interface CreateCustomActivityState
+            object DefaultCreateCustomActivityLoadingState : CreateCustomActivityState
+            sealed interface CreateCustomActivityAction
             """.trimIndent(),
             symbolProcessors = listOf(
                 simpleSymbolProcessor { resolver ->

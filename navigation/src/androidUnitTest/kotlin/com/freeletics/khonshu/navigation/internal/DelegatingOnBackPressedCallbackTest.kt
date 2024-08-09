@@ -4,7 +4,6 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 internal class DelegatingOnBackPressedCallbackTest {
-
     private val underTest = DelegatingOnBackPressedCallback()
 
     @Test

@@ -6,7 +6,6 @@ import androidx.core.app.ActivityOptionsCompat
 import app.cash.turbine.Turbine
 
 internal class TestActivityResultLauncher : ActivityResultLauncher<Any>() {
-
     val launched = Turbine<Any?>()
 
     override val contract: ActivityResultContract<Any, *>

@@ -17,7 +17,6 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 
 internal class MultiStackHostNavigatorTest {
-
     private val factory = TestStackEntryFactory()
     private val removed get() = factory.closedEntries
 
