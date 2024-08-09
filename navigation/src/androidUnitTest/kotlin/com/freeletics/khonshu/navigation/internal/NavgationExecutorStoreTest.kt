@@ -5,7 +5,6 @@ import java.io.Closeable
 import org.junit.Test
 
 internal class NavgationExecutorStoreTest {
-
     private val underTest = StackEntryStore {}
 
     @Test

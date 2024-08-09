@@ -17,7 +17,6 @@ import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import org.junit.Test
 
 internal class AllSuperTypesTest {
-
     private fun Sequence<TypeName>.find(expected: TypeName): ParameterizedTypeName? {
         return firstNotNullOfOrNull {
             (it as? ParameterizedTypeName)?.takeIf { it.rawType == expected }
@@ -104,18 +103,18 @@ internal class AllSuperTypesTest {
     fun `type parameters are resolved for external classes`() {
         anvilCompilation(
             """
-                package com.freeletics.test
+            package com.freeletics.test
 
-                import com.freeletics.khonshu.codegen.parser.TestStateMachine
+            import com.freeletics.khonshu.codegen.parser.TestStateMachine
 
-                class CreateCustomActivityStateMachine :
-                    TestStateMachine<CreateCustomActivityState, CreateCustomActivityAction>(
-                        DefaultCreateCustomActivityLoadingState,
-                    )
+            class CreateCustomActivityStateMachine :
+                TestStateMachine<CreateCustomActivityState, CreateCustomActivityAction>(
+                    DefaultCreateCustomActivityLoadingState,
+                )
 
-                sealed interface CreateCustomActivityState
-                object DefaultCreateCustomActivityLoadingState : CreateCustomActivityState
-                sealed interface CreateCustomActivityAction
+            sealed interface CreateCustomActivityState
+            object DefaultCreateCustomActivityLoadingState : CreateCustomActivityState
+            sealed interface CreateCustomActivityAction
             """.trimIndent(),
             codeGenerators = listOf(
                 simpleCodeGenerator { psiRef ->

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
 import com.freeletics.khonshu.navigation.ActivityResultRequest
 import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.EventNavigationResultRequest
+import com.freeletics.khonshu.navigation.EventNavigationResultRequest as ResultRequest
 import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.navigation.PermissionsResultRequest
 import com.freeletics.khonshu.navigation.ResultNavigator.Companion.registerForNavigationResult
@@ -18,8 +18,7 @@ internal class TestNavEventNavigator : NavEventNavigator() {
         return registerForPermissionsResult()
     }
 
-    inline fun <reified I : BaseRoute, reified O : Parcelable>
-    testRegisterForNavigationResult(): EventNavigationResultRequest<O> {
-        return registerForNavigationResult<I, O>() as EventNavigationResultRequest<O>
+    inline fun <reified I : BaseRoute, reified O : Parcelable> testRegisterForNavigationResult(): ResultRequest<O> {
+        return registerForNavigationResult<I, O>() as ResultRequest<O>
     }
 }

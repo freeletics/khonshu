@@ -15,8 +15,8 @@ import org.jetbrains.kotlin.psi.KtFile
 
 @AutoService(CodeGenerator::class)
 public class KhonshuCodeGenerator : CodeGenerator {
-
     override fun isApplicable(context: AnvilContext): Boolean = true
+
     override fun generateCode(
         codeGenDir: File,
         module: ModuleDescriptor,

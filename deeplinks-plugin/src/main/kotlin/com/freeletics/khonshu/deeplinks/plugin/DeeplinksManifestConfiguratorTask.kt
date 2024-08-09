@@ -7,7 +7,6 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
 public abstract class DeeplinksManifestConfiguratorTask : DefaultTask() {
-
     @get:InputFile
     public abstract val deepLinkDefinitionsFile: RegularFileProperty
 

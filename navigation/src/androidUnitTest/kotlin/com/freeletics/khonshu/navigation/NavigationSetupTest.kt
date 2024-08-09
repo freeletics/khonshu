@@ -35,7 +35,6 @@ import org.junit.Before
 import org.junit.Test
 
 internal class NavigationSetupTest {
-
     private val navigator = TestNavEventNavigator()
     private val hostNavigator = TestHostNavigator()
     private val resultRequest = navigator.testRegisterForNavigationResult<SimpleRoute, TestParcelable>()

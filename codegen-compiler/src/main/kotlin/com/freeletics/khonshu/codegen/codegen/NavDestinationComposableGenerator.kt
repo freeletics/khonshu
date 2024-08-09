@@ -23,7 +23,6 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 internal class NavDestinationComposableGenerator(
     override val data: NavDestinationData,
 ) : Generator<NavDestinationData>() {
-
     internal fun generate(): FunSpec {
         return FunSpec.builder(composableName)
             .addAnnotation(composable)

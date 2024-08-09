@@ -24,7 +24,6 @@ import com.squareup.kotlinpoet.TypeSpec
 internal class ActivityModuleGenerator(
     override val data: NavHostActivityData,
 ) : Generator<BaseData>() {
-
     private val moduleClassName = ClassName("Khonshu${data.baseName}ActivityModule")
 
     internal fun generate(): TypeSpec {

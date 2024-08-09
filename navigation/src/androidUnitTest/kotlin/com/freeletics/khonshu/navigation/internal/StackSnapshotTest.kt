@@ -11,7 +11,6 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 internal class StackSnapshotTest {
-
     private val factory = TestStackEntryFactory()
 
     @Test

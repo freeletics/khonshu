@@ -23,7 +23,6 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.flow.Flow
 
 internal class TestHostNavigator : HostNavigator() {
-
     val received = Turbine<NavEvent>()
 
     private val entry = TestStackEntryFactory().create(SimpleRoot(0))

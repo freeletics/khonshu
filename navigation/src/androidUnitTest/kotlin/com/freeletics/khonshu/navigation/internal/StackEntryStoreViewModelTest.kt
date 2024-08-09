@@ -6,7 +6,6 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 internal class StackEntryStoreViewModelTest {
-
     private val savedStateHandle = SavedStateHandle()
     private val underTest = StackEntryStoreViewModel(savedStateHandle)
 
