@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.0.10"
+kotlin = "2.0.20"
 coroutines = "1.8.1"
 
 java-target= "11"
@@ -24,7 +24,7 @@ uri = "0.0.18"
 
 inject = "1"
 anvil = "2.5.0-beta11"
-ksp = "2.0.10-1.0.24"
+ksp = "2.0.20-1.0.24"
 kotlinpoet = "1.18.1"
 auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
@@ -117,4 +117,4 @@ publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binarycompatibility" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
-poko = { id = "dev.drewhamilton.poko", version = "0.16.0" }
+poko = { id = "dev.drewhamilton.poko", version = "0.17.0" }
