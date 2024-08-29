@@ -42,6 +42,7 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 androidx-lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
 anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }
 anvil-annotations-optional = { module = "com.squareup.anvil:annotations-optional", version.ref = "anvil" }
+anvil-compiler = { module = "com.squareup.anvil:compiler", version.ref = "anvil" }
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
