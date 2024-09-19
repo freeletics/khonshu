@@ -14,9 +14,9 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.freeletics.khonshu.navigation.internal.ActivityStarter
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
