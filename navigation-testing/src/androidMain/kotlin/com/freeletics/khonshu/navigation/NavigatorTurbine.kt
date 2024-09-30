@@ -310,7 +310,7 @@ public interface NavigatorTurbine {
 
 internal class DefaultNavigatorTurbine(
     private val turbine: ReceiveTurbine<NavEvent>,
-    private val dispatchBackPress: () -> Unit
+    private val dispatchBackPress: () -> Unit,
 ) : NavigatorTurbine {
     override fun dispatchBackPress() {
         dispatchBackPress.invoke()
