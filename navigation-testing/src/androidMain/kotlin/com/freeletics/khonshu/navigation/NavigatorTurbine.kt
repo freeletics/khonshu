@@ -10,6 +10,7 @@ import kotlin.reflect.KClass
 import kotlin.time.Duration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
  * Collects events from [TestHostNavigator] and allows the [validate] lambda to consume
@@ -23,8 +24,8 @@ public suspend fun TestHostNavigator.test(
     name: String? = null,
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
-    navEventNavigator.navEvents.test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(navEventNavigator, this)
+    events.asChannel().receiveAsFlow().test(timeout, name) {
+        val turbine = DefaultNavigatorTurbine(this, ::dispatchBackPress)
         validate(turbine)
     }
 }
@@ -43,9 +44,9 @@ public suspend fun DestinationNavigator.test(
     name: String? = null,
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
-    val navEventNavigator = (hostNavigator as TestHostNavigator).navEventNavigator
-    merge(navEvents, navEventNavigator.navEvents).test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(navEventNavigator, this)
+    val hostEvents = (hostNavigator as TestHostNavigator).events
+    merge(navEvents, hostEvents.asChannel().receiveAsFlow()).test(timeout, name) {
+        val turbine = DefaultNavigatorTurbine(this, ::dispatchBackPress)
         validate(turbine)
     }
 }
@@ -65,8 +66,8 @@ public fun TestHostNavigator.testIn(
     timeout: Duration? = null,
     name: String? = null,
 ): NavigatorTurbine {
-    val turbine = navEventNavigator.navEvents.testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(navEventNavigator, turbine)
+    val turbine = events.asChannel().receiveAsFlow().testIn(scope, timeout, name)
+    return DefaultNavigatorTurbine(turbine, ::dispatchBackPress)
 }
 
 /**
@@ -86,9 +87,9 @@ public fun DestinationNavigator.testIn(
     timeout: Duration? = null,
     name: String? = null,
 ): NavigatorTurbine {
-    val navEventNavigator = (hostNavigator as TestHostNavigator).navEventNavigator
-    val turbine = merge(navEvents, navEventNavigator.navEvents).testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(navEventNavigator, turbine)
+    val hostEvents = (hostNavigator as TestHostNavigator).events
+    val turbine = merge(navEvents, hostEvents.asChannel().receiveAsFlow()).testIn(scope, timeout, name)
+    return DefaultNavigatorTurbine(turbine, ::dispatchBackPress)
 }
 
 /**
@@ -123,7 +124,7 @@ public suspend fun NavEventNavigator.test(
 ) {
     val navigator = this
     navEvents.test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(navigator, this)
+        val turbine = DefaultNavigatorTurbine(this, ::dispatchBackPress)
         validate(turbine)
     }
 }
@@ -144,7 +145,7 @@ public fun NavEventNavigator.testIn(
     name: String? = null,
 ): NavigatorTurbine {
     val turbine = navEvents.testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(this, turbine)
+    return DefaultNavigatorTurbine(turbine, ::dispatchBackPress)
 }
 
 /**
@@ -308,11 +309,11 @@ public interface NavigatorTurbine {
 }
 
 internal class DefaultNavigatorTurbine(
-    private val navigator: NavEventNavigator,
     private val turbine: ReceiveTurbine<NavEvent>,
+    private val dispatchBackPress: () -> Unit
 ) : NavigatorTurbine {
     override fun dispatchBackPress() {
-        navigator.onBackPressedCallback.handleOnBackPressed()
+        dispatchBackPress.invoke()
     }
 
     override suspend fun awaitNavigateTo(route: NavRoute) {
