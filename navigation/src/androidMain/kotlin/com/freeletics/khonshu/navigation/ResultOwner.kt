@@ -130,7 +130,7 @@ public sealed interface NavigationResultRequest<R : Parcelable> : ResultOwner<R>
      */
     @Poko
     @Parcelize
-    public class Key<R : Parcelable> internal constructor(
+    public class Key<R : Parcelable> @InternalNavigationTestingApi constructor(
         internal val destinationId: DestinationId<*>,
         @property:InternalNavigationTestingApi
         public val requestKey: String,
@@ -160,7 +160,7 @@ public sealed interface NavigationResultRequest<R : Parcelable> : ResultOwner<R>
 }
 
 @InternalNavigationTestingApi
-public class StandaloneNavigationResultRequest<R : Parcelable> internal constructor(
+public class StandaloneNavigationResultRequest<R : Parcelable> @InternalNavigationTestingApi constructor(
     override val key: NavigationResultRequest.Key<R>,
     @property:InternalNavigationTestingApi
     public val savedStateHandle: SavedStateHandle,

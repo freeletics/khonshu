@@ -4,20 +4,33 @@ import android.content.Intent
 import android.os.Parcelable
 import androidx.activity.OnBackPressedCallback
 import androidx.compose.runtime.State
+import androidx.lifecycle.SavedStateHandle
+import app.cash.turbine.Event
+import app.cash.turbine.Turbine
+import app.cash.turbine.plusAssign
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
+import com.freeletics.khonshu.navigation.internal.NavEvent
+import com.freeletics.khonshu.navigation.internal.NavEvent.BackEvent
+import com.freeletics.khonshu.navigation.internal.NavEvent.BackToEvent
+import com.freeletics.khonshu.navigation.internal.NavEvent.MultiNavEvent
+import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToEvent
+import com.freeletics.khonshu.navigation.internal.NavEvent.UpEvent
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 
 public class TestHostNavigator(
     public var handleDeepLinkRoute: NavRoute? = null,
 ) : HostNavigator() {
-    internal val navEventNavigator = NavEventNavigator()
+    internal val events = Turbine<NavEvent>()
+    internal val backPresses = Turbine<Unit>()
 
     @InternalNavigationCodegenApi
     @InternalNavigationTestingApi
@@ -25,8 +38,11 @@ public class TestHostNavigator(
         get() = throw UnsupportedOperationException()
 
     @InternalNavigationTestingApi
-    override val onBackPressedCallback: OnBackPressedCallback
-        get() = throw UnsupportedOperationException()
+    override val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            backPresses += Unit
+        }
+    }
 
     /**
      * The fake implementation will call [navigateTo] with [handleDeepLinkRoute] if
@@ -38,46 +54,46 @@ public class TestHostNavigator(
         deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
     ): Boolean {
         handleDeepLinkRoute?.let {
-            navEventNavigator.navigateTo(it)
+            navigateTo(it)
             return true
         }
         return false
     }
 
     override fun navigate(block: Navigator.() -> Unit) {
-        navEventNavigator.navigate(block)
+        events += MultiNavEvent(TestHostNavigator().apply(block).events.toList())
     }
 
     override fun navigateTo(route: NavRoute) {
-        navEventNavigator.navigateTo(route)
+        events += NavigateToEvent(route)
     }
 
     override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
-        navEventNavigator.navigateToRoot(root, restoreRootState)
+        events += NavEvent.NavigateToRootEvent(root, restoreRootState)
     }
 
     override fun navigateUp() {
-        navEventNavigator.navigateUp()
+        events += UpEvent
     }
 
     override fun navigateBack() {
-        navEventNavigator.navigateBack()
+        events += BackEvent
     }
 
     override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean) {
-        navEventNavigator.navigateBackTo(popUpTo, inclusive)
+        events += BackToEvent(popUpTo, inclusive)
     }
 
     override fun resetToRoot(root: NavRoot) {
-        navEventNavigator.resetToRoot(root)
+        events += NavEvent.ResetToRoot(root)
     }
 
     override fun replaceAll(root: NavRoot) {
-        navEventNavigator.replaceAll(root)
+        events += NavEvent.ReplaceAll(root)
     }
 
     override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
-        navEventNavigator.deliverNavigationResult(key, result)
+        events += NavEvent.DestinationResultEvent(key, result)
     }
 
     @InternalNavigationApi
@@ -86,14 +102,28 @@ public class TestHostNavigator(
         id: DestinationId<T>,
         resultType: String,
     ): NavigationResultRequest<O> {
-        return navEventNavigator.registerForNavigationResultInternal(id, resultType)
+        val requestKey = "${id.route.qualifiedName!!}-$resultType"
+        val key = NavigationResultRequest.Key<O>(id, requestKey)
+        return StandaloneNavigationResultRequest(key, SavedStateHandle())
     }
 
     override fun backPresses(): Flow<Unit> {
-        return navEventNavigator.backPresses()
+        return backPresses.asChannel().receiveAsFlow()
     }
 
     override fun <T> backPresses(value: T): Flow<T> {
-        return navEventNavigator.backPresses(value)
+        return backPresses.asChannel().receiveAsFlow().map { value }
+    }
+
+    private fun <T> Turbine<T>.toList(): List<T> {
+        close()
+        return buildList {
+            do {
+                val event = takeEvent()
+                if (event is Event.Item) {
+                    add(event.value)
+                }
+            } while (event is Event.Item)
+        }
     }
 }
