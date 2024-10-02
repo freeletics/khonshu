@@ -14,9 +14,9 @@ import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
+import com.freeletics.khonshu.navigation.test.TestActivityNavigator
 import com.freeletics.khonshu.navigation.test.TestActivityResultLauncher
 import com.freeletics.khonshu.navigation.test.TestHostNavigator
-import com.freeletics.khonshu.navigation.test.TestNavEventNavigator
 import com.freeletics.khonshu.navigation.test.TestParcelable
 import com.freeletics.khonshu.navigation.test.TestStackEntryFactory
 import com.google.common.truth.Truth.assertThat
@@ -35,9 +35,8 @@ import org.junit.Before
 import org.junit.Test
 
 internal class NavigationSetupTest {
-    private val navigator = TestNavEventNavigator()
+    private val navigator = TestActivityNavigator()
     private val hostNavigator = TestHostNavigator()
-    private val resultRequest = navigator.testRegisterForNavigationResult<SimpleRoute, TestParcelable>()
     private val activityRequest = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
     private val activityRequest2 = navigator.testRegisterForActivityResult(ActivityResultContracts.TakePicture())
     private val activityLauncher = TestActivityResultLauncher()
@@ -85,7 +84,7 @@ internal class NavigationSetupTest {
     fun `does not drop events when paused`() = runBlocking {
         // send events before setup
         repeat(1000) {
-            navigator.navigateTo(SimpleRoute(it))
+            navigator.navigateTo(SimpleActivity(it))
         }
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
 
@@ -100,7 +99,7 @@ internal class NavigationSetupTest {
         // send events on paused
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         repeat(1000) {
-            navigator.navigateTo(SimpleRoute(1000 + it))
+            navigator.navigateTo(SimpleActivity(1000 + it))
         }
 
         // receive events on resume
@@ -111,118 +110,11 @@ internal class NavigationSetupTest {
     }
 
     @Test
-    fun `NavigateToEvent is forwarded to hostNavigator`() = runBlocking {
-        setup()
-
-        navigator.navigateTo(SimpleRoute(1))
-        assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.NavigateToEvent(SimpleRoute(1)))
-    }
-
-    @Test
-    fun `NavigateToRootEvent is forwarded to hostNavigator`() = runBlocking {
-        setup()
-
-        navigator.navigateToRoot(
-            root = SimpleRoot(2),
-            restoreRootState = false,
-        )
-        assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(
-                NavEvent.NavigateToRootEvent(
-                    root = SimpleRoot(2),
-                    restoreRootState = false,
-                ),
-            )
-    }
-
-    @Test
     fun `NavigateToActivityEvent is forwarded to activity starter`() = runBlocking {
         setup()
 
         navigator.navigateTo(SimpleActivity(1), SimpleRoute(1))
         assertThat(started).containsExactly(SimpleActivity(1) to SimpleRoute(1)).inOrder()
-    }
-
-    @Test
-    fun `UpEvent is forwarded to hostNavigator`() = runBlocking {
-        setup()
-
-        navigator.navigateUp()
-        assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.UpEvent)
-    }
-
-    @Test
-    fun `BackEvent is forwarded to hostNavigator`() = runBlocking {
-        setup()
-
-        navigator.navigateBack()
-        assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.BackEvent)
-    }
-
-    @Test
-    fun `BackToEvent is forwarded to hostNavigator`() = runBlocking {
-        setup()
-
-        navigator.navigateBackTo<SimpleRoute>(inclusive = true)
-        assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.BackToEvent(SimpleRoute::class, inclusive = true))
-    }
-
-    @Test
-    fun `ResetToRoot is forwarded to hostNavigator`() = runBlocking {
-        setup()
-
-        navigator.resetToRoot(SimpleRoot(2))
-        assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.ResetToRoot(SimpleRoot(2)))
-    }
-
-    @Test
-    fun `ReplaceAll is forwarded to hostNavigator`() = runBlocking {
-        setup()
-
-        navigator.replaceAll(SimpleRoot(2))
-        assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(NavEvent.ReplaceAll(SimpleRoot(2)))
-    }
-
-    @Test
-    fun `MultiNavEvent is handled properly and events are forwarded to hostNavigator`() = runBlocking {
-        setup()
-
-        navigator.navigate {
-            navigateBackTo<SimpleRoute>(true)
-            navigateTo(SimpleRoute(1))
-            navigateBack()
-        }
-
-        assertThat(hostNavigator.received.awaitItem())
-            .isEqualTo(
-                NavEvent.MultiNavEvent(
-                    listOf(
-                        NavEvent.BackToEvent(SimpleRoute::class, inclusive = true),
-                        NavEvent.NavigateToEvent(SimpleRoute(1)),
-                        NavEvent.BackEvent,
-                    ),
-                ),
-            )
-    }
-
-    @Test
-    fun `DestinationResultEvent is forwarded to hostNavigator`() = runBlocking {
-        setup()
-
-        val entry = factory.create(SimpleRoute(0))
-        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), entry)
-        entry.savedStateHandle.getStateFlow<Parcelable?>(resultRequest.key.requestKey, null).test {
-            assertThat(awaitItem()).isEqualTo(null)
-
-            navigator.deliverNavigationResult(resultRequest.key, TestParcelable(9))
-            assertThat(awaitItem()).isEqualTo(TestParcelable(9))
-        }
     }
 
     @Test
@@ -254,7 +146,7 @@ internal class NavigationSetupTest {
         }
         assertThat(exception).hasMessageThat().isEqualTo(
             "No launcher registered for request with contract ${activityRequest.contract}!\n" +
-                "Make sure you called the appropriate NavEventNavigator.registerFor... method",
+                "Make sure you called the appropriate ActivityNavigator.registerFor... method",
         )
     }
 
@@ -305,67 +197,6 @@ internal class NavigationSetupTest {
                     "c" to PermissionResult.Granted,
                 ),
             )
-        }
-    }
-
-    @Test
-    fun `collectAndHandleNavigationResults forwards results`() = runBlocking {
-        val entry = factory.create(SimpleRoute(0))
-        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), entry)
-        CoroutineScope(dispatcher).launch {
-            hostNavigator.collectAndHandleNavigationResults(resultRequest)
-        }
-
-        resultRequest.results.test {
-            entry.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(3)
-            assertThat(awaitItem()).isEqualTo(TestParcelable(3))
-        }
-    }
-
-    @Test
-    fun `collectAndHandleNavigationResults forwards initial value if set`() = runBlocking {
-        val entry = factory.create(SimpleRoute(0))
-        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), entry)
-        CoroutineScope(dispatcher).launch {
-            hostNavigator.collectAndHandleNavigationResults(resultRequest)
-        }
-
-        entry.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(5)
-        resultRequest.results.test {
-            assertThat(awaitItem()).isEqualTo(TestParcelable(5))
-        }
-    }
-
-    @Test
-    fun `collectAndHandleNavigationResults does not forward same result twice`() = runBlocking {
-        val entry = factory.create(SimpleRoute(0))
-        hostNavigator.snapshot.value = StackSnapshot(listOf(entry), entry)
-        val job = CoroutineScope(dispatcher).launch {
-            hostNavigator.collectAndHandleNavigationResults(resultRequest)
-        }
-
-        entry.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(5)
-        resultRequest.results.test {
-            assertThat(awaitItem()).isEqualTo(TestParcelable(5))
-
-            // restart the collection of navigation results
-            job.cancel()
-            CoroutineScope(dispatcher).launch {
-                hostNavigator.collectAndHandleNavigationResults(resultRequest)
-            }
-
-            // waiting for an item fails
-            try {
-                awaitItem()
-                // should never be reached
-                assertThat(false).isTrue()
-            } catch (e: AssertionError) {
-                assertThat(e).hasMessageThat().isEqualTo("No value produced in 3s")
-            }
-
-            // new value
-            entry.savedStateHandle[resultRequest.key.requestKey] = TestParcelable(7)
-            assertThat(awaitItem()).isEqualTo(TestParcelable(7))
         }
     }
 }

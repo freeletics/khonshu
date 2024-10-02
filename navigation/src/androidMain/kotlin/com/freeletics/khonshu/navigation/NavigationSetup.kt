@@ -27,7 +27,7 @@ import kotlinx.parcelize.Parcelize
 import org.jetbrains.annotations.VisibleForTesting
 
 /**
- * Sets up the [ActivityNavigator] and [NavEventNavigator] inside the current composition so that it's events
+ * Sets up the [ActivityNavigator] and [DestinationNavigator] inside the current composition so that it's events
  * are handled while the composition is active.
  */
 @Composable
@@ -42,23 +42,6 @@ public fun NavigationSetup(navigator: ActivityNavigator) {
 
     val activityLaunchers = navigator.activityResultRequests.associateWith {
         rememberResultLaunchers(it, context)
-    }
-
-    if (navigator is NavEventNavigator) {
-        navigator.navigationResultRequests.forEach {
-            LaunchedEffect(hostNavigator, it) {
-                hostNavigator.collectAndHandleNavigationResults(it)
-            }
-        }
-
-        val backDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
-        DisposableEffect(backDispatcher, navigator) {
-            backDispatcher.addCallback(navigator.onBackPressedCallback)
-
-            onDispose {
-                navigator.onBackPressedCallback.remove()
-            }
-        }
     }
 
     LaunchedEffect(lifecycleOwner, hostNavigator, activityStarter, navigator) {
@@ -142,7 +125,7 @@ private fun navigateTo(
             val request = event.request
             val launcher = activityLaunchers[request] ?: throw IllegalStateException(
                 "No launcher registered for request with contract ${request.contract}!" +
-                    "\nMake sure you called the appropriate NavEventNavigator.registerFor... method",
+                    "\nMake sure you called the appropriate ActivityNavigator.registerFor... method",
             )
             @Suppress("UNCHECKED_CAST")
             (launcher as ActivityResultLauncher<Any?>).launch(event.input)

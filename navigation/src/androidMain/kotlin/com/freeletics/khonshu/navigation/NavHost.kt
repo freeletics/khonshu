@@ -31,8 +31,8 @@ import kotlinx.coroutines.CancellationException
 
 /**
  * Create a new `NavHost` containing all given [destinations]. [startRoute] will be used as the
- * start destination of the graph. Use [com.freeletics.khonshu.navigation.NavEventNavigator] and
- * [NavigationSetup] to change what is shown in [NavHost].
+ * start destination of the graph. Use [HostNavigator] and [DestinationNavigator] to change what is shown
+ * in [NavHost].
  *
  * To support deep links a set of [DeepLinkHandlers][DeepLinkHandler] can be passed in optionally.
  * These will be used to build the correct back stack when the current `Activity` was launched with

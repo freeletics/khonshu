@@ -81,21 +81,6 @@ public abstract class com/freeletics/khonshu/navigation/InternalActivityRoute : 
 public abstract interface class com/freeletics/khonshu/navigation/NavDestination {
 }
 
-public class com/freeletics/khonshu/navigation/NavEventNavigator : com/freeletics/khonshu/navigation/ActivityNavigator, com/freeletics/khonshu/navigation/BackInterceptor, com/freeletics/khonshu/navigation/Navigator, com/freeletics/khonshu/navigation/ResultNavigator {
-	public static final field $stable I
-	public fun <init> ()V
-	public fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
-	public fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
-	public final fun navigate (Lkotlin/jvm/functions/Function1;)V
-	public fun navigateBack ()V
-	public fun navigateBackTo (Lkotlin/reflect/KClass;Z)V
-	public fun navigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
-	public fun navigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
-	public fun navigateUp ()V
-	public fun replaceAll (Lcom/freeletics/khonshu/navigation/NavRoot;)V
-	public fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
-}
-
 public final class com/freeletics/khonshu/navigation/NavHostKt {
 	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/HostNavigator;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
