@@ -16,9 +16,9 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
+import com.freeletics.khonshu.navigation.internal.ActivityEvent
 import com.freeletics.khonshu.navigation.internal.ActivityStarter
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
-import com.freeletics.khonshu.navigation.internal.NavEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
@@ -43,9 +43,8 @@ public fun NavigationSetup(navigator: ActivityNavigator) {
     }
 
     LaunchedEffect(lifecycleOwner, hostNavigator, activityStarter, navigator) {
-        navigator.collectAndHandleNavEvents(
+        navigator.collectAndHandleActivityEvents(
             lifecycleOwner.lifecycle,
-            hostNavigator,
             activityStarter::start,
             activityLaunchers,
         )
@@ -63,9 +62,8 @@ private fun <I, O> rememberResultLaunchers(
 }
 
 @VisibleForTesting
-internal suspend fun ActivityNavigator.collectAndHandleNavEvents(
+internal suspend fun ActivityNavigator.collectAndHandleActivityEvents(
     lifecycle: Lifecycle,
-    hostNavigator: HostNavigator,
     activityStarter: (ActivityRoute, NavRoute?) -> Unit,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
 ) {
@@ -80,46 +78,23 @@ internal suspend fun ActivityNavigator.collectAndHandleNavEvents(
     // whichever comes first. Basically, it has some certain delay compared to [Dispatchers.Main.immediate].
     // So we must switch to [Dispatchers.Main.immediate] before collecting events.
     withContext(Dispatchers.Main.immediate) {
-        navEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
+        activityEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
             .collect { event ->
-                navigateTo(hostNavigator, activityStarter, hostNavigator, event, activityLaunchers)
+                navigateTo(event, activityStarter, activityLaunchers)
             }
     }
 }
 
 private fun navigateTo(
-    hostNavigator: HostNavigator,
+    event: ActivityEvent,
     activityStarter: (ActivityRoute, NavRoute?) -> Unit,
-    navigator: Navigator,
-    event: NavEvent,
     activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
 ) {
     when (event) {
-        is NavEvent.NavigateToEvent -> {
-            navigator.navigateTo(event.route)
-        }
-        is NavEvent.NavigateToRootEvent -> {
-            navigator.navigateToRoot(event.root, event.restoreRootState)
-        }
-        is NavEvent.NavigateToActivityEvent -> {
+        is ActivityEvent.NavigateTo -> {
             activityStarter(event.route, event.fallbackRoute)
         }
-        is NavEvent.UpEvent -> {
-            navigator.navigateUp()
-        }
-        is NavEvent.BackEvent -> {
-            navigator.navigateBack()
-        }
-        is NavEvent.BackToEvent -> {
-            navigator.navigateBackTo(event.popUpTo, event.inclusive)
-        }
-        is NavEvent.ResetToRoot -> {
-            navigator.resetToRoot(event.root)
-        }
-        is NavEvent.ReplaceAll -> {
-            navigator.replaceAll(event.root)
-        }
-        is NavEvent.ActivityResultEvent<*> -> {
+        is ActivityEvent.NavigateForResult<*> -> {
             val request = event.request
             val launcher = activityLaunchers[request] ?: throw IllegalStateException(
                 "No launcher registered for request with contract ${request.contract}!" +
@@ -127,17 +102,6 @@ private fun navigateTo(
             )
             @Suppress("UNCHECKED_CAST")
             (launcher as ActivityResultLauncher<Any?>).launch(event.input)
-        }
-        is NavEvent.DestinationResultEvent<*> -> {
-            val entry = hostNavigator.snapshot.value.entryFor(event.key.destinationId)
-            entry.savedStateHandle[event.key.requestKey] = event.result
-        }
-        is NavEvent.MultiNavEvent -> {
-            hostNavigator.navigate {
-                event.navEvents.forEach {
-                    navigateTo(hostNavigator, activityStarter, this@navigate, it, activityLaunchers)
-                }
-            }
         }
     }
 }

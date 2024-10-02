@@ -186,13 +186,9 @@ class MainActivity : ComponentActivity() {
 }
 ```
 
-
-## NavEventNavigator
-
-
 ### Other functionality
 
-There are various additional `NavEventNavigator` APIs to simplify common navigation related
+There are various additional navigation APIs to simplify common navigation related
 tasks:
 
 - [Back clicks](back.md) for custom back behavior

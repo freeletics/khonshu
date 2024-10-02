@@ -138,7 +138,7 @@ to make it possible to handle denials more granularly without needing a referenc
 
 An example usage can look like this:
 ```kotlin
-class MyNavigator : NavEventNavigator() {
+class MyNavigator : ActivtyNavigator() {
     // use permissionRequest.results somewhere to handle results
     val permissionRequest = registerForPermissionsResult()
 
