@@ -32,10 +32,6 @@ public abstract interface class com/freeletics/khonshu/navigation/BackIntercepto
 public abstract interface class com/freeletics/khonshu/navigation/BaseRoute : android/os/Parcelable {
 }
 
-public abstract class com/freeletics/khonshu/navigation/ContractResultOwner : com/freeletics/khonshu/navigation/ManagedResultOwner {
-	public static final field $stable I
-}
-
 public abstract class com/freeletics/khonshu/navigation/DestinationNavigator : com/freeletics/khonshu/navigation/ActivityNavigator, com/freeletics/khonshu/navigation/BackInterceptor, com/freeletics/khonshu/navigation/Navigator, com/freeletics/khonshu/navigation/ResultNavigator {
 	public static final field $stable I
 	public fun <init> (Lcom/freeletics/khonshu/navigation/HostNavigator;)V
@@ -92,8 +88,18 @@ public abstract interface class com/freeletics/khonshu/navigation/NavRoot : com/
 public abstract interface class com/freeletics/khonshu/navigation/NavRoute : com/freeletics/khonshu/navigation/BaseRoute {
 }
 
-public abstract interface class com/freeletics/khonshu/navigation/NavigationResultRequest : com/freeletics/khonshu/navigation/ResultOwner {
-	public abstract fun getKey ()Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;
+public final class com/freeletics/khonshu/navigation/NavigationResultRequest : com/freeletics/khonshu/navigation/ResultOwner {
+	public static final field $stable I
+	public final fun getKey ()Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;
+	public fun getResults ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/freeletics/khonshu/navigation/NavigationResultRequest$InitialValue$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest$InitialValue;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/freeletics/khonshu/navigation/NavigationResultRequest$InitialValue;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
 public final class com/freeletics/khonshu/navigation/NavigationResultRequest$Key : android/os/Parcelable {
