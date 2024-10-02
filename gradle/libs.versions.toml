@@ -10,8 +10,8 @@ android-min = "21"
 android-target = "33"
 android-compile = "33"
 
-androidx-compose-runtime = "1.7.2"
-androidx-compose-ui = "1.7.2"
+androidx-compose-runtime = "1.7.3"
+androidx-compose-ui = "1.7.3"
 androidx-compose-animation = "1.6.6"
 jetbrains-compose = "1.6.11"
 
