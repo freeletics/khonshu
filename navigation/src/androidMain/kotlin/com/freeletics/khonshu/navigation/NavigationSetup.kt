@@ -4,11 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.Parcelable
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
@@ -169,21 +167,6 @@ internal inline fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(
             },
         )
     }
-}
-
-@VisibleForTesting
-internal suspend fun <R : Parcelable> HostNavigator.collectAndHandleNavigationResults(
-    request: EventNavigationResultRequest<R>,
-) {
-    val savedStateHandle = snapshot.value.entryFor(request.key.destinationId).savedStateHandle
-    savedStateHandle.getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
-        .collect {
-            if (it != InitialValue) {
-                @Suppress("UNCHECKED_CAST")
-                request.onResult(it as R)
-                savedStateHandle[request.key.requestKey] = InitialValue
-            }
-        }
 }
 
 @Parcelize

@@ -5,20 +5,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.lifecycle.testing.TestLifecycleOwner
+import app.cash.turbine.Turbine
 import app.cash.turbine.test
-import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
-import com.freeletics.khonshu.navigation.internal.NavEvent
-import com.freeletics.khonshu.navigation.internal.Parcelable
-import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.test.SimpleActivity
-import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestActivityNavigator
 import com.freeletics.khonshu.navigation.test.TestActivityResultLauncher
 import com.freeletics.khonshu.navigation.test.TestHostNavigator
-import com.freeletics.khonshu.navigation.test.TestParcelable
-import com.freeletics.khonshu.navigation.test.TestStackEntryFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -47,7 +41,7 @@ internal class NavigationSetupTest {
         permissionRequest to permissionLauncher,
     )
 
-    private val started = mutableListOf<Pair<ActivityRoute, NavRoute?>>()
+    private val started = Turbine<Pair<ActivityRoute, NavRoute?>>()
     private val activityStarter: (ActivityRoute, NavRoute?) -> Unit = { route, fallback ->
         started.add(route to fallback)
     }
@@ -56,8 +50,6 @@ internal class NavigationSetupTest {
     private val dispatcher: CoroutineDispatcher = UnconfinedTestDispatcher()
     private val testLifecycleOwner = TestLifecycleOwner(RESUMED, dispatcher)
     private val lifecyle = testLifecycleOwner.lifecycle
-
-    private val factory = TestStackEntryFactory()
 
     @Before
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -77,6 +69,7 @@ internal class NavigationSetupTest {
         hostNavigator.received.cancel()
         activityLauncher.launched.cancel()
         permissionLauncher.launched.cancel()
+        started.cancel()
         Dispatchers.resetMain()
     }
 
@@ -92,8 +85,8 @@ internal class NavigationSetupTest {
 
         // receive events on resume
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        assertThat(List(1000) { hostNavigator.received.awaitItem() })
-            .containsExactlyElementsIn(List(1000) { NavEvent.NavigateToEvent(SimpleRoute(it)) })
+        assertThat(List(1000) { started.awaitItem() })
+            .containsExactlyElementsIn(List(1000) { SimpleActivity(it) to null })
             .inOrder()
 
         // send events on paused
@@ -104,8 +97,8 @@ internal class NavigationSetupTest {
 
         // receive events on resume
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        assertThat(List(1000) { hostNavigator.received.awaitItem() })
-            .containsExactlyElementsIn(List(1000) { NavEvent.NavigateToEvent(SimpleRoute(1000 + it)) })
+        assertThat(List(1000) { started.awaitItem() })
+            .containsExactlyElementsIn(List(1000) { SimpleActivity(1000 + it) to null })
             .inOrder()
     }
 
@@ -114,7 +107,7 @@ internal class NavigationSetupTest {
         setup()
 
         navigator.navigateTo(SimpleActivity(1), SimpleRoute(1))
-        assertThat(started).containsExactly(SimpleActivity(1) to SimpleRoute(1)).inOrder()
+        assertThat(started.awaitItem()).isEqualTo(SimpleActivity(1) to SimpleRoute(1))
     }
 
     @Test
