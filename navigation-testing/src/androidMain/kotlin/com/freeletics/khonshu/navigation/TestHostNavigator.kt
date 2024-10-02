@@ -104,7 +104,7 @@ public class TestHostNavigator(
     ): NavigationResultRequest<O> {
         val requestKey = "${id.route.qualifiedName!!}-$resultType"
         val key = NavigationResultRequest.Key<O>(id, requestKey)
-        return StandaloneNavigationResultRequest(key, SavedStateHandle())
+        return NavigationResultRequest(key, SavedStateHandle())
     }
 
     override fun backPresses(): Flow<Unit> {

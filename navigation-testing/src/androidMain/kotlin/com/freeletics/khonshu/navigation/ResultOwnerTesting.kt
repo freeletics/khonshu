@@ -2,12 +2,14 @@ package com.freeletics.khonshu.navigation
 
 import android.os.Parcelable
 import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
+import com.freeletics.khonshu.navigation.internal.DestinationId
+import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 
 /**
  * Send a fake result to collectors of this request. Can be used to test the result handling
  * logic.
  */
-public fun <O> ActivityResultRequest<*, O>.sendResult(result: O) {
+public fun <O> ContractResultOwner<*, *, O>.sendResult(result: O) {
     onResult(result)
 }
 
@@ -39,19 +41,8 @@ public fun PermissionsResultRequest.sendResult(result: Map<String, PermissionRes
  * Send a fake result to collectors of this request. Can be used to test the result handling
  * logic.
  */
-public fun <R : Parcelable> ManagedResultOwner<R>.sendResult(result: R) {
-    onResult(result)
-}
-
-/**
- * Send a fake result to collectors of this request. Can be used to test the result handling
- * logic.
- */
 public fun <R : Parcelable> NavigationResultRequest<R>.sendResult(result: R) {
-    when (this) {
-        is EventNavigationResultRequest -> onResult(result)
-        is StandaloneNavigationResultRequest -> savedStateHandle[key.requestKey] = result
-    }
+    savedStateHandle[key.requestKey] = result
 }
 
 /**
@@ -61,6 +52,7 @@ public fun <R : Parcelable> NavigationResultRequest<R>.sendResult(result: R) {
  * To test the result receiver use a real key from a request obtained by
  * [ResultNavigator.registerForNavigationResult].
  */
+@OptIn(InternalNavigationCodegenApi::class)
 public inline fun <reified R : Parcelable> fakeNavigationResultKey(): NavigationResultRequest.Key<R> {
-    return NavigationResultRequest.Key(NavRoute::class, R::class.qualifiedName!!)
+    return NavigationResultRequest.Key(DestinationId(NavRoute::class), R::class.qualifiedName!!)
 }
