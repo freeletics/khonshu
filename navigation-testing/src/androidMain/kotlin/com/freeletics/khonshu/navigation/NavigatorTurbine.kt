@@ -110,55 +110,9 @@ public fun DestinationNavigator.dispatchBackPress() {
     (hostNavigator as TestHostNavigator).onBackPressedCallback.handleOnBackPressed()
 }
 
-/**
- * Collects events from [NavEventNavigator] and and allows the [validate] lambda to consume
- * and assert properties on them in order. If any exception occurs during validation the
- * exception is rethrown from this method.
- *
- * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
- */
-public suspend fun NavEventNavigator.test(
-    timeout: Duration? = null,
-    name: String? = null,
-    validate: suspend NavigatorTurbine.() -> Unit,
-) {
-    val navigator = this
-    navEvents.test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(this, ::dispatchBackPress)
-        validate(turbine)
-    }
-}
-
-/**
- * Collects events from [NavEventNavigator] and returns a [NavigatorTurbine] for consuming
- * and asserting properties on them in order. If any exception occurs during validation the
- * exception is rethrown from this method.
- *
- * Unlike test which automatically cancels the flow at the end of the lambda, the returned
- * NavigatorTurbine be explicitly canceled.
- *
- * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
- */
-public fun NavEventNavigator.testIn(
-    scope: CoroutineScope,
-    timeout: Duration? = null,
-    name: String? = null,
-): NavigatorTurbine {
-    val turbine = navEvents.testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(turbine, ::dispatchBackPress)
-}
-
-/**
- * Causes an emission to the current [NavEventNavigator.backPresses] collector to make it possible
- * to simulate a back press in tests that check custom back press logic.
- */
-public fun NavEventNavigator.dispatchBackPress() {
-    onBackPressedCallback.handleOnBackPressed()
-}
-
 public interface NavigatorTurbine {
     /**
-     * Causes an emission to the current [NavEventNavigator.backPresses] collector to make it possible
+     * Causes an emission to the current [BackInterceptor.backPresses] collector to make it possible
      * to simulate a back press in tests that check custom back press logic.
      */
     public fun dispatchBackPress()
