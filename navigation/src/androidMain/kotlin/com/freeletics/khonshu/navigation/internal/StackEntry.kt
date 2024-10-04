@@ -26,9 +26,9 @@ import kotlinx.serialization.Serializable
 @Poko
 @Immutable
 @InternalNavigationCodegenApi
-public class StackEntry<T : BaseRoute> internal constructor(
+public actual class StackEntry<T : BaseRoute> internal constructor(
     internal val id: Id,
-    public val route: T,
+    public actual val route: T,
     private val destination: NavDestination<T>,
     public val state: StackEntryState,
     public val store: StackEntryStore,
