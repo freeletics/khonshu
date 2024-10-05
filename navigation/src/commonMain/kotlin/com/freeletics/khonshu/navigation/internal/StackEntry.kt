@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation.internal
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -27,9 +26,9 @@ import kotlinx.serialization.Serializable
 @Poko
 @Immutable
 @InternalNavigationCodegenApi
-public actual class StackEntry<T : BaseRoute> internal constructor(
+public class StackEntry<T : BaseRoute> internal constructor(
     internal val id: Id,
-    public actual val route: T,
+    public val route: T,
     private val destination: NavDestination<T>,
     public val savedStateHandle: SavedStateHandle,
     public val store: StackEntryStore,
@@ -68,7 +67,7 @@ public actual class StackEntry<T : BaseRoute> internal constructor(
     @JvmInline
     @Serializable
     @InternalNavigationTestingApi
-    public actual value class Id(internal val value: String)
+    public value class Id(internal val value: String)
 
     @InternalNavigationTestingApi
     public companion object {
@@ -97,7 +96,6 @@ public actual class StackEntry<T : BaseRoute> internal constructor(
                 createRestoredEntry(
                     decodeFromSavedState(getSavedState(KEY_ROUTE), savedStateConfiguration),
                     Id(getString(KEY_ID)),
-                    @SuppressLint("RestrictedApi")
                     SavedStateHandle.createHandle(getSavedState(KEY_STATE), null),
                 )
             }
@@ -106,7 +104,6 @@ public actual class StackEntry<T : BaseRoute> internal constructor(
         override fun SaverScope.save(value: StackEntry<*>): SavedState = savedState {
             putString(KEY_ID, value.id.value)
             putSavedState(KEY_ROUTE, encodeToSavedState(value.route, savedStateConfiguration))
-            @SuppressLint("RestrictedApi")
             putSavedState(KEY_STATE, value.savedStateHandle.savedStateProvider().saveState())
         }
     }
