@@ -116,8 +116,3 @@ public final class com/freeletics/khonshu/navigation/internal/StackEntry$Id$Comp
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class com/freeletics/khonshu/navigation/internal/StackSnapshot {
-	public static final field $stable I
-	public fun <init> ()V
-}
-

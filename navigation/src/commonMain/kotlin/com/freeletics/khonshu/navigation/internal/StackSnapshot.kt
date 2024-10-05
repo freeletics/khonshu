@@ -9,7 +9,7 @@ import dev.drewhamilton.poko.Poko
 @Poko
 @Immutable
 @InternalNavigationCodegenApi
-public actual class StackSnapshot internal constructor(
+public class StackSnapshot internal constructor(
     @get:VisibleForTesting
     internal val entries: List<StackEntry<*>>,
     private val startStackRootEntry: StackEntry<out NavRoot>,
