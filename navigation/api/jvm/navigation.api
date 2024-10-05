@@ -122,8 +122,3 @@ public final class com/freeletics/khonshu/navigation/internal/StackEntryStoreHol
 	public final fun clear ()V
 }
 
-public final class com/freeletics/khonshu/navigation/internal/StackSnapshot {
-	public static final field $stable I
-	public fun <init> ()V
-}
-
