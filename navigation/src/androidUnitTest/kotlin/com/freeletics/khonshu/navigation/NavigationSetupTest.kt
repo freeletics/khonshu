@@ -12,7 +12,6 @@ import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestActivityNavigator
 import com.freeletics.khonshu.navigation.test.TestActivityResultLauncher
-import com.freeletics.khonshu.navigation.test.TestHostNavigator
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +29,6 @@ import org.junit.Test
 
 internal class NavigationSetupTest {
     private val navigator = TestActivityNavigator()
-    private val hostNavigator = TestHostNavigator()
     private val activityRequest = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
     private val activityRequest2 = navigator.testRegisterForActivityResult(ActivityResultContracts.TakePicture())
     private val activityLauncher = TestActivityResultLauncher()
@@ -59,14 +57,13 @@ internal class NavigationSetupTest {
 
     private fun setup() {
         CoroutineScope(dispatcher).launch {
-            navigator.collectAndHandleNavEvents(lifecyle, hostNavigator, activityStarter, launchers)
+            navigator.collectAndHandleActivityEvents(lifecyle, activityStarter, launchers)
         }
     }
 
     @After
     @OptIn(ExperimentalCoroutinesApi::class)
     fun tearDown() = runBlocking {
-        hostNavigator.received.cancel()
         activityLauncher.launched.cancel()
         permissionLauncher.launched.cancel()
         started.cancel()
@@ -134,7 +131,7 @@ internal class NavigationSetupTest {
                 val launchers = mapOf<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>(
                     permissionRequest to permissionLauncher,
                 )
-                navigator.collectAndHandleNavEvents(lifecyle, hostNavigator, activityStarter, launchers)
+                navigator.collectAndHandleActivityEvents(lifecyle, activityStarter, launchers)
             }
         }
         assertThat(exception).hasMessageThat().isEqualTo(

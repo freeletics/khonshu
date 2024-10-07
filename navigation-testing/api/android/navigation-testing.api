@@ -60,15 +60,6 @@ public final class com/freeletics/khonshu/navigation/TestHostNavigator : com/fre
 	public final fun setHandleDeepLinkRoute (Lcom/freeletics/khonshu/navigation/NavRoute;)V
 }
 
-public final class com/freeletics/khonshu/navigation/TestNavEventCollector {
-	public final fun awaitNavigateBack ()V
-	public final fun awaitNavigateBackTo (Lkotlin/reflect/KClass;Z)V
-	public final fun awaitNavigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
-	public final fun awaitNavigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
-	public final fun awaitNavigateUp ()V
-	public final fun awaitResetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
-}
-
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition {
 	public static final field Companion Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition$Companion;
 	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V

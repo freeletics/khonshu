@@ -1,8 +1,8 @@
 package com.freeletics.khonshu.navigation
 
 import androidx.activity.result.contract.ActivityResultContract
+import com.freeletics.khonshu.navigation.internal.ActivityEvent
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
-import com.freeletics.khonshu.navigation.internal.NavEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -17,13 +17,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * For this work [NavigationSetup] needs to be called.
  */
 public abstract class ActivityNavigator {
-    private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
+    private val _activityEvents = Channel<ActivityEvent>(Channel.UNLIMITED)
 
     @InternalNavigationTestingApi
-    public val navEvents: Flow<NavEvent> = _navEvents.receiveAsFlow()
+    public val activityEvents: Flow<ActivityEvent> = _activityEvents.receiveAsFlow()
 
     private val _activityResultRequests = mutableListOf<ContractResultOwner<*, *, *>>()
-    internal var allowedToAddRequests = true
+    private var allowedToAddRequests = true
 
     @InternalNavigationTestingApi
     public val activityResultRequests: List<ContractResultOwner<*, *, *>>
@@ -36,8 +36,8 @@ public abstract class ActivityNavigator {
      * Triggers navigation to the given [route].
      */
     public fun navigateTo(route: ActivityRoute, fallbackRoute: NavRoute? = null) {
-        val event = NavEvent.NavigateToActivityEvent(route, fallbackRoute)
-        sendNavEvent(event)
+        val event = ActivityEvent.NavigateTo(route, fallbackRoute)
+        sendEvent(event)
     }
 
     /**
@@ -92,8 +92,8 @@ public abstract class ActivityNavigator {
      * Launches the given [request] with the given [input].
      */
     public fun <I> navigateForResult(request: ActivityResultRequest<I, *>, input: I) {
-        val event = NavEvent.ActivityResultEvent(request, input)
-        sendNavEvent(event)
+        val event = ActivityEvent.NavigateForResult(request, input)
+        sendEvent(event)
     }
 
     /**
@@ -117,12 +117,12 @@ public abstract class ActivityNavigator {
      * for more information.
      */
     public fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>) {
-        val event = NavEvent.ActivityResultEvent(request, permissions)
-        sendNavEvent(event)
+        val event = ActivityEvent.NavigateForResult(request, permissions)
+        sendEvent(event)
     }
 
-    internal fun sendNavEvent(event: NavEvent) {
-        val result = _navEvents.trySendBlocking(event)
+    private fun sendEvent(event: ActivityEvent) {
+        val result = _activityEvents.trySendBlocking(event)
         check(result.isSuccess)
     }
 
