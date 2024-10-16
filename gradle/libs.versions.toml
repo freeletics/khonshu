@@ -31,7 +31,7 @@ auto-service-ksp = "1.2.0"
 
 junit = "4.13.2"
 truth = "1.4.4"
-turbine = "1.1.0"
+turbine = "1.2.0"
 kotlin-compile-testing = "0.5.1"
 
 fgp = "0.15.0"
