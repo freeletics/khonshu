@@ -172,9 +172,9 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `push with root and without clearing the target stack`() {
+    fun `switchStack without clearing the target stack`() {
         val stack = underTest()
-        stack.push(OtherRoot(1), clearTargetStack = false)
+        stack.switchStack(OtherRoot(1), clearTargetStack = false)
 
         assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
@@ -187,30 +187,9 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `push with same root twice`() {
+    fun `switchStack to current root without clearing the target stack`() {
         val stack = underTest()
-        stack.push(OtherRoot(1), clearTargetStack = false)
-        val exception = assertThrows(IllegalStateException::class.java) {
-            stack.push(OtherRoot(1), clearTargetStack = false)
-        }
-
-        assertThat(exception).hasMessageThat()
-            .isEqualTo("OtherRoot(number=1) is already the current stack")
-    }
-
-    @Test
-    fun `push with root multiple times without clearing the target stack`() {
-        val stack = underTest()
-        stack.push(OtherRoot(1), clearTargetStack = false)
-
-        assertThat(stack.snapshot.value.visibleEntries)
-            .containsExactly(
-                factory.create(StackEntry.Id("101"), OtherRoot(1)),
-            )
-            .inOrder()
-        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
-
-        stack.push(SimpleRoot(1), clearTargetStack = false)
+        stack.switchStack(SimpleRoot(1), clearTargetStack = false)
 
         assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
@@ -219,22 +198,13 @@ internal class MultiStackTest {
             .inOrder()
         assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
-        stack.push(OtherRoot(1), clearTargetStack = false)
-
-        assertThat(stack.snapshot.value.visibleEntries)
-            .containsExactly(
-                factory.create(StackEntry.Id("101"), OtherRoot(1)),
-            )
-            .inOrder()
-        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
-
         assertThat(removed).isEmpty()
     }
 
     @Test
-    fun `push with root multiple times with clearing the target stack`() {
+    fun `switchStack multiple times without clearing the target stack`() {
         val stack = underTest()
-        stack.push(OtherRoot(1), clearTargetStack = true)
+        stack.switchStack(OtherRoot(1), clearTargetStack = false)
 
         assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
@@ -243,47 +213,32 @@ internal class MultiStackTest {
             .inOrder()
         assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
-        assertThat(removed).isEmpty()
-    }
-
-    @Test
-    fun `push with root and clearing the target stack`() {
-        val stack = underTest()
-        stack.push(OtherRoot(1), clearTargetStack = true)
+        stack.switchStack(SimpleRoot(1), clearTargetStack = false)
 
         assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
-                factory.create(StackEntry.Id("101"), OtherRoot(1)),
-            )
-            .inOrder()
-        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
-
-        stack.push(SimpleRoot(1), clearTargetStack = true)
-
-        assertThat(stack.snapshot.value.visibleEntries)
-            .containsExactly(
-                factory.create(StackEntry.Id("102"), SimpleRoot(1)),
+                factory.create(StackEntry.Id("100"), SimpleRoot(1)),
             )
             .inOrder()
         assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
-        stack.push(OtherRoot(1), clearTargetStack = true)
+        stack.switchStack(OtherRoot(1), clearTargetStack = false)
 
         assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
-                factory.create(StackEntry.Id("103"), OtherRoot(1)),
+                factory.create(StackEntry.Id("101"), OtherRoot(1)),
             )
             .inOrder()
         assertThat(stack.snapshot.value.canNavigateBack).isTrue()
 
-        assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
+        assertThat(removed).isEmpty()
     }
 
     @Test
-    fun `push with root and without clearing the target stack from within back stack`() {
+    fun `switchStack from non root destination without clearing the target stack`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
-        stack.push(OtherRoot(1), clearTargetStack = false)
+        stack.switchStack(OtherRoot(1), clearTargetStack = false)
 
         assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
@@ -296,11 +251,11 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `push with root multiple times and without clearing the target stack from within back stack`() {
+    fun `switchStack multiple times from non root destination without clearing the target stack`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
-        stack.push(OtherRoot(1), clearTargetStack = false)
-        stack.push(SimpleRoot(1), clearTargetStack = false)
+        stack.switchStack(OtherRoot(1), clearTargetStack = false)
+        stack.switchStack(SimpleRoot(1), clearTargetStack = false)
 
         assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
@@ -313,10 +268,74 @@ internal class MultiStackTest {
     }
 
     @Test
-    fun `resetToRoot with start root from start stack`() {
+    fun `switchStack with clearing the target stack`() {
+        val stack = underTest()
+        stack.switchStack(OtherRoot(1), clearTargetStack = true)
+
+        assertThat(stack.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("101"), OtherRoot(1)),
+            )
+            .inOrder()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
+
+        assertThat(removed).isEmpty()
+    }
+
+    @Test
+    fun `switchStack back to first stack with clearing the target stack`() {
+        val stack = underTest()
+        stack.switchStack(OtherRoot(1), clearTargetStack = false)
+        stack.switchStack(SimpleRoot(2), clearTargetStack = true)
+
+        assertThat(stack.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("102"), SimpleRoot(2)),
+            )
+            .inOrder()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
+
+        assertThat(removed).containsExactly(StackEntry.Id("100"))
+    }
+
+    @Test
+    fun `switchStack multiple times with clearing the target stack`() {
+        val stack = underTest()
+        stack.switchStack(OtherRoot(1), clearTargetStack = true)
+
+        assertThat(stack.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("101"), OtherRoot(1)),
+            )
+            .inOrder()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
+
+        stack.switchStack(SimpleRoot(1), clearTargetStack = true)
+
+        assertThat(stack.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("102"), SimpleRoot(1)),
+            )
+            .inOrder()
+        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
+
+        stack.switchStack(OtherRoot(1), clearTargetStack = true)
+
+        assertThat(stack.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("103"), OtherRoot(1)),
+            )
+            .inOrder()
+        assertThat(stack.snapshot.value.canNavigateBack).isTrue()
+
+        assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
+    }
+
+    @Test
+    fun `switchStack from non root destination with clearing the target stack`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
-        stack.resetToRoot(SimpleRoot(2))
+        stack.switchStack(SimpleRoot(2), clearTargetStack = true)
 
         assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
@@ -326,33 +345,6 @@ internal class MultiStackTest {
         assertThat(stack.snapshot.value.canNavigateBack).isFalse()
 
         assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
-    }
-
-    @Test
-    fun `resetToRoot with start root from other stack`() {
-        val stack = underTest()
-        stack.push(OtherRoot(1), clearTargetStack = false)
-        stack.resetToRoot(SimpleRoot(2))
-
-        assertThat(stack.snapshot.value.visibleEntries)
-            .containsExactly(
-                factory.create(StackEntry.Id("102"), SimpleRoot(2)),
-            )
-            .inOrder()
-        assertThat(stack.snapshot.value.canNavigateBack).isFalse()
-
-        assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
-    }
-
-    @Test
-    fun `resetToRoot fails throws exception when root not on back stack`() {
-        val stack = underTest()
-
-        val exception = assertThrows(IllegalStateException::class.java) {
-            stack.resetToRoot(OtherRoot(1))
-        }
-        assertThat(exception).hasMessageThat()
-            .isEqualTo("OtherRoot(number=1) is not on the current back stack")
     }
 
     @Test
@@ -382,7 +374,7 @@ internal class MultiStackTest {
     @Test
     fun `replaceAll with start root from other hostNavigator`() {
         val stack = underTest()
-        stack.push(OtherRoot(1), clearTargetStack = false)
+        stack.switchStack(OtherRoot(1), clearTargetStack = false)
         stack.replaceAll(SimpleRoot(2))
 
         assertThat(stack.snapshot.value.visibleEntries)
@@ -402,7 +394,7 @@ internal class MultiStackTest {
     fun `replaceAll after navigating with root and without clearing the target hostNavigator from within back hostNavigator`() {
         val stack = underTest()
         stack.push(SimpleRoute(1))
-        stack.push(OtherRoot(1), clearTargetStack = false)
+        stack.switchStack(OtherRoot(1), clearTargetStack = false)
 
         assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
@@ -475,7 +467,7 @@ internal class MultiStackTest {
     @Test
     fun `popCurrentStack from the root of a second stack`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), clearTargetStack = false)
+        stack.switchStack(OtherRoot(2), clearTargetStack = false)
 
         val exception = assertThrows(IllegalStateException::class.java) {
             stack.popCurrentStack()
@@ -487,7 +479,7 @@ internal class MultiStackTest {
     @Test
     fun `popCurrentStack in a second stack`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), clearTargetStack = false)
+        stack.switchStack(OtherRoot(2), clearTargetStack = false)
         stack.push(SimpleRoute(3))
         stack.popCurrentStack()
 
@@ -504,7 +496,7 @@ internal class MultiStackTest {
     @Test
     fun `popCurrentStack in a second stack and then opening that screen again`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), clearTargetStack = false)
+        stack.switchStack(OtherRoot(2), clearTargetStack = false)
         stack.push(SimpleRoute(3))
         stack.popCurrentStack()
         stack.push(SimpleRoute(3))
@@ -567,7 +559,7 @@ internal class MultiStackTest {
     @Test
     fun `pop from the root of a second stack`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), clearTargetStack = false)
+        stack.switchStack(OtherRoot(2), clearTargetStack = false)
         stack.pop()
 
         assertThat(stack.snapshot.value.visibleEntries)
@@ -583,9 +575,9 @@ internal class MultiStackTest {
     @Test
     fun `pop from the root of a second stack and then opening that stack again`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), clearTargetStack = false)
+        stack.switchStack(OtherRoot(2), clearTargetStack = false)
         stack.pop()
-        stack.push(OtherRoot(2), clearTargetStack = false)
+        stack.switchStack(OtherRoot(2), clearTargetStack = false)
 
         assertThat(stack.snapshot.value.visibleEntries)
             .containsExactly(
@@ -600,7 +592,7 @@ internal class MultiStackTest {
     @Test
     fun `pop in a second stack`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), clearTargetStack = false)
+        stack.switchStack(OtherRoot(2), clearTargetStack = false)
         stack.push(SimpleRoute(3))
         stack.pop()
 
@@ -617,7 +609,7 @@ internal class MultiStackTest {
     @Test
     fun `pop in a second stack and then opening that screen again`() {
         val stack = underTest()
-        stack.push(OtherRoot(2), clearTargetStack = false)
+        stack.switchStack(OtherRoot(2), clearTargetStack = false)
         stack.push(SimpleRoute(3))
         stack.pop()
         stack.push(SimpleRoute(3))

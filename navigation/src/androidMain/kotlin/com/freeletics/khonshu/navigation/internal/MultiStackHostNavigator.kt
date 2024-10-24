@@ -47,7 +47,7 @@ internal class MultiStackHostNavigator(
             return false
         }
 
-        stack.resetToRoot(stack.startRoot)
+        stack.switchStack(stack.startRoot, clearTargetStack = true)
 
         deepLinkRoutes.forEachIndexed { index, route ->
             when (route) {
@@ -57,7 +57,7 @@ internal class MultiStackHostNavigator(
                         "$route is the start root which is not allowed to be part of a deep " +
                             "link because it will always be on the back stack"
                     }
-                    stack.push(route, clearTargetStack = true)
+                    stack.switchStack(route, clearTargetStack = true)
                 }
                 is NavRoute -> stack.push(route)
             }
@@ -68,10 +68,6 @@ internal class MultiStackHostNavigator(
 
     override fun navigateTo(route: NavRoute) {
         stack.push(route)
-    }
-
-    override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
-        stack.push(root, clearTargetStack = !restoreRootState)
     }
 
     override fun navigateUp() {
@@ -89,11 +85,15 @@ internal class MultiStackHostNavigator(
         stack.popUpTo(DestinationId(popUpTo), inclusive)
     }
 
-    override fun resetToRoot(root: NavRoot) {
-        stack.resetToRoot(root)
+    override fun switchBackStack(root: NavRoot) {
+        stack.switchStack(root, clearTargetStack = false)
     }
 
-    override fun replaceAll(root: NavRoot) {
+    override fun showRoot(root: NavRoot) {
+        stack.switchStack(root, clearTargetStack = true)
+    }
+
+    override fun replaceAllBackStacks(root: NavRoot) {
         stack.replaceAll(root)
     }
 
@@ -141,10 +141,6 @@ internal class MultiStackHostNavigator(
             stack.push(route, notify = false)
         }
 
-        override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
-            stack.push(root, clearTargetStack = !restoreRootState, notify = false)
-        }
-
         override fun navigateUp() {
             stack.popCurrentStack(notify = false)
         }
@@ -157,11 +153,15 @@ internal class MultiStackHostNavigator(
             stack.popUpTo(DestinationId(popUpTo), inclusive, notify = false)
         }
 
-        override fun resetToRoot(root: NavRoot) {
-            stack.resetToRoot(root, notify = false)
+        override fun switchBackStack(root: NavRoot) {
+            stack.switchStack(root, clearTargetStack = false, notify = false)
         }
 
-        override fun replaceAll(root: NavRoot) {
+        override fun showRoot(root: NavRoot) {
+            stack.switchStack(root, clearTargetStack = true, notify = false)
+        }
+
+        override fun replaceAllBackStacks(root: NavRoot) {
             stack.replaceAll(root, notify = false)
         }
     }

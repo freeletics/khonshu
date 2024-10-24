@@ -83,12 +83,9 @@ internal class MultiStack(
         updateVisibleDestinations(notify)
     }
 
-    fun push(root: NavRoot, clearTargetStack: Boolean, notify: Boolean = true) {
+    fun switchStack(root: NavRoot, clearTargetStack: Boolean, notify: Boolean = true) {
         val stack = getBackStack(root)
         currentStack = if (stack != null) {
-            check(currentStack.id != stack.id) {
-                "$root is already the current stack"
-            }
             if (clearTargetStack) {
                 removeBackStack(stack)
                 createBackStack(root)
@@ -100,25 +97,6 @@ internal class MultiStack(
         }
         if (stack?.id == startStack.id) {
             startStack = currentStack
-        }
-        updateVisibleDestinations(notify)
-    }
-
-    fun resetToRoot(root: NavRoot, notify: Boolean = true) {
-        if (root.destinationId == startStack.id) {
-            if (currentStack.id != startStack.id) {
-                removeBackStack(currentStack)
-            }
-            removeBackStack(startStack)
-            val newStack = createBackStack(root)
-            startStack = newStack
-            currentStack = newStack
-        } else if (root.destinationId == currentStack.id) {
-            removeBackStack(currentStack)
-            val newStack = createBackStack(root)
-            currentStack = newStack
-        } else {
-            error("$root is not on the current back stack")
         }
         updateVisibleDestinations(notify)
     }

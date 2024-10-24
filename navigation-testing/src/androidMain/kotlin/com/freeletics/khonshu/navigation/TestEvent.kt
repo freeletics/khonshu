@@ -14,17 +14,6 @@ internal class NavigateToEvent(
     private val route: NavRoute,
 ) : TestEvent
 
-@Poko
-internal class NavigateToRootEvent(
-    private val root: NavRoot,
-    private val restoreRootState: Boolean,
-) : TestEvent
-
-@Poko
-internal class NavigateToActivityEvent(
-    private val event: ActivityEvent.NavigateTo,
-) : TestEvent
-
 internal data object UpEvent : TestEvent
 
 internal data object BackEvent : TestEvent
@@ -36,13 +25,23 @@ internal class BackToEvent(
 ) : TestEvent
 
 @Poko
-internal class ResetToRootEvent(
+internal class SwitchBackStackEvent(
     private val root: NavRoot,
 ) : TestEvent
 
 @Poko
-internal class ReplaceAllEvent(
+internal class ShowRootEvent(
     private val root: NavRoot,
+) : TestEvent
+
+@Poko
+internal class ReplaceAllBackStacksEvent(
+    private val root: NavRoot,
+) : TestEvent
+
+@Poko
+internal class NavigateToActivityEvent(
+    private val event: ActivityEvent.NavigateTo,
 ) : TestEvent
 
 @Poko

@@ -134,9 +134,8 @@ public interface NavigatorTurbine {
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun awaitNavigateToRoot(
+    public suspend fun awaitSwitchBackStack(
         root: NavRoot,
-        restoreRootState: Boolean,
     )
 
     /**
@@ -188,7 +187,7 @@ public interface NavigatorTurbine {
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun awaitResetToRoot(
+    public suspend fun awaitShowRoot(
         root: NavRoot,
     )
 
@@ -198,7 +197,7 @@ public interface NavigatorTurbine {
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun awaitReplaceAll(
+    public suspend fun awaitReplaceAllBackStacks(
         root: NavRoot,
     )
 
@@ -278,14 +277,6 @@ internal class DefaultNavigatorTurbine(
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun awaitNavigateToRoot(
-        root: NavRoot,
-        restoreRootState: Boolean,
-    ) {
-        val event = NavigateToRootEvent(root, restoreRootState)
-        Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
-    }
-
     override suspend fun awaitNavigateTo(route: ActivityRoute, fallbackRoute: NavRoute?) {
         val event = NavigateToActivityEvent(ActivityEvent.NavigateTo(route, fallbackRoute))
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
@@ -316,15 +307,18 @@ internal class DefaultNavigatorTurbine(
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun awaitResetToRoot(
-        root: NavRoot,
-    ) {
-        val event = ResetToRootEvent(root)
+    override suspend fun awaitSwitchBackStack(root: NavRoot) {
+        val event = SwitchBackStackEvent(root)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun awaitReplaceAll(root: NavRoot) {
-        val event = ReplaceAllEvent(root)
+    override suspend fun awaitShowRoot(root: NavRoot) {
+        val event = ShowRootEvent(root)
+        Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
+    }
+
+    override suspend fun awaitReplaceAllBackStacks(root: NavRoot) {
+        val event = ReplaceAllBackStacksEvent(root)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 

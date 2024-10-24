@@ -30,6 +30,6 @@ class NewRootNavigator @Inject constructor(hostNavigator: HostNavigator) : Desti
     }
 
     fun navigateToRoot() {
-        navigateToRoot(RootRoute)
+        showRoot(RootRoute)
     }
 }

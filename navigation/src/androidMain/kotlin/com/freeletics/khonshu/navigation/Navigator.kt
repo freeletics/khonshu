@@ -13,16 +13,6 @@ public interface Navigator {
     public fun navigateTo(route: NavRoute)
 
     /**
-     * Triggers navigation to the given [root]. The current back stack will be removed
-     * and saved. Whether the backstack of the given `root` is restored depends on
-     * [restoreRootState].
-     */
-    public fun navigateToRoot(
-        root: NavRoot,
-        restoreRootState: Boolean = false,
-    )
-
-    /**
      * Triggers up navigation.
      */
     public fun navigateUp()
@@ -39,20 +29,30 @@ public interface Navigator {
     public fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean = false)
 
     /**
-     * Reset the back stack to the given [root]. The current back stack will cleared and if
-     * root was already on it it will be recreated.
+     * Show the existing back stack for [root] or create a new back stack if none exists. If an existing back stack
+     * is shown it will be shown in it's previous state. If [root] is the root of the current back stack this is a
+     * no-op.
+     *
+     * The back stack that is shown at the time of calling this method will not back stack will not be modified.
      */
-    public fun resetToRoot(root: NavRoot)
+    public fun switchBackStack(root: NavRoot)
 
     /**
-     * Replace the current back stack with the given [root].
-     * The current back stack will cleared and the given [root] will be recreated.
-     * After this call the back stack will only contain the given [root].
+     * Show [root] as the current destination. If there already is a back stack for [root], regardless of whether
+     * it is the current back stack or not, the stack will be cleared.
      *
-     * This differs from [resetToRoot] in that [resetToRoot] does not pop the start route (exclusive)
-     * whereas this does.
+     * The back stack that is shown at the time of calling this method, if it isn't the back stack of [root],
+     * will not back stack will not be modified.
      */
-    public fun replaceAll(root: NavRoot)
+    public fun showRoot(root: NavRoot)
+
+    /**
+     * Remove all back stacks and create a new back stack with the given [root].
+     *
+     * This should only be used when changing the start destination of the app. For all other cases [showRoot] should
+     * be used.
+     */
+    public fun replaceAllBackStacks(root: NavRoot)
 
     public companion object {
         /**
