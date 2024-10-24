@@ -30,6 +30,6 @@ class RootNavigator @Inject constructor(hostNavigator: HostNavigator) : Destinat
     }
 
     fun replaceAllWithNewRoot() {
-        replaceAll(NewRootRoute)
+        replaceAllBackStacks(NewRootRoute)
     }
 }

@@ -37,7 +37,7 @@ class ScreenNavigator @Inject constructor(
     }
 
     fun replaceAllWithNewRoot() {
-        replaceAll(NewRootRoute)
+        replaceAllBackStacks(NewRootRoute)
     }
 
     fun navigateToScreenForResult() {
