@@ -33,21 +33,20 @@ When using multiple back stacks the start route of the nav host should be a `Nav
 
 ## Navigation
 
-Starting a new back stack is then as simple as calling `HostNavigator.navigateToRoot(LibraryTab)`.
+Starting a new back stack is then as simple as calling `HostNavigator.switchBackStack(LibraryTab)`.
 This will save the state of the current back stack and remove it and then create a new one for
-`LibraryTab`. Note that the nav hosts start route/destination will always remain on the back stack.
-If `HomeTab` was used as start route, then calling `navigateToRoot(LibraryTab)` would always result
-in a back stack of `HomeTab` -> `LibraryTab` and pressing the back button would show home again.
-Back would only exit the app from `HomeTab`.
+`LibraryTab`. If `LibraryTab` was shown before it will automatically show the existing back stack instead of
+creating a new one. If the back stack was `LibraryTab` -> `Subscreen1` before, calling `switchBackStack(LibraryTab)`
+will result in `Subscreen1` being shown.
 
-If the current back stack should not be saved `saveCurrentRootState = false` can be passed as an
-additional parameter to `navigateToRoot`.
+To reset a back stack or open it at its root without any restoration of previous state there is `showRoot`. In
+the example above calling `HostNavigator.showRoot(LibraryTab)` would result in the back stack of `LibraryTab` being
+cleared, so that `LibraryTab` is shown instead of `Subscreen1`.
 
-It is also possible to restore a previously as part of the `navigateToRoot` operation by passing
-`restoreRootState = true` to it. This will then restore a previously saved back stack if there was
-one. The saved back stack is identified by the `NavRoot`. If `LibraryTab` was open before and the
-user was viewing `LibrarySubscreenA` when navigating to a different tab then the next
-`navigateToRoot(LibraryTab, restoreRootState = true)` call would result in `HomeTab` -> `LibraryTab`
--> `LibrarySubscreenA` as back stack. Without the `restoreRootState = true` or when explicitly
-passing `false` the previously saved back stack of `LibraryTab` would be cleared and `LibraryTab`
-would be visible instead of `LibrarySubscreenA`.
+Note that the nav hosts start route/destination will always remain on the back stack. If `HomeTab` was used as
+start route, then calling `switchBackStack(LibraryTab)` would always result in a back stack of `HomeTab` ->
+`LibraryTab` and pressing the back button would show home again. Back would only exit the app from `HomeTab`.
+
+The last back stack related navigation method is `replaceAllBackStacks(root: NavRoot)`. This will clear all back
+stacks including the start back stack and then create a new one with `root`. This method should be used very rarely.
+The primary use case is to change the start destination, for example when the user logs in or out.

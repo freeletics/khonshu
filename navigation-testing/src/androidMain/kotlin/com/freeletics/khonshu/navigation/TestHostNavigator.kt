@@ -64,10 +64,6 @@ public class TestHostNavigator(
         eventTurbine += NavigateToEvent(route)
     }
 
-    override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
-        eventTurbine += NavigateToRootEvent(root, restoreRootState)
-    }
-
     override fun navigateUp() {
         eventTurbine += UpEvent
     }
@@ -80,12 +76,16 @@ public class TestHostNavigator(
         eventTurbine += BackToEvent(popUpTo, inclusive)
     }
 
-    override fun resetToRoot(root: NavRoot) {
-        eventTurbine += ResetToRootEvent(root)
+    override fun switchBackStack(root: NavRoot) {
+        eventTurbine += SwitchBackStackEvent(root)
     }
 
-    override fun replaceAll(root: NavRoot) {
-        eventTurbine += ReplaceAllEvent(root)
+    override fun showRoot(root: NavRoot) {
+        eventTurbine += ShowRootEvent(root)
+    }
+
+    override fun replaceAllBackStacks(root: NavRoot) {
+        eventTurbine += ReplaceAllBackStacksEvent(root)
     }
 
     override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {

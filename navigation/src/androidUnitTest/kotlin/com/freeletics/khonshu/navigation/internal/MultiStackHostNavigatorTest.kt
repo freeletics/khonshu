@@ -265,9 +265,9 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
-    fun `navigate with root and without clearing the target hostNavigator`() {
+    fun `switchBackStack with a different root`() {
         val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
+        hostNavigator.switchBackStack(OtherRoot(1))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -280,21 +280,28 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
-    fun `navigate with same root twice`() {
+    fun `switchBackStack to the same root twice`() {
         val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
-        val exception = assertThrows(IllegalStateException::class.java) {
-            hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
-        }
+        hostNavigator.switchBackStack(OtherRoot(1))
 
-        assertThat(exception).hasMessageThat()
-            .isEqualTo("OtherRoot(number=1) is already the current stack")
+        val rootId = hostNavigator.snapshot.value.visibleEntries[0].id
+
+        hostNavigator.switchBackStack(OtherRoot(1))
+
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
+            .containsExactly(
+                // entry id being 101 means second switch didn't create a new entry
+                factory.create(StackEntry.Id("101"), OtherRoot(1)),
+            )
+            .inOrder()
+        assertThat(hostNavigator.snapshot.value.visibleEntries.get(0).id).isEqualTo(rootId)
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
     }
 
     @Test
-    fun `navigate with root multiple times without clearing the target hostNavigator`() {
+    fun `switchBackStack between 2 different roots twice`() {
         val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
+        hostNavigator.switchBackStack(OtherRoot(1))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -303,7 +310,7 @@ internal class MultiStackHostNavigatorTest {
             .inOrder()
         assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        hostNavigator.navigateToRoot(SimpleRoot(1), restoreRootState = true)
+        hostNavigator.switchBackStack(SimpleRoot(1))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -312,7 +319,7 @@ internal class MultiStackHostNavigatorTest {
             .inOrder()
         assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
 
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
+        hostNavigator.switchBackStack(OtherRoot(1))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -325,58 +332,10 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
-    fun `navigate with root multiple times with clearing the target hostNavigator`() {
-        val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = false)
-
-        assertThat(hostNavigator.snapshot.value.visibleEntries)
-            .containsExactly(
-                factory.create(StackEntry.Id("101"), OtherRoot(1)),
-            )
-            .inOrder()
-        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
-
-        assertThat(removed).isEmpty()
-    }
-
-    @Test
-    fun `navigate with root and clearing the target hostNavigator`() {
-        val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = false)
-
-        assertThat(hostNavigator.snapshot.value.visibleEntries)
-            .containsExactly(
-                factory.create(StackEntry.Id("101"), OtherRoot(1)),
-            )
-            .inOrder()
-        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
-
-        hostNavigator.navigateToRoot(SimpleRoot(1), restoreRootState = false)
-
-        assertThat(hostNavigator.snapshot.value.visibleEntries)
-            .containsExactly(
-                factory.create(StackEntry.Id("102"), SimpleRoot(1)),
-            )
-            .inOrder()
-        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
-
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = false)
-
-        assertThat(hostNavigator.snapshot.value.visibleEntries)
-            .containsExactly(
-                factory.create(StackEntry.Id("103"), OtherRoot(1)),
-            )
-            .inOrder()
-        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
-
-        assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
-    }
-
-    @Test
-    fun `navigate with root and without clearing the target hostNavigator from within back hostNavigator`() {
+    fun `switchBackStack from a non root destination`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(1))
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
+        hostNavigator.switchBackStack(OtherRoot(1))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -389,11 +348,11 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
-    fun `navigate with root multiple times and without clearing the target hostNavigator from within back hostNavigator`() {
+    fun `switchBackStack from a non root destination and back`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(1))
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
-        hostNavigator.navigateToRoot(SimpleRoot(1), restoreRootState = true)
+        hostNavigator.switchBackStack(OtherRoot(1))
+        hostNavigator.switchBackStack(SimpleRoot(1))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -406,10 +365,73 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
-    fun `resetToRoot with start root from start hostNavigator`() {
+    fun `showRoot with the same root`() {
+        val hostNavigator = underTest()
+        hostNavigator.showRoot(SimpleRoot(1))
+
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("101"), SimpleRoot(1)),
+            )
+            .inOrder()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
+
+        assertThat(removed).containsExactly(StackEntry.Id("100"))
+    }
+
+    @Test
+    fun `showRoot with a different root`() {
+        val hostNavigator = underTest()
+        hostNavigator.showRoot(OtherRoot(1))
+
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("101"), OtherRoot(1)),
+            )
+            .inOrder()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
+
+        assertThat(removed).isEmpty()
+    }
+
+    @Test
+    fun `showRoot multiple times`() {
+        val hostNavigator = underTest()
+        hostNavigator.showRoot(OtherRoot(1))
+
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("101"), OtherRoot(1)),
+            )
+            .inOrder()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
+
+        hostNavigator.showRoot(SimpleRoot(1))
+
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("102"), SimpleRoot(1)),
+            )
+            .inOrder()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
+
+        hostNavigator.showRoot(OtherRoot(1))
+
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("103"), OtherRoot(1)),
+            )
+            .inOrder()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
+
+        assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
+    }
+
+    @Test
+    fun `showRoot with start root from a non root destination`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(1))
-        hostNavigator.resetToRoot(SimpleRoot(2))
+        hostNavigator.showRoot(SimpleRoot(2))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -422,37 +444,26 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
-    fun `resetToRoot with start root from other hostNavigator`() {
+    fun `showRoot with different root from a non root destination`() {
         val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
-        hostNavigator.resetToRoot(SimpleRoot(2))
+        hostNavigator.navigateTo(SimpleRoute(1))
+        hostNavigator.showRoot(OtherRoot(2))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
-                factory.create(StackEntry.Id("102"), SimpleRoot(2)),
+                factory.create(StackEntry.Id("102"), OtherRoot(2)),
             )
             .inOrder()
-        assertThat(hostNavigator.snapshot.value.canNavigateBack).isFalse()
+        assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
-        assertThat(removed).containsExactly(StackEntry.Id("100"), StackEntry.Id("101"))
+        assertThat(removed).isEmpty()
     }
 
     @Test
-    fun `resetToRoot fails throws exception when root not on back hostNavigator`() {
-        val hostNavigator = underTest()
-
-        val exception = assertThrows(IllegalStateException::class.java) {
-            hostNavigator.resetToRoot(OtherRoot(1))
-        }
-        assertThat(exception).hasMessageThat()
-            .isEqualTo("OtherRoot(number=1) is not on the current back stack")
-    }
-
-    @Test
-    fun `replaceAll with start root from start hostNavigator`() {
+    fun `replaceAllBackStacks with start root`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(1))
-        hostNavigator.replaceAll(SimpleRoot(2))
+        hostNavigator.replaceAllBackStacks(SimpleRoot(2))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -469,10 +480,10 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
-    fun `replaceAll with start root from other hostNavigator`() {
+    fun `replaceAllBackStacks with start root from other root`() {
         val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
-        hostNavigator.replaceAll(SimpleRoot(2))
+        hostNavigator.switchBackStack(OtherRoot(1))
+        hostNavigator.replaceAllBackStacks(SimpleRoot(2))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -488,10 +499,10 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
-    fun `replaceAll after navigating with root and without clearing the target hostNavigator from within back hostNavigator`() {
+    fun `replaceAllBackStacks after navigating multiple times`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(1))
-        hostNavigator.navigateToRoot(OtherRoot(1), restoreRootState = true)
+        hostNavigator.switchBackStack(OtherRoot(1))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -501,7 +512,7 @@ internal class MultiStackHostNavigatorTest {
         assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
         assertThat(removed).isEmpty()
 
-        hostNavigator.replaceAll(SimpleRoot(1))
+        hostNavigator.replaceAllBackStacks(SimpleRoot(1))
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
                 factory.create(StackEntry.Id("103"), SimpleRoot(1)),
@@ -580,7 +591,7 @@ internal class MultiStackHostNavigatorTest {
     @Test
     fun `navigateUp from the root of a second hostNavigator`() {
         val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        hostNavigator.showRoot(OtherRoot(2))
 
         val exception = assertThrows(IllegalStateException::class.java) {
             hostNavigator.navigateUp()
@@ -592,7 +603,7 @@ internal class MultiStackHostNavigatorTest {
     @Test
     fun `navigateUp in a second hostNavigator`() {
         val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        hostNavigator.showRoot(OtherRoot(2))
         hostNavigator.navigateTo(SimpleRoute(3))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
@@ -676,7 +687,7 @@ internal class MultiStackHostNavigatorTest {
     @Test
     fun `navigateBack from a second root`() {
         val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        hostNavigator.showRoot(OtherRoot(2))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -700,7 +711,7 @@ internal class MultiStackHostNavigatorTest {
     @Test
     fun `navigateBack from a second root and navigating there again`() {
         val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        hostNavigator.showRoot(OtherRoot(2))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -710,7 +721,7 @@ internal class MultiStackHostNavigatorTest {
         assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         hostNavigator.navigateBack()
-        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        hostNavigator.showRoot(OtherRoot(2))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
@@ -725,7 +736,7 @@ internal class MultiStackHostNavigatorTest {
     @Test
     fun `navigateBack in a second root`() {
         val hostNavigator = underTest()
-        hostNavigator.navigateToRoot(OtherRoot(2), restoreRootState = false)
+        hostNavigator.showRoot(OtherRoot(2))
         hostNavigator.navigateTo(SimpleRoute(3))
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
