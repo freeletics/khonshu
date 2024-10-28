@@ -129,16 +129,6 @@ public interface NavigatorTurbine {
     public suspend fun awaitNavigateTo(route: NavRoute)
 
     /**
-     * Assert that the next event received was a navigation event to the given [root]. This function
-     * will suspend if no events have been received.
-     *
-     * @throws AssertionError - if the next event was not a matching event.
-     */
-    public suspend fun awaitSwitchBackStack(
-        root: NavRoot,
-    )
-
-    /**
      * Assert that the next event received was a navigation event to the given [route]. This function
      * will suspend if no events have been received.
      *
@@ -182,24 +172,28 @@ public interface NavigatorTurbine {
     )
 
     /**
-     * Assert that the next event received was a "reset to root" navigation event with matching
+     * Assert that the next event received was a "switch back stack" navigation event with matching
      * parameters. This function will suspend if no events have been received.
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun awaitShowRoot(
-        root: NavRoot,
-    )
+    public suspend fun awaitSwitchBackStack(root: NavRoot)
 
     /**
-     * Assert that the next event received was a "replace all" navigation event with matching
+     * Assert that the next event received was a "show root" navigation event with matching
      * parameters. This function will suspend if no events have been received.
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun awaitReplaceAllBackStacks(
-        root: NavRoot,
-    )
+    public suspend fun awaitShowRoot(root: NavRoot)
+
+    /**
+     * Assert that the next event received was a "replace all back stacks" navigation event with matching
+     * parameters. This function will suspend if no events have been received.
+     *
+     * @throws AssertionError - if the next event was not a matching event.
+     */
+    public suspend fun awaitReplaceAllBackStacks(root: NavRoot)
 
     /**
      * Assert that the next event received was a navigate for result event to [request].
