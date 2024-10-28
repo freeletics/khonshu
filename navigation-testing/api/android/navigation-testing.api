@@ -7,13 +7,13 @@ public abstract interface class com/freeletics/khonshu/navigation/NavigatorTurbi
 	public abstract fun awaitNavigateTo (Lcom/freeletics/khonshu/navigation/ActivityRoute;Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun awaitNavigateTo$default (Lcom/freeletics/khonshu/navigation/NavigatorTurbine;Lcom/freeletics/khonshu/navigation/ActivityRoute;Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-	public abstract fun awaitNavigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateUp (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitReplaceAll (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitReplaceAllBackStacks (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;[Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitResetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitShowRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitSwitchBackStack (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun cancel (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun cancelAndIgnoreRemainingNavEvents (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun dispatchBackPress ()V
@@ -53,11 +53,11 @@ public final class com/freeletics/khonshu/navigation/TestHostNavigator : com/fre
 	public fun navigateBack ()V
 	public fun navigateBackTo (Lkotlin/reflect/KClass;Z)V
 	public fun navigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
-	public fun navigateToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Z)V
 	public fun navigateUp ()V
-	public fun replaceAll (Lcom/freeletics/khonshu/navigation/NavRoot;)V
-	public fun resetToRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
+	public fun replaceAllBackStacks (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 	public final fun setHandleDeepLinkRoute (Lcom/freeletics/khonshu/navigation/NavRoute;)V
+	public fun showRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
+	public fun switchBackStack (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition {

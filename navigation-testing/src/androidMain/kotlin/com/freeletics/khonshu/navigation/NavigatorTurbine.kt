@@ -129,17 +129,6 @@ public interface NavigatorTurbine {
     public suspend fun awaitNavigateTo(route: NavRoute)
 
     /**
-     * Assert that the next event received was a navigation event to the given [root]. This function
-     * will suspend if no events have been received.
-     *
-     * @throws AssertionError - if the next event was not a matching event.
-     */
-    public suspend fun awaitNavigateToRoot(
-        root: NavRoot,
-        restoreRootState: Boolean,
-    )
-
-    /**
      * Assert that the next event received was a navigation event to the given [route]. This function
      * will suspend if no events have been received.
      *
@@ -183,24 +172,28 @@ public interface NavigatorTurbine {
     )
 
     /**
-     * Assert that the next event received was a "reset to root" navigation event with matching
+     * Assert that the next event received was a "switch back stack" navigation event with matching
      * parameters. This function will suspend if no events have been received.
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun awaitResetToRoot(
-        root: NavRoot,
-    )
+    public suspend fun awaitSwitchBackStack(root: NavRoot)
 
     /**
-     * Assert that the next event received was a "replace all" navigation event with matching
+     * Assert that the next event received was a "show root" navigation event with matching
      * parameters. This function will suspend if no events have been received.
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun awaitReplaceAll(
-        root: NavRoot,
-    )
+    public suspend fun awaitShowRoot(root: NavRoot)
+
+    /**
+     * Assert that the next event received was a "replace all back stacks" navigation event with matching
+     * parameters. This function will suspend if no events have been received.
+     *
+     * @throws AssertionError - if the next event was not a matching event.
+     */
+    public suspend fun awaitReplaceAllBackStacks(root: NavRoot)
 
     /**
      * Assert that the next event received was a navigate for result event to [request].
@@ -278,14 +271,6 @@ internal class DefaultNavigatorTurbine(
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun awaitNavigateToRoot(
-        root: NavRoot,
-        restoreRootState: Boolean,
-    ) {
-        val event = NavigateToRootEvent(root, restoreRootState)
-        Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
-    }
-
     override suspend fun awaitNavigateTo(route: ActivityRoute, fallbackRoute: NavRoute?) {
         val event = NavigateToActivityEvent(ActivityEvent.NavigateTo(route, fallbackRoute))
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
@@ -316,15 +301,18 @@ internal class DefaultNavigatorTurbine(
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun awaitResetToRoot(
-        root: NavRoot,
-    ) {
-        val event = ResetToRootEvent(root)
+    override suspend fun awaitSwitchBackStack(root: NavRoot) {
+        val event = SwitchBackStackEvent(root)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun awaitReplaceAll(root: NavRoot) {
-        val event = ReplaceAllEvent(root)
+    override suspend fun awaitShowRoot(root: NavRoot) {
+        val event = ShowRootEvent(root)
+        Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
+    }
+
+    override suspend fun awaitReplaceAllBackStacks(root: NavRoot) {
+        val event = ReplaceAllBackStacksEvent(root)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
