@@ -21,6 +21,13 @@ public class StackSnapshot internal constructor(
     internal val current: StackEntry<*>
         get() = entries.last()
 
+    internal val size: Int
+        get() = if (root.id != startStackRootEntry.id) {
+            entries.size + 1
+        } else {
+            entries.size
+        }
+
     internal val previous: StackEntry<*>?
         get() = entries.getOrNull(entries.lastIndex - 1)
             ?: startStackRootEntry.takeIf { current.id != it.id }
