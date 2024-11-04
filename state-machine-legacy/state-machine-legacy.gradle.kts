@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.fgp.multiplatform)
-    // alias(libs.plugins.fgp.publish)
+    alias(libs.plugins.fgp.publish)
 }
 
 freeletics {
