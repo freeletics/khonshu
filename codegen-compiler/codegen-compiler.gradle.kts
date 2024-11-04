@@ -6,21 +6,14 @@ plugins {
 }
 
 freeletics {
-    optIn(
-        "com.squareup.anvil.annotations.ExperimentalAnvilApi",
-        "com.google.devtools.ksp.KspExperimental",
-        "org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi",
-    )
+    optIn("com.google.devtools.ksp.KspExperimental")
 }
 
 dependencies {
-    api(libs.kotlin.compiler)
-    api(libs.anvil.compiler.api)
     api(libs.ksp.api)
     api(libs.kotlinpoet)
     implementation(libs.anvil.annotations)
     implementation(libs.anvil.annotations.optional)
-    implementation(libs.anvil.compiler.utils)
     implementation(libs.kotlinpoet.ksp)
     implementation(projects.codegen)
 
@@ -36,8 +29,7 @@ dependencies {
     testImplementation(projects.codegenCompiler)
 
     testFixturesApi(libs.kotlin.compile.testing)
-    testFixturesImplementation(libs.anvil.annotations)
-    testFixturesImplementation(testFixtures(libs.anvil.compiler.utils))
+    testFixturesApi(libs.kotlin.compiler)
     testFixturesImplementation(libs.kotlin.compile.testing.ksp)
     // explicitly depend on ksp to force the version to a newer one than compile testing uses
     testFixturesRuntimeOnly(libs.ksp)

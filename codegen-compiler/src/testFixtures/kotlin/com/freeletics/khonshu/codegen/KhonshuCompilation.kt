@@ -1,4 +1,5 @@
 @file:Suppress("DEPRECATION")
+@file:OptIn(ExperimentalCompilerApi::class)
 
 package com.freeletics.khonshu.codegen
 
@@ -6,11 +7,6 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
-import com.squareup.anvil.compiler.api.CodeGenerator
-import com.squareup.anvil.compiler.internal.reference.ClassReference
-import com.squareup.anvil.compiler.internal.testing.AnvilCompilation
-import com.squareup.anvil.compiler.internal.testing.AnvilCompilationMode
-import com.squareup.anvil.compiler.internal.testing.simpleCodeGenerator as anvilSimpleCodeGenerator
 import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
@@ -22,6 +18,7 @@ import java.nio.file.Files
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
 interface KhonshuCompilation {
     fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit)
@@ -39,23 +36,6 @@ interface KhonshuCompilation {
                 sources = sources,
                 compilerPlugins = compilerPlugins,
                 legacyCompilerPlugins = legacyCompilerPlugins,
-                warningsAsErrors = warningsAsErrors,
-            )
-        }
-
-        fun anvilCompilation(
-            @Language("kotlin") source: String,
-            fileName: String = "Test.kt",
-            compilerPlugins: List<CompilerPluginRegistrar> = emptyList(),
-            legacyCompilerPlugins: List<ComponentRegistrar> = emptyList(),
-            codeGenerators: List<CodeGenerator> = emptyList(),
-            warningsAsErrors: Boolean = true,
-        ): KhonshuCompilation {
-            return AnvilKhonshuCompilation(
-                sources = listOf(fileName to source),
-                compilerPlugins = compilerPlugins,
-                legacyCompilerPlugins = legacyCompilerPlugins,
-                codeGenerators = codeGenerators,
                 warningsAsErrors = warningsAsErrors,
             )
         }
@@ -97,28 +77,6 @@ private class SimpleKhonshuCompilation(
 
     override fun generatedFileFor(name: String): String {
         throw UnsupportedOperationException("Simple compilation does not support generating files")
-    }
-}
-
-private class AnvilKhonshuCompilation(
-    sources: List<Pair<String, String>>,
-    compilerPlugins: List<CompilerPluginRegistrar>,
-    legacyCompilerPlugins: List<ComponentRegistrar>,
-    codeGenerators: List<CodeGenerator>,
-    warningsAsErrors: Boolean,
-) : KhonshuCompilation {
-    val compilation = AnvilCompilation().apply {
-        configureAnvil(mode = AnvilCompilationMode.Embedded(codeGenerators = codeGenerators))
-        kotlinCompilation.configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors, "1.9")
-    }
-
-    override fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit) {
-        return block(compilation.kotlinCompilation.compile())
-    }
-
-    override fun generatedFileFor(name: String): String {
-        val path = "${compilation.kotlinCompilation.workingDir.absolutePath}/build/anvil/${name.testFileName()}"
-        return File(path).readText()
     }
 }
 
@@ -178,13 +136,6 @@ public fun String.testFileName(): String {
     val path = substringBeforeLast("/")
     val name = substringAfterLast("/")
     return "$path/Khonshu$name"
-}
-
-public fun simpleCodeGenerator(block: (ClassReference) -> Unit): CodeGenerator {
-    return anvilSimpleCodeGenerator {
-        block(it)
-        null
-    }
 }
 
 public fun simpleSymbolProcessor(block: (Resolver) -> Unit): SymbolProcessorProvider {

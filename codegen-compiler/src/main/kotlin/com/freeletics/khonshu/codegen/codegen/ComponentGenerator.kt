@@ -15,7 +15,6 @@ import com.freeletics.khonshu.codegen.util.scopeToAnnotation
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
 import com.freeletics.khonshu.codegen.util.subcomponentAnnotation
 import com.freeletics.khonshu.codegen.util.subcomponentFactoryAnnotation
-import com.squareup.anvil.compiler.internal.decapitalize
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget.GET
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
@@ -41,7 +40,7 @@ internal val Generator<out BaseData>.retainedParentComponentClassName
     get() = retainedComponentClassName.nestedClass("ParentComponent")
 
 internal val Generator<out BaseData>.retainedParentComponentGetterName
-    get() = "${retainedComponentClassName.simpleName.decapitalize()}Factory"
+    get() = "${retainedComponentClassName.simpleName.replaceFirstChar { it.lowercase() }}Factory"
 
 internal class ComponentGenerator(
     override val data: BaseData,
