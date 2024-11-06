@@ -2,13 +2,6 @@ plugins {
     alias(libs.plugins.fgp.android)
 }
 
-freeletics {
-    optIn(
-        "com.squareup.anvil.annotations.ExperimentalAnvilApi",
-        "org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi",
-    )
-}
-
 dependencies {
     testImplementation(projects.codegenCompiler)
     testImplementation(projects.codegen)
@@ -16,6 +9,7 @@ dependencies {
     testImplementation(projects.stateMachine)
     testImplementation(libs.anvil.annotations)
     testImplementation(libs.anvil.annotations.optional)
+    testImplementation(libs.dagger)
     testImplementation(libs.androidx.compose.runtime)
     testImplementation(libs.coroutines.core)
 

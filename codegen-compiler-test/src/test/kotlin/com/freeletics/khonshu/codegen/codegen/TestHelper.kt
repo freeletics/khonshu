@@ -1,14 +1,16 @@
+@file:OptIn(ExperimentalCompilerApi::class)
+
 package com.freeletics.khonshu.codegen.codegen
 
 import androidx.compose.compiler.plugins.kotlin.ComposePluginRegistrar
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.anvilCompilation
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.kspCompilation
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.simpleCompilation
 import com.freeletics.khonshu.codegen.KhonshuSymbolProcessor.KhonshuSymbolProcessorProvider
 import com.freeletics.khonshu.codegen.testFileName
 import com.google.common.truth.Truth.assertThat
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
 internal fun test(
     data: BaseData,
@@ -18,7 +20,6 @@ internal fun test(
     warningsAsErrors: Boolean = true,
 ) {
     compile(fileName = fileName, source = source, data = data, expectedCode = expectedCode, warningsAsErrors)
-    compileWithAnvil(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors)
     compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors, ksp2 = false)
     compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors, ksp2 = true)
 }
@@ -37,18 +38,6 @@ private fun compile(fileName: String, source: String, data: BaseData, expectedCo
         warningsAsErrors = warningsAsErrors,
     ).compile {
         assertThat(it.exitCode).isEqualTo(ExitCode.OK)
-    }
-}
-
-private fun compileWithAnvil(fileName: String, source: String, expectedCode: String, warningsAsErrors: Boolean) {
-    anvilCompilation(
-        source = source,
-        fileName = fileName,
-        legacyCompilerPlugins = listOf(ComposePluginRegistrar()),
-        warningsAsErrors = warningsAsErrors,
-    ).compile {
-        assertThat(it.exitCode).isEqualTo(ExitCode.OK)
-        assertThat(generatedFileFor(fileName)).isEqualTo(expectedCode)
     }
 }
 

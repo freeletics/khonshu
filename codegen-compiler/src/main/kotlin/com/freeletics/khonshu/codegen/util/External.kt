@@ -5,17 +5,9 @@ import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.UNIT
-import org.jetbrains.kotlin.name.FqName
 
 // Codegen Public API
-internal val navDestination = ClassName("com.freeletics.khonshu.codegen", "NavDestination")
-internal val navDestinationFqName = FqName(navDestination.canonicalName)
-internal val navHostActivity = ClassName("com.freeletics.khonshu.codegen", "NavHostActivity")
-internal val navHostActivityFqName = FqName(navHostActivity.canonicalName)
-internal val appScope = ClassName("com.freeletics.khonshu.codegen", "AppScope")
-internal val activityScope = ClassName("com.freeletics.khonshu.codegen", "ActivityScope")
 internal val overlay = ClassName("com.freeletics.khonshu.codegen", "Overlay")
-internal val overlayFqName = FqName(overlay.canonicalName)
 
 // Codegen Internal API
 internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.internal", "asComposeState")
@@ -32,7 +24,6 @@ internal val localActivityComponentProvider =
 internal val stackSnapshot = ClassName("com.freeletics.khonshu.navigation.internal", "StackSnapshot")
 internal val stackEntry = ClassName("com.freeletics.khonshu.navigation.internal", "StackEntry")
 internal val baseRoute = ClassName("com.freeletics.khonshu.navigation", "BaseRoute")
-internal val baseRouteFqName = FqName(baseRoute.canonicalName)
 internal val navRoot = ClassName("com.freeletics.khonshu.navigation", "NavRoot")
 internal val activityNavigator = ClassName("com.freeletics.khonshu.navigation", "ActivityNavigator")
 internal val hostNavigator = ClassName("com.freeletics.khonshu.navigation", "HostNavigator")
@@ -98,6 +89,5 @@ internal val compositionLocalProvider = MemberName("androidx.compose.runtime", "
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 
 // Android
-internal val context = ClassName("android.content", "Context")
 internal val intent = ClassName("android.content", "Intent")
 internal val bundle = ClassName("android.os", "Bundle")

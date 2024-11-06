@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCompilerApi::class)
+
 package com.freeletics.khonshu.codegen.parser.ksp
 
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.kspCompilation
@@ -15,6 +17,7 @@ import com.squareup.kotlinpoet.SHORT
 import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeName
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.Test
 
 internal class AllSuperTypesTest {
