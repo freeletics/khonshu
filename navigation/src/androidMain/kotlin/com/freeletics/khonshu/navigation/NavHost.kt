@@ -2,11 +2,15 @@ package com.freeletics.khonshu.navigation
 
 import android.view.animation.PathInterpolator
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Transition
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -70,17 +74,36 @@ public fun NavHost(
     modifier: Modifier = Modifier,
     destinationChangedCallback: ((NavRoot, BaseRoute) -> Unit)? = null,
 ) {
-    val snapshot by navigator.snapshot
+    val currentSnapshot by navigator.snapshot
+    val snapshot: StackSnapshot
+
+    val gestureBackProgress = systemBackHandling(currentSnapshot, navigator)
+    val backProgress: State<Float>
+
+    // use a transition to complete the back animation after back was committed and the state updated
+    val transition = updateTransition(TransitionState(currentSnapshot, gestureBackProgress), "NavHost")
+    // when going back (stack is smaller) and the old state has an in progress back animation
+    if (transition.targetState.snapshot.size < transition.currentState.snapshot.size &&
+        transition.currentState.backProgress.value != 0f
+    ) {
+        // animate from current value to complete the back animation
+        backProgress = transition.animateFloat(label = "back-progress") { it.backProgressTargetValue }
+        // for now still use the old snapshot
+        snapshot = transition.currentState.snapshot
+    } else {
+        backProgress = transition.targetState.backProgress
+        snapshot = transition.targetState.snapshot
+    }
 
     // `backProgress` should not directly be accessed in the composition to avoid a re-composition on every small
     // progress update during the gesture. To achieve that `showPreviousEntry` uses `derivedStateOf` which will
     // limit re-compositions to when the boolean changes. For the animation the value is only accessed from within
     // the `graphicsLayer {}` block.
-    val backProgress by systemBackHandling(snapshot, navigator)
     val showPreviousEntry by remember(snapshot) {
-        derivedStateOf { backProgress > 0 }
+        derivedStateOf { backProgress.value > 0 }
     }
-    DestinationChangedCallback(snapshot, destinationChangedCallback)
+
+    DestinationChangedCallback(currentSnapshot, destinationChangedCallback)
 
     // Remember the movableContent functions from the individual entries so that we avoid blinking at the end of
     // the predictive back animations.
@@ -89,8 +112,8 @@ public fun NavHost(
     val entries = snapshot.getShowableEntries(
         entryComposables,
         showPreviousEntry,
-        Modifier.inTransition { backProgress },
-        Modifier.outTransition { backProgress },
+        Modifier.inTransition { backProgress.value },
+        Modifier.outTransition { backProgress.value },
     )
 
     val saveableStateHolder = rememberSaveableStateHolder()
@@ -101,6 +124,30 @@ public fun NavHost(
             }
         }
     }
+}
+
+@Stable
+private data class TransitionState(
+    val snapshot: StackSnapshot,
+    val backProgress: State<Float>,
+) {
+    /**
+     * Calculates the target values for [Transition.animateFloat]. If the current back progress value is
+     * not 0 it is returned which will be the start value of the transition. The value for the target
+     * state needs to be 1 so that the progress animation is completed.
+     *
+     * This makes the assumption that it's never called for aborting the animation where 0 would need
+     * to be returned.
+     */
+    val backProgressTargetValue: Float
+        get() {
+            val value = backProgress.value
+            return if (value != 0f) {
+                value
+            } else {
+                1f
+            }
+        }
 }
 
 private fun StackSnapshot.getShowableEntries(
@@ -256,12 +303,6 @@ private fun systemBackHandling(snapshot: StackSnapshot, navigator: HostNavigator
             progressFlow.collect { backEvent ->
                 backProgress.snapTo(backEvent.progress)
             }
-            // For 3 button navigation progressFlow completes without any
-            // emission, so backProgress is still 0 and the animation should
-            // not be started here.
-            if (backProgress.value > 0) {
-                backProgress.tryAnimateTo(1f)
-            }
             navigator.tryNavigateBack()
         } catch (e: CancellationException) {
             backProgress.tryAnimateTo(0f)
@@ -288,7 +329,7 @@ private fun HostNavigator.tryNavigateBack() {
 private suspend fun Animatable<Float, *>.tryAnimateTo(value: Float) {
     try {
         animateTo(value)
-    } catch (e: CancellationException) {
+    } catch (_: CancellationException) {
         // make sure that the animation is not stuck at intermediate value in case animateTo gets cancelled
         snapTo(value)
     }
