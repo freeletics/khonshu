@@ -596,8 +596,7 @@ internal class NavHostActivityCodegenTest {
             ) : ActivityComponentProvider {
               override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { parentComponent: KhonshuTest2Component.ParentComponent, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTest2ComponentFactory().create(viewModel, savedStateHandle,
-                    activity.intent)
+                parentComponent.khonshuTest2ComponentFactory().create(viewModel, savedStateHandle, activity.intent)
               }
             }
 
