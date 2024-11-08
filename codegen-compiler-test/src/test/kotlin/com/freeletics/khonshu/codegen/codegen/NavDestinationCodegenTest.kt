@@ -131,8 +131,7 @@ internal class NavDestinationCodegenTest {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
-                    @BindsInstance testRoute: TestRoute): KhonshuTestComponent
+                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @BindsInstance testRoute: TestRoute): KhonshuTestComponent
               }
 
               @ContributesTo(TestParentRoute::class)
@@ -148,8 +147,7 @@ internal class NavDestinationCodegenTest {
                 entry: StackEntry<TestRoute>,
                 snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider,
-                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
+              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
                 parentComponent.khonshuTestComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
@@ -200,8 +198,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideNavDestination(): NavDestination =
-                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
+              public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
                 KhonshuTest(snapshot, route)
               }
             }
@@ -305,8 +302,7 @@ internal class NavDestinationCodegenTest {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
-                    @BindsInstance testRoute: TestRoute): KhonshuTestComponent
+                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @BindsInstance testRoute: TestRoute): KhonshuTestComponent
               }
 
               @ContributesTo(ActivityScope::class)
@@ -322,8 +318,7 @@ internal class NavDestinationCodegenTest {
                 entry: StackEntry<TestRoute>,
                 snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTestComponent = component(entry, provider, ActivityScope::class) { parentComponent:
-                  KhonshuTestComponent.ParentComponent ->
+              ): KhonshuTestComponent = component(entry, provider, ActivityScope::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
                 parentComponent.khonshuTestComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
@@ -374,8 +369,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideNavDestination(): NavDestination =
-                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
+              public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
                 KhonshuTest(snapshot, route)
               }
             }
@@ -482,9 +476,7 @@ internal class NavDestinationCodegenTest {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance @ForScope(TestOverlayRoute::class)
-                    savedStateHandle: SavedStateHandle, @BindsInstance testOverlayRoute: TestOverlayRoute):
-                    KhonshuTestComponent
+                public fun create(@BindsInstance @ForScope(TestOverlayRoute::class) savedStateHandle: SavedStateHandle, @BindsInstance testOverlayRoute: TestOverlayRoute): KhonshuTestComponent
               }
 
               @ContributesTo(TestParentRoute::class)
@@ -494,15 +486,13 @@ internal class NavDestinationCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class)
-            public object KhonshuTestComponentProvider :
-                ComponentProvider<TestOverlayRoute, KhonshuTestComponent> {
+            public object KhonshuTestComponentProvider : ComponentProvider<TestOverlayRoute, KhonshuTestComponent> {
               @OptIn(InternalNavigationCodegenApi::class)
               override fun provide(
                 entry: StackEntry<TestOverlayRoute>,
                 snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider,
-                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
+              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
                 parentComponent.khonshuTestComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
@@ -553,8 +543,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideNavDestination(): NavDestination =
-                  OverlayDestination<TestOverlayRoute>(KhonshuTestComponentProvider) { snapshot, route ->
+              public fun provideNavDestination(): NavDestination = OverlayDestination<TestOverlayRoute>(KhonshuTestComponentProvider) { snapshot, route ->
                 KhonshuTest(snapshot, route)
               }
             }
@@ -691,8 +680,7 @@ internal class NavDestinationCodegenTest {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
-                    @BindsInstance testRoute: TestRoute): KhonshuTest2Component
+                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @BindsInstance testRoute: TestRoute): KhonshuTest2Component
               }
 
               @ContributesTo(TestParentRoute::class)
@@ -708,8 +696,7 @@ internal class NavDestinationCodegenTest {
                 entry: StackEntry<TestRoute>,
                 snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTest2Component = componentFromParentRoute(entry, snapshot, provider,
-                  TestParentRoute::class) { parentComponent: KhonshuTest2Component.ParentComponent ->
+              ): KhonshuTest2Component = componentFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { parentComponent: KhonshuTest2Component.ParentComponent ->
                 parentComponent.khonshuTest2ComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
@@ -768,8 +755,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideNavDestination(): NavDestination =
-                  ScreenDestination<TestRoute>(KhonshuTest2ComponentProvider) { snapshot, route ->
+              public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute>(KhonshuTest2ComponentProvider) { snapshot, route ->
                 KhonshuTest2(snapshot, route)
               }
             }
@@ -786,8 +772,7 @@ internal class NavDestinationCodegenTest {
         )
 
         @Language("kotlin")
-        val source =
-            """
+        val source = """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -809,8 +794,7 @@ internal class NavDestinationCodegenTest {
             """.trimIndent()
 
         @Language("kotlin")
-        val expected =
-            """
+        val expected = """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -867,8 +851,7 @@ internal class NavDestinationCodegenTest {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
-                    @BindsInstance testRoute: TestRoute): KhonshuTestComponent
+                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @BindsInstance testRoute: TestRoute): KhonshuTestComponent
               }
 
               @ContributesTo(TestParentRoute::class)
@@ -884,8 +867,7 @@ internal class NavDestinationCodegenTest {
                 entry: StackEntry<TestRoute>,
                 snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider,
-                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
+              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
                 parentComponent.khonshuTestComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
@@ -931,8 +913,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideNavDestination(): NavDestination =
-                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
+              public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
                 KhonshuTest(snapshot, route)
               }
             }
@@ -949,8 +930,7 @@ internal class NavDestinationCodegenTest {
         )
 
         @Language("kotlin")
-        val source =
-            """
+        val source = """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -972,8 +952,7 @@ internal class NavDestinationCodegenTest {
             """.trimIndent()
 
         @Language("kotlin")
-        val expected =
-            """
+        val expected = """
             package com.test
 
             import androidx.compose.runtime.Composable
@@ -1033,8 +1012,7 @@ internal class NavDestinationCodegenTest {
 
               @ContributesSubcomponent.Factory
               public interface Factory {
-                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle,
-                    @BindsInstance testRoute: TestRoute): KhonshuTestComponent
+                public fun create(@BindsInstance @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @BindsInstance testRoute: TestRoute): KhonshuTestComponent
               }
 
               @ContributesTo(TestParentRoute::class)
@@ -1050,8 +1028,7 @@ internal class NavDestinationCodegenTest {
                 entry: StackEntry<TestRoute>,
                 snapshot: StackSnapshot,
                 provider: ActivityComponentProvider,
-              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider,
-                  TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
+              ): KhonshuTestComponent = componentFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { parentComponent: KhonshuTestComponent.ParentComponent ->
                 parentComponent.khonshuTestComponentFactory().create(entry.savedStateHandle, entry.route)
               }
             }
@@ -1101,8 +1078,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideNavDestination(): NavDestination =
-                  ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
+              public fun provideNavDestination(): NavDestination = ScreenDestination<TestRoute>(KhonshuTestComponentProvider) { snapshot, route ->
                 KhonshuTest(snapshot, route)
               }
             }
