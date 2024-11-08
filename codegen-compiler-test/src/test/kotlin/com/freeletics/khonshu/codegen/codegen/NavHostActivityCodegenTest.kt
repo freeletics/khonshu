@@ -157,13 +157,9 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
-                  TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                  savedStateHandle ->
-                val viewModel = ViewModelProvider(activity,
-                    SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle,
-                    activity.intent)
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
+                val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
+                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -179,8 +175,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public object KhonshuTestActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
-                  Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -363,12 +358,9 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, ActivityScope::class,
-                  AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
-                val viewModel = ViewModelProvider(activity,
-                    SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle,
-                    activity.intent)
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, ActivityScope::class, AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
+                val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
+                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -384,8 +376,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(ActivityScope::class)
             public object KhonshuTestActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
-                  Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(ActivityScope::class)
@@ -603,13 +594,9 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTest2ComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
-                  TestParentScope::class) { parentComponent: KhonshuTest2Component.ParentComponent,
-                  savedStateHandle ->
-                val viewModel = ViewModelProvider(activity,
-                    SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTest2ComponentFactory().create(viewModel, savedStateHandle,
-                    activity.intent)
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { parentComponent: KhonshuTest2Component.ParentComponent, savedStateHandle ->
+                val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
+                parentComponent.khonshuTest2ComponentFactory().create(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -625,8 +612,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public object KhonshuTest2ActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
-                  Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -813,13 +799,9 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
-                  TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                  savedStateHandle ->
-                val viewModel = ViewModelProvider(activity,
-                    SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle,
-                    activity.intent)
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
+                val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
+                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -835,8 +817,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public object KhonshuTestActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
-                  Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -1013,13 +994,9 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
-                  TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                  savedStateHandle ->
-                val viewModel = ViewModelProvider(activity,
-                    SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle,
-                    activity.intent)
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
+                val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
+                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -1035,8 +1012,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public object KhonshuTestActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
-                  Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -1218,13 +1194,9 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class,
-                  TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent,
-                  savedStateHandle ->
-                val viewModel = ViewModelProvider(activity,
-                    SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle,
-                    activity.intent)
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
+                val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
+                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -1240,8 +1212,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public object KhonshuTestActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards
-                  Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(TestScreen::class)
