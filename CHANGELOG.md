@@ -1,6 +1,29 @@
 Change Log
 ==========
 
+## 0.29.0 *(2024-11-08)*
+
+### Navigation
+
+- Replaced `navigateToRoot` and `resetToRoot` with `switchBackStack` and `showRoot`
+  which have more predictable behavior and won't throw exceptions when called
+  in certain back stack states.
+- Renamed `replaceAll` to `replaceAllBackStacks`.
+- Fixed an issue that would cause delayed state updates after a predictive back
+  gesture. These delayed state updates could cause the app to be unresponsive for
+  a moment or that the same back navigation was repeated.
+- Removed the deprecated `NavEventNavigator`.
+
+### Codegen
+
+- Remove support for running as an Anvil plugin. Khoshu's codegen now always needs to be
+  used through KSP.
+
+### State Machine
+
+- Added Wasm/WASI target.
+
+
 ## 0.28.3 *(2024-08-05)*
 
 ### Codegen
