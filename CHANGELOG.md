@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+## 0.29.1 *(2024-11-11)*
+
+### Navigation
+
+- Fixed `TestHostNavigator.navigate {}` failing when the method is called
+  from a suspending function (both directly and indirectly).
+- Fixed `ActivityResultRequest<*, O>.sendResult` test helper requiring
+  an `@OptIn` annotation.
+
+
 ## 0.29.0 *(2024-11-08)*
 
 ### Navigation
