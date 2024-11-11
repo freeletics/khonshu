@@ -9,7 +9,7 @@ import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
  * Send a fake result to collectors of this request. Can be used to test the result handling
  * logic.
  */
-public fun <O> ContractResultOwner<*, *, O>.sendResult(result: O) {
+public fun <O> ActivityResultRequest<*, O>.sendResult(result: O) {
     onResult(result)
 }
 
