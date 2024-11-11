@@ -57,7 +57,7 @@ public class TestHostNavigator(
     }
 
     override fun navigate(block: Navigator.() -> Unit) {
-        eventTurbine += TestHostNavigator().apply(block).eventTurbine.toTestEvent()
+        eventTurbine += TestHostNavigator().apply(block).eventTurbine.asChannel().toTestEvent()
     }
 
     override fun navigateTo(route: NavRoute) {
