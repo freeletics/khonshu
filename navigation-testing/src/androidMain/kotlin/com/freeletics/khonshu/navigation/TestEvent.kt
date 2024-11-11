@@ -1,11 +1,10 @@
 package com.freeletics.khonshu.navigation
 
 import android.os.Parcelable
-import app.cash.turbine.Event
-import app.cash.turbine.Turbine
 import com.freeletics.khonshu.navigation.internal.ActivityEvent
 import dev.drewhamilton.poko.Poko
 import kotlin.reflect.KClass
+import kotlinx.coroutines.channels.Channel
 
 internal sealed interface TestEvent
 
@@ -67,15 +66,14 @@ internal fun toTestEvent(event: ActivityEvent): TestEvent {
     }
 }
 
-internal fun Turbine<TestEvent>.toTestEvent(): BatchEvent {
-    close()
+internal fun Channel<TestEvent>.toTestEvent(): BatchEvent {
     val events = buildList {
         do {
-            val event = takeEvent()
-            if (event is Event.Item) {
-                add(event.value)
+            val event = tryReceive().getOrNull()
+            if (event != null) {
+                add(event)
             }
-        } while (event is Event.Item)
+        } while (event != null)
     }
     return BatchEvent(events)
 }
