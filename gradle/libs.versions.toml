@@ -13,7 +13,7 @@ android-compile = "33"
 androidx-compose-runtime = "1.7.5"
 androidx-compose-ui = "1.7.5"
 androidx-compose-animation = "1.6.6"
-jetbrains-compose = "1.7.0"
+jetbrains-compose = "1.7.1"
 
 androidx-activity = "1.9.3"
 androidx-annotations = "1.5.0"
