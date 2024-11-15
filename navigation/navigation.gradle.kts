@@ -3,7 +3,6 @@ import com.freeletics.gradle.plugin.FreeleticsAndroidExtension
 
 plugins {
     alias(libs.plugins.fgp.multiplatform)
-    alias(libs.plugins.poko)
     alias(libs.plugins.fgp.publish)
 }
 
@@ -13,6 +12,8 @@ freeletics {
         "com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi",
         "com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi",
     )
+
+    usePoko()
 
     multiplatform {
         addJvmTarget()

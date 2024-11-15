@@ -1,11 +1,11 @@
 plugins {
     alias(libs.plugins.fgp.android)
-    alias(libs.plugins.poko)
     alias(libs.plugins.fgp.publish)
 }
 
 freeletics {
     useCompose()
+    usePoko()
 
     android {
         enableParcelize()
