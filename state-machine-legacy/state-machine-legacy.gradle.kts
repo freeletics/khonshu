@@ -1,6 +1,6 @@
 plugins {
     id("com.freeletics.gradle.multiplatform")
-    id("com.freeletics.gradle.publish.oss")
+    // id("com.freeletics.gradle.publish.oss")
 }
 
 freeletics {
