@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.fgp.nav)
+    id("com.freeletics.gradle.nav")
 }
 
 dependencies {

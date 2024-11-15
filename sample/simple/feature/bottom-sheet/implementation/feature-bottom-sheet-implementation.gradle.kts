@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.fgp.feature)
+    id("com.freeletics.gradle.feature")
 }
 
 freeletics {
