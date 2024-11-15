@@ -1,7 +1,7 @@
 plugins {
-    alias(libs.plugins.fgp.jvm)
+    id("com.freeletics.gradle.jvm")
     alias(libs.plugins.ksp)
-    alias(libs.plugins.fgp.publish)
+    id("com.freeletics.gradle.publish.oss")
     id("java-test-fixtures")
 }
 

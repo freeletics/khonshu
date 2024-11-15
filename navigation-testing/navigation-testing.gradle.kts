@@ -1,14 +1,14 @@
 import com.android.build.api.dsl.CommonExtension
 
 plugins {
-    alias(libs.plugins.fgp.multiplatform)
-    alias(libs.plugins.fgp.publish)
-    alias(libs.plugins.poko)
+    id("com.freeletics.gradle.multiplatform")
+    id("com.freeletics.gradle.publish.oss")
 }
 
 freeletics {
     optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi")
     useSerialization()
+    usePoko()
 
     multiplatform {
         addJvmTarget()

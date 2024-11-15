@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.fgp.android)
-    alias(libs.plugins.fgp.publish)
+    id("com.freeletics.gradle.android")
+    id("com.freeletics.gradle.publish.oss")
 }
 
 freeletics {

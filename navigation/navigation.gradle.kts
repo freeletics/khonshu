@@ -2,9 +2,8 @@ import com.android.build.api.dsl.CommonExtension
 import com.freeletics.gradle.plugin.FreeleticsAndroidExtension
 
 plugins {
-    alias(libs.plugins.fgp.multiplatform)
-    alias(libs.plugins.poko)
-    alias(libs.plugins.fgp.publish)
+    id("com.freeletics.gradle.multiplatform")
+    id("com.freeletics.gradle.publish.oss")
 }
 
 freeletics {
@@ -13,6 +12,8 @@ freeletics {
         "com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi",
         "com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi",
     )
+
+    usePoko()
 
     multiplatform {
         addJvmTarget()

@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.fgp.android)
+    id("com.freeletics.gradle.android")
 }
 
 dependencies {

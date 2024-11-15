@@ -1,8 +1,8 @@
 import com.android.build.api.dsl.CommonExtension
 
 plugins {
-    alias(libs.plugins.fgp.multiplatform)
-    alias(libs.plugins.fgp.publish)
+    id("com.freeletics.gradle.multiplatform")
+    id("com.freeletics.gradle.publish.oss")
 }
 
 freeletics {
