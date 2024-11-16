@@ -24,7 +24,7 @@ uri = "0.0.18"
 
 inject = "1"
 anvil = "0.4.0"
-ksp = "2.0.21-1.0.27"
+ksp = "2.0.21-1.0.28"
 kotlinpoet = "2.0.0"
 auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
