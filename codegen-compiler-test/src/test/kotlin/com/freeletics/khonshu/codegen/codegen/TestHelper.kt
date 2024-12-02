@@ -34,7 +34,7 @@ private fun compile(fileName: String, source: String, data: BaseData, expectedCo
             fileName to source,
             fileName.testFileName() to generatedCode,
         ),
-        legacyCompilerPlugins = listOf(ComposePluginRegistrar()),
+        compilerPlugins = listOf(ComposePluginRegistrar()),
         warningsAsErrors = warningsAsErrors,
     ).compile {
         assertThat(it.exitCode).isEqualTo(ExitCode.OK)
@@ -51,7 +51,7 @@ private fun compileWithKsp(
     kspCompilation(
         source = source,
         fileName = fileName,
-        legacyCompilerPlugins = listOf(ComposePluginRegistrar()),
+        compilerPlugins = listOf(ComposePluginRegistrar()),
         symbolProcessors = listOf(KhonshuSymbolProcessorProvider()),
         warningsAsErrors = warningsAsErrors,
         ksp2 = ksp2,
