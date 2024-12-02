@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.0.21"
+kotlin = "2.1.0"
 coroutines = "1.9.0"
 
 java-target= "11"
@@ -24,7 +24,7 @@ uri = "0.0.18"
 
 inject = "1"
 anvil = "0.4.0"
-ksp = "2.0.21-1.0.28"
+ksp = "2.1.0-1.0.29"
 kotlinpoet = "2.0.0"
 auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
@@ -32,7 +32,7 @@ auto-service-ksp = "1.2.0"
 junit = "4.13.2"
 truth = "1.4.4"
 turbine = "1.2.0"
-kotlin-compile-testing = "0.6.0"
+kotlin-compile-testing = "0.7.0"
 
 fgp = "0.19.2"
 publish = "0.30.0"
@@ -116,4 +116,4 @@ publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binarycompatibility" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
-poko = { id = "dev.drewhamilton.poko", version = "0.17.2" }
+poko = { id = "dev.drewhamilton.poko", version = "0.18.0" }
