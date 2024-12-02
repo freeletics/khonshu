@@ -19,11 +19,11 @@ dagger = "2.52"
 dependency-analysis-gradle = "2.5.0"
 fgp = "0.19.2"
 khonshu = "0.29.1"
-ksp = "2.0.21-1.0.28"
+ksp = "2.1.0-1.0.29"
 inject = "1"
 java-target = "11"
 java-toolchain = "21"
-kotlin = "2.0.21"
+kotlin = "2.1.0"
 timber = "5.0.1"
 
 [libraries]
