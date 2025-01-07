@@ -25,7 +25,6 @@ public synthetic class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefin
 	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
 	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition;)V
 	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition$Companion {
@@ -57,7 +56,6 @@ public synthetic class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefin
 	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
 	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitions;)V
 	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitions$Companion {
@@ -93,7 +91,6 @@ public synthetic class com/freeletics/khonshu/navigation/deeplinks/PatternDefini
 	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
 	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
 	public final fun serialize-8x5bDLE (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/String;)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/PatternDefinition$Companion {
@@ -122,7 +119,6 @@ public synthetic class com/freeletics/khonshu/navigation/deeplinks/PlaceholderDe
 	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
 	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/freeletics/khonshu/navigation/deeplinks/PlaceholderDefinition;)V
 	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/PlaceholderDefinition$Companion {
@@ -153,7 +149,6 @@ public synthetic class com/freeletics/khonshu/navigation/deeplinks/PrefixDefinit
 	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
 	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/freeletics/khonshu/navigation/deeplinks/PrefixDefinition;)V
 	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/PrefixDefinition$Companion {
