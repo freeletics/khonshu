@@ -20,7 +20,7 @@ androidx-annotations = "1.5.0"
 androidx-core = "1.15.0"
 androidx-lifecycle = "2.8.7"
 
-uri = "0.0.18"
+uri = "0.0.19"
 
 inject = "1"
 anvil = "0.4.0"
