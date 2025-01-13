@@ -23,7 +23,7 @@ androidx-lifecycle = "2.8.7"
 uri = "0.0.19"
 
 inject = "1"
-anvil = "0.4.0"
+anvil = "0.4.1"
 ksp = "2.1.0-1.0.29"
 kotlinpoet = "2.0.0"
 auto-service = "1.1.1"
