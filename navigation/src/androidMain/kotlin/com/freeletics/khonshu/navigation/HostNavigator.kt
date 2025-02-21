@@ -2,9 +2,12 @@ package com.freeletics.khonshu.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.freeletics.khonshu.navigation.activity.findActivity
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.handleDeepLink
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
@@ -66,3 +69,8 @@ public fun rememberHostNavigator(
 }
 
 private const val SAVED_STATE_HANDLED_DEEP_LINKS = "com.freeletics.khonshu.navigation.handled_deep_links"
+
+internal val LocalHostNavigator: ProvidableCompositionLocal<HostNavigator> =
+    staticCompositionLocalOf {
+        throw IllegalStateException("Can't access HostNavigator outside of a NavHost")
+    }

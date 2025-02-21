@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation.activity.internal
 
 import android.content.Context
 import android.content.Intent
@@ -10,8 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
  * as input instead of [Array]. The reason for this is that [Array.equals] does not compare
  * the contents which makes testing [ActivityEvent.NavigateForResult] painful.
  */
-internal class RequestPermissionsContract :
-    ActivityResultContract<List<String>, Map<String, Boolean>>() {
+internal class RequestPermissionsContract : ActivityResultContract<List<String>, Map<String, Boolean>>() {
     private val contract = ActivityResultContracts.RequestMultiplePermissions()
 
     override fun createIntent(context: Context, input: List<String>): Intent {

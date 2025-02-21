@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation.activity.internal
 
 import android.content.ActivityNotFoundException
 import android.content.Context

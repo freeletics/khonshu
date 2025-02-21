@@ -1,7 +1,7 @@
 package com.freeletics.khonshu.navigation
 
 import android.os.Parcelable
-import com.freeletics.khonshu.navigation.internal.ActivityEvent
+import com.freeletics.khonshu.navigation.activity.internal.ActivityEvent
 import dev.drewhamilton.poko.Poko
 import kotlin.reflect.KClass
 import kotlinx.coroutines.channels.Channel

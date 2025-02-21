@@ -10,6 +10,8 @@ import app.cash.turbine.test
 import com.freeletics.khonshu.navigation.activity.ActivityResultContractRequest
 import com.freeletics.khonshu.navigation.activity.ActivityRoute
 import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest.PermissionResult
+import com.freeletics.khonshu.navigation.activity.collectAndHandleActivityEvents
+import com.freeletics.khonshu.navigation.activity.deliverResult
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestActivityNavigator

@@ -59,10 +59,6 @@ public final class com/freeletics/khonshu/navigation/NavigationResultsKt {
 	public static final fun registerForNavigationResult-G5cFDYM (Lcom/freeletics/khonshu/navigation/Navigator;Lkotlin/reflect/KClass;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest;
 }
 
-public final class com/freeletics/khonshu/navigation/NavigationSetupKt {
-	public static final fun NavigationSetup (Lcom/freeletics/khonshu/navigation/activity/ActivityNavigator;Landroidx/compose/runtime/Composer;I)V
-}
-
 public abstract interface class com/freeletics/khonshu/navigation/Navigator {
 	public static final field Companion Lcom/freeletics/khonshu/navigation/Navigator$Companion;
 	public abstract fun navigateBack ()V
@@ -99,6 +95,10 @@ public abstract class com/freeletics/khonshu/navigation/activity/ActivityNavigat
 	public final fun registerForPermissionsResult ()Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;
 	public final fun requestPermissions (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;Ljava/util/List;)V
 	public final fun requestPermissions (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;[Ljava/lang/String;)V
+}
+
+public final class com/freeletics/khonshu/navigation/activity/ActivityNavigatorEffectKt {
+	public static final fun ActivityNavigatorEffect (Lcom/freeletics/khonshu/navigation/activity/ActivityNavigator;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/freeletics/khonshu/navigation/activity/ActivityResultRequest : com/freeletics/khonshu/navigation/activity/ActivityResultContractRequest {
