@@ -35,7 +35,7 @@ turbine = "1.2.0"
 kotlin-compile-testing = "0.7.0"
 
 fgp = "0.20.0"
-publish = "0.30.0"
+publish = "0.31.0"
 dokka = "2.0.0"
 binarycompatibility = "0.17.0"
 dependency-analysis = "2.10.1"
