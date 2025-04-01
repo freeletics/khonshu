@@ -73,7 +73,7 @@ androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmod
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.4.0" }
-kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.8.0" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.8.1" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 anvil-annotations = { module = "dev.zacsweers.anvil:annotations", version.ref = "anvil" }
