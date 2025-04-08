@@ -121,7 +121,8 @@ internal class SimpleTextResource(val text: String) : TextResource() {
 @Poko
 @Parcelize
 internal class StringTextResource(
-    @StringRes val id: Int,
+    @param:StringRes @get:StringRes
+    val id: Int,
     val args: @RawValue Array<out Any>,
 ) : TextResource() {
     override fun format(context: Context): String = tryFormat(context) {
@@ -156,7 +157,8 @@ internal class StringTextResource(
 @Poko
 @Parcelize
 internal class PluralTextResource(
-    @PluralsRes val id: Int,
+    @param:PluralsRes @get:PluralsRes
+    val id: Int,
     val quantity: Int,
     val args: @RawValue Array<out Any>,
 ) : TextResource() {
