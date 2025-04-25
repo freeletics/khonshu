@@ -1,12 +1,12 @@
 # Get started
 
-Khonshu's Codegen is a plugin for [Anvil](https://github.com/square/anvil) that helps with
-generating dependency injection related code and common boilerplate for screens.
+Khonshu's Codegen is a KSP processor that helps with generating dependency injection related code and
+common boilerplate for screens.
 
 ## Advantages
 
 - eliminate boilerplate that usually needs to be repeated on each screen
-- optional integration with Navigator to simplify its setup
+- integrated with Khonshu's navigation to simplify its setup
 - easily let objects survive configuration changes
 
 
@@ -14,8 +14,7 @@ generating dependency injection related code and common boilerplate for screens.
 
 ```groovy
 implementation("com.freeletics.khonshu:codegen-runtime:<latest-version>")
-// instead of `anvil` it's also possible to use `ksp`
-anvil("com.freeletics.khonshu:codegen-compiler:<latest-version>")
+ksp("com.freeletics.khonshu:codegen-compiler:<latest-version>")
 ```
 
 
@@ -28,7 +27,7 @@ it falls into the `Fragment` category.
 The `@NavDestination` annotation is added to the top level composable of a screen. This function
 can have 2 parameters: the state that should be rendered and a lambda that allows
 the composable to send actions for user interactions. Adding the annotation will then generate
-another Composable function called `KhonshuExampleUi`, a Dagger component and a `NavDestination`
+another Composable function called `KhonshuExampleUi`, a Metro graph and a `NavDestination`
 that uses the given `route` and the generated composable.
 
 ```kotlin
@@ -48,39 +47,36 @@ internal fun ExampleUi(
 ```
 *`scope`, `parentScope` and `destinationScope` are described in the next sections*
 
-The generated `KhonshuExampleUi` function will use the generated component, the
+The generated `KhonshuExampleUi` function will use the generated graph, the
 annotated composable as well as the `stateMachine` parameter from the
 annotation. It will automatically hook up the
 state machine with the composable so that the state from the state machine
 is passed to the composable and actions from the latter are sent back to the
-state machine. The generated composable will use the generated component
+state machine. The generated composable will use the generated graph
 to obtain the state machine.
 
 
-## Generated component
+## Generated graph
 
-All annotations have a `scope` and a `parentScope` parameter. These will be used in Anvil's
-`@ContributesSubcomponent` annotation on the generated subcomponent, i.e.
-`@ContributesSubcomponent(route = ExampleRoute::class, parentScope = AppScope::class)`.
+All annotations have a `scope` and a `parentScope` parameter. These will be used in Metros's
+`@ContributesGraphExtension` and `@ContributesGraphExtension.Factory` annotations on the
+generated code.
 
-Since the generated subcomponent is using `@ContributesSubcomponent`, it is possible
+Since the generated subgraph is using `@ContributesGraphExtension`, it is possible
 to use `@ContributesTo`, `@ContributesBinding` and so on with that same scope
 to contribute objects into it.
 
-`scope` is also used for Dagger scopes. The generated component is annotated
-with the `@SingleIn` annotation that ships with Anvil and uses
-the `scope` value as a parameter. To scope a class just add
-`@SingleIn(ExampleScope::class)` to it. Any object using this scope will automatically
-survive configuration changes and will not be recreated together with the UI. In fact any
-scoped object that is created in generated component will do so together with component itself.
+`scope` is also used in the `@SingleIn` annotation on the generated Metro graph
+Any object using this scope will automatically survive configuration changes and will
+not be recreated together with the UI.
 
-A factory for the generated subcomponent is automatically generated and contributed to
-the component that uses `parentScope` as its own scope. This component will be looked up internally
+A factory for the generated subgraph is automatically generated and contributed to
+the graph that uses `parentScope` as its own scope. This graph will be looked up internally
 with `Context.getSystemService(name)` using the fully qualified name of the given `parentScope` as
 key for the lookup. It is expected that the app will provide it through its `Application` class or an
 `Activity`.
 
-For convenience purposes the generated component will make the instance of `route` that was used to
+For convenience purposes the generated graph will make the instance of `route` that was used to
 navigate to the screen and a `SavedStateHandle` available which can be injected to classes like
 the state machine to save state. When injecting the `SavedStateHandle` a `@ForScope(ExampleScope::class)`
 qualifier needs to be added.
@@ -94,10 +90,10 @@ to implement the `Overlay` marker interface.
 
 To avoid having to access any generated code the destination is directly contributed to
 a `Set<NavDestination>` which can then be injected where the `NavHost` is
-created. By default this set lives in the `AppScope` component, but this can be changed
+created. By default this set lives in the `AppScope` graph, but this can be changed
 by setting a different scope marker class to `destinationScope`. It's also possible to use
 `destinationScope` to create distinct sets of destinations. For example if an app has a logged in
-and a logged out component, their scopes could be used as `destinationScope` depending on whether
+and a logged out graph, their scopes could be used as `destinationScope` depending on whether
 a screen is shown in the logged in or logged out state.
 
 
@@ -105,7 +101,7 @@ a screen is shown in the logged in or logged out state.
 
 The integration of Khonshu's Codegen and Navigation libraries also expects an `ActivityNavigator`
 to be injectable. This can be easily achieved by adding `@SingleIn(ExampleScope::class)
-@ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, ActivityNavigator::class)`
+@ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, binding<ActivityNavigator>())`
 to a subclass of it. The generated code will automatically take care of setting up
 the navigator by calling `NavigationSetup` for compose and `handleNavigation`
 for Fragments inside the generated code.
@@ -116,8 +112,8 @@ for Fragments inside the generated code.
 Sometimes it is needed to share an object between 2 or more screens, for example
 in a flow of screens that are connected to each other and work on the same data.
 This is possible by using the route of the first screen in the flow as `parentScope`
-for the other scopes. Internally this will cause the generated component for the
-first screen to become the parent for the components of the other screens.
+for the other scopes. Internally this will cause the generated graph for the
+first screen to become the parent for the graphs of the other screens.
 
 This then allows injecting anything that is available in the scope of the first screen,
 including the `SavedStateHandle` and route of the initial/parent screen.
@@ -128,9 +124,6 @@ including the `SavedStateHandle` and route of the initial/parent screen.
 This is a minimal example of how using Khonshu's Codegen for a screen would look like.
 
 ```kotlin
-// marker class for the scope
-sealed interface ExampleScope
-
 // state machine survives orientation changes
 @SingleIn(ExampleRoute::class)
 internal class ExampleStateMachine @Inject constructor(
@@ -147,7 +140,7 @@ internal class ExampleStateMachine @Inject constructor(
 @ForScope(ExampleRoute::class)
 // make ExampleNavigator available as ActivityNavigator so that the generated code can automatically
 // set up the navigation handling
-@ContributesBinding(ExampleRoute::class, ActivityNavigator::class)
+@ContributesBinding(ExampleRoute::class, binding<ActivityNavigator>())
 class ExampleNavigator @Inject constructor(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
     // ...
 }
@@ -155,7 +148,7 @@ class ExampleNavigator @Inject constructor(hostNavigator: HostNavigator) : Desti
 
 @NavDestination(
     route = ExampleRoute::class, // the route used to navigate to ExampleUi
-    parentScope = AppScope::class, // the scope of the app level component, AppScope is the default value and can be omitted
+    parentScope = AppScope::class, // the scope of the app level graph, AppScope is the default value and can be omitted
     stateMachine = ExampleStateMachine::class, // the state machine used for this ui
     destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted
 )
@@ -170,28 +163,29 @@ internal fun ExampleUi(
 
 
 Using this would require a one time setup in the app so that the screens can look up the `AppScope`
-component through `getSystemService` to retrieve the parent component:
+graph through `getSystemService` to retrieve the parent graph:
 
 ```kotlin
-@AppScope
-@MergeComponent(scope = AppScope::class)
-interface AppComponent {
+@SingleIn(AppScope::class)
+@DependencyGraph(scope = AppScope::class, isExtendable = true)
+interface AppGraph {
     // allows an Activity to get all generated NavDestinations to set up the NavHost
     val destinations: Set<NavDestination>
 
-    @Component.Factory
+    @DependencyGraph.Factory
     interface Factory {
-        fun create(): AppComponent
+        fun create(): AppGraph
     }
 }
 
 class App : Application() {
+    private val graph by lazy {
+        createGraphFactory<AppGraph.Factory>().create()
+    }
 
-    private val component: AppComponent = DaggerAppComponent.factory().create(this)
-
-    override fun getSystemService(name: String): Any {
+    override fun getSystemService(name: String): Any? {
         if (name == AppScope::class.qualifiedName) {
-            return component
+            return graph
         }
         return super.getSystemService(name)
     }
