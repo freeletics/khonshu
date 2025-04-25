@@ -6,7 +6,7 @@ import com.freeletics.khonshu.codegen.util.asComposeState
 import com.freeletics.khonshu.codegen.util.composable
 import com.freeletics.khonshu.codegen.util.launch
 import com.freeletics.khonshu.codegen.util.navHostParameter
-import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.remember
 import com.freeletics.khonshu.codegen.util.rememberCoroutineScope
@@ -19,18 +19,18 @@ internal val Generator<out BaseData>.composableName
 
 /**
  * The inner Composable is used for both NavDestinations and Activities.
- * Receives the component, will do the StateMachine set up and then calls
+ * Receives the graph, will do the StateMachine set up and then calls
  * the annotated composable with all required parameters.
  */
-internal class ComponentComposableGenerator(
+internal class GraphComposableGenerator(
     override val data: BaseData,
 ) : Generator<BaseData>() {
     internal fun generate(): FunSpec {
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
-            .addAnnotation(optInAnnotation())
+            .addAnnotation(optIn())
             .addModifiers(PRIVATE)
-            .addParameter("component", retainedComponentClassName)
+            .addParameter("graph", graphClassName)
             .also {
                 if (data is NavHostActivityData) {
                     it.addParameter(navHostParameter(data.navHostParameter))
@@ -44,10 +44,10 @@ internal class ComponentComposableGenerator(
         return CodeBlock.builder()
             .apply {
                 data.composableParameter.forEach { parameter ->
-                    addStatement("val %L = %M { component.%L }", parameter.name, remember, parameter.name)
+                    addStatement("val %L = %M { graph.%L }", parameter.name, remember, parameter.name)
                 }
             }
-            .addStatement("val stateMachine = %M { component.%L }", remember, data.stateMachine.propertyName)
+            .addStatement("val stateMachine = %M { graph.%L }", remember, data.stateMachine.propertyName)
             .apply {
                 if (data.sendActionParameter != null) {
                     addStatement("val scope = %M()", rememberCoroutineScope)

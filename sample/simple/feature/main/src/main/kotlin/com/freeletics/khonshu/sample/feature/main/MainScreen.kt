@@ -9,9 +9,8 @@ import com.freeletics.khonshu.codegen.NavHostActivity
 import com.freeletics.khonshu.codegen.SimpleNavHost
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.sample.feature.root.nav.RootRoute
-import com.squareup.anvil.annotations.ContributesTo
-import dagger.Module
-import dagger.Provides
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
 
 @NavHostActivity(
     stateMachine = MainStateMachine::class,
@@ -25,8 +24,7 @@ internal fun MainScreen(
 }
 
 @ContributesTo(ActivityScope::class)
-@Module
-object MainModule {
+interface MainModule {
     @Provides
     fun provideRoot(): NavRoot = RootRoute
 }

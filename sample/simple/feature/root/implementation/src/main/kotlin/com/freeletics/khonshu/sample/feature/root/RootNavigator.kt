@@ -8,14 +8,15 @@ import com.freeletics.khonshu.sample.feature.dialog.nav.DialogRoute
 import com.freeletics.khonshu.sample.feature.newroot.nav.NewRootRoute
 import com.freeletics.khonshu.sample.feature.root.nav.RootRoute
 import com.freeletics.khonshu.sample.feature.screen.nav.ScreenRoute
-import com.squareup.anvil.annotations.ContributesBinding
-import com.squareup.anvil.annotations.optional.ForScope
-import com.squareup.anvil.annotations.optional.SingleIn
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.ForScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 @ForScope(RootRoute::class)
 @SingleIn(RootRoute::class)
-@ContributesBinding(RootRoute::class, ActivityNavigator::class)
+@ContributesBinding(RootRoute::class, binding<ActivityNavigator>())
 class RootNavigator @Inject constructor(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
     fun navigateToScreen() {
         navigateTo(ScreenRoute(1))

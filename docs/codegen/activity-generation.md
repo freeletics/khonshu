@@ -45,4 +45,4 @@ use it.
 One requirement is that the `destinationScope` used by other screens is either the `scope` or
 `parentScope` (or a parent of the parent if there are deeper scope hierarchies) used for
 `@NavHostActivity`. Otherwise the `Set<NavDestination>` won't be available
-for injection and Dagger will fail while generating the component.
+for injection and Metro will fail when injecting dependencies.
