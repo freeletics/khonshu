@@ -4,7 +4,6 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.util.contributesToAnnotation
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.intoSet
-import com.freeletics.khonshu.codegen.util.module
 import com.freeletics.khonshu.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.util.provides
 import com.squareup.kotlinpoet.CodeBlock
@@ -17,18 +16,17 @@ internal class NavDestinationModuleGenerator(
     private val moduleClassName = ClassName("Khonshu${data.baseName}NavDestinationModule")
 
     internal fun generate(): TypeSpec {
-        return TypeSpec.objectBuilder(moduleClassName)
+        return TypeSpec.interfaceBuilder(moduleClassName)
             .addAnnotation(optInAnnotation())
-            .addAnnotation(module)
             .addAnnotation(contributesToAnnotation(data.navigation!!.destinationScope))
             .addFunction(providesDestination())
             .build()
     }
 
     private fun providesDestination(): FunSpec {
-        return FunSpec.builder("provideNavDestination")
-            .addAnnotation(provides)
-            .addAnnotation(intoSet)
+        return FunSpec.builder("provide${data.baseName}NavDestination")
+            .addAnnotation(provides())
+            .addAnnotation(intoSet())
             .addAnnotation(optInAnnotation(internalNavigatorApi))
             .returns(data.navigation!!.destinationClass)
             .addCode(providesDestinationCode())

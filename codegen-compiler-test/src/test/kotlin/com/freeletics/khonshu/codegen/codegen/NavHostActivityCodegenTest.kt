@@ -3,7 +3,6 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.ActivityScope
-import com.freeletics.khonshu.codegen.AppScope
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.squareup.kotlinpoet.ClassName
@@ -15,6 +14,7 @@ import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.UNIT
 import com.squareup.kotlinpoet.asClassName
+import dev.zacsweers.metro.AppScope
 import org.intellij.lang.annotations.Language
 import org.junit.Test
 
@@ -99,15 +99,13 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
-            import com.squareup.anvil.annotations.ContributesSubcomponent
-            import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.optional.ForScope
-            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.parent.TestParentScope
-            import dagger.BindsInstance
-            import dagger.Module
-            import dagger.Provides
-            import dagger.multibindings.Multibinds
+            import dev.zacsweers.metro.ContributesGraphExtension
+            import dev.zacsweers.metro.ContributesTo
+            import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.Provides
+            import dev.zacsweers.metro.SingleIn
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.Unit
@@ -120,17 +118,21 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
-            @ContributesSubcomponent(
-              scope = TestScreen::class,
-              parentScope = TestParentScope::class,
+            @ContributesGraphExtension(
+              TestScreen::class,
+              isExtendable = true,
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
 
-              @get:ForScope(TestScreen::class)
+              @ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
+
+              @Multibinds(allowEmpty = true)
+              @ForScope(TestScreen::class)
+              public fun bindCloseables(): Set<Closeable>
 
               override fun close() {
                 closeables.forEach {
@@ -138,18 +140,13 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesSubcomponent.Factory
+              @ContributesGraphExtension.Factory(TestParentScope::class)
               public interface Factory {
-                public fun create(
-                  @BindsInstance viewModel: StackEntryStoreViewModel,
-                  @BindsInstance @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                  @BindsInstance intent: Intent,
+                public fun createKhonshuTestComponent(
+                  @Provides viewModel: StackEntryStoreViewModel,
+                  @Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
+                  @Provides intent: Intent,
                 ): KhonshuTestComponent
-              }
-
-              @ContributesTo(TestParentScope::class)
-              public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
               }
             }
 
@@ -157,23 +154,14 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestComponent.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle, activity.intent)
+                factory.createKhonshuTestComponent(viewModel, savedStateHandle, activity.intent)
               }
             }
 
-            @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestModule {
-              @Multibinds
-              @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
-            }
-
-            @Module
-            @ContributesTo(TestScreen::class)
-            public object KhonshuTestActivityModule {
+            public interface KhonshuTestActivityModule {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
@@ -287,7 +275,6 @@ internal class NavHostActivityCodegenTest {
             import androidx.lifecycle.SavedStateViewModelFactory
             import androidx.lifecycle.ViewModelProvider
             import com.freeletics.khonshu.codegen.ActivityScope
-            import com.freeletics.khonshu.codegen.AppScope
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.ActivityComponentProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
@@ -301,14 +288,13 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
-            import com.squareup.anvil.annotations.ContributesSubcomponent
-            import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.optional.ForScope
-            import com.squareup.anvil.annotations.optional.SingleIn
-            import dagger.BindsInstance
-            import dagger.Module
-            import dagger.Provides
-            import dagger.multibindings.Multibinds
+            import dev.zacsweers.metro.AppScope
+            import dev.zacsweers.metro.ContributesGraphExtension
+            import dev.zacsweers.metro.ContributesTo
+            import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.Provides
+            import dev.zacsweers.metro.SingleIn
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.Unit
@@ -321,17 +307,21 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(ActivityScope::class)
-            @ContributesSubcomponent(
-              scope = ActivityScope::class,
-              parentScope = AppScope::class,
+            @ContributesGraphExtension(
+              ActivityScope::class,
+              isExtendable = true,
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
 
-              @get:ForScope(ActivityScope::class)
+              @ForScope(ActivityScope::class)
               public val closeables: Set<Closeable>
+
+              @Multibinds(allowEmpty = true)
+              @ForScope(ActivityScope::class)
+              public fun bindCloseables(): Set<Closeable>
 
               override fun close() {
                 closeables.forEach {
@@ -339,18 +329,13 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesSubcomponent.Factory
+              @ContributesGraphExtension.Factory(AppScope::class)
               public interface Factory {
-                public fun create(
-                  @BindsInstance viewModel: StackEntryStoreViewModel,
-                  @BindsInstance @ForScope(ActivityScope::class) savedStateHandle: SavedStateHandle,
-                  @BindsInstance intent: Intent,
+                public fun createKhonshuTestComponent(
+                  @Provides viewModel: StackEntryStoreViewModel,
+                  @Provides @ForScope(ActivityScope::class) savedStateHandle: SavedStateHandle,
+                  @Provides intent: Intent,
                 ): KhonshuTestComponent
-              }
-
-              @ContributesTo(AppScope::class)
-              public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
               }
             }
 
@@ -358,23 +343,14 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, ActivityScope::class, AppScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, ActivityScope::class, AppScope::class) { factory: KhonshuTestComponent.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle, activity.intent)
+                factory.createKhonshuTestComponent(viewModel, savedStateHandle, activity.intent)
               }
             }
 
-            @Module
             @ContributesTo(ActivityScope::class)
-            public interface KhonshuTestModule {
-              @Multibinds
-              @ForScope(ActivityScope::class)
-              public fun bindCloseables(): Set<Closeable>
-            }
-
-            @Module
-            @ContributesTo(ActivityScope::class)
-            public object KhonshuTestActivityModule {
+            public interface KhonshuTestActivityModule {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
@@ -524,16 +500,14 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
-            import com.squareup.anvil.annotations.ContributesSubcomponent
-            import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.optional.ForScope
-            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.other.TestClass2
             import com.test.parent.TestParentScope
-            import dagger.BindsInstance
-            import dagger.Module
-            import dagger.Provides
-            import dagger.multibindings.Multibinds
+            import dev.zacsweers.metro.ContributesGraphExtension
+            import dev.zacsweers.metro.ContributesTo
+            import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.Provides
+            import dev.zacsweers.metro.SingleIn
             import java.io.Closeable
             import kotlin.Int
             import kotlin.OptIn
@@ -549,9 +523,9 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
-            @ContributesSubcomponent(
-              scope = TestScreen::class,
-              parentScope = TestParentScope::class,
+            @ContributesGraphExtension(
+              TestScreen::class,
+              isExtendable = true,
             )
             public interface KhonshuTest2Component : Closeable {
               public val testStateMachine: TestStateMachine
@@ -566,8 +540,12 @@ internal class NavHostActivityCodegenTest {
 
               public val testMap: Map<String, Int>
 
-              @get:ForScope(TestScreen::class)
+              @ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
+
+              @Multibinds(allowEmpty = true)
+              @ForScope(TestScreen::class)
+              public fun bindCloseables(): Set<Closeable>
 
               override fun close() {
                 closeables.forEach {
@@ -575,18 +553,13 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesSubcomponent.Factory
+              @ContributesGraphExtension.Factory(TestParentScope::class)
               public interface Factory {
-                public fun create(
-                  @BindsInstance viewModel: StackEntryStoreViewModel,
-                  @BindsInstance @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                  @BindsInstance intent: Intent,
+                public fun createKhonshuTest2Component(
+                  @Provides viewModel: StackEntryStoreViewModel,
+                  @Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
+                  @Provides intent: Intent,
                 ): KhonshuTest2Component
-              }
-
-              @ContributesTo(TestParentScope::class)
-              public interface ParentComponent {
-                public fun khonshuTest2ComponentFactory(): Factory
               }
             }
 
@@ -594,23 +567,14 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTest2ComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { parentComponent: KhonshuTest2Component.ParentComponent, savedStateHandle ->
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTest2Component.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTest2ComponentFactory().create(viewModel, savedStateHandle, activity.intent)
+                factory.createKhonshuTest2Component(viewModel, savedStateHandle, activity.intent)
               }
             }
 
-            @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTest2Module {
-              @Multibinds
-              @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
-            }
-
-            @Module
-            @ContributesTo(TestScreen::class)
-            public object KhonshuTest2ActivityModule {
+            public interface KhonshuTest2ActivityModule {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
@@ -743,15 +707,13 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
-            import com.squareup.anvil.annotations.ContributesSubcomponent
-            import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.optional.ForScope
-            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.parent.TestParentScope
-            import dagger.BindsInstance
-            import dagger.Module
-            import dagger.Provides
-            import dagger.multibindings.Multibinds
+            import dev.zacsweers.metro.ContributesGraphExtension
+            import dev.zacsweers.metro.ContributesTo
+            import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.Provides
+            import dev.zacsweers.metro.SingleIn
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.collections.Set
@@ -762,17 +724,21 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
-            @ContributesSubcomponent(
-              scope = TestScreen::class,
-              parentScope = TestParentScope::class,
+            @ContributesGraphExtension(
+              TestScreen::class,
+              isExtendable = true,
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
 
-              @get:ForScope(TestScreen::class)
+              @ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
+
+              @Multibinds(allowEmpty = true)
+              @ForScope(TestScreen::class)
+              public fun bindCloseables(): Set<Closeable>
 
               override fun close() {
                 closeables.forEach {
@@ -780,18 +746,13 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesSubcomponent.Factory
+              @ContributesGraphExtension.Factory(TestParentScope::class)
               public interface Factory {
-                public fun create(
-                  @BindsInstance viewModel: StackEntryStoreViewModel,
-                  @BindsInstance @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                  @BindsInstance intent: Intent,
+                public fun createKhonshuTestComponent(
+                  @Provides viewModel: StackEntryStoreViewModel,
+                  @Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
+                  @Provides intent: Intent,
                 ): KhonshuTestComponent
-              }
-
-              @ContributesTo(TestParentScope::class)
-              public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
               }
             }
 
@@ -799,23 +760,14 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestComponent.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle, activity.intent)
+                factory.createKhonshuTestComponent(viewModel, savedStateHandle, activity.intent)
               }
             }
 
-            @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestModule {
-              @Multibinds
-              @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
-            }
-
-            @Module
-            @ContributesTo(TestScreen::class)
-            public object KhonshuTestActivityModule {
+            public interface KhonshuTestActivityModule {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
@@ -936,15 +888,13 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
-            import com.squareup.anvil.annotations.ContributesSubcomponent
-            import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.optional.ForScope
-            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.parent.TestParentScope
-            import dagger.BindsInstance
-            import dagger.Module
-            import dagger.Provides
-            import dagger.multibindings.Multibinds
+            import dev.zacsweers.metro.ContributesGraphExtension
+            import dev.zacsweers.metro.ContributesTo
+            import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.Provides
+            import dev.zacsweers.metro.SingleIn
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.Unit
@@ -957,17 +907,21 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
-            @ContributesSubcomponent(
-              scope = TestScreen::class,
-              parentScope = TestParentScope::class,
+            @ContributesGraphExtension(
+              TestScreen::class,
+              isExtendable = true,
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
 
-              @get:ForScope(TestScreen::class)
+              @ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
+
+              @Multibinds(allowEmpty = true)
+              @ForScope(TestScreen::class)
+              public fun bindCloseables(): Set<Closeable>
 
               override fun close() {
                 closeables.forEach {
@@ -975,18 +929,13 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesSubcomponent.Factory
+              @ContributesGraphExtension.Factory(TestParentScope::class)
               public interface Factory {
-                public fun create(
-                  @BindsInstance viewModel: StackEntryStoreViewModel,
-                  @BindsInstance @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                  @BindsInstance intent: Intent,
+                public fun createKhonshuTestComponent(
+                  @Provides viewModel: StackEntryStoreViewModel,
+                  @Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
+                  @Provides intent: Intent,
                 ): KhonshuTestComponent
-              }
-
-              @ContributesTo(TestParentScope::class)
-              public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
               }
             }
 
@@ -994,23 +943,14 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestComponent.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle, activity.intent)
+                factory.createKhonshuTestComponent(viewModel, savedStateHandle, activity.intent)
               }
             }
 
-            @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestModule {
-              @Multibinds
-              @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
-            }
-
-            @Module
-            @ContributesTo(TestScreen::class)
-            public object KhonshuTestActivityModule {
+            public interface KhonshuTestActivityModule {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
@@ -1136,15 +1076,13 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
-            import com.squareup.anvil.annotations.ContributesSubcomponent
-            import com.squareup.anvil.annotations.ContributesTo
-            import com.squareup.anvil.annotations.optional.ForScope
-            import com.squareup.anvil.annotations.optional.SingleIn
             import com.test.parent.TestParentScope
-            import dagger.BindsInstance
-            import dagger.Module
-            import dagger.Provides
-            import dagger.multibindings.Multibinds
+            import dev.zacsweers.metro.ContributesGraphExtension
+            import dev.zacsweers.metro.ContributesTo
+            import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.Provides
+            import dev.zacsweers.metro.SingleIn
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.Unit
@@ -1157,17 +1095,21 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
-            @ContributesSubcomponent(
-              scope = TestScreen::class,
-              parentScope = TestParentScope::class,
+            @ContributesGraphExtension(
+              TestScreen::class,
+              isExtendable = true,
             )
             public interface KhonshuTestComponent : Closeable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
 
-              @get:ForScope(TestScreen::class)
+              @ForScope(TestScreen::class)
               public val closeables: Set<Closeable>
+
+              @Multibinds(allowEmpty = true)
+              @ForScope(TestScreen::class)
+              public fun bindCloseables(): Set<Closeable>
 
               override fun close() {
                 closeables.forEach {
@@ -1175,18 +1117,13 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesSubcomponent.Factory
+              @ContributesGraphExtension.Factory(TestParentScope::class)
               public interface Factory {
-                public fun create(
-                  @BindsInstance viewModel: StackEntryStoreViewModel,
-                  @BindsInstance @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                  @BindsInstance intent: Intent,
+                public fun createKhonshuTestComponent(
+                  @Provides viewModel: StackEntryStoreViewModel,
+                  @Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
+                  @Provides intent: Intent,
                 ): KhonshuTestComponent
-              }
-
-              @ContributesTo(TestParentScope::class)
-              public interface ParentComponent {
-                public fun khonshuTestComponentFactory(): Factory
               }
             }
 
@@ -1194,23 +1131,14 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestComponentProvider(
               private final val activity: ComponentActivity,
             ) : ActivityComponentProvider {
-              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { parentComponent: KhonshuTestComponent.ParentComponent, savedStateHandle ->
+              override fun <C> provide(scope: KClass<*>): C = component(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestComponent.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                parentComponent.khonshuTestComponentFactory().create(viewModel, savedStateHandle, activity.intent)
+                factory.createKhonshuTestComponent(viewModel, savedStateHandle, activity.intent)
               }
             }
 
-            @Module
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestModule {
-              @Multibinds
-              @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
-            }
-
-            @Module
-            @ContributesTo(TestScreen::class)
-            public object KhonshuTestActivityModule {
+            public interface KhonshuTestActivityModule {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 

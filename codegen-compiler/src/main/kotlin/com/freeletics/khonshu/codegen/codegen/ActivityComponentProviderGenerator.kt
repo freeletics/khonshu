@@ -54,11 +54,11 @@ internal class ActivityComponentProviderGenerator(
             .addParameter("scope", KClass::class.asClassName().parameterizedBy(STAR))
             .returns(typeVariable)
             .beginControlFlow(
-                "return %M(activity, scope, %T::class, %T::class) { parentComponent: %T, savedStateHandle ->",
+                "return %M(activity, scope, %T::class, %T::class) { factory: %T, savedStateHandle ->",
                 getComponent,
                 data.scope,
                 data.parentScope,
-                retainedParentComponentClassName,
+                retainedComponentFactoryClassName,
             )
             .addStatement(
                 "val viewModel = %T(activity, %T())[%T::class.java]",
@@ -67,9 +67,8 @@ internal class ActivityComponentProviderGenerator(
                 multiStackHostNavigatorViewModel,
             )
             .addStatement(
-                "parentComponent.%L().%L(viewModel, savedStateHandle, activity.intent)",
-                retainedParentComponentGetterName,
-                RETAINED_COMPONENT_FACTORY_CREATE_NAME,
+                "factory.%L(viewModel, savedStateHandle, activity.intent)",
+                retainedComponentFactoryCreateName,
             )
             .endControlFlow()
             .build()

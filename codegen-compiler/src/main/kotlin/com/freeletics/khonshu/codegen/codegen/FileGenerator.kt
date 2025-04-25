@@ -16,7 +16,6 @@ public class FileGenerator {
     public fun generate(data: NavDestinationData): FileSpec {
         val component = ComponentGenerator(data)
         val componentProvider = NavDestinationComponentProviderGenerator(data)
-        val module = ComponentModuleGenerator(data)
         val destinationComposable = NavDestinationComposableGenerator(data)
         val componentComposable = ComponentComposableGenerator(data)
         val destinationModule = NavDestinationModuleGenerator(data)
@@ -24,7 +23,6 @@ public class FileGenerator {
         return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
             .addType(component.generate())
             .addType(componentProvider.generate())
-            .addType(module.generate())
             .addFunction(destinationComposable.generate())
             .addFunction(componentComposable.generate())
             .addType(destinationModule.generate())
@@ -34,7 +32,6 @@ public class FileGenerator {
     public fun generate(data: NavHostActivityData): FileSpec {
         val component = ComponentGenerator(data)
         val componentProvider = ActivityComponentProviderGenerator(data)
-        val module = ComponentModuleGenerator(data)
         val activityModule = ActivityModuleGenerator(data)
         val activity = ActivityGenerator(data)
         val componentComposable = ComponentComposableGenerator(data)
@@ -42,7 +39,6 @@ public class FileGenerator {
         return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
             .addType(component.generate())
             .addType(componentProvider.generate())
-            .addType(module.generate())
             .addType(activityModule.generate())
             .addType(activity.generate())
             .addFunction(componentComposable.generate())

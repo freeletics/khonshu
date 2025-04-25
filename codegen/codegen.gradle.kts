@@ -30,7 +30,7 @@ dependencies {
     "commonMainApi"(projects.navigation)
     "commonMainApi"(libs.jetbrains.compose.runtime)
     "commonMainApi"(libs.jetbrains.compose.ui)
-    "commonMainApi"(libs.inject)
+    "commonMainApi"(libs.metro)
 
     "androidMainApi"(libs.androidx.viewmodel)
     "androidMainApi"(libs.androidx.viewmodel.savedstate)

@@ -67,13 +67,6 @@ internal val launch = MemberName("kotlinx.coroutines", "launch")
 internal val immutableSet = ClassName("kotlinx.collections.immutable", "ImmutableSet")
 internal val toImmutableSet = MemberName("kotlinx.collections.immutable", "toImmutableSet")
 
-// Dagger
-internal val provides = ClassName("dagger", "Provides")
-internal val multibinds = ClassName("dagger.multibindings", "Multibinds")
-internal val intoSet = ClassName("dagger.multibindings", "IntoSet")
-internal val bindsInstance = ClassName("dagger", "BindsInstance")
-internal val module = ClassName("dagger", "Module")
-
 // AndroidX
 internal val componentActivity = ClassName("androidx.activity", "ComponentActivity")
 internal val setContent = MemberName("androidx.activity.compose", "setContent")

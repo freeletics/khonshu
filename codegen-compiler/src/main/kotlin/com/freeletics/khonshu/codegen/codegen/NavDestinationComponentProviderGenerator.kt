@@ -40,24 +40,23 @@ internal class NavDestinationComponentProviderGenerator(
             .apply {
                 if (data.navigation.parentScopeIsRoute) {
                     beginControlFlow(
-                        "return %M(entry, snapshot, provider, %T::class) { parentComponent: %T ->",
+                        "return %M(entry, snapshot, provider, %T::class) { factory: %T ->",
                         getComponentFromRoute,
                         data.parentScope,
-                        retainedParentComponentClassName,
+                        retainedComponentFactoryClassName,
                     )
                 } else {
                     beginControlFlow(
-                        "return %M(entry, provider, %T::class) { parentComponent: %T ->",
+                        "return %M(entry, provider, %T::class) { factory: %T ->",
                         getComponent,
                         data.parentScope,
-                        retainedParentComponentClassName,
+                        retainedComponentFactoryClassName,
                     )
                 }
             }
             .addStatement(
-                "parentComponent.%L().%L(entry.savedStateHandle, entry.route)",
-                retainedParentComponentGetterName,
-                RETAINED_COMPONENT_FACTORY_CREATE_NAME,
+                "factory.%L(entry.savedStateHandle, entry.route)",
+                retainedComponentFactoryCreateName,
             )
             .endControlFlow()
             .build()

@@ -3,15 +3,18 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
+        maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots") }
+        mavenLocal()
     }
 }
 
 plugins {
-    id("com.freeletics.gradle.settings").version("0.23.1")
+    id("com.freeletics.gradle.settings").version("metro-SNAPSHOT")
 }
 
 rootProject.name = "simple-sample"
 
-configure<com.freeletics.gradle.plugin.SettingsExtension> {
+freeletics {
+    snapshots()
     includeKhonshu("../..")
 }

@@ -3,7 +3,7 @@ plugins {
 }
 
 freeletics {
-    useDaggerWithKhonshu()
+    useKhonshu()
     useCompose()
 }
 
@@ -14,7 +14,6 @@ dependencies {
     api(libs.coroutines)
     api(libs.khonshu.navigation)
     api(libs.khonshu.statemachine)
-    api(libs.khonshu.codegen)
     api(projects.feature.screen.nav)
 
     implementation(libs.androidx.compose.ui)

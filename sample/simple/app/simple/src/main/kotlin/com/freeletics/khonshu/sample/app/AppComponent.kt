@@ -1,24 +1,18 @@
 package com.freeletics.khonshu.sample.app
 
 import android.content.Context
-import com.freeletics.khonshu.codegen.AppScope
-import com.squareup.anvil.annotations.MergeComponent
-import com.squareup.anvil.annotations.optional.SingleIn
-import dagger.BindsInstance
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 
 @SingleIn(AppScope::class)
-@MergeComponent(scope = AppScope::class)
+@DependencyGraph(scope = AppScope::class, isExtendable = true)
 interface AppComponent {
-    @MergeComponent.Factory
+    @DependencyGraph.Factory
     interface Factory {
         fun create(
-            @BindsInstance context: Context,
+            @Provides context: Context,
         ): AppComponent
-    }
-
-    companion object {
-        fun factory(): Factory {
-            return DaggerAppComponent.factory()
-        }
     }
 }

@@ -4,15 +4,15 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.activityNavigator
 import com.freeletics.khonshu.codegen.util.asParameter
-import com.freeletics.khonshu.codegen.util.bindsInstanceParameter
-import com.freeletics.khonshu.codegen.util.contributesToAnnotation
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
+import com.freeletics.khonshu.codegen.util.multibinds
 import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
-import com.freeletics.khonshu.codegen.util.scopeToAnnotation
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
+import com.freeletics.khonshu.codegen.util.singleInAnnotation
 import com.freeletics.khonshu.codegen.util.subcomponentAnnotation
 import com.freeletics.khonshu.codegen.util.subcomponentFactoryAnnotation
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget.GET
@@ -23,24 +23,20 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.asTypeName
 import java.io.Closeable
 
 internal val Generator<out BaseData>.retainedComponentClassName
     get() = ClassName("Khonshu${data.baseName}Component")
 
-internal const val RETAINED_COMPONENT_FACTORY_CREATE_NAME = "create"
-
 internal val Generator<out BaseData>.retainedComponentFactoryClassName
     get() = retainedComponentClassName.nestedClass("Factory")
 
+internal val Generator<out BaseData>.retainedComponentFactoryCreateName
+    get() = "create${retainedComponentClassName.simpleName}"
+
 internal const val CLOSEABLE_SET_PROPERTY_NAME = "closeables"
-
-internal val Generator<out BaseData>.retainedParentComponentClassName
-    get() = retainedComponentClassName.nestedClass("ParentComponent")
-
-internal val Generator<out BaseData>.retainedParentComponentGetterName
-    get() = "${retainedComponentClassName.simpleName.replaceFirstChar { it.lowercase() }}Factory"
 
 internal class ComponentGenerator(
     override val data: BaseData,
@@ -48,13 +44,13 @@ internal class ComponentGenerator(
     fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(retainedComponentClassName)
             .addAnnotation(optInAnnotation())
-            .addAnnotation(scopeToAnnotation(data.scope))
-            .addAnnotation(subcomponentAnnotation(data.scope, data.parentScope))
+            .addAnnotation(singleInAnnotation(data.scope))
+            .addAnnotation(subcomponentAnnotation(data.scope))
             .addSuperinterface(Closeable::class)
             .addProperties(componentProperties())
+            .addFunction(multibindsCloseableFunction())
             .addFunction(closeFunction())
             .addType(retainedComponentFactory())
-            .addType(retainedComponentFactoryParentComponent())
             .build()
     }
 
@@ -66,7 +62,7 @@ internal class ComponentGenerator(
             properties += simplePropertySpec(hostNavigator)
         } else {
             properties += simplePropertySpec(activityNavigator).toBuilder()
-                .addAnnotation(forScope(data.scope, GET))
+                .addAnnotation(forScope(data.scope))
                 .build()
         }
 
@@ -78,10 +74,19 @@ internal class ComponentGenerator(
             CLOSEABLE_SET_PROPERTY_NAME,
             SET.parameterizedBy(Closeable::class.asTypeName()),
         )
-            .addAnnotation(forScope(data.scope, GET))
+            .addAnnotation(forScope(data.scope))
             .build()
 
         return properties
+    }
+
+    private fun multibindsCloseableFunction(): FunSpec {
+        return FunSpec.builder("bindCloseables")
+            .addModifiers(ABSTRACT)
+            .addAnnotation(multibinds(allowEmpty = true))
+            .addAnnotation(forScope(data.scope))
+            .returns(SET.parameterizedBy(Closeable::class.asClassName()))
+            .build()
     }
 
     private fun closeFunction(): FunSpec {
@@ -94,31 +99,20 @@ internal class ComponentGenerator(
     }
 
     private fun retainedComponentFactory(): TypeSpec {
-        val createFun = FunSpec.builder(RETAINED_COMPONENT_FACTORY_CREATE_NAME)
+        val createFun = FunSpec.builder(retainedComponentFactoryCreateName)
             .addModifiers(ABSTRACT)
             .apply {
                 if (data is NavHostActivityData) {
-                    addParameter(bindsInstanceParameter("viewModel", multiStackHostNavigatorViewModel))
+                    addParameter(providesParameter("viewModel", multiStackHostNavigatorViewModel))
                 }
             }
-            .addParameter(bindsInstanceParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
-            .addParameter(bindsInstanceParameter(data.navigation.asParameter()))
+            .addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
+            .addParameter(providesParameter(data.navigation.asParameter()))
             .returns(retainedComponentClassName)
             .build()
         return TypeSpec.interfaceBuilder(retainedComponentFactoryClassName)
-            .addAnnotation(subcomponentFactoryAnnotation())
+            .addAnnotation(subcomponentFactoryAnnotation(data.parentScope))
             .addFunction(createFun)
-            .build()
-    }
-
-    private fun retainedComponentFactoryParentComponent(): TypeSpec {
-        val getterFun = FunSpec.builder(retainedParentComponentGetterName)
-            .addModifiers(ABSTRACT)
-            .returns(retainedComponentFactoryClassName)
-            .build()
-        return TypeSpec.interfaceBuilder(retainedParentComponentClassName)
-            .addAnnotation(contributesToAnnotation(data.parentScope))
-            .addFunction(getterFun)
             .build()
     }
 }

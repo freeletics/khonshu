@@ -8,13 +8,12 @@ import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.immutableSet
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.jvmSuppressWildcards
-import com.freeletics.khonshu.codegen.util.module
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
 import com.freeletics.khonshu.codegen.util.navRoot
 import com.freeletics.khonshu.codegen.util.navigationDestination
 import com.freeletics.khonshu.codegen.util.optInAnnotation
 import com.freeletics.khonshu.codegen.util.provides
-import com.freeletics.khonshu.codegen.util.scopeToAnnotation
+import com.freeletics.khonshu.codegen.util.singleInAnnotation
 import com.freeletics.khonshu.codegen.util.toImmutableSet
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -27,8 +26,7 @@ internal class ActivityModuleGenerator(
     private val moduleClassName = ClassName("Khonshu${data.baseName}ActivityModule")
 
     internal fun generate(): TypeSpec {
-        return TypeSpec.objectBuilder(moduleClassName)
-            .addAnnotation(module)
+        return TypeSpec.interfaceBuilder(moduleClassName)
             .addAnnotation(contributesToAnnotation(data.scope))
             .addFunction(provideImmutableNavDestinationsFunction())
             .addFunction(provideHostNavigator())
@@ -37,7 +35,7 @@ internal class ActivityModuleGenerator(
 
     private fun provideImmutableNavDestinationsFunction(): FunSpec {
         return FunSpec.builder("provideImmutableNavDestinations")
-            .addAnnotation(provides)
+            .addAnnotation(provides())
             .addParameter("destinations", SET.parameterizedBy(navigationDestination).jvmSuppressWildcards())
             .returns(immutableSet.parameterizedBy(navigationDestination))
             .addStatement("return destinations.%M()", toImmutableSet)
@@ -46,8 +44,8 @@ internal class ActivityModuleGenerator(
 
     private fun provideHostNavigator(): FunSpec {
         return FunSpec.builder("provideHostNavigator")
-            .addAnnotation(provides)
-            .addAnnotation(scopeToAnnotation(data.scope))
+            .addAnnotation(provides())
+            .addAnnotation(singleInAnnotation(data.scope))
             .addAnnotation(optInAnnotation(internalNavigatorApi))
             .addParameter("viewModel", multiStackHostNavigatorViewModel)
             .addParameter("startRoot", navRoot)

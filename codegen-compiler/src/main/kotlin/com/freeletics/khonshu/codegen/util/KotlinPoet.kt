@@ -2,16 +2,10 @@ package com.freeletics.khonshu.codegen.util
 
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.Navigation
-import com.squareup.anvil.annotations.ContributesSubcomponent
-import com.squareup.anvil.annotations.ContributesTo
-import com.squareup.anvil.annotations.optional.ForScope
-import com.squareup.anvil.annotations.optional.SingleIn
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
-import com.squareup.kotlinpoet.KModifier.LATEINIT
-import com.squareup.kotlinpoet.KModifier.PRIVATE
 import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName
@@ -19,29 +13,36 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.UNIT
+import dev.zacsweers.metro.ContributesGraphExtension
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.ForScope
+import dev.zacsweers.metro.IntoSet
+import dev.zacsweers.metro.Multibinds
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 
 internal val ClassName.propertyName: String get() {
     return simpleNames.first().replaceFirstChar(Char::lowercaseChar) +
         simpleNames.drop(1).joinToString { it.replaceFirstChar(Char::uppercaseChar) }
 }
 
-internal fun bindsInstanceParameter(
+internal fun providesParameter(
     name: String,
     className: ClassName,
     annotation: AnnotationSpec? = null,
 ): ParameterSpec {
     return ParameterSpec.builder(name, className)
-        .addAnnotation(bindsInstance)
+        .addAnnotation(provides())
         .apply { if (annotation != null) addAnnotation(annotation) }
         .build()
 }
 
-internal fun bindsInstanceParameter(
+internal fun providesParameter(
     spec: ParameterSpec,
     annotation: AnnotationSpec? = null,
 ): ParameterSpec {
     return spec.toBuilder()
-        .addAnnotation(bindsInstance)
+        .addAnnotation(provides())
         .apply { if (annotation != null) addAnnotation(annotation) }
         .build()
 }
@@ -60,34 +61,25 @@ internal fun simplePropertySpec(className: ClassName): PropertySpec {
     return PropertySpec.builder(className.propertyName, className).build()
 }
 
-internal fun lateinitPropertySpec(className: ClassName): PropertySpec {
-    return PropertySpec.builder(className.propertyName, className)
-        .addModifiers(PRIVATE, LATEINIT)
-        .mutable()
-        .build()
-}
-
 internal fun subcomponentAnnotation(
     scope: ClassName,
-    parentScope: ClassName,
-    module: ClassName? = null,
+    isExtendable: Boolean = true,
 ): AnnotationSpec {
-    return AnnotationSpec.builder(ContributesSubcomponent::class)
-        .addMember("scope = %T::class", scope)
-        .addMember("parentScope = %T::class", parentScope)
-        .apply {
-            if (module != null) {
-                addMember("modules = [%T::class]", module)
-            }
-        }
+    return AnnotationSpec.builder(ContributesGraphExtension::class)
+        .addMember("%T::class", scope)
+        .addMember("isExtendable = %L", isExtendable)
         .build()
 }
 
-internal fun subcomponentFactoryAnnotation(): AnnotationSpec {
-    return AnnotationSpec.builder(ContributesSubcomponent.Factory::class).build()
+internal fun subcomponentFactoryAnnotation(
+    parentScope: ClassName,
+): AnnotationSpec {
+    return AnnotationSpec.builder(ContributesGraphExtension.Factory::class)
+        .addMember("%T::class", parentScope)
+        .build()
 }
 
-internal fun scopeToAnnotation(scope: ClassName): AnnotationSpec {
+internal fun singleInAnnotation(scope: ClassName): AnnotationSpec {
     return AnnotationSpec.builder(SingleIn::class)
         .addMember("%T::class", scope)
         .build()
@@ -99,10 +91,23 @@ internal fun contributesToAnnotation(scope: ClassName): AnnotationSpec {
         .build()
 }
 
-internal fun forScope(scope: ClassName, target: UseSiteTarget? = null): AnnotationSpec {
+internal fun multibinds(allowEmpty: Boolean): AnnotationSpec {
+    return AnnotationSpec.builder(Multibinds::class)
+        .addMember("allowEmpty = %L", allowEmpty)
+        .build()
+}
+
+internal fun provides(): AnnotationSpec {
+    return AnnotationSpec.builder(Provides::class).build()
+}
+
+internal fun intoSet(): AnnotationSpec {
+    return AnnotationSpec.builder(IntoSet::class).build()
+}
+
+internal fun forScope(scope: ClassName): AnnotationSpec {
     return AnnotationSpec.builder(ForScope::class)
         .addMember("%T::class", scope)
-        .useSiteTarget(target)
         .build()
 }
 
