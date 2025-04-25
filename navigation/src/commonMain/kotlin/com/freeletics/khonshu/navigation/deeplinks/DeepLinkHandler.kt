@@ -45,8 +45,7 @@ public interface DeepLinkHandler {
      * A url prefix consisting of scheme and host. This is not allowed to have a trailing / or other
      * url elements.
      */
-    @JvmInline
-    public value class Prefix(internal val value: String) {
+    public data class Prefix(internal val value: String) {
         init {
             check(PREFIX_REGEX.matches(value)) { "$value does not match ${PREFIX_REGEX.pattern}" }
         }
@@ -60,8 +59,7 @@ public interface DeepLinkHandler {
      * would result in a placeholder named `id`. Placeholders are required to be a full path
      * segment.
      */
-    @JvmInline
-    public value class Pattern(internal val value: String) {
+    public data class Pattern(internal val value: String) {
         init {
             check(!value.startsWith("/")) { "Pattern should not start with a / but is $value" }
             check(!value.contains("?")) { "Pattern should not contain any query parameters but is $value" }

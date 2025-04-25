@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(libs.khonshu.codegen)
+    api(libs.khonshu.codegen.runtime)
     api(libs.khonshu.navigation)
 }

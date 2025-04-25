@@ -1,7 +1,7 @@
 package com.freeletics.khonshu.sample.feature.bottomsheet
 
 import com.freeletics.khonshu.statemachine.StateMachine
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 

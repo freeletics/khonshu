@@ -4,9 +4,9 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.bundle
 import com.freeletics.khonshu.codegen.util.compositionLocalProvider
-import com.freeletics.khonshu.codegen.util.localActivityComponentProvider
+import com.freeletics.khonshu.codegen.util.localActivityGraphProvider
 import com.freeletics.khonshu.codegen.util.navHost
-import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.remember
 import com.freeletics.khonshu.codegen.util.setContent
 import com.squareup.kotlinpoet.FunSpec
@@ -21,7 +21,7 @@ internal class ActivityGenerator(
 ) : Generator<NavHostActivityData>() {
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(activityName)
-            .addAnnotation(optInAnnotation())
+            .addAnnotation(optIn())
             .superclass(data.activityBaseClass)
             .addFunction(onCreateFun())
             .build()
@@ -33,20 +33,20 @@ internal class ActivityGenerator(
             .addParameter("savedInstanceState", bundle.copy(nullable = true))
             .addStatement("super.onCreate(savedInstanceState)")
             .beginControlFlow("%M", setContent)
-            .beginControlFlow("val componentProvider = %M", remember)
-            .addStatement("%T(this)", componentProviderClassName)
+            .beginControlFlow("val graphProvider = %M", remember)
+            .addStatement("%T(this)", graphProviderClassName)
             .endControlFlow()
-            .beginControlFlow("val component = %M(componentProvider)", remember)
-            .addStatement("componentProvider.provide<%T>(%T::class)", retainedComponentClassName, data.scope)
+            .beginControlFlow("val graph = %M(graphProvider)", remember)
+            .addStatement("graphProvider.provide<%T>(%T::class)", graphClassName, data.scope)
             .endControlFlow()
-            .beginControlFlow("%L(component) { modifier, destinationChangedCallback ->", composableName)
+            .beginControlFlow("%L(graph) { modifier, destinationChangedCallback ->", composableName)
             .beginControlFlow(
-                "%M(%M provides componentProvider)",
+                "%M(%M provides graphProvider)",
                 compositionLocalProvider,
-                localActivityComponentProvider,
+                localActivityGraphProvider,
             )
             .addStatement("%M(", navHost)
-            .addStatement("  navigator = %M(component) { component.hostNavigator },", remember)
+            .addStatement("  navigator = %M(graph) { graph.hostNavigator },", remember)
             .addStatement("  modifier = modifier,")
             .addStatement("  destinationChangedCallback = destinationChangedCallback,")
             .addStatement(")")

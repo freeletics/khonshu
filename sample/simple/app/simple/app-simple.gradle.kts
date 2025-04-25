@@ -3,19 +3,11 @@ plugins {
 }
 
 freeletics {
-    useDaggerWithComponent()
+    useMetro()
 
     app {
         applicationId("com.freeletics.khonshu.sample.simple")
         minify()
-    }
-}
-
-// TODO remove when Anvil works with K2
-kotlin {
-    compilerOptions {
-        languageVersion = org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9
-        progressiveMode = false
     }
 }
 
