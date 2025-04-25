@@ -1,11 +1,10 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.util.contributesToAnnotation
+import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.intoSet
-import com.freeletics.khonshu.codegen.util.module
-import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.provides
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
@@ -17,19 +16,18 @@ internal class NavDestinationModuleGenerator(
     private val moduleClassName = ClassName("Khonshu${data.baseName}NavDestinationModule")
 
     internal fun generate(): TypeSpec {
-        return TypeSpec.objectBuilder(moduleClassName)
-            .addAnnotation(optInAnnotation())
-            .addAnnotation(module)
-            .addAnnotation(contributesToAnnotation(data.navigation!!.destinationScope))
+        return TypeSpec.interfaceBuilder(moduleClassName)
+            .addAnnotation(optIn())
+            .addAnnotation(contributesTo(data.navigation!!.destinationScope))
             .addFunction(providesDestination())
             .build()
     }
 
     private fun providesDestination(): FunSpec {
-        return FunSpec.builder("provideNavDestination")
-            .addAnnotation(provides)
-            .addAnnotation(intoSet)
-            .addAnnotation(optInAnnotation(internalNavigatorApi))
+        return FunSpec.builder("provide${data.baseName}NavDestination")
+            .addAnnotation(provides())
+            .addAnnotation(intoSet())
+            .addAnnotation(optIn(internalNavigatorApi))
             .returns(data.navigation!!.destinationClass)
             .addCode(providesDestinationCode())
             .build()
@@ -42,7 +40,7 @@ internal class NavDestinationModuleGenerator(
                 "return %M<%T>(%T) { snapshot, route ->",
                 navigation.destinationMethod,
                 navigation.route,
-                componentProviderClassName,
+                graphProviderClassName,
             )
             .addStatement("%L(snapshot, route)", composableName)
             .endControlFlow()

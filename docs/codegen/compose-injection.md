@@ -3,7 +3,7 @@
 For the rare case that an object needs to be shared between UI and other components, Khonshu's Codegen
 supports injecting objects into the annotated Composable. Any parameter of that function that
 is not the `state` or `sendAction` parameter will be looked up through the generated
-Dagger component.
+Metro graph.
 
 Injecting the following `ExampleClass`
 

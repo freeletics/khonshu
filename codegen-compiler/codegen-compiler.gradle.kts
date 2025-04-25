@@ -12,8 +12,6 @@ freeletics {
 dependencies {
     api(libs.ksp.api)
     api(libs.kotlinpoet)
-    implementation(libs.anvil.annotations)
-    implementation(libs.anvil.annotations.optional)
     implementation(libs.kotlinpoet.ksp)
     implementation(projects.codegen)
 

@@ -5,9 +5,9 @@ import com.freeletics.khonshu.codegen.util.InternalCodegenApi
 import com.freeletics.khonshu.codegen.util.activityNavigator
 import com.freeletics.khonshu.codegen.util.composable
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
-import com.freeletics.khonshu.codegen.util.localActivityComponentProvider
+import com.freeletics.khonshu.codegen.util.localActivityGraphProvider
 import com.freeletics.khonshu.codegen.util.navigationSetup
-import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.remember
 import com.freeletics.khonshu.codegen.util.stackEntry
@@ -17,7 +17,7 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 
 /**
  * Generates the outer Composable for a NavDestination. This will obtain
- * the component, if needed call NavigationSetup and finally will call the
+ * the graph, if needed call NavigationSetup and finally will call the
  * inner Composable.
  */
 internal class NavDestinationComposableGenerator(
@@ -26,17 +26,17 @@ internal class NavDestinationComposableGenerator(
     internal fun generate(): FunSpec {
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
-            .addAnnotation(optInAnnotation(InternalCodegenApi, internalNavigatorApi))
+            .addAnnotation(optIn(InternalCodegenApi, internalNavigatorApi))
             .addParameter("snapshot", stackSnapshot)
             .addParameter("entry", stackEntry.parameterizedBy(data.navigation.route))
-            .addStatement("val provider = %M.current", localActivityComponentProvider)
-            .beginControlFlow("val component = %M(entry, snapshot, provider)", remember)
-            .addStatement("%T.provide(entry, snapshot, provider)", componentProviderClassName)
+            .addStatement("val provider = %M.current", localActivityGraphProvider)
+            .beginControlFlow("val graph = %M(entry, snapshot, provider)", remember)
+            .addStatement("%T.provide(entry, snapshot, provider)", graphProviderClassName)
             .endControlFlow()
             .addStatement("")
-            .addStatement("%M(component.%L)", navigationSetup, activityNavigator.propertyName)
+            .addStatement("%M(graph.%L)", navigationSetup, activityNavigator.propertyName)
             .addStatement("")
-            .addStatement("%L(component)", composableName)
+            .addStatement("%L(graph)", composableName)
             .build()
     }
 }

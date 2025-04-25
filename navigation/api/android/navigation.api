@@ -185,29 +185,23 @@ public abstract interface class com/freeletics/khonshu/navigation/deeplinks/Deep
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Pattern {
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Pattern;
-	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun copy (Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Pattern;
+	public static synthetic fun copy$default (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Pattern;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Pattern;
 	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
-	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
 	public fun hashCode ()I
-	public static fun hashCode-impl (Ljava/lang/String;)I
 	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()Ljava/lang/String;
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Prefix {
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Prefix;
-	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun copy (Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Prefix;
+	public static synthetic fun copy$default (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Prefix;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$Prefix;
 	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
-	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
 	public fun hashCode ()I
-	public static fun hashCode-impl (Ljava/lang/String;)I
 	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()Ljava/lang/String;
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkKt {
