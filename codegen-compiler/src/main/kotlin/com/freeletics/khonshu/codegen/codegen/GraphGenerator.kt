@@ -105,7 +105,7 @@ internal class GraphGenerator(
                     addParameter(providesParameter("viewModel", multiStackHostNavigatorViewModel))
                 }
             }
-            .addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
+//            .addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
             .addParameter(providesParameter(data.navigation.asParameter()))
             .returns(graphClassName)
             .build()

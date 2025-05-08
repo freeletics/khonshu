@@ -67,7 +67,7 @@ internal class ActivityGraphProviderGenerator(
                 multiStackHostNavigatorViewModel,
             )
             .addStatement(
-                "factory.%L(viewModel, savedStateHandle, activity.intent)",
+                "factory.%L(viewModel, activity.intent)",
                 graphFactoryCreateFunctionName,
             )
             .endControlFlow()
