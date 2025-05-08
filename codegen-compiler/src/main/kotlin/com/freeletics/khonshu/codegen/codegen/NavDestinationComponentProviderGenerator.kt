@@ -55,7 +55,7 @@ internal class NavDestinationComponentProviderGenerator(
                 }
             }
             .addStatement(
-                "factory.%L(entry.savedStateHandle, entry.route)",
+                "factory.%L(entry.route)",
                 retainedComponentFactoryCreateName,
             )
             .endControlFlow()

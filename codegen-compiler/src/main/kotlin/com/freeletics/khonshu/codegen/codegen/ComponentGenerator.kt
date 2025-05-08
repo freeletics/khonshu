@@ -46,7 +46,6 @@ internal class ComponentGenerator(
             .addAnnotation(optInAnnotation())
             .addAnnotation(singleInAnnotation(data.scope))
             .addAnnotation(subcomponentAnnotation(data.scope))
-            .addSuperinterface(Closeable::class)
             .addProperties(componentProperties())
             .addFunction(multibindsCloseableFunction())
             .addFunction(closeFunction())
@@ -91,7 +90,6 @@ internal class ComponentGenerator(
 
     private fun closeFunction(): FunSpec {
         return FunSpec.builder("close")
-            .addModifiers(OVERRIDE)
             .beginControlFlow("%L.forEach {", CLOSEABLE_SET_PROPERTY_NAME)
             .addStatement("it.close()")
             .endControlFlow()
@@ -106,7 +104,7 @@ internal class ComponentGenerator(
                     addParameter(providesParameter("viewModel", multiStackHostNavigatorViewModel))
                 }
             }
-            .addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
+//            .addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
             .addParameter(providesParameter(data.navigation.asParameter()))
             .returns(retainedComponentClassName)
             .build()
