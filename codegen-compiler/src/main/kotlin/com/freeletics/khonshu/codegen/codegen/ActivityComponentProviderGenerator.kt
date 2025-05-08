@@ -67,7 +67,7 @@ internal class ActivityComponentProviderGenerator(
                 multiStackHostNavigatorViewModel,
             )
             .addStatement(
-                "factory.%L(viewModel, activity.intent)",
+                "factory.%L(viewModel, savedStateHandle, activity.intent)",
                 retainedComponentFactoryCreateName,
             )
             .endControlFlow()
