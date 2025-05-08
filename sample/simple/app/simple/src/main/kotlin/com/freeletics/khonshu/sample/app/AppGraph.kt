@@ -8,11 +8,11 @@ import dev.zacsweers.metro.SingleIn
 
 @SingleIn(AppScope::class)
 @DependencyGraph(scope = AppScope::class, isExtendable = true)
-interface AppComponent {
+interface AppGraph {
     @DependencyGraph.Factory
     interface Factory {
         fun create(
             @Provides context: Context,
-        ): AppComponent
+        ): AppGraph
     }
 }

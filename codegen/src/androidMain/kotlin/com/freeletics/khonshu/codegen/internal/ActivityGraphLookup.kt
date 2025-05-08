@@ -13,18 +13,18 @@ import java.io.Closeable
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
-public interface ActivityComponentProvider {
+public interface ActivityGraphProvider {
     public fun <T> provide(scope: KClass<*>): T
 }
 
 @InternalCodegenApi
-public val LocalActivityComponentProvider: ProvidableCompositionLocal<ActivityComponentProvider> =
+public val LocalActivityGraphProvider: ProvidableCompositionLocal<ActivityGraphProvider> =
     staticCompositionLocalOf {
-        throw IllegalStateException("ActivityComponentProvider was not provided by Activity")
+        throw IllegalStateException("ActivityGraphProvider was not provided by Activity")
     }
 
 @InternalCodegenApi
-public inline fun <C : Any, reified AC : Any, P : Any> component(
+public inline fun <C : Any, reified AC : Any, P : Any> getGraph(
     activity: ComponentActivity,
     requestedScope: KClass<*>,
     activityScope: KClass<*>,
@@ -32,20 +32,20 @@ public inline fun <C : Any, reified AC : Any, P : Any> component(
     crossinline factory: @DisallowComposableCalls (P, SavedStateHandle) -> AC,
 ): C {
     if (requestedScope != activityScope) {
-        return activity.findComponentByScope(requestedScope)
+        return activity.findGraphByScope(requestedScope)
     }
-    val store = ViewModelProvider(activity, SavedStateViewModelFactory())[ActivityComponentViewModel::class.java]
+    val store = ViewModelProvider(activity, SavedStateViewModelFactory())[ActivityGraphViewModel::class.java]
     @Suppress("UNCHECKED_CAST")
     return store.getOrCreate(AC::class) {
-        val parentComponent = activity.findComponentByScope<P>(activityParentScope)
+        val parentGraph = activity.findGraphByScope<P>(activityParentScope)
         val savedStateHandle = store.savedStateHandle
-        factory(parentComponent, savedStateHandle)
+        factory(parentGraph, savedStateHandle)
     } as C
 }
 
 @PublishedApi
 @InternalCodegenApi
-internal class ActivityComponentViewModel(
+internal class ActivityGraphViewModel(
     val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val storedObjects = mutableMapOf<KClass<*>, Any>()
@@ -69,12 +69,12 @@ internal class ActivityComponentViewModel(
 }
 
 @PublishedApi
-internal fun <T> Context.findComponentByScope(scope: KClass<*>): T {
+internal fun <T> Context.findGraphByScope(scope: KClass<*>): T {
     val serviceName = scope.qualifiedName!!
-    val component = getSystemService(serviceName) ?: applicationContext.getSystemService(serviceName)
-    checkNotNull(component) {
+    val graph = getSystemService(serviceName) ?: applicationContext.getSystemService(serviceName)
+    checkNotNull(graph) {
         "Could not find scope ${scope.qualifiedName} through getSystemService"
     }
     @Suppress("UNCHECKED_CAST")
-    return component as T
+    return graph as T
 }

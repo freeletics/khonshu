@@ -12,13 +12,13 @@ internal val overlay = ClassName("com.freeletics.khonshu.codegen", "Overlay")
 // Codegen Internal API
 internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.internal", "asComposeState")
 internal val InternalCodegenApi = ClassName("com.freeletics.khonshu.codegen.internal", "InternalCodegenApi")
-internal val getComponent = MemberName("com.freeletics.khonshu.codegen.internal", "component")
-internal val getComponentFromRoute = MemberName("com.freeletics.khonshu.codegen.internal", "componentFromParentRoute")
-internal val componentProvider = ClassName("com.freeletics.khonshu.codegen.internal", "ComponentProvider")
-internal val activityComponentProvider =
-    ClassName("com.freeletics.khonshu.codegen.internal", "ActivityComponentProvider")
-internal val localActivityComponentProvider =
-    MemberName("com.freeletics.khonshu.codegen.internal", "LocalActivityComponentProvider")
+internal val getGraph = MemberName("com.freeletics.khonshu.codegen.internal", "getGraph")
+internal val getGraphFromRoute = MemberName("com.freeletics.khonshu.codegen.internal", "getGraphFromParentRoute")
+internal val graphProvider = ClassName("com.freeletics.khonshu.codegen.internal", "GraphProvider")
+internal val activityGraphProvider =
+    ClassName("com.freeletics.khonshu.codegen.internal", "ActivityGraphProvider")
+internal val localActivityGraphProvider =
+    MemberName("com.freeletics.khonshu.codegen.internal", "LocalActivityGraphProvider")
 
 // Navigator
 internal val stackSnapshot = ClassName("com.freeletics.khonshu.navigation.internal", "StackSnapshot")

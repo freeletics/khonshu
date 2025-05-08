@@ -1,11 +1,11 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.NavHostActivityData
-import com.freeletics.khonshu.codegen.util.activityComponentProvider
+import com.freeletics.khonshu.codegen.util.activityGraphProvider
 import com.freeletics.khonshu.codegen.util.componentActivity
-import com.freeletics.khonshu.codegen.util.getComponent
+import com.freeletics.khonshu.codegen.util.getGraph
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
-import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.savedStateViewModelFactory
 import com.freeletics.khonshu.codegen.util.viewModelProvider
 import com.squareup.kotlinpoet.FunSpec
@@ -20,13 +20,13 @@ import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.asClassName
 import kotlin.reflect.KClass
 
-internal class ActivityComponentProviderGenerator(
+internal class ActivityGraphProviderGenerator(
     override val data: NavHostActivityData,
 ) : Generator<NavHostActivityData>() {
     internal fun generate(): TypeSpec {
-        return TypeSpec.classBuilder(componentProviderClassName)
-            .addAnnotation(optInAnnotation())
-            .addSuperinterface(activityComponentProvider)
+        return TypeSpec.classBuilder(graphProviderClassName)
+            .addAnnotation(optIn())
+            .addSuperinterface(activityGraphProvider)
             .primaryConstructor(constructor())
             .addProperty(activityProperty())
             .addFunction(provideFunction())
@@ -55,10 +55,10 @@ internal class ActivityComponentProviderGenerator(
             .returns(typeVariable)
             .beginControlFlow(
                 "return %M(activity, scope, %T::class, %T::class) { factory: %T, savedStateHandle ->",
-                getComponent,
+                getGraph,
                 data.scope,
                 data.parentScope,
-                retainedComponentFactoryClassName,
+                graphFactoryClassName,
             )
             .addStatement(
                 "val viewModel = %T(activity, %T())[%T::class.java]",
@@ -68,7 +68,7 @@ internal class ActivityComponentProviderGenerator(
             )
             .addStatement(
                 "factory.%L(viewModel, savedStateHandle, activity.intent)",
-                retainedComponentFactoryCreateName,
+                graphFactoryCreateFunctionName,
             )
             .endControlFlow()
             .build()

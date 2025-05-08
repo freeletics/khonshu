@@ -9,7 +9,7 @@ pluginManagement {
 }
 
 plugins {
-    id("com.freeletics.gradle.settings").version("metro-SNAPSHOT")
+    id("com.freeletics.gradle.settings").version("0.23.2-SNAPSHOT")
 }
 
 rootProject.name = "simple-sample"

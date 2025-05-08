@@ -2,7 +2,7 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
-import com.freeletics.khonshu.codegen.util.contributesToAnnotation
+import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.createHostNavigator
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.immutableSet
@@ -11,9 +11,9 @@ import com.freeletics.khonshu.codegen.util.jvmSuppressWildcards
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
 import com.freeletics.khonshu.codegen.util.navRoot
 import com.freeletics.khonshu.codegen.util.navigationDestination
-import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.provides
-import com.freeletics.khonshu.codegen.util.singleInAnnotation
+import com.freeletics.khonshu.codegen.util.singleIn
 import com.freeletics.khonshu.codegen.util.toImmutableSet
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -27,7 +27,7 @@ internal class ActivityModuleGenerator(
 
     internal fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(moduleClassName)
-            .addAnnotation(contributesToAnnotation(data.scope))
+            .addAnnotation(contributesTo(data.scope))
             .addFunction(provideImmutableNavDestinationsFunction())
             .addFunction(provideHostNavigator())
             .build()
@@ -45,8 +45,8 @@ internal class ActivityModuleGenerator(
     private fun provideHostNavigator(): FunSpec {
         return FunSpec.builder("provideHostNavigator")
             .addAnnotation(provides())
-            .addAnnotation(singleInAnnotation(data.scope))
-            .addAnnotation(optInAnnotation(internalNavigatorApi))
+            .addAnnotation(singleIn(data.scope))
+            .addAnnotation(optIn(internalNavigatorApi))
             .addParameter("viewModel", multiStackHostNavigatorViewModel)
             .addParameter("startRoot", navRoot)
             .addParameter("destinations", immutableSet.parameterizedBy(navigationDestination).jvmSuppressWildcards())

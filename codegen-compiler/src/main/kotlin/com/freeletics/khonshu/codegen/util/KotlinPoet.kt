@@ -3,7 +3,6 @@ package com.freeletics.khonshu.codegen.util
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.Navigation
 import com.squareup.kotlinpoet.AnnotationSpec
-import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.LambdaTypeName
@@ -61,7 +60,7 @@ internal fun simplePropertySpec(className: ClassName): PropertySpec {
     return PropertySpec.builder(className.propertyName, className).build()
 }
 
-internal fun subcomponentAnnotation(
+internal fun contributesGraphExtension(
     scope: ClassName,
     isExtendable: Boolean = true,
 ): AnnotationSpec {
@@ -71,7 +70,7 @@ internal fun subcomponentAnnotation(
         .build()
 }
 
-internal fun subcomponentFactoryAnnotation(
+internal fun contributesGraphExtensionFactory(
     parentScope: ClassName,
 ): AnnotationSpec {
     return AnnotationSpec.builder(ContributesGraphExtension.Factory::class)
@@ -79,13 +78,13 @@ internal fun subcomponentFactoryAnnotation(
         .build()
 }
 
-internal fun singleInAnnotation(scope: ClassName): AnnotationSpec {
+internal fun singleIn(scope: ClassName): AnnotationSpec {
     return AnnotationSpec.builder(SingleIn::class)
         .addMember("%T::class", scope)
         .build()
 }
 
-internal fun contributesToAnnotation(scope: ClassName): AnnotationSpec {
+internal fun contributesTo(scope: ClassName): AnnotationSpec {
     return AnnotationSpec.builder(ContributesTo::class)
         .addMember("%T::class", scope)
         .build()
@@ -111,11 +110,11 @@ internal fun forScope(scope: ClassName): AnnotationSpec {
         .build()
 }
 
-internal fun optInAnnotation(): AnnotationSpec {
-    return optInAnnotation(InternalCodegenApi)
+internal fun optIn(): AnnotationSpec {
+    return optIn(InternalCodegenApi)
 }
 
-internal fun optInAnnotation(vararg classNames: ClassName): AnnotationSpec {
+internal fun optIn(vararg classNames: ClassName): AnnotationSpec {
     val member = CodeBlock.builder()
     classNames.forEachIndexed { index, className ->
         if (index > 0) {

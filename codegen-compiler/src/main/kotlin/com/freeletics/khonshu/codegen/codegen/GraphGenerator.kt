@@ -8,14 +8,13 @@ import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
 import com.freeletics.khonshu.codegen.util.multibinds
-import com.freeletics.khonshu.codegen.util.optInAnnotation
+import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
-import com.freeletics.khonshu.codegen.util.singleInAnnotation
-import com.freeletics.khonshu.codegen.util.subcomponentAnnotation
-import com.freeletics.khonshu.codegen.util.subcomponentFactoryAnnotation
-import com.squareup.kotlinpoet.AnnotationSpec.UseSiteTarget.GET
+import com.freeletics.khonshu.codegen.util.singleIn
+import com.freeletics.khonshu.codegen.util.contributesGraphExtension
+import com.freeletics.khonshu.codegen.util.contributesGraphExtensionFactory
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
@@ -27,34 +26,34 @@ import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.asTypeName
 import java.io.Closeable
 
-internal val Generator<out BaseData>.retainedComponentClassName
-    get() = ClassName("Khonshu${data.baseName}Component")
+internal val Generator<out BaseData>.graphClassName
+    get() = ClassName("Khonshu${data.baseName}Graph")
 
-internal val Generator<out BaseData>.retainedComponentFactoryClassName
-    get() = retainedComponentClassName.nestedClass("Factory")
+internal val Generator<out BaseData>.graphFactoryClassName
+    get() = graphClassName.nestedClass("Factory")
 
-internal val Generator<out BaseData>.retainedComponentFactoryCreateName
-    get() = "create${retainedComponentClassName.simpleName}"
+internal val Generator<out BaseData>.graphFactoryCreateFunctionName
+    get() = "create${graphClassName.simpleName}"
 
 internal const val CLOSEABLE_SET_PROPERTY_NAME = "closeables"
 
-internal class ComponentGenerator(
+internal class GraphGenerator(
     override val data: BaseData,
 ) : Generator<BaseData>() {
     fun generate(): TypeSpec {
-        return TypeSpec.interfaceBuilder(retainedComponentClassName)
-            .addAnnotation(optInAnnotation())
-            .addAnnotation(singleInAnnotation(data.scope))
-            .addAnnotation(subcomponentAnnotation(data.scope))
+        return TypeSpec.interfaceBuilder(graphClassName)
+            .addAnnotation(optIn())
+            .addAnnotation(singleIn(data.scope))
+            .addAnnotation(contributesGraphExtension(data.scope))
             .addSuperinterface(Closeable::class)
-            .addProperties(componentProperties())
+            .addProperties(graphProperties())
             .addFunction(multibindsCloseableFunction())
             .addFunction(closeFunction())
-            .addType(retainedComponentFactory())
+            .addType(retainedGraphFactory())
             .build()
     }
 
-    private fun componentProperties(): List<PropertySpec> {
+    private fun graphProperties(): List<PropertySpec> {
         val properties = mutableListOf<PropertySpec>()
         properties += simplePropertySpec(data.stateMachine)
 
@@ -98,8 +97,8 @@ internal class ComponentGenerator(
             .build()
     }
 
-    private fun retainedComponentFactory(): TypeSpec {
-        val createFun = FunSpec.builder(retainedComponentFactoryCreateName)
+    private fun retainedGraphFactory(): TypeSpec {
+        val createFun = FunSpec.builder(graphFactoryCreateFunctionName)
             .addModifiers(ABSTRACT)
             .apply {
                 if (data is NavHostActivityData) {
@@ -108,10 +107,10 @@ internal class ComponentGenerator(
             }
             .addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
             .addParameter(providesParameter(data.navigation.asParameter()))
-            .returns(retainedComponentClassName)
+            .returns(graphClassName)
             .build()
-        return TypeSpec.interfaceBuilder(retainedComponentFactoryClassName)
-            .addAnnotation(subcomponentFactoryAnnotation(data.parentScope))
+        return TypeSpec.interfaceBuilder(graphFactoryClassName)
+            .addAnnotation(contributesGraphExtensionFactory(data.parentScope))
             .addFunction(createFun)
             .build()
     }
