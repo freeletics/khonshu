@@ -47,7 +47,7 @@ internal class GraphGenerator(
             .addAnnotation(contributesGraphExtension(data.scope))
             .addSuperinterface(Closeable::class)
             .addProperties(graphProperties())
-            .addFunction(multibindsCloseableFunction())
+//            .addFunction(multibindsCloseableFunction())
             .addFunction(closeFunction())
             .addType(retainedGraphFactory())
             .build()
@@ -69,12 +69,12 @@ internal class GraphGenerator(
             PropertySpec.builder(it.name, it.typeName).build()
         }
 
-        properties += PropertySpec.builder(
-            CLOSEABLE_SET_PROPERTY_NAME,
-            SET.parameterizedBy(Closeable::class.asTypeName()),
-        )
-            .addAnnotation(forScope(data.scope))
-            .build()
+//        properties += PropertySpec.builder(
+//            CLOSEABLE_SET_PROPERTY_NAME,
+//            SET.parameterizedBy(Closeable::class.asTypeName()),
+//        )
+//            .addAnnotation(forScope(data.scope))
+//            .build()
 
         return properties
     }
@@ -91,9 +91,9 @@ internal class GraphGenerator(
     private fun closeFunction(): FunSpec {
         return FunSpec.builder("close")
             .addModifiers(OVERRIDE)
-            .beginControlFlow("%L.forEach {", CLOSEABLE_SET_PROPERTY_NAME)
-            .addStatement("it.close()")
-            .endControlFlow()
+//            .beginControlFlow("%L.forEach {", CLOSEABLE_SET_PROPERTY_NAME)
+//            .addStatement("it.close()")
+//            .endControlFlow()
             .build()
     }
 
