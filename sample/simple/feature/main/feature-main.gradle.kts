@@ -22,6 +22,5 @@ dependencies {
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.khonshu.navigation)
-    implementation(libs.khonshu.codegen)
     implementation(projects.feature.root.nav)
 }
