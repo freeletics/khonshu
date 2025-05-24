@@ -10,7 +10,7 @@ jobs:
   build:
     name: Build simple sample
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: zulu
-          java-version: 22
+          java-version: 24
 
       - name: Install Android SDK
         run: ./.github/android-sdk.sh
@@ -28,4 +28,3 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew -p sample/simple :app:simple:assembleDebug --stacktrace
-
