@@ -14,7 +14,6 @@ dependencies {
     api(libs.coroutines)
     api(libs.khonshu.navigation)
     api(libs.khonshu.statemachine)
-    api(libs.khonshu.codegen)
     api(projects.feature.newRoot.nav)
 
     implementation(libs.androidx.compose.ui)
