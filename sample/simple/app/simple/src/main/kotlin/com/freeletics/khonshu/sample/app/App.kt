@@ -1,17 +1,18 @@
 package com.freeletics.khonshu.sample.app
 
 import android.app.Application
-import com.freeletics.khonshu.codegen.AppScope
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.createGraphFactory
 
 class App : Application() {
-    override fun getSystemService(name: String): Any? {
-        if (name == AppScope::class.qualifiedName) {
-            return component
-        }
-        return super.getSystemService(name)
+    private val graph by lazy {
+        createGraphFactory<AppGraph.Factory>().create(this)
     }
 
-    private val component by lazy {
-        AppComponent.factory().create(this)
+    override fun getSystemService(name: String): Any? {
+        if (name == AppScope::class.qualifiedName) {
+            return graph
+        }
+        return super.getSystemService(name)
     }
 }

@@ -2,6 +2,7 @@ package com.freeletics.khonshu.codegen
 
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.statemachine.StateMachine
+import dev.zacsweers.metro.AppScope
 import kotlin.reflect.KClass
 
 /**
@@ -11,9 +12,8 @@ import kotlin.reflect.KClass
  *
  * This will trigger the generation of
  * - a wrapper Composable that sets up the annotated Composable with the given [stateMachine]
- * - a Dagger subcomponent that uses [route] as scope marker and [parentScope] as `parentScope`
- * - a `NavDestination` for [route] based on the given [destinationType] that is contributed
- *   to the Dagger component that uses [destinationScope]
+ * - a Metro graph extension that uses [route] as scope marker and [parentScope] as `scope` for its factory
+ * - a `NavDestination` for [route] that is contributed to the [destinationScope]
  */
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
