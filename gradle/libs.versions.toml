@@ -34,7 +34,7 @@ truth = "1.4.4"
 turbine = "1.2.0"
 kotlin-compile-testing = "0.7.1"
 
-fgp = "0.24.0"
+fgp = "0.25.0"
 publish = "0.32.0"
 dokka = "2.0.0"
 binarycompatibility = "0.17.0"
