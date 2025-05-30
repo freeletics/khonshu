@@ -4,6 +4,8 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.activityNavigator
 import com.freeletics.khonshu.codegen.util.asParameter
+import com.freeletics.khonshu.codegen.util.contributesGraphExtension
+import com.freeletics.khonshu.codegen.util.contributesGraphExtensionFactory
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
@@ -13,8 +15,6 @@ import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
 import com.freeletics.khonshu.codegen.util.singleIn
-import com.freeletics.khonshu.codegen.util.contributesGraphExtension
-import com.freeletics.khonshu.codegen.util.contributesGraphExtensionFactory
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
