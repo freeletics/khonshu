@@ -3,9 +3,9 @@ package com.freeletics.khonshu.codegen.codegen
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavDestinationData
 import com.freeletics.khonshu.codegen.util.activityGraphProvider
-import com.freeletics.khonshu.codegen.util.graphProvider
 import com.freeletics.khonshu.codegen.util.getGraph
 import com.freeletics.khonshu.codegen.util.getGraphFromRoute
+import com.freeletics.khonshu.codegen.util.graphProvider
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.stackEntry
