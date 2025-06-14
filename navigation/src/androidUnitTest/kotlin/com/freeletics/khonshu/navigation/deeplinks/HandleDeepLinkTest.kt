@@ -1,12 +1,10 @@
 package com.freeletics.khonshu.navigation.deeplinks
 
-import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.internal.MultiStack
 import com.freeletics.khonshu.navigation.internal.MultiStackHostNavigator
 import com.freeletics.khonshu.navigation.internal.StackEntry
-import com.freeletics.khonshu.navigation.internal.StackEntryStoreViewModel
 import com.freeletics.khonshu.navigation.test.OtherRoot
 import com.freeletics.khonshu.navigation.test.OtherRoute
 import com.freeletics.khonshu.navigation.test.SimpleRoot
@@ -23,13 +21,8 @@ internal class HandleDeepLinkTest {
     private val factory = TestStackEntryFactory()
     private val removed get() = factory.closedEntries
 
-    private val viewModel = StackEntryStoreViewModel(SavedStateHandle())
-
     private fun underTest(): MultiStackHostNavigator {
-        return MultiStackHostNavigator(
-            stack = MultiStack.createWith(SimpleRoot(1), factory::create),
-            viewModel = viewModel,
-        )
+        return MultiStackHostNavigator(MultiStack.createWith(SimpleRoot(1), factory::create))
     }
 
     private fun HostNavigator.testHandleDeepLink(routes: List<BaseRoute>?): Boolean {

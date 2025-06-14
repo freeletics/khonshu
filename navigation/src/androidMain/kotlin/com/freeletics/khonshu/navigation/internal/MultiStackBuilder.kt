@@ -3,11 +3,15 @@ package com.freeletics.khonshu.navigation.internal
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.SaverScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.core.os.bundleOf
+import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
-import com.freeletics.khonshu.navigation.internal.MultiStackHostNavigator.Companion.SAVED_STATE_STACK
 import kotlinx.collections.immutable.ImmutableSet
 
 internal fun createMultiStack(
@@ -16,20 +20,9 @@ internal fun createMultiStack(
     destinations: ImmutableSet<NavDestination<*>>,
 ): MultiStack {
     val factory = StackEntryFactory(destinations.toList(), viewModel)
-
-    val navState = viewModel.globalSavedStateHandle.get<Bundle>(SAVED_STATE_STACK)
-    return if (navState == null) {
-        MultiStack.createWith(
-            root = startRoot,
-            createEntry = factory::create,
-        )
-    } else {
-        MultiStack.fromState(
-            root = null,
-            bundle = navState,
-            createEntry = factory::create,
-            createRestoredEntry = factory::create,
-        )
+    val saver = MultiStack.Saver(factory::create, factory::create)
+    return viewModel.globalSavedStateHandle.saveable(SAVED_STATE_STACK, saver) {
+        MultiStack.createWith(startRoot, factory::create)
     }
 }
 
@@ -39,23 +32,25 @@ internal fun rememberMultiStack(
     viewModel: StackEntryStoreViewModel,
     destinations: ImmutableSet<NavDestination<*>>,
 ): MutableState<MultiStack> {
-    return remember(startRoot, viewModel, destinations) {
+    return key(startRoot, viewModel, destinations) {
         val factory = StackEntryFactory(destinations.toList(), viewModel)
-
-        val navState = viewModel.globalSavedStateHandle.get<Bundle>(SAVED_STATE_STACK)
-        val multiStack = if (navState == null) {
-            MultiStack.createWith(
-                root = startRoot,
-                createEntry = factory::create,
-            )
-        } else {
-            MultiStack.fromState(
-                root = startRoot,
-                bundle = navState,
-                createEntry = factory::create,
-                createRestoredEntry = factory::create,
-            )
+        val saver = MultiStack.Saver(factory::create, factory::create)
+        rememberSaveable(stateSaver = saver) {
+            mutableStateOf(MultiStack.createWith(startRoot, factory::create))
         }
-        mutableStateOf(multiStack)
     }
 }
+
+@Suppress("DEPRECATION", "UNCHECKED_CAST")
+private fun <T : Any, S : Any> SavedStateHandle.saveable(key: String, saver: Saver<T, S>, initial: () -> T): T {
+    val value = get<Bundle>(key)?.getParcelableArrayList<Parcelable>(key)?.let { saver.restore(it as S) } ?: initial()
+    setSavedStateProvider(key) {
+        with(saver) {
+            val state = SaverScope { true }.save(value)
+            bundleOf(key to state)
+        }
+    }
+    return value
+}
+
+private const val SAVED_STATE_STACK = "com.freeletics.khonshu.navigation.stack"

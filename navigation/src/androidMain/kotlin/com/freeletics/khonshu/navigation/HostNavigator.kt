@@ -4,7 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -56,22 +59,20 @@ public fun rememberHostNavigator(
     val context = LocalContext.current
     val viewModel = viewModel<StackEntryStoreViewModel>()
     val multiStack by rememberMultiStack(startRoot, viewModel, destinations)
-    return remember(multiStack, viewModel) {
-        MultiStackHostNavigator(multiStack, viewModel)
+    val handledDeepLinks = rememberSaveable { mutableStateOf(false) }
+    return remember(multiStack, deepLinkHandlers, deepLinkPrefixes) {
+        MultiStackHostNavigator(multiStack)
     }.also {
-        val handledDeepLinks = viewModel.globalSavedStateHandle.get<Boolean>(SAVED_STATE_HANDLED_DEEP_LINKS)
-        if (handledDeepLinks != true) {
+        if (!handledDeepLinks.value) {
             it.handleDeepLink(
                 intent = context.findActivity().intent,
                 deepLinkHandlers = deepLinkHandlers,
                 deepLinkPrefixes = deepLinkPrefixes,
             )
-            viewModel.globalSavedStateHandle[SAVED_STATE_HANDLED_DEEP_LINKS] = true
+            handledDeepLinks.value = true
         }
     }
 }
-
-private const val SAVED_STATE_HANDLED_DEEP_LINKS = "com.freeletics.khonshu.navigation.handled_deep_links"
 
 internal val LocalHostNavigator: ProvidableCompositionLocal<HostNavigator> =
     staticCompositionLocalOf {
@@ -85,8 +86,5 @@ public fun createHostNavigator(
     destinations: ImmutableSet<NavDestination<*>>,
 ): HostNavigator {
     val stack = createMultiStack(viewModel, startRoot, destinations)
-    return MultiStackHostNavigator(
-        stack = stack,
-        viewModel = viewModel,
-    )
+    return MultiStackHostNavigator(stack)
 }

@@ -1,22 +1,25 @@
 package com.freeletics.khonshu.navigation.internal
 
-import android.os.Bundle
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.os.bundleOf
+import androidx.compose.runtime.saveable.Saver as ComposeSaver
+import androidx.compose.runtime.saveable.SaverScope
 import androidx.lifecycle.SavedStateHandle
+import androidx.savedstate.SavedState
+import androidx.savedstate.read
+import androidx.savedstate.savedState
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 
-internal class MultiStack(
+internal class MultiStack @VisibleForTesting internal constructor(
     // Use ArrayList to make sure it is a RandomAccess
     private val allStacks: ArrayList<Stack>,
     private var startStack: Stack,
     private var currentStack: Stack,
     private val createEntry: (BaseRoute) -> StackEntry<*>,
-    private val inputRoot: NavRoot,
 ) {
     private val snapshotState: MutableState<StackSnapshot> =
         mutableStateOf(currentStack.snapshot(startStack.rootEntry))
@@ -115,15 +118,6 @@ internal class MultiStack(
         updateVisibleDestinations(notify)
     }
 
-    fun saveState(): Bundle {
-        return bundleOf(
-            SAVED_STATE_ALL_STACKS to ArrayList(allStacks.map { it.saveState() }),
-            SAVED_STATE_CURRENT_STACK to currentStack.id.route.java,
-            SAVED_STATE_START_STACK to startStack.id.route.java,
-            SAVED_INPUT_ROOT to inputRoot,
-        )
-    }
-
     companion object {
         fun createWith(
             root: NavRoot,
@@ -135,48 +129,48 @@ internal class MultiStack(
                 startStack = startStack,
                 currentStack = startStack,
                 createEntry = createEntry,
-                inputRoot = root,
             )
         }
 
-        @Suppress("DEPRECATION")
-        fun fromState(
-            root: NavRoot?,
-            bundle: Bundle,
-            createEntry: (BaseRoute) -> StackEntry<*>,
-            createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
-        ): MultiStack {
-            val inputRoot = bundle.getParcelable<NavRoot>(SAVED_INPUT_ROOT)!!
+        private const val KEY_START_STACK = "start_stack"
+        private const val KEY_CURRENT_STACK = "current_stack"
+        private const val KEY_STACKS = "stacks"
+    }
 
-            if (root != null && inputRoot != root) {
-                return createWith(
-                    root = root,
+    class Saver(
+        private val createEntry: (BaseRoute) -> StackEntry<*>,
+        createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
+    ) : ComposeSaver<MultiStack, SavedState> {
+        private val stackSaver = Stack.Saver(createEntry, createRestoredEntry)
+
+        override fun restore(value: SavedState): MultiStack {
+            return value.read {
+                val savedStacks = getSavedStateList(KEY_STACKS)
+                val allStacks = savedStacks.mapTo(ArrayList(savedStacks.size)) {
+                    stackSaver.restore(it)
+                }
+                val startStackId = getString(KEY_START_STACK)
+                val startStack = allStacks.first { it.rootEntry.id.value == startStackId }
+                val currentStackId = getString(KEY_CURRENT_STACK)
+                val currentStack = allStacks.first { it.rootEntry.id.value == currentStackId }
+
+                MultiStack(
+                    allStacks = allStacks,
+                    startStack = startStack,
+                    currentStack = currentStack,
                     createEntry = createEntry,
                 )
             }
-
-            val allStackBundles = bundle.getParcelableArrayList<Bundle>(SAVED_STATE_ALL_STACKS)!!
-            val currentStackId = bundle.getSerializable(SAVED_STATE_CURRENT_STACK)!!
-            val startDestinationId = bundle.getSerializable(SAVED_STATE_START_STACK)!!
-
-            val allStacks = allStackBundles.mapTo(ArrayList(allStackBundles.size)) {
-                Stack.fromState(it, createEntry, createRestoredEntry)
-            }
-            val startStack = allStacks.first { it.id.route.java == startDestinationId }
-            val currentStack = allStacks.first { it.id.route.java == currentStackId }
-
-            return MultiStack(
-                allStacks = allStacks,
-                startStack = startStack,
-                currentStack = currentStack,
-                createEntry = createEntry,
-                inputRoot = inputRoot,
-            )
         }
 
-        private const val SAVED_STATE_ALL_STACKS = "com.freeletics.khonshu.navigation.stack.all_stacks"
-        private const val SAVED_STATE_CURRENT_STACK = "com.freeletics.khonshu.navigation.stack.current_stack"
-        private const val SAVED_STATE_START_STACK = "com.freeletics.khonshu.navigation.stack.start_stack"
-        private const val SAVED_INPUT_ROOT = "com.freeletics.khonshu.navigation.stack.input_root"
+        override fun SaverScope.save(value: MultiStack): SavedState {
+            return savedState {
+                putString(KEY_CURRENT_STACK, value.currentStack.rootEntry.id.value)
+                putString(KEY_START_STACK, value.startStack.rootEntry.id.value)
+                with(stackSaver) {
+                    putSavedStateList(KEY_STACKS, value.allStacks.map { save(it) })
+                }
+            }
+        }
     }
 }

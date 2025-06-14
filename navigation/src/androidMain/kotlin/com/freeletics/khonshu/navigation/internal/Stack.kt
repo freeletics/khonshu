@@ -1,9 +1,11 @@
 package com.freeletics.khonshu.navigation.internal
 
-import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.core.os.bundleOf
+import androidx.compose.runtime.saveable.Saver as ComposeSaver
+import androidx.compose.runtime.saveable.SaverScope
 import androidx.lifecycle.SavedStateHandle
+import androidx.savedstate.SavedState
+import androidx.savedstate.read
+import androidx.savedstate.savedState
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
@@ -66,23 +68,6 @@ internal class Stack private constructor(
         }
     }
 
-    @SuppressLint("RestrictedApi")
-    fun saveState(): Bundle {
-        val ids = ArrayList<String>(stack.size)
-        val routes = ArrayList<BaseRoute>(stack.size)
-        val states = ArrayList<Bundle>(stack.size)
-        stack.forEach {
-            ids.add(it.id.value)
-            routes.add(it.route)
-            states.add(it.savedStateHandle.savedStateProvider().saveState())
-        }
-        return bundleOf(
-            SAVED_STATE_IDS to ids,
-            SAVED_STATE_ROUTES to routes,
-            SAVED_STATE_STATES to states,
-        )
-    }
-
     companion object {
         fun createWith(
             root: NavRoot,
@@ -92,31 +77,31 @@ internal class Stack private constructor(
             return Stack(listOf(rootEntry), createEntry)
         }
 
-        @SuppressLint("RestrictedApi")
-        fun fromState(
-            bundle: Bundle,
-            createEntry: (BaseRoute) -> StackEntry<*>,
-            createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
-        ): Stack {
-            val ids = bundle.getStringArrayList(SAVED_STATE_IDS)!!
+        private const val KEY_ENTRIES = "entries"
+    }
 
-            @Suppress("DEPRECATION")
-            val routes = bundle.getParcelableArrayList<BaseRoute>(SAVED_STATE_ROUTES)!!
+    class Saver(
+        private val createEntry: (BaseRoute) -> StackEntry<*>,
+        createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
+    ) : ComposeSaver<Stack, SavedState> {
+        private val entrySaver = StackEntry.Saver(createRestoredEntry)
 
-            @Suppress("DEPRECATION")
-            val states = bundle.getParcelableArrayList<Bundle>(SAVED_STATE_STATES)!!
-            val entries = ids.mapIndexed { index, id ->
-                createRestoredEntry(
-                    routes[index],
-                    StackEntry.Id(id),
-                    SavedStateHandle.createHandle(states[index], null),
+        override fun restore(value: SavedState): Stack {
+            return value.read {
+                val entries = getSavedStateList(KEY_ENTRIES).map { state -> entrySaver.restore(state) }
+                Stack(
+                    entries,
+                    createEntry,
                 )
             }
-            return Stack(entries, createEntry)
         }
 
-        private const val SAVED_STATE_IDS = "com.freeletics.khonshu.navigation.stack.ids"
-        private const val SAVED_STATE_ROUTES = "com.freeletics.khonshu.navigation.stack.routes"
-        private const val SAVED_STATE_STATES = "com.freeletics.khonshu.navigation.stack.states"
+        override fun SaverScope.save(value: Stack): SavedState {
+            return savedState {
+                with(entrySaver) {
+                    putSavedStateList(KEY_ENTRIES, value.stack.map { entry -> save(entry) })
+                }
+            }
+        }
     }
 }
