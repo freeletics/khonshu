@@ -3,13 +3,16 @@ package com.freeletics.khonshu.navigation.activity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Parcelable
+import androidx.core.content.IntentCompat
+import androidx.savedstate.SavedState
+import androidx.savedstate.serialization.decodeFromSavedState
+import androidx.savedstate.serialization.encodeToSavedState
 
 /**
  * Represents the route to an `Activity`. Should be used through [InternalActivityRoute]
  * and [ExternalActivityRoute].
  */
-public sealed interface ActivityRoute : Parcelable {
+public sealed interface ActivityRoute {
     public fun buildIntent(context: Context): Intent
 }
 
@@ -30,7 +33,7 @@ public interface ExternalActivityRoute : ActivityRoute
 /**
  * Returns the [ActivityRoute] that was used to navigate to this [Activity].
  */
-public fun <T : InternalActivityRoute> Activity.requireRoute(): T {
+public inline fun <reified T : InternalActivityRoute> Activity.requireRoute(): T {
     return requireNotNull(getRoute()) {
         "Error extracting ActivityRoute from Activity's Intent"
     }
@@ -40,13 +43,14 @@ public fun <T : InternalActivityRoute> Activity.requireRoute(): T {
  * Returns the [ActivityRoute] that was used to navigate to this [Activity] if it's present in
  * Activity's Intent.
  */
-public fun <T : InternalActivityRoute> Activity.getRoute(): T? {
-    @Suppress("DEPRECATION")
-    return intent.extras?.getParcelable(EXTRA_ROUTE)
+public inline fun <reified T : InternalActivityRoute> Activity.getRoute(): T? {
+    val savedState = IntentCompat.getParcelableExtra(intent, EXTRA_ROUTE, SavedState::class.java) ?: return null
+    return decodeFromSavedState(savedState)
 }
 
 internal fun Intent.putRoute(route: ActivityRoute): Intent {
-    return putExtra(EXTRA_ROUTE, this)
+    return putExtra(EXTRA_ROUTE, encodeToSavedState(route))
 }
 
-private const val EXTRA_ROUTE: String = "com.freeletics.khonshu.navigation.ROUTE"
+@PublishedApi
+internal const val EXTRA_ROUTE: String = "com.freeletics.khonshu.navigation.ROUTE"

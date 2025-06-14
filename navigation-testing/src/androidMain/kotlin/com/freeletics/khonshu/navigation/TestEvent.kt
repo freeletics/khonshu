@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation
 
-import android.os.Parcelable
 import com.freeletics.khonshu.navigation.activity.internal.ActivityEvent
 import dev.drewhamilton.poko.Poko
 import kotlin.reflect.KClass
@@ -49,7 +48,7 @@ internal class ActivityResultEvent<I>(
 ) : TestEvent
 
 @Poko
-internal class DestinationResultEvent<O : Parcelable>(
+internal class DestinationResultEvent<O>(
     private val key: NavigationResultRequest.Key<O>,
     private val result: O,
 ) : TestEvent

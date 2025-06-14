@@ -66,6 +66,7 @@ public fun rememberHostNavigator(
         if (!handledDeepLinks.value) {
             it.handleDeepLink(
                 intent = context.findActivity().intent,
+                destinations = destinations,
                 deepLinkHandlers = deepLinkHandlers,
                 deepLinkPrefixes = deepLinkPrefixes,
             )

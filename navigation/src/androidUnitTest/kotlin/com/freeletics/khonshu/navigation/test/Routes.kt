@@ -2,57 +2,56 @@ package com.freeletics.khonshu.navigation.test
 
 import android.content.Context
 import android.content.Intent
-import android.os.Parcelable
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.activity.ExternalActivityRoute
 import com.freeletics.khonshu.navigation.activity.InternalActivityRoute
 import dev.drewhamilton.poko.Poko
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 @Poko
-@Parcelize
-internal class SimpleRoute(val number: Int) : NavRoute, Parcelable
+@Serializable
+internal class SimpleRoute(val number: Int) : NavRoute
 
 @Poko
-@Parcelize
-internal class OtherRoute(val number: Int) : NavRoute, Parcelable
+@Serializable
+internal class OtherRoute(val number: Int) : NavRoute
 
 @Poko
-@Parcelize
-internal class ThirdRoute(val number: Int) : NavRoute, Parcelable
+@Serializable
+internal class ThirdRoute(val number: Int) : NavRoute
 
 @Poko
-@Parcelize
-internal class FourthRoute(val number: Int) : NavRoute, Parcelable
+@Serializable
+internal class FourthRoute(val number: Int) : NavRoute
 
 @Poko
-@Parcelize
+@Serializable
 internal class DeepLinkRoute(
     val pathParameters: Map<String, String>,
     val queryParameters: Map<String, String>,
-) : NavRoute, Parcelable
+) : NavRoute
 
 @Poko
-@Parcelize
-internal class SimpleRoot(val number: Int) : NavRoot, Parcelable
+@Serializable
+internal class SimpleRoot(val number: Int) : NavRoot
 
 @Poko
-@Parcelize
-internal class OtherRoot(val number: Int) : NavRoot, Parcelable
+@Serializable
+internal class OtherRoot(val number: Int) : NavRoot
 
 @Poko
-@Parcelize
+@Serializable
 internal class SimpleActivity(val number: Int) : InternalActivityRoute() {
     override fun buildIntent(context: Context): Intent = Intent()
 }
 
 @Poko
-@Parcelize
+@Serializable
 internal class OtherActivity(val number: Int) : ExternalActivityRoute {
     override fun buildIntent(context: Context): Intent = Intent()
 }
 
 @Poko
-@Parcelize
-internal class TestParcelable(val value: Int) : Parcelable
+@Serializable
+internal class TestParcelable(val value: Int)

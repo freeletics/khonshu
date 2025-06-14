@@ -1,7 +1,8 @@
 package com.freeletics.khonshu.navigation
 
-import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
+import androidx.savedstate.serialization.decodeFromSavedState
+import androidx.savedstate.serialization.encodeToSavedState
 import com.freeletics.khonshu.navigation.NavigationResultRequest
 import com.freeletics.khonshu.navigation.NavigationResultRequest as Request
 import com.freeletics.khonshu.navigation.internal.DestinationId
@@ -10,7 +11,9 @@ import com.freeletics.khonshu.navigation.internal.StackEntry
 import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.serializer
 
 /**
  * Register for receiving navigation results.
@@ -20,22 +23,24 @@ import kotlinx.parcelize.Parcelize
  * result passed to `deliverNavigationResult` will then be emitted by the `Flow` returned from
  * [NavigationResultRequest.results].
  */
-public inline fun <reified T : BaseRoute, reified O : Parcelable> Navigator.registerForNavigationResult(): Request<O> {
+public inline fun <reified T : BaseRoute, reified O> Navigator.registerForNavigationResult(): Request<O> {
     return registerForNavigationResult(
         id = DestinationId(T::class),
         resultType = O::class.qualifiedName!!,
+        serializer = serializer(),
     )
 }
 
 @PublishedApi
-internal fun <T : BaseRoute, O : Parcelable> Navigator.registerForNavigationResult(
+internal fun <T : BaseRoute, O> Navigator.registerForNavigationResult(
     id: DestinationId<T>,
     resultType: String,
+    serializer: KSerializer<O>,
 ): Request<O> {
     val requestKey = "${id.route.qualifiedName!!}-$resultType"
     val entry = getTopEntryFor(id)
     val key = Request.Key<O>(entry.id, requestKey)
-    return Request(key, entry.savedStateHandle)
+    return Request(key, entry.savedStateHandle, serializer)
 }
 
 /**
@@ -43,12 +48,24 @@ internal fun <T : BaseRoute, O : Parcelable> Navigator.registerForNavigationResu
  *
  * See [registerForNavigationResult].
  */
-public fun <O : Parcelable> Navigator.deliverNavigationResult(
+public inline fun <reified O> Navigator.deliverNavigationResult(
     key: Request.Key<O>,
     result: O,
 ) {
+    deliverNavigationResult(key, result, serializer())
+}
+
+@PublishedApi
+internal fun <O> Navigator.deliverNavigationResult(
+    key: Request.Key<O>,
+    result: O,
+    serializer: KSerializer<O>,
+) {
     val entry = getEntryFor(key.stackEntryId)
-    entry.savedStateHandle[key.requestKey] = NavigationResult(result)
+    entry.savedStateHandle[key.requestKey] = encodeToSavedState(
+        NavigationResult.serializer(serializer),
+        NavigationResult(result),
+    )
 }
 
 /**
@@ -57,22 +74,29 @@ public fun <O : Parcelable> Navigator.deliverNavigationResult(
  * The [key] can be passed to other destinations that can then call [deliverNavigationResult] with it
  * to deliver a `result` [R] that will then be emitted by [results].
  */
-public class NavigationResultRequest<R : Parcelable> @InternalNavigationTestingApi constructor(
+public class NavigationResultRequest<R> @InternalNavigationTestingApi constructor(
     public val key: Key<R>,
     @property:InternalNavigationTestingApi
     public val savedStateHandle: SavedStateHandle,
+    resultSerializer: KSerializer<R>,
 ) {
+    private val serializer = NavigationResult.serializer(resultSerializer)
+
+    private val emptyValue
+        get() = encodeToSavedState(serializer, NavigationResult(null))
+
     /**
      * Emits any result that was passed to [deliverNavigationResult] with the matching [key].
      *
      * Results will only be delivered to one collector at a time.
      */
     public val results: Flow<R>
-        get() = savedStateHandle.getStateFlow<NavigationResult<R>>(key.requestKey, NavigationResult(null))
+        get() = savedStateHandle.getStateFlow(key.requestKey, emptyValue)
             .mapNotNull {
-                if (it.value != null) {
-                    savedStateHandle[key.requestKey] = NavigationResult(null)
-                    it.value
+                val decoded = decodeFromSavedState(serializer, it)
+                if (decoded.value != null) {
+                    savedStateHandle[key.requestKey] = emptyValue
+                    decoded.value
                 } else {
                     null
                 }
@@ -82,16 +106,17 @@ public class NavigationResultRequest<R : Parcelable> @InternalNavigationTestingA
      * Use to identify where the result should be delivered to.
      */
     @Poko
-    @Parcelize
-    public class Key<R : Parcelable> @InternalNavigationTestingApi constructor(
+    @Serializable
+    public class Key<R> @InternalNavigationTestingApi constructor(
+        @PublishedApi
         internal val stackEntryId: StackEntry.Id,
         @property:InternalNavigationTestingApi
         public val requestKey: String,
-    ) : Parcelable
+    )
 }
 
-@Parcelize
+@Serializable
 @InternalNavigationTestingApi
-public data class NavigationResult<R : Parcelable>(
+public data class NavigationResult<R>(
     val value: R?,
-) : Parcelable
+)

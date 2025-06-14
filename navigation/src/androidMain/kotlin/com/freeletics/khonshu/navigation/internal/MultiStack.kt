@@ -10,6 +10,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
 import androidx.savedstate.read
 import androidx.savedstate.savedState
+import androidx.savedstate.serialization.SavedStateConfiguration
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
@@ -140,8 +141,9 @@ internal class MultiStack @VisibleForTesting internal constructor(
     class Saver(
         private val createEntry: (BaseRoute) -> StackEntry<*>,
         createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
+        savedStateConfiguration: SavedStateConfiguration,
     ) : ComposeSaver<MultiStack, SavedState> {
-        private val stackSaver = Stack.Saver(createEntry, createRestoredEntry)
+        private val stackSaver = Stack.Saver(createEntry, createRestoredEntry, savedStateConfiguration)
 
         override fun restore(value: SavedState): MultiStack {
             return value.read {

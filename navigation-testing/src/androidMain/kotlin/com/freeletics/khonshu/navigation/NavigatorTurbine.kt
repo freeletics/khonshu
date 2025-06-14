@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation
 
-import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
@@ -222,7 +221,7 @@ public interface NavigatorTurbine {
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun <O : Parcelable> awaitNavigationResult(
+    public suspend fun <O> awaitNavigationResult(
         key: NavigationResultRequest.Key<O>,
         result: O,
     )
@@ -323,7 +322,7 @@ internal class DefaultNavigatorTurbine(
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun <O : Parcelable> awaitNavigationResult(
+    override suspend fun <O> awaitNavigationResult(
         key: NavigationResultRequest.Key<O>,
         result: O,
     ) {

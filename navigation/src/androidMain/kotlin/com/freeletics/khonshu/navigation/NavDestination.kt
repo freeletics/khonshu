@@ -5,12 +5,15 @@ import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.serializer
 
 /**
  * A destination that can be navigated to. See `NavHost` for how to configure a `NavGraph` with it.
  */
 public sealed class NavDestination<Route : BaseRoute> {
     internal abstract val id: DestinationId<Route>
+    internal abstract val serializer: KSerializer<Route>
     internal abstract val parent: DestinationId<*>?
     internal abstract val extra: Any?
     internal abstract val content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit
@@ -24,7 +27,7 @@ public sealed class NavDestination<Route : BaseRoute> {
 @Suppress("FunctionName")
 public inline fun <reified Route : BaseRoute> ScreenDestination(
     noinline content: @Composable (Route) -> Unit,
-): NavDestination<Route> = ScreenDestination(DestinationId(Route::class), null, null) { _, entry ->
+): NavDestination<Route> = ScreenDestination(DestinationId(Route::class), serializer<Route>(), null, null) { _, entry ->
     content(entry.route)
 }
 
@@ -33,7 +36,7 @@ public inline fun <reified Route : BaseRoute> ScreenDestination(
 public inline fun <reified Route : BaseRoute> ScreenDestination(
     extra: Any,
     noinline content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit,
-): NavDestination<Route> = ScreenDestination(DestinationId(Route::class), null, extra, content)
+): NavDestination<Route> = ScreenDestination(DestinationId(Route::class), serializer<Route>(), null, extra, content)
 
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
@@ -44,6 +47,7 @@ public inline fun <reified Route : BaseRoute, reified ParentRoute : BaseRoute> S
 ): NavDestination<Route> = ScreenDestination(
     id = DestinationId(Route::class),
     parent = DestinationId(ParentRoute::class),
+    serializer = serializer<Route>(),
     extra = extra,
     content = content,
 )
@@ -51,6 +55,7 @@ public inline fun <reified Route : BaseRoute, reified ParentRoute : BaseRoute> S
 @PublishedApi
 internal class ScreenDestination<Route : BaseRoute>(
     override val id: DestinationId<Route>,
+    override val serializer: KSerializer<Route>,
     override val parent: DestinationId<*>?,
     override val extra: Any?,
     override val content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit,
@@ -64,7 +69,10 @@ internal class ScreenDestination<Route : BaseRoute>(
 @Suppress("FunctionName")
 public inline fun <reified Route : NavRoute> OverlayDestination(
     noinline content: @Composable (Route) -> Unit,
-): NavDestination<Route> = OverlayDestination(DestinationId(Route::class), null, null) { _, entry ->
+): NavDestination<Route> = OverlayDestination(DestinationId(Route::class), serializer<Route>(), null, null) {
+    _,
+    entry,
+    ->
     content(entry.route)
 }
 
@@ -73,7 +81,7 @@ public inline fun <reified Route : NavRoute> OverlayDestination(
 public inline fun <reified Route : NavRoute> OverlayDestination(
     extra: Any,
     noinline content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit,
-): NavDestination<Route> = OverlayDestination(DestinationId(Route::class), null, extra, content)
+): NavDestination<Route> = OverlayDestination(DestinationId(Route::class), serializer<Route>(), null, extra, content)
 
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
@@ -84,6 +92,7 @@ public inline fun <reified Route : NavRoute, reified ParentRoute : BaseRoute> Ov
 ): NavDestination<Route> = OverlayDestination(
     id = DestinationId(Route::class),
     parent = DestinationId(ParentRoute::class),
+    serializer = serializer<Route>(),
     extra = extra,
     content = content,
 )
@@ -91,6 +100,7 @@ public inline fun <reified Route : NavRoute, reified ParentRoute : BaseRoute> Ov
 @PublishedApi
 internal class OverlayDestination<Route : NavRoute>(
     override val id: DestinationId<Route>,
+    override val serializer: KSerializer<Route>,
     override val parent: DestinationId<*>?,
     override val extra: Any?,
     override val content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit,

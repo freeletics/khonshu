@@ -11,6 +11,8 @@ freeletics {
     )
 
     usePoko()
+    useSerialization()
+    useCompose()
 
     multiplatform {
         addJvmTarget()
@@ -19,8 +21,6 @@ freeletics {
             consumerProguardFiles("navigation.pro")
         }
     }
-
-    useCompose()
 }
 
 dependencies {

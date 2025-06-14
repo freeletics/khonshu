@@ -1,15 +1,17 @@
 package com.freeletics.khonshu.navigation
 
-import android.os.Parcelable
+import androidx.savedstate.serialization.encodeToSavedState
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
+import kotlinx.serialization.serializer
 
 /**
  * Send a fake result to collectors of this request. Can be used to test the result handling
  * logic.
  */
-public fun <R : Parcelable> NavigationResultRequest<R>.sendResult(result: R) {
-    savedStateHandle[key.requestKey] = NavigationResult(result)
+public inline fun <reified R> NavigationResultRequest<R>.sendResult(result: R) {
+    val serializer = NavigationResult.serializer(serializer<R>())
+    savedStateHandle[key.requestKey] = encodeToSavedState(serializer, NavigationResult(result))
 }
 
 /**
@@ -20,6 +22,6 @@ public fun <R : Parcelable> NavigationResultRequest<R>.sendResult(result: R) {
  * [registerForNavigationResult].
  */
 @OptIn(InternalNavigationCodegenApi::class)
-public inline fun <reified R : Parcelable> fakeNavigationResultKey(): NavigationResultRequest.Key<R> {
+public inline fun <reified R> fakeNavigationResultKey(): NavigationResultRequest.Key<R> {
     return NavigationResultRequest.Key(StackEntry.Id(""), R::class.qualifiedName!!)
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
 import androidx.savedstate.read
 import androidx.savedstate.savedState
+import androidx.savedstate.serialization.SavedStateConfiguration
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
@@ -83,8 +84,9 @@ internal class Stack private constructor(
     class Saver(
         private val createEntry: (BaseRoute) -> StackEntry<*>,
         createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
+        savedStateConfiguration: SavedStateConfiguration,
     ) : ComposeSaver<Stack, SavedState> {
-        private val entrySaver = StackEntry.Saver(createRestoredEntry)
+        private val entrySaver = StackEntry.Saver(createRestoredEntry, savedStateConfiguration)
 
         override fun restore(value: SavedState): Stack {
             return value.read {

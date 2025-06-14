@@ -76,6 +76,7 @@ internal class NavHostActivityCodegenTest {
             """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -143,7 +144,7 @@ internal class NavHostActivityCodegenTest {
                 public fun createKhonshuTestGraph(
                   @Provides viewModel: StackEntryStoreViewModel,
                   @Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                  @Provides launchInfo: LaunchInfo,
+                  @Provides intent: Intent,
                 ): KhonshuTestGraph
               }
             }
@@ -154,7 +155,7 @@ internal class NavHostActivityCodegenTest {
             ) : ActivityGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestGraph.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                factory.createKhonshuTestGraph(viewModel, savedStateHandle, activity.intent.asLaunchInfo())
+                factory.createKhonshuTestGraph(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -162,6 +163,9 @@ internal class NavHostActivityCodegenTest {
             public interface KhonshuTestActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
+
+              @Provides
+              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -261,6 +265,7 @@ internal class NavHostActivityCodegenTest {
             """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -329,7 +334,7 @@ internal class NavHostActivityCodegenTest {
                 public fun createKhonshuTestGraph(
                   @Provides viewModel: StackEntryStoreViewModel,
                   @Provides @ForScope(ActivityScope::class) savedStateHandle: SavedStateHandle,
-                  @Provides launchInfo: LaunchInfo,
+                  @Provides intent: Intent,
                 ): KhonshuTestGraph
               }
             }
@@ -340,7 +345,7 @@ internal class NavHostActivityCodegenTest {
             ) : ActivityGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, ActivityScope::class, AppScope::class) { factory: KhonshuTestGraph.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                factory.createKhonshuTestGraph(viewModel, savedStateHandle, activity.intent.asLaunchInfo())
+                factory.createKhonshuTestGraph(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -348,6 +353,9 @@ internal class NavHostActivityCodegenTest {
             public interface KhonshuTestActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
+
+              @Provides
+              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(ActivityScope::class)
@@ -471,6 +479,7 @@ internal class NavHostActivityCodegenTest {
             """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -550,7 +559,7 @@ internal class NavHostActivityCodegenTest {
                 public fun createKhonshuTest2Graph(
                   @Provides viewModel: StackEntryStoreViewModel,
                   @Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                  @Provides launchInfo: LaunchInfo,
+                  @Provides intent: Intent,
                 ): KhonshuTest2Graph
               }
             }
@@ -561,7 +570,7 @@ internal class NavHostActivityCodegenTest {
             ) : ActivityGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTest2Graph.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                factory.createKhonshuTest2Graph(viewModel, savedStateHandle, activity.intent.asLaunchInfo())
+                factory.createKhonshuTest2Graph(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -569,6 +578,9 @@ internal class NavHostActivityCodegenTest {
             public interface KhonshuTest2ActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
+
+              @Provides
+              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -676,6 +688,7 @@ internal class NavHostActivityCodegenTest {
             """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -740,7 +753,7 @@ internal class NavHostActivityCodegenTest {
                 public fun createKhonshuTestGraph(
                   @Provides viewModel: StackEntryStoreViewModel,
                   @Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                  @Provides launchInfo: LaunchInfo,
+                  @Provides intent: Intent,
                 ): KhonshuTestGraph
               }
             }
@@ -751,7 +764,7 @@ internal class NavHostActivityCodegenTest {
             ) : ActivityGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestGraph.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                factory.createKhonshuTestGraph(viewModel, savedStateHandle, activity.intent.asLaunchInfo())
+                factory.createKhonshuTestGraph(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -759,6 +772,9 @@ internal class NavHostActivityCodegenTest {
             public interface KhonshuTestActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
+
+              @Provides
+              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -853,6 +869,7 @@ internal class NavHostActivityCodegenTest {
             """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -920,7 +937,7 @@ internal class NavHostActivityCodegenTest {
                 public fun createKhonshuTestGraph(
                   @Provides viewModel: StackEntryStoreViewModel,
                   @Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                  @Provides launchInfo: LaunchInfo,
+                  @Provides intent: Intent,
                 ): KhonshuTestGraph
               }
             }
@@ -931,7 +948,7 @@ internal class NavHostActivityCodegenTest {
             ) : ActivityGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestGraph.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                factory.createKhonshuTestGraph(viewModel, savedStateHandle, activity.intent.asLaunchInfo())
+                factory.createKhonshuTestGraph(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -939,6 +956,9 @@ internal class NavHostActivityCodegenTest {
             public interface KhonshuTestActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
+
+              @Provides
+              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -1038,6 +1058,7 @@ internal class NavHostActivityCodegenTest {
             """
             package com.test
 
+            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -1105,7 +1126,7 @@ internal class NavHostActivityCodegenTest {
                 public fun createKhonshuTestGraph(
                   @Provides viewModel: StackEntryStoreViewModel,
                   @Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                  @Provides launchInfo: LaunchInfo,
+                  @Provides intent: Intent,
                 ): KhonshuTestGraph
               }
             }
@@ -1116,7 +1137,7 @@ internal class NavHostActivityCodegenTest {
             ) : ActivityGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestGraph.Factory, savedStateHandle ->
                 val viewModel = ViewModelProvider(activity, SavedStateViewModelFactory())[StackEntryStoreViewModel::class.java]
-                factory.createKhonshuTestGraph(viewModel, savedStateHandle, activity.intent.asLaunchInfo())
+                factory.createKhonshuTestGraph(viewModel, savedStateHandle, activity.intent)
               }
             }
 
@@ -1124,6 +1145,9 @@ internal class NavHostActivityCodegenTest {
             public interface KhonshuTestActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
+
+              @Provides
+              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(TestScreen::class)
