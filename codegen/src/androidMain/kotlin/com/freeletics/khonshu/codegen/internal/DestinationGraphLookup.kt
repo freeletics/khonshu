@@ -10,42 +10,42 @@ import com.freeletics.khonshu.navigation.internal.destinationId
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
-public interface ComponentProvider<R : BaseRoute, T> {
-    public fun provide(entry: StackEntry<R>, snapshot: StackSnapshot, provider: ActivityComponentProvider): T
+public interface GraphProvider<R : BaseRoute, T> {
+    public fun provide(entry: StackEntry<R>, snapshot: StackSnapshot, provider: ActivityGraphProvider): T
 }
 
 /**
  * Creates a [ViewModel] for the given [destinationId]. The `ViewModel.Factory` will use [parentScope]
- * to lookup a parent component instance. That component will then be passed to the given [factory]
+ * to lookup a parent graph instance. That graph will then be passed to the given [factory]
  * together with a [SavedStateHandle] and the passed in [destinationId].
  *
  * To be used in generated code.
  */
 @InternalCodegenApi
-public inline fun <reified C : Any, PC : Any, R : BaseRoute> component(
+public inline fun <reified C : Any, PC : Any, R : BaseRoute> getGraph(
     entry: StackEntry<R>,
-    activityComponentProvider: ActivityComponentProvider,
+    activityGraphProvider: ActivityGraphProvider,
     parentScope: KClass<*>,
     crossinline factory: (PC) -> C,
 ): C {
     return entry.store.getOrCreate(C::class) {
-        val parentComponent = activityComponentProvider.provide<PC>(parentScope)
-        factory(parentComponent)
+        val parentGraph = activityGraphProvider.provide<PC>(parentScope)
+        factory(parentGraph)
     }
 }
 
 /**
  * Creates a [ViewModel] for the given [destinationId]. The `ViewModel.Factory` will use [parentScope]
- * to lookup a parent component instance. That component will then be passed to the given [factory]
+ * to lookup a parent graph instance. That graph will then be passed to the given [factory]
  * together with a [SavedStateHandle] and the passed in [destinationId].
  *
  * To be used in generated code.
  */
 @InternalCodegenApi
-public inline fun <reified C : Any, PC : Any, R : BaseRoute, PR : BaseRoute> componentFromParentRoute(
+public inline fun <reified C : Any, PC : Any, R : BaseRoute, PR : BaseRoute> getGraphFromParentRoute(
     entry: StackEntry<R>,
     snapshot: StackSnapshot,
-    activityComponentProvider: ActivityComponentProvider,
+    activityGraphProvider: ActivityGraphProvider,
     parentScope: KClass<PR>,
     crossinline factory: (PC) -> C,
 ): C {
@@ -53,8 +53,8 @@ public inline fun <reified C : Any, PC : Any, R : BaseRoute, PR : BaseRoute> com
         val parentEntry = snapshot.entryFor(DestinationId(parentScope))
 
         @Suppress("UNCHECKED_CAST")
-        val parentComponentProvider = parentEntry.extra as ComponentProvider<PR, PC>
-        val parentComponent = parentComponentProvider.provide(parentEntry, snapshot, activityComponentProvider)
-        factory(parentComponent)
+        val parentGraphProvider = parentEntry.extra as GraphProvider<PR, PC>
+        val parentGraph = parentGraphProvider.provide(parentEntry, snapshot, activityGraphProvider)
+        factory(parentGraph)
     }
 }

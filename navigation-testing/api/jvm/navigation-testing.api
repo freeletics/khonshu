@@ -17,7 +17,7 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitio
 	public fun toString ()Ljava/lang/String;
 }
 
-public synthetic class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+public final synthetic class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
 	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition$$serializer;
 	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
 	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition;
@@ -48,7 +48,7 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitio
 	public fun toString ()Ljava/lang/String;
 }
 
-public synthetic class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitions$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+public final synthetic class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitions$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
 	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitions$$serializer;
 	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
 	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinitions;
@@ -83,7 +83,7 @@ public final class com/freeletics/khonshu/navigation/deeplinks/PatternDefinition
 	public final synthetic fun unbox-impl ()Ljava/lang/String;
 }
 
-public synthetic class com/freeletics/khonshu/navigation/deeplinks/PatternDefinition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+public final synthetic class com/freeletics/khonshu/navigation/deeplinks/PatternDefinition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
 	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/deeplinks/PatternDefinition$$serializer;
 	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
 	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
@@ -111,7 +111,7 @@ public final class com/freeletics/khonshu/navigation/deeplinks/PlaceholderDefini
 	public fun toString ()Ljava/lang/String;
 }
 
-public synthetic class com/freeletics/khonshu/navigation/deeplinks/PlaceholderDefinition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+public final synthetic class com/freeletics/khonshu/navigation/deeplinks/PlaceholderDefinition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
 	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/deeplinks/PlaceholderDefinition$$serializer;
 	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
 	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/freeletics/khonshu/navigation/deeplinks/PlaceholderDefinition;
@@ -141,7 +141,7 @@ public final class com/freeletics/khonshu/navigation/deeplinks/PrefixDefinition 
 	public fun toString ()Ljava/lang/String;
 }
 
-public synthetic class com/freeletics/khonshu/navigation/deeplinks/PrefixDefinition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+public final synthetic class com/freeletics/khonshu/navigation/deeplinks/PrefixDefinition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
 	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/deeplinks/PrefixDefinition$$serializer;
 	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
 	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/freeletics/khonshu/navigation/deeplinks/PrefixDefinition;

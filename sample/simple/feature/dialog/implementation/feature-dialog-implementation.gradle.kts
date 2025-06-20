@@ -3,7 +3,7 @@ plugins {
 }
 
 freeletics {
-    useDaggerWithKhonshu()
+    useKhonshu()
     useCompose()
 }
 
