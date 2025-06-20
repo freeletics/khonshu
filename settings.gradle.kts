@@ -28,7 +28,7 @@ pluginManagement {
 }
 
 plugins {
-    id("com.freeletics.gradle.settings").version("kotlin-2.2.0-SNAPSHOT")
+    id("com.freeletics.gradle.settings").version("0.27.0-alpha01")
 }
 
 rootProject.name = "khonshu"

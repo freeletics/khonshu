@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.2.0-RC"
+kotlin = "2.2.0-RC3"
 coroutines = "1.10.2"
 
 java-target= "11"
@@ -10,29 +10,29 @@ android-min = "21"
 android-target = "33"
 android-compile = "33"
 
-androidx-compose-runtime = "1.8.2"
-androidx-compose-ui = "1.8.2"
-jetbrains-compose = "1.8.1"
+androidx-compose-runtime = "1.8.3"
+androidx-compose-ui = "1.8.3"
+jetbrains-compose = "1.8.2"
 
 androidx-activity = "1.10.1"
 androidx-annotations = "1.5.0"
 androidx-core = "1.16.0"
-androidx-lifecycle = "2.9.0"
+androidx-lifecycle = "2.9.1"
 
 uri = "0.0.19"
 
-metro = "0.4.0-2.2.0-RC-alpha03"
-ksp = "2.2.0-RC-2.0.1"
+metro = "0.4.0-2.2.0-RC3-alpha08"
+ksp = "2.2.0-RC3-2.0.2"
 kotlinpoet = "2.2.0"
 auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
 
 junit = "4.13.2"
 truth = "1.4.4"
-turbine = "1.2.0"
+turbine = "1.2.1"
 kotlin-compile-testing = "0.7.1"
 
-fgp = "kotlin-2.2.0-SNAPSHOT"
+fgp = "0.27.0-alpha01"
 publish = "0.32.0"
 dokka = "2.0.0"
 binarycompatibility = "0.17.0"
