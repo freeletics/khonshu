@@ -1,6 +1,8 @@
 package com.freeletics.khonshu.navigation.deeplinks
 
 import android.content.Intent
+import androidx.activity.compose.LocalActivity
+import androidx.compose.runtime.Composable
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavDestination
 import kotlinx.collections.immutable.ImmutableSet
@@ -19,4 +21,10 @@ public fun HostNavigator.handleDeepLink(
     deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
 ): Boolean {
     return handleDeepLink(intent.asLaunchInfo(destinations), deepLinkHandlers, deepLinkPrefixes)
+}
+
+@Composable
+internal actual fun obtainLaunchInfo(destinations: ImmutableSet<NavDestination<*>>): LaunchInfo {
+    val activity = requireNotNull(LocalActivity.current) { "No Activity found" }
+    return activity.intent.asLaunchInfo(destinations)
 }
