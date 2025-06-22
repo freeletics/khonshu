@@ -44,7 +44,7 @@ import kotlinx.coroutines.CancellationException
  * doesn't provide its own [DeepLinkHandler.prefixes].
  *
  * The [destinationChangedCallback] can be used to be notified when the current destination
- * changes. Note that this will not be invoked when navigating to a [ActivityRoute].
+ * changes. Note that this will not be invoked when navigating to a [com.freeletics.khonshu.navigation.activity.ActivityRoute].
  */
 @Composable
 public fun NavHost(
@@ -65,7 +65,7 @@ public fun NavHost(
  * [rememberHostNavigator].
  *
  * The [destinationChangedCallback] can be used to be notified when the current destination
- * changes. Note that this will not be invoked when navigating to a [ActivityRoute].
+ * changes. Note that this will not be invoked when navigating to a [com.freeletics.khonshu.navigation.activity.ActivityRoute].
  */
 @Composable
 public fun NavHost(

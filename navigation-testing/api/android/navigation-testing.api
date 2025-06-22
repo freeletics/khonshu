@@ -1,17 +1,25 @@
+public final class com/freeletics/khonshu/navigation/NavigationResultTestingKt {
+	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest;Landroid/os/Parcelable;)V
+	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/ActivityResultRequest;Ljava/lang/Object;)V
+	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;Ljava/lang/String;Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest$PermissionResult;)V
+	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;Ljava/util/Map;)V
+	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;[Lkotlin/Pair;)V
+}
+
 public abstract interface class com/freeletics/khonshu/navigation/NavigatorTurbine {
 	public abstract fun awaitNavigate (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateBack (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateBackTo (Lkotlin/reflect/KClass;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitNavigateForResult (Lcom/freeletics/khonshu/navigation/ActivityResultRequest;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitNavigateForResult (Lcom/freeletics/khonshu/navigation/ActivityResultRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitNavigateTo (Lcom/freeletics/khonshu/navigation/ActivityRoute;Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitNavigateForResult (Lcom/freeletics/khonshu/navigation/activity/ActivityResultRequest;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitNavigateForResult (Lcom/freeletics/khonshu/navigation/activity/ActivityResultRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun awaitNavigateTo$default (Lcom/freeletics/khonshu/navigation/NavigatorTurbine;Lcom/freeletics/khonshu/navigation/ActivityRoute;Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public abstract fun awaitNavigateTo (Lcom/freeletics/khonshu/navigation/activity/ActivityRoute;Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitNavigateTo$default (Lcom/freeletics/khonshu/navigation/NavigatorTurbine;Lcom/freeletics/khonshu/navigation/activity/ActivityRoute;Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public abstract fun awaitNavigateUp (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitReplaceAllBackStacks (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;[Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;[Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitShowRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitSwitchBackStack (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun cancel (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -32,14 +40,6 @@ public final class com/freeletics/khonshu/navigation/NavigatorTurbineKt {
 	public static synthetic fun testIn-5_5nbZA$default (Lcom/freeletics/khonshu/navigation/TestHostNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/NavigatorTurbine;
 }
 
-public final class com/freeletics/khonshu/navigation/ResultOwnerTestingKt {
-	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/ActivityResultRequest;Ljava/lang/Object;)V
-	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest;Landroid/os/Parcelable;)V
-	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/lang/String;Lcom/freeletics/khonshu/navigation/PermissionsResultRequest$PermissionResult;)V
-	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;Ljava/util/Map;)V
-	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/PermissionsResultRequest;[Lkotlin/Pair;)V
-}
-
 public final class com/freeletics/khonshu/navigation/TestHostNavigator : com/freeletics/khonshu/navigation/HostNavigator {
 	public fun <init> ()V
 	public fun <init> (Lcom/freeletics/khonshu/navigation/NavRoute;)V
@@ -58,6 +58,13 @@ public final class com/freeletics/khonshu/navigation/TestHostNavigator : com/fre
 	public final fun setHandleDeepLinkRoute (Lcom/freeletics/khonshu/navigation/NavRoute;)V
 	public fun showRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 	public fun switchBackStack (Lcom/freeletics/khonshu/navigation/NavRoot;)V
+}
+
+public final class com/freeletics/khonshu/navigation/activity/ActivityResultContractTestingKt {
+	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/ActivityResultRequest;Ljava/lang/Object;)V
+	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;Ljava/lang/String;Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest$PermissionResult;)V
+	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;Ljava/util/Map;)V
+	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;[Lkotlin/Pair;)V
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkDefinition {

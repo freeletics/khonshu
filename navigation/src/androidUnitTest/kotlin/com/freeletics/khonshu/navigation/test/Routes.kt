@@ -3,10 +3,10 @@ package com.freeletics.khonshu.navigation.test
 import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
-import com.freeletics.khonshu.navigation.ExternalActivityRoute
-import com.freeletics.khonshu.navigation.InternalActivityRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.activity.ExternalActivityRoute
+import com.freeletics.khonshu.navigation.activity.InternalActivityRoute
 import dev.drewhamilton.poko.Poko
 import kotlinx.parcelize.Parcelize
 

@@ -3,7 +3,6 @@ package com.freeletics.khonshu.navigation
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.os.Parcelable
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
@@ -16,16 +15,20 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
+import com.freeletics.khonshu.navigation.activity.ActivityNavigator
+import com.freeletics.khonshu.navigation.activity.ActivityResultContractRequest
+import com.freeletics.khonshu.navigation.activity.ActivityResultRequest
+import com.freeletics.khonshu.navigation.activity.ActivityRoute
+import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest
 import com.freeletics.khonshu.navigation.internal.ActivityEvent
 import com.freeletics.khonshu.navigation.internal.ActivityStarter
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.parcelize.Parcelize
 import org.jetbrains.annotations.VisibleForTesting
 
 /**
- * Sets up the [ActivityNavigator] and [DestinationNavigator] inside the current composition so that it's events
+ * Sets up the [com.freeletics.khonshu.navigation.activity.ActivityNavigator] and [DestinationNavigator] inside the current composition so that it's events
  * are handled while the composition is active.
  */
 @Composable
@@ -53,7 +56,7 @@ public fun NavigationSetup(navigator: ActivityNavigator) {
 
 @Composable
 private fun <I, O> rememberResultLaunchers(
-    request: ContractResultOwner<I, O, *>,
+    request: ActivityResultContractRequest<I, O, *>,
     context: Context,
 ): ActivityResultLauncher<*> {
     return rememberLauncherForActivityResult(request.contract) {
@@ -65,7 +68,7 @@ private fun <I, O> rememberResultLaunchers(
 internal suspend fun ActivityNavigator.collectAndHandleActivityEvents(
     lifecycle: Lifecycle,
     activityStarter: (ActivityRoute, NavRoute?) -> Unit,
-    activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
+    activityLaunchers: Map<ActivityResultContractRequest<*, *, *>, ActivityResultLauncher<*>>,
 ) {
     // Following comment https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295,
     // the events could be lost due to the prompt cancellation guarantee of Channel,
@@ -88,7 +91,7 @@ internal suspend fun ActivityNavigator.collectAndHandleActivityEvents(
 private fun navigateTo(
     event: ActivityEvent,
     activityStarter: (ActivityRoute, NavRoute?) -> Unit,
-    activityLaunchers: Map<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>,
+    activityLaunchers: Map<ActivityResultContractRequest<*, *, *>, ActivityResultLauncher<*>>,
 ) {
     when (event) {
         is ActivityEvent.NavigateTo -> {
@@ -107,7 +110,7 @@ private fun navigateTo(
 }
 
 @VisibleForTesting
-internal fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(activity: Activity, result: O) {
+internal fun <I, O, R> ActivityResultContractRequest<I, O, R>.deliverResult(activity: Activity, result: O) {
     deliverResult(result) {
         ActivityCompat.shouldShowRequestPermissionRationale(activity, it)
     }
@@ -115,7 +118,7 @@ internal fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(activity: Acti
 
 @VisibleForTesting
 @Suppress("UNCHECKED_CAST")
-internal inline fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(
+internal inline fun <I, O, R> ActivityResultContractRequest<I, O, R>.deliverResult(
     result: O,
     shouldShowPermissionRationale: (String) -> Boolean,
 ) {

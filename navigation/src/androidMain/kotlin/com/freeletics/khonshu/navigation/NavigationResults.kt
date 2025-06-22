@@ -1,4 +1,3 @@
-@file:Suppress("ktlint:standard:filename")
 package com.freeletics.khonshu.navigation
 
 import android.os.Parcel
@@ -11,25 +10,31 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 /**
- * Class that exposes a [results] [Flow] that can be used to observe results for
- * the given [key].
+ * Class returned from [ResultNavigator.registerForNavigationResult].
  *
- * See [ResultOwner] and [ResultNavigator.registerForNavigationResult].
+ * The [key] can be passed to other destinations that can then call [ResultNavigator.deliverNavigationResult] with it
+ * to deliver a `result` [R] that will then be emitted by [results].
  */
 public class NavigationResultRequest<R : Parcelable> @InternalNavigationTestingApi constructor(
     public val key: Key<R>,
     @property:InternalNavigationTestingApi
     public val savedStateHandle: SavedStateHandle,
-) : ResultOwner<R> {
-    override val results: Flow<R>
-        get() = savedStateHandle.getStateFlow<Parcelable>(key.requestKey, InitialValue)
+) {
+    /**
+     * Emits any result that was passed to [ResultNavigator.deliverNavigationResult] with the matching
+     * [key].
+     *
+     * Results will only be delivered to one collector at a time.
+     */
+    public val results: Flow<R>
+        get() = savedStateHandle.getStateFlow<NavigationResult<R>>(key.requestKey, NavigationResult(null))
             .mapNotNull {
-                if (it != InitialValue) {
-                    savedStateHandle[key.requestKey] = InitialValue
-                    @Suppress("UNCHECKED_CAST")
-                    it as R
+                if (it.value != null) {
+                    savedStateHandle[key.requestKey] = NavigationResult(null)
+                    it.value
                 } else {
                     null
                 }
@@ -61,4 +66,7 @@ public class NavigationResultRequest<R : Parcelable> @InternalNavigationTestingA
 }
 
 @Parcelize
-private object InitialValue : Parcelable
+@InternalNavigationTestingApi
+public data class NavigationResult<R : Parcelable>(
+    val value: R?,
+) : Parcelable

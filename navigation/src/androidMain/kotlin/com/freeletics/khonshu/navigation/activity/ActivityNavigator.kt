@@ -1,6 +1,7 @@
-package com.freeletics.khonshu.navigation
+package com.freeletics.khonshu.navigation.activity
 
 import androidx.activity.result.contract.ActivityResultContract
+import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.internal.ActivityEvent
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import kotlinx.coroutines.channels.Channel
@@ -9,24 +10,26 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
- * This allows to trigger [ActivityResultContract] related navigation actions from outside t
- * he view layer without keeping references to Android framework classes that might leak.
+ * This allows to trigger [androidx.activity.result.contract.ActivityResultContract] related
+ * navigation actions from outside the view layer without keeping references to Android framework
+ * classes that might leak.
+ *
  * It also improves the testability of your navigation logic since it is possible to just write
  * test that the correct events were emitted.
  *
- * For this work [NavigationSetup] needs to be called.
+ * For this work [com.freeletics.khonshu.navigation.NavigationSetup] needs to be called.
  */
 public abstract class ActivityNavigator {
-    private val _activityEvents = Channel<ActivityEvent>(Channel.UNLIMITED)
+    private val _activityEvents = Channel<ActivityEvent>(Channel.Factory.UNLIMITED)
 
     @InternalNavigationTestingApi
     public val activityEvents: Flow<ActivityEvent> = _activityEvents.receiveAsFlow()
 
-    private val _activityResultRequests = mutableListOf<ContractResultOwner<*, *, *>>()
+    private val _activityResultRequests = mutableListOf<ActivityResultContractRequest<*, *, *>>()
     private var allowedToAddRequests = true
 
     @InternalNavigationTestingApi
-    public val activityResultRequests: List<ContractResultOwner<*, *, *>>
+    public val activityResultRequests: List<ActivityResultContractRequest<*, *, *>>
         get() {
             allowedToAddRequests = false
             return _activityResultRequests.toList()
@@ -49,7 +52,8 @@ public abstract class ActivityNavigator {
      *
      * For permission requests prefer using [registerForPermissionsResult] instead.
      *
-     * Note: You must call this before [NavigationSetup] is called with this navigator.
+     * Note: You must call this before [com.freeletics.khonshu.navigation.NavigationSetup] is called with
+     * this navigator.
      */
     public fun <I, O> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
@@ -72,7 +76,8 @@ public abstract class ActivityNavigator {
      * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
      * for more information.
      *
-     * Note: You must call this before [NavigationSetup] is called with this navigator.
+     * Note: You must call this before [com.freeletics.khonshu.navigation.NavigationSetup] is called with
+     * this navigator.
      */
     public fun registerForPermissionsResult(): PermissionsResultRequest {
         checkAllowedToAddRequests()

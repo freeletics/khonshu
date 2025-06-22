@@ -8,6 +8,7 @@ import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.NavigationResult
 import com.freeletics.khonshu.navigation.NavigationResultRequest
 import com.freeletics.khonshu.navigation.Navigator
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
@@ -98,7 +99,8 @@ internal class MultiStackHostNavigator(
     }
 
     override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
-        snapshot.value.entryFor(key.destinationId).savedStateHandle[key.requestKey] = result
+        val entry = snapshot.value.entryFor(key.destinationId)
+        entry.savedStateHandle[key.requestKey] = NavigationResult(result)
     }
 
     override fun <T : BaseRoute, O : Parcelable> registerForNavigationResultInternal(
