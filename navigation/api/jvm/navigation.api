@@ -11,6 +11,21 @@ public abstract interface class com/freeletics/khonshu/navigation/NavRoot : com/
 public abstract interface class com/freeletics/khonshu/navigation/NavRoute : com/freeletics/khonshu/navigation/BaseRoute {
 }
 
+public abstract interface class com/freeletics/khonshu/navigation/Navigator {
+	public static final field Companion Lcom/freeletics/khonshu/navigation/Navigator$Companion;
+	public abstract fun navigateBack ()V
+	public abstract fun navigateBackTo (Lkotlin/reflect/KClass;Z)V
+	public static synthetic fun navigateBackTo$default (Lcom/freeletics/khonshu/navigation/Navigator;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
+	public abstract fun navigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
+	public abstract fun navigateUp ()V
+	public abstract fun replaceAllBackStacks (Lcom/freeletics/khonshu/navigation/NavRoot;)V
+	public abstract fun showRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
+	public abstract fun switchBackStack (Lcom/freeletics/khonshu/navigation/NavRoot;)V
+}
+
+public final class com/freeletics/khonshu/navigation/Navigator$Companion {
+}
+
 public final class com/freeletics/khonshu/navigation/OverlayDestination : com/freeletics/khonshu/navigation/NavDestination {
 	public static final field $stable I
 	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlinx/serialization/KSerializer;Lkotlin/reflect/KClass;Ljava/lang/Object;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -84,6 +99,21 @@ public final class com/freeletics/khonshu/navigation/internal/StackEntry {
 	public static final field $stable I
 	public fun <init> ()V
 	public final fun getRoute ()Lcom/freeletics/khonshu/navigation/BaseRoute;
+}
+
+public final synthetic class com/freeletics/khonshu/navigation/internal/StackEntry$Id$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/internal/StackEntry$Id$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize-9HG0gqw (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/String;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize-R1WPh04 (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/String;)V
+}
+
+public final class com/freeletics/khonshu/navigation/internal/StackEntry$Id$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/freeletics/khonshu/navigation/internal/StackSnapshot {
