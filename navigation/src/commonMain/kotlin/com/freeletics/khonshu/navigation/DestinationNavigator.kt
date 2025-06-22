@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation
 
-import com.freeletics.khonshu.navigation.activity.ActivityNavigator
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 
 /**
@@ -11,7 +10,7 @@ public abstract class DestinationNavigator(
     @property:InternalNavigationTestingApi
     public val hostNavigator: HostNavigator,
 ) : Navigator by hostNavigator,
-    ActivityNavigator() {
+    PlatformNavigator() {
     /**
      * See [HostNavigator.navigate].
      */
@@ -19,3 +18,5 @@ public abstract class DestinationNavigator(
         hostNavigator.navigate(block)
     }
 }
+
+public expect abstract class PlatformNavigator()
