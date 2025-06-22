@@ -20,6 +20,58 @@ public abstract interface class com/freeletics/khonshu/navigation/NavRoot : com/
 public abstract interface class com/freeletics/khonshu/navigation/NavRoute : com/freeletics/khonshu/navigation/BaseRoute {
 }
 
+public final synthetic class com/freeletics/khonshu/navigation/NavigationResult$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/serialization/KSerializer;)V
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/freeletics/khonshu/navigation/NavigationResult;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/freeletics/khonshu/navigation/NavigationResult;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/freeletics/khonshu/navigation/NavigationResult$Companion {
+	public final fun serializer (Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/freeletics/khonshu/navigation/NavigationResultRequest {
+	public static final field $stable I
+	public final fun getKey ()Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;
+	public final fun getResults ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/freeletics/khonshu/navigation/NavigationResultRequest$Key {
+	public static final field $stable I
+	public static final field Companion Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key$Companion;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getStackEntryId-7sqkNMY ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/freeletics/khonshu/navigation/NavigationResultRequest$Key$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/serialization/KSerializer;)V
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/freeletics/khonshu/navigation/NavigationResultRequest$Key$Companion {
+	public final fun serializer (Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/freeletics/khonshu/navigation/NavigationResultsKt {
+	public static final fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/Navigator;Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Ljava/lang/Object;Lkotlinx/serialization/KSerializer;)V
+	public static final fun registerForNavigationResult-fWbuzBA (Lcom/freeletics/khonshu/navigation/Navigator;Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlinx/serialization/KSerializer;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest;
+}
+
 public abstract interface class com/freeletics/khonshu/navigation/Navigator {
 	public static final field Companion Lcom/freeletics/khonshu/navigation/Navigator$Companion;
 	public abstract fun navigateBack ()V
