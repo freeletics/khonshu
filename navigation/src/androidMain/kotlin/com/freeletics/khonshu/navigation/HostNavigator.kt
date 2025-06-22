@@ -1,55 +1,45 @@
 package com.freeletics.khonshu.navigation
 
 import android.content.Intent
-import androidx.activity.OnBackPressedCallback
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.StackEntryStoreViewModel
-import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.internal.createHostNavigator
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
+import com.freeletics.khonshu.navigation.deeplinks.DeepLink
+import com.freeletics.khonshu.navigation.internal.StackSnapshot
 
-/**
- * An implementation of [Navigator] that is meant to be used at the [NavHost] level.
- *
- * An instance can be created by calling [rememberHostNavigator].
- */
-public abstract class HostNavigator @InternalNavigationTestingApi constructor() :
-    Navigator,
-    BackInterceptor {
-        @InternalNavigationTestingApi
-        public abstract val snapshot: State<StackSnapshot>
+public abstract class HostNavigator @InternalNavigationTestingApi constructor() : Navigator {
 
-        @InternalNavigationTestingApi
-        public abstract val onBackPressedCallback: OnBackPressedCallback
+    @InternalNavigationTestingApi
+    public abstract val snapshot: State<StackSnapshot>
 
-        /**
-         * If the given [Intent] was created from a [DeepLink] or the `Uri` returned by [Intent.getData]
-         * can be handled using [deepLinkHandlers] and [deepLinkPrefixes] then the navigator will
-         * clear the current back stack and navigate to the required destinations.
-         *
-         * Returns `true` if the `Intent` contained a deeplink that was handled.
-         */
-        public abstract fun handleDeepLink(
-            intent: Intent,
-            deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
-            deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
-        ): Boolean
+    /**
+     * If the given [Intent] was created from a [DeepLink] or the `Uri` returned by [Intent.getData]
+     * can be handled using [deepLinkHandlers] and [deepLinkPrefixes] then the navigator will
+     * clear the current back stack and navigate to the required destinations.
+     *
+     * Returns `true` if the `Intent` contained a deeplink that was handled.
+     */
+    public abstract fun handleDeepLink(
+        intent: Intent,
+        deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
+        deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
+    ): Boolean
 
-        /**
-         * Allows to group multiple navigation actions and execute them atomically. The state of this [HostNavigator] will
-         * only be updated after running all actions. This should be used when navigating multiple times, for example
-         * calling `navigateBackTo` followed by `navigateTo`.
-         */
-        public abstract fun navigate(block: Navigator.() -> Unit)
-    }
+    /**
+     * Allows to group multiple navigation actions and execute them atomically. The state of this [HostNavigator] will
+     * only be updated after running all actions. This should be used when navigating multiple times, for example
+     * calling `navigateBackTo` followed by `navigateTo`.
+     */
+    public abstract fun navigate(block: Navigator.() -> Unit)
+}
 
 /**
  * Returns an instance of [HostNavigator] with the given [destinations] and

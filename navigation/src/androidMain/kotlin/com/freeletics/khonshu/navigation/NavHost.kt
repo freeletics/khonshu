@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.navigation
 
+import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Transition
@@ -22,7 +23,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
-import com.freeletics.khonshu.navigation.internal.PredictiveBackHandler
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import java.lang.ref.WeakReference
@@ -292,10 +292,7 @@ private fun systemBackHandling(snapshot: StackSnapshot, navigator: HostNavigator
     val backProgress = remember(snapshot) {
         Animatable(0f, visibilityThreshold = VISIBILITY_THRESHOLD)
     }
-    PredictiveBackHandler(
-        enabled = snapshot.canNavigateBack,
-        extraCallback = navigator.onBackPressedCallback,
-    ) { progressFlow ->
+    PredictiveBackHandler(enabled = snapshot.canNavigateBack) { progressFlow ->
         try {
             progressFlow.collect { backEvent ->
                 backProgress.snapTo(backEvent.progress)

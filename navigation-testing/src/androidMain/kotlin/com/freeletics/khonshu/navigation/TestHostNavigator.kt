@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.navigation
 
 import android.content.Intent
-import androidx.activity.OnBackPressedCallback
 import androidx.compose.runtime.State
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Turbine
@@ -16,7 +15,6 @@ import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.parcelize.Parcelize
 
@@ -34,19 +32,10 @@ public class TestHostNavigator(
         @OptIn(InternalNavigationCodegenApi::class)
         get() = fakeEntry.savedStateHandle
 
-    internal val backPresses = Turbine<Unit>()
-
     @InternalNavigationCodegenApi
     @InternalNavigationTestingApi
     override val snapshot: State<StackSnapshot>
         get() = throw UnsupportedOperationException()
-
-    @InternalNavigationTestingApi
-    override val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            backPresses += Unit
-        }
-    }
 
     /**
      * The fake implementation will call [navigateTo] with [handleDeepLinkRoute] if
@@ -94,14 +83,6 @@ public class TestHostNavigator(
 
     override fun replaceAllBackStacks(root: NavRoot) {
         eventTurbine += ReplaceAllBackStacksEvent(root)
-    }
-
-    override fun backPresses(): Flow<Unit> {
-        return backPresses.asChannel().receiveAsFlow()
-    }
-
-    override fun <T> backPresses(value: T): Flow<T> {
-        return backPresses.asChannel().receiveAsFlow().map { value }
     }
 
     @InternalNavigationApi
