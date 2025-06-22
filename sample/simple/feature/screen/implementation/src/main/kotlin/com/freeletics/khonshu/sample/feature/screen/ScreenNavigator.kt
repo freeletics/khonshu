@@ -2,8 +2,8 @@ package com.freeletics.khonshu.sample.feature.screen
 
 import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.HostNavigator
-import com.freeletics.khonshu.navigation.ResultNavigator.Companion.registerForNavigationResult
 import com.freeletics.khonshu.navigation.activity.ActivityNavigator
+import com.freeletics.khonshu.navigation.registerForNavigationResult
 import com.freeletics.khonshu.sample.feature.bottomsheet.nav.BottomSheetRoute
 import com.freeletics.khonshu.sample.feature.dialog.nav.DialogRoute
 import com.freeletics.khonshu.sample.feature.newroot.nav.NewRootRoute

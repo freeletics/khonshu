@@ -42,7 +42,6 @@ public final class com/freeletics/khonshu/navigation/TestHostNavigator : com/fre
 	public synthetic fun <init> (Lcom/freeletics/khonshu/navigation/NavRoute;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun backPresses ()Lkotlinx/coroutines/flow/Flow;
 	public fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
-	public fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
 	public final fun getHandleDeepLinkRoute ()Lcom/freeletics/khonshu/navigation/NavRoute;
 	public fun handleDeepLink (Landroid/content/Intent;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)Z
 	public fun navigate (Lkotlin/jvm/functions/Function1;)V

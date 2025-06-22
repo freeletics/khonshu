@@ -11,6 +11,7 @@ import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.OverlayDestination
+import com.freeletics.khonshu.navigation.ScreenDestination
 import dev.drewhamilton.poko.Poko
 import kotlinx.parcelize.Parcelize
 
@@ -59,4 +60,18 @@ public class StackEntry<T : BaseRoute> internal constructor(
     @Parcelize
     @InternalNavigationTestingApi
     public value class Id(internal val value: String) : Parcelable
+
+    @InternalNavigationTestingApi
+    public companion object {
+        @InternalNavigationTestingApi
+        public fun create(id: Id, route: BaseRoute): StackEntry<BaseRoute> {
+            return StackEntry(
+                id = id,
+                route = route,
+                destination = ScreenDestination<BaseRoute> {},
+                savedStateHandle = SavedStateHandle(),
+                store = StackEntryStore {},
+            )
+        }
+    }
 }

@@ -4,10 +4,10 @@ import android.content.Intent
 import androidx.activity.OnBackPressedCallback
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.freeletics.khonshu.navigation.deeplinks.DeepLink
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.StackEntryStoreViewModel
@@ -23,7 +23,6 @@ import kotlinx.collections.immutable.persistentSetOf
  */
 public abstract class HostNavigator @InternalNavigationTestingApi constructor() :
     Navigator,
-    ResultNavigator,
     BackInterceptor {
         @InternalNavigationTestingApi
         public abstract val snapshot: State<StackSnapshot>
@@ -32,7 +31,7 @@ public abstract class HostNavigator @InternalNavigationTestingApi constructor() 
         public abstract val onBackPressedCallback: OnBackPressedCallback
 
         /**
-         * If the given [Intent] was created from a [DeepLink] or the `Uri` returned by [Intent.getData]
+         * If the given [Intent] was created from a [DeepLinkå] or the `Uri` returned by [Intent.getData]
          * can be handled using [deepLinkHandlers] and [deepLinkPrefixes] then the navigator will
          * clear the current back stack and navigate to the required destinations.
          *

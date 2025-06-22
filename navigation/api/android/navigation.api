@@ -6,12 +6,11 @@ public abstract interface class com/freeletics/khonshu/navigation/BackIntercepto
 public abstract interface class com/freeletics/khonshu/navigation/BaseRoute : android/os/Parcelable {
 }
 
-public abstract class com/freeletics/khonshu/navigation/DestinationNavigator : com/freeletics/khonshu/navigation/activity/ActivityNavigator, com/freeletics/khonshu/navigation/BackInterceptor, com/freeletics/khonshu/navigation/Navigator, com/freeletics/khonshu/navigation/ResultNavigator {
+public abstract class com/freeletics/khonshu/navigation/DestinationNavigator : com/freeletics/khonshu/navigation/activity/ActivityNavigator, com/freeletics/khonshu/navigation/BackInterceptor, com/freeletics/khonshu/navigation/Navigator {
 	public static final field $stable I
 	public fun <init> (Lcom/freeletics/khonshu/navigation/HostNavigator;)V
 	public fun backPresses ()Lkotlinx/coroutines/flow/Flow;
 	public fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
-	public fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
 	public final fun navigate (Lkotlin/jvm/functions/Function1;)V
 	public fun navigateBack ()V
 	public fun navigateBackTo (Lkotlin/reflect/KClass;Z)V
@@ -22,7 +21,7 @@ public abstract class com/freeletics/khonshu/navigation/DestinationNavigator : c
 	public fun switchBackStack (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 }
 
-public abstract class com/freeletics/khonshu/navigation/HostNavigator : com/freeletics/khonshu/navigation/BackInterceptor, com/freeletics/khonshu/navigation/Navigator, com/freeletics/khonshu/navigation/ResultNavigator {
+public abstract class com/freeletics/khonshu/navigation/HostNavigator : com/freeletics/khonshu/navigation/BackInterceptor, com/freeletics/khonshu/navigation/Navigator {
 	public static final field $stable I
 	public abstract fun handleDeepLink (Landroid/content/Intent;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)Z
 	public abstract fun navigate (Lkotlin/jvm/functions/Function1;)V
@@ -63,6 +62,11 @@ public final class com/freeletics/khonshu/navigation/NavigationResultRequest$Key
 	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
+public final class com/freeletics/khonshu/navigation/NavigationResultsKt {
+	public static final fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/Navigator;Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
+	public static final fun registerForNavigationResult-G5cFDYM (Lcom/freeletics/khonshu/navigation/Navigator;Lkotlin/reflect/KClass;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest;
+}
+
 public final class com/freeletics/khonshu/navigation/NavigationSetupKt {
 	public static final fun NavigationSetup (Lcom/freeletics/khonshu/navigation/activity/ActivityNavigator;Landroidx/compose/runtime/Composer;I)V
 }
@@ -85,14 +89,6 @@ public final class com/freeletics/khonshu/navigation/Navigator$Companion {
 public final class com/freeletics/khonshu/navigation/OverlayDestination : com/freeletics/khonshu/navigation/NavDestination {
 	public static final field $stable I
 	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;Ljava/lang/Object;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-}
-
-public abstract interface class com/freeletics/khonshu/navigation/ResultNavigator {
-	public static final field Companion Lcom/freeletics/khonshu/navigation/ResultNavigator$Companion;
-	public abstract fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
-}
-
-public final class com/freeletics/khonshu/navigation/ResultNavigator$Companion {
 }
 
 public final class com/freeletics/khonshu/navigation/ScreenDestination : com/freeletics/khonshu/navigation/NavDestination {
@@ -204,6 +200,12 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkKt {
 	public static final fun DeepLink (Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
 	public static synthetic fun DeepLink$default (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
 	public static synthetic fun DeepLink$default (Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
+}
+
+public final class com/freeletics/khonshu/navigation/internal/ComposableSingletons$StackEntryKt {
+	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/internal/ComposableSingletons$StackEntryKt;
+	public fun <init> ()V
+	public final fun getLambda$312382450$navigation_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationApi : java/lang/annotation/Annotation {

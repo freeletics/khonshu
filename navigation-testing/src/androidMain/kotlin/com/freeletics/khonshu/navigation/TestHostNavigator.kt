@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.navigation
 
 import android.content.Intent
-import android.os.Parcelable
 import androidx.activity.OnBackPressedCallback
 import androidx.compose.runtime.State
 import androidx.lifecycle.SavedStateHandle
@@ -19,13 +18,21 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.parcelize.Parcelize
 
 public class TestHostNavigator(
     public var handleDeepLinkRoute: NavRoute? = null,
 ) : HostNavigator() {
+    @InternalNavigationCodegenApi
+    private val fakeEntry = StackEntry.create(StackEntry.Id(""), DummyRoute)
+
     private val eventTurbine = Turbine<TestEvent>()
     internal val events: Flow<TestEvent>
         get() = eventTurbine.asChannel().receiveAsFlow()
+
+    internal val savedStateHandle: SavedStateHandle
+        @OptIn(InternalNavigationCodegenApi::class)
+        get() = fakeEntry.savedStateHandle
 
     internal val backPresses = Turbine<Unit>()
 
@@ -89,21 +96,6 @@ public class TestHostNavigator(
         eventTurbine += ReplaceAllBackStacksEvent(root)
     }
 
-    override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
-        eventTurbine += DestinationResultEvent(key, result)
-    }
-
-    @InternalNavigationApi
-    @InternalNavigationCodegenApi
-    override fun <T : BaseRoute, O : Parcelable> registerForNavigationResultInternal(
-        id: DestinationId<T>,
-        resultType: String,
-    ): NavigationResultRequest<O> {
-        val requestKey = "${id.route.qualifiedName!!}-$resultType"
-        val key = NavigationResultRequest.Key<O>(StackEntry.Id(id.route.simpleName!!), requestKey)
-        return NavigationResultRequest(key, SavedStateHandle())
-    }
-
     override fun backPresses(): Flow<Unit> {
         return backPresses.asChannel().receiveAsFlow()
     }
@@ -113,14 +105,17 @@ public class TestHostNavigator(
     }
 
     @InternalNavigationApi
-    @OptIn(InternalNavigationCodegenApi::class)
+    @InternalNavigationCodegenApi
     override fun getTopEntryFor(destinationId: DestinationId<*>): StackEntry<*> {
-        throw UnsupportedOperationException()
+        return fakeEntry
     }
 
     @InternalNavigationApi
-    @OptIn(InternalNavigationCodegenApi::class)
+    @InternalNavigationCodegenApi
     override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
-        throw UnsupportedOperationException()
+        return fakeEntry
     }
+
+    @Parcelize
+    private object DummyRoute : NavRoute
 }
