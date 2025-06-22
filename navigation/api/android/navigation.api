@@ -224,25 +224,11 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLink_androidK
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/HandleDeeplinkKt {
-	public static final fun handleDeepLink (Lcom/freeletics/khonshu/navigation/HostNavigator;Lcom/freeletics/khonshu/navigation/deeplinks/LaunchInfo;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)Z
+	public static final fun handleDeepLink (Lcom/freeletics/khonshu/navigation/HostNavigator;Lcom/eygraber/uri/Uri;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)Z
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/HandleDeeplink_androidKt {
 	public static final fun handleDeepLink (Lcom/freeletics/khonshu/navigation/HostNavigator;Landroid/content/Intent;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)Z
-}
-
-public final class com/freeletics/khonshu/navigation/deeplinks/LaunchInfo {
-	public static final field $stable I
-	public fun <init> (Ljava/util/List;Lcom/eygraber/uri/Uri;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getRoutes ()Ljava/util/List;
-	public final fun getUri ()Lcom/eygraber/uri/Uri;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/freeletics/khonshu/navigation/deeplinks/LaunchInfo_androidKt {
-	public static final fun asLaunchInfo (Landroid/content/Intent;)Lcom/freeletics/khonshu/navigation/deeplinks/LaunchInfo;
 }
 
 public final class com/freeletics/khonshu/navigation/internal/ComposableSingletons$StackEntryKt {
