@@ -2,7 +2,6 @@ package com.freeletics.khonshu.sample.feature.screen
 
 import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.HostNavigator
-import com.freeletics.khonshu.navigation.activity.ActivityNavigator
 import com.freeletics.khonshu.navigation.registerForNavigationResult
 import com.freeletics.khonshu.sample.feature.bottomsheet.nav.BottomSheetRoute
 import com.freeletics.khonshu.sample.feature.dialog.nav.DialogRoute
@@ -19,7 +18,7 @@ import dev.zacsweers.metro.binding
 @Inject
 @ForScope(ScreenRoute::class)
 @SingleIn(ScreenRoute::class)
-@ContributesBinding(ScreenRoute::class, binding<ActivityNavigator>())
+@ContributesBinding(ScreenRoute::class, binding<DestinationNavigator>())
 class ScreenNavigator(
     hostNavigator: HostNavigator,
     private val route: ScreenRoute,

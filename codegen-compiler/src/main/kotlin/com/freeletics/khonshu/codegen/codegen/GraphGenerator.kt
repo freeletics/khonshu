@@ -2,12 +2,12 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
-import com.freeletics.khonshu.codegen.util.activityNavigator
 import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.autoCloseable
 import com.freeletics.khonshu.codegen.util.contributesGraphExtension
 import com.freeletics.khonshu.codegen.util.contributesGraphExtensionFactory
 import com.freeletics.khonshu.codegen.util.contributesTo
+import com.freeletics.khonshu.codegen.util.destinationNavigator
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
@@ -57,7 +57,7 @@ internal class GraphGenerator(
         if (data is NavHostActivityData) {
             properties += simplePropertySpec(hostNavigator)
         } else {
-            properties += simplePropertySpec(activityNavigator).toBuilder()
+            properties += simplePropertySpec(destinationNavigator).toBuilder()
                 .addAnnotation(forScope(data.scope))
                 .build()
         }
