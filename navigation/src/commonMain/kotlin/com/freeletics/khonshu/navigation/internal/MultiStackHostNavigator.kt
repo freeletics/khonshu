@@ -8,7 +8,7 @@ import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.Navigator
 import kotlin.reflect.KClass
 
-internal actual class MultiStackHostNavigator actual constructor(
+internal class MultiStackHostNavigator(
     private val stack: MultiStack,
 ) : HostNavigator() {
     override val snapshot: State<StackSnapshot>
