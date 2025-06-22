@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation
 
-import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Transition
@@ -18,7 +17,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.PredictiveBackHandler
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
@@ -283,6 +284,7 @@ private val interpolator = CubicBezierEasing(0.1f, 0.1f, 0f, 1f)
 private const val TRANSITION_POINT = 0.035f
 private const val VISIBILITY_THRESHOLD = 0.000000001f
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun systemBackHandling(snapshot: StackSnapshot, navigator: HostNavigator): State<Float> {
     val backProgress = remember(snapshot) {

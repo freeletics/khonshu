@@ -45,13 +45,14 @@ dependencies {
     "commonMainApi"(libs.androidx.lifecycle.common)
     "commonMainApi"(libs.androidx.viewmodel.savedstate)
     "commonMainApi"(libs.androidx.savedstate)
+    "commonMainApi"(libs.jetbrains.compose.ui)
+    "commonMainApi"(libs.jetbrains.compose.ui.backhandler)
     "commonMainApi"(libs.jetbrains.compose.foundation)
     "commonMainApi"(libs.uri)
 
     "androidMainApi"(libs.androidx.activity)
     "androidMainApi"(libs.androidx.activity.compose)
     "androidMainApi"(libs.androidx.core)
-    "androidMainApi"(libs.androidx.compose.ui)
     "androidMainApi"(libs.androidx.viewmodel.compose)
     "androidMainApi"(libs.coroutines.core)
 
