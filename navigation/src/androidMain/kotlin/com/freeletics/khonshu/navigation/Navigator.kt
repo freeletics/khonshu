@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation
 
-import android.os.Parcelable
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
@@ -68,40 +67,6 @@ public interface Navigator {
          */
         public inline fun <reified T : NavRoute> Navigator.navigateBackTo(inclusive: Boolean = false) {
             navigateBackTo(T::class, inclusive)
-        }
-    }
-}
-
-public interface ResultNavigator {
-    /**
-     * Delivers the [result] to the destination that created [key].
-     */
-    public fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O)
-
-    /**
-     * Register for receiving navigation results that were delivered through
-     * [deliverNavigationResult]. [T] is expected to be the [BaseRoute] to the current destination.
-     *
-     * The returned [NavigationResultRequest] has a [NavigationResultRequest.Key]. This `key` should
-     * be passed to the target destination which can then use it to call [deliverNavigationResult].
-     */
-    @InternalNavigationApi
-    public fun <T : BaseRoute, O : Parcelable> registerForNavigationResultInternal(
-        id: DestinationId<T>,
-        resultType: String,
-    ): NavigationResultRequest<O>
-
-    public companion object {
-        /**
-         * Register for receiving navigation results that were delivered through
-         * [deliverNavigationResult]. [T] is expected to be the [BaseRoute] to the current destination.
-         *
-         * The returned [NavigationResultRequest] has a [NavigationResultRequest.Key]. This `key` should
-         * be passed to the target destination which can then use it to call [deliverNavigationResult].
-         */
-        public inline fun <reified T : BaseRoute, reified O : Parcelable> ResultNavigator.registerForNavigationResult():
-            NavigationResultRequest<O> {
-            return registerForNavigationResultInternal(DestinationId(T::class), O::class.qualifiedName!!)
         }
     }
 }

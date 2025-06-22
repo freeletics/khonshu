@@ -1,15 +1,12 @@
 package com.freeletics.khonshu.navigation.internal
 
 import android.content.Intent
-import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.State
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
-import com.freeletics.khonshu.navigation.NavigationResult
-import com.freeletics.khonshu.navigation.NavigationResultRequest
 import com.freeletics.khonshu.navigation.Navigator
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.extractDeepLinkRoutes
@@ -96,21 +93,6 @@ internal class MultiStackHostNavigator(
 
     override fun replaceAllBackStacks(root: NavRoot) {
         stack.replaceAll(root)
-    }
-
-    override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
-        val entry = getEntryFor(key.stackEntryId)
-        entry.savedStateHandle[key.requestKey] = NavigationResult(result)
-    }
-
-    override fun <T : BaseRoute, O : Parcelable> registerForNavigationResultInternal(
-        id: DestinationId<T>,
-        resultType: String,
-    ): NavigationResultRequest<O> {
-        val requestKey = "${id.route.qualifiedName!!}-$resultType"
-        val entry = getTopEntryFor(id)
-        val key = NavigationResultRequest.Key<O>(entry.id, requestKey)
-        return NavigationResultRequest(key, entry.savedStateHandle)
     }
 
     override val onBackPressedCallback = DelegatingOnBackPressedCallback()

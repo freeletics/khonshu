@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation
 
 import android.os.Parcelable
+import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import app.cash.turbine.testIn
@@ -12,6 +13,7 @@ import com.google.common.truth.Truth
 import kotlin.reflect.KClass
 import kotlin.time.Duration
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
@@ -29,7 +31,7 @@ public suspend fun TestHostNavigator.test(
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
     events.test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(this, ::dispatchBackPress)
+        val turbine = DefaultNavigatorTurbine(this, savedStateHandle, this, ::dispatchBackPress)
         validate(turbine)
     }
 }
@@ -48,10 +50,11 @@ public suspend fun DestinationNavigator.test(
     name: String? = null,
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
-    val hostEvents = (hostNavigator as TestHostNavigator).events
+    val testHostNavigator = hostNavigator as TestHostNavigator
+    val hostEvents = testHostNavigator.events
     val activityEvents = activityEvents.map(::toTestEvent)
     merge(hostEvents, activityEvents).test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(this, ::dispatchBackPress)
+        val turbine = DefaultNavigatorTurbine(this, testHostNavigator.savedStateHandle, this, ::dispatchBackPress)
         validate(turbine)
     }
 }
@@ -72,7 +75,7 @@ public fun TestHostNavigator.testIn(
     name: String? = null,
 ): NavigatorTurbine {
     val turbine = events.testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(turbine, ::dispatchBackPress)
+    return DefaultNavigatorTurbine(turbine, savedStateHandle, scope, ::dispatchBackPress)
 }
 
 /**
@@ -92,10 +95,11 @@ public fun DestinationNavigator.testIn(
     timeout: Duration? = null,
     name: String? = null,
 ): NavigatorTurbine {
-    val hostEvents = (hostNavigator as TestHostNavigator).events
+    val testHostNavigator = hostNavigator as TestHostNavigator
+    val hostEvents = testHostNavigator.events
     val activityEvents = activityEvents.map(::toTestEvent)
     val turbine = merge(hostEvents, activityEvents).testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(turbine, ::dispatchBackPress)
+    return DefaultNavigatorTurbine(turbine, testHostNavigator.savedStateHandle, scope, ::dispatchBackPress)
 }
 
 /**
@@ -263,6 +267,8 @@ public interface NavigatorTurbine {
 
 internal class DefaultNavigatorTurbine(
     private val turbine: ReceiveTurbine<TestEvent>,
+    private val savedStateHandle: SavedStateHandle,
+    private val scope: CoroutineScope,
     private val dispatchBackPress: () -> Unit,
 ) : NavigatorTurbine {
     override fun dispatchBackPress() {
@@ -350,8 +356,11 @@ internal class DefaultNavigatorTurbine(
         key: NavigationResultRequest.Key<O>,
         result: O,
     ) {
-        val event = DestinationResultEvent(key, result)
-        Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
+        val turbine = savedStateHandle.getStateFlow<O?>(key.requestKey, null)
+            .filterNotNull()
+            .testIn(scope)
+        Truth.assertThat(turbine.awaitItem()).isEqualTo(result)
+        turbine.cancel()
     }
 
     override suspend fun cancel() {
