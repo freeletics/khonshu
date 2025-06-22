@@ -1,60 +1,65 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    "config:base",
-    ":disableRateLimiting",
-    ":semanticCommitsDisabled"
+    'config:recommended',
+    ':disableRateLimiting',
+    ':semanticCommitsDisabled',
   ],
   automerge: true,
   platformAutomerge: true,
-  platformCommit: true,
+  platformCommit: 'enabled',
   assignAutomerge: true,
-  reviewers: ["team:android-oss"],
-  rebaseWhen: "conflicted",
-  prBodyTemplate: "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{controls}}}{{{footer}}}",
-  prBodyColumns: ["Package", "Change", "Age"],
-  prFooter: "🔕 Ignore: Close this PR and you won't be reminded about these updates again.",
-  ignoreDeps: [
+  reviewers: [
+    'team:android-oss',
   ],
+  rebaseWhen: 'conflicted',
+  prBodyTemplate: '{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{controls}}}{{{footer}}}',
+  prBodyColumns: [
+    'Package',
+    'Change',
+    'Age',
+  ],
+  prFooter: "🔕 Ignore: Close this PR and you won't be reminded about these updates again.",
+  ignoreDeps: [],
   packageRules: [
     {
-      matchDatasources: ["maven"],
+      matchDatasources: [
+        'maven',
+      ],
       registryUrls: [
-        "https://repo.maven.apache.org/maven2",
-        "https://dl.google.com/android/maven2",
-        "https://plugins.gradle.org/m2",
-      ]
+        'https://repo.maven.apache.org/maven2',
+        'https://dl.google.com/android/maven2',
+        'https://plugins.gradle.org/m2',
+      ],
     },
     {
       matchPackageNames: [
-        "gradle",
+        'gradle',
       ],
-      prBodyNotes: "[Changelog](https://docs.gradle.org/{{{newVersion}}}/release-notes.html)"
+      prBodyNotes: '[Changelog](https://docs.gradle.org/{{{newVersion}}}/release-notes.html)',
     },
     {
-      matchPackagePatterns: [
-        "com.freeletics.gradle",
+      groupName: 'Freeletics Gradle Plugin',
+      matchPackageNames: [
+        '/com.freeletics.gradle/',
       ],
-      groupName: "Freeletics Gradle Plugin"
     },
     {
-      matchPackagePatterns: [
-        "org.jetbrains.kotlin",
-        "com.google.devtools.ksp",
-        "dev.zacsweers.kctfork",
-        "dev.drewhamilton.poko",
+      groupName: 'Kotlin and KSP',
+      matchPackageNames: [
+        '/org.jetbrains.kotlin/',
+        '/com.google.devtools.ksp/',
+        '/dev.zacsweers.kctfork/',
+        '/dev.drewhamilton.poko/',
+        '!/org.jetbrains.kotlinx/',
       ],
-      excludePackagePatterns: [
-        "org.jetbrains.kotlinx",
-      ],
-      groupName: "Kotlin and KSP"
     },
     {
-      matchPackagePatterns: [
-        "androidx.compose",
-        "org.jetbrains.compose",
+      groupName: 'Compose',
+      matchPackageNames: [
+        '/androidx.compose/',
+        '/org.jetbrains.compose/',
       ],
-      groupName: "Compose"
-    }
-  ]
+    },
+  ],
 }
