@@ -225,25 +225,11 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLink_androidK
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/HandleDeeplinkKt {
-	public static final fun handleDeepLink (Lcom/freeletics/khonshu/navigation/HostNavigator;Lcom/freeletics/khonshu/navigation/deeplinks/LaunchInfo;Ljava/util/Set;Ljava/util/Set;)Z
+	public static final fun handleDeepLink (Lcom/freeletics/khonshu/navigation/HostNavigator;Lcom/eygraber/uri/Uri;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)Z
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/HandleDeeplink_androidKt {
 	public static final fun handleDeepLink (Lcom/freeletics/khonshu/navigation/HostNavigator;Landroid/content/Intent;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;)Z
-}
-
-public final class com/freeletics/khonshu/navigation/deeplinks/LaunchInfo {
-	public static final field $stable I
-	public fun <init> (Ljava/util/List;Lcom/eygraber/uri/Uri;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getRoutes ()Ljava/util/List;
-	public final fun getUri ()Lcom/eygraber/uri/Uri;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/freeletics/khonshu/navigation/deeplinks/LaunchInfo_androidKt {
-	public static final fun asLaunchInfo (Landroid/content/Intent;Ljava/util/Set;)Lcom/freeletics/khonshu/navigation/deeplinks/LaunchInfo;
 }
 
 public final class com/freeletics/khonshu/navigation/internal/ComposableSingletons$StackEntryKt {
@@ -276,3 +262,13 @@ public final class com/freeletics/khonshu/navigation/internal/StackEntry$Id$Comp
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/freeletics/khonshu/navigation/internal/StackEntryStoreHolder : androidx/compose/runtime/retain/RetainObserver {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun clear ()V
+	public fun onEnteredComposition ()V
+	public fun onExitedComposition ()V
+	public fun onRetained ()V
+	public fun onRetired ()V
+	public fun onUnused ()V
+}

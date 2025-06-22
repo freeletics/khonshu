@@ -1,7 +1,9 @@
 package com.freeletics.khonshu.navigation.deeplinks
 
+import androidx.compose.runtime.Composable
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
+import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.internal.destinationId
@@ -57,3 +59,6 @@ private fun HostNavigator.handleDeepLink(deepLinkRoutes: List<BaseRoute>): Boole
 
     return true
 }
+
+@Composable
+internal expect fun obtainLaunchInfo(destinations: ImmutableSet<NavDestination<*>>): LaunchInfo
