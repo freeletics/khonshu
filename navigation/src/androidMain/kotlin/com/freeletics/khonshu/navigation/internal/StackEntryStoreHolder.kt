@@ -1,11 +1,8 @@
 package com.freeletics.khonshu.navigation.internal
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
+import androidx.compose.runtime.retain.RetainObserver
 
-public class StackEntryStoreViewModel(
-    internal val globalSavedStateHandle: SavedStateHandle,
-) : ViewModel() {
+public class StackEntryStoreHolder : RetainObserver {
     private val stores = mutableMapOf<StackEntry.Id, StackEntryStore>()
 
     internal fun provideStore(id: StackEntry.Id): StackEntryStore {
@@ -14,10 +11,24 @@ public class StackEntryStoreViewModel(
         }
     }
 
-    public override fun onCleared() {
+    public fun clear() {
         while (stores.isNotEmpty()) {
             val key = stores.firstNotNullOf { it.key }
             stores.remove(key)?.close()
         }
+    }
+
+    override fun onRetained() {}
+
+    override fun onEnteredComposition() {}
+
+    override fun onExitedComposition() {}
+
+    override fun onRetired() {
+        clear()
+    }
+
+    override fun onUnused() {
+        TODO("Not yet implemented")
     }
 }

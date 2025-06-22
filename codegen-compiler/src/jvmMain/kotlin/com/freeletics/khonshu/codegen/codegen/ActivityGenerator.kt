@@ -8,7 +8,9 @@ import com.freeletics.khonshu.codegen.util.localActivityGraphProvider
 import com.freeletics.khonshu.codegen.util.navHost
 import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.remember
+import com.freeletics.khonshu.codegen.util.retain
 import com.freeletics.khonshu.codegen.util.setContent
+import com.freeletics.khonshu.codegen.util.stackEntryStoreHolder
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.TypeSpec
@@ -33,8 +35,11 @@ internal class ActivityGenerator(
             .addParameter("savedInstanceState", bundle.copy(nullable = true))
             .addStatement("super.onCreate(savedInstanceState)")
             .beginControlFlow("%M", setContent)
+            .beginControlFlow("val stackEntryStoreHolder = %M", retain)
+            .addStatement("%T()", stackEntryStoreHolder)
+            .endControlFlow()
             .beginControlFlow("val graphProvider = %M", remember)
-            .addStatement("%T(this)", graphProviderClassName)
+            .addStatement("%T(this, stackEntryStoreHolder)", graphProviderClassName)
             .endControlFlow()
             .beginControlFlow("val graph = %M(graphProvider)", remember)
             .addStatement("graphProvider.provide<%T>(%T::class)", graphClassName, data.scope)

@@ -20,7 +20,7 @@ freeletics {
 dependencies {
     "commonMainApi"(projects.stateMachine)
     "commonMainApi"(projects.navigation)
-    "commonMainApi"(libs.jetbrains.compose.runtime)
+    "commonMainApi"(libs.androidx.compose.runtime)
     "commonMainApi"(libs.jetbrains.compose.ui)
     "commonMainApi"(libs.metro)
 

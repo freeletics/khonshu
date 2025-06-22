@@ -275,9 +275,9 @@ public final class com/freeletics/khonshu/navigation/internal/StackEntry$Id$Comp
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class com/freeletics/khonshu/navigation/internal/StackEntryStoreViewModel : androidx/lifecycle/ViewModel {
+public final class com/freeletics/khonshu/navigation/internal/StackEntryStoreHolder {
 	public static final field $stable I
-	public fun <init> (Landroidx/lifecycle/SavedStateHandle;)V
-	public fun onCleared ()V
+	public fun <init> ()V
+	public final fun clear ()V
 }
 
