@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.sample.feature.main
+package com.freeletics.sample.main
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,7 +8,7 @@ import com.freeletics.khonshu.codegen.ActivityScope
 import com.freeletics.khonshu.codegen.NavHostActivity
 import com.freeletics.khonshu.codegen.SimpleNavHost
 import com.freeletics.khonshu.navigation.NavRoot
-import com.freeletics.khonshu.sample.feature.root.nav.RootRoute
+import com.freeletics.sample.root.nav.RootRoute
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 
