@@ -1,12 +1,11 @@
 package com.freeletics.khonshu.navigation.internal
 
-import java.io.Closeable
 import kotlin.reflect.KClass
 
 @InternalNavigationCodegenApi
 public class StackEntryStore(
     private val onClose: () -> Unit,
-) : Closeable {
+) : AutoCloseable {
     private val storedObjects = mutableMapOf<KClass<*>, Any>()
 
     public fun <T : Any> getOrCreate(key: KClass<T>, factory: () -> T): T {
@@ -22,7 +21,7 @@ public class StackEntryStore(
     override fun close() {
         onClose()
         storedObjects.forEach { (_, storedObject) ->
-            if (storedObject is Closeable) {
+            if (storedObject is AutoCloseable) {
                 storedObject.close()
             }
         }

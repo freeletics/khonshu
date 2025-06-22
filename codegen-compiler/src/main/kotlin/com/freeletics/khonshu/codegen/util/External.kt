@@ -55,6 +55,7 @@ internal val simpleNavHostLambda = LambdaTypeName.get(
 internal val stateMachine = ClassName("com.freeletics.khonshu.statemachine", "StateMachine")
 
 // Kotlin
+internal val autoCloseable = ClassName("kotlin", "AutoCloseable")
 internal val optIn = ClassName("kotlin", "OptIn")
 internal val function1 = ClassName("kotlin", "Function1")
 internal val function2 = ClassName("kotlin", "Function2")

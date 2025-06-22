@@ -1,11 +1,9 @@
 # Support for Closeables
 
-Khonshu's Codegen supports `java.io.Closeable`s by propagating each `Closeable` contributed
-to a scoped Component to be bound to its internal `androidx.lifecycle.ViewModel`. When the
-corresponding NavDestination is cleared from the back stack and hence `ViewModel.onCleared()`
-is called, all bound `Closeable`s will be automatically closed.
+Khonshu's Codegen supports providing `AutoCloseable`s to the graph of a destination. When the destination is cleared
+from the back stack any provided `AutoCloseable` will be closed.
 
-This can be used to run any kind of cleanup you normally do in `ViewModel.onCleared()`.
+Examples:
 
 === "Kotlin CoroutineScope"
 
@@ -23,7 +21,7 @@ This can be used to run any kind of cleanup you normally do in `ViewModel.onClea
         // Closeable to cancel CoroutineScope
         @Provides
         @IntoSet
-        fun bindCoroutineScope(scope: CoroutineScope): Closeable = Closeable { scope.cancel() }
+        fun bindCoroutineScope(scope: CoroutineScope): AutoCloseable = AutoCloseable { scope.cancel() }
     }
     ```
 
@@ -43,6 +41,6 @@ This can be used to run any kind of cleanup you normally do in `ViewModel.onClea
         // Closeable to clear CompositeDisposable
         @Provides
         @IntoSet
-        fun bindCompositeDisposable(disposable: CompositeDisposable): Closeable = Closeable { disposable.clear() }
+        fun bindCompositeDisposable(disposable: CompositeDisposable): AutoCloseable = AutoCloseable { disposable.clear() }
     }
     ```

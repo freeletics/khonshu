@@ -17,7 +17,10 @@ internal class Stack private constructor(
     }
 
     val id: DestinationId<*> get() = rootEntry.destinationId
-    val rootEntry: StackEntry<*> get() = stack.first()
+
+    @Suppress("UNCHECKED_CAST")
+    val rootEntry: StackEntry<NavRoot> get() = stack.first() as StackEntry<NavRoot>
+
     val isAtRoot: Boolean get() = !stack.last().removable
 
     fun snapshot(startStackRootEntry: StackEntry<*>): StackSnapshot {

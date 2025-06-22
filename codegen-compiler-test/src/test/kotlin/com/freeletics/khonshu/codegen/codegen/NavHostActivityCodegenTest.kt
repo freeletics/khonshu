@@ -106,7 +106,7 @@ internal class NavHostActivityCodegenTest {
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
-            import java.io.Closeable
+            import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
@@ -121,17 +121,17 @@ internal class NavHostActivityCodegenTest {
               TestScreen::class,
               isExtendable = true,
             )
-            public interface KhonshuTestGraph : Closeable {
+            public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
 
               @ForScope(TestScreen::class)
-              public val closeables: Set<Closeable>
+              public val closeables: Set<AutoCloseable>
 
               @Multibinds(allowEmpty = true)
               @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
+              public fun bindCloseables(): Set<AutoCloseable>
 
               override fun close() {
                 closeables.forEach {
@@ -294,7 +294,7 @@ internal class NavHostActivityCodegenTest {
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
-            import java.io.Closeable
+            import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
@@ -309,17 +309,17 @@ internal class NavHostActivityCodegenTest {
               ActivityScope::class,
               isExtendable = true,
             )
-            public interface KhonshuTestGraph : Closeable {
+            public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
 
               @ForScope(ActivityScope::class)
-              public val closeables: Set<Closeable>
+              public val closeables: Set<AutoCloseable>
 
               @Multibinds(allowEmpty = true)
               @ForScope(ActivityScope::class)
-              public fun bindCloseables(): Set<Closeable>
+              public fun bindCloseables(): Set<AutoCloseable>
 
               override fun close() {
                 closeables.forEach {
@@ -506,7 +506,7 @@ internal class NavHostActivityCodegenTest {
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
-            import java.io.Closeable
+            import kotlin.AutoCloseable
             import kotlin.Int
             import kotlin.OptIn
             import kotlin.String
@@ -524,7 +524,7 @@ internal class NavHostActivityCodegenTest {
               TestScreen::class,
               isExtendable = true,
             )
-            public interface KhonshuTest2Graph : Closeable {
+            public interface KhonshuTest2Graph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
@@ -538,11 +538,11 @@ internal class NavHostActivityCodegenTest {
               public val testMap: Map<String, Int>
 
               @ForScope(TestScreen::class)
-              public val closeables: Set<Closeable>
+              public val closeables: Set<AutoCloseable>
 
               @Multibinds(allowEmpty = true)
               @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
+              public fun bindCloseables(): Set<AutoCloseable>
 
               override fun close() {
                 closeables.forEach {
@@ -711,7 +711,7 @@ internal class NavHostActivityCodegenTest {
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
-            import java.io.Closeable
+            import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.collections.Set
             import kotlin.reflect.KClass
@@ -724,17 +724,17 @@ internal class NavHostActivityCodegenTest {
               TestScreen::class,
               isExtendable = true,
             )
-            public interface KhonshuTestGraph : Closeable {
+            public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
 
               @ForScope(TestScreen::class)
-              public val closeables: Set<Closeable>
+              public val closeables: Set<AutoCloseable>
 
               @Multibinds(allowEmpty = true)
               @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
+              public fun bindCloseables(): Set<AutoCloseable>
 
               override fun close() {
                 closeables.forEach {
@@ -891,7 +891,7 @@ internal class NavHostActivityCodegenTest {
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
-            import java.io.Closeable
+            import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
@@ -906,17 +906,17 @@ internal class NavHostActivityCodegenTest {
               TestScreen::class,
               isExtendable = true,
             )
-            public interface KhonshuTestGraph : Closeable {
+            public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
 
               @ForScope(TestScreen::class)
-              public val closeables: Set<Closeable>
+              public val closeables: Set<AutoCloseable>
 
               @Multibinds(allowEmpty = true)
               @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
+              public fun bindCloseables(): Set<AutoCloseable>
 
               override fun close() {
                 closeables.forEach {
@@ -1078,7 +1078,7 @@ internal class NavHostActivityCodegenTest {
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
-            import java.io.Closeable
+            import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
@@ -1093,17 +1093,17 @@ internal class NavHostActivityCodegenTest {
               TestScreen::class,
               isExtendable = true,
             )
-            public interface KhonshuTestGraph : Closeable {
+            public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
 
               @ForScope(TestScreen::class)
-              public val closeables: Set<Closeable>
+              public val closeables: Set<AutoCloseable>
 
               @Multibinds(allowEmpty = true)
               @ForScope(TestScreen::class)
-              public fun bindCloseables(): Set<Closeable>
+              public fun bindCloseables(): Set<AutoCloseable>
 
               override fun close() {
                 closeables.forEach {

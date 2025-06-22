@@ -1,8 +1,6 @@
 package com.freeletics.khonshu.navigation.test
 
-import java.io.Closeable
-
-internal class FakeCloseable : Closeable {
+internal class FakeCloseable : AutoCloseable {
     var closed = false
 
     override fun close() {
