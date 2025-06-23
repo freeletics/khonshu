@@ -12,14 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
-public interface ActivityGraphProvider {
+public interface HostGraphProvider {
     public fun <T> provide(scope: KClass<*>): T
 }
 
 @InternalCodegenApi
-public val LocalActivityGraphProvider: ProvidableCompositionLocal<ActivityGraphProvider> =
+public val LocalHostGraphProvider: ProvidableCompositionLocal<HostGraphProvider> =
     staticCompositionLocalOf {
-        throw IllegalStateException("ActivityGraphProvider was not provided by Activity")
+        throw IllegalStateException("HostGraphProvider was not provided")
     }
 
 @InternalCodegenApi

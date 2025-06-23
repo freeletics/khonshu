@@ -1,7 +1,7 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.NavHostActivityData
+import com.freeletics.khonshu.codegen.HostActivityData
 import com.freeletics.khonshu.codegen.util.asLaunchInfo
 import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.createHostNavigator
@@ -25,8 +25,8 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.TypeSpec
 
-internal class ActivityGraphGenerator(
-    override val data: NavHostActivityData,
+internal class HostGraphContributionGenerator(
+    override val data: HostActivityData,
 ) : Generator<BaseData>() {
     private val moduleClassName = ClassName("Khonshu${data.baseName}ActivityGraph")
 

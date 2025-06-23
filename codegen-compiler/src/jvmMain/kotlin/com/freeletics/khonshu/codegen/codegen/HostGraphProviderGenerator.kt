@@ -1,9 +1,9 @@
 package com.freeletics.khonshu.codegen.codegen
 
-import com.freeletics.khonshu.codegen.NavHostActivityData
-import com.freeletics.khonshu.codegen.util.activityGraphProvider
+import com.freeletics.khonshu.codegen.HostActivityData
 import com.freeletics.khonshu.codegen.util.componentActivity
 import com.freeletics.khonshu.codegen.util.getGraph
+import com.freeletics.khonshu.codegen.util.hostGraphProvider
 import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.stackEntryStoreHolder
 import com.squareup.kotlinpoet.FunSpec
@@ -17,13 +17,13 @@ import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.asClassName
 import kotlin.reflect.KClass
 
-internal class ActivityGraphProviderGenerator(
-    override val data: NavHostActivityData,
-) : Generator<NavHostActivityData>() {
+internal class HostGraphProviderGenerator(
+    override val data: HostActivityData,
+) : Generator<HostActivityData>() {
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(graphProviderClassName)
             .addAnnotation(optIn())
-            .addSuperinterface(activityGraphProvider)
+            .addSuperinterface(hostGraphProvider)
             .primaryConstructor(constructor())
             .addProperty(activityProperty())
             .addProperty(stackEntryStoreHolderProperty())

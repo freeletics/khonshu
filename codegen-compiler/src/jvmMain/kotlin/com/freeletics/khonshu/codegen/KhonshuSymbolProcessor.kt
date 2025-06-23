@@ -1,8 +1,8 @@
 package com.freeletics.khonshu.codegen
 
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
-import com.freeletics.khonshu.codegen.parser.toComposeScreenDestinationData
-import com.freeletics.khonshu.codegen.parser.toNavHostActivityData
+import com.freeletics.khonshu.codegen.parser.toDestinationData
+import com.freeletics.khonshu.codegen.parser.toHostActivityData
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -28,10 +28,10 @@ public class KhonshuSymbolProcessor(
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         resolver.generateCodeForAnnotation<NavDestination> {
-            toComposeScreenDestinationData(it, logger)
+            toDestinationData(it, logger)
         }
         resolver.generateCodeForAnnotation<NavHostActivity> {
-            toNavHostActivityData(it, logger)
+            toHostActivityData(it, logger)
         }
         return emptyList()
     }

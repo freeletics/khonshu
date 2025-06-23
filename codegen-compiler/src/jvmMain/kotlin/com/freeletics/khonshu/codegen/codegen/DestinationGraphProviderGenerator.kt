@@ -1,11 +1,11 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.NavDestinationData
-import com.freeletics.khonshu.codegen.util.activityGraphProvider
+import com.freeletics.khonshu.codegen.DestinationData
+import com.freeletics.khonshu.codegen.util.destinationGraphProvider
 import com.freeletics.khonshu.codegen.util.getGraph
 import com.freeletics.khonshu.codegen.util.getGraphFromRoute
-import com.freeletics.khonshu.codegen.util.graphProvider
+import com.freeletics.khonshu.codegen.util.hostGraphProvider
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.stackEntry
@@ -19,12 +19,12 @@ internal val Generator<out BaseData>.graphProviderClassName
     get() = ClassName("Khonshu${data.baseName}GraphProvider")
 
 internal class NavDestinationGraphProviderGenerator(
-    override val data: NavDestinationData,
-) : Generator<NavDestinationData>() {
+    override val data: DestinationData,
+) : Generator<DestinationData>() {
     internal fun generate(): TypeSpec {
         return TypeSpec.objectBuilder(graphProviderClassName)
             .addAnnotation(optIn())
-            .addSuperinterface(graphProvider.parameterizedBy(data.navigation.route, graphClassName))
+            .addSuperinterface(destinationGraphProvider.parameterizedBy(data.navigation.route, graphClassName))
             .addFunction(provideFunction())
             .build()
     }
@@ -35,7 +35,7 @@ internal class NavDestinationGraphProviderGenerator(
             .addAnnotation(optIn(internalNavigatorApi))
             .addParameter("entry", stackEntry.parameterizedBy(data.navigation.route))
             .addParameter("snapshot", stackSnapshot)
-            .addParameter("provider", activityGraphProvider)
+            .addParameter("provider", hostGraphProvider)
             .returns(graphClassName)
             .apply {
                 if (data.navigation.parentScopeIsRoute) {

@@ -4,7 +4,7 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.ActivityScope
 import com.freeletics.khonshu.codegen.ComposableParameter
-import com.freeletics.khonshu.codegen.NavHostActivityData
+import com.freeletics.khonshu.codegen.HostActivityData
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.LambdaTypeName
@@ -18,8 +18,8 @@ import dev.zacsweers.metro.AppScope
 import org.intellij.lang.annotations.Language
 import org.junit.Test
 
-internal class NavHostActivityCodegenTest {
-    private val data = NavHostActivityData(
+internal class HostActivityCodegenTest {
+    private val data = HostActivityData(
         baseName = "Test",
         packageName = "com.test",
         scope = ClassName("com.test", "TestScreen"),
@@ -87,9 +87,9 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.retain.retain
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
-            import com.freeletics.khonshu.codegen.`internal`.ActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.HostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
-            import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraph
             import com.freeletics.khonshu.navigation.HostNavigator
@@ -152,7 +152,7 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestGraphProvider(
               private val activity: ComponentActivity,
               private val stackEntryStoreHolder: StackEntryStoreHolder,
-            ) : ActivityGraphProvider {
+            ) : HostGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestGraph.Factory, savedStateHandle ->
                 factory.createKhonshuTestGraph(stackEntryStoreHolder, savedStateHandle, activity.intent)
               }
@@ -192,7 +192,7 @@ internal class NavHostActivityCodegenTest {
                     graphProvider.provide<KhonshuTestGraph>(TestScreen::class)
                   }
                   KhonshuTest(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalActivityGraphProvider provides graphProvider) {
+                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
                       NavHost(
                         navigator = remember(graph) { graph.hostNavigator },
                         modifier = modifier,
@@ -280,9 +280,9 @@ internal class NavHostActivityCodegenTest {
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.SimpleNavHost
-            import com.freeletics.khonshu.codegen.`internal`.ActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.HostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
-            import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraph
             import com.freeletics.khonshu.navigation.HostNavigator
@@ -345,7 +345,7 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestGraphProvider(
               private val activity: ComponentActivity,
               private val stackEntryStoreHolder: StackEntryStoreHolder,
-            ) : ActivityGraphProvider {
+            ) : HostGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, ActivityScope::class, AppScope::class) { factory: KhonshuTestGraph.Factory, savedStateHandle ->
                 factory.createKhonshuTestGraph(stackEntryStoreHolder, savedStateHandle, activity.intent)
               }
@@ -385,7 +385,7 @@ internal class NavHostActivityCodegenTest {
                     graphProvider.provide<KhonshuTestGraph>(ActivityScope::class)
                   }
                   KhonshuTest(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalActivityGraphProvider provides graphProvider) {
+                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
                       NavHost(
                         navigator = remember(graph) { graph.hostNavigator },
                         modifier = modifier,
@@ -431,7 +431,7 @@ internal class NavHostActivityCodegenTest {
                     typeName = ClassName("com.test", "TestClass"),
                 ),
                 ComposableParameter(
-                    name = "test",
+                    name = "jvmTest",
                     typeName = ClassName("com.test.other", "TestClass2"),
                 ),
                 ComposableParameter(
@@ -471,7 +471,7 @@ internal class NavHostActivityCodegenTest {
                 state: TestState,
                 sendAction: (TestAction) -> Unit,
                 testClass: TestClass,
-                test: TestClass2,
+                jvmTest: TestClass2,
                 testSet: Set<String>,
                 testMap: Map<String, Int>,
                 navHost: SimpleNavHost,
@@ -496,9 +496,9 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.retain.retain
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
-            import com.freeletics.khonshu.codegen.`internal`.ActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.HostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
-            import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraph
             import com.freeletics.khonshu.navigation.HostNavigator
@@ -539,7 +539,7 @@ internal class NavHostActivityCodegenTest {
 
               public val testClass: TestClass
 
-              public val test: TestClass2
+              public val jvmTest: TestClass2
 
               public val testSet: Set<String>
 
@@ -573,7 +573,7 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTest2GraphProvider(
               private val activity: ComponentActivity,
               private val stackEntryStoreHolder: StackEntryStoreHolder,
-            ) : ActivityGraphProvider {
+            ) : HostGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTest2Graph.Factory, savedStateHandle ->
                 factory.createKhonshuTest2Graph(stackEntryStoreHolder, savedStateHandle, activity.intent)
               }
@@ -613,7 +613,7 @@ internal class NavHostActivityCodegenTest {
                     graphProvider.provide<KhonshuTest2Graph>(TestScreen::class)
                   }
                   KhonshuTest2(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalActivityGraphProvider provides graphProvider) {
+                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
                       NavHost(
                         navigator = remember(graph) { graph.hostNavigator },
                         modifier = modifier,
@@ -629,7 +629,7 @@ internal class NavHostActivityCodegenTest {
             @OptIn(InternalCodegenApi::class)
             private fun KhonshuTest2(graph: KhonshuTest2Graph, navHost: SimpleNavHost) {
               val testClass = remember { graph.testClass }
-              val test = remember { graph.test }
+              val jvmTest = remember { graph.jvmTest }
               val testSet = remember { graph.testSet }
               val testMap = remember { graph.testMap }
               val stateMachine = remember { graph.testStateMachine }
@@ -642,7 +642,7 @@ internal class NavHostActivityCodegenTest {
               if (currentState != null) {
                 Test2(
                   testClass = testClass,
-                  test = test,
+                  jvmTest = jvmTest,
                   testSet = testSet,
                   testMap = testMap,
                   state = currentState,
@@ -707,9 +707,9 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.retain.retain
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
-            import com.freeletics.khonshu.codegen.`internal`.ActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.HostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
-            import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraph
             import com.freeletics.khonshu.navigation.HostNavigator
@@ -770,7 +770,7 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestGraphProvider(
               private val activity: ComponentActivity,
               private val stackEntryStoreHolder: StackEntryStoreHolder,
-            ) : ActivityGraphProvider {
+            ) : HostGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestGraph.Factory, savedStateHandle ->
                 factory.createKhonshuTestGraph(stackEntryStoreHolder, savedStateHandle, activity.intent)
               }
@@ -810,7 +810,7 @@ internal class NavHostActivityCodegenTest {
                     graphProvider.provide<KhonshuTestGraph>(TestScreen::class)
                   }
                   KhonshuTest(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalActivityGraphProvider provides graphProvider) {
+                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
                       NavHost(
                         navigator = remember(graph) { graph.hostNavigator },
                         modifier = modifier,
@@ -892,9 +892,9 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.retain.retain
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
-            import com.freeletics.khonshu.codegen.`internal`.ActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.HostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
-            import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraph
             import com.freeletics.khonshu.navigation.HostNavigator
@@ -957,7 +957,7 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestGraphProvider(
               private val activity: ComponentActivity,
               private val stackEntryStoreHolder: StackEntryStoreHolder,
-            ) : ActivityGraphProvider {
+            ) : HostGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestGraph.Factory, savedStateHandle ->
                 factory.createKhonshuTestGraph(stackEntryStoreHolder, savedStateHandle, activity.intent)
               }
@@ -997,7 +997,7 @@ internal class NavHostActivityCodegenTest {
                     graphProvider.provide<KhonshuTestGraph>(TestScreen::class)
                   }
                   KhonshuTest(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalActivityGraphProvider provides graphProvider) {
+                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
                       NavHost(
                         navigator = remember(graph) { graph.hostNavigator },
                         modifier = modifier,
@@ -1084,9 +1084,9 @@ internal class NavHostActivityCodegenTest {
             import androidx.compose.runtime.retain.retain
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.SimpleNavHost
-            import com.freeletics.khonshu.codegen.`internal`.ActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.HostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
-            import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraph
             import com.freeletics.khonshu.navigation.HostNavigator
@@ -1149,7 +1149,7 @@ internal class NavHostActivityCodegenTest {
             public class KhonshuTestGraphProvider(
               private val activity: ComponentActivity,
               private val stackEntryStoreHolder: StackEntryStoreHolder,
-            ) : ActivityGraphProvider {
+            ) : HostGraphProvider {
               override fun <C> provide(scope: KClass<*>): C = getGraph(activity, scope, TestScreen::class, TestParentScope::class) { factory: KhonshuTestGraph.Factory, savedStateHandle ->
                 factory.createKhonshuTestGraph(stackEntryStoreHolder, savedStateHandle, activity.intent)
               }
@@ -1189,7 +1189,7 @@ internal class NavHostActivityCodegenTest {
                     graphProvider.provide<KhonshuTestGraph>(TestScreen::class)
                   }
                   KhonshuTest(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalActivityGraphProvider provides graphProvider) {
+                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
                       NavHost(
                         navigator = remember(graph) { graph.hostNavigator },
                         modifier = modifier,
