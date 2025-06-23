@@ -1,11 +1,13 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.HostActivityData
-import com.freeletics.khonshu.codegen.util.componentActivity
 import com.freeletics.khonshu.codegen.util.getGraph
+import com.freeletics.khonshu.codegen.util.globalGraphProvider
 import com.freeletics.khonshu.codegen.util.hostGraphProvider
+import com.freeletics.khonshu.codegen.util.intent
 import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.stackEntryStoreHolder
+import com.freeletics.khonshu.codegen.util.viewModelStoreOwner
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.KModifier.PRIVATE
@@ -25,23 +27,41 @@ internal class HostGraphProviderGenerator(
             .addAnnotation(optIn())
             .addSuperinterface(hostGraphProvider)
             .primaryConstructor(constructor())
-            .addProperty(activityProperty())
+            .addProperty(viewModelStoreOwnerProperty())
+            .addProperty(globalGraphProviderProperty())
             .addProperty(stackEntryStoreHolderProperty())
+            .addProperty(intentProperty())
             .addFunction(provideFunction())
             .build()
     }
 
     private fun constructor(): FunSpec {
         return FunSpec.constructorBuilder()
-            .addParameter("activity", componentActivity)
+            .addParameter("viewModelStoreOwner", viewModelStoreOwner)
+            .addParameter("globalGraphProvider", globalGraphProvider)
             .addParameter("stackEntryStoreHolder", stackEntryStoreHolder)
+            .addParameter("intent", intent)
             .build()
     }
 
-    private fun activityProperty(): PropertySpec {
-        return PropertySpec.builder("activity", componentActivity)
+    private fun viewModelStoreOwnerProperty(): PropertySpec {
+        return PropertySpec.builder("viewModelStoreOwner", viewModelStoreOwner)
             .addModifiers(PRIVATE)
-            .initializer("activity")
+            .initializer("viewModelStoreOwner")
+            .build()
+    }
+
+    private fun intentProperty(): PropertySpec {
+        return PropertySpec.builder("intent", intent)
+            .addModifiers(PRIVATE)
+            .initializer("intent")
+            .build()
+    }
+
+    private fun globalGraphProviderProperty(): PropertySpec {
+        return PropertySpec.builder("globalGraphProvider", globalGraphProvider)
+            .addModifiers(PRIVATE)
+            .initializer("globalGraphProvider")
             .build()
     }
 
@@ -60,14 +80,14 @@ internal class HostGraphProviderGenerator(
             .addParameter("scope", KClass::class.asClassName().parameterizedBy(STAR))
             .returns(typeVariable)
             .beginControlFlow(
-                "return %M(activity, scope, %T::class, %T::class) { factory: %T, savedStateHandle ->",
+                "return %M(viewModelStoreOwner, globalGraphProvider, scope, %T::class, %T::class) { factory: %T, savedStateHandle ->",
                 getGraph,
                 data.scope,
                 data.parentScope,
                 graphFactoryClassName,
             )
             .addStatement(
-                "factory.%L(stackEntryStoreHolder, savedStateHandle, activity.intent)",
+                "factory.%L(stackEntryStoreHolder, savedStateHandle, intent)",
                 graphFactoryCreateFunctionName,
             )
             .endControlFlow()

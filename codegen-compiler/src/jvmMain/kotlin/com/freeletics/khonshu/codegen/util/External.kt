@@ -10,6 +10,7 @@ import com.squareup.kotlinpoet.WildcardTypeName
 
 // Codegen Public API
 internal val overlay = ClassName("com.freeletics.khonshu.codegen", "Overlay")
+internal val globalGraphProvider = ClassName("com.freeletics.khonshu.codegen", "GlobalGraphProvider")
 
 // Codegen Internal API
 internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.internal", "asComposeState")
@@ -80,6 +81,7 @@ internal val toImmutableSet = MemberName("kotlinx.collections.immutable", "toImm
 
 // AndroidX
 internal val componentActivity = ClassName("androidx.activity", "ComponentActivity")
+internal val viewModelStoreOwner = ClassName("androidx.lifecycle", "ViewModelStoreOwner")
 internal val setContent = MemberName("androidx.activity.compose", "setContent")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
 

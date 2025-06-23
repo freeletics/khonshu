@@ -1,7 +1,5 @@
 package com.freeletics.khonshu.codegen.internal
 
-import android.content.Context
-import androidx.activity.ComponentActivity
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -9,6 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
+import com.freeletics.khonshu.codegen.GlobalGraphProvider
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
@@ -24,19 +24,20 @@ public val LocalHostGraphProvider: ProvidableCompositionLocal<HostGraphProvider>
 
 @InternalCodegenApi
 public inline fun <C : Any, reified AC : Any, P : Any> getGraph(
-    activity: ComponentActivity,
+    viewModelStoreOwner: ViewModelStoreOwner,
+    globalGraphProvider: GlobalGraphProvider,
     requestedScope: KClass<*>,
     activityScope: KClass<*>,
     activityParentScope: KClass<*>,
     crossinline factory: @DisallowComposableCalls (P, SavedStateHandle) -> AC,
 ): C {
     if (requestedScope != activityScope) {
-        return activity.findGraphByScope(requestedScope)
+        return globalGraphProvider.getGraph(requestedScope)
     }
-    val store = ViewModelProvider(activity, SavedStateViewModelFactory())[ActivityGraphViewModel::class.java]
+    val store = ViewModelProvider(viewModelStoreOwner, SavedStateViewModelFactory())[ActivityGraphViewModel::class.java]
     @Suppress("UNCHECKED_CAST")
     return store.getOrCreate(AC::class) {
-        val parentGraph = activity.findGraphByScope<P>(activityParentScope)
+        val parentGraph = globalGraphProvider.getGraph<P>(activityParentScope)
         val savedStateHandle = store.savedStateHandle
         factory(parentGraph, savedStateHandle)
     } as C
@@ -65,15 +66,4 @@ internal class ActivityGraphViewModel(
     override fun onCleared() {
         storedObjects.clear()
     }
-}
-
-@PublishedApi
-internal fun <T> Context.findGraphByScope(scope: KClass<*>): T {
-    val serviceName = scope.qualifiedName!!
-    val graph = getSystemService(serviceName) ?: applicationContext.getSystemService(serviceName)
-    checkNotNull(graph) {
-        "Could not find scope ${scope.qualifiedName} through getSystemService"
-    }
-    @Suppress("UNCHECKED_CAST")
-    return graph as T
 }
