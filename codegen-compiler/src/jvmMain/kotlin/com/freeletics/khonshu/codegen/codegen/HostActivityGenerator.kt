@@ -4,6 +4,7 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.HostActivityData
 import com.freeletics.khonshu.codegen.util.bundle
 import com.freeletics.khonshu.codegen.util.compositionLocalProvider
+import com.freeletics.khonshu.codegen.util.globalGraphProvider
 import com.freeletics.khonshu.codegen.util.localHostGraphProvider
 import com.freeletics.khonshu.codegen.util.navHost
 import com.freeletics.khonshu.codegen.util.optIn
@@ -39,7 +40,11 @@ internal class HostActivityGenerator(
             .addStatement("%T()", stackEntryStoreHolder)
             .endControlFlow()
             .beginControlFlow("val graphProvider = %M", remember)
-            .addStatement("%T(this, stackEntryStoreHolder)", graphProviderClassName)
+            .addStatement(
+                "%T(this, application as %T, stackEntryStoreHolder, intent)",
+                graphProviderClassName,
+                globalGraphProvider,
+            )
             .endControlFlow()
             .beginControlFlow("val graph = %M(graphProvider)", remember)
             .addStatement("graphProvider.provide<%T>(%T::class)", graphClassName, data.scope)
