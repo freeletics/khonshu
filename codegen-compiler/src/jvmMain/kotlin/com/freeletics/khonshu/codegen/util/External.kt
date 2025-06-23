@@ -16,11 +16,11 @@ internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.interna
 internal val InternalCodegenApi = ClassName("com.freeletics.khonshu.codegen.internal", "InternalCodegenApi")
 internal val getGraph = MemberName("com.freeletics.khonshu.codegen.internal", "getGraph")
 internal val getGraphFromRoute = MemberName("com.freeletics.khonshu.codegen.internal", "getGraphFromParentRoute")
-internal val graphProvider = ClassName("com.freeletics.khonshu.codegen.internal", "GraphProvider")
-internal val activityGraphProvider =
-    ClassName("com.freeletics.khonshu.codegen.internal", "ActivityGraphProvider")
-internal val localActivityGraphProvider =
-    MemberName("com.freeletics.khonshu.codegen.internal", "LocalActivityGraphProvider")
+internal val destinationGraphProvider = ClassName("com.freeletics.khonshu.codegen.internal", "DestinationGraphProvider")
+internal val hostGraphProvider =
+    ClassName("com.freeletics.khonshu.codegen.internal", "HostGraphProvider")
+internal val localHostGraphProvider =
+    MemberName("com.freeletics.khonshu.codegen.internal", "LocalHostGraphProvider")
 
 // Navigator
 internal val stackSnapshot = ClassName("com.freeletics.khonshu.navigation.internal", "StackSnapshot")

@@ -1,8 +1,8 @@
 package com.freeletics.khonshu.codegen.parser
 
 import com.freeletics.khonshu.codegen.ComposableParameter
-import com.freeletics.khonshu.codegen.NavDestinationData
-import com.freeletics.khonshu.codegen.NavHostActivityData
+import com.freeletics.khonshu.codegen.DestinationData
+import com.freeletics.khonshu.codegen.HostActivityData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.util.baseRoute
@@ -31,10 +31,10 @@ import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.toTypeParameterResolver
 import org.jetbrains.annotations.VisibleForTesting
 
-internal fun KSFunctionDeclaration.toComposeScreenDestinationData(
+internal fun KSFunctionDeclaration.toDestinationData(
     annotation: KSAnnotation,
     logger: KSPLogger,
-): NavDestinationData? {
+): DestinationData? {
     val (stateMachineClass, stateParameter, actionParameter) = annotation.stateMachineParameters(logger) ?: return null
 
     val navigation = Navigation(
@@ -44,7 +44,7 @@ internal fun KSFunctionDeclaration.toComposeScreenDestinationData(
         destinationScope = annotation.destinationScope,
     )
 
-    return NavDestinationData(
+    return DestinationData(
         baseName = simpleName.asString(),
         packageName = packageName.asString(),
         scope = annotation.route,
@@ -58,15 +58,15 @@ internal fun KSFunctionDeclaration.toComposeScreenDestinationData(
     )
 }
 
-internal fun KSFunctionDeclaration.toNavHostActivityData(
+internal fun KSFunctionDeclaration.toHostActivityData(
     annotation: KSAnnotation,
     logger: KSPLogger,
-): NavHostActivityData? {
+): HostActivityData? {
     val (stateMachineClass, stateParameter, actionParameter) = annotation.stateMachineParameters(logger) ?: return null
 
     val navHostParameter = navHostParameter(logger) ?: return null
 
-    return NavHostActivityData(
+    return HostActivityData(
         baseName = simpleName.asString(),
         packageName = packageName.asString(),
         scope = annotation.scope,

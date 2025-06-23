@@ -10,8 +10,8 @@ import com.freeletics.khonshu.navigation.internal.destinationId
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
-public interface GraphProvider<R : BaseRoute, T> {
-    public fun provide(entry: StackEntry<R>, snapshot: StackSnapshot, provider: ActivityGraphProvider): T
+public interface DestinationGraphProvider<R : BaseRoute, T> {
+    public fun provide(entry: StackEntry<R>, snapshot: StackSnapshot, provider: HostGraphProvider): T
 }
 
 /**
@@ -24,12 +24,12 @@ public interface GraphProvider<R : BaseRoute, T> {
 @InternalCodegenApi
 public inline fun <reified C : Any, PC : Any, R : BaseRoute> getGraph(
     entry: StackEntry<R>,
-    activityGraphProvider: ActivityGraphProvider,
+    hostGraphProvider: HostGraphProvider,
     parentScope: KClass<*>,
     crossinline factory: (PC) -> C,
 ): C {
     return entry.store.getOrCreate(C::class) {
-        val parentGraph = activityGraphProvider.provide<PC>(parentScope)
+        val parentGraph = hostGraphProvider.provide<PC>(parentScope)
         factory(parentGraph)
     }
 }
@@ -45,7 +45,7 @@ public inline fun <reified C : Any, PC : Any, R : BaseRoute> getGraph(
 public inline fun <reified C : Any, PC : Any, R : BaseRoute, PR : BaseRoute> getGraphFromParentRoute(
     entry: StackEntry<R>,
     snapshot: StackSnapshot,
-    activityGraphProvider: ActivityGraphProvider,
+    hostGraphProvider: HostGraphProvider,
     parentScope: KClass<PR>,
     crossinline factory: (PC) -> C,
 ): C {
@@ -53,8 +53,8 @@ public inline fun <reified C : Any, PC : Any, R : BaseRoute, PR : BaseRoute> get
         val parentEntry = snapshot.entryFor(DestinationId(parentScope))
 
         @Suppress("UNCHECKED_CAST")
-        val parentGraphProvider = parentEntry.extra as GraphProvider<PR, PC>
-        val parentGraph = parentGraphProvider.provide(parentEntry, snapshot, activityGraphProvider)
+        val parentDestinationGraphProvider = parentEntry.extra as DestinationGraphProvider<PR, PC>
+        val parentGraph = parentDestinationGraphProvider.provide(parentEntry, snapshot, hostGraphProvider)
         factory(parentGraph)
     }
 }

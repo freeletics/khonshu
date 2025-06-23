@@ -1,10 +1,10 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.NavHostActivityData
+import com.freeletics.khonshu.codegen.HostActivityData
 import com.freeletics.khonshu.codegen.util.bundle
 import com.freeletics.khonshu.codegen.util.compositionLocalProvider
-import com.freeletics.khonshu.codegen.util.localActivityGraphProvider
+import com.freeletics.khonshu.codegen.util.localHostGraphProvider
 import com.freeletics.khonshu.codegen.util.navHost
 import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.remember
@@ -18,9 +18,9 @@ import com.squareup.kotlinpoet.TypeSpec
 internal val Generator<out BaseData>.activityName
     get() = "Khonshu${data.baseName}Activity"
 
-internal class ActivityGenerator(
-    override val data: NavHostActivityData,
-) : Generator<NavHostActivityData>() {
+internal class HostActivityGenerator(
+    override val data: HostActivityData,
+) : Generator<HostActivityData>() {
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(activityName)
             .addAnnotation(optIn())
@@ -48,13 +48,13 @@ internal class ActivityGenerator(
             .beginControlFlow(
                 "%M(%M provides graphProvider)",
                 compositionLocalProvider,
-                localActivityGraphProvider,
+                localHostGraphProvider,
             )
-            .addStatement("%M(", navHost)
-            .addStatement("  navigator = %M(graph) { graph.hostNavigator },", remember)
-            .addStatement("  modifier = modifier,")
-            .addStatement("  destinationChangedCallback = destinationChangedCallback,")
-            .addStatement(")")
+            .addStatement("%M(⇥", navHost)
+            .addStatement("navigator = %M(graph) { graph.hostNavigator },", remember)
+            .addStatement("modifier = modifier,")
+            .addStatement("destinationChangedCallback = destinationChangedCallback,")
+            .addStatement("⇤)")
             .endControlFlow()
             .endControlFlow()
             .endControlFlow()
