@@ -23,7 +23,7 @@ ksp = "2.1.21-2.0.2"
 inject = "1"
 java-target = "11"
 java-toolchain = "21"
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 timber = "5.0.1"
 
 [libraries]
