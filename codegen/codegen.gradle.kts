@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.CommonExtension
-
 plugins {
     id("com.freeletics.gradle.multiplatform")
     id("com.freeletics.gradle.publish.oss")
@@ -17,12 +15,6 @@ freeletics {
     }
 
     useCompose()
-}
-
-extensions.configure(CommonExtension::class.java) {
-    lint {
-        disable.add("UnsafeOptInUsageError")
-    }
 }
 
 dependencies {

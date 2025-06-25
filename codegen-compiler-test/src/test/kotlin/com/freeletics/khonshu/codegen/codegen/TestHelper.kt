@@ -20,8 +20,7 @@ internal fun test(
     warningsAsErrors: Boolean = true,
 ) {
     compile(fileName = fileName, source = source, data = data, expectedCode = expectedCode, warningsAsErrors)
-    compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors, ksp2 = false)
-    compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors, ksp2 = true)
+    compileWithKsp(fileName = fileName, source = source, expectedCode = expectedCode, warningsAsErrors)
 }
 
 private fun compile(fileName: String, source: String, data: BaseData, expectedCode: String, warningsAsErrors: Boolean) {
@@ -46,7 +45,6 @@ private fun compileWithKsp(
     source: String,
     expectedCode: String,
     warningsAsErrors: Boolean,
-    ksp2: Boolean,
 ) {
     kspCompilation(
         source = source,
@@ -54,7 +52,6 @@ private fun compileWithKsp(
         compilerPlugins = listOf(ComposePluginRegistrar()),
         symbolProcessors = listOf(KhonshuSymbolProcessorProvider()),
         warningsAsErrors = warningsAsErrors,
-        ksp2 = ksp2,
     ).compile {
         assertThat(it.exitCode).isEqualTo(ExitCode.OK)
         assertThat(generatedFileFor(fileName)).isEqualTo(expectedCode)

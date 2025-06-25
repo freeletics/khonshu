@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 coroutines = "1.10.2"
 
 java-target= "11"
@@ -24,7 +24,7 @@ uri = "0.0.19"
 
 inject = "1"
 anvil = "0.4.1"
-ksp = "2.1.21-2.0.2"
+ksp = "2.2.0-2.0.2"
 kotlinpoet = "2.2.0"
 auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
@@ -34,7 +34,7 @@ truth = "1.4.4"
 turbine = "1.2.1"
 kotlin-compile-testing = "0.7.1"
 
-fgp = "0.26.1"
+fgp = "0.27.0"
 publish = "0.33.0"
 dokka = "2.0.0"
 binarycompatibility = "0.17.0"

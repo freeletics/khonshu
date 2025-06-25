@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.CommonExtension
 import com.freeletics.gradle.plugin.FreeleticsAndroidExtension
 
 plugins {
@@ -25,12 +24,6 @@ freeletics {
     extensions.configure(FreeleticsAndroidExtension::class) {
         enableParcelize()
         consumerProguardFiles("navigation.pro")
-    }
-}
-
-extensions.configure(CommonExtension::class.java) {
-    lint {
-        disable.add("UnsafeOptInUsageError")
     }
 }
 
