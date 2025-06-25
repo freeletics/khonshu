@@ -47,7 +47,6 @@ interface KhonshuCompilation {
             legacyCompilerPlugins: List<ComponentRegistrar> = emptyList(),
             symbolProcessors: List<SymbolProcessorProvider> = emptyList(),
             warningsAsErrors: Boolean = true,
-            ksp2: Boolean = false,
         ): KhonshuCompilation {
             return KspKhonshuCompilation(
                 sources = listOf(fileName to source),
@@ -55,7 +54,6 @@ interface KhonshuCompilation {
                 legacyCompilerPlugins = legacyCompilerPlugins,
                 symbolProcessors = symbolProcessors,
                 warningsAsErrors = warningsAsErrors,
-                ksp2 = ksp2,
             )
         }
     }
@@ -86,14 +84,10 @@ private class KspKhonshuCompilation(
     legacyCompilerPlugins: List<ComponentRegistrar>,
     symbolProcessors: List<SymbolProcessorProvider>,
     warningsAsErrors: Boolean,
-    ksp2: Boolean,
 ) : KhonshuCompilation {
     val compilation = KotlinCompilation().apply {
-        val languageVersion = "1.9".takeUnless { ksp2 }
-        configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors, languageVersion)
-        if (ksp2) {
-            useKsp2()
-        }
+        configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors)
+        useKsp2()
         symbolProcessorProviders = symbolProcessors.toMutableList()
     }
 
@@ -124,6 +118,7 @@ private fun KotlinCompilation.configure(
     sources = sourceFiles.map { (fileName, source) ->
         sourceFile(fileName, source)
     }
+    kotlincArguments += listOf("-Xskip-prerelease-check")
 }
 
 private fun KotlinCompilation.sourceFile(name: String, content: String): SourceFile {

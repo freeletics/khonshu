@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.CommonExtension
-
 plugins {
     id("com.freeletics.gradle.multiplatform")
     id("com.freeletics.gradle.publish.oss")
@@ -13,12 +11,6 @@ freeletics {
     multiplatform {
         addJvmTarget()
         addAndroidTarget()
-    }
-}
-
-extensions.configure(CommonExtension::class.java) {
-    lint {
-        disable.add("UnsafeOptInUsageError")
     }
 }
 
