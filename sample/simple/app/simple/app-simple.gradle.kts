@@ -11,14 +11,6 @@ freeletics {
     }
 }
 
-// TODO remove when Anvil works with K2
-kotlin {
-    compilerOptions {
-        languageVersion = org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9
-        progressiveMode = false
-    }
-}
-
 dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
     implementation(libs.khonshu.navigation)
