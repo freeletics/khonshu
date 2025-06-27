@@ -14,9 +14,8 @@ For more information check out the [docs][4].
 
 ## Codegen
 
-Codegen provides a plugin for [Anvil][5] that helps with generating dependency injection
-related code and common boilerplate for screens as well as handling most of the set up
-of the navigation library.
+Codegen provides generates the dependency injection setup with [Metro][5], state management and navigation
+setup for screens to eliminate boilerplate.
 
 For more information check out the [docs][6].
 
@@ -49,6 +48,6 @@ limitations under the License.
 [1]: https://freeletics.engineering/2021/01/22/abstraction-text-resource.html
 [2]: https://freeletics.github.io/FlowRedux/dsl/
 [4]: https://freeletics.github.io/khonshu/navigation/get-started/
-[5]: https://github.com/square/anvil
+[5]: https://github.com/zacsweers/metro
 [6]: https://freeletics.github.io/khonshu/codegen/get-started/
 [7]: https://freeletics.github.io/khonshu/helpers/

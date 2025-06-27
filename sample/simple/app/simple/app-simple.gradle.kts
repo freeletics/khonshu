@@ -3,7 +3,7 @@ plugins {
 }
 
 freeletics {
-    useDaggerWithComponent()
+    useMetro()
 
     app {
         applicationId("com.freeletics.khonshu.sample.simple")

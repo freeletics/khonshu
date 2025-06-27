@@ -12,6 +12,6 @@ plugins {
 
 rootProject.name = "simple-sample"
 
-configure<com.freeletics.gradle.plugin.SettingsExtension> {
+freeletics {
     includeKhonshu("../..")
 }

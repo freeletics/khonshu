@@ -12,7 +12,6 @@ android-compile = "33"
 
 androidx-compose-runtime = "1.8.3"
 androidx-compose-ui = "1.8.3"
-androidx-compose-animation = "1.6.6"
 jetbrains-compose = "1.8.2"
 
 androidx-activity = "1.10.1"
@@ -22,8 +21,7 @@ androidx-lifecycle = "2.9.1"
 
 uri = "0.0.19"
 
-inject = "1"
-anvil = "0.4.1"
+metro = "0.4.0"
 ksp = "2.2.0-2.0.2"
 kotlinpoet = "2.2.0"
 auto-service = "1.1.1"
@@ -75,10 +73,7 @@ uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.4.0" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.8.1" }
 
-inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
-anvil-annotations = { module = "dev.zacsweers.anvil:annotations", version.ref = "anvil" }
-anvil-annotations-optional = { module = "dev.zacsweers.anvil:annotations-optional", version.ref = "anvil" }
-dagger = { module = "com.google.dagger:dagger", version = "2.56.2" }
+metro = { module = "dev.zacsweers.metro:runtime", version.ref = "metro"}
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoet" }
