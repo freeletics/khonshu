@@ -1,13 +1,11 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.HostActivityData
-import com.freeletics.khonshu.codegen.util.getGraph
+import com.freeletics.khonshu.codegen.util.InternalCodegenApi
 import com.freeletics.khonshu.codegen.util.globalGraphProvider
 import com.freeletics.khonshu.codegen.util.hostGraphProvider
-import com.freeletics.khonshu.codegen.util.intent
+import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.optIn
-import com.freeletics.khonshu.codegen.util.stackEntryStoreHolder
-import com.freeletics.khonshu.codegen.util.viewModelStoreOwner
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.KModifier.PRIVATE
@@ -24,37 +22,26 @@ internal class HostGraphProviderGenerator(
 ) : Generator<HostActivityData>() {
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(graphProviderClassName)
-            .addAnnotation(optIn())
+            .addAnnotation(optIn(InternalCodegenApi, internalNavigatorApi))
             .addSuperinterface(hostGraphProvider)
             .primaryConstructor(constructor())
-            .addProperty(viewModelStoreOwnerProperty())
+            .addProperty(graphProperty())
             .addProperty(globalGraphProviderProperty())
-            .addProperty(stackEntryStoreHolderProperty())
-            .addProperty(intentProperty())
             .addFunction(provideFunction())
             .build()
     }
 
     private fun constructor(): FunSpec {
         return FunSpec.constructorBuilder()
-            .addParameter("viewModelStoreOwner", viewModelStoreOwner)
+            .addParameter("graph", graphClassName)
             .addParameter("globalGraphProvider", globalGraphProvider)
-            .addParameter("stackEntryStoreHolder", stackEntryStoreHolder)
-            .addParameter("intent", intent)
             .build()
     }
 
-    private fun viewModelStoreOwnerProperty(): PropertySpec {
-        return PropertySpec.builder("viewModelStoreOwner", viewModelStoreOwner)
+    private fun graphProperty(): PropertySpec {
+        return PropertySpec.builder("graph", graphClassName)
             .addModifiers(PRIVATE)
-            .initializer("viewModelStoreOwner")
-            .build()
-    }
-
-    private fun intentProperty(): PropertySpec {
-        return PropertySpec.builder("intent", intent)
-            .addModifiers(PRIVATE)
-            .initializer("intent")
+            .initializer("graph")
             .build()
     }
 
@@ -65,13 +52,6 @@ internal class HostGraphProviderGenerator(
             .build()
     }
 
-    private fun stackEntryStoreHolderProperty(): PropertySpec {
-        return PropertySpec.builder("stackEntryStoreHolder", stackEntryStoreHolder)
-            .addModifiers(PRIVATE)
-            .initializer("stackEntryStoreHolder")
-            .build()
-    }
-
     private fun provideFunction(): FunSpec {
         val typeVariable = TypeVariableName("C")
         return FunSpec.builder("provide")
@@ -79,18 +59,11 @@ internal class HostGraphProviderGenerator(
             .addTypeVariable(typeVariable)
             .addParameter("scope", KClass::class.asClassName().parameterizedBy(STAR))
             .returns(typeVariable)
-            .beginControlFlow(
-                "return %M(viewModelStoreOwner, globalGraphProvider, scope, %T::class, %T::class) { factory: %T, savedStateHandle ->",
-                getGraph,
-                data.scope,
-                data.parentScope,
-                graphFactoryClassName,
-            )
-            .addStatement(
-                "factory.%L(stackEntryStoreHolder, savedStateHandle, intent)",
-                graphFactoryCreateFunctionName,
-            )
+            .beginControlFlow("if (scope != %T::class)", data.scope)
+            .addStatement("return globalGraphProvider.getGraph(scope)")
             .endControlFlow()
+            .addStatement("@Suppress(%S)", "UNCHECKED_CAST")
+            .addStatement("return graph as C")
             .build()
     }
 }

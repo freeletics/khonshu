@@ -117,6 +117,19 @@ internal fun optIn(vararg classNames: ClassName): AnnotationSpec {
         .build()
 }
 
+internal fun suppressLint(vararg ids: String): AnnotationSpec {
+    val member = CodeBlock.builder()
+    ids.forEachIndexed { index, id ->
+        if (index > 0) {
+            member.add(", ")
+        }
+        member.add("%S", id)
+    }
+    return AnnotationSpec.builder(suppressLint)
+        .addMember(member.build())
+        .build()
+}
+
 internal fun Navigation?.asParameter(): ParameterSpec {
     if (this != null) {
         return ParameterSpec.builder(route.propertyName, route).build()
