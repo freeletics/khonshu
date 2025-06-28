@@ -1,13 +1,17 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.HostActivityData
+import com.freeletics.khonshu.codegen.util.InternalCodegenApi
 import com.freeletics.khonshu.codegen.util.getGraph
 import com.freeletics.khonshu.codegen.util.globalGraphProvider
 import com.freeletics.khonshu.codegen.util.hostGraphProvider
 import com.freeletics.khonshu.codegen.util.intent
+import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.optIn
+import com.freeletics.khonshu.codegen.util.savedStateHandle
+import com.freeletics.khonshu.codegen.util.stackEntry
+import com.freeletics.khonshu.codegen.util.stackEntryStore
 import com.freeletics.khonshu.codegen.util.stackEntryStoreHolder
-import com.freeletics.khonshu.codegen.util.viewModelStoreOwner
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.KModifier.PRIVATE
@@ -24,12 +28,12 @@ internal class HostGraphProviderGenerator(
 ) : Generator<HostActivityData>() {
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(graphProviderClassName)
-            .addAnnotation(optIn())
+            .addAnnotation(optIn(InternalCodegenApi, internalNavigatorApi))
             .addSuperinterface(hostGraphProvider)
             .primaryConstructor(constructor())
-            .addProperty(viewModelStoreOwnerProperty())
             .addProperty(globalGraphProviderProperty())
             .addProperty(stackEntryStoreHolderProperty())
+            .addProperty(savedStateHandleProperty())
             .addProperty(intentProperty())
             .addFunction(provideFunction())
             .build()
@@ -37,24 +41,10 @@ internal class HostGraphProviderGenerator(
 
     private fun constructor(): FunSpec {
         return FunSpec.constructorBuilder()
-            .addParameter("viewModelStoreOwner", viewModelStoreOwner)
             .addParameter("globalGraphProvider", globalGraphProvider)
             .addParameter("stackEntryStoreHolder", stackEntryStoreHolder)
+            .addParameter("savedStateHandle", savedStateHandle)
             .addParameter("intent", intent)
-            .build()
-    }
-
-    private fun viewModelStoreOwnerProperty(): PropertySpec {
-        return PropertySpec.builder("viewModelStoreOwner", viewModelStoreOwner)
-            .addModifiers(PRIVATE)
-            .initializer("viewModelStoreOwner")
-            .build()
-    }
-
-    private fun intentProperty(): PropertySpec {
-        return PropertySpec.builder("intent", intent)
-            .addModifiers(PRIVATE)
-            .initializer("intent")
             .build()
     }
 
@@ -72,6 +62,20 @@ internal class HostGraphProviderGenerator(
             .build()
     }
 
+    private fun savedStateHandleProperty(): PropertySpec {
+        return PropertySpec.builder("savedStateHandle", savedStateHandle)
+            .addModifiers(PRIVATE)
+            .initializer("savedStateHandle")
+            .build()
+    }
+
+    private fun intentProperty(): PropertySpec {
+        return PropertySpec.builder("intent", intent)
+            .addModifiers(PRIVATE)
+            .initializer("intent")
+            .build()
+    }
+
     private fun provideFunction(): FunSpec {
         val typeVariable = TypeVariableName("C")
         return FunSpec.builder("provide")
@@ -79,8 +83,9 @@ internal class HostGraphProviderGenerator(
             .addTypeVariable(typeVariable)
             .addParameter("scope", KClass::class.asClassName().parameterizedBy(STAR))
             .returns(typeVariable)
+            .addStatement("val stackEntryStore = stackEntryStoreHolder.provideStore(%T.Id(%S))", stackEntry, data.baseName)
             .beginControlFlow(
-                "return %M(viewModelStoreOwner, globalGraphProvider, scope, %T::class, %T::class) { factory: %T, savedStateHandle ->",
+                "return %M(stackEntryStore, globalGraphProvider, scope, %T::class, %T::class) { factory: %T ->",
                 getGraph,
                 data.scope,
                 data.parentScope,
