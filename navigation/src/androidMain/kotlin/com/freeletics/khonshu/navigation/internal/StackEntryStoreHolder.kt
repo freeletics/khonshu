@@ -5,7 +5,7 @@ import androidx.compose.runtime.retain.RetainObserver
 public class StackEntryStoreHolder : RetainObserver {
     private val stores = mutableMapOf<StackEntry.Id, StackEntryStore>()
 
-    internal fun provideStore(id: StackEntry.Id): StackEntryStore {
+    public fun provideStore(id: StackEntry.Id): StackEntryStore {
         return stores.getOrPut(id) {
             StackEntryStore { stores.remove(id) }
         }

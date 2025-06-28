@@ -71,7 +71,7 @@ public class StackEntry<T : BaseRoute> internal constructor(
 
     @JvmInline
     @Serializable
-    @InternalNavigationTestingApi
+    @InternalNavigationCodegenApi
     public value class Id(internal val value: String)
 
     @InternalNavigationTestingApi

@@ -285,5 +285,6 @@ public final class com/freeletics/khonshu/navigation/internal/StackEntryStoreHol
 	public fun onRetained ()V
 	public fun onRetired ()V
 	public fun onUnused ()V
+	public final fun provideStore-WIOqws8 (Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/internal/StackEntryStore;
 }
 
