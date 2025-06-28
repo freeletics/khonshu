@@ -1,7 +1,7 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.HostActivityData
+import com.freeletics.khonshu.codegen.HostData
 import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.createHostNavigator
 import com.freeletics.khonshu.codegen.util.forScope
@@ -20,9 +20,9 @@ import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.TypeSpec
 
 internal class HostGraphContributionGenerator(
-    override val data: HostActivityData,
+    override val data: HostData,
 ) : Generator<BaseData>() {
-    private val moduleClassName = ClassName("Khonshu${data.baseName}ActivityGraph")
+    private val moduleClassName = ClassName("Khonshu${data.baseName}HostGraph")
 
     internal fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(moduleClassName)

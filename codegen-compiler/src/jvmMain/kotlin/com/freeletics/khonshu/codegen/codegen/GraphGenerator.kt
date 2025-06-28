@@ -1,7 +1,7 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.HostActivityData
+import com.freeletics.khonshu.codegen.HostData
 import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.autoCloseable
 import com.freeletics.khonshu.codegen.util.contributesGraphExtension
@@ -53,7 +53,7 @@ internal class GraphGenerator(
         val properties = mutableListOf<PropertySpec>()
         properties += simplePropertySpec(data.stateMachine)
 
-        if (data is HostActivityData) {
+        if (data is HostData) {
             properties += simplePropertySpec(hostNavigator)
             properties += simplePropertySpec(savedStateHandle).toBuilder()
                 .addAnnotation(forScope(data.scope))
