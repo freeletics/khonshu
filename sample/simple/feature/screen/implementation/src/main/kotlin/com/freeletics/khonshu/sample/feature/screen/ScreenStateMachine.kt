@@ -2,7 +2,7 @@ package com.freeletics.khonshu.sample.feature.screen
 
 import com.freeletics.khonshu.sample.feature.screen.nav.ScreenRoute
 import com.freeletics.khonshu.statemachine.StateMachine
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map

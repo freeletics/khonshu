@@ -146,11 +146,12 @@ usually declared in a shared module and the destinations then in the individual 
 where the respective screen is implemented. The set would then mean that for each new feature module
 a developer would need to remember to go to the app module and add the destination to the set.
 
-In practice it makes more sense to use dagger multi bindings to declare and collect destinations:
+In practice it makes more sense to use dependency injection and multi bindings to declare and collect destinations.
+With Metro it would like this:
 
 ```kotlin
-@Module
-object DetailScreenModule {
+@ContributesTo(AppScope::class)
+interface DetailScreenModule {
 	@Provides
 	@IntoSet
 	fun provideDetailScreenDestinations() = ScreenDestination<DetailScreenRoute> {

@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.statemachine.StateMachine
+import dev.zacsweers.metro.AppScope
 import kotlin.reflect.KClass
 
 /**
@@ -16,7 +17,7 @@ import kotlin.reflect.KClass
  * This will trigger the generation of
  * - an `Activity` that extends [activityBaseClass] and displays the annotated composable
  * - a wrapper Composable that sets up the annotated Composable with the given [stateMachine]
- * - a Dagger subcomponent that uses [scope] as scope marker and [parentScope] as `parentScope`
+ * - a Metro graph extension that uses [scope] as scope marker and [parentScope] as `scope` for its factory
  */
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
