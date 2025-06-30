@@ -110,7 +110,6 @@ internal class NavHostActivityCodegenTest {
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
-            import kotlin.jvm.JvmSuppressWildcards
             import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
@@ -299,7 +298,6 @@ internal class NavHostActivityCodegenTest {
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
-            import kotlin.jvm.JvmSuppressWildcards
             import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
@@ -515,7 +513,6 @@ internal class NavHostActivityCodegenTest {
             import kotlin.Unit
             import kotlin.collections.Map
             import kotlin.collections.Set
-            import kotlin.jvm.JvmSuppressWildcards
             import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
@@ -717,7 +714,6 @@ internal class NavHostActivityCodegenTest {
             import java.io.Closeable
             import kotlin.OptIn
             import kotlin.collections.Set
-            import kotlin.jvm.JvmSuppressWildcards
             import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
@@ -769,7 +765,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -777,7 +773,7 @@ internal class NavHostActivityCodegenTest {
               public fun provideHostNavigator(
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
-                destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
+                destinations: ImmutableSet<NavDestination>,
               ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
@@ -899,7 +895,6 @@ internal class NavHostActivityCodegenTest {
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
-            import kotlin.jvm.JvmSuppressWildcards
             import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
@@ -952,7 +947,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -960,7 +955,7 @@ internal class NavHostActivityCodegenTest {
               public fun provideHostNavigator(
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
-                destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
+                destinations: ImmutableSet<NavDestination>,
               ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
@@ -1087,7 +1082,6 @@ internal class NavHostActivityCodegenTest {
             import kotlin.OptIn
             import kotlin.Unit
             import kotlin.collections.Set
-            import kotlin.jvm.JvmSuppressWildcards
             import kotlin.reflect.KClass
             import kotlinx.collections.immutable.ImmutableSet
             import kotlinx.collections.immutable.toImmutableSet
@@ -1140,7 +1134,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -1148,7 +1142,7 @@ internal class NavHostActivityCodegenTest {
               public fun provideHostNavigator(
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
-                destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
+                destinations: ImmutableSet<NavDestination>,
               ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
