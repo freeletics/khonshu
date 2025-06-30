@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+## 0.30.0 *(2025-06-30)*
+
+- Updated Kotlin to 2.2.0.
+
+### Codegen
+
+- Replaced Dagger and Anvil with Metro.
+- Removed `AppScope` in favor of Metro's `AppScope`.
+
+
 ## 0.29.0 *(2024-11-08)*
 
 ### Navigation
