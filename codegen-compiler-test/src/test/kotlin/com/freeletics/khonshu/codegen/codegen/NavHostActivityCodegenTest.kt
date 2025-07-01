@@ -162,7 +162,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -170,7 +170,7 @@ internal class NavHostActivityCodegenTest {
               public fun provideHostNavigator(
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
-                destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
+                destinations: ImmutableSet<NavDestination>,
               ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
@@ -350,7 +350,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(ActivityScope::class)
             public interface KhonshuTestActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(ActivityScope::class)
@@ -358,7 +358,7 @@ internal class NavHostActivityCodegenTest {
               public fun provideHostNavigator(
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
-                destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
+                destinations: ImmutableSet<NavDestination>,
               ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
@@ -573,7 +573,7 @@ internal class NavHostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTest2ActivityModule {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
+              public fun provideImmutableNavDestinations(destinations: Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -581,7 +581,7 @@ internal class NavHostActivityCodegenTest {
               public fun provideHostNavigator(
                 viewModel: StackEntryStoreViewModel,
                 startRoot: NavRoot,
-                destinations: @JvmSuppressWildcards ImmutableSet<NavDestination>,
+                destinations: ImmutableSet<NavDestination>,
               ): HostNavigator = createHostNavigator(viewModel, startRoot, destinations)
             }
 
