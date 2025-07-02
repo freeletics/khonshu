@@ -182,7 +182,7 @@ internal class NavDestinationCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(TestDestinationScope::class)
-            public interface KhonshuTestNavDestinationModule {
+            public interface KhonshuTestNavDestinationGraph {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
@@ -341,7 +341,7 @@ internal class NavDestinationCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(AppScope::class)
-            public interface KhonshuTestNavDestinationModule {
+            public interface KhonshuTestNavDestinationGraph {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
@@ -503,7 +503,7 @@ internal class NavDestinationCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(TestDestinationScope::class)
-            public interface KhonshuTestNavDestinationModule {
+            public interface KhonshuTestNavDestinationGraph {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
@@ -703,7 +703,7 @@ internal class NavDestinationCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(TestDestinationScope::class)
-            public interface KhonshuTest2NavDestinationModule {
+            public interface KhonshuTest2NavDestinationGraph {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
@@ -851,7 +851,7 @@ internal class NavDestinationCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(TestDestinationScope::class)
-            public interface KhonshuTestNavDestinationModule {
+            public interface KhonshuTestNavDestinationGraph {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
@@ -1006,7 +1006,7 @@ internal class NavDestinationCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(TestDestinationScope::class)
-            public interface KhonshuTestNavDestinationModule {
+            public interface KhonshuTestNavDestinationGraph {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)

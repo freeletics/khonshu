@@ -161,7 +161,7 @@ internal class NavHostActivityCodegenTest {
             }
 
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestActivityModule {
+            public interface KhonshuTestActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
@@ -350,7 +350,7 @@ internal class NavHostActivityCodegenTest {
             }
 
             @ContributesTo(ActivityScope::class)
-            public interface KhonshuTestActivityModule {
+            public interface KhonshuTestActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
@@ -574,7 +574,7 @@ internal class NavHostActivityCodegenTest {
             }
 
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTest2ActivityModule {
+            public interface KhonshuTest2ActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
@@ -767,7 +767,7 @@ internal class NavHostActivityCodegenTest {
             }
 
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestActivityModule {
+            public interface KhonshuTestActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
@@ -950,7 +950,7 @@ internal class NavHostActivityCodegenTest {
             }
 
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestActivityModule {
+            public interface KhonshuTestActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
@@ -1138,7 +1138,7 @@ internal class NavHostActivityCodegenTest {
             }
 
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestActivityModule {
+            public interface KhonshuTestActivityGraph {
               @Provides
               public fun provideImmutableNavDestinations(destinations: @JvmSuppressWildcards Set<NavDestination>): ImmutableSet<NavDestination> = destinations.toImmutableSet()
 
