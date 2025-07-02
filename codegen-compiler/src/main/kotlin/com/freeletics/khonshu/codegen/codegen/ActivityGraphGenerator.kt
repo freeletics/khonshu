@@ -7,7 +7,6 @@ import com.freeletics.khonshu.codegen.util.createHostNavigator
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.immutableSet
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
-import com.freeletics.khonshu.codegen.util.jvmSuppressWildcards
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
 import com.freeletics.khonshu.codegen.util.navRoot
 import com.freeletics.khonshu.codegen.util.navigationDestination
@@ -36,7 +35,7 @@ internal class ActivityGraphGenerator(
     private fun provideImmutableNavDestinationsFunction(): FunSpec {
         return FunSpec.builder("provideImmutableNavDestinations")
             .addAnnotation(provides())
-            .addParameter("destinations", SET.parameterizedBy(navigationDestination).jvmSuppressWildcards())
+            .addParameter("destinations", SET.parameterizedBy(navigationDestination))
             .returns(immutableSet.parameterizedBy(navigationDestination))
             .addStatement("return destinations.%M()", toImmutableSet)
             .build()
@@ -49,7 +48,7 @@ internal class ActivityGraphGenerator(
             .addAnnotation(optIn(internalNavigatorApi))
             .addParameter("viewModel", multiStackHostNavigatorViewModel)
             .addParameter("startRoot", navRoot)
-            .addParameter("destinations", immutableSet.parameterizedBy(navigationDestination).jvmSuppressWildcards())
+            .addParameter("destinations", immutableSet.parameterizedBy(navigationDestination))
             .returns(hostNavigator)
             .addStatement(
                 "return %M(viewModel, startRoot, destinations)",

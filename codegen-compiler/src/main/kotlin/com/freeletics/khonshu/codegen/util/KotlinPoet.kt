@@ -46,11 +46,6 @@ internal fun providesParameter(
         .build()
 }
 
-internal fun TypeName.jvmSuppressWildcards(): TypeName {
-    val suppress = AnnotationSpec.builder(JvmSuppressWildcards::class).build()
-    return copy(annotations = annotations + suppress)
-}
-
 internal fun navHostParameter(parameter: ComposableParameter): ParameterSpec {
     return ParameterSpec.builder(parameter.name, simpleNavHost)
         .build()
