@@ -18,7 +18,7 @@ public class FileGenerator {
         val graphProvider = NavDestinationGraphProviderGenerator(data)
         val destinationComposable = NavDestinationComposableGenerator(data)
         val graphComposable = GraphComposableGenerator(data)
-        val destinationModule = NavDestinationModuleGenerator(data)
+        val destinationModule = NavDestinationGraphGenerator(data)
 
         return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
             .addType(graph.generate())
@@ -32,7 +32,7 @@ public class FileGenerator {
     public fun generate(data: NavHostActivityData): FileSpec {
         val graph = GraphGenerator(data)
         val graphProvider = ActivityGraphProviderGenerator(data)
-        val activityModule = ActivityModuleGenerator(data)
+        val activityModule = ActivityGraphGenerator(data)
         val activity = ActivityGenerator(data)
         val graphComposable = GraphComposableGenerator(data)
 

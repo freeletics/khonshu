@@ -10,10 +10,10 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
 
-internal class NavDestinationModuleGenerator(
+internal class NavDestinationGraphGenerator(
     override val data: BaseData,
 ) : Generator<BaseData>() {
-    private val moduleClassName = ClassName("Khonshu${data.baseName}NavDestinationModule")
+    private val moduleClassName = ClassName("Khonshu${data.baseName}NavDestinationGraph")
 
     internal fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(moduleClassName)

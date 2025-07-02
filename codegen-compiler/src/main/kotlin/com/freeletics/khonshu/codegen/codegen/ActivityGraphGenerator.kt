@@ -19,10 +19,10 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.TypeSpec
 
-internal class ActivityModuleGenerator(
+internal class ActivityGraphGenerator(
     override val data: NavHostActivityData,
 ) : Generator<BaseData>() {
-    private val moduleClassName = ClassName("Khonshu${data.baseName}ActivityModule")
+    private val moduleClassName = ClassName("Khonshu${data.baseName}ActivityGraph")
 
     internal fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(moduleClassName)
