@@ -19,7 +19,7 @@ androidx-annotations = "1.5.0"
 androidx-core = "1.16.0"
 androidx-lifecycle = "2.9.1"
 
-uri = "0.0.19"
+uri = "0.0.20"
 
 metro = "0.4.0"
 ksp = "2.2.0-2.0.2"
