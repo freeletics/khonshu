@@ -70,7 +70,7 @@ androidx-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-
 androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
-toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.4.0" }
+toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.5.0" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.9.0" }
 
 metro = { module = "dev.zacsweers.metro:runtime", version.ref = "metro"}
