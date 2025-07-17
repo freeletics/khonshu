@@ -1,7 +1,7 @@
 package com.freeletics.khonshu.navigation
 
-import android.view.animation.PathInterpolator
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
@@ -238,7 +238,7 @@ internal class SaveableCloseable(
  *   weird user experience.
  */
 private fun Modifier.outTransition(progress: () -> Float): Modifier = graphicsLayer {
-    val interpolatedProgress = interpolator.getInterpolation(progress())
+    val interpolatedProgress = interpolator.transform(progress())
     // the current screen is only shown until the transition point is reached
     val clippedProgress = if (interpolatedProgress <= TRANSITION_POINT) {
         interpolatedProgress / TRANSITION_POINT
@@ -268,7 +268,7 @@ private fun Modifier.outTransition(progress: () -> Float): Modifier = graphicsLa
  *   weird user experience.
  */
 private fun Modifier.inTransition(progress: () -> Float): Modifier = graphicsLayer {
-    val interpolatedProgress = interpolator.getInterpolation(progress())
+    val interpolatedProgress = interpolator.transform(progress())
     // the previous screen is shown from the transition point on
     val clippedProgress = if (interpolatedProgress >= TRANSITION_POINT) {
         (interpolatedProgress - TRANSITION_POINT) / (1f - TRANSITION_POINT)
@@ -286,7 +286,7 @@ private fun Modifier.inTransition(progress: () -> Float): Modifier = graphicsLay
 }
 
 private val offset = 24.dp
-private val interpolator = PathInterpolator(0.1f, 0.1f, 0f, 1f)
+private val interpolator = CubicBezierEasing(0.1f, 0.1f, 0f, 1f)
 private const val TRANSITION_POINT = 0.035f
 private const val VISIBILITY_THRESHOLD = 0.000000001f
 
