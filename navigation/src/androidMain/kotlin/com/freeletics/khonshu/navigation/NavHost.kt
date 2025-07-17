@@ -25,7 +25,6 @@ import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.PredictiveBackHandler
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
-import java.io.Closeable
 import java.lang.ref.WeakReference
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
@@ -216,7 +215,7 @@ private fun <T : BaseRoute> Show(
 
 internal class SaveableCloseable(
     private val id: String,
-) : Closeable {
+) : AutoCloseable {
     internal lateinit var saveableStateHolderRef: WeakReference<SaveableStateHolder>
 
     override fun close() {

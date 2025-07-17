@@ -9,7 +9,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import java.io.Closeable
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
@@ -56,7 +55,7 @@ internal class ActivityGraphViewModel(
         if (storedObject == null) {
             storedObject = factory()
             storedObjects[key] = storedObject
-            if (storedObject is Closeable) {
+            if (storedObject is AutoCloseable) {
                 addCloseable(storedObject)
             }
         }

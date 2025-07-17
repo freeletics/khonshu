@@ -4,6 +4,7 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.activityNavigator
 import com.freeletics.khonshu.codegen.util.asParameter
+import com.freeletics.khonshu.codegen.util.autoCloseable
 import com.freeletics.khonshu.codegen.util.contributesGraphExtension
 import com.freeletics.khonshu.codegen.util.contributesGraphExtensionFactory
 import com.freeletics.khonshu.codegen.util.forScope
@@ -22,9 +23,6 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.asClassName
-import com.squareup.kotlinpoet.asTypeName
-import java.io.Closeable
 
 internal val Generator<out BaseData>.graphClassName
     get() = ClassName("Khonshu${data.baseName}Graph")
@@ -45,7 +43,7 @@ internal class GraphGenerator(
             .addAnnotation(optIn())
             .addAnnotation(singleIn(data.scope))
             .addAnnotation(contributesGraphExtension(data.scope))
-            .addSuperinterface(Closeable::class)
+            .addSuperinterface(autoCloseable)
             .addProperties(graphProperties())
             .addFunction(multibindsCloseableFunction())
             .addFunction(closeFunction())
@@ -71,7 +69,7 @@ internal class GraphGenerator(
 
         properties += PropertySpec.builder(
             CLOSEABLE_SET_PROPERTY_NAME,
-            SET.parameterizedBy(Closeable::class.asTypeName()),
+            SET.parameterizedBy(autoCloseable),
         )
             .addAnnotation(forScope(data.scope))
             .build()
@@ -84,7 +82,7 @@ internal class GraphGenerator(
             .addModifiers(ABSTRACT)
             .addAnnotation(multibinds(allowEmpty = true))
             .addAnnotation(forScope(data.scope))
-            .returns(SET.parameterizedBy(Closeable::class.asClassName()))
+            .returns(SET.parameterizedBy(autoCloseable))
             .build()
     }
 

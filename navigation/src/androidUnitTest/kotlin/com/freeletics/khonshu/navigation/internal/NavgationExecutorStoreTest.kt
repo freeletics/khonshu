@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.navigation.internal
 
 import com.google.common.truth.Truth.assertThat
-import java.io.Closeable
 import org.junit.Test
 
 internal class NavgationExecutorStoreTest {
@@ -57,18 +56,18 @@ internal class NavgationExecutorStoreTest {
 
     @Test
     fun `store always returns the same object for key`() {
-        val closeable = Closeable { }
-        val value1 = underTest.getOrCreate(Closeable::class) { closeable }
+        val closeable = AutoCloseable { }
+        val value1 = underTest.getOrCreate(AutoCloseable::class) { closeable }
         assertThat(value1).isEqualTo(closeable)
-        val value2 = underTest.getOrCreate(Closeable::class) { closeable }
+        val value2 = underTest.getOrCreate(AutoCloseable::class) { closeable }
         assertThat(value2).isEqualTo(closeable)
     }
 
     @Test
     fun `store closes stored Closeables on close`() {
         var closed = false
-        val closeable = Closeable { closed = true }
-        underTest.getOrCreate(Closeable::class) { closeable }
+        val closeable = AutoCloseable { closed = true }
+        underTest.getOrCreate(AutoCloseable::class) { closeable }
 
         underTest.close()
         assertThat(closed).isTrue()
