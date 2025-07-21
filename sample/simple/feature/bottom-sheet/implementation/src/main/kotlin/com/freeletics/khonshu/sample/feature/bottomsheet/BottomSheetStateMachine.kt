@@ -13,7 +13,8 @@ sealed interface BottomSheetAction {
     data object DismissRequested : BottomSheetAction
 }
 
-class BottomSheetStateMachine @Inject constructor(
+@Inject
+class BottomSheetStateMachine(
     private val navigator: BottomSheetNavigator,
 ) : StateMachine<BottomSheetState, BottomSheetAction> {
     override val state: Flow<BottomSheetState> = flowOf(Init)

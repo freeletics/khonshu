@@ -13,7 +13,8 @@ sealed interface ScreenWithResultAction {
     data object DeliverResult : ScreenWithResultAction
 }
 
-class ScreenWithResultStateMachine @Inject constructor(
+@Inject
+class ScreenWithResultStateMachine (
     private val navigator: ScreenWithResultNavigator,
 ) : StateMachine<ScreenWithResultState, ScreenWithResultAction> {
     private val _state = MutableStateFlow(ScreenWithResultState(data = ""))
