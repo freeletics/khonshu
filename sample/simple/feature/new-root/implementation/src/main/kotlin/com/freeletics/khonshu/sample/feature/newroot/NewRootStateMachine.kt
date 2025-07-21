@@ -17,7 +17,8 @@ sealed interface NewRootAction {
     data object NavigateToRootButtonClicked : NewRootAction
 }
 
-class NewRootStateMachine @Inject constructor(
+@Inject
+class NewRootStateMachine(
     private val navigator: NewRootNavigator,
 ) : StateMachine<NewRootState, NewRootAction> {
     private val _state = MutableStateFlow(NewRootState)

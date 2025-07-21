@@ -9,7 +9,8 @@ Injecting the following `ExampleClass`
 
 ```kotlin
 // could use @SingleIn(...) with the matching scope or a parent scope
-class ExampleClass @Inject constructor() {
+@Inject
+class ExampleClass {
     // implementation ...
 }
 ```

@@ -11,7 +11,8 @@ sealed interface DialogAction {
     data object DismissRequested : DialogAction
 }
 
-class DialogStateMachine @Inject constructor(
+@Inject
+class DialogStateMachine(
     private val navigator: DialogNavigator,
 ) : StateMachine<DialogState, DialogAction> {
     private val _state = MutableStateFlow(DialogState)

@@ -16,10 +16,11 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metro.binding
 
+@Inject
 @ForScope(ScreenRoute::class)
 @SingleIn(ScreenRoute::class)
 @ContributesBinding(ScreenRoute::class, binding<ActivityNavigator>())
-class ScreenNavigator @Inject constructor(
+class ScreenNavigator(
     hostNavigator: HostNavigator,
     private val route: ScreenRoute,
 ) : DestinationNavigator(hostNavigator) {

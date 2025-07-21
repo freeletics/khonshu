@@ -17,7 +17,8 @@ sealed interface RootAction {
     data object ReplaceAllButtonClicked : RootAction
 }
 
-class RootStateMachine @Inject constructor(
+@Inject
+class RootStateMachine(
     private val navigator: RootNavigator,
 ) : StateMachine<RootState, RootAction> {
     private val _state = MutableStateFlow(RootState)

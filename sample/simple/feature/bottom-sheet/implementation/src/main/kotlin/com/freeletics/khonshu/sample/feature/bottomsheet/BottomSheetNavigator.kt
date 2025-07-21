@@ -10,7 +10,8 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metro.binding
 
+@Inject
 @ForScope(BottomSheetRoute::class)
 @SingleIn(BottomSheetRoute::class)
 @ContributesBinding(BottomSheetRoute::class, binding<ActivityNavigator>())
-class BottomSheetNavigator @Inject constructor(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator)
+class BottomSheetNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator)

@@ -22,7 +22,8 @@ sealed interface ScreenAction {
     data object ScreenForResultButtonClicked : ScreenAction
 }
 
-class ScreenStateMachine @Inject constructor(
+@Inject
+class ScreenStateMachine(
     route: ScreenRoute,
     private val navigator: ScreenNavigator,
 ) : StateMachine<ScreenState, ScreenAction> {

@@ -10,7 +10,8 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metro.binding
 
+@Inject
 @ForScope(DialogRoute::class)
 @SingleIn(DialogRoute::class)
 @ContributesBinding(DialogRoute::class, binding<ActivityNavigator>())
-class DialogNavigator @Inject constructor(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator)
+class DialogNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator)

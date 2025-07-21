@@ -125,8 +125,9 @@ This is a minimal example of how using Khonshu's Codegen for a screen would look
 
 ```kotlin
 // state machine survives orientation changes
+@Inject
 @SingleIn(ExampleRoute::class)
-internal class ExampleStateMachine @Inject constructor(
+internal class ExampleStateMachine(
     val route: ExampleRoute, // inject the navigator route that was used to get to this screen
     @ForScope(ExampleRoute::class)
     val savedStateHandle: SavedStateHandle, // a saved state handle tied to this screen
@@ -140,8 +141,9 @@ internal class ExampleStateMachine @Inject constructor(
 @ForScope(ExampleRoute::class)
 // make ExampleNavigator available as ActivityNavigator so that the generated code can automatically
 // set up the navigation handling
+@Inject
 @ContributesBinding(ExampleRoute::class, binding<ActivityNavigator>())
-class ExampleNavigator @Inject constructor(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
+class ExampleNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
     // ...
 }
 
