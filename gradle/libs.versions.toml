@@ -21,7 +21,7 @@ androidx-lifecycle = "2.9.2"
 
 uri = "0.0.20"
 
-metro = "0.5.1"
+metro = "0.5.2"
 ksp = "2.2.0-2.0.2"
 kotlinpoet = "2.2.0"
 auto-service = "1.1.1"
