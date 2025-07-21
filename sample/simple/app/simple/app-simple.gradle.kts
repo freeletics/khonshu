@@ -1,5 +1,5 @@
 plugins {
-    id("com.freeletics.gradle.app")
+    id("com.freeletics.gradle.app.android")
 }
 
 freeletics {
