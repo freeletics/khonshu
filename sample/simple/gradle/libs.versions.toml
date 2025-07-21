@@ -48,9 +48,9 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
-fgp-app = { id = "com.freeletics.gradle.app", version.ref = "fgp" }
-fgp-feature = { id = "com.freeletics.gradle.feature", version.ref = "fgp" }
-fgp-nav = { id = "com.freeletics.gradle.nav", version.ref = "fgp" }
+fgp-app = { id = "com.freeletics.gradle.app.android", version.ref = "fgp" }
+fgp-feature = { id = "com.freeletics.gradle.feature.android", version.ref = "fgp" }
+fgp-nav = { id = "com.freeletics.gradle.nav.android", version.ref = "fgp" }
 fgp-root = { id = "com.freeletics.gradle.root", version.ref = "fgp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
