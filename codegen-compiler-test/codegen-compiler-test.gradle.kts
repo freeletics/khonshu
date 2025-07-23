@@ -16,5 +16,5 @@ dependencies {
     testImplementation(libs.kotlin.compile.testing)
     testImplementation(libs.compose.compiler)
     testImplementation(testFixtures(projects.codegenCompiler))
-    testImplementation("com.freeletics.flowredux2:flowredux:1.2.3-SNAPSHOT")
+    testImplementation(libs.flowredux)
 }
