@@ -139,7 +139,10 @@ private fun KSFunctionDeclaration.navHostParameter(logger: KSPLogger): Composabl
     return parameter
 }
 
-private fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLogger): Triple<ClassName, TypeName, TypeName>? {
+private fun ClassName.stateMachineParameters(
+    resolver: Resolver,
+    logger: KSPLogger,
+): Triple<ClassName, TypeName, TypeName>? {
     val stateMachineDeclaration = resolver.getClassDeclarationByName(toString())!!
 
     val stateMachineType = stateMachineDeclaration.allSuperTypes(true).firstNotNullOfOrNull { superType ->

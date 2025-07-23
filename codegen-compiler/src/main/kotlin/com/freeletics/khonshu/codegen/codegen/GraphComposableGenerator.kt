@@ -32,7 +32,15 @@ internal class GraphComposableGenerator(
     internal fun generate(): FunSpec {
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
-            .addAnnotation(if (data.stateMachineClass == stateMachine) optIn() else optIn(ExperimentalCoroutinesApi::class.asClassName()))
+            .addAnnotation(
+                if (data.stateMachineClass == stateMachine) {
+                    optIn()
+                } else {
+                    optIn(
+                        ExperimentalCoroutinesApi::class.asClassName(),
+                    )
+                },
+            )
             .addModifiers(PRIVATE)
             .addParameter("graph", graphClassName)
             .also {

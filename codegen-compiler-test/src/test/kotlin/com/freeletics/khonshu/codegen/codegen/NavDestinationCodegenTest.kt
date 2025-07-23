@@ -1027,6 +1027,7 @@ internal class NavDestinationCodegenTest {
             stateMachine = ClassName("com.test", "TestStateMachineFactory"),
             stateMachineClass = ClassName("com.freeletics.flowredux2", "FlowReduxStateMachineFactory"),
         )
+
         @Language("kotlin")
         val source =
             """
