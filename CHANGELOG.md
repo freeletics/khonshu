@@ -1,6 +1,22 @@
 Change Log
 ==========
 
+## 0.31.0 *(2025-06-30)*
+
+## Navigation
+
+- Updated `com.eygraber:uri-kmp` to 0.0.20 and adapted to breaking API change
+
+## Codegen
+
+- Support FlowRedux 2 by allowing to use `FlowReduxStateMachineFactory` as parameter
+  in annotations.
+- Replaced `java.io.Closeable` with `kotlin.AutoCloseable`. If you contributed any
+  closeables into sets so that they are automatically closed when a destination leaves
+  the back stack this needs to be changed to use `AutoCloseable` now.
+- Generated code does not call generated interfaces `Module` anymore
+
+
 ## 0.30.0 *(2025-06-30)*
 
 - Updated Kotlin to 2.2.0.
