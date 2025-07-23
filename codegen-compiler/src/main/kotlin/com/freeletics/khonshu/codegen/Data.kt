@@ -18,6 +18,7 @@ public sealed interface BaseData {
 
     public val navigation: Navigation?
 
+    public val stateMachineClass: ClassName
     public val stateParameter: ComposableParameter?
     public val sendActionParameter: ComposableParameter?
     public val composableParameter: List<ComposableParameter>
@@ -35,6 +36,7 @@ public data class NavDestinationData(
     override val parentScope: ClassName,
     override val stateMachine: ClassName,
     override val navigation: Navigation,
+    override val stateMachineClass: ClassName,
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
@@ -48,6 +50,7 @@ public data class NavHostActivityData(
     override val stateMachine: ClassName,
     public val activityBaseClass: ClassName,
     val navHostParameter: ComposableParameter,
+    override val stateMachineClass: ClassName,
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,

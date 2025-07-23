@@ -1,10 +1,12 @@
 package com.test
 
 import android.os.Parcel
+import com.freeletics.flowredux2.FlowReduxStateMachineFactory
 import com.freeletics.khonshu.codegen.Overlay
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.statemachine.StateMachine
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 
 public class TestScreen
@@ -37,6 +39,11 @@ public class TestStateMachine : FooStateMachine<TestAction, TestState>() {
         throw UnsupportedOperationException("Not implemented")
     }
 }
+
+@OptIn(ExperimentalCoroutinesApi::class)
+public class TestStateMachineFactory : FlowReduxStateMachineFactory<TestState, TestAction>({
+    throw UnsupportedOperationException("Not implemented")
+})
 
 public abstract class FooStateMachine<A : Any, S : Any> : StateMachine<S, A>
 

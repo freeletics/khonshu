@@ -20,6 +20,6 @@ import kotlin.reflect.KClass
 public annotation class NavDestination(
     val route: KClass<out BaseRoute>,
     val parentScope: KClass<*> = ActivityScope::class,
-    val stateMachine: KClass<out StateMachine<*, *>>,
+    val stateMachine: KClass<*>,
     val destinationScope: KClass<*> = AppScope::class,
 )

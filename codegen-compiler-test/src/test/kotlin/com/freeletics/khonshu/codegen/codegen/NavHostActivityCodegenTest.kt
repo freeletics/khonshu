@@ -30,6 +30,7 @@ internal class NavHostActivityCodegenTest {
             "navHost",
             ClassName("com.freeletics.khonshu.codegen", "SimpleNavHost"),
         ),
+        stateMachineClass = ClassName("com.freeletics.khonshu.statemachine", "StateMachine"),
         stateParameter = ComposableParameter("state", ClassName("com.test", "TestState")),
         sendActionParameter = ComposableParameter(
             "sendAction",

@@ -31,3 +31,7 @@ plugins {
 }
 
 rootProject.name = "khonshu"
+
+freeletics {
+    snapshots()
+}

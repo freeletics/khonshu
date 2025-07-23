@@ -53,6 +53,8 @@ internal val simpleNavHostLambda = LambdaTypeName.get(
 
 // StateMachine
 internal val stateMachine = ClassName("com.freeletics.khonshu.statemachine", "StateMachine")
+internal val stateMachineFactory = ClassName("com.freeletics.flowredux2", "FlowReduxStateMachineFactory")
+internal val produceStateMachine = MemberName("com.freeletics.flowredux2", "produceStateMachine")
 
 // Kotlin
 internal val autoCloseable = ClassName("kotlin", "AutoCloseable")

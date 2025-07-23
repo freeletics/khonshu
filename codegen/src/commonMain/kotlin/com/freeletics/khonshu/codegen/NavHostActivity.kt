@@ -24,7 +24,7 @@ import kotlin.reflect.KClass
 public annotation class NavHostActivity(
     val scope: KClass<*> = ActivityScope::class,
     val parentScope: KClass<*> = AppScope::class,
-    val stateMachine: KClass<out StateMachine<*, *>>,
+    val stateMachine: KClass<*>,
     val activityBaseClass: KClass<*>,
 )
 
