@@ -31,4 +31,3 @@ plugins {
 }
 
 rootProject.name = "khonshu"
-
