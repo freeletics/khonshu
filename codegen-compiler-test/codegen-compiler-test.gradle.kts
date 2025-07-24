@@ -16,4 +16,5 @@ dependencies {
     testImplementation(libs.kotlin.compile.testing)
     testImplementation(libs.compose.compiler)
     testImplementation(testFixtures(projects.codegenCompiler))
+    testImplementation(libs.flowredux)
 }

@@ -36,6 +36,7 @@ internal class NavDestinationCodegenTest {
         stateMachine = ClassName("com.test", "TestStateMachine"),
         navigation = navigation,
         composableParameter = emptyList(),
+        stateMachineClass = ClassName("com.freeletics.khonshu.statemachine", "StateMachine"),
         stateParameter = ComposableParameter("state", ClassName("com.test", "TestState")),
         sendActionParameter = ComposableParameter(
             "sendAction",
@@ -1018,5 +1019,156 @@ internal class NavDestinationCodegenTest {
             """.trimIndent()
 
         test(withoutSendAction, "com/test/Test.kt", source, expected)
+    }
+
+    @Test
+    fun `generates code for ComposeScreenData with FlowReduxStateMachineFactory`() {
+        val withFactory = data.copy(
+            stateMachine = ClassName("com.test", "TestStateMachineFactory"),
+            stateMachineClass = ClassName("com.freeletics.flowredux2", "FlowReduxStateMachineFactory"),
+        )
+
+        @Language("kotlin")
+        val source =
+            """
+            package com.test
+
+            import androidx.compose.runtime.Composable
+            import com.freeletics.khonshu.codegen.NavDestination
+            import com.test.destination.TestDestinationScope
+            import com.test.parent.TestParentRoute
+
+            @NavDestination(
+              route = TestRoute::class,
+              parentScope = TestParentRoute::class,
+              stateMachine = TestStateMachineFactory::class,
+              destinationScope = TestDestinationScope::class,
+            )
+            @Composable
+            @Suppress("unused_parameter")
+            public fun Test(
+              state: TestState,
+              sendAction: (TestAction) -> Unit
+            ) {}
+            """.trimIndent()
+
+        @Language("kotlin")
+        val expected =
+            """
+            package com.test
+
+            import androidx.compose.runtime.Composable
+            import androidx.compose.runtime.remember
+            import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.flowredux2.produceStateMachine
+            import com.freeletics.khonshu.codegen.`internal`.ActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.GraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
+            import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
+            import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
+            import com.freeletics.khonshu.navigation.ActivityNavigator
+            import com.freeletics.khonshu.navigation.NavDestination
+            import com.freeletics.khonshu.navigation.NavigationSetup
+            import com.freeletics.khonshu.navigation.ScreenDestination
+            import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
+            import com.freeletics.khonshu.navigation.`internal`.StackEntry
+            import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
+            import com.test.destination.TestDestinationScope
+            import com.test.parent.TestParentRoute
+            import dev.zacsweers.metro.ContributesGraphExtension
+            import dev.zacsweers.metro.ContributesTo
+            import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.IntoSet
+            import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.Provides
+            import dev.zacsweers.metro.SingleIn
+            import kotlin.AutoCloseable
+            import kotlin.OptIn
+            import kotlin.collections.Set
+            import kotlinx.coroutines.ExperimentalCoroutinesApi
+
+            @OptIn(InternalCodegenApi::class)
+            @SingleIn(TestRoute::class)
+            @ContributesGraphExtension(
+              TestRoute::class,
+              isExtendable = true,
+            )
+            public interface KhonshuTestGraph : AutoCloseable {
+              public val testStateMachineFactory: TestStateMachineFactory
+
+              @ForScope(TestRoute::class)
+              public val activityNavigator: ActivityNavigator
+
+              @ForScope(TestRoute::class)
+              public val closeables: Set<AutoCloseable>
+
+              @Multibinds(allowEmpty = true)
+              @ForScope(TestRoute::class)
+              public fun bindCloseables(): Set<AutoCloseable>
+
+              override fun close() {
+                closeables.forEach {
+                  it.close()
+                }
+              }
+
+              @ContributesGraphExtension.Factory(TestParentRoute::class)
+              public interface Factory {
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTestGraph
+              }
+            }
+
+            @OptIn(InternalCodegenApi::class)
+            public object KhonshuTestGraphProvider : GraphProvider<TestRoute, KhonshuTestGraph> {
+              @OptIn(InternalNavigationCodegenApi::class)
+              override fun provide(
+                entry: StackEntry<TestRoute>,
+                snapshot: StackSnapshot,
+                provider: ActivityGraphProvider,
+              ): KhonshuTestGraph = getGraphFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { factory: KhonshuTestGraph.Factory ->
+                factory.createKhonshuTestGraph(entry.savedStateHandle, entry.route)
+              }
+            }
+
+            @Composable
+            @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
+            public fun KhonshuTest(snapshot: StackSnapshot, entry: StackEntry<TestRoute>) {
+              val provider = LocalActivityGraphProvider.current
+              val graph = remember(entry, snapshot, provider) {
+                KhonshuTestGraphProvider.provide(entry, snapshot, provider)
+              }
+
+              NavigationSetup(graph.activityNavigator)
+
+              KhonshuTest(graph)
+            }
+
+            @Composable
+            @OptIn(ExperimentalCoroutinesApi::class)
+            private fun KhonshuTest(graph: KhonshuTestGraph) {
+              val stateMachineFactory = remember { graph.testStateMachineFactory }
+              val stateMachine = stateMachineFactory.produceStateMachine()
+              val currentState = stateMachine.state.value
+              val sendAction = stateMachine.dispatchAction
+              Test(
+                state = currentState,
+                sendAction = sendAction,
+              )
+            }
+
+            @OptIn(InternalCodegenApi::class)
+            @ContributesTo(TestDestinationScope::class)
+            public interface KhonshuTestNavDestinationGraph {
+              @Provides
+              @IntoSet
+              @OptIn(InternalNavigationCodegenApi::class)
+              public fun provideTestNavDestination(): NavDestination = ScreenDestination<TestRoute>(KhonshuTestGraphProvider) { snapshot, route ->
+                KhonshuTest(snapshot, route)
+              }
+            }
+
+            """.trimIndent()
+
+        test(withFactory, "com/test/Test.kt", source, expected)
     }
 }

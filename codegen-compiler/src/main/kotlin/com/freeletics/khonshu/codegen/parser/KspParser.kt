@@ -12,6 +12,7 @@ import com.freeletics.khonshu.codegen.util.simpleNavHost
 import com.freeletics.khonshu.codegen.util.simpleNavHostLambda
 import com.freeletics.khonshu.codegen.util.simpleNavHostParameterized
 import com.freeletics.khonshu.codegen.util.stateMachine
+import com.freeletics.khonshu.codegen.util.stateMachineFactory
 import com.google.devtools.ksp.getClassDeclarationByName
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -37,8 +38,8 @@ internal fun KSFunctionDeclaration.toComposeScreenDestinationData(
     resolver: Resolver,
     logger: KSPLogger,
 ): NavDestinationData? {
-    val (stateParameter, actionParameter) = annotation.stateMachine.stateMachineParameters(resolver, logger)
-        ?: return null
+    val (stateMachineClass, stateParameter, actionParameter) =
+        annotation.stateMachine.stateMachineParameters(resolver, logger) ?: return null
 
     val navigation = Navigation(
         route = annotation.route,
@@ -55,6 +56,7 @@ internal fun KSFunctionDeclaration.toComposeScreenDestinationData(
         stateMachine = annotation.stateMachine,
         navigation = navigation,
         composableParameter = getInjectedParameters(stateParameter, actionParameter),
+        stateMachineClass = stateMachineClass,
         stateParameter = this.getParameterWithType(stateParameter),
         sendActionParameter = this.getParameterWithType(actionParameter),
     )
@@ -65,8 +67,8 @@ internal fun KSFunctionDeclaration.toNavHostActivityData(
     resolver: Resolver,
     logger: KSPLogger,
 ): NavHostActivityData? {
-    val (stateParameter, actionParameter) = annotation.stateMachine.stateMachineParameters(resolver, logger)
-        ?: return null
+    val (stateMachineClass, stateParameter, actionParameter) =
+        annotation.stateMachine.stateMachineParameters(resolver, logger) ?: return null
 
     val navHostParameter = navHostParameter(logger) ?: return null
 
@@ -79,6 +81,7 @@ internal fun KSFunctionDeclaration.toNavHostActivityData(
         activityBaseClass = annotation.activityBaseClass,
         navHostParameter = navHostParameter,
         composableParameter = getInjectedParameters(stateParameter, actionParameter, navHostParameter.typeName),
+        stateMachineClass = stateMachineClass,
         stateParameter = getParameterWithType(stateParameter),
         sendActionParameter = getParameterWithType(actionParameter),
     )
@@ -136,20 +139,24 @@ private fun KSFunctionDeclaration.navHostParameter(logger: KSPLogger): Composabl
     return parameter
 }
 
-private fun ClassName.stateMachineParameters(resolver: Resolver, logger: KSPLogger): Pair<TypeName, TypeName>? {
+private fun ClassName.stateMachineParameters(
+    resolver: Resolver,
+    logger: KSPLogger,
+): Triple<ClassName, TypeName, TypeName>? {
     val stateMachineDeclaration = resolver.getClassDeclarationByName(toString())!!
 
     val stateMachineType = stateMachineDeclaration.allSuperTypes(true).firstNotNullOfOrNull { superType ->
-        superType.asParameterized()?.takeIf { it.rawType == stateMachine }
+        superType.asParameterized()?.takeIf { it.rawType == stateMachine || it.rawType == stateMachineFactory }
     }
     if (stateMachineType == null) {
-        logger.error("Could not find StateMachine super type for $this")
+        logger.error("$this does not extend $stateMachine or $stateMachineFactory")
         return null
     }
 
+    val stateMachineClass = stateMachineType.rawType
     val stateParameter = stateMachineType.typeArguments[0]
     val actionParameter = stateMachineType.typeArguments[1].asLambdaParameter()
-    return stateParameter to actionParameter
+    return Triple(stateMachineClass, stateParameter, actionParameter)
 }
 
 private fun ClassName.extendsBaseRoute(resolver: Resolver): Boolean {

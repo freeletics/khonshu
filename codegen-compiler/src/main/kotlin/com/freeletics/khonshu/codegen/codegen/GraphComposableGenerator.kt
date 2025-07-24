@@ -7,12 +7,16 @@ import com.freeletics.khonshu.codegen.util.composable
 import com.freeletics.khonshu.codegen.util.launch
 import com.freeletics.khonshu.codegen.util.navHostParameter
 import com.freeletics.khonshu.codegen.util.optIn
+import com.freeletics.khonshu.codegen.util.produceStateMachine
 import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.remember
 import com.freeletics.khonshu.codegen.util.rememberCoroutineScope
+import com.freeletics.khonshu.codegen.util.stateMachine
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.PRIVATE
+import com.squareup.kotlinpoet.asClassName
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 internal val Generator<out BaseData>.composableName
     get() = "Khonshu${data.baseName}"
@@ -28,7 +32,15 @@ internal class GraphComposableGenerator(
     internal fun generate(): FunSpec {
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
-            .addAnnotation(optIn())
+            .addAnnotation(
+                if (data.stateMachineClass == stateMachine) {
+                    optIn()
+                } else {
+                    optIn(
+                        ExperimentalCoroutinesApi::class.asClassName(),
+                    )
+                },
+            )
             .addModifiers(PRIVATE)
             .addParameter("graph", graphClassName)
             .also {
@@ -47,22 +59,33 @@ internal class GraphComposableGenerator(
                     addStatement("val %L = %M { graph.%L }", parameter.name, remember, parameter.name)
                 }
             }
-            .addStatement("val stateMachine = %M { graph.%L }", remember, data.stateMachine.propertyName)
             .apply {
-                if (data.sendActionParameter != null) {
-                    addStatement("val scope = %M()", rememberCoroutineScope)
-                        .beginControlFlow(
-                            "val sendAction: %T = %M(stateMachine, scope)",
-                            data.sendActionParameter!!.typeName,
-                            remember,
-                        )
-                        .addStatement("{ scope.%M { stateMachine.dispatch(it) } }", launch)
-                        .endControlFlow()
+                if (data.stateMachineClass == stateMachine) {
+                    addStatement("val stateMachine = %M { graph.%L }", remember, data.stateMachine.propertyName)
+                    if (data.sendActionParameter != null) {
+                        addStatement("val scope = %M()", rememberCoroutineScope)
+                            .beginControlFlow(
+                                "val sendAction: %T = %M(stateMachine, scope)",
+                                data.sendActionParameter!!.typeName,
+                                remember,
+                            )
+                            .addStatement("{ scope.%M { stateMachine.dispatch(it) } }", launch)
+                            .endControlFlow()
+                    }
+                    addStatement("val state = stateMachine.%M()", asComposeState)
+                    addStatement("val currentState = state.value")
+                    beginControlFlow("if (currentState != null)")
+                } else {
+                    addStatement("val stateMachineFactory = %M { graph.%L }", remember, data.stateMachine.propertyName)
+                    addStatement("val stateMachine = stateMachineFactory.%M()", produceStateMachine)
+                    if (data.stateParameter != null) {
+                        addStatement("val currentState = stateMachine.state.value")
+                    }
+                    if (data.sendActionParameter != null) {
+                        addStatement("val sendAction = stateMachine.dispatchAction")
+                    }
                 }
             }
-            .addStatement("val state = stateMachine.%M()", asComposeState)
-            .addStatement("val currentState = state.value")
-            .beginControlFlow("if (currentState != null)")
             .addStatement("%L(", data.baseName)
             .apply {
                 data.composableParameter.forEach { parameter ->
@@ -83,7 +106,11 @@ internal class GraphComposableGenerator(
                 }
             }
             .addStatement(")")
-            .endControlFlow()
+            .apply {
+                if (data.stateMachineClass == stateMachine) {
+                    endControlFlow()
+                }
+            }
             .build()
     }
 }
