@@ -106,7 +106,7 @@ public fun NavHost(
 
     // Remember the movableContent functions from the individual entries so that we avoid blinking at the end of
     // the predictive back animations.
-    val entryComposables = remember { mutableMapOf<StackEntry.Id, @Composable () -> Unit>() }
+    val entryComposables = remember { mutableMapOf<StackEntry.Id, @Composable (Modifier) -> Unit>() }
     // build list of show-able entries that are visible in this composition
     val entries = snapshot.getShowableEntries(
         entryComposables,
@@ -150,7 +150,7 @@ private data class TransitionState(
 }
 
 private fun StackSnapshot.getShowableEntries(
-    entryComposables: MutableMap<StackEntry.Id, @Composable () -> Unit>,
+    entryComposables: MutableMap<StackEntry.Id, @Composable (Modifier) -> Unit>,
     showPreviousEntry: Boolean,
     inTransition: Modifier,
     outTransition: Modifier,
@@ -186,7 +186,7 @@ private fun StackSnapshot.getShowableEntries(
 private data class ShowableStackEntry<T : BaseRoute>(
     val entry: StackEntry<T>,
     val modifier: Modifier,
-    val content: @Composable () -> Unit,
+    val content: @Composable (Modifier) -> Unit,
 )
 
 @Composable
@@ -207,9 +207,7 @@ private fun <T : BaseRoute> Show(
     saveableCloseable.saveableStateHolderRef = WeakReference(saveableStateHolder)
 
     saveableStateHolder.SaveableStateProvider(entry.entry.id.value) {
-        Box(modifier = entry.modifier) {
-            entry.content()
-        }
+        entry.content(entry.modifier)
     }
 }
 
@@ -303,7 +301,7 @@ private fun systemBackHandling(snapshot: StackSnapshot, navigator: HostNavigator
                 backProgress.snapTo(backEvent.progress)
             }
             navigator.tryNavigateBack()
-        } catch (e: CancellationException) {
+        } catch (_: CancellationException) {
             backProgress.tryAnimateTo(0f)
         }
     }
