@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.dp
 import com.freeletics.khonshu.codegen.NavDestination
 import com.freeletics.khonshu.sample.feature.screen.nav.ScreenRoute
 
-@NavDestination(
-    route = ScreenRoute::class,
-    stateMachine = ScreenStateMachine::class,
-)
+// @NavDestination(
+//    route = ScreenRoute::class,
+//    stateMachine = ScreenStateMachine::class,
+// )
 @Composable
 fun ScreenScreen(
     state: ScreenState,
