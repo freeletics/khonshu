@@ -1,8 +1,10 @@
 package com.freeletics.khonshu.navigation.internal
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.movableContentOf
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.ContentDestination
@@ -39,8 +41,10 @@ public class StackEntry<T : BaseRoute> internal constructor(
             is NavRoot -> false
         }
 
-    internal fun content(snapshot: StackSnapshot): @Composable () -> Unit = movableContentOf {
-        destination.content(snapshot, this)
+    internal fun content(snapshot: StackSnapshot): @Composable (Modifier) -> Unit = movableContentOf<Modifier> {
+        Box(modifier = it) {
+            destination.content(snapshot, this@StackEntry)
+        }
     }
 
     internal fun close() {
