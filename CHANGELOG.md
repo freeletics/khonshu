@@ -1,7 +1,15 @@
 Change Log
 ==========
 
-## 0.31.0 *(2025-06-30)*
+## 0.31.1 *(2025-07-28)*
+
+### Navigation
+
+- Fix issue where `NavHost` would not draw the content of a destination until one
+  recomposition happened.
+
+
+## 0.31.0 *(2025-07-23)*
 
 ### Navigation
 
