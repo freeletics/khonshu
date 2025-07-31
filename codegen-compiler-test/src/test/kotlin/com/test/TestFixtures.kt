@@ -41,9 +41,7 @@ public class TestStateMachine : FooStateMachine<TestAction, TestState>() {
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-public class TestStateMachineFactory : FlowReduxStateMachineFactory<TestState, TestAction>({
-    throw UnsupportedOperationException("Not implemented")
-})
+public class TestStateMachineFactory : FlowReduxStateMachineFactory<TestState, TestAction>()
 
 public abstract class FooStateMachine<A : Any, S : Any> : StateMachine<S, A>
 
