@@ -124,9 +124,11 @@ internal class StackTest {
         val exception = assertThrows(IllegalStateException::class.java) {
             stack.push(FourthRoute(3))
         }
-        assertThat(exception).hasMessageThat().isEqualTo("Navigated to FourthRoute(number=3) with parent " +
-            "DestinationId(route=class com.freeletics.khonshu.navigation.test.SimpleRoute (Kotlin reflection is not " +
-            "available)) but did not find the parent on the current stack: SimpleRoot(number=1), FourthRoute(number=3)")
+        assertThat(exception).hasMessageThat().isEqualTo(
+            "Navigated to FourthRoute(number=3) with parent DestinationId(route=class " +
+                "com.freeletics.khonshu.navigation.test.SimpleRoute (Kotlin reflection is not available)) but " +
+                "did not find the parent on the current stack: SimpleRoot(number=1), FourthRoute(number=3)",
+        )
 
         assertThat(removed).isEmpty()
     }
