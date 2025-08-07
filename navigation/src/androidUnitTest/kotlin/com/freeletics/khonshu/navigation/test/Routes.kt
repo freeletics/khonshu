@@ -24,6 +24,10 @@ internal class ThirdRoute(val number: Int) : NavRoute, Parcelable
 
 @Poko
 @Parcelize
+internal class FourthRoute(val number: Int) : NavRoute, Parcelable
+
+@Poko
+@Parcelize
 internal class DeepLinkRoute(
     val pathParameters: Map<String, String>,
     val queryParameters: Map<String, String>,

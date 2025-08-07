@@ -28,7 +28,14 @@ internal class Stack private constructor(
     }
 
     fun push(route: NavRoute) {
-        stack.add(createEntry(route))
+        val entry = createEntry(route)
+        stack.add(entry)
+        if (entry.parentDesintationId != null) {
+            check(stack.any { it.destinationId == entry.parentDesintationId }) {
+                "Navigated to $route with parent ${entry.parentDesintationId} but did not find the parent on " +
+                    "the current stack: ${stack.joinToString(separator = ", ") { it.route.toString() }}"
+            }
+        }
     }
 
     fun pop() {

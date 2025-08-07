@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.navigation.internal
 
+import com.freeletics.khonshu.navigation.test.FourthRoute
 import com.freeletics.khonshu.navigation.test.OtherRoute
 import com.freeletics.khonshu.navigation.test.SimpleRoot
 import com.freeletics.khonshu.navigation.test.SimpleRoute
@@ -97,6 +98,35 @@ internal class StackTest {
                 factory.create(StackEntry.Id("101"), ThirdRoute(4)),
             )
             .inOrder()
+
+        assertThat(removed).isEmpty()
+    }
+
+    @Test
+    fun `push with a destination that has a parent`() {
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
+        stack.push(SimpleRoute(2))
+        stack.push(FourthRoute(3))
+
+        assertThat(stack.snapshot(stack.rootEntry).visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("102"), FourthRoute(3)),
+            )
+            .inOrder()
+
+        assertThat(removed).isEmpty()
+    }
+
+    @Test
+    fun `push with a destination that has a parent and parent isn't present in stack`() {
+        val stack = Stack.createWith(SimpleRoot(1), factory::create)
+
+        val exception = assertThrows(IllegalStateException::class.java) {
+            stack.push(FourthRoute(3))
+        }
+        assertThat(exception).hasMessageThat().isEqualTo("Navigated to FourthRoute(number=3) with parent " +
+            "DestinationId(route=class com.freeletics.khonshu.navigation.test.SimpleRoute (Kotlin reflection is not " +
+            "available)) but did not find the parent on the current stack: SimpleRoot(number=1), FourthRoute(number=3)")
 
         assertThat(removed).isEmpty()
     }
