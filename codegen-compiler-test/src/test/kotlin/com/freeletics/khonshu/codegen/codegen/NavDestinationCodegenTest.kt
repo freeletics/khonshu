@@ -187,7 +187,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideTestNavDestination(): NavDestination = ScreenDestination<TestRoute>(KhonshuTestGraphProvider) { snapshot, route ->
+              public fun provideTestNavDestination(): NavDestination = ScreenDestination<TestRoute, TestParentRoute>(KhonshuTestGraphProvider) { snapshot, route ->
                 KhonshuTest(snapshot, route)
               }
             }
@@ -508,7 +508,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideTestNavDestination(): NavDestination = OverlayDestination<TestOverlayRoute>(KhonshuTestGraphProvider) { snapshot, route ->
+              public fun provideTestNavDestination(): NavDestination = OverlayDestination<TestOverlayRoute, TestParentRoute>(KhonshuTestGraphProvider) { snapshot, route ->
                 KhonshuTest(snapshot, route)
               }
             }
@@ -708,7 +708,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideTest2NavDestination(): NavDestination = ScreenDestination<TestRoute>(KhonshuTest2GraphProvider) { snapshot, route ->
+              public fun provideTest2NavDestination(): NavDestination = ScreenDestination<TestRoute, TestParentRoute>(KhonshuTest2GraphProvider) { snapshot, route ->
                 KhonshuTest2(snapshot, route)
               }
             }
@@ -856,7 +856,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideTestNavDestination(): NavDestination = ScreenDestination<TestRoute>(KhonshuTestGraphProvider) { snapshot, route ->
+              public fun provideTestNavDestination(): NavDestination = ScreenDestination<TestRoute, TestParentRoute>(KhonshuTestGraphProvider) { snapshot, route ->
                 KhonshuTest(snapshot, route)
               }
             }
@@ -1011,7 +1011,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideTestNavDestination(): NavDestination = ScreenDestination<TestRoute>(KhonshuTestGraphProvider) { snapshot, route ->
+              public fun provideTestNavDestination(): NavDestination = ScreenDestination<TestRoute, TestParentRoute>(KhonshuTestGraphProvider) { snapshot, route ->
                 KhonshuTest(snapshot, route)
               }
             }
@@ -1162,7 +1162,7 @@ internal class NavDestinationCodegenTest {
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
-              public fun provideTestNavDestination(): NavDestination = ScreenDestination<TestRoute>(KhonshuTestGraphProvider) { snapshot, route ->
+              public fun provideTestNavDestination(): NavDestination = ScreenDestination<TestRoute, TestParentRoute>(KhonshuTestGraphProvider) { snapshot, route ->
                 KhonshuTest(snapshot, route)
               }
             }

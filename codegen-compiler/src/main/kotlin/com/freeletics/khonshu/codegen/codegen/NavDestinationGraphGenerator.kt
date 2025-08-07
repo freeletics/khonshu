@@ -37,9 +37,14 @@ internal class NavDestinationGraphGenerator(
         val navigation = data.navigation!!
         return CodeBlock.builder()
             .beginControlFlow(
-                "return %M<%T>(%T) { snapshot, route ->",
+                "return %M<%T%L>(%T) { snapshot, route ->",
                 navigation.destinationMethod,
                 navigation.route,
+                if (navigation.parentScopeIsRoute) {
+                    CodeBlock.builder().add(", %T", data.parentScope).build()
+                } else {
+                    ""
+                },
                 graphProviderClassName,
             )
             .addStatement("%L(snapshot, route)", composableName)

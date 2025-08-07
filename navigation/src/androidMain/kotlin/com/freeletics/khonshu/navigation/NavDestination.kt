@@ -13,6 +13,7 @@ public sealed interface NavDestination
 
 internal sealed class ContentDestination<T : BaseRoute> : NavDestination {
     internal abstract val id: DestinationId<T>
+    internal abstract val parent: DestinationId<*>?
     internal abstract val extra: Any?
     internal abstract val content: @Composable (StackSnapshot, StackEntry<T>) -> Unit
 }
@@ -25,18 +26,27 @@ internal sealed class ContentDestination<T : BaseRoute> : NavDestination {
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute> ScreenDestination(
     noinline content: @Composable (T) -> Unit,
-): NavDestination = ScreenDestination(DestinationId(T::class), null) { _, entry -> content(entry.route) }
+): NavDestination = ScreenDestination(DestinationId(T::class), null, null) { _, entry -> content(entry.route) }
 
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute> ScreenDestination(
     extra: Any,
     noinline content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
-): NavDestination = ScreenDestination(DestinationId(T::class), extra, content)
+): NavDestination = ScreenDestination(DestinationId(T::class), null, extra, content)
+
+@InternalNavigationCodegenApi
+@Suppress("FunctionName")
+@JvmName("ScreenWithParentDestination")
+public inline fun <reified T : BaseRoute, reified P : BaseRoute> ScreenDestination(
+    extra: Any,
+    noinline content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
+): NavDestination = ScreenDestination(DestinationId(T::class), DestinationId(P::class), extra, content)
 
 @PublishedApi
 internal class ScreenDestination<T : BaseRoute>(
     override val id: DestinationId<T>,
+    override val parent: DestinationId<*>?,
     override val extra: Any?,
     override val content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
 ) : ContentDestination<T>()
@@ -49,18 +59,27 @@ internal class ScreenDestination<T : BaseRoute>(
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> OverlayDestination(
     noinline content: @Composable (T) -> Unit,
-): NavDestination = OverlayDestination(DestinationId(T::class), null) { _, entry -> content(entry.route) }
+): NavDestination = OverlayDestination(DestinationId(T::class), null, null) { _, entry -> content(entry.route) }
 
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> OverlayDestination(
     extra: Any,
     noinline content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
-): NavDestination = OverlayDestination(DestinationId(T::class), extra, content)
+): NavDestination = OverlayDestination(DestinationId(T::class), null, extra, content)
+
+@InternalNavigationCodegenApi
+@Suppress("FunctionName")
+@JvmName("OverlayWithParentDestination")
+public inline fun <reified T : NavRoute, reified P : BaseRoute> OverlayDestination(
+    extra: Any,
+    noinline content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
+): NavDestination = OverlayDestination(DestinationId(T::class), DestinationId(P::class), extra, content)
 
 @PublishedApi
 internal class OverlayDestination<T : NavRoute>(
     override val id: DestinationId<T>,
+    override val parent: DestinationId<*>?,
     override val extra: Any?,
     override val content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
 ) : ContentDestination<T>()

@@ -29,6 +29,9 @@ public class StackEntry<T : BaseRoute> internal constructor(
     internal val isOverlay
         get() = destination is OverlayDestination<*>
 
+    internal val parentDesintationId: DestinationId<*>?
+        get() = destination.parent
+
     @InternalNavigationCodegenApi
     public val extra: Any?
         get() = destination.extra
