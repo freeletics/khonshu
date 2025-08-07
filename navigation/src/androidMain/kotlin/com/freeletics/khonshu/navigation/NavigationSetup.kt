@@ -133,9 +133,6 @@ internal inline fun <I, O, R> ContractResultOwner<I, O, R>.deliverResult(
     }
 }
 
-@Parcelize
-internal object InitialValue : Parcelable
-
 @InternalNavigationCodegenApi
 public val LocalHostNavigator: ProvidableCompositionLocal<HostNavigator> = staticCompositionLocalOf {
     throw IllegalStateException("Can't access HostNavigator outside of a NavHost")
