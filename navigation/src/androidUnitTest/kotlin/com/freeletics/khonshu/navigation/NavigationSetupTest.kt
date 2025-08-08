@@ -7,7 +7,9 @@ import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.lifecycle.testing.TestLifecycleOwner
 import app.cash.turbine.Turbine
 import app.cash.turbine.test
-import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
+import com.freeletics.khonshu.navigation.activity.ActivityResultContractRequest
+import com.freeletics.khonshu.navigation.activity.ActivityRoute
+import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest.PermissionResult
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestActivityNavigator
@@ -34,7 +36,7 @@ internal class NavigationSetupTest {
     private val activityLauncher = TestActivityResultLauncher()
     private val permissionRequest = navigator.testRegisterForPermissionResult()
     private val permissionLauncher = TestActivityResultLauncher()
-    private val launchers = mapOf<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>(
+    private val launchers = mapOf<ActivityResultContractRequest<*, *, *>, ActivityResultLauncher<*>>(
         activityRequest to activityLauncher,
         permissionRequest to permissionLauncher,
     )
@@ -128,7 +130,7 @@ internal class NavigationSetupTest {
         navigator.navigateForResult(activityRequest, "")
         val exception = assertThrows(IllegalStateException::class.java) {
             runBlocking {
-                val launchers = mapOf<ContractResultOwner<*, *, *>, ActivityResultLauncher<*>>(
+                val launchers = mapOf<ActivityResultContractRequest<*, *, *>, ActivityResultLauncher<*>>(
                     permissionRequest to permissionLauncher,
                 )
                 navigator.collectAndHandleActivityEvents(lifecyle, activityStarter, launchers)

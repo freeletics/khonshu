@@ -1,7 +1,9 @@
-package com.freeletics.khonshu.navigation
+package com.freeletics.khonshu.navigation.activity
 
 import androidx.activity.result.contract.ActivityResultContract
-import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
+import com.freeletics.khonshu.navigation.NavigationSetup
+import com.freeletics.khonshu.navigation.activity.ActivityNavigator
+import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest.PermissionResult
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.RequestPermissionsContract
 import dev.drewhamilton.poko.Poko
@@ -11,16 +13,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 
 @InternalNavigationTestingApi
-public sealed class ContractResultOwner<I, O, R> : ResultOwner<R> {
+public sealed class ActivityResultContractRequest<I, O, R> {
     internal abstract val contract: ActivityResultContract<I, O>
 
-    /**
-     * Emits any result passed to [onResult]. Results will only be delivered
-     * to one collector at a time.
-     */
     private val _results = Channel<R>(capacity = Channel.UNLIMITED)
 
-    override val results: Flow<R> = _results.receiveAsFlow()
+    /**
+     * Emits any result received by the [ActivityResultContract].
+     *
+     * Results will only be delivered to one collector at a time.
+     */
+    public val results: Flow<R> = _results.receiveAsFlow()
 
     /**
      * Deliver a new [result] to [results]. This method should be called by [NavigationSetup].
@@ -42,7 +45,7 @@ public sealed class ContractResultOwner<I, O, R> : ResultOwner<R> {
  */
 public class ActivityResultRequest<I, O> internal constructor(
     override val contract: ActivityResultContract<I, O>,
-) : ContractResultOwner<I, O, O>()
+) : ActivityResultContractRequest<I, O, O>()
 
 /**
  * Class returned from [ActivityNavigator.registerForPermissionsResult].
@@ -58,7 +61,7 @@ public class ActivityResultRequest<I, O> internal constructor(
  *  about the whether a permission rationale should be shown.
  */
 public class PermissionsResultRequest internal constructor() :
-    ContractResultOwner<List<String>, Map<String, Boolean>, Map<String, PermissionResult>>() {
+    ActivityResultContractRequest<List<String>, Map<String, Boolean>, Map<String, PermissionResult>>() {
         override val contract: RequestPermissionsContract = RequestPermissionsContract()
 
         /**

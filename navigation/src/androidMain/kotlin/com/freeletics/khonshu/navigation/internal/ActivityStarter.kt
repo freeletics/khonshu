@@ -2,11 +2,11 @@ package com.freeletics.khonshu.navigation.internal
 
 import android.content.ActivityNotFoundException
 import android.content.Context
-import com.freeletics.khonshu.navigation.ActivityRoute
-import com.freeletics.khonshu.navigation.InternalActivityRoute
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.Navigator
-import com.freeletics.khonshu.navigation.putRoute
+import com.freeletics.khonshu.navigation.activity.ActivityRoute
+import com.freeletics.khonshu.navigation.activity.InternalActivityRoute
+import com.freeletics.khonshu.navigation.activity.putRoute
 
 internal class ActivityStarter(
     private val context: Context,

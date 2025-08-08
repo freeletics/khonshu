@@ -1,7 +1,9 @@
 package com.freeletics.khonshu.navigation
 
 import android.os.Parcelable
-import com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult
+import com.freeletics.khonshu.navigation.activity.ActivityResultRequest
+import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest
+import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest.PermissionResult
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 
@@ -42,7 +44,7 @@ public fun PermissionsResultRequest.sendResult(result: Map<String, PermissionRes
  * logic.
  */
 public fun <R : Parcelable> NavigationResultRequest<R>.sendResult(result: R) {
-    savedStateHandle[key.requestKey] = result
+    savedStateHandle[key.requestKey] = NavigationResult(result)
 }
 
 /**

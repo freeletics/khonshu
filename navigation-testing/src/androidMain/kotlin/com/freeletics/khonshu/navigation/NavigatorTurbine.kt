@@ -4,6 +4,9 @@ import android.os.Parcelable
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import app.cash.turbine.testIn
+import com.freeletics.khonshu.navigation.activity.ActivityResultRequest
+import com.freeletics.khonshu.navigation.activity.ActivityRoute
+import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest
 import com.freeletics.khonshu.navigation.internal.ActivityEvent
 import com.google.common.truth.Truth
 import kotlin.reflect.KClass

@@ -1,8 +1,8 @@
 package com.freeletics.khonshu.sample.feature.dialog
 
-import com.freeletics.khonshu.navigation.ActivityNavigator
 import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.HostNavigator
+import com.freeletics.khonshu.navigation.activity.ActivityNavigator
 import com.freeletics.khonshu.sample.feature.dialog.nav.DialogRoute
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.ForScope

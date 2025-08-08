@@ -85,13 +85,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.ActivityNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
+            import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
             import dev.zacsweers.metro.ContributesGraphExtension
@@ -245,13 +245,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraph
-            import com.freeletics.khonshu.navigation.ActivityNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
+            import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import dev.zacsweers.metro.AppScope
             import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
@@ -406,13 +406,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.ActivityNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.OverlayDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
+            import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
             import dev.zacsweers.metro.ContributesGraphExtension
@@ -586,13 +586,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.ActivityNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
+            import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import com.test.destination.TestDestinationScope
             import com.test.other.TestClass2
             import com.test.parent.TestParentRoute
@@ -761,13 +761,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.ActivityNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
+            import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
             import dev.zacsweers.metro.ContributesGraphExtension
@@ -910,13 +910,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.ActivityNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
+            import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
             import dev.zacsweers.metro.ContributesGraphExtension
@@ -1066,13 +1066,13 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.LocalActivityGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.ActivityNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.NavigationSetup
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
+            import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
             import dev.zacsweers.metro.ContributesGraphExtension

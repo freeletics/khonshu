@@ -1,15 +1,14 @@
-package com.freeletics.khonshu.navigation
+package com.freeletics.khonshu.navigation.activity
 
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
-import com.freeletics.khonshu.navigation.internal.ActivityEvent.NavigateForResult
-import com.freeletics.khonshu.navigation.internal.ActivityEvent.NavigateTo
+import com.freeletics.khonshu.navigation.internal.ActivityEvent
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestActivityNavigator
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertThrows
+import org.junit.Assert
 import org.junit.Test
 
 internal class ActivityNavigatorTest {
@@ -20,7 +19,8 @@ internal class ActivityNavigatorTest {
         navigator.activityEvents.test {
             navigator.navigateTo(SimpleActivity(1), SimpleRoute(2))
 
-            assertThat(awaitItem()).isEqualTo(NavigateTo(SimpleActivity(1), SimpleRoute(2)))
+            Truth.assertThat(awaitItem())
+                .isEqualTo(ActivityEvent.NavigateTo(SimpleActivity(1), SimpleRoute(2)))
 
             cancel()
         }
@@ -31,10 +31,12 @@ internal class ActivityNavigatorTest {
         val navigator = TestActivityNavigator()
 
         navigator.activityEvents.test {
-            val launcher = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
+            val launcher =
+                navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
             navigator.navigateForResult(launcher, "image/*")
 
-            assertThat(awaitItem()).isEqualTo(NavigateForResult(launcher, "image/*"))
+            Truth.assertThat(awaitItem())
+                .isEqualTo(ActivityEvent.NavigateForResult(launcher, "image/*"))
 
             cancel()
         }
@@ -49,7 +51,8 @@ internal class ActivityNavigatorTest {
             val permission = "android.permission.READ_CALENDAR"
             navigator.requestPermissions(launcher, permission)
 
-            assertThat(awaitItem()).isEqualTo(NavigateForResult(launcher, listOf(permission)))
+            Truth.assertThat(awaitItem())
+                .isEqualTo(ActivityEvent.NavigateForResult(launcher, listOf(permission)))
 
             cancel()
         }
@@ -61,10 +64,10 @@ internal class ActivityNavigatorTest {
 
         navigator.activityResultRequests
 
-        val exception = assertThrows(IllegalStateException::class.java) {
+        val exception = Assert.assertThrows(IllegalStateException::class.java) {
             navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
         }
-        assertThat(exception).hasMessageThat().isEqualTo(
+        Truth.assertThat(exception).hasMessageThat().isEqualTo(
             "Failed to register for result! You must call this before NavigationSetup is called with this navigator.",
         )
     }
@@ -75,10 +78,10 @@ internal class ActivityNavigatorTest {
 
         navigator.activityResultRequests
 
-        val exception = assertThrows(IllegalStateException::class.java) {
+        val exception = Assert.assertThrows(IllegalStateException::class.java) {
             navigator.testRegisterForPermissionResult()
         }
-        assertThat(exception).hasMessageThat().isEqualTo(
+        Truth.assertThat(exception).hasMessageThat().isEqualTo(
             "Failed to register for result! You must call this before NavigationSetup is called with this navigator.",
         )
     }
