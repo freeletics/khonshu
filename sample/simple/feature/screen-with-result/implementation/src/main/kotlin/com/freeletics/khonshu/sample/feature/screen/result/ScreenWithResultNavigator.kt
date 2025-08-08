@@ -1,8 +1,8 @@
 package com.freeletics.khonshu.sample.feature.screen.result
 
-import com.freeletics.khonshu.navigation.ActivityNavigator
 import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.HostNavigator
+import com.freeletics.khonshu.navigation.activity.ActivityNavigator
 import com.freeletics.khonshu.sample.feature.screen.result.nav.Result
 import com.freeletics.khonshu.sample.feature.screen.result.nav.ScreenWithResultRoute
 import dev.zacsweers.metro.ContributesBinding
