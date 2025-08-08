@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+## 0.31.2 *(2025-08-08)*
+
+### Navigation
+
+- Throw exception when navigating to a destination with a parent declared in `@NavDestination`
+  that is not present in the current back stack. This avoids a later exception in the `NavHost`
+  which is harder to debug because of not knowing how the back stack got into this state.
+
+
 ## 0.31.1 *(2025-07-28)*
 
 ### Navigation
