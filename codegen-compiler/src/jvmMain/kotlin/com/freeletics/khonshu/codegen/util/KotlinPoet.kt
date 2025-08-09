@@ -17,6 +17,7 @@ import dev.zacsweers.metro.ForScope
 import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.IntoSet
 import dev.zacsweers.metro.Multibinds
+import dev.zacsweers.metro.OptionalBinding
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
@@ -98,6 +99,10 @@ internal fun forScope(scope: ClassName): AnnotationSpec {
     return AnnotationSpec.builder(ForScope::class)
         .addMember("%T::class", scope)
         .build()
+}
+
+internal fun optionalBinding(): AnnotationSpec {
+    return AnnotationSpec.builder(OptionalBinding::class).build()
 }
 
 internal fun optIn(): AnnotationSpec {

@@ -14,7 +14,7 @@ import dev.zacsweers.metro.binding
 @Inject
 @ForScope(ScreenWithResultRoute::class)
 @SingleIn(ScreenWithResultRoute::class)
-@ContributesBinding(ScreenWithResultRoute::class, binding<DestinationNavigator>())
+@ContributesBinding(ScreenWithResultRoute::class, binding<DestinationNavigator?>())
 class ScreenWithResultNavigator(
     hostNavigator: HostNavigator,
     private val route: ScreenWithResultRoute,

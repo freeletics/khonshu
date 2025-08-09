@@ -12,5 +12,5 @@ import dev.zacsweers.metro.binding
 @Inject
 @ForScope(DialogRoute::class)
 @SingleIn(DialogRoute::class)
-@ContributesBinding(DialogRoute::class, binding<DestinationNavigator>())
+@ContributesBinding(DialogRoute::class, binding<DestinationNavigator?>())
 class DialogNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator)

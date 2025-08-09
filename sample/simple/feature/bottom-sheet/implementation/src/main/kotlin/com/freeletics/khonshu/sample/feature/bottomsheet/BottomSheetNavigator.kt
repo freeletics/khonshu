@@ -12,5 +12,5 @@ import dev.zacsweers.metro.binding
 @Inject
 @ForScope(BottomSheetRoute::class)
 @SingleIn(BottomSheetRoute::class)
-@ContributesBinding(BottomSheetRoute::class, binding<DestinationNavigator>())
+@ContributesBinding(BottomSheetRoute::class, binding<DestinationNavigator?>())
 class BottomSheetNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator)

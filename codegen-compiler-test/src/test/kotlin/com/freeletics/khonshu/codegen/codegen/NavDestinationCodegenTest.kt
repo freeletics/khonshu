@@ -112,7 +112,7 @@ internal class NavDestinationCodegenTest {
               public val testStateMachine: TestStateMachine
 
               @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator?
 
               @ForScope(TestRoute::class)
               public val closeables: Set<AutoCloseable>
@@ -154,7 +154,10 @@ internal class NavDestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              val navigator = graph.destinationNavigator
+              if (navigator != null) {
+                ActivityNavigatorEffect(navigator)
+              }
 
               KhonshuTest(graph)
             }
@@ -267,7 +270,7 @@ internal class NavDestinationCodegenTest {
               public val testStateMachine: TestStateMachine
 
               @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator?
 
               @ForScope(TestRoute::class)
               public val closeables: Set<AutoCloseable>
@@ -309,7 +312,10 @@ internal class NavDestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              val navigator = graph.destinationNavigator
+              if (navigator != null) {
+                ActivityNavigatorEffect(navigator)
+              }
 
               KhonshuTest(graph)
             }
@@ -425,7 +431,7 @@ internal class NavDestinationCodegenTest {
               public val testStateMachine: TestStateMachine
 
               @ForScope(TestOverlayRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator?
 
               @ForScope(TestOverlayRoute::class)
               public val closeables: Set<AutoCloseable>
@@ -467,7 +473,10 @@ internal class NavDestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              val navigator = graph.destinationNavigator
+              if (navigator != null) {
+                ActivityNavigatorEffect(navigator)
+              }
 
               KhonshuTest(graph)
             }
@@ -605,7 +614,7 @@ internal class NavDestinationCodegenTest {
               public val testStateMachine: TestStateMachine
 
               @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator?
 
               public val testClass: TestClass
 
@@ -655,7 +664,10 @@ internal class NavDestinationCodegenTest {
                 KhonshuTest2GraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              val navigator = graph.destinationNavigator
+              if (navigator != null) {
+                ActivityNavigatorEffect(navigator)
+              }
 
               KhonshuTest2(graph)
             }
@@ -770,7 +782,7 @@ internal class NavDestinationCodegenTest {
               public val testStateMachine: TestStateMachine
 
               @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator?
 
               @ForScope(TestRoute::class)
               public val closeables: Set<AutoCloseable>
@@ -812,7 +824,10 @@ internal class NavDestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              val navigator = graph.destinationNavigator
+              if (navigator != null) {
+                ActivityNavigatorEffect(navigator)
+              }
 
               KhonshuTest(graph)
             }
@@ -917,7 +932,7 @@ internal class NavDestinationCodegenTest {
               public val testStateMachine: TestStateMachine
 
               @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator?
 
               @ForScope(TestRoute::class)
               public val closeables: Set<AutoCloseable>
@@ -959,7 +974,10 @@ internal class NavDestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              val navigator = graph.destinationNavigator
+              if (navigator != null) {
+                ActivityNavigatorEffect(navigator)
+              }
 
               KhonshuTest(graph)
             }
@@ -1068,7 +1086,7 @@ internal class NavDestinationCodegenTest {
               public val testStateMachineFactory: TestStateMachineFactory
 
               @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator?
 
               @ForScope(TestRoute::class)
               public val closeables: Set<AutoCloseable>
@@ -1110,7 +1128,10 @@ internal class NavDestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              val navigator = graph.destinationNavigator
+              if (navigator != null) {
+                ActivityNavigatorEffect(navigator)
+              }
 
               KhonshuTest(graph)
             }

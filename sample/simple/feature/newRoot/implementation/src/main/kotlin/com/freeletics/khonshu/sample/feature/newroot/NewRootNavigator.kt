@@ -16,7 +16,7 @@ import dev.zacsweers.metro.binding
 @Inject
 @ForScope(NewRootRoute::class)
 @SingleIn(NewRootRoute::class)
-@ContributesBinding(NewRootRoute::class, binding<DestinationNavigator>())
+@ContributesBinding(NewRootRoute::class, binding<DestinationNavigator?>())
 class NewRootNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
     fun navigateToScreen() {
         navigateTo(ScreenRoute(100))

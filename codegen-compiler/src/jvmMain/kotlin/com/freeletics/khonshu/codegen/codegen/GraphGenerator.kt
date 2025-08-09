@@ -13,6 +13,7 @@ import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
 import com.freeletics.khonshu.codegen.util.multibinds
 import com.freeletics.khonshu.codegen.util.optIn
+import com.freeletics.khonshu.codegen.util.optionalBinding
 import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
@@ -57,8 +58,11 @@ internal class GraphGenerator(
         if (data is NavHostActivityData) {
             properties += simplePropertySpec(hostNavigator)
         } else {
-            properties += simplePropertySpec(destinationNavigator).toBuilder()
+            properties += simplePropertySpec(destinationNavigator)
+                .toBuilder(type = destinationNavigator.copy(nullable = true))
                 .addAnnotation(forScope(data.scope))
+                .addAnnotation(optionalBinding())
+                .getter(FunSpec.getterBuilder().addStatement("return null").build())
                 .build()
         }
 
