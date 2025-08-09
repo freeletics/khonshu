@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.TaskStackBuilder
-import com.eygraber.uri.toKmpUri
+import androidx.core.content.IntentCompat
 import com.freeletics.khonshu.navigation.BaseRoute
 
 /**
@@ -57,18 +57,6 @@ private fun defaultFlag(): Int {
     }
 }
 
-internal fun Intent.extractDeepLinkRoutes(
-    deepLinkHandlers: Set<DeepLinkHandler>,
-    deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
-): List<BaseRoute> {
-    if (hasExtra(EXTRA_DEEPLINK_ROUTES)) {
-        @Suppress("DEPRECATION")
-        return getParcelableArrayListExtra(EXTRA_DEEPLINK_ROUTES)!!
-    }
-    val uri = data
-    if (uri != null) {
-        val deepLink = deepLinkHandlers.createDeepLinkIfMatching(uri.toKmpUri(), deepLinkPrefixes)
-        return deepLink?.routes ?: emptyList()
-    }
-    return emptyList()
+internal fun Intent.extractDeepLinkRoutes(): List<BaseRoute>? {
+    return IntentCompat.getParcelableArrayListExtra(this, EXTRA_DEEPLINK_ROUTES, BaseRoute::class.java)
 }

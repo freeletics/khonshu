@@ -1,11 +1,9 @@
 package com.freeletics.khonshu.navigation
 
-import android.content.Intent
 import androidx.compose.runtime.State
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Turbine
 import app.cash.turbine.plusAssign
-import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
@@ -13,14 +11,11 @@ import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
-import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.parcelize.Parcelize
 
-public class TestHostNavigator(
-    public var handleDeepLinkRoute: NavRoute? = null,
-) : HostNavigator() {
+public class TestHostNavigator() : HostNavigator() {
     @InternalNavigationCodegenApi
     private val fakeEntry = StackEntry.create(StackEntry.Id(""), DummyRoute)
 
@@ -36,22 +31,6 @@ public class TestHostNavigator(
     @InternalNavigationTestingApi
     override val snapshot: State<StackSnapshot>
         get() = throw UnsupportedOperationException()
-
-    /**
-     * The fake implementation will call [navigateTo] with [handleDeepLinkRoute] if
-     * the latter is not `null`. Otherwise it will just return false.
-     */
-    override fun handleDeepLink(
-        intent: Intent,
-        deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
-        deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
-    ): Boolean {
-        handleDeepLinkRoute?.let {
-            navigateTo(it)
-            return true
-        }
-        return false
-    }
 
     override fun navigate(block: Navigator.() -> Unit) {
         eventTurbine += TestHostNavigator().apply(block).eventTurbine.asChannel().toTestEvent()

@@ -16,7 +16,6 @@ public abstract class com/freeletics/khonshu/navigation/DestinationNavigator : c
 
 public abstract class com/freeletics/khonshu/navigation/HostNavigator : com/freeletics/khonshu/navigation/Navigator {
 	public static final field $stable I
-	public abstract fun handleDeepLink (Landroid/content/Intent;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)Z
 	public abstract fun navigate (Lkotlin/jvm/functions/Function1;)V
 }
 
@@ -148,13 +147,6 @@ public final class com/freeletics/khonshu/navigation/activity/PermissionsResultR
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/freeletics/khonshu/navigation/deeplinks/AndroidDeepLinkExtensionsKt {
-	public static final fun buildIntent (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;)Landroid/content/Intent;
-	public static final fun buildPendingIntent (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;I)Landroid/app/PendingIntent;
-	public static synthetic fun buildPendingIntent$default (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;IILjava/lang/Object;)Landroid/app/PendingIntent;
-	public static final fun buildTaskStack (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;)Landroidx/core/app/TaskStackBuilder;
-}
-
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLink {
 	public static final field $stable I
 	public fun equals (Ljava/lang/Object;)Z
@@ -193,6 +185,35 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkKt {
 	public static final fun DeepLink (Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
 	public static synthetic fun DeepLink$default (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
 	public static synthetic fun DeepLink$default (Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
+}
+
+public final class com/freeletics/khonshu/navigation/deeplinks/DeepLink_androidKt {
+	public static final fun buildIntent (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;)Landroid/content/Intent;
+	public static final fun buildPendingIntent (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;I)Landroid/app/PendingIntent;
+	public static synthetic fun buildPendingIntent$default (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;IILjava/lang/Object;)Landroid/app/PendingIntent;
+	public static final fun buildTaskStack (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;)Landroidx/core/app/TaskStackBuilder;
+}
+
+public final class com/freeletics/khonshu/navigation/deeplinks/HandleDeeplinkKt {
+	public static final fun handleDeepLink (Lcom/freeletics/khonshu/navigation/HostNavigator;Lcom/freeletics/khonshu/navigation/deeplinks/LaunchInfo;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)Z
+}
+
+public final class com/freeletics/khonshu/navigation/deeplinks/HandleDeeplink_androidKt {
+	public static final fun handleDeepLink (Lcom/freeletics/khonshu/navigation/HostNavigator;Landroid/content/Intent;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)Z
+}
+
+public final class com/freeletics/khonshu/navigation/deeplinks/LaunchInfo {
+	public static final field $stable I
+	public fun <init> (Ljava/util/List;Lcom/eygraber/uri/Uri;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRoutes ()Ljava/util/List;
+	public final fun getUri ()Lcom/eygraber/uri/Uri;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/freeletics/khonshu/navigation/deeplinks/LaunchInfo_androidKt {
+	public static final fun asLaunchInfo (Landroid/content/Intent;)Lcom/freeletics/khonshu/navigation/deeplinks/LaunchInfo;
 }
 
 public final class com/freeletics/khonshu/navigation/internal/ComposableSingletons$StackEntryKt {

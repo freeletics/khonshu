@@ -24,7 +24,7 @@ internal class MultiStack(
         get() = snapshotState
 
     val startRoot
-        get() = startStack.rootEntry.route as NavRoot
+        get() = startStack.rootEntry.route
 
     private fun getBackStack(root: NavRoot): Stack? {
         return allStacks.find { it.id == root.destinationId }

@@ -2,6 +2,7 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.activityGraphProvider
+import com.freeletics.khonshu.codegen.util.asLaunchInfo
 import com.freeletics.khonshu.codegen.util.componentActivity
 import com.freeletics.khonshu.codegen.util.getGraph
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
@@ -67,8 +68,9 @@ internal class ActivityGraphProviderGenerator(
                 multiStackHostNavigatorViewModel,
             )
             .addStatement(
-                "factory.%L(viewModel, savedStateHandle, activity.intent)",
+                "factory.%L(viewModel, savedStateHandle, activity.intent.%M())",
                 graphFactoryCreateFunctionName,
+                asLaunchInfo,
             )
             .endControlFlow()
             .build()

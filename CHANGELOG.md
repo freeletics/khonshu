@@ -10,6 +10,9 @@ Change Log
 - Moved `com.freeletics.khonshu.navigation.ResultNavigator.Companion.registerForNavigationResult`
   to `com.freeletics.khonshu.navigation.registerForNavigationResult`.
 - `deliverNavigationResult` is now an extension function and needs to be imported.
+- `HostNavigator.handleDeepLink` is now an extension function and needs to be imported.
+- Added `LaunchInfo` and `Intent.asLaunchInfo()` as abstraction around `Intent` to make
+  testing easier and added an overload of `handleDeepLink` for it.
 - Removed `backPresses` and the testing related APIs. Use `PredictiveBackHandler`,
   `BackHandler` or the `navigation-events` APIs instead.
 - Improve reliability of navigation result APIs by ensuring that results
@@ -18,6 +21,7 @@ Change Log
 
 ### Codegen
 
+- `@NavHostActivity` now provides `LaunchInfo` instead of `Intent` into the graph.
 - Optimize performance by avoiding unneeded lookups of classes.
 - Fix an error that occurred for classed referenced in the codegen annotations which have a package name
   where one of the segments contains a soft Kotlin keyword.

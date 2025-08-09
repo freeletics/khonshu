@@ -33,7 +33,7 @@ internal class MultiStackTest {
             startStack = startStack,
             currentStack = startStack,
             createEntry = factory::create,
-            inputRoot = startStack.rootEntry.route as NavRoot,
+            inputRoot = startStack.rootEntry.route,
         )
     }
 
