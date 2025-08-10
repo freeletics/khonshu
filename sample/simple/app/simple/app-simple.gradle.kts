@@ -10,6 +10,7 @@ freeletics {
 dependencies {
     commonMainImplementation(libs.androidx.lifecycle.viewmodel.savedstate)
     commonMainImplementation(libs.khonshu.navigation)
+    commonMainImplementation(libs.khonshu.codegen.runtime)
     commonMainImplementation(projects.feature.bottomSheet.implementation)
     commonMainImplementation(projects.feature.bottomSheet.nav)
     commonMainImplementation(projects.feature.dialog.implementation)
