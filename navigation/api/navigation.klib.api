@@ -1,0 +1,206 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <khonshu:navigation>
+open annotation class com.freeletics.khonshu.navigation.internal/InternalNavigationApi : kotlin/Annotation { // com.freeletics.khonshu.navigation.internal/InternalNavigationApi|null[0]
+    constructor <init>() // com.freeletics.khonshu.navigation.internal/InternalNavigationApi.<init>|<init>(){}[0]
+}
+
+open annotation class com.freeletics.khonshu.navigation.internal/InternalNavigationCodegenApi : kotlin/Annotation { // com.freeletics.khonshu.navigation.internal/InternalNavigationCodegenApi|null[0]
+    constructor <init>() // com.freeletics.khonshu.navigation.internal/InternalNavigationCodegenApi.<init>|<init>(){}[0]
+}
+
+open annotation class com.freeletics.khonshu.navigation.internal/InternalNavigationTestingApi : kotlin/Annotation { // com.freeletics.khonshu.navigation.internal/InternalNavigationTestingApi|null[0]
+    constructor <init>() // com.freeletics.khonshu.navigation.internal/InternalNavigationTestingApi.<init>|<init>(){}[0]
+}
+
+abstract interface com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler { // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler|null[0]
+    abstract val patterns // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.patterns|{}patterns[0]
+        abstract fun <get-patterns>(): kotlin.collections/Set<com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Pattern> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.patterns.<get-patterns>|<get-patterns>(){}[0]
+    open val prefixes // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.prefixes|{}prefixes[0]
+        open fun <get-prefixes>(): kotlin.collections/Set<com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.prefixes.<get-prefixes>|<get-prefixes>(){}[0]
+
+    abstract fun deepLink(kotlin.collections/Map<kotlin/String, kotlin/String>, kotlin.collections/Map<kotlin/String, kotlin/String>): com.freeletics.khonshu.navigation.deeplinks/DeepLink // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.deepLink|deepLink(kotlin.collections.Map<kotlin.String,kotlin.String>;kotlin.collections.Map<kotlin.String,kotlin.String>){}[0]
+
+    final class Pattern { // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Pattern|null[0]
+        constructor <init>(kotlin/String) // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Pattern.<init>|<init>(kotlin.String){}[0]
+
+        final fun copy(kotlin/String = ...): com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Pattern // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Pattern.copy|copy(kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Pattern.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Pattern.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Pattern.toString|toString(){}[0]
+    }
+
+    final class Prefix { // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix|null[0]
+        constructor <init>(kotlin/String) // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix.<init>|<init>(kotlin.String){}[0]
+
+        final fun copy(kotlin/String = ...): com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix.copy|copy(kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix.toString|toString(){}[0]
+    }
+}
+
+abstract interface com.freeletics.khonshu.navigation/NavRoot : com.freeletics.khonshu.navigation/BaseRoute // com.freeletics.khonshu.navigation/NavRoot|null[0]
+
+abstract interface com.freeletics.khonshu.navigation/NavRoute : com.freeletics.khonshu.navigation/BaseRoute // com.freeletics.khonshu.navigation/NavRoute|null[0]
+
+abstract interface com.freeletics.khonshu.navigation/Navigator { // com.freeletics.khonshu.navigation/Navigator|null[0]
+    abstract fun <#A1: com.freeletics.khonshu.navigation/BaseRoute> navigateBackTo(kotlin.reflect/KClass<#A1>, kotlin/Boolean = ...) // com.freeletics.khonshu.navigation/Navigator.navigateBackTo|navigateBackTo(kotlin.reflect.KClass<0:0>;kotlin.Boolean){0§<com.freeletics.khonshu.navigation.BaseRoute>}[0]
+    abstract fun navigateBack() // com.freeletics.khonshu.navigation/Navigator.navigateBack|navigateBack(){}[0]
+    abstract fun navigateTo(com.freeletics.khonshu.navigation/NavRoute) // com.freeletics.khonshu.navigation/Navigator.navigateTo|navigateTo(com.freeletics.khonshu.navigation.NavRoute){}[0]
+    abstract fun navigateUp() // com.freeletics.khonshu.navigation/Navigator.navigateUp|navigateUp(){}[0]
+    abstract fun replaceAllBackStacks(com.freeletics.khonshu.navigation/NavRoot) // com.freeletics.khonshu.navigation/Navigator.replaceAllBackStacks|replaceAllBackStacks(com.freeletics.khonshu.navigation.NavRoot){}[0]
+    abstract fun showRoot(com.freeletics.khonshu.navigation/NavRoot) // com.freeletics.khonshu.navigation/Navigator.showRoot|showRoot(com.freeletics.khonshu.navigation.NavRoot){}[0]
+    abstract fun switchBackStack(com.freeletics.khonshu.navigation/NavRoot) // com.freeletics.khonshu.navigation/Navigator.switchBackStack|switchBackStack(com.freeletics.khonshu.navigation.NavRoot){}[0]
+
+    final object Companion { // com.freeletics.khonshu.navigation/Navigator.Companion|null[0]
+        final inline fun <#A2: reified com.freeletics.khonshu.navigation/NavRoute> (com.freeletics.khonshu.navigation/Navigator).navigateBackTo(kotlin/Boolean = ...) // com.freeletics.khonshu.navigation/Navigator.Companion.navigateBackTo|navigateBackTo@com.freeletics.khonshu.navigation.Navigator(kotlin.Boolean){0§<com.freeletics.khonshu.navigation.NavRoute>}[0]
+    }
+}
+
+sealed interface com.freeletics.khonshu.navigation/BaseRoute // com.freeletics.khonshu.navigation/BaseRoute|null[0]
+
+abstract class com.freeletics.khonshu.navigation/DestinationNavigator : com.freeletics.khonshu.navigation/Navigator, com.freeletics.khonshu.navigation/PlatformNavigator { // com.freeletics.khonshu.navigation/DestinationNavigator|null[0]
+    constructor <init>(com.freeletics.khonshu.navigation/HostNavigator) // com.freeletics.khonshu.navigation/DestinationNavigator.<init>|<init>(com.freeletics.khonshu.navigation.HostNavigator){}[0]
+
+    final fun navigate(kotlin/Function1<com.freeletics.khonshu.navigation/Navigator, kotlin/Unit>) // com.freeletics.khonshu.navigation/DestinationNavigator.navigate|navigate(kotlin.Function1<com.freeletics.khonshu.navigation.Navigator,kotlin.Unit>){}[0]
+    open fun <#A1: com.freeletics.khonshu.navigation/BaseRoute> navigateBackTo(kotlin.reflect/KClass<#A1>, kotlin/Boolean) // com.freeletics.khonshu.navigation/DestinationNavigator.navigateBackTo|navigateBackTo(kotlin.reflect.KClass<0:0>;kotlin.Boolean){0§<com.freeletics.khonshu.navigation.BaseRoute>}[0]
+    open fun navigateBack() // com.freeletics.khonshu.navigation/DestinationNavigator.navigateBack|navigateBack(){}[0]
+    open fun navigateTo(com.freeletics.khonshu.navigation/NavRoute) // com.freeletics.khonshu.navigation/DestinationNavigator.navigateTo|navigateTo(com.freeletics.khonshu.navigation.NavRoute){}[0]
+    open fun navigateUp() // com.freeletics.khonshu.navigation/DestinationNavigator.navigateUp|navigateUp(){}[0]
+    open fun replaceAllBackStacks(com.freeletics.khonshu.navigation/NavRoot) // com.freeletics.khonshu.navigation/DestinationNavigator.replaceAllBackStacks|replaceAllBackStacks(com.freeletics.khonshu.navigation.NavRoot){}[0]
+    open fun showRoot(com.freeletics.khonshu.navigation/NavRoot) // com.freeletics.khonshu.navigation/DestinationNavigator.showRoot|showRoot(com.freeletics.khonshu.navigation.NavRoot){}[0]
+    open fun switchBackStack(com.freeletics.khonshu.navigation/NavRoot) // com.freeletics.khonshu.navigation/DestinationNavigator.switchBackStack|switchBackStack(com.freeletics.khonshu.navigation.NavRoot){}[0]
+}
+
+abstract class com.freeletics.khonshu.navigation/HostNavigator : com.freeletics.khonshu.navigation/Navigator { // com.freeletics.khonshu.navigation/HostNavigator|null[0]
+    abstract fun navigate(kotlin/Function1<com.freeletics.khonshu.navigation/Navigator, kotlin/Unit>) // com.freeletics.khonshu.navigation/HostNavigator.navigate|navigate(kotlin.Function1<com.freeletics.khonshu.navigation.Navigator,kotlin.Unit>){}[0]
+}
+
+abstract class com.freeletics.khonshu.navigation/PlatformNavigator { // com.freeletics.khonshu.navigation/PlatformNavigator|null[0]
+    constructor <init>() // com.freeletics.khonshu.navigation/PlatformNavigator.<init>|<init>(){}[0]
+}
+
+final class <#A: com.freeletics.khonshu.navigation/BaseRoute> com.freeletics.khonshu.navigation/ScreenDestination : com.freeletics.khonshu.navigation/NavDestination<#A> { // com.freeletics.khonshu.navigation/ScreenDestination|null[0]
+    constructor <init>(com.freeletics.khonshu.navigation.internal/DestinationId<#A>, kotlinx.serialization/KSerializer<#A>, com.freeletics.khonshu.navigation.internal/DestinationId<*>?, kotlin/Any?, kotlin/Function4<com.freeletics.khonshu.navigation.internal/StackSnapshot, com.freeletics.khonshu.navigation.internal/StackEntry<#A>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>) // com.freeletics.khonshu.navigation/ScreenDestination.<init>|<init>(com.freeletics.khonshu.navigation.internal.DestinationId<1:0>;kotlinx.serialization.KSerializer<1:0>;com.freeletics.khonshu.navigation.internal.DestinationId<*>?;kotlin.Any?;kotlin.Function4<com.freeletics.khonshu.navigation.internal.StackSnapshot,com.freeletics.khonshu.navigation.internal.StackEntry<1:0>,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){}[0]
+}
+
+final class <#A: com.freeletics.khonshu.navigation/NavRoute> com.freeletics.khonshu.navigation/OverlayDestination : com.freeletics.khonshu.navigation/NavDestination<#A> { // com.freeletics.khonshu.navigation/OverlayDestination|null[0]
+    constructor <init>(com.freeletics.khonshu.navigation.internal/DestinationId<#A>, kotlinx.serialization/KSerializer<#A>, com.freeletics.khonshu.navigation.internal/DestinationId<*>?, kotlin/Any?, kotlin/Function4<com.freeletics.khonshu.navigation.internal/StackSnapshot, com.freeletics.khonshu.navigation.internal/StackEntry<#A>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>) // com.freeletics.khonshu.navigation/OverlayDestination.<init>|<init>(com.freeletics.khonshu.navigation.internal.DestinationId<1:0>;kotlinx.serialization.KSerializer<1:0>;com.freeletics.khonshu.navigation.internal.DestinationId<*>?;kotlin.Any?;kotlin.Function4<com.freeletics.khonshu.navigation.internal.StackSnapshot,com.freeletics.khonshu.navigation.internal.StackEntry<1:0>,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){}[0]
+}
+
+final class <#A: kotlin/Any?> com.freeletics.khonshu.navigation/NavigationResultRequest { // com.freeletics.khonshu.navigation/NavigationResultRequest|null[0]
+    final val key // com.freeletics.khonshu.navigation/NavigationResultRequest.key|{}key[0]
+        final fun <get-key>(): com.freeletics.khonshu.navigation/NavigationResultRequest.Key<#A> // com.freeletics.khonshu.navigation/NavigationResultRequest.key.<get-key>|<get-key>(){}[0]
+    final val results // com.freeletics.khonshu.navigation/NavigationResultRequest.results|{}results[0]
+        final fun <get-results>(): kotlinx.coroutines.flow/Flow<#A> // com.freeletics.khonshu.navigation/NavigationResultRequest.results.<get-results>|<get-results>(){}[0]
+
+    final class <#A1: kotlin/Any?> Key { // com.freeletics.khonshu.navigation/NavigationResultRequest.Key|null[0]
+        final val stackEntryId // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.stackEntryId|{}stackEntryId[0]
+            final fun <get-stackEntryId>(): com.freeletics.khonshu.navigation.internal/StackEntry.Id // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.stackEntryId.<get-stackEntryId>|<get-stackEntryId>(){}[0]
+
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.toString|toString(){}[0]
+
+        final class <#A2: kotlin/Any?> $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.freeletics.khonshu.navigation/NavigationResultRequest.Key<#A2>> { // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.$serializer|null[0]
+            constructor <init>(kotlinx.serialization/KSerializer<#A2>) // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.$serializer.<init>|<init>(kotlinx.serialization.KSerializer<1:0>){}[0]
+
+            final val descriptor // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.$serializer.descriptor|{}descriptor[0]
+                final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+            final val typeSerial0 // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.$serializer.typeSerial0|{}typeSerial0[0]
+
+            final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.$serializer.childSerializers|childSerializers(){}[0]
+            final fun deserialize(kotlinx.serialization.encoding/Decoder): com.freeletics.khonshu.navigation/NavigationResultRequest.Key<#A2> // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+            final fun serialize(kotlinx.serialization.encoding/Encoder, com.freeletics.khonshu.navigation/NavigationResultRequest.Key<#A2>) // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;com.freeletics.khonshu.navigation.NavigationResultRequest.Key<1:0>){}[0]
+            final fun typeParametersSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.$serializer.typeParametersSerializers|typeParametersSerializers(){}[0]
+        }
+
+        final object Companion : kotlinx.serialization.internal/SerializerFactory { // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.Companion|null[0]
+            final val $cachedDescriptor // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.Companion.$cachedDescriptor|{}$cachedDescriptor[0]
+                final fun <get-$cachedDescriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.Companion.$cachedDescriptor.<get-$cachedDescriptor>|<get-$cachedDescriptor>(){}[0]
+
+            final fun <#A3: kotlin/Any?> serializer(kotlinx.serialization/KSerializer<#A3>): kotlinx.serialization/KSerializer<com.freeletics.khonshu.navigation/NavigationResultRequest.Key<#A3>> // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.Companion.serializer|serializer(kotlinx.serialization.KSerializer<0:0>){0§<kotlin.Any?>}[0]
+            final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // com.freeletics.khonshu.navigation/NavigationResultRequest.Key.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        }
+    }
+}
+
+final class com.freeletics.khonshu.navigation.deeplinks/DeepLink { // com.freeletics.khonshu.navigation.deeplinks/DeepLink|null[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/DeepLink.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/DeepLink.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/DeepLink.toString|toString(){}[0]
+}
+
+final class com.freeletics.khonshu.navigation.deeplinks/LaunchInfo { // com.freeletics.khonshu.navigation.deeplinks/LaunchInfo|null[0]
+    constructor <init>(com.eygraber.uri/Uri?) // com.freeletics.khonshu.navigation.deeplinks/LaunchInfo.<init>|<init>(com.eygraber.uri.Uri?){}[0]
+
+    final val uri // com.freeletics.khonshu.navigation.deeplinks/LaunchInfo.uri|{}uri[0]
+        final fun <get-uri>(): com.eygraber.uri/Uri? // com.freeletics.khonshu.navigation.deeplinks/LaunchInfo.uri.<get-uri>|<get-uri>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/LaunchInfo.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/LaunchInfo.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/LaunchInfo.toString|toString(){}[0]
+}
+
+sealed class <#A: com.freeletics.khonshu.navigation/BaseRoute> com.freeletics.khonshu.navigation/NavDestination // com.freeletics.khonshu.navigation/NavDestination|null[0]
+
+final val com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLink$stableprop // com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLink$stableprop|#static{}com_freeletics_khonshu_navigation_deeplinks_DeepLink$stableprop[0]
+final val com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Pattern$stableprop // com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Pattern$stableprop|#static{}com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Pattern$stableprop[0]
+final val com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Prefix$stableprop // com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Prefix$stableprop|#static{}com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Prefix$stableprop[0]
+final val com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_LaunchInfo$stableprop // com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_LaunchInfo$stableprop|#static{}com_freeletics_khonshu_navigation_deeplinks_LaunchInfo$stableprop[0]
+final val com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_MultiStack_Saver$stableprop // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_MultiStack_Saver$stableprop|#static{}com_freeletics_khonshu_navigation_internal_MultiStack_Saver$stableprop[0]
+final val com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntry$stableprop // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntry$stableprop|#static{}com_freeletics_khonshu_navigation_internal_StackEntry$stableprop[0]
+final val com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntryState$stableprop // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntryState$stableprop|#static{}com_freeletics_khonshu_navigation_internal_StackEntryState$stableprop[0]
+final val com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntryStore$stableprop // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntryStore$stableprop|#static{}com_freeletics_khonshu_navigation_internal_StackEntryStore$stableprop[0]
+final val com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntry_Id_$serializer$stableprop // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntry_Id_$serializer$stableprop|#static{}com_freeletics_khonshu_navigation_internal_StackEntry_Id_$serializer$stableprop[0]
+final val com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackSnapshot$stableprop // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackSnapshot$stableprop|#static{}com_freeletics_khonshu_navigation_internal_StackSnapshot$stableprop[0]
+final val com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_Stack_Saver$stableprop // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_Stack_Saver$stableprop|#static{}com_freeletics_khonshu_navigation_internal_Stack_Saver$stableprop[0]
+final val com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_DestinationNavigator$stableprop // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_DestinationNavigator$stableprop|#static{}com_freeletics_khonshu_navigation_DestinationNavigator$stableprop[0]
+final val com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_HostNavigator$stableprop // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_HostNavigator$stableprop|#static{}com_freeletics_khonshu_navigation_HostNavigator$stableprop[0]
+final val com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavDestination$stableprop // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavDestination$stableprop|#static{}com_freeletics_khonshu_navigation_NavDestination$stableprop[0]
+final val com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResult$stableprop // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResult$stableprop|#static{}com_freeletics_khonshu_navigation_NavigationResult$stableprop[0]
+final val com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest$stableprop // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest$stableprop|#static{}com_freeletics_khonshu_navigation_NavigationResultRequest$stableprop[0]
+final val com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest_Key$stableprop // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest_Key$stableprop|#static{}com_freeletics_khonshu_navigation_NavigationResultRequest_Key$stableprop[0]
+final val com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest_Key_$serializer$stableprop // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest_Key_$serializer$stableprop|#static{}com_freeletics_khonshu_navigation_NavigationResultRequest_Key_$serializer$stableprop[0]
+final val com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResult_$serializer$stableprop // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResult_$serializer$stableprop|#static{}com_freeletics_khonshu_navigation_NavigationResult_$serializer$stableprop[0]
+final val com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_PlatformNavigator$stableprop // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_PlatformNavigator$stableprop|#static{}com_freeletics_khonshu_navigation_PlatformNavigator$stableprop[0]
+
+final fun (com.freeletics.khonshu.navigation/HostNavigator).com.freeletics.khonshu.navigation.deeplinks/handleDeepLink(com.freeletics.khonshu.navigation.deeplinks/LaunchInfo, kotlin.collections/Set<com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler>, kotlin.collections/Set<com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix>): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/handleDeepLink|handleDeepLink@com.freeletics.khonshu.navigation.HostNavigator(com.freeletics.khonshu.navigation.deeplinks.LaunchInfo;kotlin.collections.Set<com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler>;kotlin.collections.Set<com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix>){}[0]
+final fun <#A: com.freeletics.khonshu.navigation/BaseRoute, #B: kotlin/Any?> (com.freeletics.khonshu.navigation/Navigator).com.freeletics.khonshu.navigation/registerForNavigationResult(com.freeletics.khonshu.navigation.internal/DestinationId<#A>, kotlin/String, kotlinx.serialization/KSerializer<#B>): com.freeletics.khonshu.navigation/NavigationResultRequest<#B> // com.freeletics.khonshu.navigation/registerForNavigationResult|registerForNavigationResult@com.freeletics.khonshu.navigation.Navigator(com.freeletics.khonshu.navigation.internal.DestinationId<0:0>;kotlin.String;kotlinx.serialization.KSerializer<0:1>){0§<com.freeletics.khonshu.navigation.BaseRoute>;1§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.freeletics.khonshu.navigation/Navigator).com.freeletics.khonshu.navigation/deliverNavigationResult(com.freeletics.khonshu.navigation/NavigationResultRequest.Key<#A>, #A, kotlinx.serialization/KSerializer<#A>) // com.freeletics.khonshu.navigation/deliverNavigationResult|deliverNavigationResult@com.freeletics.khonshu.navigation.Navigator(com.freeletics.khonshu.navigation.NavigationResultRequest.Key<0:0>;0:0;kotlinx.serialization.KSerializer<0:0>){0§<kotlin.Any?>}[0]
+final fun com.freeletics.khonshu.navigation.deeplinks/DeepLink(com.freeletics.khonshu.navigation/NavRoot, kotlin.collections/List<com.freeletics.khonshu.navigation/NavRoute> = ...): com.freeletics.khonshu.navigation.deeplinks/DeepLink // com.freeletics.khonshu.navigation.deeplinks/DeepLink|DeepLink(com.freeletics.khonshu.navigation.NavRoot;kotlin.collections.List<com.freeletics.khonshu.navigation.NavRoute>){}[0]
+final fun com.freeletics.khonshu.navigation.deeplinks/DeepLink(kotlin.collections/List<com.freeletics.khonshu.navigation/NavRoute>): com.freeletics.khonshu.navigation.deeplinks/DeepLink // com.freeletics.khonshu.navigation.deeplinks/DeepLink|DeepLink(kotlin.collections.List<com.freeletics.khonshu.navigation.NavRoute>){}[0]
+final fun com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLink$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLink$stableprop_getter|com_freeletics_khonshu_navigation_deeplinks_DeepLink$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Pattern$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Pattern$stableprop_getter|com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Pattern$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Prefix$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Prefix$stableprop_getter|com_freeletics_khonshu_navigation_deeplinks_DeepLinkHandler_Prefix$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_LaunchInfo$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/com_freeletics_khonshu_navigation_deeplinks_LaunchInfo$stableprop_getter|com_freeletics_khonshu_navigation_deeplinks_LaunchInfo$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_MultiStack_Saver$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_MultiStack_Saver$stableprop_getter|com_freeletics_khonshu_navigation_internal_MultiStack_Saver$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntry$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntry$stableprop_getter|com_freeletics_khonshu_navigation_internal_StackEntry$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntryState$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntryState$stableprop_getter|com_freeletics_khonshu_navigation_internal_StackEntryState$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntryStore$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntryStore$stableprop_getter|com_freeletics_khonshu_navigation_internal_StackEntryStore$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntry_Id_$serializer$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackEntry_Id_$serializer$stableprop_getter|com_freeletics_khonshu_navigation_internal_StackEntry_Id_$serializer$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackSnapshot$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_StackSnapshot$stableprop_getter|com_freeletics_khonshu_navigation_internal_StackSnapshot$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_Stack_Saver$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation.internal/com_freeletics_khonshu_navigation_internal_Stack_Saver$stableprop_getter|com_freeletics_khonshu_navigation_internal_Stack_Saver$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation/NavHost(com.freeletics.khonshu.navigation/HostNavigator, androidx.compose.ui/Modifier?, kotlin/Function2<com.freeletics.khonshu.navigation/NavRoot, com.freeletics.khonshu.navigation/BaseRoute, kotlin/Unit>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.freeletics.khonshu.navigation/NavHost|NavHost(com.freeletics.khonshu.navigation.HostNavigator;androidx.compose.ui.Modifier?;kotlin.Function2<com.freeletics.khonshu.navigation.NavRoot,com.freeletics.khonshu.navigation.BaseRoute,kotlin.Unit>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.freeletics.khonshu.navigation/NavHost(com.freeletics.khonshu.navigation/NavRoot, kotlin.collections/Set<com.freeletics.khonshu.navigation/NavDestination<*>>, androidx.compose.ui/Modifier?, kotlin.collections/Set<com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler>?, kotlin.collections/Set<com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix>?, kotlin/Function2<com.freeletics.khonshu.navigation/NavRoot, com.freeletics.khonshu.navigation/BaseRoute, kotlin/Unit>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.freeletics.khonshu.navigation/NavHost|NavHost(com.freeletics.khonshu.navigation.NavRoot;kotlin.collections.Set<com.freeletics.khonshu.navigation.NavDestination<*>>;androidx.compose.ui.Modifier?;kotlin.collections.Set<com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler>?;kotlin.collections.Set<com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix>?;kotlin.Function2<com.freeletics.khonshu.navigation.NavRoot,com.freeletics.khonshu.navigation.BaseRoute,kotlin.Unit>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.freeletics.khonshu.navigation/PlatformNavigatorEffect(com.freeletics.khonshu.navigation/PlatformNavigator, androidx.compose.runtime/Composer?, kotlin/Int) // com.freeletics.khonshu.navigation/PlatformNavigatorEffect|PlatformNavigatorEffect(com.freeletics.khonshu.navigation.PlatformNavigator;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_DestinationNavigator$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_DestinationNavigator$stableprop_getter|com_freeletics_khonshu_navigation_DestinationNavigator$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_HostNavigator$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_HostNavigator$stableprop_getter|com_freeletics_khonshu_navigation_HostNavigator$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavDestination$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavDestination$stableprop_getter|com_freeletics_khonshu_navigation_NavDestination$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResult$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResult$stableprop_getter|com_freeletics_khonshu_navigation_NavigationResult$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest$stableprop_getter|com_freeletics_khonshu_navigation_NavigationResultRequest$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest_Key$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest_Key$stableprop_getter|com_freeletics_khonshu_navigation_NavigationResultRequest_Key$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest_Key_$serializer$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResultRequest_Key_$serializer$stableprop_getter|com_freeletics_khonshu_navigation_NavigationResultRequest_Key_$serializer$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResult_$serializer$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_NavigationResult_$serializer$stableprop_getter|com_freeletics_khonshu_navigation_NavigationResult_$serializer$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_PlatformNavigator$stableprop_getter(): kotlin/Int // com.freeletics.khonshu.navigation/com_freeletics_khonshu_navigation_PlatformNavigator$stableprop_getter|com_freeletics_khonshu_navigation_PlatformNavigator$stableprop_getter(){}[0]
+final fun com.freeletics.khonshu.navigation/rememberHostNavigator(com.freeletics.khonshu.navigation/NavRoot, kotlin.collections/Set<com.freeletics.khonshu.navigation/NavDestination<*>>, kotlin.collections/Set<com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler>?, kotlin.collections/Set<com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): com.freeletics.khonshu.navigation/HostNavigator // com.freeletics.khonshu.navigation/rememberHostNavigator|rememberHostNavigator(com.freeletics.khonshu.navigation.NavRoot;kotlin.collections.Set<com.freeletics.khonshu.navigation.NavDestination<*>>;kotlin.collections.Set<com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler>?;kotlin.collections.Set<com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final inline fun <#A: reified com.freeletics.khonshu.navigation/BaseRoute, #B: reified kotlin/Any> (com.freeletics.khonshu.navigation/Navigator).com.freeletics.khonshu.navigation/registerForNavigationResult(): com.freeletics.khonshu.navigation/NavigationResultRequest<#B> // com.freeletics.khonshu.navigation/registerForNavigationResult|registerForNavigationResult@com.freeletics.khonshu.navigation.Navigator(){0§<com.freeletics.khonshu.navigation.BaseRoute>;1§<kotlin.Any>}[0]
+final inline fun <#A: reified com.freeletics.khonshu.navigation/BaseRoute> com.freeletics.khonshu.navigation/ScreenDestination(noinline kotlin/Function3<#A, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): com.freeletics.khonshu.navigation/NavDestination<#A> // com.freeletics.khonshu.navigation/ScreenDestination|ScreenDestination(kotlin.Function3<0:0,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){0§<com.freeletics.khonshu.navigation.BaseRoute>}[0]
+final inline fun <#A: reified com.freeletics.khonshu.navigation/NavRoute> com.freeletics.khonshu.navigation/OverlayDestination(noinline kotlin/Function3<#A, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): com.freeletics.khonshu.navigation/NavDestination<#A> // com.freeletics.khonshu.navigation/OverlayDestination|OverlayDestination(kotlin.Function3<0:0,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){0§<com.freeletics.khonshu.navigation.NavRoute>}[0]
+final inline fun <#A: reified kotlin/Any?> (com.freeletics.khonshu.navigation/Navigator).com.freeletics.khonshu.navigation/deliverNavigationResult(com.freeletics.khonshu.navigation/NavigationResultRequest.Key<#A>, #A) // com.freeletics.khonshu.navigation/deliverNavigationResult|deliverNavigationResult@com.freeletics.khonshu.navigation.Navigator(com.freeletics.khonshu.navigation.NavigationResultRequest.Key<0:0>;0:0){0§<kotlin.Any?>}[0]

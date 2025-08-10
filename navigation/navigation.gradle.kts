@@ -19,6 +19,7 @@ freeletics {
         addAndroidTarget {
             consumerProguardFiles("navigation.pro")
         }
+        addIosTargets(includeX64 = true)
     }
 }
 
