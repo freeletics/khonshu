@@ -1,0 +1,5 @@
+PRODUCT_NAME=sample-simple
+PRODUCT_BUNDLE_IDENTIFIER=com.freeletics.khonshu.sample.simple
+
+CURRENT_PROJECT_VERSION=1
+MARKETING_VERSION=1.0
