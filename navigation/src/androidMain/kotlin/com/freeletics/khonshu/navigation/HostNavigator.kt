@@ -3,6 +3,7 @@ package com.freeletics.khonshu.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
@@ -10,10 +11,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.freeletics.khonshu.navigation.activity.findActivity
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.handleDeepLink
+import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
+import com.freeletics.khonshu.navigation.internal.MultiStackHostNavigator
 import com.freeletics.khonshu.navigation.internal.StackEntryStoreViewModel
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
-import com.freeletics.khonshu.navigation.internal.createHostNavigator
+import com.freeletics.khonshu.navigation.internal.createMultiStack
+import com.freeletics.khonshu.navigation.internal.rememberMultiStack
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 
@@ -48,22 +52,18 @@ public fun rememberHostNavigator(
 ): HostNavigator {
     val context = LocalContext.current
     val viewModel = viewModel<StackEntryStoreViewModel>()
-    return remember(viewModel, startRoot, destinations, deepLinkHandlers, deepLinkPrefixes) {
-        createHostNavigator(
-            viewModel = viewModel,
-            startRoot = startRoot,
-            destinations = destinations,
-            startRootOverridesSavedRoot = true,
-        ).also {
-            val handledDeepLinks = viewModel.globalSavedStateHandle.get<Boolean>(SAVED_STATE_HANDLED_DEEP_LINKS)
-            if (handledDeepLinks != true) {
-                it.handleDeepLink(
-                    intent = context.findActivity().intent,
-                    deepLinkHandlers = deepLinkHandlers,
-                    deepLinkPrefixes = deepLinkPrefixes,
-                )
-                viewModel.globalSavedStateHandle[SAVED_STATE_HANDLED_DEEP_LINKS] = true
-            }
+    val multiStack by rememberMultiStack(startRoot, viewModel, destinations)
+    return remember(multiStack, viewModel) {
+        MultiStackHostNavigator(multiStack, viewModel)
+    }.also {
+        val handledDeepLinks = viewModel.globalSavedStateHandle.get<Boolean>(SAVED_STATE_HANDLED_DEEP_LINKS)
+        if (handledDeepLinks != true) {
+            it.handleDeepLink(
+                intent = context.findActivity().intent,
+                deepLinkHandlers = deepLinkHandlers,
+                deepLinkPrefixes = deepLinkPrefixes,
+            )
+            viewModel.globalSavedStateHandle[SAVED_STATE_HANDLED_DEEP_LINKS] = true
         }
     }
 }
@@ -74,3 +74,16 @@ internal val LocalHostNavigator: ProvidableCompositionLocal<HostNavigator> =
     staticCompositionLocalOf {
         throw IllegalStateException("Can't access HostNavigator outside of a NavHost")
     }
+
+@InternalNavigationCodegenApi
+public fun createHostNavigator(
+    viewModel: StackEntryStoreViewModel,
+    startRoot: NavRoot,
+    destinations: ImmutableSet<NavDestination<*>>,
+): HostNavigator {
+    val stack = createMultiStack(viewModel, startRoot, destinations)
+    return MultiStackHostNavigator(
+        stack = stack,
+        viewModel = viewModel,
+    )
+}
