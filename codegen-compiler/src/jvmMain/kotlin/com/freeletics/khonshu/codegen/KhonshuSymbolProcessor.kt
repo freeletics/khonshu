@@ -3,6 +3,7 @@ package com.freeletics.khonshu.codegen
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
 import com.freeletics.khonshu.codegen.parser.toDestinationData
 import com.freeletics.khonshu.codegen.parser.toHostActivityData
+import com.freeletics.khonshu.codegen.parser.toHostViewControllerData
 import com.freeletics.khonshu.codegen.parser.toHostWindowData
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
@@ -36,6 +37,9 @@ public class KhonshuSymbolProcessor(
         }
         resolver.generateCodeForAnnotation<NavHostWindow> {
             toHostWindowData(it, logger)
+        }
+        resolver.generateCodeForAnnotation<NavHostViewController> {
+            toHostViewControllerData(it, logger)
         }
         return emptyList()
     }
