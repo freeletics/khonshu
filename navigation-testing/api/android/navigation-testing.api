@@ -1,9 +1,5 @@
 public final class com/freeletics/khonshu/navigation/NavigationResultTestingKt {
 	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest;Landroid/os/Parcelable;)V
-	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/ActivityResultRequest;Ljava/lang/Object;)V
-	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;Ljava/lang/String;Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest$PermissionResult;)V
-	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;Ljava/util/Map;)V
-	public static final fun sendResult (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;[Lkotlin/Pair;)V
 }
 
 public abstract interface class com/freeletics/khonshu/navigation/NavigatorTurbine {
