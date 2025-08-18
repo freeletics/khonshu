@@ -6,7 +6,7 @@ import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import dev.drewhamilton.poko.Poko
 import java.util.IllegalFormatException
@@ -169,7 +169,7 @@ internal class PluralTextResource(
     @Composable
     @ReadOnlyComposable
     override fun format(): String {
-        return LocalContext.current.resources.getQuantityString(id, quantity, *args.formatRecursively())
+        return pluralStringResource(id, quantity, *args.formatRecursively())
     }
 
     override fun equals(other: Any?): Boolean {
