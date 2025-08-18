@@ -11,8 +11,6 @@ import dev.zacsweers.metro.SingleIn
 interface AppGraph {
     @DependencyGraph.Factory
     interface Factory {
-        fun create(
-            @Provides context: Context,
-        ): AppGraph
+        fun create(): AppGraph
     }
 }

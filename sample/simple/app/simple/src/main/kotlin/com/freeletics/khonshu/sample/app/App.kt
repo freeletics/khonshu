@@ -6,7 +6,7 @@ import dev.zacsweers.metro.createGraphFactory
 
 class App : Application() {
     private val graph by lazy {
-        createGraphFactory<AppGraph.Factory>().create(this)
+        createGraphFactory<AppGraph.Factory>().create()
     }
 
     override fun getSystemService(name: String): Any? {
