@@ -59,10 +59,10 @@ to obtain the state machine.
 ## Generated graph
 
 All annotations have a `scope` and a `parentScope` parameter. These will be used in Metros's
-`@ContributesGraphExtension` and `@ContributesGraphExtension.Factory` annotations on the
-generated code.
+`@GraphExtension` annotation and when contributing the `@GraphExtension.Factory` to the parent
+scope when generating code.
 
-Since the generated subgraph is using `@ContributesGraphExtension`, it is possible
+Since the generated subgraph is using `@GraphExternsion`, it is possible
 to use `@ContributesTo`, `@ContributesBinding` and so on with that same scope
 to contribute objects into it.
 
@@ -169,7 +169,7 @@ graph through `getSystemService` to retrieve the parent graph:
 
 ```kotlin
 @SingleIn(AppScope::class)
-@DependencyGraph(scope = AppScope::class, isExtendable = true)
+@DependencyGraph(scope = AppScope::class)
 interface AppGraph {
     // allows an Activity to get all generated NavDestinations to set up the NavHost
     val destinations: Set<NavDestination>

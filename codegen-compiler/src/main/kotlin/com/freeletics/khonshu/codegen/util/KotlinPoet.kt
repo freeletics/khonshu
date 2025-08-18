@@ -12,9 +12,9 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.UNIT
-import dev.zacsweers.metro.ContributesGraphExtension
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.ForScope
+import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.IntoSet
 import dev.zacsweers.metro.Multibinds
 import dev.zacsweers.metro.Provides
@@ -57,19 +57,14 @@ internal fun simplePropertySpec(className: ClassName): PropertySpec {
 
 internal fun contributesGraphExtension(
     scope: ClassName,
-    isExtendable: Boolean = true,
 ): AnnotationSpec {
-    return AnnotationSpec.builder(ContributesGraphExtension::class)
+    return AnnotationSpec.builder(GraphExtension::class)
         .addMember("%T::class", scope)
-        .addMember("isExtendable = %L", isExtendable)
         .build()
 }
 
-internal fun contributesGraphExtensionFactory(
-    parentScope: ClassName,
-): AnnotationSpec {
-    return AnnotationSpec.builder(ContributesGraphExtension.Factory::class)
-        .addMember("%T::class", parentScope)
+internal fun contributesGraphExtensionFactory(): AnnotationSpec {
+    return AnnotationSpec.builder(GraphExtension.Factory::class)
         .build()
 }
 

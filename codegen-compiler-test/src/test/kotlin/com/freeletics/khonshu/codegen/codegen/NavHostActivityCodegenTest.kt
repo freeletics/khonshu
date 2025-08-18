@@ -101,9 +101,9 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
             import com.test.parent.TestParentScope
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
@@ -118,10 +118,7 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
-            @ContributesGraphExtension(
-              TestScreen::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestScreen::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -140,7 +137,8 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(TestParentScope::class)
+              @ContributesTo(TestParentScope::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTestGraph(
                   @Provides viewModel: StackEntryStoreViewModel,
@@ -289,9 +287,9 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
             import dev.zacsweers.metro.AppScope
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
@@ -306,10 +304,7 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(ActivityScope::class)
-            @ContributesGraphExtension(
-              ActivityScope::class,
-              isExtendable = true,
-            )
+            @GraphExtension(ActivityScope::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -328,7 +323,8 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(AppScope::class)
+              @ContributesTo(AppScope::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTestGraph(
                   @Provides viewModel: StackEntryStoreViewModel,
@@ -501,9 +497,9 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
             import com.test.other.TestClass2
             import com.test.parent.TestParentScope
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
@@ -521,10 +517,7 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
-            @ContributesGraphExtension(
-              TestScreen::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestScreen::class)
             public interface KhonshuTest2Graph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -551,7 +544,8 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(TestParentScope::class)
+              @ContributesTo(TestParentScope::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTest2Graph(
                   @Provides viewModel: StackEntryStoreViewModel,
@@ -706,9 +700,9 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
             import com.test.parent.TestParentScope
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
@@ -721,10 +715,7 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
-            @ContributesGraphExtension(
-              TestScreen::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestScreen::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -743,7 +734,8 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(TestParentScope::class)
+              @ContributesTo(TestParentScope::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTestGraph(
                   @Provides viewModel: StackEntryStoreViewModel,
@@ -886,9 +878,9 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
             import com.test.parent.TestParentScope
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
@@ -903,10 +895,7 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
-            @ContributesGraphExtension(
-              TestScreen::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestScreen::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -925,7 +914,8 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(TestParentScope::class)
+              @ContributesTo(TestParentScope::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTestGraph(
                   @Provides viewModel: StackEntryStoreViewModel,
@@ -1073,9 +1063,9 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
             import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
             import com.test.parent.TestParentScope
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
@@ -1090,10 +1080,7 @@ internal class NavHostActivityCodegenTest {
 
             @OptIn(InternalCodegenApi::class)
             @SingleIn(TestScreen::class)
-            @ContributesGraphExtension(
-              TestScreen::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestScreen::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -1112,7 +1099,8 @@ internal class NavHostActivityCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(TestParentScope::class)
+              @ContributesTo(TestParentScope::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTestGraph(
                   @Provides viewModel: StackEntryStoreViewModel,

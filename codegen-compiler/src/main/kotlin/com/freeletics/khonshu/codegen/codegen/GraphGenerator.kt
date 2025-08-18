@@ -7,6 +7,7 @@ import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.autoCloseable
 import com.freeletics.khonshu.codegen.util.contributesGraphExtension
 import com.freeletics.khonshu.codegen.util.contributesGraphExtensionFactory
+import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
@@ -108,7 +109,8 @@ internal class GraphGenerator(
             .returns(graphClassName)
             .build()
         return TypeSpec.interfaceBuilder(graphFactoryClassName)
-            .addAnnotation(contributesGraphExtensionFactory(data.parentScope))
+            .addAnnotation(contributesTo(data.parentScope))
+            .addAnnotation(contributesGraphExtensionFactory())
             .addFunction(createFun)
             .build()
     }
