@@ -117,7 +117,6 @@ internal class NavHostActivityCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestScreen::class)
             @GraphExtension(TestScreen::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
@@ -303,7 +302,6 @@ internal class NavHostActivityCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(ActivityScope::class)
             @GraphExtension(ActivityScope::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
@@ -516,7 +514,6 @@ internal class NavHostActivityCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestScreen::class)
             @GraphExtension(TestScreen::class)
             public interface KhonshuTest2Graph : AutoCloseable {
               public val testStateMachine: TestStateMachine
@@ -714,7 +711,6 @@ internal class NavHostActivityCodegenTest {
             import kotlinx.collections.immutable.toImmutableSet
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestScreen::class)
             @GraphExtension(TestScreen::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
@@ -894,7 +890,6 @@ internal class NavHostActivityCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestScreen::class)
             @GraphExtension(TestScreen::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
@@ -1079,7 +1074,6 @@ internal class NavHostActivityCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestScreen::class)
             @GraphExtension(TestScreen::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine

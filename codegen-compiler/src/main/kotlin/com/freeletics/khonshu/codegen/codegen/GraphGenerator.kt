@@ -16,7 +16,6 @@ import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
-import com.freeletics.khonshu.codegen.util.singleIn
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
@@ -42,7 +41,6 @@ internal class GraphGenerator(
     fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(graphClassName)
             .addAnnotation(optIn())
-            .addAnnotation(singleIn(data.scope))
             .addAnnotation(contributesGraphExtension(data.scope))
             .addSuperinterface(autoCloseable)
             .addProperties(graphProperties())

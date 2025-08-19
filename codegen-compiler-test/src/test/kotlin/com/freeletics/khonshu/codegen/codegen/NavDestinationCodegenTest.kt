@@ -100,7 +100,6 @@ internal class NavDestinationCodegenTest {
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
@@ -108,7 +107,6 @@ internal class NavDestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
             @GraphExtension(TestRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
@@ -257,7 +255,6 @@ internal class NavDestinationCodegenTest {
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
@@ -265,7 +262,6 @@ internal class NavDestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
             @GraphExtension(TestRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
@@ -417,7 +413,6 @@ internal class NavDestinationCodegenTest {
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
@@ -425,7 +420,6 @@ internal class NavDestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestOverlayRoute::class)
             @GraphExtension(TestOverlayRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
@@ -596,7 +590,6 @@ internal class NavDestinationCodegenTest {
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.Int
             import kotlin.OptIn
@@ -607,7 +600,6 @@ internal class NavDestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
             @GraphExtension(TestRoute::class)
             public interface KhonshuTest2Graph : AutoCloseable {
               public val testStateMachine: TestStateMachine
@@ -768,13 +760,11 @@ internal class NavDestinationCodegenTest {
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
             @GraphExtension(TestRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
@@ -915,7 +905,6 @@ internal class NavDestinationCodegenTest {
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
@@ -923,7 +912,6 @@ internal class NavDestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
             @GraphExtension(TestRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
@@ -1069,14 +1057,12 @@ internal class NavDestinationCodegenTest {
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.collections.Set
             import kotlinx.coroutines.ExperimentalCoroutinesApi
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
             @GraphExtension(TestRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachineFactory: TestStateMachineFactory
