@@ -6,7 +6,6 @@ import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
-@SingleIn(AppScope::class)
 @DependencyGraph(scope = AppScope::class)
 interface AppGraph {
     @DependencyGraph.Factory
