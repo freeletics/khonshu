@@ -94,13 +94,12 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
@@ -108,11 +107,7 @@ internal class NavDestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
-            @ContributesGraphExtension(
-              TestRoute::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -132,7 +127,8 @@ internal class NavDestinationCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(TestParentRoute::class)
+              @ContributesTo(TestParentRoute::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTestGraph
               }
@@ -253,13 +249,12 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
             import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import dev.zacsweers.metro.AppScope
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
@@ -267,11 +262,7 @@ internal class NavDestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
-            @ContributesGraphExtension(
-              TestRoute::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -291,7 +282,8 @@ internal class NavDestinationCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(ActivityScope::class)
+              @ContributesTo(ActivityScope::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTestGraph
               }
@@ -415,13 +407,12 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
@@ -429,11 +420,7 @@ internal class NavDestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestOverlayRoute::class)
-            @ContributesGraphExtension(
-              TestOverlayRoute::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestOverlayRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -453,7 +440,8 @@ internal class NavDestinationCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(TestParentRoute::class)
+              @ContributesTo(TestParentRoute::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTestGraph(@Provides @ForScope(TestOverlayRoute::class) savedStateHandle: SavedStateHandle, @Provides testOverlayRoute: TestOverlayRoute): KhonshuTestGraph
               }
@@ -596,13 +584,12 @@ internal class NavDestinationCodegenTest {
             import com.test.destination.TestDestinationScope
             import com.test.other.TestClass2
             import com.test.parent.TestParentRoute
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.Int
             import kotlin.OptIn
@@ -613,11 +600,7 @@ internal class NavDestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
-            @ContributesGraphExtension(
-              TestRoute::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestRoute::class)
             public interface KhonshuTest2Graph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -645,7 +628,8 @@ internal class NavDestinationCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(TestParentRoute::class)
+              @ContributesTo(TestParentRoute::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTest2Graph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTest2Graph
               }
@@ -770,23 +754,18 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
-            @ContributesGraphExtension(
-              TestRoute::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -806,7 +785,8 @@ internal class NavDestinationCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(TestParentRoute::class)
+              @ContributesTo(TestParentRoute::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTestGraph
               }
@@ -919,13 +899,12 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.Unit
@@ -933,11 +912,7 @@ internal class NavDestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
-            @ContributesGraphExtension(
-              TestRoute::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -957,7 +932,8 @@ internal class NavDestinationCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(TestParentRoute::class)
+              @ContributesTo(TestParentRoute::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTestGraph
               }
@@ -1075,24 +1051,19 @@ internal class NavDestinationCodegenTest {
             import com.freeletics.khonshu.navigation.activity.ActivityNavigator
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
-            import dev.zacsweers.metro.ContributesGraphExtension
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
+            import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
             import dev.zacsweers.metro.Provides
-            import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.collections.Set
             import kotlinx.coroutines.ExperimentalCoroutinesApi
 
             @OptIn(InternalCodegenApi::class)
-            @SingleIn(TestRoute::class)
-            @ContributesGraphExtension(
-              TestRoute::class,
-              isExtendable = true,
-            )
+            @GraphExtension(TestRoute::class)
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachineFactory: TestStateMachineFactory
 
@@ -1112,7 +1083,8 @@ internal class NavDestinationCodegenTest {
                 }
               }
 
-              @ContributesGraphExtension.Factory(TestParentRoute::class)
+              @ContributesTo(TestParentRoute::class)
+              @GraphExtension.Factory
               public interface Factory {
                 public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTestGraph
               }

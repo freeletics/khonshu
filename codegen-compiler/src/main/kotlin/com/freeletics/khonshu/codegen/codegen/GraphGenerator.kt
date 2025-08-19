@@ -7,6 +7,7 @@ import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.autoCloseable
 import com.freeletics.khonshu.codegen.util.contributesGraphExtension
 import com.freeletics.khonshu.codegen.util.contributesGraphExtensionFactory
+import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
@@ -15,7 +16,6 @@ import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
-import com.freeletics.khonshu.codegen.util.singleIn
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
@@ -41,7 +41,6 @@ internal class GraphGenerator(
     fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(graphClassName)
             .addAnnotation(optIn())
-            .addAnnotation(singleIn(data.scope))
             .addAnnotation(contributesGraphExtension(data.scope))
             .addSuperinterface(autoCloseable)
             .addProperties(graphProperties())
@@ -108,7 +107,8 @@ internal class GraphGenerator(
             .returns(graphClassName)
             .build()
         return TypeSpec.interfaceBuilder(graphFactoryClassName)
-            .addAnnotation(contributesGraphExtensionFactory(data.parentScope))
+            .addAnnotation(contributesTo(data.parentScope))
+            .addAnnotation(contributesGraphExtensionFactory())
             .addFunction(createFun)
             .build()
     }
