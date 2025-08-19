@@ -1,6 +1,25 @@
 Change Log
 ==========
 
+## 0.32.0 *(2025-08-19)*
+
+### Navigation
+
+- Removed `ResultOwner`, use `NavigationResultRequest`, `ActivityResultRequest` and
+  `PermissionResultRequest` directly
+- The package of the following classes changed to `com.freeletics.khonshu.activity`:
+    - `ActivityRoute`
+    - `ActivityNavigator`
+    - `ActivityResultRequest`
+    - `PermissionResultRequest`
+
+### Codegen
+
+- Compatibility with Metro 0.6.0.
+- Replaced Metro `@ContributesGraphExtension` with the new `@GraphExtension` and
+  `@ContributesTo` on the factory interface.
+
+
 ## 0.31.2 *(2025-08-08)*
 
 ### Navigation
