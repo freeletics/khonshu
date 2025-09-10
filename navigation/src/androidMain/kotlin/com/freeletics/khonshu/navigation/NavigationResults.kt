@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
-import kotlinx.serialization.Serializable
 
 /**
  * Class returned from [ResultNavigator.registerForNavigationResult].

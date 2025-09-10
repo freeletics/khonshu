@@ -2,8 +2,6 @@ package com.freeletics.khonshu.navigation
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
-import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest
-import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest.PermissionResult
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.simpleRootDestination
 import com.google.common.truth.Truth.assertThat

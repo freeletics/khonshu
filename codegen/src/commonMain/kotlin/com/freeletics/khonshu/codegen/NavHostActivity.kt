@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
-import com.freeletics.khonshu.statemachine.StateMachine
 import dev.zacsweers.metro.AppScope
 import kotlin.reflect.KClass
 
