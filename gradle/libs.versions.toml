@@ -29,7 +29,7 @@ auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
 
 junit = "4.13.2"
-truth = "1.4.4"
+truth = "1.4.5"
 turbine = "1.2.1"
 kotlin-compile-testing = "0.8.0"
 
