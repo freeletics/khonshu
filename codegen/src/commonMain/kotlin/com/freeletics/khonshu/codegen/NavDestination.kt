@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.codegen
 
 import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.statemachine.StateMachine
 import dev.zacsweers.metro.AppScope
 import kotlin.reflect.KClass
 
