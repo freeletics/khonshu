@@ -1,6 +1,6 @@
 [versions]
 flowredux = "2.0.0-alpha1"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 coroutines = "1.10.2"
 
 java-target= "11"
@@ -22,8 +22,8 @@ androidx-lifecycle = "2.9.3"
 
 uri = "0.0.20"
 
-metro = "0.6.4"
-ksp = "2.2.10-2.0.2"
+metro = "0.6.6"
+ksp = "2.2.20-2.0.2"
 kotlinpoet = "2.2.0"
 auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
@@ -31,7 +31,7 @@ auto-service-ksp = "1.2.0"
 junit = "4.13.2"
 truth = "1.4.5"
 turbine = "1.2.1"
-kotlin-compile-testing = "0.8.0"
+kotlin-compile-testing = "0.9.0"
 
 fgp = "0.32.0"
 publish = "0.34.0"
