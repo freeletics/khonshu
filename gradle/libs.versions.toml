@@ -23,7 +23,7 @@ androidx-lifecycle = "2.9.3"
 uri = "0.0.20"
 
 metro = "0.6.6"
-ksp = "2.2.20-2.0.2"
+ksp = "2.2.20-2.0.3"
 kotlinpoet = "2.2.0"
 auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
@@ -112,4 +112,4 @@ publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binarycompatibility" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
-poko = { id = "dev.drewhamilton.poko", version = "0.19.3" }
+poko = { id = "dev.drewhamilton.poko", version = "0.20.0" }
