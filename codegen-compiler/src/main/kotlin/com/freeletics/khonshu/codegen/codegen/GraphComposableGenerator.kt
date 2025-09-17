@@ -4,6 +4,7 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.asComposeState
 import com.freeletics.khonshu.codegen.util.composable
+import com.freeletics.khonshu.codegen.util.khonshuStateMachine
 import com.freeletics.khonshu.codegen.util.launch
 import com.freeletics.khonshu.codegen.util.navHostParameter
 import com.freeletics.khonshu.codegen.util.optIn
@@ -11,7 +12,6 @@ import com.freeletics.khonshu.codegen.util.produceStateMachine
 import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.remember
 import com.freeletics.khonshu.codegen.util.rememberCoroutineScope
-import com.freeletics.khonshu.codegen.util.stateMachine
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.PRIVATE
@@ -33,7 +33,7 @@ internal class GraphComposableGenerator(
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
             .addAnnotation(
-                if (data.stateMachineClass == stateMachine) {
+                if (data.stateMachineClass == khonshuStateMachine) {
                     optIn()
                 } else {
                     optIn(
@@ -60,7 +60,7 @@ internal class GraphComposableGenerator(
                 }
             }
             .apply {
-                if (data.stateMachineClass == stateMachine) {
+                if (data.stateMachineClass == khonshuStateMachine) {
                     addStatement("val stateMachine = %M { graph.%L }", remember, data.stateMachine.propertyName)
                     if (data.sendActionParameter != null) {
                         addStatement("val scope = %M()", rememberCoroutineScope)
@@ -107,7 +107,7 @@ internal class GraphComposableGenerator(
             }
             .addStatement(")")
             .apply {
-                if (data.stateMachineClass == stateMachine) {
+                if (data.stateMachineClass == khonshuStateMachine) {
                     endControlFlow()
                 }
             }
