@@ -30,10 +30,10 @@ public class KhonshuSymbolProcessor(
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         resolver.generateCodeForAnnotation<NavDestination> {
-            toComposeScreenDestinationData(it, resolver, logger)
+            toComposeScreenDestinationData(it, logger)
         }
         resolver.generateCodeForAnnotation<NavHostActivity> {
-            toNavHostActivityData(it, resolver, logger)
+            toNavHostActivityData(it, logger)
         }
         return emptyList()
     }
@@ -48,8 +48,8 @@ public class KhonshuSymbolProcessor(
                     return@forEach
                 }
 
-                it.annotations.filter {
-                    it.annotationType.resolve().declaration.qualifiedName?.asString() == A::class.qualifiedName
+                it.annotations.filter { annotation ->
+                    annotation.annotationType.resolve().declaration.qualifiedName?.asString() == A::class.qualifiedName
                 }.forEach annotation@{ annotation ->
                     val data = parser(it, annotation) ?: return@annotation
                     val file = fileGenerator.generate(data)

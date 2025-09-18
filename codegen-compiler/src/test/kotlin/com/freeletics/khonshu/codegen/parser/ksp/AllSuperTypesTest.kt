@@ -5,7 +5,7 @@ package com.freeletics.khonshu.codegen.parser.ksp
 import com.freeletics.khonshu.codegen.KhonshuCompilation.Companion.kspCompilation
 import com.freeletics.khonshu.codegen.parser.allSuperTypes
 import com.freeletics.khonshu.codegen.simpleSymbolProcessor
-import com.freeletics.khonshu.codegen.util.stateMachine
+import com.freeletics.khonshu.codegen.util.khonshuStateMachine
 import com.google.common.truth.Truth.assertThat
 import com.google.devtools.ksp.getClassDeclarationByName
 import com.squareup.kotlinpoet.BOOLEAN
@@ -114,7 +114,7 @@ internal class AllSuperTypesTest {
             symbolProcessors = listOf(
                 simpleSymbolProcessor { resolver ->
                     resolver.getClassDeclarationByName("com.freeletics.test.CreateCustomActivityStateMachine")!!.also {
-                        val superType = it.allSuperTypes(true).find(stateMachine)
+                        val superType = it.allSuperTypes(true).find(khonshuStateMachine)
                         assertThat(superType!!.typeArguments[0])
                             .isEqualTo(ClassName("com.freeletics.test", "CreateCustomActivityState"))
                         assertThat(superType.typeArguments[1])
