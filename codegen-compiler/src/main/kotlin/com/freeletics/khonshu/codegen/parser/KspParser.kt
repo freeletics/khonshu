@@ -7,15 +7,13 @@ import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.util.baseRoute
 import com.freeletics.khonshu.codegen.util.functionToLambda
+import com.freeletics.khonshu.codegen.util.khonshuStateMachine
 import com.freeletics.khonshu.codegen.util.overlay
 import com.freeletics.khonshu.codegen.util.simpleNavHost
 import com.freeletics.khonshu.codegen.util.simpleNavHostLambda
 import com.freeletics.khonshu.codegen.util.simpleNavHostParameterized
-import com.freeletics.khonshu.codegen.util.stateMachine
 import com.freeletics.khonshu.codegen.util.stateMachineFactory
-import com.google.devtools.ksp.getClassDeclarationByName
 import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
@@ -35,16 +33,14 @@ import org.jetbrains.annotations.VisibleForTesting
 
 internal fun KSFunctionDeclaration.toComposeScreenDestinationData(
     annotation: KSAnnotation,
-    resolver: Resolver,
     logger: KSPLogger,
 ): NavDestinationData? {
-    val (stateMachineClass, stateParameter, actionParameter) =
-        annotation.stateMachine.stateMachineParameters(resolver, logger) ?: return null
+    val (stateMachineClass, stateParameter, actionParameter) = annotation.stateMachineParameters(logger) ?: return null
 
     val navigation = Navigation(
         route = annotation.route,
-        parentScopeIsRoute = annotation.parentScope.extendsBaseRoute(resolver),
-        overlay = annotation.route.extendsOverlay(resolver),
+        parentScopeIsRoute = annotation.parentScopeExtendsBaseRoute(),
+        overlay = annotation.routeExtendsOverlay(),
         destinationScope = annotation.destinationScope,
     )
 
@@ -64,11 +60,9 @@ internal fun KSFunctionDeclaration.toComposeScreenDestinationData(
 
 internal fun KSFunctionDeclaration.toNavHostActivityData(
     annotation: KSAnnotation,
-    resolver: Resolver,
     logger: KSPLogger,
 ): NavHostActivityData? {
-    val (stateMachineClass, stateParameter, actionParameter) =
-        annotation.stateMachine.stateMachineParameters(resolver, logger) ?: return null
+    val (stateMachineClass, stateParameter, actionParameter) = annotation.stateMachineParameters(logger) ?: return null
 
     val navHostParameter = navHostParameter(logger) ?: return null
 
@@ -88,26 +82,42 @@ internal fun KSFunctionDeclaration.toNavHostActivityData(
 }
 
 private val KSAnnotation.scope: ClassName
-    get() = (findArgument("scope").value as KSType).toClassName()
+    get() = findTypeArgument("scope").toClassName()
+
+private val KSAnnotation.routeType: KSType
+    get() = findTypeArgument("route")
 
 private val KSAnnotation.route: ClassName
-    get() = (findArgument("route").value as KSType).toClassName()
+    get() = routeType.toClassName()
+
+private val KSAnnotation.parentScopeType: KSType
+    get() = findTypeArgument("parentScope")
 
 private val KSAnnotation.parentScope: ClassName
-    get() = (findArgument("parentScope").value as KSType).toClassName()
+    get() = parentScopeType.toClassName()
+
+private val KSAnnotation.stateMachineType: KSType
+    get() = findTypeArgument("stateMachine")
 
 private val KSAnnotation.stateMachine: ClassName
-    get() = (findArgument("stateMachine").value as KSType).toClassName()
+    get() = stateMachineType.toClassName()
 
 private val KSAnnotation.destinationScope: ClassName
-    get() = (findArgument("destinationScope").value as KSType).toClassName()
+    get() = findTypeArgument("destinationScope").toClassName()
 
 private val KSAnnotation.activityBaseClass: ClassName
-    get() = (findArgument("activityBaseClass").value as KSType).toClassName()
+    get() = findTypeArgument("activityBaseClass").toClassName()
+
+private fun KSAnnotation.findTypeArgument(name: String): KSType {
+    val argument = findArgument(name)
+    return argument.value as? KSType
+        ?: error("Expected argument $name in ${shortName.asString()} to be a type was ${argument.value}")
+}
 
 private fun KSAnnotation.findArgument(name: String): KSValueArgument {
     return arguments.find { it.name?.asString() == name }
-        ?: defaultArguments.find { it.name?.asString() == name }!!
+        ?: defaultArguments.find { it.name?.asString() == name }
+        ?: error("Could not find argument $name in ${shortName.asString()}")
 }
 
 private fun KSFunctionDeclaration.getParameterWithType(expectedType: TypeName): ComposableParameter? {
@@ -139,17 +149,14 @@ private fun KSFunctionDeclaration.navHostParameter(logger: KSPLogger): Composabl
     return parameter
 }
 
-private fun ClassName.stateMachineParameters(
-    resolver: Resolver,
-    logger: KSPLogger,
-): Triple<ClassName, TypeName, TypeName>? {
-    val stateMachineDeclaration = resolver.getClassDeclarationByName(toString())!!
+private fun KSAnnotation.stateMachineParameters(logger: KSPLogger): Triple<ClassName, TypeName, TypeName>? {
+    val stateMachineDeclaration = stateMachineType.declaration as KSClassDeclaration
 
     val stateMachineType = stateMachineDeclaration.allSuperTypes(true).firstNotNullOfOrNull { superType ->
-        superType.asParameterized()?.takeIf { it.rawType == stateMachine || it.rawType == stateMachineFactory }
+        superType.asParameterized()?.takeIf { it.rawType == khonshuStateMachine || it.rawType == stateMachineFactory }
     }
     if (stateMachineType == null) {
-        logger.error("$this does not extend $stateMachine or $stateMachineFactory")
+        logger.error("$stateMachine does not extend $khonshuStateMachine or $stateMachineFactory")
         return null
     }
 
@@ -159,13 +166,13 @@ private fun ClassName.stateMachineParameters(
     return Triple(stateMachineClass, stateParameter, actionParameter)
 }
 
-private fun ClassName.extendsBaseRoute(resolver: Resolver): Boolean {
-    val declaration = resolver.getClassDeclarationByName(toString())!!
+private fun KSAnnotation.parentScopeExtendsBaseRoute(): Boolean {
+    val declaration = parentScopeType.declaration as KSClassDeclaration
     return declaration.allSuperTypes(false).any { it == baseRoute }
 }
 
-private fun ClassName.extendsOverlay(resolver: Resolver): Boolean {
-    val declaration = resolver.getClassDeclarationByName(toString())!!
+private fun KSAnnotation.routeExtendsOverlay(): Boolean {
+    val declaration = routeType.declaration as KSClassDeclaration
     return declaration.allSuperTypes(false).any { it == overlay }
 }
 

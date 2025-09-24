@@ -52,7 +52,7 @@ internal val simpleNavHostLambda = LambdaTypeName.get(
 )
 
 // StateMachine
-internal val stateMachine = ClassName("com.freeletics.khonshu.statemachine", "StateMachine")
+internal val khonshuStateMachine = ClassName("com.freeletics.khonshu.statemachine", "StateMachine")
 internal val stateMachineFactory = ClassName("com.freeletics.flowredux2", "FlowReduxStateMachineFactory")
 internal val produceStateMachine = MemberName("com.freeletics.flowredux2", "produceStateMachine")
 
