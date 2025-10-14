@@ -17,7 +17,6 @@ import java.io.File
 import java.nio.file.Files
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
-import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
 interface KhonshuCompilation {
@@ -29,13 +28,11 @@ interface KhonshuCompilation {
         fun simpleCompilation(
             sources: List<Pair<String, String>>,
             compilerPlugins: List<CompilerPluginRegistrar> = emptyList(),
-            legacyCompilerPlugins: List<ComponentRegistrar> = emptyList(),
             warningsAsErrors: Boolean = true,
         ): KhonshuCompilation {
             return SimpleKhonshuCompilation(
                 sources = sources,
                 compilerPlugins = compilerPlugins,
-                legacyCompilerPlugins = legacyCompilerPlugins,
                 warningsAsErrors = warningsAsErrors,
             )
         }
@@ -44,14 +41,12 @@ interface KhonshuCompilation {
             @Language("kotlin") source: String,
             fileName: String = "Test.kt",
             compilerPlugins: List<CompilerPluginRegistrar> = emptyList(),
-            legacyCompilerPlugins: List<ComponentRegistrar> = emptyList(),
             symbolProcessors: List<SymbolProcessorProvider> = emptyList(),
             warningsAsErrors: Boolean = true,
         ): KhonshuCompilation {
             return KspKhonshuCompilation(
                 sources = listOf(fileName to source),
                 compilerPlugins = compilerPlugins,
-                legacyCompilerPlugins = legacyCompilerPlugins,
                 symbolProcessors = symbolProcessors,
                 warningsAsErrors = warningsAsErrors,
             )
@@ -62,11 +57,10 @@ interface KhonshuCompilation {
 private class SimpleKhonshuCompilation(
     sources: List<Pair<String, String>>,
     compilerPlugins: List<CompilerPluginRegistrar>,
-    legacyCompilerPlugins: List<ComponentRegistrar>,
     warningsAsErrors: Boolean,
 ) : KhonshuCompilation {
     val compilation = KotlinCompilation().apply {
-        configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors)
+        configure(sourceFiles = sources, compilerPlugins = compilerPlugins, warningsAsErrors = warningsAsErrors)
     }
 
     override fun compile(block: KhonshuCompilation.(JvmCompilationResult) -> Unit) {
@@ -81,12 +75,11 @@ private class SimpleKhonshuCompilation(
 private class KspKhonshuCompilation(
     sources: List<Pair<String, String>>,
     compilerPlugins: List<CompilerPluginRegistrar>,
-    legacyCompilerPlugins: List<ComponentRegistrar>,
     symbolProcessors: List<SymbolProcessorProvider>,
     warningsAsErrors: Boolean,
 ) : KhonshuCompilation {
     val compilation = KotlinCompilation().apply {
-        configure(sources, compilerPlugins, legacyCompilerPlugins, warningsAsErrors)
+        configure(sourceFiles = sources, compilerPlugins = compilerPlugins, warningsAsErrors = warningsAsErrors)
         useKsp2()
         symbolProcessorProviders = symbolProcessors.toMutableList()
     }
@@ -104,11 +97,9 @@ private class KspKhonshuCompilation(
 private fun KotlinCompilation.configure(
     sourceFiles: List<Pair<String, String>>,
     compilerPlugins: List<CompilerPluginRegistrar>,
-    legacyCompilerPlugins: List<ComponentRegistrar>,
     warningsAsErrors: Boolean,
     kotlinLanguageVersion: String? = null,
 ) {
-    componentRegistrars += legacyCompilerPlugins
     compilerPluginRegistrars += compilerPlugins
     jvmTarget = "11"
     languageVersion = kotlinLanguageVersion
