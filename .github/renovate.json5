@@ -39,18 +39,6 @@
     },
     {
       matchPackagePatterns: [
-        "org.jetbrains.kotlin",
-        "com.google.devtools.ksp",
-        "dev.zacsweers.kctfork",
-        "dev.drewhamilton.poko",
-      ],
-      excludePackagePatterns: [
-        "org.jetbrains.kotlinx",
-      ],
-      groupName: "Kotlin and KSP"
-    },
-    {
-      matchPackagePatterns: [
         "androidx.compose",
         "org.jetbrains.compose",
       ],
