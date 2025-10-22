@@ -22,7 +22,7 @@ androidx-lifecycle = "2.9.4"
 
 uri = "0.0.21"
 
-metro = "0.7.0"
+metro = "0.7.2"
 
 ksp = "2.2.20-2.0.4"
 kotlinpoet = "2.2.0"
