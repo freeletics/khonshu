@@ -5,6 +5,11 @@ Change Log
 
 ### Navigation
 
+- Improve reliability of navigation result APIs by ensuring that results
+  are not delivered to a wrong entry on the back stack with the same
+  route class.
+
+
 ### Codegen
 
 - Optimize performance by avoiding unneeded lookups of classes.
