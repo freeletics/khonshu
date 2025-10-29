@@ -114,13 +114,13 @@ public class TestHostNavigator(
 
     @InternalNavigationApi
     @OptIn(InternalNavigationCodegenApi::class)
-    override fun <T : BaseRoute> getTopEntryFor(destinationId: DestinationId<T>): StackEntry<T> {
+    override fun getTopEntryFor(destinationId: DestinationId<*>): StackEntry<*> {
         throw UnsupportedOperationException()
     }
 
     @InternalNavigationApi
     @OptIn(InternalNavigationCodegenApi::class)
-    override fun <T : BaseRoute> getEntryFor(id: StackEntry.Id): StackEntry<T> {
+    override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
         throw UnsupportedOperationException()
     }
 }

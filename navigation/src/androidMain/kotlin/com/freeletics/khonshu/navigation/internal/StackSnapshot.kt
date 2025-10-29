@@ -59,10 +59,9 @@ public class StackSnapshot internal constructor(
             ?: throw IllegalStateException("Route $destinationId not found on back stack")
     }
 
-    @Suppress("UNCHECKED_CAST")
-    internal fun <T : BaseRoute> entryFor(id: StackEntry.Id): StackEntry<T> {
-        return entries.lastOrNull { it.id == id } as StackEntry<T>?
-            ?: startStackRootEntry.takeIf { it.id == id } as StackEntry<T>?
+    internal fun entryFor(id: StackEntry.Id): StackEntry<*> {
+        return entries.lastOrNull { it.id == id }
+            ?: startStackRootEntry.takeIf { it.id == id }
             ?: throw IllegalStateException("Entry $id not found on back stack")
     }
 }

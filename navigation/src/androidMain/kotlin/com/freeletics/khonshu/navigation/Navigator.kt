@@ -56,10 +56,10 @@ public interface Navigator {
     public fun replaceAllBackStacks(root: NavRoot)
 
     @InternalNavigationApi
-    public fun <T : BaseRoute> getTopEntryFor(destinationId: DestinationId<T>): StackEntry<T>
+    public fun getTopEntryFor(destinationId: DestinationId<*>): StackEntry<*>
 
     @InternalNavigationApi
-    public fun <T : BaseRoute> getEntryFor(id: StackEntry.Id): StackEntry<T>
+    public fun getEntryFor(id: StackEntry.Id): StackEntry<*>
 
     public companion object {
         /**

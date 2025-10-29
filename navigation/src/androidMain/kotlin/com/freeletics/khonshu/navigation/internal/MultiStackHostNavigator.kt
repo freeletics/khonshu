@@ -99,7 +99,7 @@ internal class MultiStackHostNavigator(
     }
 
     override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
-        val entry = getEntryFor<BaseRoute>(key.stackEntryId)
+        val entry = getEntryFor(key.stackEntryId)
         entry.savedStateHandle[key.requestKey] = NavigationResult(result)
     }
 
@@ -136,12 +136,12 @@ internal class MultiStackHostNavigator(
     }
 
     @InternalNavigationApi
-    override fun <T : BaseRoute> getTopEntryFor(destinationId: DestinationId<T>): StackEntry<T> {
+    override fun getTopEntryFor(destinationId: DestinationId<*>): StackEntry<*> {
         return snapshot.value.entryFor(destinationId)
     }
 
     @InternalNavigationApi
-    override fun <T : BaseRoute> getEntryFor(id: StackEntry.Id): StackEntry<T> {
+    override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
         return snapshot.value.entryFor(id)
     }
 
@@ -179,12 +179,12 @@ internal class MultiStackHostNavigator(
         }
 
         @InternalNavigationApi
-        override fun <T : BaseRoute> getTopEntryFor(destinationId: DestinationId<T>): StackEntry<T> {
+        override fun getTopEntryFor(destinationId: DestinationId<*>): StackEntry<*> {
             return this@MultiStackHostNavigator.getTopEntryFor(destinationId)
         }
 
         @InternalNavigationApi
-        override fun <T : BaseRoute> getEntryFor(id: StackEntry.Id): StackEntry<T> {
+        override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
             return this@MultiStackHostNavigator.getEntryFor(id)
         }
     }
