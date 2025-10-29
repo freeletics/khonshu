@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.codegen
 
-import com.freeletics.khonshu.codegen.util.navigationDestination
 import com.freeletics.khonshu.codegen.util.overlayDestination
 import com.freeletics.khonshu.codegen.util.screenDestination
 import com.squareup.kotlinpoet.ClassName
@@ -64,8 +63,6 @@ public data class Navigation(
     private val overlay: Boolean,
     val destinationScope: ClassName,
 ) {
-    val destinationClass: ClassName = navigationDestination
-
     val destinationMethod: MemberName = when (overlay) {
         false -> screenDestination
         true -> overlayDestination
