@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+## UNRELEASED
+
+### Navigation
+
+### Codegen
+
+- Optimize performance by avoiding unneeded lookups of classes.
+- Fix an error that occurred for classed referenced in the codegen annotations which have a package name
+  where one of the segments contains a soft Kotlin keyword.
+- Removed `@SingleIn(T::class)` annotation from generated `GraphExtension(T::class)` interfaces. It's implicitly
+  added by Metro for the extension scope.
+
+
 ## 0.32.0 *(2025-08-19)*
 
 ### Navigation
