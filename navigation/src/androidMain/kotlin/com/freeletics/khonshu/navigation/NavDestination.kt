@@ -9,77 +9,89 @@ import com.freeletics.khonshu.navigation.internal.StackSnapshot
 /**
  * A destination that can be navigated to. See `NavHost` for how to configure a `NavGraph` with it.
  */
-public sealed interface NavDestination
-
-internal sealed class ContentDestination<T : BaseRoute> : NavDestination {
-    internal abstract val id: DestinationId<T>
+public sealed class NavDestination<Route : BaseRoute> {
+    internal abstract val id: DestinationId<Route>
     internal abstract val parent: DestinationId<*>?
     internal abstract val extra: Any?
-    internal abstract val content: @Composable (StackSnapshot, StackEntry<T>) -> Unit
+    internal abstract val content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit
 }
 
 /**
- * Creates a new [NavDestination] that represents a full screen. The class of [T] will be used
+ * Creates a new [NavDestination] that represents a full screen. The class of [Route] will be used
  * as a unique identifier. The given [content] will be shown when the screen is being
- * navigated to using an instance of [T].
+ * navigated to using an instance of [Route].
  */
 @Suppress("FunctionName")
-public inline fun <reified T : BaseRoute> ScreenDestination(
-    noinline content: @Composable (T) -> Unit,
-): NavDestination = ScreenDestination(DestinationId(T::class), null, null) { _, entry -> content(entry.route) }
+public inline fun <reified Route : BaseRoute> ScreenDestination(
+    noinline content: @Composable (Route) -> Unit,
+): NavDestination<Route> = ScreenDestination(DestinationId(Route::class), null, null) { _, entry ->
+    content(entry.route)
+}
 
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
-public inline fun <reified T : BaseRoute> ScreenDestination(
+public inline fun <reified Route : BaseRoute> ScreenDestination(
     extra: Any,
-    noinline content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
-): NavDestination = ScreenDestination(DestinationId(T::class), null, extra, content)
+    noinline content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit,
+): NavDestination<Route> = ScreenDestination(DestinationId(Route::class), null, extra, content)
 
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
 @JvmName("ScreenWithParentDestination")
-public inline fun <reified T : BaseRoute, reified P : BaseRoute> ScreenDestination(
+public inline fun <reified Route : BaseRoute, reified ParentRoute : BaseRoute> ScreenDestination(
     extra: Any,
-    noinline content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
-): NavDestination = ScreenDestination(DestinationId(T::class), DestinationId(P::class), extra, content)
+    noinline content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit,
+): NavDestination<Route> = ScreenDestination(
+    id = DestinationId(Route::class),
+    parent = DestinationId(ParentRoute::class),
+    extra = extra,
+    content = content,
+)
 
 @PublishedApi
-internal class ScreenDestination<T : BaseRoute>(
-    override val id: DestinationId<T>,
+internal class ScreenDestination<Route : BaseRoute>(
+    override val id: DestinationId<Route>,
     override val parent: DestinationId<*>?,
     override val extra: Any?,
-    override val content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
-) : ContentDestination<T>()
+    override val content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit,
+) : NavDestination<Route>()
 
 /**
  * Creates a new [NavDestination] that is shown on top a [ScreenDestination], for example a dialog or bottom sheet. The
- * class of [T] will be used as a unique identifier. The given [content] will be shown inside the dialog window when
- * navigating to it by using an instance of [T].
+ * class of [Route] will be used as a unique identifier. The given [content] will be shown inside the dialog window when
+ * navigating to it by using an instance of [Route].
  */
 @Suppress("FunctionName")
-public inline fun <reified T : NavRoute> OverlayDestination(
-    noinline content: @Composable (T) -> Unit,
-): NavDestination = OverlayDestination(DestinationId(T::class), null, null) { _, entry -> content(entry.route) }
+public inline fun <reified Route : NavRoute> OverlayDestination(
+    noinline content: @Composable (Route) -> Unit,
+): NavDestination<Route> = OverlayDestination(DestinationId(Route::class), null, null) { _, entry ->
+    content(entry.route)
+}
 
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
-public inline fun <reified T : NavRoute> OverlayDestination(
+public inline fun <reified Route : NavRoute> OverlayDestination(
     extra: Any,
-    noinline content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
-): NavDestination = OverlayDestination(DestinationId(T::class), null, extra, content)
+    noinline content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit,
+): NavDestination<Route> = OverlayDestination(DestinationId(Route::class), null, extra, content)
 
 @InternalNavigationCodegenApi
 @Suppress("FunctionName")
 @JvmName("OverlayWithParentDestination")
-public inline fun <reified T : NavRoute, reified P : BaseRoute> OverlayDestination(
+public inline fun <reified Route : NavRoute, reified ParentRoute : BaseRoute> OverlayDestination(
     extra: Any,
-    noinline content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
-): NavDestination = OverlayDestination(DestinationId(T::class), DestinationId(P::class), extra, content)
+    noinline content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit,
+): NavDestination<Route> = OverlayDestination(
+    id = DestinationId(Route::class),
+    parent = DestinationId(ParentRoute::class),
+    extra = extra,
+    content = content,
+)
 
 @PublishedApi
-internal class OverlayDestination<T : NavRoute>(
-    override val id: DestinationId<T>,
+internal class OverlayDestination<Route : NavRoute>(
+    override val id: DestinationId<Route>,
     override val parent: DestinationId<*>?,
     override val extra: Any?,
-    override val content: @Composable (StackSnapshot, StackEntry<T>) -> Unit,
-) : ContentDestination<T>()
+    override val content: @Composable (StackSnapshot, StackEntry<Route>) -> Unit,
+) : NavDestination<Route>()

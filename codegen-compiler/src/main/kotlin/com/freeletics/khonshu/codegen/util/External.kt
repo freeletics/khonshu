@@ -1,10 +1,12 @@
 package com.freeletics.khonshu.codegen.util
 
+import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.UNIT
+import com.squareup.kotlinpoet.WildcardTypeName
 
 // Codegen Public API
 internal val overlay = ClassName("com.freeletics.khonshu.codegen", "Overlay")
@@ -32,7 +34,10 @@ internal val multiStackHostNavigatorViewModel =
     ClassName("com.freeletics.khonshu.navigation.internal", "StackEntryStoreViewModel")
 internal val navHost = MemberName("com.freeletics.khonshu.navigation", "NavHost")
 internal val navigationSetup = MemberName("com.freeletics.khonshu.navigation", "NavigationSetup")
-internal val navigationDestination = ClassName("com.freeletics.khonshu.navigation", "NavDestination")
+internal val navigationDestination = ClassName(
+    "com.freeletics.khonshu.navigation",
+    "NavDestination",
+).parameterizedBy(WildcardTypeName.producerOf(ANY.copy(nullable = true)))
 internal val screenDestination = MemberName("com.freeletics.khonshu.navigation", "ScreenDestination")
 internal val overlayDestination = MemberName("com.freeletics.khonshu.navigation", "OverlayDestination")
 internal val internalNavigatorApi =

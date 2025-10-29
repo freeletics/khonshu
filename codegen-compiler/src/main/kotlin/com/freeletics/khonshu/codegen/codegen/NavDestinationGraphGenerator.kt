@@ -4,6 +4,7 @@ import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.intoSet
+import com.freeletics.khonshu.codegen.util.navigationDestination
 import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.provides
 import com.squareup.kotlinpoet.CodeBlock
@@ -28,7 +29,7 @@ internal class NavDestinationGraphGenerator(
             .addAnnotation(provides())
             .addAnnotation(intoSet())
             .addAnnotation(optIn(internalNavigatorApi))
-            .returns(data.navigation!!.destinationClass)
+            .returns(navigationDestination)
             .addCode(providesDestinationCode())
             .build()
     }
