@@ -12,6 +12,7 @@ import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
+import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableSet
@@ -99,7 +100,7 @@ public class TestHostNavigator(
         resultType: String,
     ): NavigationResultRequest<O> {
         val requestKey = "${id.route.qualifiedName!!}-$resultType"
-        val key = NavigationResultRequest.Key<O>(id, requestKey)
+        val key = NavigationResultRequest.Key<O>(StackEntry.Id(id.route.simpleName!!), requestKey)
         return NavigationResultRequest(key, SavedStateHandle())
     }
 
@@ -109,5 +110,17 @@ public class TestHostNavigator(
 
     override fun <T> backPresses(value: T): Flow<T> {
         return backPresses.asChannel().receiveAsFlow().map { value }
+    }
+
+    @InternalNavigationApi
+    @OptIn(InternalNavigationCodegenApi::class)
+    override fun <T : BaseRoute> getTopEntryFor(destinationId: DestinationId<T>): StackEntry<T> {
+        throw UnsupportedOperationException()
+    }
+
+    @InternalNavigationApi
+    @OptIn(InternalNavigationCodegenApi::class)
+    override fun <T : BaseRoute> getEntryFor(id: StackEntry.Id): StackEntry<T> {
+        throw UnsupportedOperationException()
     }
 }

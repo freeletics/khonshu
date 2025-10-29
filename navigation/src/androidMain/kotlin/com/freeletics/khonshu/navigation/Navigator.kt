@@ -3,6 +3,7 @@ package com.freeletics.khonshu.navigation
 import android.os.Parcelable
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import com.freeletics.khonshu.navigation.internal.StackEntry
 import kotlin.reflect.KClass
 import kotlinx.coroutines.flow.Flow
 
@@ -53,6 +54,12 @@ public interface Navigator {
      * be used.
      */
     public fun replaceAllBackStacks(root: NavRoot)
+
+    @InternalNavigationApi
+    public fun <T : BaseRoute> getTopEntryFor(destinationId: DestinationId<T>): StackEntry<T>
+
+    @InternalNavigationApi
+    public fun <T : BaseRoute> getEntryFor(id: StackEntry.Id): StackEntry<T>
 
     public companion object {
         /**
