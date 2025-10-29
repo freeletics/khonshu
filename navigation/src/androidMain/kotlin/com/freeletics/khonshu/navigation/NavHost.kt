@@ -49,7 +49,7 @@ import kotlinx.coroutines.CancellationException
 @Composable
 public fun NavHost(
     startRoute: NavRoot,
-    destinations: ImmutableSet<NavDestination>,
+    destinations: ImmutableSet<NavDestination<*>>,
     modifier: Modifier = Modifier,
     deepLinkHandlers: ImmutableSet<DeepLinkHandler> = persistentSetOf(),
     deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),

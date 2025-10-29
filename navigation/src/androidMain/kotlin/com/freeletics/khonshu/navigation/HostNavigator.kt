@@ -65,7 +65,7 @@ public abstract class HostNavigator @InternalNavigationTestingApi constructor() 
 @Composable
 public fun rememberHostNavigator(
     startRoot: NavRoot,
-    destinations: ImmutableSet<NavDestination>,
+    destinations: ImmutableSet<NavDestination<*>>,
     deepLinkHandlers: ImmutableSet<DeepLinkHandler> = persistentSetOf(),
     deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
 ): HostNavigator {

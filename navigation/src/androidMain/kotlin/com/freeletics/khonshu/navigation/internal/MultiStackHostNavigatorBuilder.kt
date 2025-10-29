@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.navigation.internal
 
 import android.os.Bundle
-import com.freeletics.khonshu.navigation.ContentDestination
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
@@ -12,10 +11,10 @@ import kotlinx.collections.immutable.ImmutableSet
 public fun createHostNavigator(
     viewModel: StackEntryStoreViewModel,
     startRoot: NavRoot,
-    destinations: ImmutableSet<NavDestination>,
+    destinations: ImmutableSet<NavDestination<*>>,
     startRootOverridesSavedRoot: Boolean = false,
 ): HostNavigator {
-    val contentDestinations = destinations.filterIsInstance<ContentDestination<*>>()
+    val contentDestinations = destinations.filterIsInstance<NavDestination<*>>()
     val factory = StackEntryFactory(contentDestinations, viewModel)
 
     val navState = viewModel.globalSavedStateHandle.get<Bundle>(SAVED_STATE_STACK)

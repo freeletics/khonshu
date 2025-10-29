@@ -7,7 +7,7 @@ import androidx.compose.runtime.movableContentOf
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.ContentDestination
+import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.OverlayDestination
@@ -19,7 +19,7 @@ import dev.drewhamilton.poko.Poko
 public class StackEntry<T : BaseRoute> internal constructor(
     internal val id: Id,
     public val route: T,
-    private val destination: ContentDestination<T>,
+    private val destination: NavDestination<T>,
     public val savedStateHandle: SavedStateHandle,
     public val store: StackEntryStore,
 ) {
