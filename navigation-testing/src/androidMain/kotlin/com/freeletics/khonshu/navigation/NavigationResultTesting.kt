@@ -1,8 +1,8 @@
 package com.freeletics.khonshu.navigation
 
 import android.os.Parcelable
-import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
+import com.freeletics.khonshu.navigation.internal.StackEntry
 
 /**
  * Send a fake result to collectors of this request. Can be used to test the result handling
@@ -21,5 +21,5 @@ public fun <R : Parcelable> NavigationResultRequest<R>.sendResult(result: R) {
  */
 @OptIn(InternalNavigationCodegenApi::class)
 public inline fun <reified R : Parcelable> fakeNavigationResultKey(): NavigationResultRequest.Key<R> {
-    return NavigationResultRequest.Key(DestinationId(NavRoute::class), R::class.qualifiedName!!)
+    return NavigationResultRequest.Key(StackEntry.Id(""), R::class.qualifiedName!!)
 }

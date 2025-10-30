@@ -1,14 +1,12 @@
 package com.freeletics.khonshu.navigation
 
-import android.os.Parcel
 import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
-import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
+import com.freeletics.khonshu.navigation.internal.StackEntry
 import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -45,23 +43,10 @@ public class NavigationResultRequest<R : Parcelable> @InternalNavigationTestingA
     @Poko
     @Parcelize
     public class Key<R : Parcelable> @InternalNavigationTestingApi constructor(
-        internal val destinationId: DestinationId<*>,
+        internal val stackEntryId: StackEntry.Id,
         @property:InternalNavigationTestingApi
         public val requestKey: String,
-    ) : Parcelable {
-        private companion object : Parceler<Key<*>> {
-            override fun Key<*>.write(parcel: Parcel, flags: Int) {
-                parcel.writeSerializable(destinationId.route.java)
-                parcel.writeString(requestKey)
-            }
-
-            override fun create(parcel: Parcel): Key<*> {
-                @Suppress("UNCHECKED_CAST", "DEPRECATION")
-                val cls = (parcel.readSerializable() as Class<out BaseRoute>).kotlin
-                return Key<Parcelable>(DestinationId(cls), parcel.readString()!!)
-            }
-        }
-    }
+    ) : Parcelable
 }
 
 @Parcelize

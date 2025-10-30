@@ -12,6 +12,7 @@ import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.OverlayDestination
 import dev.drewhamilton.poko.Poko
+import kotlinx.parcelize.Parcelize
 
 @Poko
 @Immutable
@@ -55,5 +56,7 @@ public class StackEntry<T : BaseRoute> internal constructor(
     }
 
     @JvmInline
-    internal value class Id(internal val value: String)
+    @Parcelize
+    @InternalNavigationTestingApi
+    public value class Id(internal val value: String) : Parcelable
 }
