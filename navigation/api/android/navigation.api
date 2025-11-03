@@ -32,7 +32,8 @@ public final class com/freeletics/khonshu/navigation/HostNavigatorKt {
 	public static final fun rememberHostNavigator (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/runtime/Composer;II)Lcom/freeletics/khonshu/navigation/HostNavigator;
 }
 
-public abstract interface class com/freeletics/khonshu/navigation/NavDestination {
+public abstract class com/freeletics/khonshu/navigation/NavDestination {
+	public static final field $stable I
 }
 
 public final class com/freeletics/khonshu/navigation/NavHostKt {
@@ -81,8 +82,7 @@ public abstract interface class com/freeletics/khonshu/navigation/Navigator {
 public final class com/freeletics/khonshu/navigation/Navigator$Companion {
 }
 
-public final class com/freeletics/khonshu/navigation/OverlayDestination {
-	public static final field $stable I
+public final class com/freeletics/khonshu/navigation/OverlayDestination : com/freeletics/khonshu/navigation/NavDestination {
 	public static final field $stable I
 	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;Ljava/lang/Object;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
@@ -95,8 +95,7 @@ public abstract interface class com/freeletics/khonshu/navigation/ResultNavigato
 public final class com/freeletics/khonshu/navigation/ResultNavigator$Companion {
 }
 
-public final class com/freeletics/khonshu/navigation/ScreenDestination {
-	public static final field $stable I
+public final class com/freeletics/khonshu/navigation/ScreenDestination : com/freeletics/khonshu/navigation/NavDestination {
 	public static final field $stable I
 	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;Ljava/lang/Object;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }

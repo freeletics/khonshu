@@ -5,6 +5,9 @@ Change Log
 
 ### Navigation
 
+- `NavDestination` is now `NavDestination<T : BaseRoute>`, from a consumer perspective
+  the only change is that it now needs to be referenced as `NavDestination<*>`.
+
 ### Codegen
 
 - Optimize performance by avoiding unneeded lookups of classes.
