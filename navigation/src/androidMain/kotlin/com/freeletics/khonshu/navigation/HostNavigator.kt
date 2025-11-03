@@ -6,17 +6,16 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.freeletics.khonshu.navigation.deeplinks.DeepLink
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.StackEntryStoreViewModel
+import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.internal.createHostNavigator
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
-import com.freeletics.khonshu.navigation.deeplinks.DeepLink
-import com.freeletics.khonshu.navigation.internal.StackSnapshot
 
 public abstract class HostNavigator @InternalNavigationTestingApi constructor() : Navigator {
-
     @InternalNavigationTestingApi
     public abstract val snapshot: State<StackSnapshot>
 
