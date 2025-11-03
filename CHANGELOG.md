@@ -7,6 +7,9 @@ Change Log
 
 - `NavDestination` is now `NavDestination<T : BaseRoute>`, from a consumer perspective
   the only change is that it now needs to be referenced as `NavDestination<*>`.
+- Improve reliability of navigation result APIs by ensuring that results
+  are not delivered to a wrong entry on the back stack with the same
+  route class.
 
 ### Codegen
 

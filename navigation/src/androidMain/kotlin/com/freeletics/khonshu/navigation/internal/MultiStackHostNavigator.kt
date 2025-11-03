@@ -99,7 +99,7 @@ internal class MultiStackHostNavigator(
     }
 
     override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
-        val entry = snapshot.value.entryFor(key.destinationId)
+        val entry = getEntryFor(key.stackEntryId)
         entry.savedStateHandle[key.requestKey] = NavigationResult(result)
     }
 
@@ -108,8 +108,9 @@ internal class MultiStackHostNavigator(
         resultType: String,
     ): NavigationResultRequest<O> {
         val requestKey = "${id.route.qualifiedName!!}-$resultType"
-        val key = NavigationResultRequest.Key<O>(id, requestKey)
-        return NavigationResultRequest(key, snapshot.value.entryFor(id).savedStateHandle)
+        val entry = getTopEntryFor(id)
+        val key = NavigationResultRequest.Key<O>(entry.id, requestKey)
+        return NavigationResultRequest(key, entry.savedStateHandle)
     }
 
     override val onBackPressedCallback = DelegatingOnBackPressedCallback()
@@ -132,6 +133,16 @@ internal class MultiStackHostNavigator(
         val nonNotifyingNavigator = NonNotifyingNavigator()
         nonNotifyingNavigator.apply(block)
         stack.updateVisibleDestinations(true)
+    }
+
+    @InternalNavigationApi
+    override fun getTopEntryFor(destinationId: DestinationId<*>): StackEntry<*> {
+        return snapshot.value.entryFor(destinationId)
+    }
+
+    @InternalNavigationApi
+    override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
+        return snapshot.value.entryFor(id)
     }
 
     internal companion object {
@@ -165,6 +176,16 @@ internal class MultiStackHostNavigator(
 
         override fun replaceAllBackStacks(root: NavRoot) {
             stack.replaceAll(root, notify = false)
+        }
+
+        @InternalNavigationApi
+        override fun getTopEntryFor(destinationId: DestinationId<*>): StackEntry<*> {
+            return this@MultiStackHostNavigator.getTopEntryFor(destinationId)
+        }
+
+        @InternalNavigationApi
+        override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
+            return this@MultiStackHostNavigator.getEntryFor(id)
         }
     }
 }

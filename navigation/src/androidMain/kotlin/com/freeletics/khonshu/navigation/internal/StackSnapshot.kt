@@ -58,4 +58,10 @@ public class StackSnapshot internal constructor(
             ?: startStackRootEntry.takeIf { it.destinationId == destinationId } as StackEntry<T>?
             ?: throw IllegalStateException("Route $destinationId not found on back stack")
     }
+
+    internal fun entryFor(id: StackEntry.Id): StackEntry<*> {
+        return entries.lastOrNull { it.id == id }
+            ?: startStackRootEntry.takeIf { it.id == id }
+            ?: throw IllegalStateException("Entry $id not found on back stack")
+    }
 }
