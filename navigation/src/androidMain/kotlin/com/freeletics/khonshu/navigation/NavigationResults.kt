@@ -2,6 +2,9 @@ package com.freeletics.khonshu.navigation
 
 import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
+import com.freeletics.khonshu.navigation.NavigationResultRequest
+import com.freeletics.khonshu.navigation.NavigationResultRequest as Request
+import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import dev.drewhamilton.poko.Poko
@@ -10,9 +13,48 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.parcelize.Parcelize
 
 /**
- * Class returned from [ResultNavigator.registerForNavigationResult].
+ * Register for receiving navigation results.
  *
- * The [key] can be passed to other destinations that can then call [ResultNavigator.deliverNavigationResult] with it
+ * The returned [NavigationResultRequest] has a [NavigationResultRequest.Key]. This `key` should
+ * be passed to different destinations which can then use it to call [deliverNavigationResult]. A
+ * result passed to `deliverNavigationResult` will then be emitted by the `Flow` returned from
+ * [NavigationResultRequest.results].
+ */
+public inline fun <reified T : BaseRoute, reified O : Parcelable> Navigator.registerForNavigationResult(): Request<O> {
+    return registerForNavigationResult(
+        id = DestinationId(T::class),
+        resultType = O::class.qualifiedName!!,
+    )
+}
+
+@PublishedApi
+internal fun <T : BaseRoute, O : Parcelable> Navigator.registerForNavigationResult(
+    id: DestinationId<T>,
+    resultType: String,
+): Request<O> {
+    val requestKey = "${id.route.qualifiedName!!}-$resultType"
+    val entry = getTopEntryFor(id)
+    val key = Request.Key<O>(entry.id, requestKey)
+    return Request(key, entry.savedStateHandle)
+}
+
+/**
+ * Delivers the [result] to the destination that created [key].
+ *
+ * See [registerForNavigationResult].
+ */
+public fun <O : Parcelable> Navigator.deliverNavigationResult(
+    key: Request.Key<O>,
+    result: O,
+) {
+    val entry = getEntryFor(key.stackEntryId)
+    entry.savedStateHandle[key.requestKey] = NavigationResult(result)
+}
+
+/**
+ * Class returned from [registerForNavigationResult].
+ *
+ * The [key] can be passed to other destinations that can then call [deliverNavigationResult] with it
  * to deliver a `result` [R] that will then be emitted by [results].
  */
 public class NavigationResultRequest<R : Parcelable> @InternalNavigationTestingApi constructor(
@@ -21,8 +63,7 @@ public class NavigationResultRequest<R : Parcelable> @InternalNavigationTestingA
     public val savedStateHandle: SavedStateHandle,
 ) {
     /**
-     * Emits any result that was passed to [ResultNavigator.deliverNavigationResult] with the matching
-     * [key].
+     * Emits any result that was passed to [deliverNavigationResult] with the matching [key].
      *
      * Results will only be delivered to one collector at a time.
      */
