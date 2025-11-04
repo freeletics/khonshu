@@ -4,7 +4,6 @@ import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import kotlin.reflect.KClass
-import kotlinx.coroutines.flow.Flow
 
 public interface Navigator {
     /**
@@ -69,22 +68,4 @@ public interface Navigator {
             navigateBackTo(T::class, inclusive)
         }
     }
-}
-
-public interface BackInterceptor {
-    /**
-     * Returns a [Flow] that will emit [Unit] on every back press. While this Flow is being collected
-     * all back presses will be intercepted and none of the default back press handling happens.
-     *
-     * When this is called multiple times only the latest caller will receive emissions.
-     */
-    public fun backPresses(): Flow<Unit> = backPresses(Unit)
-
-    /**
-     * Returns a [Flow] that will emit [value] on every back press. While this Flow is being collected
-     * all back presses will be intercepted and none of the default back press handling happens.
-     *
-     * When this is called multiple times only the latest caller will receive emissions.
-     */
-    public fun <T> backPresses(value: T): Flow<T>
 }

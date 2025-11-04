@@ -31,7 +31,7 @@ public suspend fun TestHostNavigator.test(
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
     events.test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(this, savedStateHandle, this, ::dispatchBackPress)
+        val turbine = DefaultNavigatorTurbine(this, savedStateHandle, this)
         validate(turbine)
     }
 }
@@ -54,7 +54,7 @@ public suspend fun DestinationNavigator.test(
     val hostEvents = testHostNavigator.events
     val activityEvents = activityEvents.map(::toTestEvent)
     merge(hostEvents, activityEvents).test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(this, testHostNavigator.savedStateHandle, this, ::dispatchBackPress)
+        val turbine = DefaultNavigatorTurbine(this, testHostNavigator.savedStateHandle, this)
         validate(turbine)
     }
 }
@@ -75,7 +75,7 @@ public fun TestHostNavigator.testIn(
     name: String? = null,
 ): NavigatorTurbine {
     val turbine = events.testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(turbine, savedStateHandle, scope, ::dispatchBackPress)
+    return DefaultNavigatorTurbine(turbine, savedStateHandle, scope)
 }
 
 /**
@@ -99,34 +99,10 @@ public fun DestinationNavigator.testIn(
     val hostEvents = testHostNavigator.events
     val activityEvents = activityEvents.map(::toTestEvent)
     val turbine = merge(hostEvents, activityEvents).testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(turbine, testHostNavigator.savedStateHandle, scope, ::dispatchBackPress)
-}
-
-/**
- * Causes an emission to the current [TestHostNavigator.backPresses] collector to make it possible
- * to simulate a back press in tests that check custom back press logic.
- */
-public fun TestHostNavigator.dispatchBackPress() {
-    onBackPressedCallback.handleOnBackPressed()
-}
-
-/**
- * Causes an emission to the current [DestinationNavigator.backPresses] collector to make it possible
- * to simulate a back press in tests that check custom back press logic.
- *
- * Note: This requires passing [TestHostNavigator] to [DestinationNavigator].
- */
-public fun DestinationNavigator.dispatchBackPress() {
-    (hostNavigator as TestHostNavigator).onBackPressedCallback.handleOnBackPressed()
+    return DefaultNavigatorTurbine(turbine, testHostNavigator.savedStateHandle, scope)
 }
 
 public interface NavigatorTurbine {
-    /**
-     * Causes an emission to the current [BackInterceptor.backPresses] collector to make it possible
-     * to simulate a back press in tests that check custom back press logic.
-     */
-    public fun dispatchBackPress()
-
     /**
      * Assert that the next event received was a navigation event to the given [route]. This function
      * will suspend if no events have been received.
@@ -269,12 +245,7 @@ internal class DefaultNavigatorTurbine(
     private val turbine: ReceiveTurbine<TestEvent>,
     private val savedStateHandle: SavedStateHandle,
     private val scope: CoroutineScope,
-    private val dispatchBackPress: () -> Unit,
 ) : NavigatorTurbine {
-    override fun dispatchBackPress() {
-        dispatchBackPress.invoke()
-    }
-
     override suspend fun awaitNavigateTo(route: NavRoute) {
         val event = NavigateToEvent(route)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)

@@ -11,7 +11,6 @@ public abstract class DestinationNavigator(
     @property:InternalNavigationTestingApi
     public val hostNavigator: HostNavigator,
 ) : Navigator by hostNavigator,
-    BackInterceptor by hostNavigator,
     ActivityNavigator() {
     /**
      * See [HostNavigator.navigate].

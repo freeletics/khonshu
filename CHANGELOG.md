@@ -10,6 +10,8 @@ Change Log
 - Moved `com.freeletics.khonshu.navigation.ResultNavigator.Companion.registerForNavigationResult`
   to `com.freeletics.khonshu.navigation.registerForNavigationResult`.
 - `deliverNavigationResult` is now an extension function and needs to be imported.
+- Removed `backPresses` and the testing related APIs. Use `PredictiveBackHandler`,
+  `BackHandler` or the `navigation-events` APIs instead.
 - Improve reliability of navigation result APIs by ensuring that results
   are not delivered to a wrong entry on the back stack with the same
   route class.

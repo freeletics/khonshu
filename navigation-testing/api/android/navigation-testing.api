@@ -20,12 +20,9 @@ public abstract interface class com/freeletics/khonshu/navigation/NavigatorTurbi
 	public abstract fun awaitSwitchBackStack (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun cancel (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun cancelAndIgnoreRemainingNavEvents (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun dispatchBackPress ()V
 }
 
 public final class com/freeletics/khonshu/navigation/NavigatorTurbineKt {
-	public static final fun dispatchBackPress (Lcom/freeletics/khonshu/navigation/DestinationNavigator;)V
-	public static final fun dispatchBackPress (Lcom/freeletics/khonshu/navigation/TestHostNavigator;)V
 	public static final fun test-C2H2yOE (Lcom/freeletics/khonshu/navigation/DestinationNavigator;Lkotlin/time/Duration;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun test-C2H2yOE (Lcom/freeletics/khonshu/navigation/TestHostNavigator;Lkotlin/time/Duration;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun test-C2H2yOE$default (Lcom/freeletics/khonshu/navigation/DestinationNavigator;Lkotlin/time/Duration;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
@@ -40,8 +37,6 @@ public final class com/freeletics/khonshu/navigation/TestHostNavigator : com/fre
 	public fun <init> ()V
 	public fun <init> (Lcom/freeletics/khonshu/navigation/NavRoute;)V
 	public synthetic fun <init> (Lcom/freeletics/khonshu/navigation/NavRoute;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun backPresses ()Lkotlinx/coroutines/flow/Flow;
-	public fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 	public final fun getHandleDeepLinkRoute ()Lcom/freeletics/khonshu/navigation/NavRoute;
 	public fun handleDeepLink (Landroid/content/Intent;Lkotlinx/collections/immutable/ImmutableSet;Lkotlinx/collections/immutable/ImmutableSet;)Z
 	public fun navigate (Lkotlin/jvm/functions/Function1;)V
