@@ -1,17 +1,12 @@
 package com.freeletics.khonshu.navigation.internal
 
-import android.content.Intent
-import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.State
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.Navigator
-import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
-import com.freeletics.khonshu.navigation.deeplinks.extractDeepLinkRoutes
 import kotlin.reflect.KClass
-import kotlinx.collections.immutable.ImmutableSet
 
 internal class MultiStackHostNavigator(
     private val stack: MultiStack,
@@ -24,40 +19,6 @@ internal class MultiStackHostNavigator(
         viewModel.globalSavedStateHandle.setSavedStateProvider(SAVED_STATE_STACK) {
             stack.saveState()
         }
-    }
-
-    override fun handleDeepLink(
-        intent: Intent,
-        deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
-        deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
-    ): Boolean {
-        val deepLinkRoutes = intent.extractDeepLinkRoutes(deepLinkHandlers, deepLinkPrefixes)
-        return handleDeepLink(deepLinkRoutes)
-    }
-
-    @VisibleForTesting
-    internal fun handleDeepLink(deepLinkRoutes: List<BaseRoute>): Boolean {
-        if (deepLinkRoutes.isEmpty()) {
-            return false
-        }
-
-        stack.switchStack(stack.startRoot, clearTargetStack = true)
-
-        deepLinkRoutes.forEachIndexed { index, route ->
-            when (route) {
-                is NavRoot -> {
-                    require(index == 0) { "NavRoot can only be the first element of a deep link" }
-                    require(route.destinationId != stack.startRoot.destinationId) {
-                        "$route is the start root which is not allowed to be part of a deep " +
-                            "link because it will always be on the back stack"
-                    }
-                    stack.switchStack(route, clearTargetStack = true)
-                }
-                is NavRoute -> stack.push(route)
-            }
-        }
-
-        return true
     }
 
     override fun navigateTo(route: NavRoute) {

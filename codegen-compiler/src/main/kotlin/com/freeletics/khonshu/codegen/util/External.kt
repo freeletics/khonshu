@@ -40,6 +40,8 @@ internal val navigationDestination = ClassName(
 ).parameterizedBy(WildcardTypeName.producerOf(ANY.copy(nullable = true)))
 internal val screenDestination = MemberName("com.freeletics.khonshu.navigation", "ScreenDestination")
 internal val overlayDestination = MemberName("com.freeletics.khonshu.navigation", "OverlayDestination")
+internal val launchInfo = ClassName("com.freeletics.khonshu.navigation.deeplinks", "LaunchInfo")
+internal val asLaunchInfo = MemberName("com.freeletics.khonshu.navigation.deeplinks", "asLaunchInfo")
 internal val internalNavigatorApi =
     ClassName("com.freeletics.khonshu.navigation.internal", "InternalNavigationCodegenApi")
 

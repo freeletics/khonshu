@@ -3,6 +3,7 @@ package com.freeletics.khonshu.navigation.internal
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Immutable
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.NavRoot
 import dev.drewhamilton.poko.Poko
 
 @Poko
@@ -11,12 +12,17 @@ import dev.drewhamilton.poko.Poko
 public class StackSnapshot internal constructor(
     @get:VisibleForTesting
     internal val entries: List<StackEntry<*>>,
-    private val startStackRootEntry: StackEntry<*>,
+    private val startStackRootEntry: StackEntry<out NavRoot>,
 ) {
     private var firstVisibleIndex: Int = -1
 
-    internal val root: StackEntry<*>
-        get() = entries.first()
+    @Suppress("UNCHECKED_CAST")
+    internal val startRoot: StackEntry<out NavRoot>
+        get() = startStackRootEntry
+
+    @Suppress("UNCHECKED_CAST")
+    internal val root: StackEntry<out NavRoot>
+        get() = entries.first() as StackEntry<NavRoot>
 
     internal val current: StackEntry<*>
         get() = entries.last()
