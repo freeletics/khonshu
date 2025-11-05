@@ -1,11 +1,9 @@
 package com.freeletics.khonshu.navigation.activity
 
 import androidx.activity.result.contract.ActivityResultContract
-import com.freeletics.khonshu.navigation.NavigationSetup
-import com.freeletics.khonshu.navigation.activity.ActivityNavigator
 import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest.PermissionResult
+import com.freeletics.khonshu.navigation.activity.internal.RequestPermissionsContract
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
-import com.freeletics.khonshu.navigation.internal.RequestPermissionsContract
 import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
@@ -26,7 +24,7 @@ public sealed class ActivityResultContractRequest<I, O, R> {
     public val results: Flow<R> = _results.receiveAsFlow()
 
     /**
-     * Deliver a new [result] to [results]. This method should be called by [NavigationSetup].
+     * Deliver a new [result] to [results]. This method should be called by [ActivityNavigatorEffect].
      */
     @InternalNavigationTestingApi
     public fun onResult(result: R) {

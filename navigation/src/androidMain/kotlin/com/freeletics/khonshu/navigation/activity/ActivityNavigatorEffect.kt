@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation
+package com.freeletics.khonshu.navigation.activity
 
 import android.app.Activity
 import android.content.Context
@@ -7,32 +7,26 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
-import com.freeletics.khonshu.navigation.activity.ActivityNavigator
-import com.freeletics.khonshu.navigation.activity.ActivityResultContractRequest
-import com.freeletics.khonshu.navigation.activity.ActivityResultRequest
-import com.freeletics.khonshu.navigation.activity.ActivityRoute
-import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest
-import com.freeletics.khonshu.navigation.internal.ActivityEvent
-import com.freeletics.khonshu.navigation.internal.ActivityStarter
-import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
+import com.freeletics.khonshu.navigation.LocalHostNavigator
+import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.activity.internal.ActivityEvent
+import com.freeletics.khonshu.navigation.activity.internal.ActivityStarter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.annotations.VisibleForTesting
 
 /**
- * Sets up the [com.freeletics.khonshu.navigation.activity.ActivityNavigator] and [DestinationNavigator] inside the current composition so that it's events
- * are handled while the composition is active.
+ * Sets up the [ActivityNavigator] and [com.freeletics.khonshu.navigation.DestinationNavigator] inside the current
+ * composition so that its events are handled while the composition is active.
  */
 @Composable
-public fun NavigationSetup(navigator: ActivityNavigator) {
+public fun ActivityNavigatorEffect(navigator: ActivityNavigator) {
     val hostNavigator = LocalHostNavigator.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -134,11 +128,6 @@ internal inline fun <I, O, R> ActivityResultContractRequest<I, O, R>.deliverResu
             },
         )
     }
-}
-
-@InternalNavigationCodegenApi
-public val LocalHostNavigator: ProvidableCompositionLocal<HostNavigator> = staticCompositionLocalOf {
-    throw IllegalStateException("Can't access HostNavigator outside of a NavHost")
 }
 
 internal tailrec fun Context.findActivity(): Activity = when (this) {

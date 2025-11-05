@@ -2,7 +2,8 @@ package com.freeletics.khonshu.navigation.activity
 
 import androidx.activity.result.contract.ActivityResultContracts
 import app.cash.turbine.test
-import com.freeletics.khonshu.navigation.internal.ActivityEvent
+import com.freeletics.khonshu.navigation.activity.internal.ActivityEvent.NavigateForResult
+import com.freeletics.khonshu.navigation.activity.internal.ActivityEvent.NavigateTo
 import com.freeletics.khonshu.navigation.test.SimpleActivity
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestActivityNavigator
@@ -20,7 +21,7 @@ internal class ActivityNavigatorTest {
             navigator.navigateTo(SimpleActivity(1), SimpleRoute(2))
 
             Truth.assertThat(awaitItem())
-                .isEqualTo(ActivityEvent.NavigateTo(SimpleActivity(1), SimpleRoute(2)))
+                .isEqualTo(NavigateTo(SimpleActivity(1), SimpleRoute(2)))
 
             cancel()
         }
@@ -36,7 +37,7 @@ internal class ActivityNavigatorTest {
             navigator.navigateForResult(launcher, "image/*")
 
             Truth.assertThat(awaitItem())
-                .isEqualTo(ActivityEvent.NavigateForResult(launcher, "image/*"))
+                .isEqualTo(NavigateForResult(launcher, "image/*"))
 
             cancel()
         }
@@ -52,7 +53,7 @@ internal class ActivityNavigatorTest {
             navigator.requestPermissions(launcher, permission)
 
             Truth.assertThat(awaitItem())
-                .isEqualTo(ActivityEvent.NavigateForResult(launcher, listOf(permission)))
+                .isEqualTo(NavigateForResult(launcher, listOf(permission)))
 
             cancel()
         }

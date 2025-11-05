@@ -1,8 +1,9 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation.activity.internal
 
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.activity.ActivityResultContractRequest
 import com.freeletics.khonshu.navigation.activity.ActivityRoute
+import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import dev.drewhamilton.poko.Poko
 
 @InternalNavigationTestingApi
