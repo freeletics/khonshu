@@ -52,12 +52,7 @@ public abstract class ActivityNavigator {
      *
      * For permission requests prefer using [registerForPermissionsResult] instead.
      *
-<<<<<<< HEAD
-     * Note: You must call this before [com.freeletics.khonshu.navigation.NavigationSetup] is called with
-     * this navigator.
-=======
      * Note: You must call this before [ActivityNavigatorEffect] is called with this navigator.
->>>>>>> 0a0d838b (move Android APIs to extra package)
      */
     public fun <I, O> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
@@ -80,12 +75,7 @@ public abstract class ActivityNavigator {
      * a `PermissionResult` instead of a `boolean. See `[com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult]`
      * for more information.
      *
-<<<<<<< HEAD
-     * Note: You must call this before [com.freeletics.khonshu.navigation.NavigationSetup] is called with
-     * this navigator.
-=======
      * Note: You must call this before [ActivityNavigatorEffect] is called with this navigator.
->>>>>>> 0a0d838b (move Android APIs to extra package)
      */
     public fun registerForPermissionsResult(): PermissionsResultRequest {
         checkAllowedToAddRequests()
