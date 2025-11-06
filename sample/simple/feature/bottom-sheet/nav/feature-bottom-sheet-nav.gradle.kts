@@ -1,5 +1,5 @@
 plugins {
-    id("com.freeletics.gradle.feature.android")
+    id("com.freeletics.gradle.feature")
 }
 
 dependencies {

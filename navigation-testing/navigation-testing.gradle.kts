@@ -1,6 +1,3 @@
-import com.freeletics.gradle.plugin.FreeleticsAndroidExtension
-import org.gradle.kotlin.dsl.configure
-
 plugins {
     id("com.freeletics.gradle.multiplatform")
     id("com.freeletics.gradle.publish.oss")
@@ -13,11 +10,9 @@ freeletics {
 
     multiplatform {
         addJvmTarget()
-        addAndroidTarget()
-    }
-
-    extensions.configure(FreeleticsAndroidExtension::class) {
-        enableParcelize()
+        addAndroidTarget {
+            enableParcelize()
+        }
     }
 }
 
