@@ -15,6 +15,7 @@ import com.tschuchort.compiletesting.symbolProcessorProviders
 import com.tschuchort.compiletesting.useKsp2
 import java.io.File
 import java.nio.file.Files
+import java.util.Collections.emptyList
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
@@ -113,7 +114,7 @@ private fun KotlinCompilation.configure(
 }
 
 private fun KotlinCompilation.sourceFile(name: String, content: String): SourceFile {
-    val path = "${workingDir.absolutePath}/sources/src/main/kotlin/$name"
+    val path = "${workingDir.absolutePath}/sources/src/jvmMain/kotlin/$name"
     Files.createDirectories(File(path).parentFile!!.toPath())
     return SourceFile.kotlin(path, content)
 }

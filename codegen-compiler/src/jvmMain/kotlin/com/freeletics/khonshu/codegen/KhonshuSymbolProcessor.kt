@@ -3,7 +3,6 @@ package com.freeletics.khonshu.codegen
 import com.freeletics.khonshu.codegen.codegen.FileGenerator
 import com.freeletics.khonshu.codegen.parser.toComposeScreenDestinationData
 import com.freeletics.khonshu.codegen.parser.toNavHostActivityData
-import com.google.auto.service.AutoService
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -19,7 +18,6 @@ public class KhonshuSymbolProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
 ) : SymbolProcessor {
-    @AutoService(SymbolProcessorProvider::class)
     public class KhonshuSymbolProcessorProvider : SymbolProcessorProvider {
         override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
             return KhonshuSymbolProcessor(environment.codeGenerator, environment.logger)

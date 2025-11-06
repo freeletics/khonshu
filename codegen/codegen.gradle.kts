@@ -30,9 +30,9 @@ dependencies {
 
     "androidMainImplementation"(libs.coroutines.core)
 
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.truth)
-    "androidUnitTestImplementation"(libs.coroutines.test)
-    "androidUnitTestImplementation"(libs.turbine)
-    "androidUnitTestImplementation"(libs.androidx.lifecycle.testing)
+    "androidHostTestImplementation"(libs.junit)
+    "androidHostTestImplementation"(libs.truth)
+    "androidHostTestImplementation"(libs.coroutines.test)
+    "androidHostTestImplementation"(libs.turbine)
+    "androidHostTestImplementation"(libs.androidx.lifecycle.testing)
 }

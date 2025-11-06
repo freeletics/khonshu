@@ -1,5 +1,3 @@
-import com.freeletics.gradle.plugin.FreeleticsAndroidExtension
-
 plugins {
     id("com.freeletics.gradle.multiplatform")
     id("com.freeletics.gradle.publish.oss")
@@ -16,15 +14,13 @@ freeletics {
 
     multiplatform {
         addJvmTarget()
-        addAndroidTarget()
+        addAndroidTarget {
+            enableParcelize()
+            consumerProguardFiles("navigation.pro")
+        }
     }
 
     useCompose()
-
-    extensions.configure(FreeleticsAndroidExtension::class) {
-        enableParcelize()
-        consumerProguardFiles("navigation.pro")
-    }
 }
 
 dependencies {
@@ -45,9 +41,9 @@ dependencies {
     "androidMainImplementation"(libs.androidx.lifecycle.runtime)
     "androidMainImplementation"(libs.kotlin.parcelize)
 
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.truth)
-    "androidUnitTestImplementation"(libs.turbine)
-    "androidUnitTestImplementation"(libs.androidx.lifecycle.testing)
-    "androidUnitTestImplementation"(libs.coroutines.test)
+    "androidHostTestImplementation"(libs.junit)
+    "androidHostTestImplementation"(libs.truth)
+    "androidHostTestImplementation"(libs.turbine)
+    "androidHostTestImplementation"(libs.androidx.lifecycle.testing)
+    "androidHostTestImplementation"(libs.coroutines.test)
 }
