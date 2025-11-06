@@ -98,7 +98,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
-            import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
+            import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import com.test.parent.TestParentScope
@@ -284,7 +284,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
-            import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
+            import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import dev.zacsweers.metro.AppScope
@@ -493,7 +493,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
-            import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
+            import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import com.test.other.TestClass2
@@ -697,7 +697,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
-            import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
+            import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import com.test.parent.TestParentScope
@@ -875,7 +875,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
-            import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
+            import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import com.test.parent.TestParentScope
@@ -1060,7 +1060,7 @@ internal class NavHostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavRoot
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntryStoreViewModel
-            import com.freeletics.khonshu.navigation.`internal`.createHostNavigator
+            import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import com.test.parent.TestParentScope
