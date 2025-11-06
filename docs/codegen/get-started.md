@@ -101,7 +101,7 @@ a screen is shown in the logged in or logged out state.
 
 The integration of Khonshu's Codegen and Navigation libraries also expects an `ActivityNavigator`
 to be injectable. This can be easily achieved by adding `@SingleIn(ExampleScope::class)
-@ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, binding<ActivityNavigator>())`
+@ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, binding<DestinationNavigator>())`
 to a subclass of it. The generated code will automatically take care of setting up
 the navigator by calling `NavigationSetup` for compose and `handleNavigation`
 for Fragments inside the generated code.
@@ -136,14 +136,15 @@ internal class ExampleStateMachine(
     // ...
 }
 
+@Inject
 // scope the navigator so that everything interacts with the same instance
 @SingleIn(ExampleRoute::class)
 @ForScope(ExampleRoute::class)
 // make ExampleNavigator available as ActivityNavigator so that the generated code can automatically
 // set up the navigation handling
-@Inject
-@ContributesBinding(ExampleRoute::class, binding<ActivityNavigator>())
+@ContributesBinding(ExampleRoute::class, binding<DestinationNavigator>())
 class ExampleNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
+class ExampleNavigator @Inject constructor(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
     // ...
 }
 

@@ -2,9 +2,9 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.NavDestinationData
 import com.freeletics.khonshu.codegen.util.InternalCodegenApi
-import com.freeletics.khonshu.codegen.util.activityNavigator
 import com.freeletics.khonshu.codegen.util.activityNavigatorEffect
 import com.freeletics.khonshu.codegen.util.composable
+import com.freeletics.khonshu.codegen.util.destinationNavigator
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.localActivityGraphProvider
 import com.freeletics.khonshu.codegen.util.optIn
@@ -34,7 +34,7 @@ internal class NavDestinationComposableGenerator(
             .addStatement("%T.provide(entry, snapshot, provider)", graphProviderClassName)
             .endControlFlow()
             .addStatement("")
-            .addStatement("%M(graph.%L)", activityNavigatorEffect, activityNavigator.propertyName)
+            .addStatement("%M(graph.%L)", activityNavigatorEffect, destinationNavigator.propertyName)
             .addStatement("")
             .addStatement("%L(graph)", composableName)
             .build()
