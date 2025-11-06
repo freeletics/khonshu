@@ -5,6 +5,14 @@ Change Log
 
 ### Navigation
 
+
+### Codegen
+
+
+## 0.33.0 *(2025-11-06)*
+
+### Navigation
+
 - `NavDestination` is now `NavDestination<T : BaseRoute>`, from a consumer perspective
   the only change is that it now needs to be referenced as `NavDestination<*>`.
 - Moved `com.freeletics.khonshu.navigation.ResultNavigator.Companion.registerForNavigationResult`
@@ -22,6 +30,8 @@ Change Log
 ### Codegen
 
 - `@NavHostActivity` now provides `LaunchInfo` instead of `Intent` into the graph.
+- `@NavDestination` is now expecting `DestinationNavigator` instead of `ActivityNavigator`
+  removing the need for an explicit binding.
 - Optimize performance by avoiding unneeded lookups of classes.
 - Fix an error that occurred for classed referenced in the codegen annotations which have a package name
   where one of the segments contains a soft Kotlin keyword.
