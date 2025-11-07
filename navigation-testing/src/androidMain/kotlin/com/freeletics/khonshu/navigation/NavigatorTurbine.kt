@@ -327,7 +327,9 @@ internal class DefaultNavigatorTurbine(
         key: NavigationResultRequest.Key<O>,
         result: O,
     ) {
-        val turbine = savedStateHandle.getStateFlow<O?>(key.requestKey, null)
+        val turbine = savedStateHandle.getStateFlow<NavigationResult<O>?>(key.requestKey, null)
+            .filterNotNull()
+            .map { it.value }
             .filterNotNull()
             .testIn(scope)
         Truth.assertThat(turbine.awaitItem()).isEqualTo(result)
