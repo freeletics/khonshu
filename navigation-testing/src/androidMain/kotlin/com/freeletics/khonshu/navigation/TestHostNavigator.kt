@@ -15,7 +15,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.parcelize.Parcelize
 
-public class TestHostNavigator() : HostNavigator() {
+public class TestHostNavigator(
+    override var startRoot: NavRoot = DummyRoot,
+) : HostNavigator() {
     @InternalNavigationCodegenApi
     private val fakeEntry = StackEntry.create(StackEntry.Id(""), DummyRoute)
 
@@ -61,6 +63,7 @@ public class TestHostNavigator() : HostNavigator() {
     }
 
     override fun replaceAllBackStacks(root: NavRoot) {
+        startRoot = root
         eventTurbine += ReplaceAllBackStacksEvent(root)
     }
 
@@ -75,6 +78,9 @@ public class TestHostNavigator() : HostNavigator() {
     override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
         return fakeEntry
     }
+
+    @Parcelize
+    private object DummyRoot : NavRoot
 
     @Parcelize
     private object DummyRoute : NavRoute

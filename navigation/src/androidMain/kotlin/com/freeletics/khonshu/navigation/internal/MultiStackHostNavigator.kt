@@ -14,6 +14,8 @@ internal class MultiStackHostNavigator(
 ) : HostNavigator() {
     override val snapshot: State<StackSnapshot>
         get() = stack.snapshot
+    override val startRoot: NavRoot
+        get() = snapshot.value.startRoot.route
 
     init {
         viewModel.globalSavedStateHandle.setSavedStateProvider(SAVED_STATE_STACK) {

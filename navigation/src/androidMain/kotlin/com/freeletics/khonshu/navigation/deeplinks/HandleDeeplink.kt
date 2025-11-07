@@ -36,7 +36,7 @@ public fun HostNavigator.handleDeepLink(
 }
 
 private fun HostNavigator.handleDeepLink(deepLinkRoutes: List<BaseRoute>): Boolean {
-    val root = snapshot.value.startRoot.route
+    val root = startRoot
     navigate {
         showRoot(root)
 

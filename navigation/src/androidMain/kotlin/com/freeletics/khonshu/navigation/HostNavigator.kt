@@ -25,6 +25,9 @@ public abstract class HostNavigator @InternalNavigationTestingApi constructor() 
     @InternalNavigationTestingApi
     public abstract val snapshot: State<StackSnapshot>
 
+    @InternalNavigationTestingApi
+    public abstract val startRoot: NavRoot
+
     /**
      * Allows to group multiple navigation actions and execute them atomically. The state of this [HostNavigator] will
      * only be updated after running all actions. This should be used when navigating multiple times, for example
