@@ -9,6 +9,15 @@ Change Log
 ### Codegen
 
 
+## 0.33.0 *(2025-11-07)*
+
+### Navigation
+
+- Add optional `startRoot` parameter to `TestHotNavigator`.
+- Fix issue which caused `handleDeepLink` to fail in tests that use `TestHostNavigator.
+- Fix issue with `awaitNavigationResult` always failing
+
+
 ## 0.33.0 *(2025-11-06)*
 
 ### Navigation
