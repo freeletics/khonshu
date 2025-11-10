@@ -10,18 +10,11 @@ import kotlin.reflect.KClass
 
 internal class MultiStackHostNavigator(
     private val stack: MultiStack,
-    viewModel: StackEntryStoreViewModel,
 ) : HostNavigator() {
     override val snapshot: State<StackSnapshot>
         get() = stack.snapshot
     override val startRoot: NavRoot
         get() = snapshot.value.startRoot.route
-
-    init {
-        viewModel.globalSavedStateHandle.setSavedStateProvider(SAVED_STATE_STACK) {
-            stack.saveState()
-        }
-    }
 
     override fun navigateTo(route: NavRoute) {
         stack.push(route)
@@ -68,10 +61,6 @@ internal class MultiStackHostNavigator(
     @InternalNavigationApi
     override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
         return snapshot.value.entryFor(id)
-    }
-
-    internal companion object {
-        const val SAVED_STATE_STACK = "com.freeletics.khonshu.navigation.stack"
     }
 
     private inner class NonNotifyingNavigator : Navigator {

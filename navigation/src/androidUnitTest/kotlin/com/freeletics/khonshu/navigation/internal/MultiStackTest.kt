@@ -27,15 +27,12 @@ internal class MultiStackTest {
 
     private fun underTest(
         startStack: Stack = defaultStack,
-    ): MultiStack {
-        return MultiStack(
-            allStacks = arrayListOf(startStack),
-            startStack = startStack,
-            currentStack = startStack,
-            createEntry = factory::create,
-            inputRoot = startStack.rootEntry.route,
-        )
-    }
+    ) = MultiStack(
+        allStacks = arrayListOf(startStack),
+        startStack = startStack,
+        currentStack = startStack,
+        createEntry = factory::create,
+    )
 
     @Test
     fun startRoot() {
