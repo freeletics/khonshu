@@ -95,7 +95,7 @@ public class StackEntry<T : BaseRoute> internal constructor(
         override fun restore(value: SavedState): StackEntry<*> {
             return value.read {
                 createRestoredEntry(
-                    decodeFromSavedState(getSavedState(KEY_ROUTE)),
+                    decodeFromSavedState(getSavedState(KEY_ROUTE), savedStateConfiguration),
                     Id(getString(KEY_ID)),
                     @SuppressLint("RestrictedApi")
                     SavedStateHandle.createHandle(getSavedState(KEY_STATE), null),
