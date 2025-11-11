@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation.internal
 
-import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.key
@@ -8,11 +7,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.core.os.bundleOf
 import androidx.lifecycle.SavedStateHandle
+import androidx.savedstate.SavedState
+import androidx.savedstate.read
+import androidx.savedstate.savedState
+import androidx.savedstate.serialization.SavedStateConfiguration
+import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
 import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.SerializersModuleBuilder
 
 internal fun createMultiStack(
     viewModel: StackEntryStoreViewModel,
@@ -20,7 +25,8 @@ internal fun createMultiStack(
     destinations: ImmutableSet<NavDestination<*>>,
 ): MultiStack {
     val factory = StackEntryFactory(destinations.toList(), viewModel)
-    val saver = MultiStack.Saver(factory::create, factory::create)
+    val savedStateConfiguration = SavedStateConfiguration(destinations)
+    val saver = MultiStack.Saver(factory::create, factory::create, savedStateConfiguration)
     return viewModel.globalSavedStateHandle.saveable(SAVED_STATE_STACK, saver) {
         MultiStack.createWith(startRoot, factory::create)
     }
@@ -34,22 +40,51 @@ internal fun rememberMultiStack(
 ): MutableState<MultiStack> {
     return key(startRoot, viewModel, destinations) {
         val factory = StackEntryFactory(destinations.toList(), viewModel)
-        val saver = MultiStack.Saver(factory::create, factory::create)
+        val savedStateConfiguration = SavedStateConfiguration(destinations)
+        val saver = MultiStack.Saver(factory::create, factory::create, savedStateConfiguration)
         rememberSaveable(stateSaver = saver) {
             mutableStateOf(MultiStack.createWith(startRoot, factory::create))
         }
     }
 }
 
-@Suppress("DEPRECATION", "UNCHECKED_CAST")
-private fun <T : Any, S : Any> SavedStateHandle.saveable(key: String, saver: Saver<T, S>, initial: () -> T): T {
-    val value = get<Bundle>(key)?.getParcelableArrayList<Parcelable>(key)?.let { saver.restore(it as S) } ?: initial()
-    setSavedStateProvider(key) {
-        with(saver) {
-            val state = SaverScope { true }.save(value)
-            bundleOf(key to state)
+internal fun SavedStateConfiguration(destinations: ImmutableSet<NavDestination<*>>): SavedStateConfiguration {
+    return SavedStateConfiguration {
+        serializersModule = SerializersModule {
+            destinations.forEach {
+                addRoute(it)
+            }
         }
     }
+}
+
+private fun <T : BaseRoute> SerializersModuleBuilder.addRoute(destination: NavDestination<T>) {
+    polymorphic(BaseRoute::class, destination.id.route, destination.serializer)
+}
+
+@Suppress("DEPRECATION", "UNCHECKED_CAST")
+private fun <T : Any> SavedStateHandle.saveable(key: String, saver: Saver<T, SavedState>, initial: () -> T): T {
+    val savedState = get<SavedState>(key)?.read {
+        getSavedState(key)
+    }
+    val value = if (savedState != null) {
+        saver.restore(savedState) ?: initial()
+    } else {
+        initial()
+    }
+
+    setSavedStateProvider(key) {
+        val scope = SaverScope { true }
+        val state = with(saver) {
+            scope.save(value)
+        }
+        savedState {
+            if (state != null) {
+                putSavedState(key, state)
+            }
+        }
+    }
+
     return value
 }
 

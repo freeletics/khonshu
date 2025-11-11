@@ -1,13 +1,11 @@
 package com.freeletics.khonshu.navigation
 
-import com.freeletics.khonshu.navigation.internal.Parcelable
-
-public sealed interface BaseRoute : Parcelable
+public sealed interface BaseRoute
 
 /**
  * Represents the route to a destination.
  *
- * The instance of this will be put into the navigation arguments as a [Parcelable] and is then
+ * The instance of this will be put into the navigation arguments as a [kotlinx.serialization.Serializable] and is then
  * available to the target screens.
  */
 public interface NavRoute : BaseRoute
@@ -17,7 +15,7 @@ public interface NavRoute : BaseRoute
  * a backstack. When you navigate to a [NavRoot] the current backstack is saved and removed
  * so that the [NavRoot] is right on top of the start destination.
  *
- * The instance of this will be put into the navigation arguments as a [Parcelable] and is then
+ * The instance of this will be put into the navigation arguments as a [kotlinx.serialization.Serializable] and is then
  * available to the target screens.
  */
 public interface NavRoot : BaseRoute

@@ -13,7 +13,7 @@ import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 public class TestHostNavigator(
     override var startRoot: NavRoot = DummyRoot,
@@ -79,9 +79,9 @@ public class TestHostNavigator(
         return fakeEntry
     }
 
-    @Parcelize
+    @Serializable
     private object DummyRoot : NavRoot
 
-    @Parcelize
+    @Serializable
     private object DummyRoute : NavRoute
 }

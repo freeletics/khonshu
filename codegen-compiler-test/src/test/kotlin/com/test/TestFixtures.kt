@@ -1,6 +1,5 @@
 package com.test
 
-import android.os.Parcel
 import com.freeletics.flowredux2.FlowReduxStateMachineFactory
 import com.freeletics.khonshu.codegen.Overlay
 import com.freeletics.khonshu.navigation.NavRoot
@@ -13,23 +12,11 @@ public class TestScreen
 
 public class TestClass
 
-public class TestRoute : NavRoute {
-    override fun describeContents(): Int = 0
+public class TestRoute : NavRoute
 
-    override fun writeToParcel(p0: Parcel, p1: Int) {}
-}
+public class TestOverlayRoute : NavRoute, Overlay
 
-public class TestOverlayRoute : NavRoute, Overlay {
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(p0: Parcel, p1: Int) {}
-}
-
-public class TestRoot : NavRoot {
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(p0: Parcel, p1: Int) {}
-}
+public class TestRoot : NavRoot
 
 public class TestStateMachine : FooStateMachine<TestAction, TestState>() {
     override val state: Flow<TestState>

@@ -2,11 +2,14 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.NavHostActivityData
+import com.freeletics.khonshu.codegen.util.asLaunchInfo
 import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.createHostNavigator
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.immutableSet
+import com.freeletics.khonshu.codegen.util.intent
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
+import com.freeletics.khonshu.codegen.util.launchInfo
 import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
 import com.freeletics.khonshu.codegen.util.navRoot
 import com.freeletics.khonshu.codegen.util.navigationDestination
@@ -28,6 +31,7 @@ internal class ActivityGraphGenerator(
         return TypeSpec.interfaceBuilder(moduleClassName)
             .addAnnotation(contributesTo(data.scope))
             .addFunction(provideImmutableNavDestinationsFunction())
+            .addFunction(provideLaunchInfo())
             .addFunction(provideHostNavigator())
             .build()
     }
@@ -38,6 +42,16 @@ internal class ActivityGraphGenerator(
             .addParameter("destinations", SET.parameterizedBy(navigationDestination))
             .returns(immutableSet.parameterizedBy(navigationDestination))
             .addStatement("return destinations.%M()", toImmutableSet)
+            .build()
+    }
+
+    private fun provideLaunchInfo(): FunSpec {
+        return FunSpec.builder("provideLaunchInfo")
+            .addAnnotation(provides())
+            .addParameter("intent", intent)
+            .addParameter("destinations", immutableSet.parameterizedBy(navigationDestination))
+            .returns(launchInfo)
+            .addStatement("return intent.%M(destinations)", asLaunchInfo)
             .build()
     }
 

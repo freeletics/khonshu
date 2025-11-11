@@ -12,6 +12,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
 import androidx.savedstate.read
 import androidx.savedstate.savedState
+import androidx.savedstate.serialization.SavedStateConfiguration
+import androidx.savedstate.serialization.decodeFromSavedState
+import androidx.savedstate.serialization.encodeToSavedState
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
@@ -19,7 +22,7 @@ import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.OverlayDestination
 import com.freeletics.khonshu.navigation.ScreenDestination
 import dev.drewhamilton.poko.Poko
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 @Poko
 @Immutable
@@ -63,9 +66,9 @@ public class StackEntry<T : BaseRoute> internal constructor(
     }
 
     @JvmInline
-    @Parcelize
+    @Serializable
     @InternalNavigationTestingApi
-    public value class Id(internal val value: String) : Parcelable
+    public value class Id(internal val value: String)
 
     @InternalNavigationTestingApi
     public companion object {
@@ -87,11 +90,12 @@ public class StackEntry<T : BaseRoute> internal constructor(
 
     internal class Saver(
         private val createRestoredEntry: (BaseRoute, Id, SavedStateHandle) -> StackEntry<*>,
+        private val savedStateConfiguration: SavedStateConfiguration,
     ) : ComposeSaver<StackEntry<*>, SavedState> {
         override fun restore(value: SavedState): StackEntry<*> {
             return value.read {
                 createRestoredEntry(
-                    getParcelable(KEY_ROUTE),
+                    decodeFromSavedState(getSavedState(KEY_ROUTE), savedStateConfiguration),
                     Id(getString(KEY_ID)),
                     @SuppressLint("RestrictedApi")
                     SavedStateHandle.createHandle(getSavedState(KEY_STATE), null),
@@ -101,7 +105,7 @@ public class StackEntry<T : BaseRoute> internal constructor(
 
         override fun SaverScope.save(value: StackEntry<*>): SavedState = savedState {
             putString(KEY_ID, value.id.value)
-            putParcelable(KEY_ROUTE, value.route)
+            putSavedState(KEY_ROUTE, encodeToSavedState(value.route, savedStateConfiguration))
             @SuppressLint("RestrictedApi")
             putSavedState(KEY_STATE, value.savedStateHandle.savedStateProvider().saveState())
         }

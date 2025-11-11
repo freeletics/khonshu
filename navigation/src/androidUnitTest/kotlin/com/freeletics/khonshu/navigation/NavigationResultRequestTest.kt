@@ -6,13 +6,18 @@ import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.serializer
 import org.junit.Test
 
 internal class NavigationResultRequestTest {
     @Test
     fun `NavigationResultRequest emits events`(): Unit = runBlocking {
         val handle = SavedStateHandle()
-        val owner = NavigationResultRequest(NavigationResultRequest.Key(StackEntry.Id(""), "key"), handle)
+        val owner = NavigationResultRequest(
+            NavigationResultRequest.Key(StackEntry.Id(""), "key"),
+            handle,
+            serializer<SimpleRoute>(),
+        )
 
         owner.results.test {
             handle["key"] = NavigationResult(SimpleRoute(1))
@@ -29,7 +34,11 @@ internal class NavigationResultRequestTest {
     @Test
     fun `NavigationResultRequest emits results that were delivered before collection`(): Unit = runBlocking {
         val handle = SavedStateHandle()
-        val owner = NavigationResultRequest(NavigationResultRequest.Key(StackEntry.Id(""), "key"), handle)
+        val owner = NavigationResultRequest(
+            NavigationResultRequest.Key(StackEntry.Id(""), "key"),
+            handle,
+            serializer<SimpleRoute>(),
+        )
 
         handle["key"] = NavigationResult(SimpleRoute(1))
 
@@ -41,7 +50,11 @@ internal class NavigationResultRequestTest {
     @Test
     fun `NavigationResultRequest emits results were delivered before and during collection`(): Unit = runBlocking {
         val handle = SavedStateHandle()
-        val owner = NavigationResultRequest(NavigationResultRequest.Key(StackEntry.Id(""), "key"), handle)
+        val owner = NavigationResultRequest(
+            NavigationResultRequest.Key(StackEntry.Id(""), "key"),
+            handle,
+            serializer<SimpleRoute>(),
+        )
 
         handle["key"] = NavigationResult(SimpleRoute(1))
         owner.results.test {

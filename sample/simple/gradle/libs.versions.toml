@@ -43,6 +43,7 @@ khonshu-navigation = { module = "com.freeletics.khonshu:navigation", version.ref
 khonshu-codegen-compiler = { module = "com.freeletics.khonshu:codegen-compiler", version.ref = "khonshu" }
 khonshu-codegen-runtime = { module = "com.freeletics.khonshu:codegen-runtime", version.ref = "khonshu" }
 khonshu-statemachine = { module = "com.freeletics.khonshu:state-machine", version.ref = "khonshu" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.8.0" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [plugins]
@@ -53,6 +54,7 @@ fgp-feature = { id = "com.freeletics.gradle.feature", version.ref = "fgp" }
 fgp-nav = { id = "com.freeletics.gradle.nav", version.ref = "fgp" }
 fgp-root = { id = "com.freeletics.gradle.root", version.ref = "fgp" }
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }

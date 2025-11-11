@@ -121,7 +121,7 @@ internal fun Navigation?.asParameter(): ParameterSpec {
     if (this != null) {
         return ParameterSpec.builder(route.propertyName, route).build()
     }
-    return ParameterSpec.builder(launchInfo.propertyName, launchInfo).build()
+    return ParameterSpec.builder(intent.propertyName, intent).build()
 }
 
 internal fun TypeName.asLambdaParameter(): TypeName {

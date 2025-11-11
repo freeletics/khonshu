@@ -6,9 +6,15 @@ import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.IntentCompat
+import androidx.savedstate.serialization.decodeFromSavedState
+import androidx.savedstate.serialization.encodeToSavedState
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.NavDestination
+import com.freeletics.khonshu.navigation.internal.SavedStateConfiguration
+import kotlinx.collections.immutable.ImmutableSet
 
 /**
  * Creates an [Intent] that can be used to launch this deep link.
@@ -23,7 +29,7 @@ public fun DeepLink.buildIntent(context: Context): Intent {
     }
     return intent
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        .putParcelableArrayListExtra(EXTRA_DEEPLINK_ROUTES, ArrayList(routes))
+        .putExtra(EXTRA_DEEPLINK_ROUTES, encodeToSavedState(routes))
 }
 
 /**
@@ -57,6 +63,9 @@ private fun defaultFlag(): Int {
     }
 }
 
-internal fun Intent.extractDeepLinkRoutes(): List<BaseRoute>? {
-    return IntentCompat.getParcelableArrayListExtra(this, EXTRA_DEEPLINK_ROUTES, BaseRoute::class.java)
+internal fun Intent.extractDeepLinkRoutes(destinations: ImmutableSet<NavDestination<*>>): List<BaseRoute>? {
+    return IntentCompat.getParcelableExtra(this, EXTRA_DEEPLINK_ROUTES, Bundle::class.java)?.let {
+        val savedStateConfiguration = SavedStateConfiguration(destinations)
+        decodeFromSavedState(it, savedStateConfiguration)
+    }
 }

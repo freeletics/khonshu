@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.application).apply(false)
     alias(libs.plugins.dependency.analysis).apply(false)
     alias(libs.plugins.kotlin).apply(false)
+    alias(libs.plugins.kotlin.serialization).apply(false)
     alias(libs.plugins.compose).apply(false)
     alias(libs.plugins.ksp).apply(false)
     alias(libs.plugins.metro).apply(false)
