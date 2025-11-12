@@ -9,6 +9,15 @@ Change Log
 ### Codegen
 
 
+
+## 0.34.0 *(2025-11-12)*
+
+### Navigation
+
+- Switch from `Parcelable` to `Serializable` for saving routes. This means that
+  routes now need to be annotated with `@Serializable` instead of `@Parcelize`
+
+
 ## 0.33.1 *(2025-11-07)*
 
 ### Navigation
