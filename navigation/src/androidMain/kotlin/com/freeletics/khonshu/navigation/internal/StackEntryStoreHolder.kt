@@ -28,7 +28,5 @@ public class StackEntryStoreHolder : RetainObserver {
         clear()
     }
 
-    override fun onUnused() {
-        TODO("Not yet implemented")
-    }
+    override fun onUnused() {}
 }
