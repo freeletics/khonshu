@@ -2,6 +2,7 @@
 flowredux = "2.0.0-alpha1"
 kotlin = "2.2.21"
 coroutines = "1.10.2"
+serialization = "1.9.0"
 
 java-target= "11"
 java-toolchain = "24"
@@ -73,7 +74,8 @@ androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmod
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.5.0" }
-kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.9.0" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 metro = { module = "dev.zacsweers.metro:runtime", version.ref = "metro"}
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
