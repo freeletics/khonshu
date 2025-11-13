@@ -4,12 +4,9 @@ import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.activityGraphProvider
 import com.freeletics.khonshu.codegen.util.componentActivity
 import com.freeletics.khonshu.codegen.util.getGraph
-import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
 import com.freeletics.khonshu.codegen.util.optIn
-import com.freeletics.khonshu.codegen.util.savedStateViewModelFactory
-import com.freeletics.khonshu.codegen.util.viewModelProvider
+import com.freeletics.khonshu.codegen.util.stackEntryStoreHolder
 import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier.FINAL
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
 import com.squareup.kotlinpoet.KModifier.PRIVATE
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -29,6 +26,7 @@ internal class ActivityGraphProviderGenerator(
             .addSuperinterface(activityGraphProvider)
             .primaryConstructor(constructor())
             .addProperty(activityProperty())
+            .addProperty(stackEntryStoreHolderProperty())
             .addFunction(provideFunction())
             .build()
     }
@@ -36,13 +34,21 @@ internal class ActivityGraphProviderGenerator(
     private fun constructor(): FunSpec {
         return FunSpec.constructorBuilder()
             .addParameter("activity", componentActivity)
+            .addParameter("stackEntryStoreHolder", stackEntryStoreHolder)
             .build()
     }
 
     private fun activityProperty(): PropertySpec {
         return PropertySpec.builder("activity", componentActivity)
-            .addModifiers(PRIVATE, FINAL)
+            .addModifiers(PRIVATE)
             .initializer("activity")
+            .build()
+    }
+
+    private fun stackEntryStoreHolderProperty(): PropertySpec {
+        return PropertySpec.builder("stackEntryStoreHolder", stackEntryStoreHolder)
+            .addModifiers(PRIVATE)
+            .initializer("stackEntryStoreHolder")
             .build()
     }
 
@@ -61,13 +67,7 @@ internal class ActivityGraphProviderGenerator(
                 graphFactoryClassName,
             )
             .addStatement(
-                "val viewModel = %T(activity, %T())[%T::class.java]",
-                viewModelProvider,
-                savedStateViewModelFactory,
-                multiStackHostNavigatorViewModel,
-            )
-            .addStatement(
-                "factory.%L(viewModel, savedStateHandle, activity.intent)",
+                "factory.%L(stackEntryStoreHolder, savedStateHandle, activity.intent)",
                 graphFactoryCreateFunctionName,
             )
             .endControlFlow()

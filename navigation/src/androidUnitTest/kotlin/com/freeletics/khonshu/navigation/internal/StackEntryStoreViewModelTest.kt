@@ -7,7 +7,7 @@ import org.junit.Test
 
 internal class StackEntryStoreViewModelTest {
     private val savedStateHandle = SavedStateHandle()
-    private val underTest = StackEntryStoreViewModel(savedStateHandle)
+    private val underTest = StackEntryStoreHolder(savedStateHandle)
 
     @Test
     fun `StoreViewModel returns same store for same id`() {
@@ -62,7 +62,7 @@ internal class StackEntryStoreViewModelTest {
     @Test
     fun `StoreViewModel returns different store for same id after onCleared`() {
         val valueA = underTest.provideStore(StackEntry.Id("1"))
-        underTest.onCleared()
+        underTest.clear()
         val valueB = underTest.provideStore(StackEntry.Id("1"))
         assertThat(valueA).isNotSameInstanceAs(valueB)
     }
@@ -72,7 +72,7 @@ internal class StackEntryStoreViewModelTest {
         val closeable = FakeCloseable()
         val valueA = underTest.provideStore(StackEntry.Id("1"))
         valueA.getOrCreate(FakeCloseable::class) { closeable }
-        underTest.onCleared()
+        underTest.clear()
         assertThat(closeable.closed).isTrue()
     }
 }

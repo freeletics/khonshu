@@ -7,17 +7,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.activity.findActivity
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.handleDeepLink
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.MultiStackHostNavigator
-import com.freeletics.khonshu.navigation.internal.StackEntryStoreViewModel
+import com.freeletics.khonshu.navigation.internal.StackEntryStoreHolder
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.internal.createMultiStack
 import com.freeletics.khonshu.navigation.internal.rememberMultiStack
@@ -57,8 +56,7 @@ public fun rememberHostNavigator(
     deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
 ): HostNavigator {
     val context = LocalContext.current
-    val viewModel = viewModel<StackEntryStoreViewModel>()
-    val multiStack by rememberMultiStack(startRoot, viewModel, destinations)
+    val multiStack by rememberMultiStack(startRoot, destinations)
     val handledDeepLinks = rememberSaveable { mutableStateOf(false) }
     return remember(multiStack, deepLinkHandlers, deepLinkPrefixes) {
         MultiStackHostNavigator(multiStack)
@@ -82,10 +80,11 @@ internal val LocalHostNavigator: ProvidableCompositionLocal<HostNavigator> =
 
 @InternalNavigationCodegenApi
 public fun createHostNavigator(
-    viewModel: StackEntryStoreViewModel,
     startRoot: NavRoot,
     destinations: ImmutableSet<NavDestination<*>>,
+    storeHolder: StackEntryStoreHolder,
+    savedStateHandle: SavedStateHandle,
 ): HostNavigator {
-    val stack = createMultiStack(viewModel, startRoot, destinations)
-    return MultiStackHostNavigator(stack)
+    val stack = createMultiStack(startRoot, destinations, storeHolder, savedStateHandle)
+    return MultiStackHostNavigator(stack = stack)
 }

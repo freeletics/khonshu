@@ -24,7 +24,7 @@ freeletics {
 }
 
 dependencies {
-    "commonMainApi"(libs.jetbrains.compose.runtime)
+    "commonMainApi"(libs.androidx.compose.runtime)
     "commonMainApi"(libs.collections.immutable)
     "commonMainApi"(libs.uri)
 
