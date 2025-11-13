@@ -9,6 +9,12 @@ Change Log
 ### Codegen
 
 
+## 0.34.1 *(2025-11-13)*
+
+### TextResource
+
+- Make `TextResource` `Serializable` so that it can be used in `NavRoute`.
+
 
 ## 0.34.0 *(2025-11-12)*
 
