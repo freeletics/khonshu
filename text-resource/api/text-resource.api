@@ -9,6 +9,7 @@ public final class com/freeletics/khonshu/text/LoadingTextResource : com/freelet
 	public synthetic fun format (Landroidx/compose/runtime/Composer;I)Ljava/lang/String;
 	public fun format (Landroidx/compose/runtime/Composer;I)Ljava/lang/Void;
 	public fun hashCode ()I
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 	public fun toString ()Ljava/lang/String;
 	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
@@ -16,10 +17,12 @@ public final class com/freeletics/khonshu/text/LoadingTextResource : com/freelet
 public abstract class com/freeletics/khonshu/text/TextResource : android/os/Parcelable {
 	public static final field $stable I
 	public static final field Companion Lcom/freeletics/khonshu/text/TextResource$Companion;
+	public synthetic fun <init> (ILkotlinx/serialization/internal/SerializationConstructorMarker;)V
 	public abstract fun format (Landroid/content/Context;)Ljava/lang/String;
 	public abstract fun format (Landroidx/compose/runtime/Composer;I)Ljava/lang/String;
 	public static final fun join (Ljava/util/List;)Lcom/freeletics/khonshu/text/TextResource;
 	public static final fun join (Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/khonshu/text/TextResource;
+	public static final synthetic fun write$Self (Lcom/freeletics/khonshu/text/TextResource;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/freeletics/khonshu/text/TextResource$Companion {
@@ -30,6 +33,7 @@ public final class com/freeletics/khonshu/text/TextResource$Companion {
 	public final fun join (Ljava/util/List;)Lcom/freeletics/khonshu/text/TextResource;
 	public final fun join (Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/khonshu/text/TextResource;
 	public static synthetic fun join$default (Lcom/freeletics/khonshu/text/TextResource$Companion;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/text/TextResource;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/freeletics/khonshu/text/TextResourcesKt {

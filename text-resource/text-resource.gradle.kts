@@ -6,6 +6,7 @@ plugins {
 freeletics {
     useCompose()
     usePoko()
+    useSerialization()
 
     android {
         enableParcelize()
@@ -19,4 +20,8 @@ dependencies {
     implementation(libs.kotlin.parcelize)
 
     compileOnly(libs.androidx.annotations)
+
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.truth)
+    testImplementation(libs.kotlinx.serialization.json)
 }

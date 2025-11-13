@@ -12,6 +12,20 @@ import dev.drewhamilton.poko.Poko
 import java.util.IllegalFormatException
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.element
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.descriptors.serialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeCollection
+import kotlinx.serialization.modules.plus
+import kotlinx.serialization.serializer
 
 /**
  * A simple text representation that allows you to model text without the need
@@ -20,6 +34,7 @@ import kotlinx.parcelize.RawValue
  * Use the various factory methods to create a new instance.
  * Use [format] with an Android context to get the proper formatted text.
  */
+@Serializable
 public sealed class TextResource : Parcelable {
     /**
      * Returns the formatted [String] represented by this `TextResource`.
@@ -92,6 +107,7 @@ public sealed class TextResource : Parcelable {
  * and is meant as a marker to for example show a placeholder graphic.
  */
 @Parcelize
+@Serializable
 public data object LoadingTextResource : TextResource() {
     override fun format(context: Context): Nothing {
         throw UnsupportedOperationException("LoadingTextResource can not be formatted.")
@@ -106,6 +122,7 @@ public data object LoadingTextResource : TextResource() {
 
 @Poko
 @Parcelize
+@Serializable
 internal class SimpleTextResource(val text: String) : TextResource() {
     override fun format(context: Context): String {
         return text
@@ -120,9 +137,11 @@ internal class SimpleTextResource(val text: String) : TextResource() {
 
 @Poko
 @Parcelize
+@Serializable
 internal class StringTextResource(
     @param:StringRes @get:StringRes
     val id: Int,
+    @Serializable(AnyArraySerializer::class)
     val args: @RawValue Array<out Any>,
 ) : TextResource() {
     override fun format(context: Context): String = tryFormat(context) {
@@ -156,10 +175,12 @@ internal class StringTextResource(
 
 @Poko
 @Parcelize
+@Serializable
 internal class PluralTextResource(
     @param:PluralsRes @get:PluralsRes
     val id: Int,
     val quantity: Int,
+    @Serializable(AnyArraySerializer::class)
     val args: @RawValue Array<out Any>,
 ) : TextResource() {
     override fun format(context: Context): String = tryFormat(context) {
@@ -195,6 +216,7 @@ internal class PluralTextResource(
 
 @Poko
 @Parcelize
+@Serializable
 internal class CompositeTextResource(
     val elements: List<TextResource>,
     val separator: String,
@@ -255,6 +277,64 @@ private class TextResourceFormatException(
             is StringTextResource -> resNameInfo(textResource.id)
             is PluralTextResource -> resNameInfo(textResource.id)
             else -> ""
+        }
+    }
+}
+
+@Serializable
+internal sealed interface Arg {
+    val value: Any
+}
+
+@Serializable
+internal class IntArg(override val value: Int) : Arg
+
+@Serializable
+internal class LongArg(override val value: Long) : Arg
+
+@Serializable
+internal class FloatArg(override val value: Float) : Arg
+
+@Serializable
+internal class DoubleArg(override val value: Double) : Arg
+
+@Serializable
+internal class StringArg(override val value: String) : Arg
+
+@Serializable
+internal class TextResourceArg(override val value: TextResource) : Arg
+
+@OptIn(ExperimentalSerializationApi::class)
+internal object AnyArraySerializer : KSerializer<Array<out Any>> {
+    override val descriptor: SerialDescriptor
+        get() = listSerialDescriptor(serialDescriptor<Arg>())
+
+    override fun serialize(encoder: Encoder, value: Array<out Any>) {
+        encoder.encodeCollection(descriptor, value.size) {
+            value.forEach {
+                val wrapped = when (it) {
+                    is Int -> IntArg(it)
+                    is Long -> LongArg(it)
+                    is Float -> FloatArg(it)
+                    is Double -> DoubleArg(it)
+                    is String -> StringArg(it)
+                    is TextResource -> TextResourceArg(it)
+                    else -> error("Unknown arg $it")
+                }
+                encodeSerializableElement(descriptor, 1, Arg.serializer(), wrapped)
+            }
+        }
+    }
+
+    override fun deserialize(decoder: Decoder): Array<out Any> {
+        return decoder.decodeStructure(descriptor) {
+            val elements = mutableListOf<Any>()
+            loop@ while (true) {
+                val index = decodeElementIndex(descriptor)
+                if (index == CompositeDecoder.DECODE_DONE) break
+                elements += decodeSerializableElement(descriptor, index, Arg.serializer()).value
+            }
+            elements.toTypedArray()
         }
     }
 }
