@@ -1,6 +1,9 @@
 plugins {
     id("com.freeletics.gradle.gradle")
-    id("com.freeletics.gradle.publish.oss")
+}
+
+freeletics {
+    enableOssPublishing()
 }
 
 dependencies {

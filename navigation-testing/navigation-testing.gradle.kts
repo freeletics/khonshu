@@ -1,17 +1,31 @@
 plugins {
     id("com.freeletics.gradle.multiplatform")
-    id("com.freeletics.gradle.publish.oss")
 }
 
 freeletics {
     optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi")
+
     useSerialization()
     usePoko()
+    enableOssPublishing()
 
     multiplatform {
         addJvmTarget()
-        addAndroidTarget {
-            enableParcelize()
+        addAndroidTarget()
+    }
+}
+
+@OptIn(org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation::class)
+kotlin {
+    abiValidation {
+        filters {
+            excluded {
+                annotatedWith.addAll(
+                    "com.freeletics.khonshu.navigation.internal.InternalNavigationApi",
+                    "com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi",
+                    "com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi",
+                )
+            }
         }
     }
 }

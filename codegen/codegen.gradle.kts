@@ -1,6 +1,5 @@
 plugins {
     id("com.freeletics.gradle.multiplatform")
-    id("com.freeletics.gradle.publish.oss")
 }
 
 freeletics {
@@ -9,12 +8,26 @@ freeletics {
         "com.freeletics.khonshu.codegen.internal.InternalCodegenApi",
     )
 
+    useCompose()
+    enableOssPublishing()
+
     multiplatform {
         addJvmTarget()
         addAndroidTarget()
     }
+}
 
-    useCompose()
+@OptIn(org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation::class)
+kotlin {
+    abiValidation {
+        filters {
+            excluded {
+                annotatedWith.addAll(
+                    "com.freeletics.khonshu.codegen.internal.InternalCodegenApi",
+                )
+            }
+        }
+    }
 }
 
 dependencies {
