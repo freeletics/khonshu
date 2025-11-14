@@ -64,6 +64,7 @@ public final class com/freeletics/khonshu/navigation/NavigationResultRequest$Key
 	public static final field $stable I
 	public static final field Companion Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key$Companion;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getStackEntryId-7sqkNMY ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -153,7 +154,7 @@ public abstract class com/freeletics/khonshu/navigation/activity/InternalActivit
 
 public final class com/freeletics/khonshu/navigation/activity/PermissionsResultRequest : com/freeletics/khonshu/navigation/activity/ActivityResultContractRequest {
 	public static final field $stable I
-	public synthetic fun getContract$navigation_release ()Landroidx/activity/result/contract/ActivityResultContract;
+	public synthetic fun getContract$navigation ()Landroidx/activity/result/contract/ActivityResultContract;
 }
 
 public abstract interface class com/freeletics/khonshu/navigation/activity/PermissionsResultRequest$PermissionResult {
@@ -242,13 +243,13 @@ public final class com/freeletics/khonshu/navigation/deeplinks/LaunchInfo {
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/LaunchInfo_androidKt {
-	public static final fun asLaunchInfo (Landroid/content/Intent;)Lcom/freeletics/khonshu/navigation/deeplinks/LaunchInfo;
+	public static final fun asLaunchInfo (Landroid/content/Intent;Lkotlinx/collections/immutable/ImmutableSet;)Lcom/freeletics/khonshu/navigation/deeplinks/LaunchInfo;
 }
 
 public final class com/freeletics/khonshu/navigation/internal/ComposableSingletons$StackEntryKt {
 	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/internal/ComposableSingletons$StackEntryKt;
 	public fun <init> ()V
-	public final fun getLambda$312382450$navigation_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$312382450$navigation ()Lkotlin/jvm/functions/Function3;
 }
 
 public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationApi : java/lang/annotation/Annotation {

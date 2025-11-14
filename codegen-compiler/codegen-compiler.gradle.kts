@@ -1,11 +1,12 @@
 plugins {
     id("com.freeletics.gradle.multiplatform")
-    id("com.freeletics.gradle.publish.oss")
     id("java-test-fixtures")
 }
 
 freeletics {
     optIn("com.google.devtools.ksp.KspExperimental")
+
+    enableOssPublishing()
 
     multiplatform {
         addJvmTarget()

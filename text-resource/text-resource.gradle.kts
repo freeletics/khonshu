@@ -1,27 +1,29 @@
 plugins {
-    id("com.freeletics.gradle.android")
-    id("com.freeletics.gradle.publish.oss")
+    id("com.freeletics.gradle.multiplatform")
 }
 
 freeletics {
     useCompose()
     usePoko()
     useSerialization()
+    enableOssPublishing()
 
-    android {
-        enableParcelize()
+    multiplatform {
+        addAndroidTarget {
+            enableParcelize()
+        }
     }
 }
 
 dependencies {
-    api(libs.androidx.compose.runtime)
+    commonMainApi(libs.androidx.compose.runtime)
 
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.kotlin.parcelize)
+    commonMainImplementation(libs.androidx.compose.ui)
+    "androidMainImplementation"(libs.kotlin.parcelize)
 
-    compileOnly(libs.androidx.annotations)
+    "androidMainCompileOnly"(libs.androidx.annotations)
 
-    testImplementation(libs.kotlin.test)
-    testImplementation(libs.truth)
-    testImplementation(libs.kotlinx.serialization.json)
+    "androidHostTestImplementation"(libs.kotlin.test)
+    "androidHostTestImplementation"(libs.truth)
+    "androidHostTestImplementation"(libs.kotlinx.serialization.json)
 }
