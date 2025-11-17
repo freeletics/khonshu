@@ -18,7 +18,7 @@ dependencies {
     implementation(projects.feature.bottomSheet.nav)
     implementation(projects.feature.dialog.implementation)
     implementation(projects.feature.dialog.nav)
-    implementation(projects.feature.main)
+    implementation(projects.feature.main.implementation)
     implementation(projects.feature.root.implementation)
     implementation(projects.feature.root.nav)
     implementation(projects.feature.screen.implementation)

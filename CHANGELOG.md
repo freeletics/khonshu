@@ -9,6 +9,27 @@ Change Log
 ### Codegen
 
 
+## 0.34.2 *(2025-11-13)*
+
+- Resolve issues when using the navigation result APIs in Android host side tests, which had failures
+  because of `Bundle` APIs being called but them not being mocked.
+
+
+## 0.34.1 *(2025-11-13)*
+
+### TextResource
+
+- Make `TextResource` `Serializable` so that it can be used in `NavRoute`.
+
+
+## 0.34.0 *(2025-11-12)*
+
+### Navigation
+
+- Switch from `Parcelable` to `Serializable` for saving routes. This means that
+  routes now need to be annotated with `@Serializable` instead of `@Parcelize`
+
+
 ## 0.33.1 *(2025-11-07)*
 
 ### Navigation

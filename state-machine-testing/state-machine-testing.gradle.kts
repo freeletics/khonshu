@@ -1,13 +1,17 @@
 plugins {
-    id("com.freeletics.gradle.android")
-    id("com.freeletics.gradle.publish.oss")
+    id("com.freeletics.gradle.multiplatform")
 }
 
 freeletics {
+    enableOssPublishing()
+
+    multiplatform {
+        addAndroidTarget()
+    }
 }
 
 dependencies {
-    api(projects.stateMachine)
-    api(libs.coroutines.core)
-    api(libs.turbine)
+    commonMainApi(projects.stateMachine)
+    commonMainApi(libs.coroutines.core)
+    commonMainApi(libs.turbine)
 }

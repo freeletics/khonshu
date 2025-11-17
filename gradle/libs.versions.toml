@@ -2,6 +2,7 @@
 flowredux = "2.0.0-alpha1"
 kotlin = "2.2.21"
 coroutines = "1.10.2"
+serialization = "1.9.0"
 
 java-target= "11"
 java-toolchain = "24"
@@ -34,10 +35,9 @@ truth = "1.4.5"
 turbine = "1.2.1"
 kotlin-compile-testing = "0.11.0"
 
-fgp = "0.33.1"
-publish = "0.34.0"
+fgp = "0.34.2"
+publish = "0.35.0"
 dokka = "2.1.0"
-binarycompatibility = "0.18.1"
 dependency-analysis = "3.4.1"
 
 [libraries]
@@ -72,7 +72,8 @@ androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmod
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.5.0" }
-kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.9.0" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 metro = { module = "dev.zacsweers.metro:runtime", version.ref = "metro"}
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
@@ -95,7 +96,6 @@ ksp-embeddable = { module = "com.google.devtools.ksp:symbol-processing-aa-embedd
 [plugins]
 fgp-multiplatform = { id = "com.freeletics.gradle.multiplatform", version.ref = "fgp" }
 fgp-gradle = { id = "com.freeletics.gradle.gradle", version.ref = "fgp" }
-fgp-publish = { id = "com.freeletics.gradle.publish.oss", version.ref = "fgp" }
 fgp-root = { id = "com.freeletics.gradle.root", version.ref = "fgp" }
 fgp-settings = { id = "com.freeletics.gradle.settings", version.ref = "fgp" }
 
@@ -107,6 +107,5 @@ compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
-binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binarycompatibility" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 poko = { id = "dev.drewhamilton.poko", version = "0.20.1" }

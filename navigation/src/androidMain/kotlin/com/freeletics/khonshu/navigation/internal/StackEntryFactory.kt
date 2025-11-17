@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation.internal
 
-import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination
 import java.util.UUID
@@ -17,10 +16,10 @@ internal class StackEntryFactory(
     ) : this(destinations.toList(), storeHolder)
 
     fun <T : BaseRoute> create(route: T): StackEntry<T> {
-        return create(route, idGenerator(), SavedStateHandle())
+        return create(route, idGenerator(), StackEntryState())
     }
 
-    fun <T : BaseRoute> create(route: T, id: StackEntry.Id, savedStateHandle: SavedStateHandle): StackEntry<T> {
+    fun <T : BaseRoute> create(route: T, id: StackEntry.Id, savedStateHandle: StackEntryState): StackEntry<T> {
         @Suppress("UNCHECKED_CAST")
         val destination = destinations.find { it.id == route.destinationId } as NavDestination<T>
         return StackEntry(id, route, destination, savedStateHandle, storeHolder.provideStore(id))

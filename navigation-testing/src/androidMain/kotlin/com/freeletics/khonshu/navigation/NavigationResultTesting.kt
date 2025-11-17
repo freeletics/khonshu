@@ -1,17 +1,16 @@
 package com.freeletics.khonshu.navigation
 
-import androidx.savedstate.serialization.encodeToSavedState
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
-import kotlinx.serialization.serializer
 
 /**
  * Send a fake result to collectors of this request. Can be used to test the result handling
  * logic.
  */
+@OptIn(InternalNavigationApi::class)
 public inline fun <reified R> NavigationResultRequest<R>.sendResult(result: R) {
-    val serializer = NavigationResult.serializer(serializer<R>())
-    savedStateHandle[key.requestKey] = encodeToSavedState(serializer, NavigationResult(result))
+    state[key.requestKey] = NavigationResult(result)
 }
 
 /**

@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.fgp.multiplatform).apply(false)
     alias(libs.plugins.fgp.gradle).apply(false)
-    alias(libs.plugins.fgp.publish).apply(false)
     alias(libs.plugins.kotlin).apply(false)
     alias(libs.plugins.kotlin.parcelize).apply(false)
     alias(libs.plugins.kotlin.serialization).apply(false)
@@ -13,7 +12,6 @@ plugins {
     alias(libs.plugins.dependency.analysis).apply(false)
 
     alias(libs.plugins.fgp.root)
-    alias(libs.plugins.binarycompatibility)
 }
 
 dependencyAnalysis {
@@ -44,15 +42,4 @@ dependencyAnalysis {
             }
         }
     }
-}
-
-apiValidation {
-    ignoredProjects += arrayOf("codegen-compiler", "codegen-compiler-test")
-
-    nonPublicMarkers += arrayOf(
-        "com.freeletics.khonshu.navigation.internal.InternalNavigationApi",
-        "com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi",
-        "com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi",
-        "com.freeletics.khonshu.codegen.internal.InternalCodegenApi",
-    )
 }

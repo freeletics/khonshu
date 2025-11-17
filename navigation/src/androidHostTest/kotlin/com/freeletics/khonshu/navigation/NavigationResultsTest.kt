@@ -1,46 +1,69 @@
 package com.freeletics.khonshu.navigation
 
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.freeletics.khonshu.navigation.internal.StackEntry
+import com.freeletics.khonshu.navigation.internal.StackEntryState
 import com.freeletics.khonshu.navigation.test.SimpleRoute
+import com.freeletics.khonshu.navigation.test.TestParcelable
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.serializer
 import org.junit.Test
 
-internal class NavigationResultRequestTest {
+internal class NavigationResultsTest {
+    @Test
+    fun registerNavigationResults(): Unit = runBlocking {
+        val navigator = TestHostNavigator()
+        val request = navigator.registerForNavigationResult<SimpleRoute, TestParcelable>()
+
+        request.results.test {
+            request.sendResult(TestParcelable(4))
+            assertThat(awaitItem()).isEqualTo(TestParcelable(4))
+        }
+    }
+
+    @Test
+    fun deliverNavigationResult() = runTest {
+        val navigator = TestHostNavigator()
+        val key = fakeNavigationResultKey<TestParcelable>()
+
+        navigator.test {
+            navigator.deliverNavigationResult(key, TestParcelable(5))
+
+            awaitNavigationResult(key, TestParcelable(5))
+        }
+    }
+
     @Test
     fun `NavigationResultRequest emits events`(): Unit = runBlocking {
-        val handle = SavedStateHandle()
         val owner = NavigationResultRequest(
             NavigationResultRequest.Key(StackEntry.Id(""), "key"),
-            handle,
+            StackEntryState(),
             serializer<SimpleRoute>(),
         )
 
         owner.results.test {
-            handle["key"] = NavigationResult(SimpleRoute(1))
+            owner.sendResult(SimpleRoute(1))
             assertThat(awaitItem()).isEqualTo(SimpleRoute(1))
 
-            handle["key"] = NavigationResult(SimpleRoute(2))
+            owner.sendResult(SimpleRoute(2))
             assertThat(awaitItem()).isEqualTo(SimpleRoute(2))
 
-            handle["key"] = NavigationResult(SimpleRoute(3))
+            owner.sendResult(SimpleRoute(3))
             assertThat(awaitItem()).isEqualTo(SimpleRoute(3))
         }
     }
 
     @Test
     fun `NavigationResultRequest emits results that were delivered before collection`(): Unit = runBlocking {
-        val handle = SavedStateHandle()
         val owner = NavigationResultRequest(
             NavigationResultRequest.Key(StackEntry.Id(""), "key"),
-            handle,
+            StackEntryState(),
             serializer<SimpleRoute>(),
         )
 
-        handle["key"] = NavigationResult(SimpleRoute(1))
+        owner.sendResult(SimpleRoute(1))
 
         owner.results.test {
             assertThat(awaitItem()).isEqualTo(SimpleRoute(1))
@@ -49,18 +72,17 @@ internal class NavigationResultRequestTest {
 
     @Test
     fun `NavigationResultRequest emits results were delivered before and during collection`(): Unit = runBlocking {
-        val handle = SavedStateHandle()
         val owner = NavigationResultRequest(
             NavigationResultRequest.Key(StackEntry.Id(""), "key"),
-            handle,
+            StackEntryState(),
             serializer<SimpleRoute>(),
         )
 
-        handle["key"] = NavigationResult(SimpleRoute(1))
+        owner.sendResult(SimpleRoute(1))
         owner.results.test {
             assertThat(awaitItem()).isEqualTo(SimpleRoute(1))
 
-            handle["key"] = NavigationResult(SimpleRoute(2))
+            owner.sendResult(SimpleRoute(2))
             assertThat(awaitItem()).isEqualTo(SimpleRoute(2))
         }
     }

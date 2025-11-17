@@ -15,10 +15,10 @@ androidx-core = "1.17.0"
 androidx-lifecycle = "2.9.4"
 coroutines = "1.10.2"
 dependency-analysis = "3.4.1"
-fgp = "0.33.1"
+fgp = "0.34.2"
 java-target = "11"
 java-toolchain = "21"
-khonshu = "0.33.1"
+khonshu = "0.34.1"
 ksp = "2.3.2"
 kotlin = "2.2.21"
 metro = "0.7.5"
@@ -43,7 +43,7 @@ khonshu-navigation = { module = "com.freeletics.khonshu:navigation", version.ref
 khonshu-codegen-compiler = { module = "com.freeletics.khonshu:codegen-compiler", version.ref = "khonshu" }
 khonshu-codegen-runtime = { module = "com.freeletics.khonshu:codegen-runtime", version.ref = "khonshu" }
 khonshu-statemachine = { module = "com.freeletics.khonshu:state-machine", version.ref = "khonshu" }
-kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.8.0" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.9.0" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [plugins]

@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.navigation
 
 import androidx.compose.runtime.State
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Turbine
 import app.cash.turbine.plusAssign
 import com.freeletics.khonshu.navigation.internal.DestinationId
@@ -9,6 +8,7 @@ import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
+import com.freeletics.khonshu.navigation.internal.StackEntryState
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import kotlin.reflect.KClass
 import kotlinx.coroutines.flow.Flow
@@ -25,9 +25,9 @@ public class TestHostNavigator(
     internal val events: Flow<TestEvent>
         get() = eventTurbine.asChannel().receiveAsFlow()
 
-    internal val savedStateHandle: SavedStateHandle
-        @OptIn(InternalNavigationCodegenApi::class)
-        get() = fakeEntry.savedStateHandle
+    @OptIn(InternalNavigationApi::class, InternalNavigationCodegenApi::class)
+    internal val state: StackEntryState
+        get() = fakeEntry.state
 
     @InternalNavigationCodegenApi
     @InternalNavigationTestingApi
