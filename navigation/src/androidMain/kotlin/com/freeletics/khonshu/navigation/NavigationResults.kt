@@ -1,13 +1,9 @@
 package com.freeletics.khonshu.navigation
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.savedstate.serialization.decodeFromSavedState
-import androidx.savedstate.serialization.encodeToSavedState
-import com.freeletics.khonshu.navigation.NavigationResultRequest
-import com.freeletics.khonshu.navigation.NavigationResultRequest as Request
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
+import com.freeletics.khonshu.navigation.internal.StackEntryState
 import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
@@ -23,7 +19,8 @@ import kotlinx.serialization.serializer
  * result passed to `deliverNavigationResult` will then be emitted by the `Flow` returned from
  * [NavigationResultRequest.results].
  */
-public inline fun <reified T : BaseRoute, reified O> Navigator.registerForNavigationResult(): Request<O> {
+@Suppress("ktlint:standard:max-line-length")
+public inline fun <reified T : BaseRoute, reified O : Any> Navigator.registerForNavigationResult(): NavigationResultRequest<O> {
     return registerForNavigationResult(
         id = DestinationId(T::class),
         resultType = O::class.qualifiedName!!,
@@ -36,11 +33,11 @@ internal fun <T : BaseRoute, O> Navigator.registerForNavigationResult(
     id: DestinationId<T>,
     resultType: String,
     serializer: KSerializer<O>,
-): Request<O> {
+): NavigationResultRequest<O> {
     val requestKey = "${id.route.qualifiedName!!}-$resultType"
     val entry = getTopEntryFor(id)
-    val key = Request.Key<O>(entry.id, requestKey)
-    return Request(key, entry.savedStateHandle, serializer)
+    val key = NavigationResultRequest.Key<O>(entry.id, requestKey)
+    return NavigationResultRequest(key, entry.state, serializer)
 }
 
 /**
@@ -49,7 +46,7 @@ internal fun <T : BaseRoute, O> Navigator.registerForNavigationResult(
  * See [registerForNavigationResult].
  */
 public inline fun <reified O> Navigator.deliverNavigationResult(
-    key: Request.Key<O>,
+    key: NavigationResultRequest.Key<O>,
     result: O,
 ) {
     deliverNavigationResult(key, result, serializer())
@@ -57,15 +54,13 @@ public inline fun <reified O> Navigator.deliverNavigationResult(
 
 @PublishedApi
 internal fun <O> Navigator.deliverNavigationResult(
-    key: Request.Key<O>,
+    key: NavigationResultRequest.Key<O>,
     result: O,
     serializer: KSerializer<O>,
 ) {
     val entry = getEntryFor(key.stackEntryId)
-    entry.savedStateHandle[key.requestKey] = encodeToSavedState(
-        NavigationResult.serializer(serializer),
-        NavigationResult(result),
-    )
+    val resultSerializer = NavigationResult.serializer(serializer)
+    entry.state.set(key.requestKey, NavigationResult(result), resultSerializer)
 }
 
 /**
@@ -77,13 +72,12 @@ internal fun <O> Navigator.deliverNavigationResult(
 public class NavigationResultRequest<R> @InternalNavigationTestingApi constructor(
     public val key: Key<R>,
     @property:InternalNavigationTestingApi
-    public val savedStateHandle: SavedStateHandle,
+    public val state: StackEntryState,
     resultSerializer: KSerializer<R>,
 ) {
     private val serializer = NavigationResult.serializer(resultSerializer)
 
-    private val emptyValue
-        get() = encodeToSavedState(serializer, NavigationResult(null))
+    private val emptyValue = NavigationResult(null)
 
     /**
      * Emits any result that was passed to [deliverNavigationResult] with the matching [key].
@@ -91,12 +85,11 @@ public class NavigationResultRequest<R> @InternalNavigationTestingApi constructo
      * Results will only be delivered to one collector at a time.
      */
     public val results: Flow<R>
-        get() = savedStateHandle.getStateFlow(key.requestKey, emptyValue)
+        get() = state.getStateFlow(key.requestKey, emptyValue, serializer)
             .mapNotNull {
-                val decoded = decodeFromSavedState(serializer, it)
-                if (decoded.value != null) {
-                    savedStateHandle[key.requestKey] = emptyValue
-                    decoded.value
+                if (it.value != null) {
+                    state[key.requestKey] = emptyValue
+                    it.value
                 } else {
                     null
                 }

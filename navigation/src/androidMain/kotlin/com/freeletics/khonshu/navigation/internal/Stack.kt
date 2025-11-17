@@ -2,7 +2,6 @@ package com.freeletics.khonshu.navigation.internal
 
 import androidx.compose.runtime.saveable.Saver as ComposeSaver
 import androidx.compose.runtime.saveable.SaverScope
-import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
 import androidx.savedstate.read
 import androidx.savedstate.savedState
@@ -83,7 +82,7 @@ internal class Stack private constructor(
 
     class Saver(
         private val createEntry: (BaseRoute) -> StackEntry<*>,
-        createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
+        createRestoredEntry: (BaseRoute, StackEntry.Id, StackEntryState) -> StackEntry<*>,
         savedStateConfiguration: SavedStateConfiguration,
     ) : ComposeSaver<Stack, SavedState> {
         private val entrySaver = StackEntry.Saver(createRestoredEntry, savedStateConfiguration)

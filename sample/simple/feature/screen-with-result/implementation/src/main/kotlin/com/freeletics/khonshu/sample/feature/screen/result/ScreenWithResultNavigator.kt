@@ -21,6 +21,5 @@ class ScreenWithResultNavigator(
 ) : DestinationNavigator(hostNavigator) {
     fun deliverResult(data: String) {
         deliverNavigationResult(route.key, Result(data))
-        navigateBack()
     }
 }

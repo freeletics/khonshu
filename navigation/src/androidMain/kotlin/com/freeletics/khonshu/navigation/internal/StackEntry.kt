@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation.internal
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -31,7 +30,7 @@ public class StackEntry<T : BaseRoute> internal constructor(
     internal val id: Id,
     public val route: T,
     private val destination: NavDestination<T>,
-    public val savedStateHandle: SavedStateHandle,
+    public val state: StackEntryState,
     public val store: StackEntryStore,
 ) {
     internal val destinationId
@@ -42,6 +41,11 @@ public class StackEntry<T : BaseRoute> internal constructor(
 
     internal val parentDesintationId: DestinationId<*>?
         get() = destination.parent
+
+    // for now to be compatible with codegen and not expose StackEntryState publicly yet
+    @InternalNavigationCodegenApi
+    public val savedStateHandle: SavedStateHandle
+        get() = state.savedStateHandle()
 
     @InternalNavigationCodegenApi
     public val extra: Any?
@@ -78,7 +82,7 @@ public class StackEntry<T : BaseRoute> internal constructor(
                 id = id,
                 route = route,
                 destination = ScreenDestination<BaseRoute> {},
-                savedStateHandle = SavedStateHandle(),
+                state = StackEntryState(),
                 store = StackEntryStore {},
             )
         }
@@ -89,7 +93,7 @@ public class StackEntry<T : BaseRoute> internal constructor(
     }
 
     internal class Saver(
-        private val createRestoredEntry: (BaseRoute, Id, SavedStateHandle) -> StackEntry<*>,
+        private val createRestoredEntry: (BaseRoute, Id, StackEntryState) -> StackEntry<*>,
         private val savedStateConfiguration: SavedStateConfiguration,
     ) : ComposeSaver<StackEntry<*>, SavedState> {
         override fun restore(value: SavedState): StackEntry<*> {
@@ -97,8 +101,7 @@ public class StackEntry<T : BaseRoute> internal constructor(
                 createRestoredEntry(
                     decodeFromSavedState(getSavedState(KEY_ROUTE), savedStateConfiguration),
                     Id(getString(KEY_ID)),
-                    @SuppressLint("RestrictedApi")
-                    SavedStateHandle.createHandle(getSavedState(KEY_STATE), null),
+                    StackEntryState(getSavedState(KEY_STATE)),
                 )
             }
         }
@@ -106,8 +109,7 @@ public class StackEntry<T : BaseRoute> internal constructor(
         override fun SaverScope.save(value: StackEntry<*>): SavedState = savedState {
             putString(KEY_ID, value.id.value)
             putSavedState(KEY_ROUTE, encodeToSavedState(value.route, savedStateConfiguration))
-            @SuppressLint("RestrictedApi")
-            putSavedState(KEY_STATE, value.savedStateHandle.savedStateProvider().saveState())
+            putSavedState(KEY_STATE, value.state.saveState())
         }
     }
 }
