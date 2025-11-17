@@ -10,12 +10,12 @@ import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.destinationNavigator
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
-import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
 import com.freeletics.khonshu.codegen.util.multibinds
 import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
+import com.freeletics.khonshu.codegen.util.stackEntryStoreHolder
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
@@ -99,7 +99,7 @@ internal class GraphGenerator(
             .addModifiers(ABSTRACT)
             .apply {
                 if (data is NavHostActivityData) {
-                    addParameter(providesParameter("viewModel", multiStackHostNavigatorViewModel))
+                    addParameter(providesParameter("stackEntryStoreHolder", stackEntryStoreHolder))
                 }
             }
             .addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))

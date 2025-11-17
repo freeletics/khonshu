@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -20,14 +21,15 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.SerializersModuleBuilder
 
 internal fun createMultiStack(
-    viewModel: StackEntryStoreViewModel,
     startRoot: NavRoot,
     destinations: ImmutableSet<NavDestination<*>>,
+    storeHolder: StackEntryStoreHolder,
+    savedStateHandle: SavedStateHandle,
 ): MultiStack {
-    val factory = StackEntryFactory(destinations.toList(), viewModel)
+    val factory = StackEntryFactory(destinations.toList(), storeHolder)
     val savedStateConfiguration = SavedStateConfiguration(destinations)
     val saver = MultiStack.Saver(factory::create, factory::create, savedStateConfiguration)
-    return viewModel.globalSavedStateHandle.saveable(SAVED_STATE_STACK, saver) {
+    return savedStateHandle.saveable(SAVED_STATE_STACK, saver) {
         MultiStack.createWith(startRoot, factory::create)
     }
 }
@@ -35,11 +37,11 @@ internal fun createMultiStack(
 @Composable
 internal fun rememberMultiStack(
     startRoot: NavRoot,
-    viewModel: StackEntryStoreViewModel,
     destinations: ImmutableSet<NavDestination<*>>,
 ): MutableState<MultiStack> {
-    return key(startRoot, viewModel, destinations) {
-        val factory = StackEntryFactory(destinations.toList(), viewModel)
+    return key(startRoot, destinations) {
+        val storeHolder = retain { StackEntryStoreHolder() }
+        val factory = StackEntryFactory(destinations, storeHolder)
         val savedStateConfiguration = SavedStateConfiguration(destinations)
         val saver = MultiStack.Saver(factory::create, factory::create, savedStateConfiguration)
         rememberSaveable(stateSaver = saver) {

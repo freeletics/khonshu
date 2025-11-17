@@ -5,19 +5,22 @@ import com.freeletics.khonshu.codegen.NavHostActivityData
 import com.freeletics.khonshu.codegen.util.asLaunchInfo
 import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.createHostNavigator
+import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.immutableSet
 import com.freeletics.khonshu.codegen.util.intent
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.launchInfo
-import com.freeletics.khonshu.codegen.util.multiStackHostNavigatorViewModel
 import com.freeletics.khonshu.codegen.util.navRoot
 import com.freeletics.khonshu.codegen.util.navigationDestination
 import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.provides
+import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.singleIn
+import com.freeletics.khonshu.codegen.util.stackEntryStoreHolder
 import com.freeletics.khonshu.codegen.util.toImmutableSet
 import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.TypeSpec
@@ -60,12 +63,15 @@ internal class ActivityGraphGenerator(
             .addAnnotation(provides())
             .addAnnotation(singleIn(data.scope))
             .addAnnotation(optIn(internalNavigatorApi))
-            .addParameter("viewModel", multiStackHostNavigatorViewModel)
             .addParameter("startRoot", navRoot)
+            .addParameter("storeHolder", stackEntryStoreHolder)
+            .addParameter(
+                ParameterSpec.builder("savedStateHandle", savedStateHandle).addAnnotation(forScope(data.scope)).build(),
+            )
             .addParameter("destinations", immutableSet.parameterizedBy(navigationDestination))
             .returns(hostNavigator)
             .addStatement(
-                "return %M(viewModel, startRoot, destinations)",
+                "return %M(startRoot, destinations, storeHolder, savedStateHandle)",
                 createHostNavigator,
             )
             .build()

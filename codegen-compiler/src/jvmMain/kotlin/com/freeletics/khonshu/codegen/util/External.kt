@@ -30,8 +30,8 @@ internal val navRoot = ClassName("com.freeletics.khonshu.navigation", "NavRoot")
 internal val destinationNavigator = ClassName("com.freeletics.khonshu.navigation", "DestinationNavigator")
 internal val hostNavigator = ClassName("com.freeletics.khonshu.navigation", "HostNavigator")
 internal val createHostNavigator = MemberName("com.freeletics.khonshu.navigation", "createHostNavigator")
-internal val multiStackHostNavigatorViewModel =
-    ClassName("com.freeletics.khonshu.navigation.internal", "StackEntryStoreViewModel")
+internal val stackEntryStoreHolder =
+    ClassName("com.freeletics.khonshu.navigation.internal", "StackEntryStoreHolder")
 internal val navHost = MemberName("com.freeletics.khonshu.navigation", "NavHost")
 internal val activityNavigatorEffect =
     MemberName("com.freeletics.khonshu.navigation.activity", "ActivityNavigatorEffect")
@@ -82,13 +82,12 @@ internal val toImmutableSet = MemberName("kotlinx.collections.immutable", "toImm
 internal val componentActivity = ClassName("androidx.activity", "ComponentActivity")
 internal val setContent = MemberName("androidx.activity.compose", "setContent")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
-internal val savedStateViewModelFactory = ClassName("androidx.lifecycle", "SavedStateViewModelFactory")
-internal val viewModelProvider = ClassName("androidx.lifecycle", "ViewModelProvider")
 
 // Compose
 internal val composable = ClassName("androidx.compose.runtime", "Composable")
 internal val getValue = MemberName("androidx.compose.runtime", "getValue")
 internal val remember = MemberName("androidx.compose.runtime", "remember")
+internal val retain = MemberName("androidx.compose.runtime.retain", "retain")
 internal val compositionLocalProvider = MemberName("androidx.compose.runtime", "CompositionLocalProvider")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 
