@@ -1,7 +1,5 @@
 package com.freeletics.khonshu.codegen.internal
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.StackEntry
@@ -10,8 +8,19 @@ import com.freeletics.khonshu.navigation.internal.destinationId
 import kotlin.reflect.KClass
 
 @InternalCodegenApi
-public interface DestinationGraphProvider<R : BaseRoute, T> {
-    public fun provide(entry: StackEntry<R>, snapshot: StackSnapshot, provider: HostGraphProvider): T
+public interface DestinationGraphProvider<R : BaseRoute, ParentGraph, Graph> {
+    public fun getParentGraph(snapshot: StackSnapshot, provider: HostGraphProvider): ParentGraph
+    // hostGraphProvider.provide<ParentGraph>(ParentScope::class)
+
+    // val parentEntry = snapshot.entryFor(DestinationId(ParentScope::class))
+    // @Suppress("UNCHECKED_CAST")
+    // val parentGraphProvider = parentEntry.extra as DestinationGraphProvider<ParentScope, *, ParentGraph>
+    // parentDestinationGraphProvider.provide(parentEntry, snapshot, hostGraphProvider)
+
+    public fun provide(entry: StackEntry<R>, snapshot: StackSnapshot, provider: HostGraphProvider): Graph
+    // entry.store.getOrCreate(Graph::class) {
+    //   getParentGraph(snapshot, provider).create(entry.savedStateHandle, entry.route)
+    // }
 }
 
 /**
@@ -29,7 +38,6 @@ public inline fun <reified C : Any, PC : Any, R : BaseRoute> getGraph(
     crossinline factory: (PC) -> C,
 ): C {
     return entry.store.getOrCreate(C::class) {
-        val parentGraph = hostGraphProvider.provide<PC>(parentScope)
         factory(parentGraph)
     }
 }
