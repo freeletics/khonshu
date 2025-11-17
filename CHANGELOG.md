@@ -9,6 +9,12 @@ Change Log
 ### Codegen
 
 
+## 0.34.2 *(2025-11-13)*
+
+- Resolve issues when using the navigation result APIs in Android host side tests, which had failures
+  because of `Bundle` APIs being called but them not being mocked.
+
+
 ## 0.34.1 *(2025-11-13)*
 
 ### TextResource
