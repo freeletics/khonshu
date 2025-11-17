@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation
 
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import app.cash.turbine.testIn
@@ -8,6 +7,8 @@ import com.freeletics.khonshu.navigation.activity.ActivityResultRequest
 import com.freeletics.khonshu.navigation.activity.ActivityRoute
 import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest
 import com.freeletics.khonshu.navigation.activity.internal.ActivityEvent
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import com.freeletics.khonshu.navigation.internal.StackEntryState
 import com.google.common.truth.Truth
 import kotlin.reflect.KClass
 import kotlin.time.Duration
@@ -16,6 +17,8 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.serializer
 
 /**
  * Collects events from [TestHostNavigator] and allows the [validate] lambda to consume
@@ -24,13 +27,14 @@ import kotlinx.coroutines.flow.merge
  *
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
  */
+@OptIn(InternalNavigationApi::class)
 public suspend fun TestHostNavigator.test(
     timeout: Duration? = null,
     name: String? = null,
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
     events.test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(this, savedStateHandle, this)
+        val turbine = DefaultNavigatorTurbine(this, state, this)
         validate(turbine)
     }
 }
@@ -44,6 +48,7 @@ public suspend fun TestHostNavigator.test(
  *
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
  */
+@OptIn(InternalNavigationApi::class)
 public suspend fun DestinationNavigator.test(
     timeout: Duration? = null,
     name: String? = null,
@@ -53,7 +58,7 @@ public suspend fun DestinationNavigator.test(
     val hostEvents = testHostNavigator.events
     val activityEvents = activityEvents.map(::toTestEvent)
     merge(hostEvents, activityEvents).test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(this, testHostNavigator.savedStateHandle, this)
+        val turbine = DefaultNavigatorTurbine(this, testHostNavigator.state, this)
         validate(turbine)
     }
 }
@@ -68,13 +73,14 @@ public suspend fun DestinationNavigator.test(
  *
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
  */
+@OptIn(InternalNavigationApi::class)
 public fun TestHostNavigator.testIn(
     scope: CoroutineScope,
     timeout: Duration? = null,
     name: String? = null,
 ): NavigatorTurbine {
     val turbine = events.testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(turbine, savedStateHandle, scope)
+    return DefaultNavigatorTurbine(turbine, state, scope)
 }
 
 /**
@@ -89,6 +95,7 @@ public fun TestHostNavigator.testIn(
  *
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
  */
+@OptIn(InternalNavigationApi::class)
 public fun DestinationNavigator.testIn(
     scope: CoroutineScope,
     timeout: Duration? = null,
@@ -98,7 +105,7 @@ public fun DestinationNavigator.testIn(
     val hostEvents = testHostNavigator.events
     val activityEvents = activityEvents.map(::toTestEvent)
     val turbine = merge(hostEvents, activityEvents).testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(turbine, testHostNavigator.savedStateHandle, scope)
+    return DefaultNavigatorTurbine(turbine, testHostNavigator.state, scope)
 }
 
 public interface NavigatorTurbine {
@@ -221,9 +228,10 @@ public interface NavigatorTurbine {
      *
      * @throws AssertionError - if the next event was not a matching event.
      */
-    public suspend fun <O> awaitNavigationResult(
+    public suspend fun <O : Any> awaitNavigationResult(
         key: NavigationResultRequest.Key<O>,
         result: O,
+        serializer: KSerializer<O>,
     )
 
     /**
@@ -240,9 +248,16 @@ public interface NavigatorTurbine {
     public suspend fun cancelAndIgnoreRemainingNavEvents()
 }
 
-internal class DefaultNavigatorTurbine(
+public suspend inline fun <reified O : Any> NavigatorTurbine.awaitNavigationResult(
+    key: NavigationResultRequest.Key<O>,
+    result: O,
+) {
+    awaitNavigationResult(key, result, serializer())
+}
+
+internal class DefaultNavigatorTurbine @OptIn(InternalNavigationApi::class) constructor(
     private val turbine: ReceiveTurbine<TestEvent>,
-    private val savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: StackEntryState,
     private val scope: CoroutineScope,
 ) : NavigatorTurbine {
     override suspend fun awaitNavigateTo(route: NavRoute) {
@@ -322,12 +337,17 @@ internal class DefaultNavigatorTurbine(
         Truth.assertThat(turbine.awaitItem()).isEqualTo(event)
     }
 
-    override suspend fun <O> awaitNavigationResult(
+    @OptIn(InternalNavigationApi::class)
+    override suspend fun <O : Any> awaitNavigationResult(
         key: NavigationResultRequest.Key<O>,
         result: O,
+        serializer: KSerializer<O>,
     ) {
-        val turbine = savedStateHandle.getStateFlow<NavigationResult<O>?>(key.requestKey, null)
-            .filterNotNull()
+        val turbine = savedStateHandle.getStateFlow<NavigationResult<O>>(
+            key = key.requestKey,
+            initialValue = NavigationResult(null),
+            strategy = NavigationResult.serializer(serializer),
+        )
             .map { it.value }
             .filterNotNull()
             .testIn(scope)

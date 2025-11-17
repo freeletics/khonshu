@@ -6,7 +6,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver as ComposeSaver
 import androidx.compose.runtime.saveable.SaverScope
-import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
 import androidx.savedstate.read
 import androidx.savedstate.savedState
@@ -140,7 +139,7 @@ internal class MultiStack @VisibleForTesting internal constructor(
 
     class Saver(
         private val createEntry: (BaseRoute) -> StackEntry<*>,
-        createRestoredEntry: (BaseRoute, StackEntry.Id, SavedStateHandle) -> StackEntry<*>,
+        createRestoredEntry: (BaseRoute, StackEntry.Id, StackEntryState) -> StackEntry<*>,
         savedStateConfiguration: SavedStateConfiguration,
     ) : ComposeSaver<MultiStack, SavedState> {
         private val stackSaver = Stack.Saver(createEntry, createRestoredEntry, savedStateConfiguration)
