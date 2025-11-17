@@ -1,13 +1,11 @@
 package com.freeletics.khonshu.navigation.internal
 
-import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.test.FakeCloseable
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
-internal class StackEntryStoreViewModelTest {
-    private val savedStateHandle = SavedStateHandle()
-    private val underTest = StackEntryStoreHolder(savedStateHandle)
+internal class StackEntryStoreHolderTest {
+    private val underTest = StackEntryStoreHolder()
 
     @Test
     fun `StoreViewModel returns same store for same id`() {
