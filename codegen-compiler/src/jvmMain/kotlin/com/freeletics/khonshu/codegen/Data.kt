@@ -28,7 +28,7 @@ public data class ComposableParameter(
     public val typeName: TypeName,
 )
 
-public data class NavDestinationData(
+public data class DestinationData(
     override val baseName: String,
     override val packageName: String,
     override val scope: ClassName,
@@ -41,7 +41,7 @@ public data class NavDestinationData(
     override val composableParameter: List<ComposableParameter>,
 ) : BaseData
 
-public data class NavHostActivityData(
+public data class HostActivityData(
     override val baseName: String,
     override val packageName: String,
     override val scope: ClassName,

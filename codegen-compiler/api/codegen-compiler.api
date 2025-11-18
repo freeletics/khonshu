@@ -24,17 +24,7 @@ public final class com/freeletics/khonshu/codegen/ComposableParameter {
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/freeletics/khonshu/codegen/KhonshuSymbolProcessor : com/google/devtools/ksp/processing/SymbolProcessor {
-	public fun <init> (Lcom/google/devtools/ksp/processing/CodeGenerator;Lcom/google/devtools/ksp/processing/KSPLogger;)V
-	public fun process (Lcom/google/devtools/ksp/processing/Resolver;)Ljava/util/List;
-}
-
-public final class com/freeletics/khonshu/codegen/KhonshuSymbolProcessor$KhonshuSymbolProcessorProvider : com/google/devtools/ksp/processing/SymbolProcessorProvider {
-	public fun <init> ()V
-	public fun create (Lcom/google/devtools/ksp/processing/SymbolProcessorEnvironment;)Lcom/google/devtools/ksp/processing/SymbolProcessor;
-}
-
-public final class com/freeletics/khonshu/codegen/NavDestinationData : com/freeletics/khonshu/codegen/BaseData {
+public final class com/freeletics/khonshu/codegen/DestinationData : com/freeletics/khonshu/codegen/BaseData {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/Navigation;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component10 ()Ljava/util/List;
@@ -46,8 +36,8 @@ public final class com/freeletics/khonshu/codegen/NavDestinationData : com/freel
 	public final fun component7 ()Lcom/squareup/kotlinpoet/ClassName;
 	public final fun component8 ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
 	public final fun component9 ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/Navigation;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;)Lcom/freeletics/khonshu/codegen/NavDestinationData;
-	public static synthetic fun copy$default (Lcom/freeletics/khonshu/codegen/NavDestinationData;Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/Navigation;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;ILjava/lang/Object;)Lcom/freeletics/khonshu/codegen/NavDestinationData;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/Navigation;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;)Lcom/freeletics/khonshu/codegen/DestinationData;
+	public static synthetic fun copy$default (Lcom/freeletics/khonshu/codegen/DestinationData;Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/Navigation;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;ILjava/lang/Object;)Lcom/freeletics/khonshu/codegen/DestinationData;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getBaseName ()Ljava/lang/String;
 	public fun getComposableParameter ()Ljava/util/List;
@@ -63,7 +53,7 @@ public final class com/freeletics/khonshu/codegen/NavDestinationData : com/freel
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/freeletics/khonshu/codegen/NavHostActivityData : com/freeletics/khonshu/codegen/BaseData {
+public final class com/freeletics/khonshu/codegen/HostActivityData : com/freeletics/khonshu/codegen/BaseData {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component10 ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
@@ -76,8 +66,8 @@ public final class com/freeletics/khonshu/codegen/NavHostActivityData : com/free
 	public final fun component7 ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
 	public final fun component8 ()Lcom/squareup/kotlinpoet/ClassName;
 	public final fun component9 ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;)Lcom/freeletics/khonshu/codegen/NavHostActivityData;
-	public static synthetic fun copy$default (Lcom/freeletics/khonshu/codegen/NavHostActivityData;Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;ILjava/lang/Object;)Lcom/freeletics/khonshu/codegen/NavHostActivityData;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;)Lcom/freeletics/khonshu/codegen/HostActivityData;
+	public static synthetic fun copy$default (Lcom/freeletics/khonshu/codegen/HostActivityData;Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;ILjava/lang/Object;)Lcom/freeletics/khonshu/codegen/HostActivityData;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getActivityBaseClass ()Lcom/squareup/kotlinpoet/ClassName;
 	public fun getBaseName ()Ljava/lang/String;
@@ -93,6 +83,16 @@ public final class com/freeletics/khonshu/codegen/NavHostActivityData : com/free
 	public fun getStateParameter ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/freeletics/khonshu/codegen/KhonshuSymbolProcessor : com/google/devtools/ksp/processing/SymbolProcessor {
+	public fun <init> (Lcom/google/devtools/ksp/processing/CodeGenerator;Lcom/google/devtools/ksp/processing/KSPLogger;)V
+	public fun process (Lcom/google/devtools/ksp/processing/Resolver;)Ljava/util/List;
+}
+
+public final class com/freeletics/khonshu/codegen/KhonshuSymbolProcessor$KhonshuSymbolProcessorProvider : com/google/devtools/ksp/processing/SymbolProcessorProvider {
+	public fun <init> ()V
+	public fun create (Lcom/google/devtools/ksp/processing/SymbolProcessorEnvironment;)Lcom/google/devtools/ksp/processing/SymbolProcessor;
 }
 
 public final class com/freeletics/khonshu/codegen/Navigation {
@@ -114,7 +114,7 @@ public final class com/freeletics/khonshu/codegen/Navigation {
 public final class com/freeletics/khonshu/codegen/codegen/FileGenerator {
 	public fun <init> ()V
 	public final fun generate (Lcom/freeletics/khonshu/codegen/BaseData;)Lcom/squareup/kotlinpoet/FileSpec;
-	public final fun generate (Lcom/freeletics/khonshu/codegen/NavDestinationData;)Lcom/squareup/kotlinpoet/FileSpec;
-	public final fun generate (Lcom/freeletics/khonshu/codegen/NavHostActivityData;)Lcom/squareup/kotlinpoet/FileSpec;
+	public final fun generate (Lcom/freeletics/khonshu/codegen/DestinationData;)Lcom/squareup/kotlinpoet/FileSpec;
+	public final fun generate (Lcom/freeletics/khonshu/codegen/HostActivityData;)Lcom/squareup/kotlinpoet/FileSpec;
 }
 
