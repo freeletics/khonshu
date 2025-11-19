@@ -77,19 +77,17 @@ public class NavigationResultRequest<R> @InternalNavigationTestingApi constructo
 ) {
     private val serializer = NavigationResult.serializer(resultSerializer)
 
-    private val emptyValue = NavigationResult(null)
-
     /**
      * Emits any result that was passed to [deliverNavigationResult] with the matching [key].
      *
      * Results will only be delivered to one collector at a time.
      */
     public val results: Flow<R>
-        get() = state.getStateFlow(key.requestKey, emptyValue, serializer)
+        get() = state.getStateFlow<NavigationResult<R>>(key.requestKey, NavigationResult(null), serializer)
             .mapNotNull {
                 if (it.value != null) {
-                    state[key.requestKey] = emptyValue
-                    it.value
+                    state[key.requestKey] = NavigationResult(null)
+                    it.value as R
                 } else {
                     null
                 }

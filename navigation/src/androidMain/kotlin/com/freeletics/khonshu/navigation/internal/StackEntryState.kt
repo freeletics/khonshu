@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
 
@@ -35,7 +36,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
     public fun <T : Any> getStateFlow(
         key: String,
         initialValue: T,
-        strategy: DeserializationStrategy<T>?,
+        strategy: KSerializer<T>?,
     ): StateFlow<T> {
         // If a flow exists we should just return it, and since it is a StateFlow and a value must
         // always be set, we know a value must already be available
@@ -43,7 +44,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
             // If there is not a value associated with the key, add the initial value,
             // otherwise, use the one we already have.
             val initial = if (key !in values) {
-                values[key] = initialValue
+                set(key, initialValue, strategy)
                 initialValue
             } else {
                 get(key, strategy)
