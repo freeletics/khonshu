@@ -218,10 +218,10 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkKt {
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLink_androidKt {
-	public static final fun buildIntent (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;)Landroid/content/Intent;
-	public static final fun buildPendingIntent (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;I)Landroid/app/PendingIntent;
-	public static synthetic fun buildPendingIntent$default (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;IILjava/lang/Object;)Landroid/app/PendingIntent;
-	public static final fun buildTaskStack (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;)Landroidx/core/app/TaskStackBuilder;
+	public static final fun buildIntent (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;Lkotlinx/collections/immutable/ImmutableSet;)Landroid/content/Intent;
+	public static final fun buildPendingIntent (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;Lkotlinx/collections/immutable/ImmutableSet;I)Landroid/app/PendingIntent;
+	public static synthetic fun buildPendingIntent$default (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;Lkotlinx/collections/immutable/ImmutableSet;IILjava/lang/Object;)Landroid/app/PendingIntent;
+	public static final fun buildTaskStack (Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;Landroid/content/Context;Lkotlinx/collections/immutable/ImmutableSet;)Landroidx/core/app/TaskStackBuilder;
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/HandleDeeplinkKt {

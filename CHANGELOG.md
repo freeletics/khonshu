@@ -9,6 +9,11 @@ Change Log
 ### Codegen
 
 
+## 0.34.4 *(2025-11-19)*
+
+- Add `destinations` parameter to `buildIntent`, `buildTaskStack` and `buildPendingIntent`.
+
+
 ## 0.34.3 *(2025-11-19)*
 
 - Fix crash when serializing empty `NavigationResult` instances.
