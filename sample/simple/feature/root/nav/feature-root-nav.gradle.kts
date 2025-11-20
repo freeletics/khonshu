@@ -7,5 +7,5 @@ freeletics {
 }
 
 dependencies {
-    api(libs.khonshu.navigation)
+    androidMainApi(libs.khonshu.navigation)
 }

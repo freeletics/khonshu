@@ -8,7 +8,7 @@ java-target= "11"
 java-toolchain = "24"
 
 android-gradle = "8.13.1"
-android-min = "21"
+android-min = "23"
 android-target = "36"
 android-compile = "36"
 
@@ -17,7 +17,7 @@ androidx-compose-ui = "1.10.0-rc01"
 jetbrains-compose = "1.10.0-beta01"
 
 androidx-activity = "1.12.0"
-androidx-annotations = "1.5.0"
+androidx-annotations = "1.9.1"
 androidx-core = "1.17.0"
 androidx-lifecycle = "2.10.0"
 
@@ -35,7 +35,7 @@ truth = "1.4.5"
 turbine = "1.2.1"
 kotlin-compile-testing = "0.11.1"
 
-fgp = "0.35.0"
+fgp = "0.36.0"
 publish = "0.35.0"
 dokka = "2.1.0"
 dependency-analysis = "3.5.0"
@@ -69,6 +69,7 @@ androidx-lifecycle-testing = { module = "androidx.lifecycle:lifecycle-runtime-te
 androidx-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
 androidx-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
+androidx-lint-gradle = { module = "androidx.lint:lint-gradle", version = "1.0.0-alpha05" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.5.0" }

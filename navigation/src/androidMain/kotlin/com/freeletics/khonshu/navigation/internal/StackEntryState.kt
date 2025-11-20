@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.navigation.internal
 
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
@@ -90,6 +91,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
     }
 
     public fun savedStateHandle(): SavedStateHandle {
+        @SuppressLint("VisibleForTests")
         return values.getOrPut("khonshu-internal-saved-state-handle") { SavedStateHandle() } as SavedStateHandle
     }
 
@@ -116,7 +118,10 @@ private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: S
         is Boolean -> putBoolean(key, value)
         is Parcelable -> putParcelable(key, value)
         is Serializable -> putJavaSerializable(key, value)
-        is SavedStateHandle -> value.savedStateProvider().saveState()
+        is SavedStateHandle -> {
+            @SuppressLint("RestrictedApi")
+            value.savedStateProvider().saveState()
+        }
         else -> {
             val serializer = requireNotNull(serializer) { "Did not find serializer for $value" }
             val savedState = encodeToSavedState(serializer, value)
