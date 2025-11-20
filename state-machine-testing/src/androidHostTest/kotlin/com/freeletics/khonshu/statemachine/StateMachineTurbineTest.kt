@@ -15,7 +15,6 @@ class StateMachineTurbineTest {
         override suspend fun dispatch(action: Int) {
             mutableState.value += action
         }
-
     }
 
     @Test

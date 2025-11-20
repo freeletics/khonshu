@@ -8,6 +8,7 @@ class DeepLinkTestingTest {
     private val prefix = DeepLinkHandler.Prefix("https://example.com")
     private val handler1 = object : DeepLinkHandler {
         override val patterns: Set<DeepLinkHandler.Pattern> = setOf(DeepLinkHandler.Pattern("abc"))
+
         override fun deepLink(
             pathParameters: Map<String, String>,
             queryParameters: Map<String, String>,
@@ -15,6 +16,7 @@ class DeepLinkTestingTest {
     }
     private val handler2 = object : DeepLinkHandler {
         override val patterns: Set<DeepLinkHandler.Pattern> = setOf(DeepLinkHandler.Pattern("abc/{id}"))
+
         override fun deepLink(
             pathParameters: Map<String, String>,
             queryParameters: Map<String, String>,
@@ -36,11 +38,11 @@ class DeepLinkTestingTest {
             prefixes = listOf(prefixDefinition),
             deepLinks = mapOf(
                 "link1" to definition1,
-                "link2" to definition2
-            )
+                "link2" to definition2,
+            ),
         ).containsAllDeepLinks(
             deepLinkHandlers = setOf(handler1, handler2),
-            defaultPrefixes = setOf(prefix)
+            defaultPrefixes = setOf(prefix),
         )
     }
 
@@ -51,17 +53,19 @@ class DeepLinkTestingTest {
                 prefixes = listOf(prefixDefinition),
                 deepLinks = mapOf(
                     "link1" to definition1,
-                )
+                ),
             ).containsAllDeepLinks(
                 deepLinkHandlers = setOf(handler1, handler2),
-                defaultPrefixes = setOf(prefix)
+                defaultPrefixes = setOf(prefix),
             )
         }
 
         assertThat(error)
             .hasMessageThat()
-            .isEqualTo("The following deep links are not defined in TOML but are present in code: " +
-                "[(Prefix(value=https://example.com), Pattern(value=abc/{id}))]")
+            .isEqualTo(
+                "The following deep links are not defined in TOML but are present in code: " +
+                    "[(Prefix(value=https://example.com), Pattern(value=abc/{id}))]",
+            )
     }
 
     @Test
@@ -71,16 +75,18 @@ class DeepLinkTestingTest {
                 prefixes = listOf(prefixDefinition),
                 deepLinks = mapOf(
                     "link1" to definition1,
-                    "link2" to definition2
-                )
+                    "link2" to definition2,
+                ),
             ).containsAllDeepLinks(
                 deepLinkHandlers = setOf(handler1),
-                defaultPrefixes = setOf(prefix)
+                defaultPrefixes = setOf(prefix),
             )
         }
 
         assertThat(error).hasMessageThat()
-            .isEqualTo("The following deep links are not defined in code but are present in the TOML file: " +
-                "[(Prefix(value=https://example.com), Pattern(value=abc/{id}))]")
+            .isEqualTo(
+                "The following deep links are not defined in code but are present in the TOML file: " +
+                    "[(Prefix(value=https://example.com), Pattern(value=abc/{id}))]",
+            )
     }
 }
