@@ -19,7 +19,7 @@ import kotlinx.collections.immutable.ImmutableSet
 /**
  * Creates an [Intent] that can be used to launch this deep link.
  */
-public fun DeepLink.buildIntent(context: Context): Intent {
+public fun DeepLink.buildIntent(context: Context, destinations: ImmutableSet<NavDestination<*>>): Intent {
     val intent = if (action != null) {
         Intent(action).setPackage(context.packageName)
     } else {
@@ -27,16 +27,17 @@ public fun DeepLink.buildIntent(context: Context): Intent {
             "Couldn't obtain launch intent for ${context.packageName}"
         }
     }
+    val savedStateConfiguration = SavedStateConfiguration(destinations)
     return intent
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        .putExtra(EXTRA_DEEPLINK_ROUTES, encodeToSavedState(routes))
+        .putExtra(EXTRA_DEEPLINK_ROUTES, encodeToSavedState(routes, savedStateConfiguration))
 }
 
 /**
  * Creates a [TaskStackBuilder] that can be used to launch this deep link.
  */
-public fun DeepLink.buildTaskStack(context: Context): TaskStackBuilder {
-    return TaskStackBuilder.create(context).addNextIntent(buildIntent(context))
+public fun DeepLink.buildTaskStack(context: Context, destinations: ImmutableSet<NavDestination<*>>): TaskStackBuilder {
+    return TaskStackBuilder.create(context).addNextIntent(buildIntent(context, destinations))
 }
 
 /**
@@ -44,13 +45,14 @@ public fun DeepLink.buildTaskStack(context: Context): TaskStackBuilder {
  */
 public fun DeepLink.buildPendingIntent(
     context: Context,
+    destinations: ImmutableSet<NavDestination<*>>,
     flags: Int = defaultFlag(),
 ): PendingIntent {
     val requestCode: Int = routes.fold(0) { acc, navDirection ->
         31 * acc + navDirection.hashCode()
     }
 
-    return buildTaskStack(context).getPendingIntent(requestCode, flags)!!
+    return buildTaskStack(context, destinations).getPendingIntent(requestCode, flags)!!
 }
 
 private const val EXTRA_DEEPLINK_ROUTES: String = "com.freeletics.khonshu.navigation.DEEPLINK_ROUTES"
