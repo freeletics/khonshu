@@ -41,4 +41,7 @@ dependencies {
 
     "androidMainImplementation"(libs.androidx.activity)
     "androidMainImplementation"(libs.truth)
+
+    "androidHostTestImplementation"(libs.junit)
+    "androidHostTestImplementation"(libs.truth)
 }

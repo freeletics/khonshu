@@ -53,7 +53,7 @@ fgp-app = { id = "com.freeletics.gradle.app.android", version.ref = "fgp" }
 fgp-feature = { id = "com.freeletics.gradle.feature", version.ref = "fgp" }
 fgp-nav = { id = "com.freeletics.gradle.nav", version.ref = "fgp" }
 fgp-root = { id = "com.freeletics.gradle.root", version.ref = "fgp" }
-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

@@ -8,18 +8,18 @@ freeletics {
 }
 
 dependencies {
-    api(libs.androidx.compose.runtime)
-    api(libs.androidx.lifecycle.viewmodel.compose)
-    api(libs.androidx.lifecycle.viewmodel.savedstate)
-    api(libs.coroutines)
-    api(libs.khonshu.navigation)
-    api(libs.khonshu.statemachine)
-    api(projects.feature.newRoot.nav)
+    androidMainApi(libs.androidx.compose.runtime)
+    androidMainApi(libs.androidx.lifecycle.viewmodel.compose)
+    androidMainApi(libs.androidx.lifecycle.viewmodel.savedstate)
+    androidMainApi(libs.coroutines)
+    androidMainApi(libs.khonshu.navigation)
+    androidMainApi(libs.khonshu.statemachine)
+    androidMainApi(projects.feature.newRoot.nav)
 
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.foundation)
-    implementation(projects.feature.bottomSheet.nav)
-    implementation(projects.feature.dialog.nav)
-    implementation(projects.feature.root.nav)
-    implementation(projects.feature.screen.nav)
+    androidMainImplementation(libs.androidx.compose.ui)
+    androidMainImplementation(libs.androidx.compose.foundation)
+    androidMainImplementation(projects.feature.bottomSheet.nav)
+    androidMainImplementation(projects.feature.dialog.nav)
+    androidMainImplementation(projects.feature.root.nav)
+    androidMainImplementation(projects.feature.screen.nav)
 }

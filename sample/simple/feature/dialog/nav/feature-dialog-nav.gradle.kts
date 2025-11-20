@@ -7,6 +7,6 @@ freeletics {
 }
 
 dependencies {
-    api(libs.khonshu.codegen.runtime)
-    api(libs.khonshu.navigation)
+    androidMainApi(libs.khonshu.codegen.runtime)
+    androidMainApi(libs.khonshu.navigation)
 }

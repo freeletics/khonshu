@@ -5,7 +5,6 @@ import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.IntentCompat
@@ -46,7 +45,7 @@ public fun DeepLink.buildTaskStack(context: Context, destinations: ImmutableSet<
 public fun DeepLink.buildPendingIntent(
     context: Context,
     destinations: ImmutableSet<NavDestination<*>>,
-    flags: Int = defaultFlag(),
+    flags: Int = FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE,
 ): PendingIntent {
     val requestCode: Int = routes.fold(0) { acc, navDirection ->
         31 * acc + navDirection.hashCode()
@@ -56,14 +55,6 @@ public fun DeepLink.buildPendingIntent(
 }
 
 private const val EXTRA_DEEPLINK_ROUTES: String = "com.freeletics.khonshu.navigation.DEEPLINK_ROUTES"
-
-private fun defaultFlag(): Int {
-    return if (Build.VERSION.SDK_INT >= 23) {
-        FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
-    } else {
-        FLAG_UPDATE_CURRENT
-    }
-}
 
 internal fun Intent.extractDeepLinkRoutes(destinations: ImmutableSet<NavDestination<*>>): List<BaseRoute>? {
     return IntentCompat.getParcelableExtra(this, EXTRA_DEEPLINK_ROUTES, Bundle::class.java)?.let {
