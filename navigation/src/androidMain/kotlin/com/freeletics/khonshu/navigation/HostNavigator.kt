@@ -20,8 +20,6 @@ import com.freeletics.khonshu.navigation.internal.StackEntryStoreHolder
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.internal.createMultiStack
 import com.freeletics.khonshu.navigation.internal.rememberMultiStack
-import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.persistentSetOf
 
 public abstract class HostNavigator @InternalNavigationTestingApi constructor() : Navigator {
     @InternalNavigationTestingApi
@@ -51,9 +49,9 @@ public abstract class HostNavigator @InternalNavigationTestingApi constructor() 
 @Composable
 public fun rememberHostNavigator(
     startRoot: NavRoot,
-    destinations: ImmutableSet<NavDestination<*>>,
-    deepLinkHandlers: ImmutableSet<DeepLinkHandler> = persistentSetOf(),
-    deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
+    destinations: Set<NavDestination<*>>,
+    deepLinkHandlers: Set<DeepLinkHandler> = setOf(),
+    deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = setOf(),
 ): HostNavigator {
     val context = LocalContext.current
     val multiStack by rememberMultiStack(startRoot, destinations)
@@ -81,7 +79,7 @@ internal val LocalHostNavigator: ProvidableCompositionLocal<HostNavigator> =
 @InternalNavigationCodegenApi
 public fun createHostNavigator(
     startRoot: NavRoot,
-    destinations: ImmutableSet<NavDestination<*>>,
+    destinations: Set<NavDestination<*>>,
     storeHolder: StackEntryStoreHolder,
     savedStateHandle: SavedStateHandle,
 ): HostNavigator {

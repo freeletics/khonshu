@@ -13,7 +13,6 @@ import com.freeletics.khonshu.navigation.test.TestStackEntryFactory
 import com.freeletics.khonshu.navigation.test.ThirdRoute
 import com.freeletics.khonshu.navigation.test.visibleEntries
 import com.google.common.truth.Truth.assertThat
-import kotlinx.collections.immutable.persistentSetOf
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
@@ -28,8 +27,8 @@ internal class HandleDeepLinkTest {
     private fun HostNavigator.testHandleDeepLink(routes: List<BaseRoute>?): Boolean {
         return handleDeepLink(
             launchInfo = LaunchInfo(routes, null),
-            deepLinkHandlers = persistentSetOf(),
-            deepLinkPrefixes = persistentSetOf(),
+            deepLinkHandlers = setOf(),
+            deepLinkPrefixes = setOf(),
         )
     }
 

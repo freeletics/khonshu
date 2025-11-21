@@ -5,7 +5,6 @@ import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.internal.destinationId
-import kotlinx.collections.immutable.ImmutableSet
 
 /**
  * If the given [launchInfo] can be handled using [deepLinkHandlers] and [deepLinkPrefixes]
@@ -16,8 +15,8 @@ import kotlinx.collections.immutable.ImmutableSet
  */
 public fun HostNavigator.handleDeepLink(
     launchInfo: LaunchInfo,
-    deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
-    deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
+    deepLinkHandlers: Set<DeepLinkHandler>,
+    deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
 ): Boolean {
     val deepLinkRoutes = launchInfo.routes
     if (deepLinkRoutes != null) {

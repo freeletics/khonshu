@@ -43,7 +43,7 @@ class UserProfileDeepLinkHandler : DeepLinkHandler {
 }
 ```
 
-To bring everything together an `ImmutableSet<DeepLinkHandler>` needs to be passed to `rememberHostNavigator`:
+To bring everything together an `Set<DeepLinkHandler>` needs to be passed to `rememberHostNavigator`:
 
 
 ```kotlin

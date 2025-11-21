@@ -3,7 +3,6 @@ package com.freeletics.khonshu.navigation.deeplinks
 import android.content.Intent
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavDestination
-import kotlinx.collections.immutable.ImmutableSet
 
 /**
  * If the given [Intent] was created from a [DeepLink] or the `Uri` returned by [Intent.getData]
@@ -14,9 +13,9 @@ import kotlinx.collections.immutable.ImmutableSet
  */
 public fun HostNavigator.handleDeepLink(
     intent: Intent,
-    destinations: ImmutableSet<NavDestination<*>>,
-    deepLinkHandlers: ImmutableSet<DeepLinkHandler>,
-    deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix>,
+    destinations: Set<NavDestination<*>>,
+    deepLinkHandlers: Set<DeepLinkHandler>,
+    deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
 ): Boolean {
     return handleDeepLink(intent.asLaunchInfo(destinations), deepLinkHandlers, deepLinkPrefixes)
 }

@@ -16,13 +16,12 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
-import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.SerializersModuleBuilder
 
 internal fun createMultiStack(
     startRoot: NavRoot,
-    destinations: ImmutableSet<NavDestination<*>>,
+    destinations: Set<NavDestination<*>>,
     storeHolder: StackEntryStoreHolder,
     savedStateHandle: SavedStateHandle,
 ): MultiStack {
@@ -37,7 +36,7 @@ internal fun createMultiStack(
 @Composable
 internal fun rememberMultiStack(
     startRoot: NavRoot,
-    destinations: ImmutableSet<NavDestination<*>>,
+    destinations: Set<NavDestination<*>>,
 ): MutableState<MultiStack> {
     return key(startRoot, destinations) {
         val storeHolder = retain { StackEntryStoreHolder() }
@@ -50,7 +49,7 @@ internal fun rememberMultiStack(
     }
 }
 
-internal fun SavedStateConfiguration(destinations: ImmutableSet<NavDestination<*>>): SavedStateConfiguration {
+internal fun SavedStateConfiguration(destinations: Set<NavDestination<*>>): SavedStateConfiguration {
     return SavedStateConfiguration {
         serializersModule = SerializersModule {
             destinations.forEach {

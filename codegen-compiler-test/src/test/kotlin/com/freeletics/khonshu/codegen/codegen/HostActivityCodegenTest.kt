@@ -115,8 +115,6 @@ internal class HostActivityCodegenTest {
             import kotlin.Unit
             import kotlin.collections.Set
             import kotlin.reflect.KClass
-            import kotlinx.collections.immutable.ImmutableSet
-            import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -165,10 +163,7 @@ internal class HostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityGraph {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
-
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
+              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -177,7 +172,7 @@ internal class HostActivityCodegenTest {
                 startRoot: NavRoot,
                 storeHolder: StackEntryStoreHolder,
                 @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                destinations: ImmutableSet<NavDestination<*>>,
+                destinations: Set<NavDestination<*>>,
               ): HostNavigator = createHostNavigator(startRoot, destinations, storeHolder, savedStateHandle)
             }
 
@@ -312,8 +307,6 @@ internal class HostActivityCodegenTest {
             import kotlin.Unit
             import kotlin.collections.Set
             import kotlin.reflect.KClass
-            import kotlinx.collections.immutable.ImmutableSet
-            import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -362,10 +355,7 @@ internal class HostActivityCodegenTest {
             @ContributesTo(ActivityScope::class)
             public interface KhonshuTestActivityGraph {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
-
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
+              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(ActivityScope::class)
@@ -374,7 +364,7 @@ internal class HostActivityCodegenTest {
                 startRoot: NavRoot,
                 storeHolder: StackEntryStoreHolder,
                 @ForScope(ActivityScope::class) savedStateHandle: SavedStateHandle,
-                destinations: ImmutableSet<NavDestination<*>>,
+                destinations: Set<NavDestination<*>>,
               ): HostNavigator = createHostNavigator(startRoot, destinations, storeHolder, savedStateHandle)
             }
 
@@ -536,8 +526,6 @@ internal class HostActivityCodegenTest {
             import kotlin.collections.Map
             import kotlin.collections.Set
             import kotlin.reflect.KClass
-            import kotlinx.collections.immutable.ImmutableSet
-            import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -594,10 +582,7 @@ internal class HostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTest2ActivityGraph {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
-
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
+              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -606,7 +591,7 @@ internal class HostActivityCodegenTest {
                 startRoot: NavRoot,
                 storeHolder: StackEntryStoreHolder,
                 @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                destinations: ImmutableSet<NavDestination<*>>,
+                destinations: Set<NavDestination<*>>,
               ): HostNavigator = createHostNavigator(startRoot, destinations, storeHolder, savedStateHandle)
             }
 
@@ -746,8 +731,6 @@ internal class HostActivityCodegenTest {
             import kotlin.OptIn
             import kotlin.collections.Set
             import kotlin.reflect.KClass
-            import kotlinx.collections.immutable.ImmutableSet
-            import kotlinx.collections.immutable.toImmutableSet
 
             @OptIn(InternalCodegenApi::class)
             @GraphExtension(TestScreen::class)
@@ -795,10 +778,7 @@ internal class HostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityGraph {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
-
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
+              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -807,7 +787,7 @@ internal class HostActivityCodegenTest {
                 startRoot: NavRoot,
                 storeHolder: StackEntryStoreHolder,
                 @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                destinations: ImmutableSet<NavDestination<*>>,
+                destinations: Set<NavDestination<*>>,
               ): HostNavigator = createHostNavigator(startRoot, destinations, storeHolder, savedStateHandle)
             }
 
@@ -936,8 +916,6 @@ internal class HostActivityCodegenTest {
             import kotlin.Unit
             import kotlin.collections.Set
             import kotlin.reflect.KClass
-            import kotlinx.collections.immutable.ImmutableSet
-            import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -986,10 +964,7 @@ internal class HostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityGraph {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
-
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
+              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -998,7 +973,7 @@ internal class HostActivityCodegenTest {
                 startRoot: NavRoot,
                 storeHolder: StackEntryStoreHolder,
                 @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                destinations: ImmutableSet<NavDestination<*>>,
+                destinations: Set<NavDestination<*>>,
               ): HostNavigator = createHostNavigator(startRoot, destinations, storeHolder, savedStateHandle)
             }
 
@@ -1132,8 +1107,6 @@ internal class HostActivityCodegenTest {
             import kotlin.Unit
             import kotlin.collections.Set
             import kotlin.reflect.KClass
-            import kotlinx.collections.immutable.ImmutableSet
-            import kotlinx.collections.immutable.toImmutableSet
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
@@ -1182,10 +1155,7 @@ internal class HostActivityCodegenTest {
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityGraph {
               @Provides
-              public fun provideImmutableNavDestinations(destinations: Set<NavDestination<*>>): ImmutableSet<NavDestination<*>> = destinations.toImmutableSet()
-
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: ImmutableSet<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
+              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
               @SingleIn(TestScreen::class)
@@ -1194,7 +1164,7 @@ internal class HostActivityCodegenTest {
                 startRoot: NavRoot,
                 storeHolder: StackEntryStoreHolder,
                 @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
-                destinations: ImmutableSet<NavDestination<*>>,
+                destinations: Set<NavDestination<*>>,
               ): HostNavigator = createHostNavigator(startRoot, destinations, storeHolder, savedStateHandle)
             }
 

@@ -75,10 +75,6 @@ internal val function3 = ClassName("kotlin", "Function3")
 // Coroutines
 internal val launch = MemberName("kotlinx.coroutines", "launch")
 
-// Collections Immutable
-internal val immutableSet = ClassName("kotlinx.collections.immutable", "ImmutableSet")
-internal val toImmutableSet = MemberName("kotlinx.collections.immutable", "toImmutableSet")
-
 // AndroidX
 internal val componentActivity = ClassName("androidx.activity", "ComponentActivity")
 internal val viewModelStoreOwner = ClassName("androidx.lifecycle", "ViewModelStoreOwner")
