@@ -3,7 +3,6 @@ package com.freeletics.khonshu.navigation.internal
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination
 import java.util.UUID
-import kotlinx.collections.immutable.ImmutableSet
 
 internal class StackEntryFactory(
     private val destinations: List<NavDestination<*>>,
@@ -11,7 +10,7 @@ internal class StackEntryFactory(
     private val idGenerator: () -> StackEntry.Id = { StackEntry.Id(UUID.randomUUID().toString()) },
 ) {
     constructor(
-        destinations: ImmutableSet<NavDestination<*>>,
+        destinations: Set<NavDestination<*>>,
         storeHolder: StackEntryStoreHolder,
     ) : this(destinations.toList(), storeHolder)
 

@@ -7,7 +7,6 @@ import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.createHostNavigator
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
-import com.freeletics.khonshu.codegen.util.immutableSet
 import com.freeletics.khonshu.codegen.util.intent
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.launchInfo
@@ -18,7 +17,6 @@ import com.freeletics.khonshu.codegen.util.provides
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.singleIn
 import com.freeletics.khonshu.codegen.util.stackEntryStoreHolder
-import com.freeletics.khonshu.codegen.util.toImmutableSet
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -33,18 +31,8 @@ internal class HostGraphContributionGenerator(
     internal fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(moduleClassName)
             .addAnnotation(contributesTo(data.scope))
-            .addFunction(provideImmutableNavDestinationsFunction())
             .addFunction(provideLaunchInfo())
             .addFunction(provideHostNavigator())
-            .build()
-    }
-
-    private fun provideImmutableNavDestinationsFunction(): FunSpec {
-        return FunSpec.builder("provideImmutableNavDestinations")
-            .addAnnotation(provides())
-            .addParameter("destinations", SET.parameterizedBy(navigationDestination))
-            .returns(immutableSet.parameterizedBy(navigationDestination))
-            .addStatement("return destinations.%M()", toImmutableSet)
             .build()
     }
 
@@ -52,7 +40,7 @@ internal class HostGraphContributionGenerator(
         return FunSpec.builder("provideLaunchInfo")
             .addAnnotation(provides())
             .addParameter("intent", intent)
-            .addParameter("destinations", immutableSet.parameterizedBy(navigationDestination))
+            .addParameter("destinations", SET.parameterizedBy(navigationDestination))
             .returns(launchInfo)
             .addStatement("return intent.%M(destinations)", asLaunchInfo)
             .build()
@@ -68,7 +56,7 @@ internal class HostGraphContributionGenerator(
             .addParameter(
                 ParameterSpec.builder("savedStateHandle", savedStateHandle).addAnnotation(forScope(data.scope)).build(),
             )
-            .addParameter("destinations", immutableSet.parameterizedBy(navigationDestination))
+            .addParameter("destinations", SET.parameterizedBy(navigationDestination))
             .returns(hostNavigator)
             .addStatement(
                 "return %M(startRoot, destinations, storeHolder, savedStateHandle)",

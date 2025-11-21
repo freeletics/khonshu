@@ -39,7 +39,6 @@ kotlin {
 
 dependencies {
     "commonMainApi"(libs.androidx.compose.runtime)
-    "commonMainApi"(libs.collections.immutable)
     "commonMainApi"(libs.uri)
 
     "androidMainApi"(libs.androidx.compose.foundation)

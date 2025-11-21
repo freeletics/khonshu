@@ -26,10 +26,6 @@ import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import java.lang.ref.WeakReference
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.persistentSetOf
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CancellationException
 
 /**
@@ -49,10 +45,10 @@ import kotlinx.coroutines.CancellationException
 @Composable
 public fun NavHost(
     startRoute: NavRoot,
-    destinations: ImmutableSet<NavDestination<*>>,
+    destinations: Set<NavDestination<*>>,
     modifier: Modifier = Modifier,
-    deepLinkHandlers: ImmutableSet<DeepLinkHandler> = persistentSetOf(),
-    deepLinkPrefixes: ImmutableSet<DeepLinkHandler.Prefix> = persistentSetOf(),
+    deepLinkHandlers: Set<DeepLinkHandler> = setOf(),
+    deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = setOf(),
     destinationChangedCallback: ((NavRoot, BaseRoute) -> Unit)? = null,
 ) {
     val navigator = rememberHostNavigator(startRoute, destinations, deepLinkHandlers, deepLinkPrefixes)
@@ -154,7 +150,7 @@ private fun StackSnapshot.getShowableEntries(
     showPreviousEntry: Boolean,
     inTransition: Modifier,
     outTransition: Modifier,
-): ImmutableList<ShowableStackEntry<*>> {
+): List<ShowableStackEntry<*>> {
     val entries = mutableListOf<ShowableStackEntry<*>>()
     val previous = previous
     // only add previous to composition while a back gesture is ongoing
@@ -176,10 +172,10 @@ private fun StackSnapshot.getShowableEntries(
     // update entryComposables to remove any entry that left the composition
     entryComposables.clear()
     entries.forEach {
-        entryComposables.put(it.entry.id, it.content)
+        entryComposables[it.entry.id] = it.content
     }
 
-    return entries.toImmutableList()
+    return entries
 }
 
 @Immutable

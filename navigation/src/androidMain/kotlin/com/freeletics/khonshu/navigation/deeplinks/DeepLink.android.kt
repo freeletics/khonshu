@@ -13,12 +13,11 @@ import androidx.savedstate.serialization.encodeToSavedState
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.internal.SavedStateConfiguration
-import kotlinx.collections.immutable.ImmutableSet
 
 /**
  * Creates an [Intent] that can be used to launch this deep link.
  */
-public fun DeepLink.buildIntent(context: Context, destinations: ImmutableSet<NavDestination<*>>): Intent {
+public fun DeepLink.buildIntent(context: Context, destinations: Set<NavDestination<*>>): Intent {
     val intent = if (action != null) {
         Intent(action).setPackage(context.packageName)
     } else {
@@ -35,7 +34,7 @@ public fun DeepLink.buildIntent(context: Context, destinations: ImmutableSet<Nav
 /**
  * Creates a [TaskStackBuilder] that can be used to launch this deep link.
  */
-public fun DeepLink.buildTaskStack(context: Context, destinations: ImmutableSet<NavDestination<*>>): TaskStackBuilder {
+public fun DeepLink.buildTaskStack(context: Context, destinations: Set<NavDestination<*>>): TaskStackBuilder {
     return TaskStackBuilder.create(context).addNextIntent(buildIntent(context, destinations))
 }
 
@@ -44,7 +43,7 @@ public fun DeepLink.buildTaskStack(context: Context, destinations: ImmutableSet<
  */
 public fun DeepLink.buildPendingIntent(
     context: Context,
-    destinations: ImmutableSet<NavDestination<*>>,
+    destinations: Set<NavDestination<*>>,
     flags: Int = FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE,
 ): PendingIntent {
     val requestCode: Int = routes.fold(0) { acc, navDirection ->
@@ -56,7 +55,7 @@ public fun DeepLink.buildPendingIntent(
 
 private const val EXTRA_DEEPLINK_ROUTES: String = "com.freeletics.khonshu.navigation.DEEPLINK_ROUTES"
 
-internal fun Intent.extractDeepLinkRoutes(destinations: ImmutableSet<NavDestination<*>>): List<BaseRoute>? {
+internal fun Intent.extractDeepLinkRoutes(destinations: Set<NavDestination<*>>): List<BaseRoute>? {
     return IntentCompat.getParcelableExtra(this, EXTRA_DEEPLINK_ROUTES, Bundle::class.java)?.let {
         val savedStateConfiguration = SavedStateConfiguration(destinations)
         decodeFromSavedState(it, savedStateConfiguration)
