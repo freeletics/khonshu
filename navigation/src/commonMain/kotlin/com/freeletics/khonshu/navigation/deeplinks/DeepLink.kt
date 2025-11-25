@@ -10,8 +10,8 @@ import dev.drewhamilton.poko.Poko
  * stack on top of the start destination. The last of the given routes will be the visible
  * screen.
  *
- * If an [action] is provided the [Intent] returned by [buildIntent] and the other builders
- * will use it as it's [Intent.getAction]. If no `action` is provided the app's
+ * If an [action] is provided the [android.content.Intent] returned by [buildIntent] and the other builders
+ * will use it as it's [android.content.Intent.getAction]. If no `action` is provided the app's
  * [android.content.pm.PackageManager.getLaunchIntentForPackage] will be used.
  */
 public fun DeepLink(
@@ -24,8 +24,8 @@ public fun DeepLink(
  * of the start destination. The given [routes] will be added to that back stack. The last of
  * the given routes will be the visible screen, if none is provided `root` will be visible.
  *
- * If an [action] is provided the [Intent] returned by [buildIntent] and the other builders
- * will use it as it's [Intent.getAction]. If no `action` is provided the app's
+ * If an [action] is provided the [android.content.Intent] returned by [buildIntent] and the other builders
+ * will use it as it's [android.content.Intent.getAction]. If no `action` is provided the app's
  * [android.content.pm.PackageManager.getLaunchIntentForPackage] will be used.
  */
 public fun DeepLink(

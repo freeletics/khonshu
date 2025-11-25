@@ -1,9 +1,9 @@
 package com.freeletics.khonshu.navigation.activity
 
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.annotation.VisibleForTesting
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.activity.internal.ActivityEvent
-import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -20,16 +20,16 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * For this work [ActivityNavigatorEffect] needs to be called.
  */
 public abstract class ActivityNavigator {
-    private val _activityEvents = Channel<ActivityEvent>(Channel.Factory.UNLIMITED)
+    private val _activityEvents = Channel<ActivityEvent>(Channel.UNLIMITED)
 
-    @InternalNavigationTestingApi
-    public val activityEvents: Flow<ActivityEvent> = _activityEvents.receiveAsFlow()
+    @VisibleForTesting
+    internal val activityEvents: Flow<ActivityEvent> = _activityEvents.receiveAsFlow()
 
     private val _activityResultRequests = mutableListOf<ActivityResultContractRequest<*, *, *>>()
     private var allowedToAddRequests = true
 
-    @InternalNavigationTestingApi
-    public val activityResultRequests: List<ActivityResultContractRequest<*, *, *>>
+    @get:VisibleForTesting
+    internal val activityResultRequests: List<ActivityResultContractRequest<*, *, *>>
         get() {
             allowedToAddRequests = false
             return _activityResultRequests.toList()
@@ -46,8 +46,8 @@ public abstract class ActivityNavigator {
     /**
      * Register for receiving activity results for the given [contract].
      *
-     * The returned [com.freeletics.khonshu.navigation.ActivityResultRequest] can be used to collect incoming results (via
-     * [com.freeletics.khonshu.navigation.ActivityResultRequest.results]) and to launch the actual activity result call via
+     * The returned [ActivityResultRequest] can be used to collect incoming results (via
+     * [ActivityResultRequest.results]) and to launch the actual activity result call via
      * [navigateForResult].
      *
      * For permission requests prefer using [registerForPermissionsResult] instead.
@@ -66,13 +66,13 @@ public abstract class ActivityNavigator {
     /**
      * Register for receiving permission results.
      *
-     * The returned [com.freeletics.khonshu.navigation.PermissionsResultRequest] can be used to collect incoming permission results (via
-     * [com.freeletics.khonshu.navigation.PermissionsResultRequest.results]) and to launch the actual permission result call via
+     * The returned [PermissionsResultRequest] can be used to collect incoming permission results (via
+     * [PermissionsResultRequest.results]) and to launch the actual permission result call via
      * [requestPermissions].
      *
      * Compared to using [registerForActivityResult] with
      * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
-     * a `PermissionResult` instead of a `boolean. See `[com.freeletics.khonshu.navigation.PermissionsResultRequest.PermissionResult]`
+     * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
      * for more information.
      *
      * Note: You must call this before [ActivityNavigatorEffect] is called with this navigator.
