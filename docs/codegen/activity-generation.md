@@ -31,11 +31,11 @@ The `scope` and `parentScope` work the same as `route` and `parentScope` for the
 generation. `stateMachine` also behaves the same and the composable will receive `state` from
 it and can use `sendAction` to talk to the state machine.
 
-A new parameter is the `navHost` composable. This composable is a pre-configured `NavHost` that
+A new parameter is the `SimpleNavHost` composable. This composable is a pre-configured `NavHost` that
 already has all destinations and deep links added to it. This leaves 2 parameters when calling
 the composable:
 - A `Modifier` to influence how the `NavHost` is shown on screen
-- A `(NavRoot, BaseRoute) -> Unit)` function that will be called whenever the currently shown destination
+- A `(NavRoot, BaseRoute) -> Unit` function that will be called whenever the currently shown destination
   changes. This is optional and null can be passed instead.
 
 The code generation will automatically take care of creating a `HostNavigator` and

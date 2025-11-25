@@ -1,11 +1,10 @@
 # Destination results
 
 Khonshu has a built-in way to receive results from another screen inside the app. For that
-it is required to call `HostNavigator.registerForNavigationResult<Route, Result>`. `Route` in this
-case should be the `NavRoute` class for the current screen, while `Result` is the type of the
-expected result which can be any `Parcelable` class. The register method
-will return a `NavigationResultRequest`, which has a `results` property that returns a
-`Flow<Result>` to collect the results.
+it is required to call `HostNavigator.registerForNavigationResult<Route, Result>`.
+`Route` in this case should be the `NavRoute` class for the current screen, while `Result`is the type of the
+expected result which can be any `Serializable` class. The register method
+will return a `NavigationResultRequest`, which has a `results: Flow<Result>` property to collect the results.
 
 The navigation to the screen from which the result should be returned is a regular call to
 `navigateTo`. However the `NavRoute` class for that target destination should have

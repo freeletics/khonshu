@@ -10,7 +10,7 @@ hijacked by other apps.
 
 ## Uri based deep links
 
-`DeepLink` provides facilities to launch deep links for the current app, but on it's own is
+`DeepLink` provides facilities to launch deep links for the current app, but on its own is
 not enough to handle deep links from the outside. For that `DeepLinkHandler` is needed. When
 implementing such a handler a `patterns` property and the `deepLink` method need to be overridden.
 
@@ -21,7 +21,7 @@ possible to specify placeholders in the pattern by using curly braces, for examp
 `users/{id}/profile` would work for `https://example.com/users/123/profile` and
 `https://example.com/users/uuid/profile`. Multiple placeholders are supported as well.
 
-The `deepLink` method is called by the library if a pattern of the handler matched an `Uri` from
+The `deepLink` method is called by the library if a pattern of the handler matched a `Uri` from
 `Intent.data` and is then supposed to return a `DeepLink`. To build a deep link based on parameters
 from the uri the method gets a `Map<String, String>` that contains all extracted path placeholders
 (for the `users/{id}/profile` example it would contain an `id` key) and a second map with any
@@ -43,19 +43,18 @@ class UserProfileDeepLinkHandler : DeepLinkHandler {
 }
 ```
 
-To bring everything together an `Set<DeepLinkHandler>` needs to be passed to `rememberHostNavigator`:
-
+To bring everything together a `Set<DeepLinkHandler>` needs to be passed to `rememberHostNavigator`:
 
 ```kotlin
 setContent {
     rememberHostNavigator(
-        startRoot0 = ...,
+        startRoot = ...,
         destinations = ...,
-        deepLinkHandlers = persistentSetOf(
+        deepLinkHandlers = setOf(
             HomeDeepLinkHandler(),
             UserProfileDeepLinkHandler(),
         ),
-        prefix = persistentSetOf(
+        deepLinkPrefixes = setOf(
             Prefix("https://example.com"),
             Prefix("exampleapp://example.com"),
         )

@@ -33,13 +33,13 @@ implementation of this interface and screens can use it to navigate to the desti
 The most minimal implementation of `NavRoute` would be for a screen that doesn't require any
 arguments can be a simple Kotlin object:
 ```kotlin
-@Parcelize
+@Serializable
 data object HomeScreenRoute : NavRoute
 ```
 
 The more common case when a destination needs arguments passed to it would look like this:
 ```kotlin
-@Parcelize
+@Serializable
 data class DetailScreenRoute(
     val id: String,
 ) : NavRoute
@@ -102,7 +102,7 @@ val hostNavigator = rememberHostNavigator(
     startRoot = StartScreen,
     // set of destinations defined as above
     // in practice the set should be defined outside of Compose
-    destinations = persistentSetOf(
+    destinations = setOf(
         startDestination,
         detailScreenDestination,
         infoSheetDestination,
@@ -192,7 +192,6 @@ class MainActivity : ComponentActivity() {
 There are various additional navigation APIs to simplify common navigation related
 tasks:
 
-- [Back clicks](back.md) for custom back behavior
 - [Destination result handling](results.md) to deliver and obtain results to
   a previous destination
 - [Multiple back stack support](back-stacks.md) for supporting something like

@@ -66,16 +66,6 @@ that were not handled through one of the `await...` functions an `AssertionError
 during the cancellation.
 
 
-## Back presses
-
-For tests of classes or functions that collect `HostNavigator.backPresses()` it is possible
-to manually trigger a back press emission by calling the `HostNavigator.dispatchBackPress()`
-function.
-
-`NavigatorTurbine` also has a `dispatchBackPress()` function which can be directly called from
-within a `test` block.
-
-
 ## Result receivers
 
 When testing code that deals with `Activity`, permission or navigation results it is often needed
@@ -91,11 +81,11 @@ class MyNavigator : ActivityNavigator() {
 ```
 
 If the code under test collects `permissionRequest.results`, it would be possible to call
-`navigator.permissionRequest.sendResult("permission", PermissionResult.GRANTED)` to simulate
+`navigator.permissionRequest.sendResult("permission", PermissionResult.Granted)` to simulate
 the request succeeding.
 
 
 ## Navigation result senders
 
 When testing a component that delivers navigation results a `NavigationResultRequest.Key` is usually
-required. Tests can obtain such a key with the `fakeNavigationResultKey` helper method.
+required. Tests can obtain such a key with the `fakeNavigationResultKey()` helper method.
