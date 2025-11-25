@@ -45,17 +45,16 @@ class UserProfileDeepLinkHandler : DeepLinkHandler {
 
 To bring everything together an `Set<DeepLinkHandler>` needs to be passed to `rememberHostNavigator`:
 
-
 ```kotlin
 setContent {
     rememberHostNavigator(
-        startRoot0 = ...,
+        startRoot = ...,
         destinations = ...,
-        deepLinkHandlers = persistentSetOf(
+        deepLinkHandlers = setOf(
             HomeDeepLinkHandler(),
             UserProfileDeepLinkHandler(),
         ),
-        prefix = persistentSetOf(
+        prefix = setOf(
             Prefix("https://example.com"),
             Prefix("exampleapp://example.com"),
         )

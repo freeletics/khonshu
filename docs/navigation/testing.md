@@ -66,16 +66,6 @@ that were not handled through one of the `await...` functions an `AssertionError
 during the cancellation.
 
 
-## Back presses
-
-For tests of classes or functions that collect `HostNavigator.backPresses()` it is possible
-to manually trigger a back press emission by calling the `HostNavigator.dispatchBackPress()`
-function.
-
-`NavigatorTurbine` also has a `dispatchBackPress()` function which can be directly called from
-within a `test` block.
-
-
 ## Result receivers
 
 When testing code that deals with `Activity`, permission or navigation results it is often needed

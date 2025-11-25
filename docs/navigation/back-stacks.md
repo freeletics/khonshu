@@ -1,6 +1,6 @@
 # Multiple back stacks
 
-The library provides support for AndroidX Navigation's multi back stack feature. This is most
+The library provides support for having multiple independent back stacks. This is most
 commonly used in apps that use bottom navigation to separate the back stack of each tab. for example
 going from tab 1 to tab 2 will save what was shown before and display the start screen of tab 2.
 When selecting tab 1 again that previous state will be restored showing the screen the user
@@ -12,24 +12,20 @@ To use this feature the start screen of each back stack (each tab) needs to use 
 of `NavRoute` as parent type for their route:
 
 ```kotlin
-@Parcelize
+@Serializable
 data object HomeTab : NavRoot
 
-@Parcelize
+@Serializable
 data class SearchTab(
     val initialQuery: String = "",
 ) : NavRoot
 
-@Parcelize
+@Serializable
 data object LibraryTab : NavRoot
 ```
 
 Like for a regular `NavRoute` these are then passed to `ScreenDestination` to create destinations
 for each screen.
-
-## Setup
-
-When using multiple back stacks the start route of the nav host should be a `NavRoot`.
 
 ## Navigation
 

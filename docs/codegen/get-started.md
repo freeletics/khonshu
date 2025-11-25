@@ -20,10 +20,6 @@ ksp("com.freeletics.khonshu:codegen-compiler:<latest-version>")
 
 ## Basic usage
 
-The library provides 2 different runtime implementations. One for `Fragment` based apps and one
-for pure `Compose` apps. If an app uses Compose but the composables are hosted inside fragments
-it falls into the `Fragment` category.
-
 The `@NavDestination` annotation is added to the top level composable of a screen. This function
 can have 2 parameters: the state that should be rendered and a lambda that allows
 the composable to send actions for user interactions. Adding the annotation will then generate
@@ -45,7 +41,7 @@ internal fun ExampleUi(
   // composable logic ...
 }
 ```
-*`scope`, `parentScope` and `destinationScope` are described in the next sections*
+*`scope`, `parentScope` and `destinationScope` are described in the next sections/*
 
 The generated `KhonshuExampleUi` function will use the generated graph, the
 annotated composable as well as the `stateMachine` parameter from the
@@ -58,9 +54,9 @@ to obtain the state machine.
 
 ## Generated graph
 
-All annotations have a `scope` and a `parentScope` parameter. These will be used in Metros's
-`@GraphExtension` annotation and when contributing the `@GraphExtension.Factory` to the parent
-scope when generating code.
+All annotations have a `scope` and a `parentScope` parameter. The scope will be used in Metros's
+`@GraphExtension` annotation and the parent scope is used to contribute the `@GraphExtension.Factory`
+to the parent graph.
 
 Since the generated subgraph is using `@GraphExternsion`, it is possible
 to use `@ContributesTo`, `@ContributesBinding` and so on with that same scope
@@ -71,10 +67,7 @@ Any object using this scope will automatically survive configuration changes and
 not be recreated together with the UI.
 
 A factory for the generated subgraph is automatically generated and contributed to
-the graph that uses `parentScope` as its own scope. This graph will be looked up internally
-with `Context.getSystemService(name)` using the fully qualified name of the given `parentScope` as
-key for the lookup. It is expected that the app will provide it through its `Application` class or an
-`Activity`.
+the graph that uses `parentScope` as its own scope.
 
 For convenience purposes the generated graph will make the instance of `route` that was used to
 navigate to the screen and a `SavedStateHandle` available which can be injected to classes like
@@ -99,12 +92,11 @@ a screen is shown in the logged in or logged out state.
 
 ## Navigation set up
 
-The integration of Khonshu's Codegen and Navigation libraries also expects an `ActivityNavigator`
-to be injectable. This can be easily achieved by adding `@SingleIn(ExampleScope::class)
+The integration of Khonshu's Codegen and Navigation libraries also expects a `DestinationNavigator`
+binding to be available. This can be easily achieved by adding `@SingleIn(ExampleScope::class)
 @ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, binding<DestinationNavigator>())`
 to a subclass of it. The generated code will automatically take care of setting up
-the navigator by calling `NavigationSetup` for compose and `handleNavigation`
-for Fragments inside the generated code.
+the navigator by calling `ActivityNavigatorEffect` in the compose UI layer with the navigator.
 
 
 ## Sharing objects between screens
@@ -140,18 +132,17 @@ internal class ExampleStateMachine(
 // scope the navigator so that everything interacts with the same instance
 @SingleIn(ExampleRoute::class)
 @ForScope(ExampleRoute::class)
-// make ExampleNavigator available as ActivityNavigator so that the generated code can automatically
+// make ExampleNavigator available as DestinationNavigator so that the generated code can automatically
 // set up the navigation handling
-@ContributesBinding(ExampleRoute::class, binding<DestinationNavigator>())
+@ContributesBinding(ExampleRoute::class)
 class ExampleNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
-class ExampleNavigator @Inject constructor(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
     // ...
 }
 
 
 @NavDestination(
     route = ExampleRoute::class, // the route used to navigate to ExampleUi
-    parentScope = AppScope::class, // the scope of the app level graph, AppScope is the default value and can be omitted
+    parentScope = AppScope::class, // the scope of the app level graph
     stateMachine = ExampleStateMachine::class, // the state machine used for this ui
     destinationScope = AppScope::class, // contribute the generated destination to AppScope, AppScope is the default value and can be omitted
 )
@@ -166,7 +157,7 @@ internal fun ExampleUi(
 
 
 Using this would require a one time setup in the app so that the screens can look up the `AppScope`
-graph through `getSystemService` to retrieve the parent graph:
+graph through the application class. This can be easily done by implementing `GlobalGraphProvider`:
 
 ```kotlin
 @SingleIn(AppScope::class)
@@ -181,16 +172,21 @@ interface AppGraph {
     }
 }
 
-class App : Application() {
+class App : Application(), GlobalGraphProvider {
     private val graph by lazy {
         createGraphFactory<AppGraph.Factory>().create()
     }
 
-    override fun getSystemService(name: String): Any? {
-        if (name == AppScope::class.qualifiedName) {
-            return graph
+    private val graph by lazy {
+        createGraphFactory<AppGraph.Factory>().create()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> getGraph(scope: KClass<*>): T {
+        if (scope == AppScope::class) {
+            return graph as T
         }
-        return super.getSystemService(name)
+        throw IllegalArgumentException("Unknown scope")
     }
 }
 ```

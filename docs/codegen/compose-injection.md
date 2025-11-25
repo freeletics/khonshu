@@ -17,30 +17,14 @@ class ExampleClass {
 
 would then look like this:
 
-=== "Compose"
-
-    ```kotlin
-    @ComposeScreen(...)
-    @Composable
-    internal fun ExampleUi(
-      exampleClass: ExampleClass,
-      state: ExampleState,
-      sendAction: (ExampleAction) -> Unit
-    ) {
-      // composable logic ...
-    }
-    ```
-
-=== "Compose with Fragments"
-
-    ```kotlin
-    @ComposeFragment(...)
-    @Composable
-    internal fun ExampleUi(
-      exampleClass: ExampleClass,
-      state: ExampleState,
-      sendAction: (ExampleAction) -> Unit
-    ) {
-      // composable logic ...
-    }
-    ```
+```kotlin
+@NavDestination(...)
+@Composable
+internal fun ExampleUi(
+  exampleClass: ExampleClass,
+  state: ExampleState,
+  sendAction: (ExampleAction) -> Unit
+) {
+  // composable logic ...
+}
+```
