@@ -81,11 +81,11 @@ class MyNavigator : ActivityNavigator() {
 ```
 
 If the code under test collects `permissionRequest.results`, it would be possible to call
-`navigator.permissionRequest.sendResult("permission", PermissionResult.GRANTED)` to simulate
+`navigator.permissionRequest.sendResult("permission", PermissionResult.Granted)` to simulate
 the request succeeding.
 
 
 ## Navigation result senders
 
 When testing a component that delivers navigation results a `NavigationResultRequest.Key` is usually
-required. Tests can obtain such a key with the `fakeNavigationResultKey` helper method.
+required. Tests can obtain such a key with the `fakeNavigationResultKey()` helper method.

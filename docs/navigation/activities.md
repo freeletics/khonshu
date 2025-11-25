@@ -1,8 +1,8 @@
 # Navigating to Activities and other apps
 
-It is also possible navigate to an `Activity` both inside and outside of the app. Similar to other
+It is also possible to navigate to an `Activity` both inside and outside of the app. Similar to other
 screens it is required to define a route for Activities. Instead of `NavRoute`
-the route class needs to extend either `InternalActivtyRoute` for `Activity` instances in the
+the route class needs to extend either `InternalActivityRoute` for `Activity` instances in the
 current app or `ExternalActivityRoute` if it is part of a different app.
 
 ## Setup
@@ -21,7 +21,7 @@ one screen where they are needed instead of having a global instance.
 
 ## Internal Activities
 
-This is example shows the route for a `SettingsActivity`:
+This example shows the route for a `SettingsActivity`:
 ```kotlin
 @Serializable
 data class SettingsActivityRoute(
@@ -38,11 +38,11 @@ argument through it.
 
 To avoid having to reference a specific `Activity` `class` it's possible to use custom `Intent` actions.
 Khonshu will automatically make sure that the created `Intent` is always routed to the current app
-and can not be hijacked.
+and cannot be hijacked.
 
 ## Other apps
 
-Activities in other apps can be targeted with `ExternalActivityRoute`. The only differences
+Activities in other apps can be targeted with `ExternalActivityRoute`. The only difference
 to `InternalActivityRoute` is that the route itself won't be added to the `Intent` and that
 the `Intent` isn't limited to the current app.
 
@@ -122,12 +122,12 @@ The Activity result APIs can already be used with `ActivityResultContracts.Reque
 `ActivityResultContracts.RequestMultiplePermissions` to also handle requesting Android runtime
 permission requests. `ActivityNavigator` provides a slightly higher level API for this.
 
-To use this call `registerForPermissionResult`, which should be done during the construction
+To use this call `registerForPermissionsResult`, which should be done during the construction
 of the navigator or shortly after. This can then be passed to `requestPermissions` with one or
 more permission to request to launch the request. Results can be collected through the
 `Flow<Map<String, PermissionResult>>` that is returned by the `results` property of request.
 
-The `PermissionResult` is the main advantage of using this API instead for the Activity result APIs.
+The `PermissionResult` is the main advantage of using this API instead of the Activity result APIs.
 Instead of being a simple `Boolean` for granted/denied it is a sealed class with `Granted` and
 `Denied` where `Denied` has an extra `shouldShowRationale` property. After it receives the result
 from the contract, the library will internally use `Activity.shouldShowRequestPermissionRationale(permission)`
@@ -135,7 +135,7 @@ to make it possible to handle denials more granularly without needing a referenc
 
 An example usage can look like this:
 ```kotlin
-class MyNavigator : ActivtyNavigator() {
+class MyNavigator : ActivityNavigator() {
     // use permissionRequest.results somewhere to handle results
     val permissionRequest = registerForPermissionsResult()
 

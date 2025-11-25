@@ -24,8 +24,8 @@ testImplementation("com.freeletics.khonshu:state-machine-testing:<latest-version
 
 ## TextResource
 
-`TextResource` is a domain specific model to represent text. Abstracts text
-whether it a localized `String` sent by the backend, a simple Android `string`
+`TextResource` is a domain specific model to represent text. It abstracts text
+whether it is a localized `String` sent by the backend, a simple Android `string`
 resource (with or without formatting args) or an Android `plurals` resource.
 This way business logic with text can be easily tested without requiring
 `Context` and running on a device.

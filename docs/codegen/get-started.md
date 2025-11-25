@@ -54,11 +54,11 @@ to obtain the state machine.
 
 ## Generated graph
 
-All annotations have a `scope` and a `parentScope` parameter. The scope will be used in Metros's
+All annotations have a `scope` and a `parentScope` parameter. The scope will be used in Metro's
 `@GraphExtension` annotation and the parent scope is used to contribute the `@GraphExtension.Factory`
 to the parent graph.
 
-Since the generated subgraph is using `@GraphExternsion`, it is possible
+Since the generated subgraph is using `@GraphExtension`, it is possible
 to use `@ContributesTo`, `@ContributesBinding` and so on with that same scope
 to contribute objects into it.
 
@@ -173,10 +173,6 @@ interface AppGraph {
 }
 
 class App : Application(), GlobalGraphProvider {
-    private val graph by lazy {
-        createGraphFactory<AppGraph.Factory>().create()
-    }
-
     private val graph by lazy {
         createGraphFactory<AppGraph.Factory>().create()
     }
