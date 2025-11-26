@@ -10,7 +10,7 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 
 @CacheableTask
-public abstract class DeeplinksManifestConfiguratorTask : DefaultTask() {
+public abstract class DeepLinksManifestConfiguratorTask : DefaultTask() {
     @get:InputFile
     @get:PathSensitive(PathSensitivity.NONE)
     public abstract val deepLinkDefinitionsFile: RegularFileProperty
