@@ -16,7 +16,6 @@ import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.provides
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.singleIn
-import com.freeletics.khonshu.codegen.util.stackEntryStoreHolder
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -52,16 +51,12 @@ internal class HostGraphContributionGenerator(
             .addAnnotation(singleIn(data.scope))
             .addAnnotation(optIn(internalNavigatorApi))
             .addParameter("startRoot", navRoot)
-            .addParameter("storeHolder", stackEntryStoreHolder)
             .addParameter(
                 ParameterSpec.builder("savedStateHandle", savedStateHandle).addAnnotation(forScope(data.scope)).build(),
             )
             .addParameter("destinations", SET.parameterizedBy(navigationDestination))
             .returns(hostNavigator)
-            .addStatement(
-                "return %M(startRoot, destinations, storeHolder, savedStateHandle)",
-                createHostNavigator,
-            )
+            .addStatement("return %M(startRoot, destinations, savedStateHandle)", createHostNavigator)
             .build()
     }
 }

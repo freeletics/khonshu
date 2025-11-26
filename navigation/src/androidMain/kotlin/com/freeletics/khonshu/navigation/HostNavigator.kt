@@ -16,7 +16,6 @@ import com.freeletics.khonshu.navigation.deeplinks.handleDeepLink
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.MultiStackHostNavigator
-import com.freeletics.khonshu.navigation.internal.StackEntryStoreHolder
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.internal.createMultiStack
 import com.freeletics.khonshu.navigation.internal.rememberMultiStack
@@ -80,9 +79,8 @@ internal val LocalHostNavigator: ProvidableCompositionLocal<HostNavigator> =
 public fun createHostNavigator(
     startRoot: NavRoot,
     destinations: Set<NavDestination<*>>,
-    storeHolder: StackEntryStoreHolder,
     savedStateHandle: SavedStateHandle,
 ): HostNavigator {
-    val stack = createMultiStack(startRoot, destinations, storeHolder, savedStateHandle)
+    val stack = createMultiStack(startRoot, destinations, savedStateHandle)
     return MultiStackHostNavigator(stack = stack)
 }

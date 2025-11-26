@@ -276,14 +276,3 @@ public final class com/freeletics/khonshu/navigation/internal/StackEntry$Id$Comp
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class com/freeletics/khonshu/navigation/internal/StackEntryStoreHolder : androidx/compose/runtime/retain/RetainObserver {
-	public static final field $stable I
-	public fun <init> ()V
-	public final fun clear ()V
-	public fun onEnteredComposition ()V
-	public fun onExitedComposition ()V
-	public fun onRetained ()V
-	public fun onRetired ()V
-	public fun onUnused ()V
-}
-

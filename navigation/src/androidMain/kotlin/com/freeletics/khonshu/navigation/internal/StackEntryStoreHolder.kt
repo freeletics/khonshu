@@ -2,7 +2,7 @@ package com.freeletics.khonshu.navigation.internal
 
 import androidx.compose.runtime.retain.RetainObserver
 
-public class StackEntryStoreHolder : RetainObserver {
+internal class StackEntryStoreHolder : RetainObserver {
     private val stores = mutableMapOf<StackEntry.Id, StackEntryStore>()
 
     internal fun provideStore(id: StackEntry.Id): StackEntryStore {

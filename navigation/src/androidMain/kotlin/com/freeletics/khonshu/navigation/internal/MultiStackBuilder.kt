@@ -22,9 +22,9 @@ import kotlinx.serialization.modules.SerializersModuleBuilder
 internal fun createMultiStack(
     startRoot: NavRoot,
     destinations: Set<NavDestination<*>>,
-    storeHolder: StackEntryStoreHolder,
     savedStateHandle: SavedStateHandle,
 ): MultiStack {
+    val storeHolder = StackEntryStoreHolder()
     val factory = StackEntryFactory(destinations.toList(), storeHolder)
     val savedStateConfiguration = SavedStateConfiguration(destinations)
     val saver = MultiStack.Saver(factory::create, factory::create, savedStateConfiguration)

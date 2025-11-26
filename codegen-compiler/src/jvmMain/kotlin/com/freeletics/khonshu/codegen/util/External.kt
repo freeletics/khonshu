@@ -31,6 +31,7 @@ internal val navRoot = ClassName("com.freeletics.khonshu.navigation", "NavRoot")
 internal val destinationNavigator = ClassName("com.freeletics.khonshu.navigation", "DestinationNavigator")
 internal val hostNavigator = ClassName("com.freeletics.khonshu.navigation", "HostNavigator")
 internal val createHostNavigator = MemberName("com.freeletics.khonshu.navigation", "createHostNavigator")
+internal val stackEntryStore = ClassName("com.freeletics.khonshu.navigation.internal", "StackEntryStore")
 internal val stackEntryStoreHolder =
     ClassName("com.freeletics.khonshu.navigation.internal", "StackEntryStoreHolder")
 internal val navHost = MemberName("com.freeletics.khonshu.navigation", "NavHost")
@@ -76,8 +77,6 @@ internal val function3 = ClassName("kotlin", "Function3")
 internal val launch = MemberName("kotlinx.coroutines", "launch")
 
 // AndroidX
-internal val componentActivity = ClassName("androidx.activity", "ComponentActivity")
-internal val viewModelStoreOwner = ClassName("androidx.lifecycle", "ViewModelStoreOwner")
 internal val setContent = MemberName("androidx.activity.compose", "setContent")
 internal val savedStateHandle = ClassName("androidx.lifecycle", "SavedStateHandle")
 
@@ -90,5 +89,6 @@ internal val compositionLocalProvider = MemberName("androidx.compose.runtime", "
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 
 // Android
+internal val suppressLint = ClassName("android.annotation", "SuppressLint")
 internal val intent = ClassName("android.content", "Intent")
 internal val bundle = ClassName("android.os", "Bundle")

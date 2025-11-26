@@ -15,7 +15,6 @@ import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
-import com.freeletics.khonshu.codegen.util.stackEntryStoreHolder
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
@@ -56,6 +55,9 @@ internal class GraphGenerator(
 
         if (data is HostActivityData) {
             properties += simplePropertySpec(hostNavigator)
+            properties += simplePropertySpec(savedStateHandle).toBuilder()
+                .addAnnotation(forScope(data.scope))
+                .build()
         } else {
             properties += simplePropertySpec(destinationNavigator).toBuilder()
                 .addAnnotation(forScope(data.scope))
@@ -97,11 +99,6 @@ internal class GraphGenerator(
     private fun retainedGraphFactory(): TypeSpec {
         val createFun = FunSpec.builder(graphFactoryCreateFunctionName)
             .addModifiers(ABSTRACT)
-            .apply {
-                if (data is HostActivityData) {
-                    addParameter(providesParameter("stackEntryStoreHolder", stackEntryStoreHolder))
-                }
-            }
             .addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
             .addParameter(providesParameter(data.navigation.asParameter()))
             .returns(graphClassName)
