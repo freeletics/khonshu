@@ -55,7 +55,9 @@ internal class GraphGenerator(
 
         if (data is HostActivityData) {
             properties += simplePropertySpec(hostNavigator)
-            properties += simplePropertySpec(savedStateHandle)
+            properties += simplePropertySpec(savedStateHandle).toBuilder()
+                .addAnnotation(forScope(data.scope))
+                .build()
         } else {
             properties += simplePropertySpec(destinationNavigator).toBuilder()
                 .addAnnotation(forScope(data.scope))

@@ -122,6 +122,7 @@ internal class HostActivityCodegenTest {
 
               public val hostNavigator: HostNavigator
 
+              @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
 
               @ForScope(TestScreen::class)
@@ -320,6 +321,7 @@ internal class HostActivityCodegenTest {
 
               public val hostNavigator: HostNavigator
 
+              @ForScope(ActivityScope::class)
               public val savedStateHandle: SavedStateHandle
 
               @ForScope(ActivityScope::class)
@@ -545,6 +547,7 @@ internal class HostActivityCodegenTest {
 
               public val hostNavigator: HostNavigator
 
+              @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
 
               public val testClass: TestClass
@@ -755,6 +758,7 @@ internal class HostActivityCodegenTest {
 
               public val hostNavigator: HostNavigator
 
+              @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
 
               @ForScope(TestScreen::class)
@@ -947,6 +951,7 @@ internal class HostActivityCodegenTest {
 
               public val hostNavigator: HostNavigator
 
+              @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
 
               @ForScope(TestScreen::class)
@@ -1144,6 +1149,7 @@ internal class HostActivityCodegenTest {
 
               public val hostNavigator: HostNavigator
 
+              @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
 
               @ForScope(TestScreen::class)
