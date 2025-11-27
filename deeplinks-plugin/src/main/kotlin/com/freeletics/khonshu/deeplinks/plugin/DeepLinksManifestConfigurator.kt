@@ -2,8 +2,11 @@ package com.freeletics.khonshu.deeplinks.plugin
 
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkDefinition
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkDefinitions
+import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.PatternDefinition
 import com.freeletics.khonshu.navigation.deeplinks.PrefixDefinition
+import com.freeletics.khonshu.navigation.deeplinks.replacePlaceholders
+import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import java.io.File
 
 private const val PLACEHOLDER = "<!-- DEEPLINK INTENT FILTERS -->"
@@ -80,8 +83,9 @@ private class IntentFilterBuilder(
         builder.appendLine("$indentation    <category android:name=\"${category}\" />")
     }
 
+    @OptIn(InternalNavigationTestingApi::class)
     fun appendData(scheme: String, host: String, pattern: PatternDefinition) {
-        val pathPattern = pattern.replacePlaceholders { ".*" }
+        val pathPattern = DeepLinkHandler.Pattern(pattern.value).replacePlaceholders { ".*" }
         builder.appendLine("$indentation    <data")
         builder.appendLine("$indentation        android:scheme=\"${scheme}\"")
         builder.appendLine("$indentation        android:host=\"${host}\"")

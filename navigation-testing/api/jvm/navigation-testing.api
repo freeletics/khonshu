@@ -77,7 +77,6 @@ public final class com/freeletics/khonshu/navigation/deeplinks/PatternDefinition
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public static fun hashCode-impl (Ljava/lang/String;)I
-	public static final fun replacePlaceholders-impl (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
 	public final synthetic fun unbox-impl ()Ljava/lang/String;
