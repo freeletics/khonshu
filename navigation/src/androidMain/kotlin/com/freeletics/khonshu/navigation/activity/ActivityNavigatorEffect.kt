@@ -1,14 +1,12 @@
 package com.freeletics.khonshu.navigation.activity
 
 import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -29,14 +27,16 @@ import org.jetbrains.annotations.VisibleForTesting
 public fun ActivityNavigatorEffect(navigator: ActivityNavigator) {
     val hostNavigator = LocalHostNavigator.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
+    val activity = requireNotNull(LocalActivity.current) {
+        "ActivityNavigatorEffect can only be used in the context of an Activity"
+    }
 
-    val activityStarter = remember(context, hostNavigator) {
-        ActivityStarter(context, hostNavigator)
+    val activityStarter = remember(activity, hostNavigator) {
+        ActivityStarter(activity, hostNavigator)
     }
 
     val activityLaunchers = navigator.activityResultRequests.associateWith {
-        rememberResultLaunchers(it, context)
+        rememberResultLaunchers(it, activity)
     }
 
     LaunchedEffect(lifecycleOwner, hostNavigator, activityStarter, navigator) {
@@ -51,10 +51,10 @@ public fun ActivityNavigatorEffect(navigator: ActivityNavigator) {
 @Composable
 private fun <I, O> rememberResultLaunchers(
     request: ActivityResultContractRequest<I, O, *>,
-    context: Context,
+    activity: Activity,
 ): ActivityResultLauncher<*> {
     return rememberLauncherForActivityResult(request.contract) {
-        request.deliverResult(context.findActivity(), it)
+        request.deliverResult(activity, it)
     }
 }
 
@@ -128,10 +128,4 @@ internal inline fun <I, O, R> ActivityResultContractRequest<I, O, R>.deliverResu
             },
         )
     }
-}
-
-internal tailrec fun Context.findActivity(): Activity = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> error("Could not find activity in Context chain.")
 }

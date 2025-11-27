@@ -12,6 +12,7 @@ Change Log
   in compose. APIs that were expecting these are now just using plain interfaces like `Set` or `List`.
 - Internal changes to use `retain` from Compose instead of `ViewModel` classes for
   making objects survive configuration changes.
+- Replace internal usages of `LocalContext` with `LocalActivity`.
 
 ### Codegen
 
