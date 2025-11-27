@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.navigation
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.State
@@ -8,9 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.SavedStateHandle
-import com.freeletics.khonshu.navigation.activity.findActivity
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.deeplinks.handleDeepLink
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
@@ -52,7 +51,9 @@ public fun rememberHostNavigator(
     deepLinkHandlers: Set<DeepLinkHandler> = setOf(),
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix> = setOf(),
 ): HostNavigator {
-    val context = LocalContext.current
+    val activity = requireNotNull(LocalActivity.current) {
+        "rememberHostNavigator can only be used in a Composable that is attached to an Activity"
+    }
     val multiStack by rememberMultiStack(startRoot, destinations)
     val handledDeepLinks = rememberSaveable { mutableStateOf(false) }
     return remember(multiStack, deepLinkHandlers, deepLinkPrefixes) {
@@ -60,7 +61,7 @@ public fun rememberHostNavigator(
     }.also {
         if (!handledDeepLinks.value) {
             it.handleDeepLink(
-                intent = context.findActivity().intent,
+                intent = activity.intent,
                 destinations = destinations,
                 deepLinkHandlers = deepLinkHandlers,
                 deepLinkPrefixes = deepLinkPrefixes,
