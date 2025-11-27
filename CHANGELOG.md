@@ -5,8 +5,19 @@ Change Log
 
 ### Navigation
 
+- The deep link Gradle plugin now supports being applied to projects with the
+  `com.android.kotlin.multiplatform.library` plugin. It will also explicitly fail when being
+  applied to a project with no compatible plugin.
+- Removed `kotlinx.collections.immutable` since it's not necessary anymore with strong skipping
+  in compose. APIs that were expecting these are now just using plain interfaces like `Set` or `List`.
+- Internal changes to use `retain` from Compose instead of `ViewModel` classes for
+  making objects survive configuration changes.
 
 ### Codegen
+
+- Added `GlobalGraphProvider` interface. This needs to be implemented by an app's `Application`
+  class too provide the `AppScope` graph (or other graphs in a more complex hierarchy). Overriding
+  `getSystemService` is not needed anymore.
 
 
 ## 0.34.4 *(2025-11-19)*
