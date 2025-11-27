@@ -137,7 +137,10 @@ Defining which `Activity` should handle deep links:
 </activity>
 ```
 
-In the tests it's then possible to write something like this
+Additionally the `navigation-testing` artifact allows reading the TOML file in unit tests and comparing it with a given
+set of `DeepLinkHandler` objects. This allows making sure that the TOML file, the intent-filters that are generated
+based on it and the `DeepLinkHandler` classes stay in sync.
+
 ```kotlin
 class DeepLinksTest {
     @Test
@@ -146,7 +149,27 @@ class DeepLinksTest {
         val toml = tomlFile.readAllBytes().decodeToString()
         val definitions = DeepLinkDefinitions.decodeFromString(toml)
 
+        val deepLinkHandlers = TODO("Set of all DeepLinkHandler classes")
+        val defaultPrefixes = TODO("Set of default prefixes")
+
         definitions.containsAllDeepLinks(deepLinkHandlers, defaultPrefixes)
     }
 }
+```
+
+## CLI
+
+Create a `.main.kts` script like shown below. The script has 3 commands, `list`, `test` and `test-all` available
+to make testing deep links defined in the same TOML file used above on a real device easy.
+
+```kts
+#!/usr/bin/env kotlin
+
+@file:Repository("https://repo.maven.apache.org/maven2", "https://dl.google.com/dl/android/maven2/")
+@file:DependsOn("com.freeletics.khonshu:deeplinks-script-jvm:<latest-version>")
+
+import com.freeletics.khonshu.deeplinks.script.DeepLinksCli
+import com.github.ajalt.clikt.core.main
+
+DeepLinksCli().main(args)
 ```

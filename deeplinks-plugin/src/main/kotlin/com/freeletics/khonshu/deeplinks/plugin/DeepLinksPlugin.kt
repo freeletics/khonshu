@@ -12,7 +12,9 @@ import org.gradle.api.Project
 public abstract class DeepLinksPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val extension = project.extensions.create("deepLinks", DeepLinksExtension::class.java)
-        extension.deepLinkDefinitionsFile.convention(project.layout.projectDirectory.file("deeplinks.toml"))
+        extension.deepLinkDefinitionsFile.convention(
+            project.layout.projectDirectory.file("src/test/resources/deeplinks.toml"),
+        )
 
         var foundPlugin = false
         project.plugins.withId("com.android.library") {

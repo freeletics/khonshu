@@ -10,6 +10,9 @@ Change Log
   applied to a project with no compatible plugin.
 - Removed `kotlinx.collections.immutable` since it's not necessary anymore with strong skipping
   in compose. APIs that were expecting these are now just using plain interfaces like `Set` or `List`.
+- Added new `com.freeletics.khonshu:deeplinks-script-jvm` artifact that allows easy testing of defined deep links
+  from the command line. See [docs](https://freeletics.github.io/khonshu/navigation/deeplinks/#cli) for more
+  information.
 - Internal changes to use `retain` from Compose instead of `ViewModel` classes for
   making objects survive configuration changes.
 - Replace internal usages of `LocalContext` with `LocalActivity`.
