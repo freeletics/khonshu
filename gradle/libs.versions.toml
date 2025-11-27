@@ -68,6 +68,7 @@ androidx-lifecycle-testing = { module = "androidx.lifecycle:lifecycle-runtime-te
 androidx-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
 androidx-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
+androidx-savedstate = { module = "androidx.savedstate:savedstate", version = "1.4.0" }
 androidx-lint-gradle = { module = "androidx.lint:lint-gradle", version = "1.0.0-alpha05" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
