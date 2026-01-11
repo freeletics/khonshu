@@ -3,9 +3,11 @@ public abstract interface class com/freeletics/khonshu/navigation/BaseRoute {
 
 public abstract class com/freeletics/khonshu/navigation/HostNavigator : com/freeletics/khonshu/navigation/Navigator {
 	public static final field $stable I
-	public fun <init> ()V
-	public abstract fun getStartRoot ()Lcom/freeletics/khonshu/navigation/NavRoot;
 	public abstract fun navigate (Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class com/freeletics/khonshu/navigation/HostNavigatorKt {
+	public static final fun rememberHostNavigator (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Landroidx/compose/runtime/Composer;II)Lcom/freeletics/khonshu/navigation/HostNavigator;
 }
 
 public abstract class com/freeletics/khonshu/navigation/NavDestination {
