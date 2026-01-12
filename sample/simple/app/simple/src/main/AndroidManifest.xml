@@ -1,10 +1,13 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:name="com.freeletics.khonshu.sample.app.App"
         android:icon="@mipmap/ic_launcher"
         android:label="Khonshu Example"
-        android:enableOnBackInvokedCallback="true">
+        android:enableOnBackInvokedCallback="true"
+        tools:ignore="UnusedAttribute">
     </application>
 
 </manifest>
