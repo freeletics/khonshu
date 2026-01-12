@@ -205,6 +205,7 @@ internal class HostActivityCodegenTest {
               }
 
               override fun onSaveInstanceState(outState: Bundle) {
+                super.onSaveInstanceState(outState)
                 val bundle = savedStateHandle?.savedStateProvider()?.saveState()
                 outState.putAll(bundle ?: Bundle.EMPTY)
               }
@@ -404,6 +405,7 @@ internal class HostActivityCodegenTest {
               }
 
               override fun onSaveInstanceState(outState: Bundle) {
+                super.onSaveInstanceState(outState)
                 val bundle = savedStateHandle?.savedStateProvider()?.saveState()
                 outState.putAll(bundle ?: Bundle.EMPTY)
               }
@@ -638,6 +640,7 @@ internal class HostActivityCodegenTest {
               }
 
               override fun onSaveInstanceState(outState: Bundle) {
+                super.onSaveInstanceState(outState)
                 val bundle = savedStateHandle?.savedStateProvider()?.saveState()
                 outState.putAll(bundle ?: Bundle.EMPTY)
               }
@@ -841,6 +844,7 @@ internal class HostActivityCodegenTest {
               }
 
               override fun onSaveInstanceState(outState: Bundle) {
+                super.onSaveInstanceState(outState)
                 val bundle = savedStateHandle?.savedStateProvider()?.saveState()
                 outState.putAll(bundle ?: Bundle.EMPTY)
               }
@@ -1034,6 +1038,7 @@ internal class HostActivityCodegenTest {
               }
 
               override fun onSaveInstanceState(outState: Bundle) {
+                super.onSaveInstanceState(outState)
                 val bundle = savedStateHandle?.savedStateProvider()?.saveState()
                 outState.putAll(bundle ?: Bundle.EMPTY)
               }
@@ -1232,6 +1237,7 @@ internal class HostActivityCodegenTest {
               }
 
               override fun onSaveInstanceState(outState: Bundle) {
+                super.onSaveInstanceState(outState)
                 val bundle = savedStateHandle?.savedStateProvider()?.saveState()
                 outState.putAll(bundle ?: Bundle.EMPTY)
               }

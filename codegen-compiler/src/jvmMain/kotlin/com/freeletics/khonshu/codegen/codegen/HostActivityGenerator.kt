@@ -83,6 +83,7 @@ internal class HostActivityGenerator(
         return FunSpec.builder("onSaveInstanceState")
             .addModifiers(OVERRIDE)
             .addParameter("outState", bundle)
+            .addStatement("super.onSaveInstanceState(outState)")
             .addStatement("val bundle = savedStateHandle?.savedStateProvider()?.saveState()")
             .addStatement("outState.putAll(bundle ?: %T.EMPTY)", bundle)
             .build()
