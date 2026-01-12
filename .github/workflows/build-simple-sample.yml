@@ -27,4 +27,4 @@ jobs:
       - uses: gradle/actions/setup-gradle@v5.0.0
 
       - name: Build with Gradle
-        run: ./gradlew -p sample/simple :app:simple:assembleDebug --stacktrace
+        run: ./gradlew -p sample/simple :app:simple:assembleDebug lint --stacktrace
