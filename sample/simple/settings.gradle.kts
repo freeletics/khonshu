@@ -1,5 +1,18 @@
 pluginManagement {
     repositories {
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = "Sonatype Snapshots"
+                    url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+                }
+            }
+
+            filter {
+                includeGroup("dev.zacsweers.metro")
+            }
+        }
+
         google()
         gradlePluginPortal()
         mavenCentral()
@@ -14,4 +27,5 @@ rootProject.name = "simple-sample"
 
 freeletics {
     includeKhonshu("../..")
+    snapshots()
 }
