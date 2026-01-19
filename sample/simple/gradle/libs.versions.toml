@@ -15,11 +15,11 @@ androidx-core = "1.17.0"
 androidx-lifecycle = "2.9.4"
 coroutines = "1.10.2"
 dependency-analysis = "3.4.1"
-fgp = "0.34.2"
+fgp = "0.36.1"
 java-target = "11"
 java-toolchain = "21"
-khonshu = "0.34.1"
-ksp = "2.3.2"
+khonshu = "0.34.4"
+ksp = "2.3.4"
 kotlin = "2.3.0"
 metro = "0.9.4"
 timber = "5.0.1"
@@ -53,7 +53,7 @@ fgp-app = { id = "com.freeletics.gradle.app.android", version.ref = "fgp" }
 fgp-feature = { id = "com.freeletics.gradle.feature", version.ref = "fgp" }
 fgp-nav = { id = "com.freeletics.gradle.nav", version.ref = "fgp" }
 fgp-root = { id = "com.freeletics.gradle.root", version.ref = "fgp" }
-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
