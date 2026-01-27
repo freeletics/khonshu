@@ -21,5 +21,6 @@ dependencies {
     commonMainImplementation(projects.feature.bottomSheet.nav)
     commonMainImplementation(projects.feature.dialog.nav)
     commonMainImplementation(projects.feature.newRoot.nav)
+    commonMainImplementation(projects.feature.root.nav)
     commonMainImplementation(projects.feature.screenWithResult.nav)
 }

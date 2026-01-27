@@ -1,10 +1,15 @@
 plugins {
     id("com.freeletics.gradle.app")
+    id("com.freeletics.khonshu.deeplinks")
 }
 
 freeletics {
     useMetro()
     useCompose()
+}
+
+deepLinks {
+    deepLinkDefinitionsFile = file("src/test/resources/deeplinks.toml")
 }
 
 dependencies {
