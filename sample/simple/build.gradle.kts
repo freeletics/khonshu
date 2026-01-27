@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.compose).apply(false)
     alias(libs.plugins.ksp).apply(false)
     alias(libs.plugins.metro).apply(false)
+    alias(libs.plugins.khonshu.deeplinks).apply(false)
 
     alias(libs.plugins.fgp.root)
 }

@@ -12,6 +12,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
+            <!-- The following comment will be automatically replaced with the right
+                 intent-filters based on deeplinks.toml. DO NOT REMOVE IT -->
+            <!-- DEEPLINK INTENT FILTERS -->
         </activity>
     </application>
 </manifest>

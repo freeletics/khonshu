@@ -21,5 +21,6 @@ dependencies {
     androidMainImplementation(projects.feature.bottomSheet.nav)
     androidMainImplementation(projects.feature.dialog.nav)
     androidMainImplementation(projects.feature.newRoot.nav)
+    androidMainImplementation(projects.feature.root.nav)
     androidMainImplementation(projects.feature.screenWithResult.nav)
 }

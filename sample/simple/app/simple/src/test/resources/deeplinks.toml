@@ -1,0 +1,21 @@
+[[prefixes]]
+scheme = "https"
+host = "www.sample.com"
+autoVerified = true
+
+[[prefixes]]
+scheme = "khonshu"
+host = "sample.com"
+autoVerified = false
+
+[[placeholders]]
+key = "screenNum"
+exampleValues = ["987"]
+
+[deepLinks]
+
+[deepLinks.home]
+patterns = ["home/"]
+
+[deepLinks.screen]
+patterns = ["screen/{screenNum}"]

@@ -1,5 +1,7 @@
+
 plugins {
     id("com.freeletics.gradle.app.android")
+    id("com.freeletics.khonshu.deeplinks")
 }
 
 freeletics {
@@ -9,6 +11,10 @@ freeletics {
         applicationId("com.freeletics.khonshu.sample.simple")
         minify()
     }
+}
+
+deepLinks {
+    deepLinkDefinitionsFile = file("src/test/resources/deeplinks.toml")
 }
 
 dependencies {
