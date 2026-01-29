@@ -16,7 +16,7 @@ androidx-compose-runtime = "1.10.2"
 androidx-compose-ui = "1.10.2"
 jetbrains-compose = "1.10.0"
 
-androidx-activity = "1.12.2"
+androidx-activity = "1.12.3"
 androidx-annotations = "1.9.1"
 androidx-core = "1.17.0"
 androidx-lifecycle = "2.10.0"
