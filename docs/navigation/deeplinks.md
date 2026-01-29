@@ -120,10 +120,10 @@ Adding the plugin to the build file:
 ```kotlin
 plugins {
     id("com.freeletics.khonshu.deeplinks") version "..."
+}
 
-    deepLinks {
-        deepLinkDefinitionsFile = project.file("src/test/resources/deeplinks.toml")
-    }
+deepLinks {
+    deepLinkDefinitionsFile = project.file("src/test/resources/deeplinks.toml")
 }
 ```
 
@@ -137,7 +137,7 @@ Defining which `Activity` should handle deep links:
 </activity>
 ```
 
-Additionally the `navigation-testing` artifact allows reading the TOML file in unit tests and comparing it with a given
+Additionally, the `navigation-testing` artifact allows reading the TOML file in unit tests and comparing it with a given
 set of `DeepLinkHandler` objects. This allows making sure that the TOML file, the intent-filters that are generated
 based on it and the `DeepLinkHandler` classes stay in sync.
 
