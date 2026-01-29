@@ -43,7 +43,7 @@ public abstract class DeepLinksPlugin : Plugin<Project> {
     private fun setupDeepLinksManifestConfigurator(project: Project, extension: DeepLinksExtension) {
         val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
         androidComponents.onVariants { variant ->
-            val name = "${variant.name}DeeplinksManifestConfigurator"
+            val name = "${variant.name}DeepLinksManifestConfigurator"
             val manifestUpdater = project.tasks.register(name, DeepLinksManifestConfiguratorTask::class.java) {
                 it.deepLinkDefinitionsFile.set(extension.deepLinkDefinitionsFile)
             }

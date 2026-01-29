@@ -19,7 +19,7 @@ gradlePlugin {
     plugins {
         create("plugin") {
             id = "com.freeletics.khonshu.deeplinks"
-            implementationClass = "com.freeletics.khonshu.deeplinks.plugin.DeeplinksPlugin"
+            implementationClass = "com.freeletics.khonshu.deeplinks.plugin.DeepLinksPlugin"
         }
     }
 }
