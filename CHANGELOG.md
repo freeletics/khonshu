@@ -3,6 +3,8 @@ Change Log
 
 ## UNRELEASED
 
+## 0.35.0 *(2026-01-29)*
+
 ### Navigation
 
 - The deep link Gradle plugin now supports being applied to projects with the
@@ -20,7 +22,7 @@ Change Log
 ### Codegen
 
 - Added `GlobalGraphProvider` interface. This needs to be implemented by an app's `Application`
-  class too provide the `AppScope` graph (or other graphs in a more complex hierarchy). Overriding
+  class to provide the `AppScope` graph (or other graphs in a more complex hierarchy). Overriding
   `getSystemService` is not needed anymore.
 
 
