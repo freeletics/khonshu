@@ -13,5 +13,5 @@ plugins {
 rootProject.name = "simple-sample"
 
 freeletics {
-    includeKhonshu("../..")
+//    includeKhonshu("../..")
 }
