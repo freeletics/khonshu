@@ -12,8 +12,8 @@ android-min = "23"
 android-target = "36"
 android-compile = "36"
 
-androidx-compose-runtime = "1.10.1"
-androidx-compose-ui = "1.10.1"
+androidx-compose-runtime = "1.10.2"
+androidx-compose-ui = "1.10.2"
 jetbrains-compose = "1.10.0"
 
 androidx-activity = "1.12.2"
