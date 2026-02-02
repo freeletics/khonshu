@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation
 
-import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Transition
@@ -11,22 +10,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.NavigationEventTransitionState
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import java.lang.ref.WeakReference
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
 
 /**
  * Create a new `NavHost` containing all given [destinations]. [startRoute] will be used as the
@@ -288,14 +294,25 @@ private fun systemBackHandling(snapshot: StackSnapshot, navigator: HostNavigator
     val backProgress = remember(snapshot) {
         Animatable(0f, visibilityThreshold = VISIBILITY_THRESHOLD)
     }
-    PredictiveBackHandler(enabled = snapshot.canNavigateBack) { progressFlow ->
-        try {
-            progressFlow.collect { backEvent ->
-                backProgress.snapTo(backEvent.progress)
+
+    val navState = rememberNavigationEventState(NavigationEventInfo.None)
+    val scope = rememberCoroutineScope()
+    NavigationBackHandler(
+        state = navState,
+        isBackEnabled = snapshot.canNavigateBack,
+        onBackCancelled = {
+            scope.launch {
+                backProgress.tryAnimateTo(0f)
             }
+        },
+        onBackCompleted = {
             navigator.tryNavigateBack()
-        } catch (_: CancellationException) {
-            backProgress.tryAnimateTo(0f)
+        },
+    )
+    LaunchedEffect(navState.transitionState) {
+        val transitionState = navState.transitionState
+        if (transitionState is NavigationEventTransitionState.InProgress) {
+            backProgress.snapTo(transitionState.latestEvent.progress)
         }
     }
 
