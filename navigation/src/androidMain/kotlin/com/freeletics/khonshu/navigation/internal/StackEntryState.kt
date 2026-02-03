@@ -91,8 +91,23 @@ public class StackEntryState(initialState: Map<String, Any?>) {
     }
 
     public fun savedStateHandle(): SavedStateHandle {
-        @SuppressLint("VisibleForTests")
-        return values.getOrPut("khonshu-internal-saved-state-handle") { SavedStateHandle() } as SavedStateHandle
+        return when (val current = values.get("khonshu-internal-saved-state-handle")) {
+            is SavedStateHandle -> current
+            is SavedState -> {
+                val savedValues = current.read { toMap() }
+                @SuppressLint("VisibleForTests")
+                SavedStateHandle(savedValues).also {
+                    values[KEY_SAVED_STATE_HANDLE] = it
+                }
+            }
+            null -> {
+                @SuppressLint("VisibleForTests")
+                SavedStateHandle().also {
+                    values[KEY_SAVED_STATE_HANDLE] = it
+                }
+            }
+            else -> error("Unknown value $current for SavedStateHandle")
+        }
     }
 
     internal fun saveState(): SavedState {
@@ -104,6 +119,8 @@ public class StackEntryState(initialState: Map<String, Any?>) {
         }
     }
 }
+
+private const val KEY_SAVED_STATE_HANDLE = "khonshu-internal-saved-state-handle"
 
 private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: SerializationStrategy<T>?) {
     when (value) {
@@ -120,7 +137,7 @@ private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: S
         is Serializable -> putJavaSerializable(key, value)
         is SavedStateHandle -> {
             @SuppressLint("RestrictedApi")
-            value.savedStateProvider().saveState()
+            putSavedState(key, value.savedStateProvider().saveState())
         }
         else -> {
             val serializer = requireNotNull(serializer) { "Did not find serializer for $value" }
