@@ -62,4 +62,7 @@ dependencies {
     "androidHostTestImplementation"(libs.androidx.lifecycle.testing)
     "androidHostTestImplementation"(libs.coroutines.test)
     "androidHostTestImplementation"(projects.navigationTesting)
+
+    "jvmTestImplementation"(libs.junit)
+    "jvmTestImplementation"(libs.truth)
 }

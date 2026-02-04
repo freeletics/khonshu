@@ -52,7 +52,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
         @Suppress("UNCHECKED_CAST") return flow.asStateFlow() as StateFlow<T>
     }
 
-    public inline operator fun <reified T : Any> get(key: String): T? {
+    public inline operator fun <reified T> get(key: String): T? {
         return get(key, serializer())
     }
 
@@ -88,7 +88,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
     }
 
     public fun savedStateHandle(): SavedStateHandle {
-        return when (val current = values.get("khonshu-internal-saved-state-handle")) {
+        return when (val current = values[KEY_SAVED_STATE_HANDLE]) {
             is SavedStateHandle -> current
             is SavedState -> {
                 val savedValues = current.read { toMap() }
@@ -122,9 +122,7 @@ private const val KEY_SAVED_STATE_HANDLE = "khonshu-internal-saved-state-handle"
 private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: SerializationStrategy<T>?) {
     when (value) {
         null -> putNull(key)
-        is SavedState -> putSavedState(key, value)
         is String -> putString(key, value)
-        is CharSequence -> putCharSequence(key, value)
         is Long -> putLong(key, value)
         is Int -> putInt(key, value)
         is Double -> putDouble(key, value)
