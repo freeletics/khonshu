@@ -1,7 +1,5 @@
 package com.freeletics.khonshu.navigation.internal
 
-import android.annotation.SuppressLint
-import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
 import androidx.savedstate.SavedStateWriter
@@ -9,7 +7,6 @@ import androidx.savedstate.read
 import androidx.savedstate.savedState
 import androidx.savedstate.serialization.decodeFromSavedState
 import androidx.savedstate.serialization.encodeToSavedState
-import java.io.Serializable
 import kotlin.collections.getOrPut
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -95,13 +92,13 @@ public class StackEntryState(initialState: Map<String, Any?>) {
             is SavedStateHandle -> current
             is SavedState -> {
                 val savedValues = current.read { toMap() }
-                @SuppressLint("VisibleForTests")
+                // noinspection VisibleForTests
                 SavedStateHandle(savedValues).also {
                     values[KEY_SAVED_STATE_HANDLE] = it
                 }
             }
             null -> {
-                @SuppressLint("VisibleForTests")
+                // noinspection VisibleForTests
                 SavedStateHandle().also {
                     values[KEY_SAVED_STATE_HANDLE] = it
                 }
@@ -133,16 +130,18 @@ private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: S
         is Double -> putDouble(key, value)
         is Float -> putFloat(key, value)
         is Boolean -> putBoolean(key, value)
-        is Parcelable -> putParcelable(key, value)
-        is Serializable -> putJavaSerializable(key, value)
         is SavedStateHandle -> {
-            @SuppressLint("RestrictedApi")
+            // noinspection RestrictedApi
             putSavedState(key, value.savedStateProvider().saveState())
         }
         else -> {
-            val serializer = requireNotNull(serializer) { "Did not find serializer for $value" }
-            val savedState = encodeToSavedState(serializer, value)
-            putSavedState(key, savedState)
+            if (!putPlatformValue(key, value)) {
+                val serializer = requireNotNull(serializer) { "Did not find serializer for $value" }
+                val savedState = encodeToSavedState(serializer, value)
+                putSavedState(key, savedState)
+            }
         }
     }
 }
+
+internal expect fun SavedStateWriter.putPlatformValue(key: String, value: Any): Boolean
