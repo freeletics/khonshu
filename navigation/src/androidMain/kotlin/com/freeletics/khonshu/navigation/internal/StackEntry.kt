@@ -72,7 +72,7 @@ public actual class StackEntry<T : BaseRoute> internal constructor(
     @JvmInline
     @Serializable
     @InternalNavigationTestingApi
-    public value class Id(internal val value: String)
+    public actual value class Id(internal val value: String)
 
     @InternalNavigationTestingApi
     public companion object {
