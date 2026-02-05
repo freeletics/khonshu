@@ -40,6 +40,8 @@ kotlin {
 dependencies {
     "commonMainApi"(libs.androidx.compose.runtime)
     "commonMainApi"(libs.androidx.compose.runtime.retain)
+    "commonMainApi"(libs.androidx.viewmodel.savedstate)
+    "commonMainApi"(libs.androidx.savedstate)
     "commonMainApi"(libs.uri)
 
     "androidMainApi"(libs.androidx.compose.foundation)
@@ -61,4 +63,7 @@ dependencies {
     "androidHostTestImplementation"(libs.androidx.lifecycle.testing)
     "androidHostTestImplementation"(libs.coroutines.test)
     "androidHostTestImplementation"(projects.navigationTesting)
+
+    "jvmTestImplementation"(libs.junit)
+    "jvmTestImplementation"(libs.truth)
 }
