@@ -1,7 +1,5 @@
 package com.freeletics.khonshu.navigation.internal
 
-import android.annotation.SuppressLint
-import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
 import androidx.savedstate.SavedStateWriter
@@ -9,7 +7,6 @@ import androidx.savedstate.read
 import androidx.savedstate.savedState
 import androidx.savedstate.serialization.decodeFromSavedState
 import androidx.savedstate.serialization.encodeToSavedState
-import java.io.Serializable
 import kotlin.collections.getOrPut
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -55,7 +52,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
         @Suppress("UNCHECKED_CAST") return flow.asStateFlow() as StateFlow<T>
     }
 
-    public inline operator fun <reified T : Any> get(key: String): T? {
+    public inline operator fun <reified T> get(key: String): T? {
         return get(key, serializer())
     }
 
@@ -91,8 +88,23 @@ public class StackEntryState(initialState: Map<String, Any?>) {
     }
 
     public fun savedStateHandle(): SavedStateHandle {
-        @SuppressLint("VisibleForTests")
-        return values.getOrPut("khonshu-internal-saved-state-handle") { SavedStateHandle() } as SavedStateHandle
+        return when (val current = values[KEY_SAVED_STATE_HANDLE]) {
+            is SavedStateHandle -> current
+            is SavedState -> {
+                val savedValues = current.read { toMap() }
+                // noinspection VisibleForTests
+                SavedStateHandle(savedValues).also {
+                    values[KEY_SAVED_STATE_HANDLE] = it
+                }
+            }
+            null -> {
+                // noinspection VisibleForTests
+                SavedStateHandle().also {
+                    values[KEY_SAVED_STATE_HANDLE] = it
+                }
+            }
+            else -> error("Unknown value $current for SavedStateHandle")
+        }
     }
 
     internal fun saveState(): SavedState {
@@ -105,27 +117,29 @@ public class StackEntryState(initialState: Map<String, Any?>) {
     }
 }
 
+private const val KEY_SAVED_STATE_HANDLE = "khonshu-internal-saved-state-handle"
+
 private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: SerializationStrategy<T>?) {
     when (value) {
         null -> putNull(key)
-        is SavedState -> putSavedState(key, value)
         is String -> putString(key, value)
-        is CharSequence -> putCharSequence(key, value)
         is Long -> putLong(key, value)
         is Int -> putInt(key, value)
         is Double -> putDouble(key, value)
         is Float -> putFloat(key, value)
         is Boolean -> putBoolean(key, value)
-        is Parcelable -> putParcelable(key, value)
-        is Serializable -> putJavaSerializable(key, value)
         is SavedStateHandle -> {
-            @SuppressLint("RestrictedApi")
-            value.savedStateProvider().saveState()
+            // noinspection RestrictedApi
+            putSavedState(key, value.savedStateProvider().saveState())
         }
         else -> {
-            val serializer = requireNotNull(serializer) { "Did not find serializer for $value" }
-            val savedState = encodeToSavedState(serializer, value)
-            putSavedState(key, savedState)
+            if (!putPlatformValue(key, value)) {
+                val serializer = requireNotNull(serializer) { "Did not find serializer for $value" }
+                val savedState = encodeToSavedState(serializer, value)
+                putSavedState(key, savedState)
+            }
         }
     }
 }
+
+internal expect fun SavedStateWriter.putPlatformValue(key: String, value: Any): Boolean
