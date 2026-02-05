@@ -26,9 +26,9 @@ import kotlinx.serialization.Serializable
 @Poko
 @Immutable
 @InternalNavigationCodegenApi
-public actual class StackEntry<T : BaseRoute> internal constructor(
+public class StackEntry<T : BaseRoute> internal constructor(
     internal val id: Id,
-    public actual val route: T,
+    public val route: T,
     private val destination: NavDestination<T>,
     public val state: StackEntryState,
     public val store: StackEntryStore,
@@ -72,7 +72,7 @@ public actual class StackEntry<T : BaseRoute> internal constructor(
     @JvmInline
     @Serializable
     @InternalNavigationTestingApi
-    public actual value class Id(internal val value: String)
+    public value class Id(internal val value: String)
 
     @InternalNavigationTestingApi
     public companion object {
