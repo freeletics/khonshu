@@ -116,6 +116,18 @@ public final class com/freeletics/khonshu/navigation/internal/StackEntry$Id$Comp
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/freeletics/khonshu/navigation/internal/StackEntryState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Landroidx/savedstate/SavedState;)V
+	public fun <init> (Ljava/util/Map;)V
+	public final fun contains (Ljava/lang/String;)Z
+	public final fun get (Ljava/lang/String;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
+	public final fun getStateFlow (Ljava/lang/String;Ljava/lang/Object;Lkotlinx/serialization/KSerializer;)Lkotlinx/coroutines/flow/StateFlow;
+	public final fun remove (Ljava/lang/String;)Ljava/lang/Object;
+	public final fun set (Ljava/lang/String;Ljava/lang/Object;Lkotlinx/serialization/SerializationStrategy;)V
+}
+
 public final class com/freeletics/khonshu/navigation/internal/StackSnapshot {
 	public static final field $stable I
 	public fun <init> ()V

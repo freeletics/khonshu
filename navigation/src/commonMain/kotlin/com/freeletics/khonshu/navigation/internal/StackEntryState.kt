@@ -16,7 +16,6 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
 
-@InternalNavigationApi
 public class StackEntryState(initialState: Map<String, Any?>) {
     public constructor() : this(emptyMap())
     public constructor(savedState: SavedState) : this(savedState.read { toMap() })
@@ -87,6 +86,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
         return latestValue
     }
 
+    @InternalNavigationApi
     public fun savedStateHandle(): SavedStateHandle {
         return when (val current = values[KEY_SAVED_STATE_HANDLE]) {
             is SavedStateHandle -> current

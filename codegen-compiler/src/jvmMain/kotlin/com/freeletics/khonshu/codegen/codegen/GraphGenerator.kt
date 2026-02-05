@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
+import com.freeletics.khonshu.codegen.DestinationData
 import com.freeletics.khonshu.codegen.HostActivityData
 import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.autoCloseable
@@ -15,6 +16,7 @@ import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
+import com.freeletics.khonshu.codegen.util.stackEntryState
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
@@ -99,14 +101,16 @@ internal class GraphGenerator(
     private fun retainedGraphFactory(): TypeSpec {
         val createFun = FunSpec.builder(graphFactoryCreateFunctionName)
             .addModifiers(ABSTRACT)
-            .addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
+        if (data is DestinationData) {
+            createFun.addParameter(providesParameter("stackEntryState", stackEntryState, forScope(data.scope)))
+        }
+        createFun.addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
             .addParameter(providesParameter(data.navigation.asParameter()))
             .returns(graphClassName)
-            .build()
         return TypeSpec.interfaceBuilder(graphFactoryClassName)
             .addAnnotation(contributesTo(data.parentScope))
             .addAnnotation(contributesGraphExtensionFactory())
-            .addFunction(createFun)
+            .addFunction(createFun.build())
             .build()
     }
 }

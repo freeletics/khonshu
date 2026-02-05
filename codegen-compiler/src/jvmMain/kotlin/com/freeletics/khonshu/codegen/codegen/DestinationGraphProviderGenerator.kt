@@ -55,7 +55,7 @@ internal class NavDestinationGraphProviderGenerator(
                 }
             }
             .addStatement(
-                "factory.%L(entry.savedStateHandle, entry.route)",
+                "factory.%L(entry.state, entry.savedStateHandle, entry.route)",
                 graphFactoryCreateFunctionName,
             )
             .endControlFlow()
