@@ -21,7 +21,7 @@ java-toolchain = "21"
 khonshu = "0.35.0"
 ksp = "2.3.5"
 kotlin = "2.3.0"
-metro = "0.10.2"
+metro = "0.10.3"
 timber = "5.0.1"
 
 [libraries]
