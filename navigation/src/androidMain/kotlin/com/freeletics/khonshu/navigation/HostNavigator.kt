@@ -19,19 +19,19 @@ import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.internal.createMultiStack
 import com.freeletics.khonshu.navigation.internal.rememberMultiStack
 
-public abstract class HostNavigator @InternalNavigationTestingApi constructor() : Navigator {
+public actual abstract class HostNavigator @InternalNavigationTestingApi constructor() : Navigator {
     @InternalNavigationTestingApi
     public abstract val snapshot: State<StackSnapshot>
 
     @InternalNavigationTestingApi
-    public abstract val startRoot: NavRoot
+    public actual abstract val startRoot: NavRoot
 
     /**
      * Allows to group multiple navigation actions and execute them atomically. The state of this [HostNavigator] will
      * only be updated after running all actions. This should be used when navigating multiple times, for example
      * calling `navigateBackTo` followed by `navigateTo`.
      */
-    public abstract fun navigate(block: Navigator.() -> Unit)
+    public actual abstract fun navigate(block: Navigator.() -> Unit)
 }
 
 /**

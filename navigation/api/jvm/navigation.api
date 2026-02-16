@@ -1,6 +1,13 @@
 public abstract interface class com/freeletics/khonshu/navigation/BaseRoute {
 }
 
+public abstract class com/freeletics/khonshu/navigation/HostNavigator : com/freeletics/khonshu/navigation/Navigator {
+	public static final field $stable I
+	public fun <init> ()V
+	public abstract fun getStartRoot ()Lcom/freeletics/khonshu/navigation/NavRoot;
+	public abstract fun navigate (Lkotlin/jvm/functions/Function1;)V
+}
+
 public abstract class com/freeletics/khonshu/navigation/NavDestination {
 	public static final field $stable I
 }
@@ -74,6 +81,10 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkKt {
 	public static final fun DeepLink (Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
 	public static synthetic fun DeepLink$default (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
 	public static synthetic fun DeepLink$default (Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
+}
+
+public final class com/freeletics/khonshu/navigation/deeplinks/HandleDeepLinkKt {
+	public static final fun handleDeepLink (Lcom/freeletics/khonshu/navigation/HostNavigator;Lcom/freeletics/khonshu/navigation/deeplinks/LaunchInfo;Ljava/util/Set;Ljava/util/Set;)Z
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/LaunchInfo {
