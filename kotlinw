@@ -19,6 +19,8 @@ case "$(uname -s)" in
     *)          MACHINE="UNSUPPORTED"
 esac
 
+if [ "$CI" = "trie" ]; then
+  echo "Skipping JDK installation"
 if [ "$MACHINE" = "Linux" ]; then
   export JAVA_HOME="/usr/lib/jvm/zulu-$JDK_VERSION-amd64/"
   if [ ! -d "$JAVA_HOME" ]; then
