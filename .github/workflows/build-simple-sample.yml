@@ -24,7 +24,7 @@ jobs:
       - name: Install Android SDK
         run: ./.github/android-sdk.sh
 
-      - uses: gradle/actions/setup-gradle@v5.0.1
+      - uses: gradle/actions/setup-gradle@v5.0.2
 
       - name: Build with Gradle
         run: ./gradlew -p sample/simple :app:simple:assembleDebug lint --stacktrace
