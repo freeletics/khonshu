@@ -38,7 +38,7 @@ kotlin-compile-testing = "0.12.1"
 fgp = "0.36.5"
 publish = "0.36.0"
 dokka = "2.1.0"
-dependency-analysis = "3.5.1"
+dependency-analysis = "3.6.1"
 
 [libraries]
 android-gradle-api = { module = "com.android.tools.build:gradle-api", version.ref = "android-gradle" }
