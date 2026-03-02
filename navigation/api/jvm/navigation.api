@@ -14,6 +14,11 @@ public abstract class com/freeletics/khonshu/navigation/NavDestination {
 	public static final field $stable I
 }
 
+public final class com/freeletics/khonshu/navigation/NavHostKt {
+	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/HostNavigator;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun NavHost (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/Set;Landroidx/compose/ui/Modifier;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
 public abstract interface class com/freeletics/khonshu/navigation/NavRoot : com/freeletics/khonshu/navigation/BaseRoute {
 }
 
