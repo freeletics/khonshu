@@ -2,12 +2,12 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.DestinationData
 import com.freeletics.khonshu.codegen.util.InternalCodegenApi
-import com.freeletics.khonshu.codegen.util.platformNavigatorEffect
 import com.freeletics.khonshu.codegen.util.composable
 import com.freeletics.khonshu.codegen.util.destinationNavigator
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.localHostGraphProvider
 import com.freeletics.khonshu.codegen.util.optIn
+import com.freeletics.khonshu.codegen.util.platformNavigatorEffect
 import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.remember
 import com.freeletics.khonshu.codegen.util.stackEntry
