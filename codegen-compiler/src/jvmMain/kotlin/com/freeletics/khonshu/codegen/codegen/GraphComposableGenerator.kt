@@ -15,8 +15,6 @@ import com.freeletics.khonshu.codegen.util.rememberCoroutineScope
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.PRIVATE
-import com.squareup.kotlinpoet.asClassName
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 internal val Generator<out BaseData>.composableName
     get() = "Khonshu${data.baseName}"
