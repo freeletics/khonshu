@@ -2,7 +2,6 @@ package com.freeletics.khonshu.navigation.deeplinks
 
 import android.content.Intent
 import com.freeletics.khonshu.navigation.HostNavigator
-import com.freeletics.khonshu.navigation.NavDestination
 
 /**
  * If the given [Intent] was created from a [DeepLink] or the `Uri` returned by [Intent.getData]
@@ -13,9 +12,8 @@ import com.freeletics.khonshu.navigation.NavDestination
  */
 public fun HostNavigator.handleDeepLink(
     intent: Intent,
-    destinations: Set<NavDestination<*>>,
     deepLinkHandlers: Set<DeepLinkHandler>,
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
 ): Boolean {
-    return handleDeepLink(intent.asLaunchInfo(destinations), deepLinkHandlers, deepLinkPrefixes)
+    return handleDeepLink(intent.asLaunchInfo(), deepLinkHandlers, deepLinkPrefixes)
 }

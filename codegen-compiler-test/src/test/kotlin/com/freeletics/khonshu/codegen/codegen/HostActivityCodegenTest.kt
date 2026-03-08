@@ -77,7 +77,6 @@ internal class HostActivityCodegenTest {
             package com.test
 
             import android.`annotation`.SuppressLint
-            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -141,7 +140,7 @@ internal class HostActivityCodegenTest {
               @ContributesTo(TestParentScope::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle, @Provides intent: Intent): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle, @Provides launchInfo: LaunchInfo): KhonshuTestGraph
               }
             }
 
@@ -161,9 +160,6 @@ internal class HostActivityCodegenTest {
 
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityGraph {
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
-
               @Provides
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
@@ -186,7 +182,7 @@ internal class HostActivityCodegenTest {
                     val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
                     val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent)
+                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent.asLaunchInfo())
                   }
                   savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {
@@ -276,7 +272,6 @@ internal class HostActivityCodegenTest {
             package com.test
 
             import android.`annotation`.SuppressLint
-            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -341,7 +336,7 @@ internal class HostActivityCodegenTest {
               @ContributesTo(AppScope::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(ActivityScope::class) savedStateHandle: SavedStateHandle, @Provides intent: Intent): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(ActivityScope::class) savedStateHandle: SavedStateHandle, @Provides launchInfo: LaunchInfo): KhonshuTestGraph
               }
             }
 
@@ -361,9 +356,6 @@ internal class HostActivityCodegenTest {
 
             @ContributesTo(ActivityScope::class)
             public interface KhonshuTestActivityGraph {
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
-
               @Provides
               @SingleIn(ActivityScope::class)
               @OptIn(InternalNavigationCodegenApi::class)
@@ -386,7 +378,7 @@ internal class HostActivityCodegenTest {
                     val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(AppScope::class)
                     val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent)
+                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent.asLaunchInfo())
                   }
                   savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {
@@ -500,7 +492,6 @@ internal class HostActivityCodegenTest {
             package com.test
 
             import android.`annotation`.SuppressLint
-            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -576,7 +567,7 @@ internal class HostActivityCodegenTest {
               @ContributesTo(TestParentScope::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTest2Graph(@Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle, @Provides intent: Intent): KhonshuTest2Graph
+                public fun createKhonshuTest2Graph(@Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle, @Provides launchInfo: LaunchInfo): KhonshuTest2Graph
               }
             }
 
@@ -596,9 +587,6 @@ internal class HostActivityCodegenTest {
 
             @ContributesTo(TestScreen::class)
             public interface KhonshuTest2ActivityGraph {
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
-
               @Provides
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
@@ -621,7 +609,7 @@ internal class HostActivityCodegenTest {
                     val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTest2Graph.Factory>(TestParentScope::class)
                     val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTest2Graph(savedStateHandle, intent)
+                    parentGraph.createKhonshuTest2Graph(savedStateHandle, intent.asLaunchInfo())
                   }
                   savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {
@@ -719,7 +707,6 @@ internal class HostActivityCodegenTest {
             package com.test
 
             import android.`annotation`.SuppressLint
-            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -780,7 +767,7 @@ internal class HostActivityCodegenTest {
               @ContributesTo(TestParentScope::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle, @Provides intent: Intent): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle, @Provides launchInfo: LaunchInfo): KhonshuTestGraph
               }
             }
 
@@ -800,9 +787,6 @@ internal class HostActivityCodegenTest {
 
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityGraph {
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
-
               @Provides
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
@@ -825,7 +809,7 @@ internal class HostActivityCodegenTest {
                     val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
                     val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent)
+                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent.asLaunchInfo())
                   }
                   savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {
@@ -910,7 +894,6 @@ internal class HostActivityCodegenTest {
             package com.test
 
             import android.`annotation`.SuppressLint
-            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -974,7 +957,7 @@ internal class HostActivityCodegenTest {
               @ContributesTo(TestParentScope::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle, @Provides intent: Intent): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle, @Provides launchInfo: LaunchInfo): KhonshuTestGraph
               }
             }
 
@@ -994,9 +977,6 @@ internal class HostActivityCodegenTest {
 
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityGraph {
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
-
               @Provides
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
@@ -1019,7 +999,7 @@ internal class HostActivityCodegenTest {
                     val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
                     val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent)
+                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent.asLaunchInfo())
                   }
                   savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {
@@ -1109,7 +1089,6 @@ internal class HostActivityCodegenTest {
             package com.test
 
             import android.`annotation`.SuppressLint
-            import android.content.Intent
             import android.os.Bundle
             import androidx.activity.ComponentActivity
             import androidx.activity.compose.setContent
@@ -1173,7 +1152,7 @@ internal class HostActivityCodegenTest {
               @ContributesTo(TestParentScope::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle, @Provides intent: Intent): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle, @Provides launchInfo: LaunchInfo): KhonshuTestGraph
               }
             }
 
@@ -1193,9 +1172,6 @@ internal class HostActivityCodegenTest {
 
             @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityGraph {
-              @Provides
-              public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
-
               @Provides
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
@@ -1218,7 +1194,7 @@ internal class HostActivityCodegenTest {
                     val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
                     val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent)
+                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent.asLaunchInfo())
                   }
                   savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {

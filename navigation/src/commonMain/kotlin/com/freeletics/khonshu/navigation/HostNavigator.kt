@@ -58,7 +58,7 @@ public fun rememberHostNavigator(
     }.also {
         if (!handledDeepLinks.value) {
             it.handleDeepLink(
-                launchInfo = obtainLaunchInfo(destinations),
+                launchInfo = obtainLaunchInfo(),
                 deepLinkHandlers = deepLinkHandlers,
                 deepLinkPrefixes = deepLinkPrefixes,
             )

@@ -15,6 +15,6 @@ internal class TestDeepLinkHandler(
         pathParameters: Map<String, String>,
         queryParameters: Map<String, String>,
     ): DeepLink {
-        return DeepLink("test", listOf(DeepLinkRoute(pathParameters, queryParameters)))
+        return DeepLink(listOf(DeepLinkRoute(pathParameters, queryParameters)))
     }
 }
