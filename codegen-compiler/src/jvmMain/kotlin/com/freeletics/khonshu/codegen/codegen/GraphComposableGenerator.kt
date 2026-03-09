@@ -15,8 +15,6 @@ import com.freeletics.khonshu.codegen.util.rememberCoroutineScope
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.PRIVATE
-import com.squareup.kotlinpoet.asClassName
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 internal val Generator<out BaseData>.composableName
     get() = "Khonshu${data.baseName}"
@@ -32,15 +30,7 @@ internal class GraphComposableGenerator(
     internal fun generate(): FunSpec {
         return FunSpec.builder(composableName)
             .addAnnotation(composable)
-            .addAnnotation(
-                if (data.stateMachineClass == khonshuStateMachine) {
-                    optIn()
-                } else {
-                    optIn(
-                        ExperimentalCoroutinesApi::class.asClassName(),
-                    )
-                },
-            )
+            .addAnnotation(optIn())
             .addModifiers(PRIVATE)
             .addParameter("graph", graphClassName)
             .also {

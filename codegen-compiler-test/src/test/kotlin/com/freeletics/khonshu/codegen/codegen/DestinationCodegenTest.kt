@@ -1060,7 +1060,6 @@ internal class DestinationCodegenTest {
             import kotlin.AutoCloseable
             import kotlin.OptIn
             import kotlin.collections.Set
-            import kotlinx.coroutines.ExperimentalCoroutinesApi
 
             @OptIn(InternalCodegenApi::class)
             @GraphExtension(TestRoute::class)
@@ -1116,7 +1115,7 @@ internal class DestinationCodegenTest {
             }
 
             @Composable
-            @OptIn(ExperimentalCoroutinesApi::class)
+            @OptIn(InternalCodegenApi::class)
             private fun KhonshuTest(graph: KhonshuTestGraph) {
               val stateMachineFactory = remember { graph.testStateMachineFactory }
               val stateMachine = stateMachineFactory.produceStateMachine()
