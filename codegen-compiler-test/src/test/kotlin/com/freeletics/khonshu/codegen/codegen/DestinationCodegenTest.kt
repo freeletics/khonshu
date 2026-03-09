@@ -87,11 +87,11 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.NavDestination
+            import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
-            import com.freeletics.khonshu.navigation.activity.ActivityNavigatorEffect
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
             import dev.zacsweers.metro.ContributesTo
@@ -154,7 +154,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator)
 
               KhonshuTest(graph)
             }
@@ -243,11 +243,11 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.getGraph
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.NavDestination
+            import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
-            import com.freeletics.khonshu.navigation.activity.ActivityNavigatorEffect
             import dev.zacsweers.metro.AppScope
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
@@ -309,7 +309,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator)
 
               KhonshuTest(graph)
             }
@@ -401,10 +401,10 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.OverlayDestination
+            import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
-            import com.freeletics.khonshu.navigation.activity.ActivityNavigatorEffect
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
             import dev.zacsweers.metro.ContributesTo
@@ -467,7 +467,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator)
 
               KhonshuTest(graph)
             }
@@ -576,11 +576,11 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.NavDestination
+            import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
-            import com.freeletics.khonshu.navigation.activity.ActivityNavigatorEffect
             import com.test.destination.TestDestinationScope
             import com.test.other.TestClass2
             import com.test.parent.TestParentRoute
@@ -655,7 +655,7 @@ internal class DestinationCodegenTest {
                 KhonshuTest2GraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator)
 
               KhonshuTest2(graph)
             }
@@ -747,11 +747,11 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.NavDestination
+            import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
-            import com.freeletics.khonshu.navigation.activity.ActivityNavigatorEffect
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
             import dev.zacsweers.metro.ContributesTo
@@ -812,7 +812,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator)
 
               KhonshuTest(graph)
             }
@@ -892,11 +892,11 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.NavDestination
+            import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
-            import com.freeletics.khonshu.navigation.activity.ActivityNavigatorEffect
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
             import dev.zacsweers.metro.ContributesTo
@@ -959,7 +959,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator)
 
               KhonshuTest(graph)
             }
@@ -1044,11 +1044,11 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.NavDestination
+            import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
-            import com.freeletics.khonshu.navigation.activity.ActivityNavigatorEffect
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
             import dev.zacsweers.metro.ContributesTo
@@ -1109,7 +1109,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              ActivityNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator)
 
               KhonshuTest(graph)
             }

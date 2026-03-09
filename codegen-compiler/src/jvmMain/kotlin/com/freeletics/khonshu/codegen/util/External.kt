@@ -35,8 +35,8 @@ internal val stackEntryStore = ClassName("com.freeletics.khonshu.navigation.inte
 internal val stackEntryStoreHolder =
     ClassName("com.freeletics.khonshu.navigation.internal", "StackEntryStoreHolder")
 internal val navHost = MemberName("com.freeletics.khonshu.navigation", "NavHost")
-internal val activityNavigatorEffect =
-    MemberName("com.freeletics.khonshu.navigation.activity", "ActivityNavigatorEffect")
+internal val platformNavigatorEffect =
+    MemberName("com.freeletics.khonshu.navigation", "PlatformNavigatorEffect")
 internal val navigationDestination = ClassName(
     "com.freeletics.khonshu.navigation",
     "NavDestination",
