@@ -2,7 +2,6 @@
 
 package com.freeletics.khonshu.codegen.codegen
 
-import com.freeletics.khonshu.codegen.ActivityScope
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.HostActivityData
 import com.squareup.kotlinpoet.ClassName
@@ -87,6 +86,7 @@ internal class HostActivityCodegenTest {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.HostGraphProvider
@@ -116,7 +116,10 @@ internal class HostActivityCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestScreen::class)
+            @GraphExtension(
+              scope = TestScreen::class,
+              additionalScopes = [ActivityScope::class],
+            )
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -238,7 +241,6 @@ internal class HostActivityCodegenTest {
     @Test
     fun `generates code for NavHostActivityData with default values`() {
         val withDefaultValues = data.copy(
-            scope = ActivityScope::class.asClassName(),
             parentScope = AppScope::class.asClassName(),
         )
 
@@ -256,6 +258,7 @@ internal class HostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.NavRoot
 
             @NavHostActivity(
+              scope = TestScreen::class,
               stateMachine = TestStateMachine::class,
               activityBaseClass = ComponentActivity::class,
             )
@@ -316,20 +319,23 @@ internal class HostActivityCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(ActivityScope::class)
+            @GraphExtension(
+              scope = TestScreen::class,
+              additionalScopes = [ActivityScope::class],
+            )
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
 
-              @ForScope(ActivityScope::class)
+              @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
 
-              @ForScope(ActivityScope::class)
+              @ForScope(TestScreen::class)
               public val closeables: Set<AutoCloseable>
 
               @Multibinds(allowEmpty = true)
-              @ForScope(ActivityScope::class)
+              @ForScope(TestScreen::class)
               public fun bindCloseables(): Set<AutoCloseable>
 
               override fun close() {
@@ -341,7 +347,7 @@ internal class HostActivityCodegenTest {
               @ContributesTo(AppScope::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(ActivityScope::class) savedStateHandle: SavedStateHandle, @Provides intent: Intent): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle, @Provides intent: Intent): KhonshuTestGraph
               }
             }
 
@@ -351,7 +357,7 @@ internal class HostActivityCodegenTest {
               private val globalGraphProvider: GlobalGraphProvider,
             ) : HostGraphProvider {
               override fun <C> provide(scope: KClass<*>): C {
-                if (scope != ActivityScope::class) {
+                if (scope != TestScreen::class) {
                   return globalGraphProvider.getGraph(scope)
                 }
                 @Suppress("UNCHECKED_CAST")
@@ -359,17 +365,17 @@ internal class HostActivityCodegenTest {
               }
             }
 
-            @ContributesTo(ActivityScope::class)
+            @ContributesTo(TestScreen::class)
             public interface KhonshuTestActivityGraph {
               @Provides
               public fun provideLaunchInfo(intent: Intent, destinations: Set<NavDestination<*>>): LaunchInfo = intent.asLaunchInfo(destinations)
 
               @Provides
-              @SingleIn(ActivityScope::class)
+              @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
               public fun provideHostNavigator(
                 startRoot: NavRoot,
-                @ForScope(ActivityScope::class) savedStateHandle: SavedStateHandle,
+                @ForScope(TestScreen::class) savedStateHandle: SavedStateHandle,
                 destinations: Set<NavDestination<*>>,
               ): HostNavigator = createHostNavigator(startRoot, destinations, savedStateHandle)
             }
@@ -510,6 +516,7 @@ internal class HostActivityCodegenTest {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.HostGraphProvider
@@ -543,7 +550,10 @@ internal class HostActivityCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestScreen::class)
+            @GraphExtension(
+              scope = TestScreen::class,
+              additionalScopes = [ActivityScope::class],
+            )
             public interface KhonshuTest2Graph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -728,6 +738,7 @@ internal class HostActivityCodegenTest {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.retain.retain
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.HostGraphProvider
@@ -755,7 +766,10 @@ internal class HostActivityCodegenTest {
             import kotlin.reflect.KClass
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestScreen::class)
+            @GraphExtension(
+              scope = TestScreen::class,
+              additionalScopes = [ActivityScope::class],
+            )
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -920,6 +934,7 @@ internal class HostActivityCodegenTest {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.HostGraphProvider
@@ -949,7 +964,10 @@ internal class HostActivityCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestScreen::class)
+            @GraphExtension(
+              scope = TestScreen::class,
+              additionalScopes = [ActivityScope::class],
+            )
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -1119,6 +1137,7 @@ internal class HostActivityCodegenTest {
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
             import androidx.lifecycle.SavedStateHandle
+            import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.codegen.`internal`.HostGraphProvider
@@ -1148,7 +1167,10 @@ internal class HostActivityCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestScreen::class)
+            @GraphExtension(
+              scope = TestScreen::class,
+              additionalScopes = [ActivityScope::class],
+            )
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 

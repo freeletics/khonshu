@@ -57,9 +57,11 @@ internal fun simplePropertySpec(className: ClassName): PropertySpec {
 
 internal fun contributesGraphExtension(
     scope: ClassName,
+    additionalScopes: List<ClassName>,
 ): AnnotationSpec {
     return AnnotationSpec.builder(GraphExtension::class)
-        .addMember("%T::class", scope)
+        .addMember("scope = %T::class", scope)
+        .addMember(additionalScopes.joinToString(prefix = "additionalScopes = [", separator = ", ", postfix = "]") { "%T::class" }, *additionalScopes.toTypedArray())
         .build()
 }
 

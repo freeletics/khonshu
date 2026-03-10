@@ -107,7 +107,10 @@ internal class DestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestRoute::class)
+            @GraphExtension(
+              scope = TestRoute::class,
+              additionalScopes = [],
+            )
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -262,7 +265,10 @@ internal class DestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestRoute::class)
+            @GraphExtension(
+              scope = TestRoute::class,
+              additionalScopes = [],
+            )
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -420,7 +426,10 @@ internal class DestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestOverlayRoute::class)
+            @GraphExtension(
+              scope = TestOverlayRoute::class,
+              additionalScopes = [],
+            )
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -600,7 +609,10 @@ internal class DestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestRoute::class)
+            @GraphExtension(
+              scope = TestRoute::class,
+              additionalScopes = [],
+            )
             public interface KhonshuTest2Graph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -765,7 +777,10 @@ internal class DestinationCodegenTest {
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestRoute::class)
+            @GraphExtension(
+              scope = TestRoute::class,
+              additionalScopes = [],
+            )
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -912,7 +927,10 @@ internal class DestinationCodegenTest {
             import kotlinx.coroutines.launch
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestRoute::class)
+            @GraphExtension(
+              scope = TestRoute::class,
+              additionalScopes = [],
+            )
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
@@ -1062,7 +1080,10 @@ internal class DestinationCodegenTest {
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class)
-            @GraphExtension(TestRoute::class)
+            @GraphExtension(
+              scope = TestRoute::class,
+              additionalScopes = [],
+            )
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachineFactory: TestStateMachineFactory
 

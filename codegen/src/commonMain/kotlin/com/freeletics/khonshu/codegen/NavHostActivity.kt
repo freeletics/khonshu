@@ -21,7 +21,7 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class NavHostActivity(
-    val scope: KClass<*> = ActivityScope::class,
+    val scope: KClass<*>,
     val parentScope: KClass<*> = AppScope::class,
     val stateMachine: KClass<*>,
     val activityBaseClass: KClass<*>,

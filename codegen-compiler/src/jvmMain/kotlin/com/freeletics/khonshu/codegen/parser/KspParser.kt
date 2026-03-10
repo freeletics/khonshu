@@ -4,6 +4,7 @@ import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.DestinationData
 import com.freeletics.khonshu.codegen.HostActivityData
 import com.freeletics.khonshu.codegen.Navigation
+import com.freeletics.khonshu.codegen.util.activityScope
 import com.freeletics.khonshu.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.util.baseRoute
 import com.freeletics.khonshu.codegen.util.functionToLambda
@@ -29,6 +30,7 @@ import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.toTypeParameterResolver
+import kotlin.math.log
 import org.jetbrains.annotations.VisibleForTesting
 
 internal fun KSFunctionDeclaration.toDestinationData(
@@ -65,6 +67,13 @@ internal fun KSFunctionDeclaration.toHostActivityData(
     val (stateMachineClass, stateParameter, actionParameter) = annotation.stateMachineParameters(logger) ?: return null
 
     val navHostParameter = navHostParameter(logger) ?: return null
+
+    if (annotation.scope == activityScope) {
+        logger.error("Using ActivityScope as scope for @NavHostActivity is not allowed. Each " +
+            "@NavHostActivity should define its own unique scope. ActivityScope will be automatically included in " +
+            " each graph generated for @NavHostActivity and can be used to contribute to all activities.", annotation)
+        return null
+    }
 
     return HostActivityData(
         baseName = simpleName.asString(),

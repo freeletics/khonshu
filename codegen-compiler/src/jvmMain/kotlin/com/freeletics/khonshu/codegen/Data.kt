@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.codegen
 
+import com.freeletics.khonshu.codegen.util.activityScope
 import com.freeletics.khonshu.codegen.util.overlayDestination
 import com.freeletics.khonshu.codegen.util.screenDestination
 import com.squareup.kotlinpoet.ClassName
@@ -11,6 +12,7 @@ public sealed interface BaseData {
     public val packageName: String
 
     public val scope: ClassName
+    public val additionalScopes: List<ClassName>
     public val parentScope: ClassName
 
     public val stateMachine: ClassName
@@ -39,7 +41,9 @@ public data class DestinationData(
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
-) : BaseData
+) : BaseData {
+    override val additionalScopes: List<ClassName> = emptyList()
+}
 
 public data class HostActivityData(
     override val baseName: String,
@@ -54,6 +58,7 @@ public data class HostActivityData(
     override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
 ) : BaseData {
+    override val additionalScopes: List<ClassName> = listOf(activityScope)
     override val navigation: Navigation? = null
 }
 

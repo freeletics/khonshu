@@ -12,7 +12,10 @@ import com.freeletics.khonshu.sample.feature.root.nav.RootRoute
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 
+sealed class MainScreen
+
 @NavHostActivity(
+    scope = MainScreen::class,
     stateMachine = MainStateMachine::class,
     activityBaseClass = ComponentActivity::class,
 )
