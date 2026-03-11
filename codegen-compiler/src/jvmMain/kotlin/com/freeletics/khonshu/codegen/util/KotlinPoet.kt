@@ -61,7 +61,12 @@ internal fun contributesGraphExtension(
 ): AnnotationSpec {
     return AnnotationSpec.builder(GraphExtension::class)
         .addMember("scope = %T::class", scope)
-        .addMember(additionalScopes.joinToString(prefix = "additionalScopes = [", separator = ", ", postfix = "]") { "%T::class" }, *additionalScopes.toTypedArray())
+        .addMember(
+            additionalScopes.joinToString(prefix = "additionalScopes = [", separator = ", ", postfix = "]") {
+                "%T::class"
+            },
+            *additionalScopes.toTypedArray(),
+        )
         .build()
 }
 

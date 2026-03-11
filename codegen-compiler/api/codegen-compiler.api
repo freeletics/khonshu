@@ -1,4 +1,5 @@
 public abstract interface class com/freeletics/khonshu/codegen/BaseData {
+	public abstract fun getAdditionalScopes ()Ljava/util/List;
 	public abstract fun getBaseName ()Ljava/lang/String;
 	public abstract fun getComposableParameter ()Ljava/util/List;
 	public abstract fun getNavigation ()Lcom/freeletics/khonshu/codegen/Navigation;
@@ -39,6 +40,7 @@ public final class com/freeletics/khonshu/codegen/DestinationData : com/freeleti
 	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/Navigation;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;)Lcom/freeletics/khonshu/codegen/DestinationData;
 	public static synthetic fun copy$default (Lcom/freeletics/khonshu/codegen/DestinationData;Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/Navigation;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;ILjava/lang/Object;)Lcom/freeletics/khonshu/codegen/DestinationData;
 	public fun equals (Ljava/lang/Object;)Z
+	public fun getAdditionalScopes ()Ljava/util/List;
 	public fun getBaseName ()Ljava/lang/String;
 	public fun getComposableParameter ()Ljava/util/List;
 	public fun getNavigation ()Lcom/freeletics/khonshu/codegen/Navigation;
@@ -70,6 +72,7 @@ public final class com/freeletics/khonshu/codegen/HostActivityData : com/freelet
 	public static synthetic fun copy$default (Lcom/freeletics/khonshu/codegen/HostActivityData;Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;ILjava/lang/Object;)Lcom/freeletics/khonshu/codegen/HostActivityData;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getActivityBaseClass ()Lcom/squareup/kotlinpoet/ClassName;
+	public fun getAdditionalScopes ()Ljava/util/List;
 	public fun getBaseName ()Ljava/lang/String;
 	public fun getComposableParameter ()Ljava/util/List;
 	public final fun getNavHostParameter ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
