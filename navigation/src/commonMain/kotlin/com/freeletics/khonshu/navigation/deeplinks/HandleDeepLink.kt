@@ -18,14 +18,8 @@ public fun HostNavigator.handleDeepLink(
     deepLinkHandlers: Set<DeepLinkHandler>,
     deepLinkPrefixes: Set<DeepLinkHandler.Prefix>,
 ): Boolean {
-    val deepLinkRoutes = launchInfo.routes
-    if (deepLinkRoutes != null) {
-        return handleDeepLink(deepLinkRoutes)
-    }
-
-    val uri = launchInfo.uri
-    if (uri != null) {
-        val deepLink = deepLinkHandlers.createDeepLinkIfMatching(uri, deepLinkPrefixes)
+    if (launchInfo.uri != null) {
+        val deepLink = deepLinkHandlers.createDeepLinkIfMatching(launchInfo.uri, deepLinkPrefixes)
         if (deepLink != null) {
             return handleDeepLink(deepLink.routes)
         }
