@@ -158,10 +158,9 @@ public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkHandler$P
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLinkKt {
-	public static final fun DeepLink (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
-	public static final fun DeepLink (Ljava/util/List;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
-	public static synthetic fun DeepLink$default (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
-	public static synthetic fun DeepLink$default (Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
+	public static final fun DeepLink (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/List;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
+	public static final fun DeepLink (Ljava/util/List;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
+	public static synthetic fun DeepLink$default (Lcom/freeletics/khonshu/navigation/NavRoot;Ljava/util/List;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/deeplinks/DeepLink;
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/HandleDeepLinkKt {
@@ -170,9 +169,8 @@ public final class com/freeletics/khonshu/navigation/deeplinks/HandleDeepLinkKt 
 
 public final class com/freeletics/khonshu/navigation/deeplinks/LaunchInfo {
 	public static final field $stable I
-	public fun <init> (Ljava/util/List;Lcom/eygraber/uri/Uri;)V
+	public fun <init> (Lcom/eygraber/uri/Uri;)V
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getRoutes ()Ljava/util/List;
 	public final fun getUri ()Lcom/eygraber/uri/Uri;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;

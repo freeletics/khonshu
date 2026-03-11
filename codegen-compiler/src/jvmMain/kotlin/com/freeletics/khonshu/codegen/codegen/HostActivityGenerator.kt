@@ -3,6 +3,7 @@ package com.freeletics.khonshu.codegen.codegen
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.HostActivityData
 import com.freeletics.khonshu.codegen.util.InternalCodegenApi
+import com.freeletics.khonshu.codegen.util.asLaunchInfo
 import com.freeletics.khonshu.codegen.util.bundle
 import com.freeletics.khonshu.codegen.util.compositionLocalProvider
 import com.freeletics.khonshu.codegen.util.globalGraphProvider
@@ -60,7 +61,7 @@ internal class HostActivityGenerator(
                 data.parentScope,
             )
             .addStatement("val savedStateHandle = %T.createHandle(savedInstanceState, null)", savedStateHandle)
-            .addStatement("parentGraph.%L(savedStateHandle, intent)", graphFactoryCreateFunctionName)
+            .addStatement("parentGraph.%L(savedStateHandle, intent.%M())", graphFactoryCreateFunctionName, asLaunchInfo)
             .endControlFlow()
             .addStatement("savedStateHandle = graph.savedStateHandle")
             .beginControlFlow("val graphProvider = %M(graph)", remember)

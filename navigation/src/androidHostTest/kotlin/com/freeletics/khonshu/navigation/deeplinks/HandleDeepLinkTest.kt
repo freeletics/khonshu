@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.navigation.deeplinks
 
+import com.eygraber.uri.toKmpUri
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.internal.MultiStack
@@ -24,10 +25,24 @@ internal class HandleDeepLinkTest {
         return MultiStackHostNavigator(MultiStack.createWith(SimpleRoot(1), factory::create))
     }
 
-    private fun HostNavigator.testHandleDeepLink(routes: List<BaseRoute>?): Boolean {
+    private fun HostNavigator.testHandleDeepLink(routes: List<BaseRoute>): Boolean {
         return handleDeepLink(
-            launchInfo = LaunchInfo(routes, null),
-            deepLinkHandlers = setOf(),
+            launchInfo = LaunchInfo("https://example.com/test".toKmpUri()),
+            deepLinkHandlers = setOf(
+                object : DeepLinkHandler {
+                    override val prefixes: Set<DeepLinkHandler.Prefix>
+                        get() = setOf(DeepLinkHandler.Prefix("https://example.com"))
+                    override val patterns: Set<DeepLinkHandler.Pattern>
+                        get() = setOf(DeepLinkHandler.Pattern("test"))
+
+                    override fun deepLink(
+                        pathParameters: Map<String, String>,
+                        queryParameters: Map<String, String>,
+                    ): DeepLink {
+                        return DeepLink(routes)
+                    }
+                },
+            ),
             deepLinkPrefixes = setOf(),
         )
     }

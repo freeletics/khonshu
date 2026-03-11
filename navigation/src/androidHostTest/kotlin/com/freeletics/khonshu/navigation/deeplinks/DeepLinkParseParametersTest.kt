@@ -106,7 +106,7 @@ internal class DeepLinkParseParametersTest {
 
         val uri = Uri.parse("https://a.com/home")
         assertThat(handlers.createDeepLinkIfMatching(uri, emptySet())).isEqualTo(
-            DeepLink("test", listOf(DeepLinkRoute(emptyMap(), emptyMap()))),
+            DeepLink(listOf(DeepLinkRoute(emptyMap(), emptyMap()))),
         )
     }
 
@@ -123,7 +123,6 @@ internal class DeepLinkParseParametersTest {
         val uri = Uri.parse("https://a.com/home?query=value&other=true")
         assertThat(handlers.createDeepLinkIfMatching(uri, emptySet())).isEqualTo(
             DeepLink(
-                "test",
                 listOf(
                     DeepLinkRoute(
                         mapOf("path" to "home"),
