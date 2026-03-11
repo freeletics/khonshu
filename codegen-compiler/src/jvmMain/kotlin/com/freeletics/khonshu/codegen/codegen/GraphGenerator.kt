@@ -40,7 +40,7 @@ internal class GraphGenerator(
     fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(graphClassName)
             .addAnnotation(optIn())
-            .addAnnotation(contributesGraphExtension(data.scope))
+            .addAnnotation(contributesGraphExtension(data.scope, data.additionalScopes))
             .addSuperinterface(autoCloseable)
             .addProperties(graphProperties())
             .addFunction(multibindsCloseableFunction())
