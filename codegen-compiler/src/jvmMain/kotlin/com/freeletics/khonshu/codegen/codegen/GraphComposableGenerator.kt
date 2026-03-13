@@ -1,7 +1,7 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
-import com.freeletics.khonshu.codegen.HostActivityData
+import com.freeletics.khonshu.codegen.HostData
 import com.freeletics.khonshu.codegen.util.asComposeState
 import com.freeletics.khonshu.codegen.util.composable
 import com.freeletics.khonshu.codegen.util.khonshuStateMachine
@@ -34,7 +34,7 @@ internal class GraphComposableGenerator(
             .addModifiers(PRIVATE)
             .addParameter("graph", graphClassName)
             .also {
-                if (data is HostActivityData) {
+                if (data is HostData) {
                     it.addParameter(navHostParameter(data.navHostParameter))
                 }
             }
@@ -87,7 +87,7 @@ internal class GraphComposableGenerator(
                 if (data.sendActionParameter != null) {
                     addStatement("  %L = sendAction,", data.sendActionParameter!!.name)
                 }
-                if (data is HostActivityData) {
+                if (data is HostData) {
                     addStatement(
                         "  %L = %L,",
                         data.navHostParameter.name,

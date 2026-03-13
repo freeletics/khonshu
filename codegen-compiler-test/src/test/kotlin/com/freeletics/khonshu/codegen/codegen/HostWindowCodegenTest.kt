@@ -3,7 +3,7 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.ComposableParameter
-import com.freeletics.khonshu.codegen.HostActivityData
+import com.freeletics.khonshu.codegen.HostWindowData
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.LambdaTypeName
@@ -17,14 +17,13 @@ import dev.zacsweers.metro.AppScope
 import org.intellij.lang.annotations.Language
 import org.junit.Test
 
-internal class HostActivityCodegenTest {
-    private val data = HostActivityData(
+internal class HostWindowCodegenTest {
+    private val data = HostWindowData(
         baseName = "Test",
         packageName = "com.test",
         scope = ClassName("com.test", "TestScreen"),
         parentScope = ClassName("com.test.parent", "TestParentScope"),
         stateMachine = ClassName("com.test", "TestStateMachine"),
-        activityBaseClass = ClassName("androidx.activity", "ComponentActivity"),
         navHostParameter = ComposableParameter(
             "navHost",
             ClassName("com.freeletics.khonshu.codegen", "SimpleNavHost"),
@@ -39,25 +38,23 @@ internal class HostActivityCodegenTest {
     )
 
     @Test
-    fun `generates code for NavHostActivityData`() {
+    fun `generates code for NavHostWindowData`() {
         @Language("kotlin")
         val source =
             """
             package com.test
 
-            import androidx.activity.ComponentActivity
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.NavHostWindow
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
 
-            @NavHostActivity(
+            @NavHostWindow(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
-              activityBaseClass = ComponentActivity::class,
             )
             @Composable
             @Suppress("unused_parameter")
@@ -75,15 +72,12 @@ internal class HostActivityCodegenTest {
             """
             package com.test
 
-            import android.`annotation`.SuppressLint
-            import android.os.Bundle
-            import androidx.activity.ComponentActivity
-            import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
+            import androidx.compose.ui.window.Window
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -99,7 +93,6 @@ internal class HostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
-            import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import com.test.parent.TestParentScope
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
@@ -174,22 +167,20 @@ internal class HostActivityCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            @SuppressLint("RestrictedApi")
-            public class KhonshuTestActivity : ComponentActivity() {
-              private var savedStateHandle: SavedStateHandle? = null
-
-              override fun onCreate(savedInstanceState: Bundle?) {
-                super.onCreate(savedInstanceState)
-                setContent {
+            public class KhonshuTestWindow(
+              private val globalGraphProvider: GlobalGraphProvider,
+              private val launchInfo: LaunchInfo,
+            ) {
+              @Composable
+              public fun Show(onCloseRequest: () -> Unit) {
+                Window(onCloseRequest = onCloseRequest) {
                   val graph = retain {
-                    val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent.asLaunchInfo())
+                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                    parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
                   }
-                  savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {
-                    KhonshuTestGraphProvider(graph, application as GlobalGraphProvider)
+                    KhonshuTestGraphProvider(graph, globalGraphProvider)
                   }
                   KhonshuTest(graph) { modifier, destinationChangedCallback ->
                     CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
@@ -201,12 +192,6 @@ internal class HostActivityCodegenTest {
                     }
                   }
                 }
-              }
-
-              override fun onSaveInstanceState(outState: Bundle) {
-                super.onSaveInstanceState(outState)
-                val bundle = savedStateHandle?.savedStateProvider()?.saveState()
-                outState.putAll(bundle ?: Bundle.EMPTY)
               }
             }
 
@@ -235,7 +220,7 @@ internal class HostActivityCodegenTest {
     }
 
     @Test
-    fun `generates code for NavHostActivityData with default values`() {
+    fun `generates code for NavHostWindowData with default values`() {
         val withDefaultValues = data.copy(
             parentScope = AppScope::class.asClassName(),
         )
@@ -245,18 +230,16 @@ internal class HostActivityCodegenTest {
             """
             package com.test
 
-            import androidx.activity.ComponentActivity
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
             import com.freeletics.khonshu.codegen.ActivityScope
-            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.NavHostWindow
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
 
-            @NavHostActivity(
+            @NavHostWindow(
               scope = TestScreen::class,
               stateMachine = TestStateMachine::class,
-              activityBaseClass = ComponentActivity::class,
             )
             @Composable
             @Suppress("unused_parameter")
@@ -274,15 +257,12 @@ internal class HostActivityCodegenTest {
             """
             package com.test
 
-            import android.`annotation`.SuppressLint
-            import android.os.Bundle
-            import androidx.activity.ComponentActivity
-            import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
+            import androidx.compose.ui.window.Window
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -298,7 +278,6 @@ internal class HostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
-            import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import dev.zacsweers.metro.AppScope
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
@@ -373,22 +352,20 @@ internal class HostActivityCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            @SuppressLint("RestrictedApi")
-            public class KhonshuTestActivity : ComponentActivity() {
-              private var savedStateHandle: SavedStateHandle? = null
-
-              override fun onCreate(savedInstanceState: Bundle?) {
-                super.onCreate(savedInstanceState)
-                setContent {
+            public class KhonshuTestWindow(
+              private val globalGraphProvider: GlobalGraphProvider,
+              private val launchInfo: LaunchInfo,
+            ) {
+              @Composable
+              public fun Show(onCloseRequest: () -> Unit) {
+                Window(onCloseRequest = onCloseRequest) {
                   val graph = retain {
-                    val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(AppScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent.asLaunchInfo())
+                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                    parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
                   }
-                  savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {
-                    KhonshuTestGraphProvider(graph, application as GlobalGraphProvider)
+                    KhonshuTestGraphProvider(graph, globalGraphProvider)
                   }
                   KhonshuTest(graph) { modifier, destinationChangedCallback ->
                     CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
@@ -400,12 +377,6 @@ internal class HostActivityCodegenTest {
                     }
                   }
                 }
-              }
-
-              override fun onSaveInstanceState(outState: Bundle) {
-                super.onSaveInstanceState(outState)
-                val bundle = savedStateHandle?.savedStateProvider()?.saveState()
-                outState.putAll(bundle ?: Bundle.EMPTY)
               }
             }
 
@@ -434,7 +405,7 @@ internal class HostActivityCodegenTest {
     }
 
     @Test
-    fun `generates code for NavHostActivityData with Composable Dependencies`() {
+    fun `generates code for NavHostWindowData with Composable Dependencies`() {
         val withInjectedParameters = data.copy(
             baseName = "Test2",
             composableParameter = listOf(
@@ -462,20 +433,18 @@ internal class HostActivityCodegenTest {
             """
             package com.test
 
-            import androidx.activity.ComponentActivity
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.NavHostWindow
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.other.TestClass2
             import com.test.parent.TestParentScope
 
-            @NavHostActivity(
+            @NavHostWindow(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
-              activityBaseClass = ComponentActivity::class,
             )
             @Composable
             @Suppress("unused_parameter")
@@ -497,15 +466,12 @@ internal class HostActivityCodegenTest {
             """
             package com.test
 
-            import android.`annotation`.SuppressLint
-            import android.os.Bundle
-            import androidx.activity.ComponentActivity
-            import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
+            import androidx.compose.ui.window.Window
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -521,7 +487,6 @@ internal class HostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
-            import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import com.test.other.TestClass2
             import com.test.parent.TestParentScope
             import dev.zacsweers.metro.ContributesTo
@@ -608,22 +573,20 @@ internal class HostActivityCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            @SuppressLint("RestrictedApi")
-            public class KhonshuTest2Activity : ComponentActivity() {
-              private var savedStateHandle: SavedStateHandle? = null
-
-              override fun onCreate(savedInstanceState: Bundle?) {
-                super.onCreate(savedInstanceState)
-                setContent {
+            public class KhonshuTest2Window(
+              private val globalGraphProvider: GlobalGraphProvider,
+              private val launchInfo: LaunchInfo,
+            ) {
+              @Composable
+              public fun Show(onCloseRequest: () -> Unit) {
+                Window(onCloseRequest = onCloseRequest) {
                   val graph = retain {
-                    val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTest2Graph.Factory>(TestParentScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTest2Graph(savedStateHandle, intent.asLaunchInfo())
+                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                    parentGraph.createKhonshuTest2Graph(savedStateHandle, launchInfo)
                   }
-                  savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {
-                    KhonshuTest2GraphProvider(graph, application as GlobalGraphProvider)
+                    KhonshuTest2GraphProvider(graph, globalGraphProvider)
                   }
                   KhonshuTest2(graph) { modifier, destinationChangedCallback ->
                     CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
@@ -635,12 +598,6 @@ internal class HostActivityCodegenTest {
                     }
                   }
                 }
-              }
-
-              override fun onSaveInstanceState(outState: Bundle) {
-                super.onSaveInstanceState(outState)
-                val bundle = savedStateHandle?.savedStateProvider()?.saveState()
-                outState.putAll(bundle ?: Bundle.EMPTY)
               }
             }
 
@@ -677,7 +634,7 @@ internal class HostActivityCodegenTest {
     }
 
     @Test
-    fun `generates code for NavHostActivityData without sendAction`() {
+    fun `generates code for NavHostWindowData without sendAction`() {
         val withoutSendAction = data.copy(
             sendActionParameter = null,
         )
@@ -687,19 +644,17 @@ internal class HostActivityCodegenTest {
             """
             package com.test
 
-            import androidx.activity.ComponentActivity
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.NavHostWindow
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
 
-            @NavHostActivity(
+            @NavHostWindow(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
-              activityBaseClass = ComponentActivity::class,
             )
             @Composable
             @Suppress("unused_parameter")
@@ -716,14 +671,11 @@ internal class HostActivityCodegenTest {
             """
             package com.test
 
-            import android.`annotation`.SuppressLint
-            import android.os.Bundle
-            import androidx.activity.ComponentActivity
-            import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.retain.retain
+            import androidx.compose.ui.window.Window
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -739,7 +691,6 @@ internal class HostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
-            import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import com.test.parent.TestParentScope
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
@@ -749,6 +700,7 @@ internal class HostActivityCodegenTest {
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
+            import kotlin.Unit
             import kotlin.collections.Set
             import kotlin.reflect.KClass
 
@@ -812,22 +764,20 @@ internal class HostActivityCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            @SuppressLint("RestrictedApi")
-            public class KhonshuTestActivity : ComponentActivity() {
-              private var savedStateHandle: SavedStateHandle? = null
-
-              override fun onCreate(savedInstanceState: Bundle?) {
-                super.onCreate(savedInstanceState)
-                setContent {
+            public class KhonshuTestWindow(
+              private val globalGraphProvider: GlobalGraphProvider,
+              private val launchInfo: LaunchInfo,
+            ) {
+              @Composable
+              public fun Show(onCloseRequest: () -> Unit) {
+                Window(onCloseRequest = onCloseRequest) {
                   val graph = retain {
-                    val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent.asLaunchInfo())
+                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                    parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
                   }
-                  savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {
-                    KhonshuTestGraphProvider(graph, application as GlobalGraphProvider)
+                    KhonshuTestGraphProvider(graph, globalGraphProvider)
                   }
                   KhonshuTest(graph) { modifier, destinationChangedCallback ->
                     CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
@@ -839,12 +789,6 @@ internal class HostActivityCodegenTest {
                     }
                   }
                 }
-              }
-
-              override fun onSaveInstanceState(outState: Bundle) {
-                super.onSaveInstanceState(outState)
-                val bundle = savedStateHandle?.savedStateProvider()?.saveState()
-                outState.putAll(bundle ?: Bundle.EMPTY)
               }
             }
 
@@ -868,7 +812,7 @@ internal class HostActivityCodegenTest {
     }
 
     @Test
-    fun `generates code for NavHostActivityData without state`() {
+    fun `generates code for NavHostWindowData without state`() {
         val withoutSendAction = data.copy(
             stateParameter = null,
         )
@@ -878,19 +822,17 @@ internal class HostActivityCodegenTest {
             """
             package com.test
 
-            import androidx.activity.ComponentActivity
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.NavHostWindow
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
 
-            @NavHostActivity(
+            @NavHostWindow(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
-              activityBaseClass = ComponentActivity::class,
             )
             @Composable
             @Suppress("unused_parameter")
@@ -907,15 +849,12 @@ internal class HostActivityCodegenTest {
             """
             package com.test
 
-            import android.`annotation`.SuppressLint
-            import android.os.Bundle
-            import androidx.activity.ComponentActivity
-            import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
+            import androidx.compose.ui.window.Window
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -931,7 +870,6 @@ internal class HostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
-            import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import com.test.parent.TestParentScope
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
@@ -1006,22 +944,20 @@ internal class HostActivityCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            @SuppressLint("RestrictedApi")
-            public class KhonshuTestActivity : ComponentActivity() {
-              private var savedStateHandle: SavedStateHandle? = null
-
-              override fun onCreate(savedInstanceState: Bundle?) {
-                super.onCreate(savedInstanceState)
-                setContent {
+            public class KhonshuTestWindow(
+              private val globalGraphProvider: GlobalGraphProvider,
+              private val launchInfo: LaunchInfo,
+            ) {
+              @Composable
+              public fun Show(onCloseRequest: () -> Unit) {
+                Window(onCloseRequest = onCloseRequest) {
                   val graph = retain {
-                    val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent.asLaunchInfo())
+                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                    parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
                   }
-                  savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {
-                    KhonshuTestGraphProvider(graph, application as GlobalGraphProvider)
+                    KhonshuTestGraphProvider(graph, globalGraphProvider)
                   }
                   KhonshuTest(graph) { modifier, destinationChangedCallback ->
                     CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
@@ -1033,12 +969,6 @@ internal class HostActivityCodegenTest {
                     }
                   }
                 }
-              }
-
-              override fun onSaveInstanceState(outState: Bundle) {
-                super.onSaveInstanceState(outState)
-                val bundle = savedStateHandle?.savedStateProvider()?.saveState()
-                outState.putAll(bundle ?: Bundle.EMPTY)
               }
             }
 
@@ -1066,7 +996,7 @@ internal class HostActivityCodegenTest {
     }
 
     @Test
-    fun `generates code for NavHostActivityData with lambda parameter`() {
+    fun `generates code for NavHostWindowData with lambda parameter`() {
         // nothing changes on the data side
         val withLambdaParameter = data
 
@@ -1075,20 +1005,18 @@ internal class HostActivityCodegenTest {
             """
             package com.test
 
-            import androidx.activity.ComponentActivity
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.NavHostActivity
+            import com.freeletics.khonshu.codegen.NavHostWindow
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.BaseRoute
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
 
-            @NavHostActivity(
+            @NavHostWindow(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
-              activityBaseClass = ComponentActivity::class,
             )
             @Composable
             @Suppress("unused_parameter")
@@ -1106,15 +1034,12 @@ internal class HostActivityCodegenTest {
             """
             package com.test
 
-            import android.`annotation`.SuppressLint
-            import android.os.Bundle
-            import androidx.activity.ComponentActivity
-            import androidx.activity.compose.setContent
             import androidx.compose.runtime.Composable
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
+            import androidx.compose.ui.window.Window
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -1130,7 +1055,6 @@ internal class HostActivityCodegenTest {
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
-            import com.freeletics.khonshu.navigation.deeplinks.asLaunchInfo
             import com.test.parent.TestParentScope
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
@@ -1205,22 +1129,20 @@ internal class HostActivityCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            @SuppressLint("RestrictedApi")
-            public class KhonshuTestActivity : ComponentActivity() {
-              private var savedStateHandle: SavedStateHandle? = null
-
-              override fun onCreate(savedInstanceState: Bundle?) {
-                super.onCreate(savedInstanceState)
-                setContent {
+            public class KhonshuTestWindow(
+              private val globalGraphProvider: GlobalGraphProvider,
+              private val launchInfo: LaunchInfo,
+            ) {
+              @Composable
+              public fun Show(onCloseRequest: () -> Unit) {
+                Window(onCloseRequest = onCloseRequest) {
                   val graph = retain {
-                    val globalGraphProvider = application as GlobalGraphProvider
                     val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(savedInstanceState, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, intent.asLaunchInfo())
+                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                    parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
                   }
-                  savedStateHandle = graph.savedStateHandle
                   val graphProvider = remember(graph) {
-                    KhonshuTestGraphProvider(graph, application as GlobalGraphProvider)
+                    KhonshuTestGraphProvider(graph, globalGraphProvider)
                   }
                   KhonshuTest(graph) { modifier, destinationChangedCallback ->
                     CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
@@ -1232,12 +1154,6 @@ internal class HostActivityCodegenTest {
                     }
                   }
                 }
-              }
-
-              override fun onSaveInstanceState(outState: Bundle) {
-                super.onSaveInstanceState(outState)
-                val bundle = savedStateHandle?.savedStateProvider()?.saveState()
-                outState.putAll(bundle ?: Bundle.EMPTY)
               }
             }
 

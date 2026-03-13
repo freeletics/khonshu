@@ -45,6 +45,10 @@ public data class DestinationData(
     override val additionalScopes: List<ClassName> = emptyList()
 }
 
+public sealed interface HostData : BaseData {
+    public val navHostParameter: ComposableParameter
+}
+
 public data class HostActivityData(
     override val baseName: String,
     override val packageName: String,
@@ -52,12 +56,28 @@ public data class HostActivityData(
     override val parentScope: ClassName,
     override val stateMachine: ClassName,
     public val activityBaseClass: ClassName,
-    val navHostParameter: ComposableParameter,
+    override val navHostParameter: ComposableParameter,
     override val stateMachineClass: ClassName,
     override val stateParameter: ComposableParameter?,
     override val sendActionParameter: ComposableParameter?,
     override val composableParameter: List<ComposableParameter>,
-) : BaseData {
+) : HostData {
+    override val additionalScopes: List<ClassName> = listOf(activityScope)
+    override val navigation: Navigation? = null
+}
+
+public data class HostWindowData(
+    override val baseName: String,
+    override val packageName: String,
+    override val scope: ClassName,
+    override val parentScope: ClassName,
+    override val stateMachine: ClassName,
+    override val stateMachineClass: ClassName,
+    override val navHostParameter: ComposableParameter,
+    override val stateParameter: ComposableParameter?,
+    override val sendActionParameter: ComposableParameter?,
+    override val composableParameter: List<ComposableParameter>,
+) : HostData {
     override val additionalScopes: List<ClassName> = listOf(activityScope)
     override val navigation: Navigation? = null
 }

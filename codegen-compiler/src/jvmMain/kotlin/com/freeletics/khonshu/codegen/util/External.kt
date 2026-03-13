@@ -88,8 +88,8 @@ internal val remember = MemberName("androidx.compose.runtime", "remember")
 internal val retain = MemberName("androidx.compose.runtime.retain", "retain")
 internal val compositionLocalProvider = MemberName("androidx.compose.runtime", "CompositionLocalProvider")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
+internal val window = MemberName("androidx.compose.ui.window", "Window")
 
 // Android
 internal val suppressLint = ClassName("android.annotation", "SuppressLint")
-internal val intent = ClassName("android.content", "Intent")
 internal val bundle = ClassName("android.os", "Bundle")

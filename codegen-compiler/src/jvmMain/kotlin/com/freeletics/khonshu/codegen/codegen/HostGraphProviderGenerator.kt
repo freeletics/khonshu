@@ -1,7 +1,8 @@
 package com.freeletics.khonshu.codegen.codegen
 
-import com.freeletics.khonshu.codegen.HostActivityData
+import com.freeletics.khonshu.codegen.HostData
 import com.freeletics.khonshu.codegen.util.InternalCodegenApi
+import com.freeletics.khonshu.codegen.util.activityScope
 import com.freeletics.khonshu.codegen.util.globalGraphProvider
 import com.freeletics.khonshu.codegen.util.hostGraphProvider
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
@@ -18,8 +19,8 @@ import com.squareup.kotlinpoet.asClassName
 import kotlin.reflect.KClass
 
 internal class HostGraphProviderGenerator(
-    override val data: HostActivityData,
-) : Generator<HostActivityData>() {
+    override val data: HostData,
+) : Generator<HostData>() {
     internal fun generate(): TypeSpec {
         return TypeSpec.classBuilder(graphProviderClassName)
             .addAnnotation(optIn(InternalCodegenApi, internalNavigatorApi))
@@ -59,7 +60,7 @@ internal class HostGraphProviderGenerator(
             .addTypeVariable(typeVariable)
             .addParameter("scope", KClass::class.asClassName().parameterizedBy(STAR))
             .returns(typeVariable)
-            .beginControlFlow("if (scope != %T::class)", data.scope)
+            .beginControlFlow("if (scope != %T::class && scope != %T::class)", data.scope, activityScope)
             .addStatement("return globalGraphProvider.getGraph(scope)")
             .endControlFlow()
             .addStatement("@Suppress(%S)", "UNCHECKED_CAST")

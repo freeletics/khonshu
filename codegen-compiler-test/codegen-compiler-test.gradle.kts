@@ -8,6 +8,9 @@ dependencies {
     testImplementation(projects.navigation)
     testImplementation(projects.stateMachine)
     testImplementation(libs.androidx.compose.runtime)
+    testImplementation(libs.jetbrains.compose.ui.desktop) {
+        exclude(group = "org.jetbrains.skiko")
+    }
     testImplementation(libs.coroutines.core)
 
     testImplementation(libs.kotlinpoet)
