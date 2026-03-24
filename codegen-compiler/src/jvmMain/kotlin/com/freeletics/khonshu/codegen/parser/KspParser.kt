@@ -3,6 +3,7 @@ package com.freeletics.khonshu.codegen.parser
 import com.freeletics.khonshu.codegen.ComposableParameter
 import com.freeletics.khonshu.codegen.DestinationData
 import com.freeletics.khonshu.codegen.HostActivityData
+import com.freeletics.khonshu.codegen.HostWindowData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.util.activityScope
 import com.freeletics.khonshu.codegen.util.asLambdaParameter
@@ -85,6 +86,28 @@ internal fun KSFunctionDeclaration.toHostActivityData(
         parentScope = annotation.parentScope,
         stateMachine = annotation.stateMachine,
         activityBaseClass = annotation.activityBaseClass,
+        navHostParameter = navHostParameter,
+        composableParameter = getInjectedParameters(stateParameter, actionParameter, navHostParameter.typeName),
+        stateMachineClass = stateMachineClass,
+        stateParameter = getParameterWithType(stateParameter),
+        sendActionParameter = getParameterWithType(actionParameter),
+    )
+}
+
+internal fun KSFunctionDeclaration.toHostWindowData(
+    annotation: KSAnnotation,
+    logger: KSPLogger,
+): HostWindowData? {
+    val (stateMachineClass, stateParameter, actionParameter) = annotation.stateMachineParameters(logger) ?: return null
+
+    val navHostParameter = navHostParameter(logger) ?: return null
+
+    return HostWindowData(
+        baseName = simpleName.asString(),
+        packageName = packageName.asString(),
+        scope = annotation.scope,
+        parentScope = annotation.parentScope,
+        stateMachine = annotation.stateMachine,
         navHostParameter = navHostParameter,
         composableParameter = getInjectedParameters(stateParameter, actionParameter, navHostParameter.typeName),
         stateMachineClass = stateMachineClass,
