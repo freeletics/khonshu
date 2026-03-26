@@ -20,7 +20,7 @@ java-target = "11"
 java-toolchain = "21"
 khonshu = "0.35.0"
 ksp = "2.3.6"
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 metro = "0.11.4"
 timber = "5.0.1"
 
