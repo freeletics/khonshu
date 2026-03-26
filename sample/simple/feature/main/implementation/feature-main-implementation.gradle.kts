@@ -8,19 +8,22 @@ freeletics {
 }
 
 dependencies {
-    androidMainApi(libs.androidx.activity)
-    androidMainApi(libs.androidx.compose.runtime)
-    androidMainApi(libs.androidx.lifecycle.viewmodel.compose)
-    androidMainApi(libs.androidx.lifecycle.viewmodel.savedstate)
-    androidMainApi(libs.coroutines)
-    androidMainApi(libs.khonshu.navigation)
-    androidMainApi(libs.khonshu.statemachine)
+    "androidMainApi"(libs.androidx.activity)
+    commonMainApi(libs.compose.runtime)
+    commonMainApi(libs.androidx.lifecycle.viewmodel.compose)
+    commonMainApi(libs.androidx.lifecycle.viewmodel.savedstate)
+    commonMainApi(libs.coroutines)
+    commonMainApi(libs.khonshu.navigation)
+    commonMainApi(libs.khonshu.statemachine)
 
-    androidMainImplementation(libs.androidx.activity.compose)
-    androidMainImplementation(libs.androidx.compose.ui)
-    androidMainImplementation(libs.androidx.compose.foundation)
-    androidMainImplementation(libs.androidx.lifecycle.common)
-    androidMainImplementation(libs.androidx.lifecycle.viewmodel)
-    androidMainImplementation(libs.khonshu.navigation)
-    androidMainImplementation(projects.feature.root.nav)
+    "androidMainApi"(libs.androidx.activity.compose)
+    commonMainImplementation(libs.compose.ui)
+    commonMainImplementation(libs.compose.foundation)
+    commonMainImplementation(libs.androidx.lifecycle.common)
+    commonMainImplementation(libs.androidx.lifecycle.viewmodel)
+    commonMainImplementation(libs.khonshu.navigation)
+    commonMainImplementation(projects.feature.root.nav)
+
+    "kspAndroid"(libs.khonshu.codegen.compiler)
+    "kspJvm"(libs.khonshu.codegen.compiler)
 }
