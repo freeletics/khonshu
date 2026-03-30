@@ -26,7 +26,7 @@ uri = "0.0.21"
 metro = "0.11.4"
 
 ksp = "2.3.6"
-kotlinpoet = "2.2.0"
+kotlinpoet = "2.3.0"
 auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
 
