@@ -69,6 +69,7 @@ internal class DestinationCodegenTest {
               sendAction: (TestAction) -> Unit
             ) {}
             """.trimIndent()
+
         @Language("kotlin")
         val expected =
             """

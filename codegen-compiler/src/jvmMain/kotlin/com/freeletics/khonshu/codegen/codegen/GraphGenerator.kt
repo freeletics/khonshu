@@ -141,7 +141,8 @@ internal class GraphGenerator(
             )
             add(
                 providesFunction(
-                    "provideRoute", data.navigation.asClassName(),
+                    "provideRoute",
+                    data.navigation.asClassName(),
                     parameters = listOf(stackEntryParam),
                     codeBlock = CodeBlock.builder()
                         .addStatement("return stackEntry.route")
@@ -150,7 +151,8 @@ internal class GraphGenerator(
             )
             add(
                 providesFunction(
-                    "provideStackEntryState", stackEntryState,
+                    "provideStackEntryState",
+                    stackEntryState,
                     parameters = listOf(stackEntryParam),
                     codeBlock = CodeBlock.builder()
                         .addStatement("return stackEntry.state")
@@ -180,7 +182,7 @@ internal class GraphGenerator(
 
             is HostActivityData,
             is HostWindowData,
-                -> {
+            -> {
                 createFun.addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
                     .addParameter(providesParameter(data.navigation.asParameter()))
             }
