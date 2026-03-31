@@ -12,9 +12,9 @@ android-min = "23"
 android-target = "36"
 android-compile = "36"
 
-androidx-compose-runtime = "1.10.5"
-androidx-compose-ui = "1.10.5"
-jetbrains-compose = "1.10.2"
+androidx-compose-runtime = "1.10.6"
+androidx-compose-ui = "1.10.6"
+jetbrains-compose = "1.10.3"
 
 androidx-activity = "1.12.4"
 androidx-annotations = "1.9.1"
@@ -23,7 +23,7 @@ androidx-lifecycle = "2.10.0"
 
 uri = "0.0.21"
 
-metro = "0.11.4"
+metro = "0.12.1"
 
 ksp = "2.3.6"
 kotlinpoet = "2.2.0"
