@@ -19,7 +19,7 @@ freeletics {
 kotlin {
     abiValidation {
         filters {
-            excluded {
+            exclude {
                 annotatedWith.addAll(
                     "com.freeletics.khonshu.navigation.internal.InternalNavigationApi",
                     "com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi",
