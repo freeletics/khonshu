@@ -1,11 +1,10 @@
 plugins {
-    id("com.freeletics.gradle.feature")
+    id("com.freeletics.gradle.nav")
 }
 
 freeletics {
-    useSerialization()
 }
 
 dependencies {
-    androidMainApi(libs.khonshu.navigation)
+    commonMainApi(libs.khonshu.navigation)
 }
