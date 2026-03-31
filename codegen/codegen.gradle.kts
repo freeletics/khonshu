@@ -21,7 +21,7 @@ freeletics {
 kotlin {
     abiValidation {
         filters {
-            excluded {
+            exclude {
                 annotatedWith.addAll(
                     "com.freeletics.khonshu.codegen.internal.InternalCodegenApi",
                 )
