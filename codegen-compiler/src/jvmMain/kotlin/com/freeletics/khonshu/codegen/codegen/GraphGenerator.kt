@@ -2,7 +2,11 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.DestinationData
+import com.freeletics.khonshu.codegen.HostActivityData
 import com.freeletics.khonshu.codegen.HostData
+import com.freeletics.khonshu.codegen.HostWindowData
+import com.freeletics.khonshu.codegen.util.InternalCodegenApi
+import com.freeletics.khonshu.codegen.util.asClassName
 import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.autoCloseable
 import com.freeletics.khonshu.codegen.util.contributesGraphExtension
@@ -11,15 +15,21 @@ import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.destinationNavigator
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
+import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.multibinds
 import com.freeletics.khonshu.codegen.util.optIn
+import com.freeletics.khonshu.codegen.util.providesFunction
 import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
+import com.freeletics.khonshu.codegen.util.stackEntry
 import com.freeletics.khonshu.codegen.util.stackEntryState
+import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.ABSTRACT
 import com.squareup.kotlinpoet.KModifier.OVERRIDE
+import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.SET
@@ -41,14 +51,23 @@ internal class GraphGenerator(
 ) : Generator<BaseData>() {
     fun generate(): TypeSpec {
         return TypeSpec.interfaceBuilder(graphClassName)
-            .addAnnotation(optIn())
+            .addAnnotation(optInAnnotation())
             .addAnnotation(contributesGraphExtension(data.scope, data.additionalScopes))
             .addSuperinterface(autoCloseable)
             .addProperties(graphProperties())
             .addFunction(multibindsCloseableFunction())
             .addFunction(closeFunction())
+            .addFunctions(providesFunctions())
             .addType(retainedGraphFactory())
             .build()
+    }
+
+    private fun optInAnnotation(): AnnotationSpec {
+        return if (data is DestinationData) {
+            optIn(InternalCodegenApi, internalNavigatorApi)
+        } else {
+            optIn()
+        }
     }
 
     private fun graphProperties(): List<PropertySpec> {
@@ -98,15 +117,74 @@ internal class GraphGenerator(
             .build()
     }
 
+    private fun providesFunctions(): Iterable<FunSpec> {
+        if (data !is DestinationData) return emptyList()
+
+        return buildList {
+            val stackEntryParam = ParameterSpec
+                .builder(
+                    "stackEntry",
+                    stackEntry.parameterizedBy(data.navigation.route),
+                )
+                .addAnnotation(forScope(data.scope))
+                .build()
+            add(
+                providesFunction(
+                    "provideSavedStateHandle",
+                    savedStateHandle,
+                    parameters = listOf(stackEntryParam),
+                    codeBlock = CodeBlock.builder()
+                        .addStatement("return stackEntry.savedStateHandle")
+                        .build(),
+                    annotation = forScope(data.scope),
+                ),
+            )
+            add(
+                providesFunction(
+                    "provideRoute", data.navigation.asClassName(),
+                    parameters = listOf(stackEntryParam),
+                    codeBlock = CodeBlock.builder()
+                        .addStatement("return stackEntry.route")
+                        .build(),
+                ),
+            )
+            add(
+                providesFunction(
+                    "provideStackEntryState", stackEntryState,
+                    parameters = listOf(stackEntryParam),
+                    codeBlock = CodeBlock.builder()
+                        .addStatement("return stackEntry.state")
+                        .build(),
+                    annotation = forScope(data.scope),
+                ),
+            )
+        }
+    }
+
     private fun retainedGraphFactory(): TypeSpec {
         val createFun = FunSpec.builder(graphFactoryCreateFunctionName)
             .addModifiers(ABSTRACT)
-        if (data is DestinationData) {
-            createFun.addParameter(providesParameter("stackEntryState", stackEntryState, forScope(data.scope)))
-        }
-        createFun.addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
-            .addParameter(providesParameter(data.navigation.asParameter()))
             .returns(graphClassName)
+        when (data) {
+            is DestinationData -> {
+                createFun.addParameter(
+                    providesParameter(
+                        ParameterSpec.builder(
+                            "stackEntry",
+                            stackEntry.parameterizedBy(data.navigation.route),
+                        ).build(),
+                        forScope(data.scope),
+                    ),
+                )
+            }
+
+            is HostActivityData,
+            is HostWindowData,
+                -> {
+                createFun.addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
+                    .addParameter(providesParameter(data.navigation.asParameter()))
+            }
+        }
         return TypeSpec.interfaceBuilder(graphFactoryClassName)
             .addAnnotation(contributesTo(data.parentScope))
             .addAnnotation(contributesGraphExtensionFactory())

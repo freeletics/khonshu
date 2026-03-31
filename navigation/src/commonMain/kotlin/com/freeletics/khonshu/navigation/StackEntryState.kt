@@ -18,7 +18,7 @@ import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
 
 /**
- *
+ * Wrapper for [SavedState] with kotlinx.serialization and [StateFlow] support
  */
 public class StackEntryState(initialState: Map<String, Any?>) {
     public constructor() : this(emptyMap())
