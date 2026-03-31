@@ -3,7 +3,7 @@ package com.freeletics.khonshu.navigation.internal
 import androidx.savedstate.SavedState
 import androidx.savedstate.read
 import androidx.savedstate.savedState
-import com.freeletics.khonshu.navigation.internal.putPlatformValue
+import com.freeletics.khonshu.navigation.StackEntryState
 import com.google.common.truth.Truth.assertThat
 import kotlinx.serialization.Serializable
 import org.junit.Test

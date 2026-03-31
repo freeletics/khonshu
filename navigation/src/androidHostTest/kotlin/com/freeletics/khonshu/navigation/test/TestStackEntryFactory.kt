@@ -3,7 +3,7 @@ package com.freeletics.khonshu.navigation.test
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.internal.StackEntry
-import com.freeletics.khonshu.navigation.internal.StackEntryState
+import com.freeletics.khonshu.navigation.StackEntryState
 import com.freeletics.khonshu.navigation.internal.StackEntryStore
 import com.freeletics.khonshu.navigation.internal.destinationId
 

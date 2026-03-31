@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation
 
 import android.os.Parcelable
 import androidx.savedstate.SavedStateWriter
