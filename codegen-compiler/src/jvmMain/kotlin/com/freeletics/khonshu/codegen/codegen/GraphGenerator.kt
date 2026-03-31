@@ -2,9 +2,7 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.DestinationData
-import com.freeletics.khonshu.codegen.HostActivityData
 import com.freeletics.khonshu.codegen.HostData
-import com.freeletics.khonshu.codegen.HostWindowData
 import com.freeletics.khonshu.codegen.util.InternalCodegenApi
 import com.freeletics.khonshu.codegen.util.asClassName
 import com.freeletics.khonshu.codegen.util.asParameter
@@ -166,31 +164,33 @@ internal class GraphGenerator(
     private fun retainedGraphFactory(): TypeSpec {
         val createFun = FunSpec.builder(graphFactoryCreateFunctionName)
             .addModifiers(ABSTRACT)
-            .returns(graphClassName)
-        when (data) {
-            is DestinationData -> {
-                createFun.addParameter(
-                    providesParameter(
-                        ParameterSpec.builder(
-                            "stackEntry",
-                            stackEntry.parameterizedBy(data.navigation.route),
-                        ).build(),
-                        forScope(data.scope),
-                    ),
-                )
+            .apply {
+                if (data is DestinationData) {
+                    addParameter(
+                        providesParameter(
+                            ParameterSpec.builder(
+                                "stackEntry",
+                                stackEntry.parameterizedBy(data.navigation.route),
+                            ).build(),
+                            forScope(data.scope),
+                        ),
+                    )
+                } else {
+                    addParameter(
+                        providesParameter(
+                            "savedStateHandle",
+                            savedStateHandle,
+                            forScope(data.scope),
+                        ),
+                    )
+                    addParameter(providesParameter(data.navigation.asParameter()))
+                }
             }
-
-            is HostActivityData,
-            is HostWindowData,
-            -> {
-                createFun.addParameter(providesParameter("savedStateHandle", savedStateHandle, forScope(data.scope)))
-                    .addParameter(providesParameter(data.navigation.asParameter()))
-            }
-        }
+            .returns(graphClassName).build()
         return TypeSpec.interfaceBuilder(graphFactoryClassName)
             .addAnnotation(contributesTo(data.parentScope))
             .addAnnotation(contributesGraphExtensionFactory())
-            .addFunction(createFun.build())
+            .addFunction(createFun)
             .build()
     }
 }
