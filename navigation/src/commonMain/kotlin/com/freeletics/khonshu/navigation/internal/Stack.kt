@@ -9,6 +9,7 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.StackEntryState
 
 internal class Stack private constructor(
     initialStack: List<StackEntry<*>>,

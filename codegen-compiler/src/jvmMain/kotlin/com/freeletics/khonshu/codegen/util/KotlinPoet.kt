@@ -5,6 +5,7 @@ import com.freeletics.khonshu.codegen.Navigation
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName
@@ -42,6 +43,22 @@ internal fun providesParameter(
 ): ParameterSpec {
     return spec.toBuilder()
         .addAnnotation(provides())
+        .apply { if (annotation != null) addAnnotation(annotation) }
+        .build()
+}
+
+internal fun providesFunction(
+    name: String,
+    className: ClassName,
+    codeBlock: CodeBlock,
+    parameters: Iterable<ParameterSpec> = emptyList(),
+    annotation: AnnotationSpec? = null,
+): FunSpec {
+    return FunSpec.builder(name)
+        .returns(className)
+        .addAnnotation(provides())
+        .addParameters(parameters)
+        .addCode(codeBlock)
         .apply { if (annotation != null) addAnnotation(annotation) }
         .build()
 }
@@ -142,6 +159,13 @@ internal fun Navigation?.asParameter(): ParameterSpec {
         return ParameterSpec.builder(route.propertyName, route).build()
     }
     return ParameterSpec.builder(launchInfo.propertyName, launchInfo).build()
+}
+
+internal fun Navigation?.asClassName(): ClassName {
+    if (this != null) {
+        return route
+    }
+    return launchInfo
 }
 
 internal fun TypeName.asLambdaParameter(): TypeName {
