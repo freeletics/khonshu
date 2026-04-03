@@ -1,0 +1,168 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <khonshu:navigation-testing>
+final class com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition { // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition|null[0]
+    constructor <init>(kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PatternDefinition>, kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition> = ..., kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition> = ..., kotlin.collections/List<kotlin/String> = ...) // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.<init>|<init>(kotlin.collections.List<com.freeletics.khonshu.navigation.deeplinks.PatternDefinition>;kotlin.collections.List<com.freeletics.khonshu.navigation.deeplinks.PrefixDefinition>;kotlin.collections.List<com.freeletics.khonshu.navigation.deeplinks.PlaceholderDefinition>;kotlin.collections.List<kotlin.String>){}[0]
+
+    final val exampleQueries // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.exampleQueries|{}exampleQueries[0]
+        final fun <get-exampleQueries>(): kotlin.collections/List<kotlin/String> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.exampleQueries.<get-exampleQueries>|<get-exampleQueries>(){}[0]
+    final val patterns // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.patterns|{}patterns[0]
+        final fun <get-patterns>(): kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PatternDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.patterns.<get-patterns>|<get-patterns>(){}[0]
+    final val placeholders // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.placeholders|{}placeholders[0]
+        final fun <get-placeholders>(): kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.placeholders.<get-placeholders>|<get-placeholders>(){}[0]
+    final val prefixes // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.prefixes|{}prefixes[0]
+        final fun <get-prefixes>(): kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.prefixes.<get-prefixes>|<get-prefixes>(){}[0]
+
+    final fun component1(): kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PatternDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.component1|component1(){}[0]
+    final fun component2(): kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.component2|component2(){}[0]
+    final fun component3(): kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.component3|component3(){}[0]
+    final fun component4(): kotlin.collections/List<kotlin/String> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.component4|component4(){}[0]
+    final fun copy(kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PatternDefinition> = ..., kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition> = ..., kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition> = ..., kotlin.collections/List<kotlin/String> = ...): com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.copy|copy(kotlin.collections.List<com.freeletics.khonshu.navigation.deeplinks.PatternDefinition>;kotlin.collections.List<com.freeletics.khonshu.navigation.deeplinks.PrefixDefinition>;kotlin.collections.List<com.freeletics.khonshu.navigation.deeplinks.PlaceholderDefinition>;kotlin.collections.List<kotlin.String>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition> { // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.$serializer|null[0]
+        final val descriptor // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition) // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;com.freeletics.khonshu.navigation.deeplinks.DeepLinkDefinition){}[0]
+    }
+
+    final object Companion { // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.Companion|null[0]
+        final val $childSerializers // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.Companion.$childSerializers|{}$childSerializers[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions { // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions|null[0]
+    constructor <init>(kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition> = ..., kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition> = ..., kotlin.collections/Map<kotlin/String, com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition>) // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.<init>|<init>(kotlin.collections.List<com.freeletics.khonshu.navigation.deeplinks.PrefixDefinition>;kotlin.collections.List<com.freeletics.khonshu.navigation.deeplinks.PlaceholderDefinition>;kotlin.collections.Map<kotlin.String,com.freeletics.khonshu.navigation.deeplinks.DeepLinkDefinition>){}[0]
+
+    final val deepLinks // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.deepLinks|{}deepLinks[0]
+        final fun <get-deepLinks>(): kotlin.collections/Map<kotlin/String, com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.deepLinks.<get-deepLinks>|<get-deepLinks>(){}[0]
+    final val placeholders // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.placeholders|{}placeholders[0]
+        final fun <get-placeholders>(): kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.placeholders.<get-placeholders>|<get-placeholders>(){}[0]
+    final val prefixes // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.prefixes|{}prefixes[0]
+        final fun <get-prefixes>(): kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.prefixes.<get-prefixes>|<get-prefixes>(){}[0]
+
+    final fun component1(): kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.component1|component1(){}[0]
+    final fun component2(): kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.component2|component2(){}[0]
+    final fun component3(): kotlin.collections/Map<kotlin/String, com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.component3|component3(){}[0]
+    final fun copy(kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition> = ..., kotlin.collections/List<com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition> = ..., kotlin.collections/Map<kotlin/String, com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinition> = ...): com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.copy|copy(kotlin.collections.List<com.freeletics.khonshu.navigation.deeplinks.PrefixDefinition>;kotlin.collections.List<com.freeletics.khonshu.navigation.deeplinks.PlaceholderDefinition>;kotlin.collections.Map<kotlin.String,com.freeletics.khonshu.navigation.deeplinks.DeepLinkDefinition>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions> { // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.$serializer|null[0]
+        final val descriptor // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions) // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;com.freeletics.khonshu.navigation.deeplinks.DeepLinkDefinitions){}[0]
+    }
+
+    final object Companion { // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.Companion|null[0]
+        final val $childSerializers // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.Companion.$childSerializers|{}$childSerializers[0]
+
+        final fun decodeFromString(kotlin/String): com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.Companion.decodeFromString|decodeFromString(kotlin.String){}[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions> // com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition { // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition|null[0]
+    constructor <init>(kotlin/String, kotlin.collections/List<kotlin/String>) // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.<init>|<init>(kotlin.String;kotlin.collections.List<kotlin.String>){}[0]
+
+    final val exampleValues // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.exampleValues|{}exampleValues[0]
+        final fun <get-exampleValues>(): kotlin.collections/List<kotlin/String> // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.exampleValues.<get-exampleValues>|<get-exampleValues>(){}[0]
+    final val key // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.key|{}key[0]
+        final fun <get-key>(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.key.<get-key>|<get-key>(){}[0]
+
+    final fun component1(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.component1|component1(){}[0]
+    final fun component2(): kotlin.collections/List<kotlin/String> // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.component2|component2(){}[0]
+    final fun copy(kotlin/String = ..., kotlin.collections/List<kotlin/String> = ...): com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.copy|copy(kotlin.String;kotlin.collections.List<kotlin.String>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition> { // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.$serializer|null[0]
+        final val descriptor // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition) // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;com.freeletics.khonshu.navigation.deeplinks.PlaceholderDefinition){}[0]
+    }
+
+    final object Companion { // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.Companion|null[0]
+        final val $childSerializers // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.Companion.$childSerializers|{}$childSerializers[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition> // com.freeletics.khonshu.navigation.deeplinks/PlaceholderDefinition.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition { // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition|null[0]
+    constructor <init>(kotlin/String, kotlin/String, kotlin/Boolean) // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.<init>|<init>(kotlin.String;kotlin.String;kotlin.Boolean){}[0]
+
+    final val autoVerified // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.autoVerified|{}autoVerified[0]
+        final fun <get-autoVerified>(): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.autoVerified.<get-autoVerified>|<get-autoVerified>(){}[0]
+    final val host // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.host|{}host[0]
+        final fun <get-host>(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.host.<get-host>|<get-host>(){}[0]
+    final val scheme // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.scheme|{}scheme[0]
+        final fun <get-scheme>(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.scheme.<get-scheme>|<get-scheme>(){}[0]
+
+    final fun component1(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.component1|component1(){}[0]
+    final fun component2(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.component2|component2(){}[0]
+    final fun component3(): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.component3|component3(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String = ..., kotlin/Boolean = ...): com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.copy|copy(kotlin.String;kotlin.String;kotlin.Boolean){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition> { // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.$serializer|null[0]
+        final val descriptor // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition) // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;com.freeletics.khonshu.navigation.deeplinks.PrefixDefinition){}[0]
+    }
+
+    final object Companion { // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.Companion|null[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition> // com.freeletics.khonshu.navigation.deeplinks/PrefixDefinition.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final value class com.freeletics.khonshu.navigation.deeplinks/PatternDefinition { // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition|null[0]
+    constructor <init>(kotlin/String) // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.<init>|<init>(kotlin.String){}[0]
+
+    final val value // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.value|{}value[0]
+        final fun <get-value>(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.value.<get-value>|<get-value>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.freeletics.khonshu.navigation.deeplinks/PatternDefinition> { // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.$serializer|null[0]
+        final val descriptor // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): com.freeletics.khonshu.navigation.deeplinks/PatternDefinition // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, com.freeletics.khonshu.navigation.deeplinks/PatternDefinition) // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;com.freeletics.khonshu.navigation.deeplinks.PatternDefinition){}[0]
+    }
+
+    final object Companion { // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.Companion|null[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<com.freeletics.khonshu.navigation.deeplinks/PatternDefinition> // com.freeletics.khonshu.navigation.deeplinks/PatternDefinition.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final fun (com.freeletics.khonshu.navigation.deeplinks/DeepLinkDefinitions).com.freeletics.khonshu.navigation.deeplinks/containsAllDeepLinks(kotlin.collections/Set<com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler>, kotlin.collections/Set<com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler.Prefix>) // com.freeletics.khonshu.navigation.deeplinks/containsAllDeepLinks|containsAllDeepLinks@com.freeletics.khonshu.navigation.deeplinks.DeepLinkDefinitions(kotlin.collections.Set<com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler>;kotlin.collections.Set<com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix>){}[0]

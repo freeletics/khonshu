@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation.internal
 
 import com.freeletics.khonshu.navigation.BaseRoute
+import kotlin.jvm.JvmInline
 import kotlin.reflect.KClass
 
 @InternalNavigationCodegenApi

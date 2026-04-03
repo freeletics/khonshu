@@ -21,6 +21,7 @@ import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.OverlayDestination
 import com.freeletics.khonshu.navigation.ScreenDestination
 import dev.drewhamilton.poko.Poko
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 @Poko

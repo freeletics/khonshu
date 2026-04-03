@@ -12,6 +12,7 @@ freeletics {
     multiplatform {
         addJvmTarget()
         addAndroidTarget()
+        addIosTargets()
     }
 }
 
