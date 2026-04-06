@@ -22,7 +22,7 @@ java-toolchain = "21"
 khonshu = "0.35.0"
 ksp = "2.3.6"
 kotlin = "2.3.20"
-metro = "0.12.1"
+metro = "0.13.1"
 
 [libraries]
 android-desugarjdklibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugarjdklibs" }
