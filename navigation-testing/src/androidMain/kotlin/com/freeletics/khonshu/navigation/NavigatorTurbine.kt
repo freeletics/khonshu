@@ -8,7 +8,6 @@ import com.freeletics.khonshu.navigation.activity.ActivityRoute
 import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest
 import com.freeletics.khonshu.navigation.activity.internal.ActivityEvent
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
-import com.freeletics.khonshu.navigation.internal.StackEntryState
 import com.google.common.truth.Truth
 import kotlin.reflect.KClass
 import kotlin.time.Duration

@@ -2,6 +2,7 @@ package com.freeletics.khonshu.navigation.internal
 
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination
+import com.freeletics.khonshu.navigation.StackEntryState
 import java.util.UUID
 
 internal class StackEntryFactory(

@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
@@ -7,6 +7,7 @@ import androidx.savedstate.read
 import androidx.savedstate.savedState
 import androidx.savedstate.serialization.decodeFromSavedState
 import androidx.savedstate.serialization.encodeToSavedState
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import kotlin.collections.getOrPut
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,9 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
 
-@InternalNavigationApi
+/**
+ * Wrapper for [SavedState] with kotlinx.serialization and [StateFlow] support
+ */
 public class StackEntryState(initialState: Map<String, Any?>) {
     public constructor() : this(emptyMap())
     public constructor(savedState: SavedState) : this(savedState.read { toMap() })
@@ -87,6 +90,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
         return latestValue
     }
 
+    @InternalNavigationApi
     public fun savedStateHandle(): SavedStateHandle {
         return when (val current = values[KEY_SAVED_STATE_HANDLE]) {
             is SavedStateHandle -> current

@@ -2,7 +2,6 @@ package com.freeletics.khonshu.navigation
 
 import app.cash.turbine.test
 import com.freeletics.khonshu.navigation.internal.StackEntry
-import com.freeletics.khonshu.navigation.internal.StackEntryState
 import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestParcelable
 import com.google.common.truth.Truth.assertThat
