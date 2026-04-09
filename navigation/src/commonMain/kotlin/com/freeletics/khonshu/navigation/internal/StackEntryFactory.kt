@@ -6,7 +6,6 @@ import com.freeletics.khonshu.navigation.StackEntryState
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-
 @OptIn(ExperimentalUuidApi::class)
 internal class StackEntryFactory(
     private val destinations: List<NavDestination<*>>,
