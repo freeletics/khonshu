@@ -89,6 +89,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
+            import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
@@ -106,7 +107,7 @@ internal class DestinationCodegenTest {
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
-            @OptIn(InternalCodegenApi::class)
+            @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
             @GraphExtension(
               scope = TestRoute::class,
               additionalScopes = [],
@@ -130,10 +131,21 @@ internal class DestinationCodegenTest {
                 }
               }
 
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+
+              @Provides
+              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
               }
             }
 
@@ -145,7 +157,7 @@ internal class DestinationCodegenTest {
                 snapshot: StackSnapshot,
                 provider: HostGraphProvider,
               ): KhonshuTestGraph = getGraphFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { factory: KhonshuTestGraph.Factory ->
-                factory.createKhonshuTestGraph(entry.savedStateHandle, entry.route)
+                factory.createKhonshuTestGraph(entry)
               }
             }
 
@@ -248,6 +260,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
+            import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
@@ -264,7 +277,7 @@ internal class DestinationCodegenTest {
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
-            @OptIn(InternalCodegenApi::class)
+            @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
             @GraphExtension(
               scope = TestRoute::class,
               additionalScopes = [],
@@ -288,10 +301,21 @@ internal class DestinationCodegenTest {
                 }
               }
 
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+
+              @Provides
+              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+
               @ContributesTo(ActivityScope::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
               }
             }
 
@@ -303,7 +327,7 @@ internal class DestinationCodegenTest {
                 snapshot: StackSnapshot,
                 provider: HostGraphProvider,
               ): KhonshuTestGraph = getGraph(entry, provider, ActivityScope::class) { factory: KhonshuTestGraph.Factory ->
-                factory.createKhonshuTestGraph(entry.savedStateHandle, entry.route)
+                factory.createKhonshuTestGraph(entry)
               }
             }
 
@@ -408,6 +432,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.OverlayDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
+            import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
@@ -425,7 +450,7 @@ internal class DestinationCodegenTest {
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
-            @OptIn(InternalCodegenApi::class)
+            @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
             @GraphExtension(
               scope = TestOverlayRoute::class,
               additionalScopes = [],
@@ -449,10 +474,21 @@ internal class DestinationCodegenTest {
                 }
               }
 
+              @Provides
+              @ForScope(TestOverlayRoute::class)
+              public fun provideSavedStateHandle(@ForScope(TestOverlayRoute::class) stackEntry: StackEntry<TestOverlayRoute>): SavedStateHandle = stackEntry.savedStateHandle
+
+              @Provides
+              public fun provideRoute(@ForScope(TestOverlayRoute::class) stackEntry: StackEntry<TestOverlayRoute>): TestOverlayRoute = stackEntry.route
+
+              @Provides
+              @ForScope(TestOverlayRoute::class)
+              public fun provideStackEntryState(@ForScope(TestOverlayRoute::class) stackEntry: StackEntry<TestOverlayRoute>): StackEntryState = stackEntry.state
+
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestOverlayRoute::class) savedStateHandle: SavedStateHandle, @Provides testOverlayRoute: TestOverlayRoute): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestOverlayRoute::class) stackEntry: StackEntry<TestOverlayRoute>): KhonshuTestGraph
               }
             }
 
@@ -464,7 +500,7 @@ internal class DestinationCodegenTest {
                 snapshot: StackSnapshot,
                 provider: HostGraphProvider,
               ): KhonshuTestGraph = getGraphFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { factory: KhonshuTestGraph.Factory ->
-                factory.createKhonshuTestGraph(entry.savedStateHandle, entry.route)
+                factory.createKhonshuTestGraph(entry)
               }
             }
 
@@ -587,6 +623,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
+            import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
@@ -608,7 +645,7 @@ internal class DestinationCodegenTest {
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
-            @OptIn(InternalCodegenApi::class)
+            @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
             @GraphExtension(
               scope = TestRoute::class,
               additionalScopes = [],
@@ -640,10 +677,21 @@ internal class DestinationCodegenTest {
                 }
               }
 
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+
+              @Provides
+              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTest2Graph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTest2Graph
+                public fun createKhonshuTest2Graph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTest2Graph
               }
             }
 
@@ -655,7 +703,7 @@ internal class DestinationCodegenTest {
                 snapshot: StackSnapshot,
                 provider: HostGraphProvider,
               ): KhonshuTest2Graph = getGraphFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { factory: KhonshuTest2Graph.Factory ->
-                factory.createKhonshuTest2Graph(entry.savedStateHandle, entry.route)
+                factory.createKhonshuTest2Graph(entry)
               }
             }
 
@@ -761,6 +809,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
+            import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
@@ -776,7 +825,7 @@ internal class DestinationCodegenTest {
             import kotlin.OptIn
             import kotlin.collections.Set
 
-            @OptIn(InternalCodegenApi::class)
+            @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
             @GraphExtension(
               scope = TestRoute::class,
               additionalScopes = [],
@@ -800,10 +849,21 @@ internal class DestinationCodegenTest {
                 }
               }
 
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+
+              @Provides
+              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
               }
             }
 
@@ -815,7 +875,7 @@ internal class DestinationCodegenTest {
                 snapshot: StackSnapshot,
                 provider: HostGraphProvider,
               ): KhonshuTestGraph = getGraphFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { factory: KhonshuTestGraph.Factory ->
-                factory.createKhonshuTestGraph(entry.savedStateHandle, entry.route)
+                factory.createKhonshuTestGraph(entry)
               }
             }
 
@@ -909,6 +969,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
+            import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
@@ -926,7 +987,7 @@ internal class DestinationCodegenTest {
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
 
-            @OptIn(InternalCodegenApi::class)
+            @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
             @GraphExtension(
               scope = TestRoute::class,
               additionalScopes = [],
@@ -950,10 +1011,21 @@ internal class DestinationCodegenTest {
                 }
               }
 
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+
+              @Provides
+              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
               }
             }
 
@@ -965,7 +1037,7 @@ internal class DestinationCodegenTest {
                 snapshot: StackSnapshot,
                 provider: HostGraphProvider,
               ): KhonshuTestGraph = getGraphFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { factory: KhonshuTestGraph.Factory ->
-                factory.createKhonshuTestGraph(entry.savedStateHandle, entry.route)
+                factory.createKhonshuTestGraph(entry)
               }
             }
 
@@ -1064,6 +1136,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
+            import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
             import com.freeletics.khonshu.navigation.`internal`.StackSnapshot
@@ -1079,7 +1152,7 @@ internal class DestinationCodegenTest {
             import kotlin.OptIn
             import kotlin.collections.Set
 
-            @OptIn(InternalCodegenApi::class)
+            @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
             @GraphExtension(
               scope = TestRoute::class,
               additionalScopes = [],
@@ -1103,10 +1176,21 @@ internal class DestinationCodegenTest {
                 }
               }
 
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+
+              @Provides
+              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+
+              @Provides
+              @ForScope(TestRoute::class)
+              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) savedStateHandle: SavedStateHandle, @Provides testRoute: TestRoute): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
               }
             }
 
@@ -1118,7 +1202,7 @@ internal class DestinationCodegenTest {
                 snapshot: StackSnapshot,
                 provider: HostGraphProvider,
               ): KhonshuTestGraph = getGraphFromParentRoute(entry, snapshot, provider, TestParentRoute::class) { factory: KhonshuTestGraph.Factory ->
-                factory.createKhonshuTestGraph(entry.savedStateHandle, entry.route)
+                factory.createKhonshuTestGraph(entry)
               }
             }
 

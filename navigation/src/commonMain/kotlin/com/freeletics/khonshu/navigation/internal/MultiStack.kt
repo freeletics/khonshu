@@ -13,6 +13,7 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
+import com.freeletics.khonshu.navigation.StackEntryState
 
 internal class MultiStack @VisibleForTesting internal constructor(
     // Use ArrayList to make sure it is a RandomAccess

@@ -3,7 +3,6 @@ package com.freeletics.khonshu.navigation
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
-import com.freeletics.khonshu.navigation.internal.StackEntryState
 import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull

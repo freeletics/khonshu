@@ -2,8 +2,10 @@ package com.freeletics.khonshu.navigation.internal
 
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination
+import com.freeletics.khonshu.navigation.StackEntryState
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
+
 
 @OptIn(ExperimentalUuidApi::class)
 internal class StackEntryFactory(
