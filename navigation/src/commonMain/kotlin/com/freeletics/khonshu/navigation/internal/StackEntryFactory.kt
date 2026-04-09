@@ -3,12 +3,14 @@ package com.freeletics.khonshu.navigation.internal
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.StackEntryState
-import java.util.UUID
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 internal class StackEntryFactory(
     private val destinations: List<NavDestination<*>>,
     private val storeHolder: StackEntryStoreHolder,
-    private val idGenerator: () -> StackEntry.Id = { StackEntry.Id(UUID.randomUUID().toString()) },
+    private val idGenerator: () -> StackEntry.Id = { StackEntry.Id(Uuid.random().toString()) },
 ) {
     constructor(
         destinations: Set<NavDestination<*>>,

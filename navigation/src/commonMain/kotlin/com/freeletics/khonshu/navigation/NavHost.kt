@@ -31,7 +31,7 @@ import androidx.navigationevent.compose.rememberNavigationEventState
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
-import java.lang.ref.WeakReference
+import com.freeletics.khonshu.navigation.internal.WeakReference
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 

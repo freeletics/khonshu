@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.navigation.deeplinks
 
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import net.peanuuutz.tomlkt.Toml

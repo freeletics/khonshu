@@ -22,6 +22,7 @@ import com.freeletics.khonshu.navigation.OverlayDestination
 import com.freeletics.khonshu.navigation.ScreenDestination
 import com.freeletics.khonshu.navigation.StackEntryState
 import dev.drewhamilton.poko.Poko
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 @Poko

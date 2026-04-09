@@ -1,11 +1,11 @@
 package com.freeletics.khonshu.navigation.deeplinks
 
+import androidx.annotation.VisibleForTesting
 import com.eygraber.uri.Uri
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Pattern
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler.Prefix
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
-import org.jetbrains.annotations.VisibleForTesting
 
 /**
  * Checks if the given [uri] matches one of the [DeepLinkHandler] in the `Set` and if yes
