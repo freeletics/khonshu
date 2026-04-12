@@ -118,6 +118,8 @@ internal class DestinationCodegenTest {
               @ForScope(TestRoute::class)
               public val destinationNavigator: DestinationNavigator
 
+              public val stackEntry: StackEntry<TestRoute>
+
               @ForScope(TestRoute::class)
               public val closeables: Set<AutoCloseable>
 
@@ -133,19 +135,19 @@ internal class DestinationCodegenTest {
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+              public fun provideSavedStateHandle(stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
 
               @Provides
-              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+              public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+              public fun provideStackEntryState(stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
 
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
               }
             }
 
@@ -195,6 +197,8 @@ internal class DestinationCodegenTest {
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(TestDestinationScope::class)
             public interface KhonshuTestNavDestinationGraph {
+              public val destinations: Set<NavDestination<*>>
+
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
@@ -288,6 +292,8 @@ internal class DestinationCodegenTest {
               @ForScope(TestRoute::class)
               public val destinationNavigator: DestinationNavigator
 
+              public val stackEntry: StackEntry<TestRoute>
+
               @ForScope(TestRoute::class)
               public val closeables: Set<AutoCloseable>
 
@@ -303,19 +309,19 @@ internal class DestinationCodegenTest {
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+              public fun provideSavedStateHandle(stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
 
               @Provides
-              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+              public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+              public fun provideStackEntryState(stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
 
               @ContributesTo(ActivityScope::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
               }
             }
 
@@ -365,6 +371,8 @@ internal class DestinationCodegenTest {
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(AppScope::class)
             public interface KhonshuTestNavDestinationGraph {
+              public val destinations: Set<NavDestination<*>>
+
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
@@ -461,6 +469,8 @@ internal class DestinationCodegenTest {
               @ForScope(TestOverlayRoute::class)
               public val destinationNavigator: DestinationNavigator
 
+              public val stackEntry: StackEntry<TestOverlayRoute>
+
               @ForScope(TestOverlayRoute::class)
               public val closeables: Set<AutoCloseable>
 
@@ -476,19 +486,19 @@ internal class DestinationCodegenTest {
 
               @Provides
               @ForScope(TestOverlayRoute::class)
-              public fun provideSavedStateHandle(@ForScope(TestOverlayRoute::class) stackEntry: StackEntry<TestOverlayRoute>): SavedStateHandle = stackEntry.savedStateHandle
+              public fun provideSavedStateHandle(stackEntry: StackEntry<TestOverlayRoute>): SavedStateHandle = stackEntry.savedStateHandle
 
               @Provides
-              public fun provideRoute(@ForScope(TestOverlayRoute::class) stackEntry: StackEntry<TestOverlayRoute>): TestOverlayRoute = stackEntry.route
+              public fun provideRoute(stackEntry: StackEntry<TestOverlayRoute>): TestOverlayRoute = stackEntry.route
 
               @Provides
               @ForScope(TestOverlayRoute::class)
-              public fun provideStackEntryState(@ForScope(TestOverlayRoute::class) stackEntry: StackEntry<TestOverlayRoute>): StackEntryState = stackEntry.state
+              public fun provideStackEntryState(stackEntry: StackEntry<TestOverlayRoute>): StackEntryState = stackEntry.state
 
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestOverlayRoute::class) stackEntry: StackEntry<TestOverlayRoute>): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides stackEntry: StackEntry<TestOverlayRoute>): KhonshuTestGraph
               }
             }
 
@@ -538,6 +548,8 @@ internal class DestinationCodegenTest {
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(TestDestinationScope::class)
             public interface KhonshuTestNavDestinationGraph {
+              public val destinations: Set<NavDestination<*>>
+
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
@@ -656,6 +668,8 @@ internal class DestinationCodegenTest {
               @ForScope(TestRoute::class)
               public val destinationNavigator: DestinationNavigator
 
+              public val stackEntry: StackEntry<TestRoute>
+
               public val testClass: TestClass
 
               public val jvmTest: TestClass2
@@ -679,19 +693,19 @@ internal class DestinationCodegenTest {
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+              public fun provideSavedStateHandle(stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
 
               @Provides
-              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+              public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+              public fun provideStackEntryState(stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
 
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTest2Graph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTest2Graph
+                public fun createKhonshuTest2Graph(@Provides stackEntry: StackEntry<TestRoute>): KhonshuTest2Graph
               }
             }
 
@@ -749,6 +763,8 @@ internal class DestinationCodegenTest {
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(TestDestinationScope::class)
             public interface KhonshuTest2NavDestinationGraph {
+              public val destinations: Set<NavDestination<*>>
+
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
@@ -836,6 +852,8 @@ internal class DestinationCodegenTest {
               @ForScope(TestRoute::class)
               public val destinationNavigator: DestinationNavigator
 
+              public val stackEntry: StackEntry<TestRoute>
+
               @ForScope(TestRoute::class)
               public val closeables: Set<AutoCloseable>
 
@@ -851,19 +869,19 @@ internal class DestinationCodegenTest {
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+              public fun provideSavedStateHandle(stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
 
               @Provides
-              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+              public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+              public fun provideStackEntryState(stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
 
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
               }
             }
 
@@ -908,6 +926,8 @@ internal class DestinationCodegenTest {
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(TestDestinationScope::class)
             public interface KhonshuTestNavDestinationGraph {
+              public val destinations: Set<NavDestination<*>>
+
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
@@ -998,6 +1018,8 @@ internal class DestinationCodegenTest {
               @ForScope(TestRoute::class)
               public val destinationNavigator: DestinationNavigator
 
+              public val stackEntry: StackEntry<TestRoute>
+
               @ForScope(TestRoute::class)
               public val closeables: Set<AutoCloseable>
 
@@ -1013,19 +1035,19 @@ internal class DestinationCodegenTest {
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+              public fun provideSavedStateHandle(stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
 
               @Provides
-              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+              public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+              public fun provideStackEntryState(stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
 
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
               }
             }
 
@@ -1074,6 +1096,8 @@ internal class DestinationCodegenTest {
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(TestDestinationScope::class)
             public interface KhonshuTestNavDestinationGraph {
+              public val destinations: Set<NavDestination<*>>
+
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
@@ -1163,6 +1187,8 @@ internal class DestinationCodegenTest {
               @ForScope(TestRoute::class)
               public val destinationNavigator: DestinationNavigator
 
+              public val stackEntry: StackEntry<TestRoute>
+
               @ForScope(TestRoute::class)
               public val closeables: Set<AutoCloseable>
 
@@ -1178,19 +1204,19 @@ internal class DestinationCodegenTest {
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideSavedStateHandle(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
+              public fun provideSavedStateHandle(stackEntry: StackEntry<TestRoute>): SavedStateHandle = stackEntry.savedStateHandle
 
               @Provides
-              public fun provideRoute(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
+              public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
               @ForScope(TestRoute::class)
-              public fun provideStackEntryState(@ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
+              public fun provideStackEntryState(stackEntry: StackEntry<TestRoute>): StackEntryState = stackEntry.state
 
               @ContributesTo(TestParentRoute::class)
               @GraphExtension.Factory
               public interface Factory {
-                public fun createKhonshuTestGraph(@Provides @ForScope(TestRoute::class) stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
+                public fun createKhonshuTestGraph(@Provides stackEntry: StackEntry<TestRoute>): KhonshuTestGraph
               }
             }
 
@@ -1235,6 +1261,8 @@ internal class DestinationCodegenTest {
             @OptIn(InternalCodegenApi::class)
             @ContributesTo(TestDestinationScope::class)
             public interface KhonshuTestNavDestinationGraph {
+              public val destinations: Set<NavDestination<*>>
+
               @Provides
               @IntoSet
               @OptIn(InternalNavigationCodegenApi::class)
