@@ -10,10 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.freeletics.khonshu.codegen.ActivityScope
 import com.freeletics.khonshu.codegen.NavDestination
 import com.freeletics.sample.bottomsheet.nav.BottomSheetRoute
-import dev.zacsweers.metro.AppScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @NavDestination(
