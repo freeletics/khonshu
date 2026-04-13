@@ -5,7 +5,6 @@ import com.freeletics.khonshu.codegen.DestinationData
 import com.freeletics.khonshu.codegen.HostData
 import com.freeletics.khonshu.codegen.util.InternalCodegenApi
 import com.freeletics.khonshu.codegen.util.asClassName
-import com.freeletics.khonshu.codegen.util.asParameter
 import com.freeletics.khonshu.codegen.util.autoCloseable
 import com.freeletics.khonshu.codegen.util.contributesGraphExtension
 import com.freeletics.khonshu.codegen.util.contributesGraphExtensionFactory
@@ -14,8 +13,10 @@ import com.freeletics.khonshu.codegen.util.destinationNavigator
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
+import com.freeletics.khonshu.codegen.util.launchInfo
 import com.freeletics.khonshu.codegen.util.multibinds
 import com.freeletics.khonshu.codegen.util.optIn
+import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.providesFunction
 import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
@@ -72,15 +73,23 @@ internal class GraphGenerator(
         val properties = mutableListOf<PropertySpec>()
         properties += simplePropertySpec(data.stateMachine)
 
-        if (data is HostData) {
-            properties += simplePropertySpec(hostNavigator)
-            properties += simplePropertySpec(savedStateHandle).toBuilder()
-                .addAnnotation(forScope(data.scope))
-                .build()
-        } else {
-            properties += simplePropertySpec(destinationNavigator).toBuilder()
-                .addAnnotation(forScope(data.scope))
-                .build()
+        when (data) {
+            is HostData -> {
+                properties += simplePropertySpec(hostNavigator)
+                properties += simplePropertySpec(launchInfo)
+                properties += simplePropertySpec(savedStateHandle).toBuilder()
+                    .addAnnotation(forScope(data.scope))
+                    .build()
+            }
+            is DestinationData -> {
+                properties += simplePropertySpec(destinationNavigator).toBuilder()
+                    .addAnnotation(forScope(data.scope))
+                    .build()
+                properties += simplePropertySpec(
+                    "stackEntry",
+                    stackEntry.parameterizedBy(data.navigation.route),
+                )
+            }
         }
 
         properties += data.composableParameter.map {
@@ -124,7 +133,6 @@ internal class GraphGenerator(
                     "stackEntry",
                     stackEntry.parameterizedBy(data.navigation.route),
                 )
-                .addAnnotation(forScope(data.scope))
                 .build()
             add(
                 providesFunction(
@@ -168,11 +176,8 @@ internal class GraphGenerator(
                 if (data is DestinationData) {
                     addParameter(
                         providesParameter(
-                            ParameterSpec.builder(
-                                "stackEntry",
-                                stackEntry.parameterizedBy(data.navigation.route),
-                            ).build(),
-                            forScope(data.scope),
+                            "stackEntry",
+                            stackEntry.parameterizedBy(data.navigation.route),
                         ),
                     )
                 } else {
@@ -183,7 +188,7 @@ internal class GraphGenerator(
                             forScope(data.scope),
                         ),
                     )
-                    addParameter(providesParameter(data.navigation.asParameter()))
+                    addParameter(providesParameter(launchInfo.propertyName, launchInfo))
                 }
             }
             .returns(graphClassName).build()

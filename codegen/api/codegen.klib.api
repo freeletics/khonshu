@@ -36,6 +36,17 @@ open annotation class com.freeletics.khonshu.codegen/NavHostActivity : kotlin/An
         final fun <get-stateMachine>(): kotlin.reflect/KClass<*> // com.freeletics.khonshu.codegen/NavHostActivity.stateMachine.<get-stateMachine>|<get-stateMachine>(){}[0]
 }
 
+open annotation class com.freeletics.khonshu.codegen/NavHostViewController : kotlin/Annotation { // com.freeletics.khonshu.codegen/NavHostViewController|null[0]
+    constructor <init>(kotlin.reflect/KClass<*> = ..., kotlin.reflect/KClass<*> = ..., kotlin.reflect/KClass<*>) // com.freeletics.khonshu.codegen/NavHostViewController.<init>|<init>(kotlin.reflect.KClass<*>;kotlin.reflect.KClass<*>;kotlin.reflect.KClass<*>){}[0]
+
+    final val parentScope // com.freeletics.khonshu.codegen/NavHostViewController.parentScope|{}parentScope[0]
+        final fun <get-parentScope>(): kotlin.reflect/KClass<*> // com.freeletics.khonshu.codegen/NavHostViewController.parentScope.<get-parentScope>|<get-parentScope>(){}[0]
+    final val scope // com.freeletics.khonshu.codegen/NavHostViewController.scope|{}scope[0]
+        final fun <get-scope>(): kotlin.reflect/KClass<*> // com.freeletics.khonshu.codegen/NavHostViewController.scope.<get-scope>|<get-scope>(){}[0]
+    final val stateMachine // com.freeletics.khonshu.codegen/NavHostViewController.stateMachine|{}stateMachine[0]
+        final fun <get-stateMachine>(): kotlin.reflect/KClass<*> // com.freeletics.khonshu.codegen/NavHostViewController.stateMachine.<get-stateMachine>|<get-stateMachine>(){}[0]
+}
+
 open annotation class com.freeletics.khonshu.codegen/NavHostWindow : kotlin/Annotation { // com.freeletics.khonshu.codegen/NavHostWindow|null[0]
     constructor <init>(kotlin.reflect/KClass<*> = ..., kotlin.reflect/KClass<*> = ..., kotlin.reflect/KClass<*>) // com.freeletics.khonshu.codegen/NavHostWindow.<init>|<init>(kotlin.reflect.KClass<*>;kotlin.reflect.KClass<*>;kotlin.reflect.KClass<*>){}[0]
 

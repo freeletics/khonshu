@@ -3,7 +3,7 @@
 package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.ComposableParameter
-import com.freeletics.khonshu.codegen.HostWindowData
+import com.freeletics.khonshu.codegen.HostViewControllerData
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.INT
 import com.squareup.kotlinpoet.LambdaTypeName
@@ -17,8 +17,8 @@ import dev.zacsweers.metro.AppScope
 import org.intellij.lang.annotations.Language
 import org.junit.Test
 
-internal class HostWindowCodegenTest {
-    private val data = HostWindowData(
+internal class HostViewControllerCodegenTest {
+    private val data = HostViewControllerData(
         baseName = "Test",
         packageName = "com.test",
         scope = ClassName("com.test", "TestScreen"),
@@ -38,7 +38,7 @@ internal class HostWindowCodegenTest {
     )
 
     @Test
-    fun `generates code for NavHostWindowData`() {
+    fun `generates code for NavHostViewControllerData`() {
         @Language("kotlin")
         val source =
             """
@@ -46,12 +46,12 @@ internal class HostWindowCodegenTest {
 
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.NavHostWindow
+            import com.freeletics.khonshu.codegen.NavHostViewController
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
 
-            @NavHostWindow(
+            @NavHostViewController(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
@@ -77,7 +77,7 @@ internal class HostWindowCodegenTest {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
-            import androidx.compose.ui.window.Window
+            import androidx.compose.ui.window.ComposeUIViewController
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -106,6 +106,7 @@ internal class HostWindowCodegenTest {
             import kotlin.collections.Set
             import kotlin.reflect.KClass
             import kotlinx.coroutines.launch
+            import platform.UIKit.UIViewController
 
             @OptIn(InternalCodegenApi::class)
             @GraphExtension(
@@ -116,8 +117,6 @@ internal class HostWindowCodegenTest {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
-
-              public val launchInfo: LaunchInfo
 
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
@@ -169,29 +168,26 @@ internal class HostWindowCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public class KhonshuTestWindow(
+            public class KhonshuTestViewController(
               private val globalGraphProvider: GlobalGraphProvider,
               private val launchInfo: LaunchInfo,
             ) {
-              @Composable
-              public fun Show(onCloseRequest: () -> Unit) {
-                Window(onCloseRequest = onCloseRequest) {
-                  val graph = retain {
-                    val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
-                  }
-                  val graphProvider = remember(graph) {
-                    KhonshuTestGraphProvider(graph, globalGraphProvider)
-                  }
-                  KhonshuTest(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
-                      NavHost(
-                        navigator = remember(graph) { graph.hostNavigator },
-                        modifier = modifier,
-                        destinationChangedCallback = destinationChangedCallback,
-                      )
-                    }
+              public fun viewController(): UIViewController = ComposeUIViewController {
+                val graph = retain {
+                  val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
+                  val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                  parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
+                }
+                val graphProvider = remember(graph) {
+                  KhonshuTestGraphProvider(graph, globalGraphProvider)
+                }
+                KhonshuTest(graph) { modifier, destinationChangedCallback ->
+                  CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
+                    NavHost(
+                      navigator = remember(graph) { graph.hostNavigator },
+                      modifier = modifier,
+                      destinationChangedCallback = destinationChangedCallback,
+                    )
                   }
                 }
               }
@@ -222,7 +218,7 @@ internal class HostWindowCodegenTest {
     }
 
     @Test
-    fun `generates code for NavHostWindowData with default values`() {
+    fun `generates code for NavHostViewControllerData with default values`() {
         val withDefaultValues = data.copy(
             parentScope = AppScope::class.asClassName(),
         )
@@ -235,11 +231,11 @@ internal class HostWindowCodegenTest {
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
             import com.freeletics.khonshu.codegen.ActivityScope
-            import com.freeletics.khonshu.codegen.NavHostWindow
+            import com.freeletics.khonshu.codegen.NavHostViewController
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
 
-            @NavHostWindow(
+            @NavHostViewController(
               scope = TestScreen::class,
               stateMachine = TestStateMachine::class,
             )
@@ -264,7 +260,7 @@ internal class HostWindowCodegenTest {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
-            import androidx.compose.ui.window.Window
+            import androidx.compose.ui.window.ComposeUIViewController
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -293,6 +289,7 @@ internal class HostWindowCodegenTest {
             import kotlin.collections.Set
             import kotlin.reflect.KClass
             import kotlinx.coroutines.launch
+            import platform.UIKit.UIViewController
 
             @OptIn(InternalCodegenApi::class)
             @GraphExtension(
@@ -303,8 +300,6 @@ internal class HostWindowCodegenTest {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
-
-              public val launchInfo: LaunchInfo
 
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
@@ -356,29 +351,26 @@ internal class HostWindowCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public class KhonshuTestWindow(
+            public class KhonshuTestViewController(
               private val globalGraphProvider: GlobalGraphProvider,
               private val launchInfo: LaunchInfo,
             ) {
-              @Composable
-              public fun Show(onCloseRequest: () -> Unit) {
-                Window(onCloseRequest = onCloseRequest) {
-                  val graph = retain {
-                    val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(AppScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
-                  }
-                  val graphProvider = remember(graph) {
-                    KhonshuTestGraphProvider(graph, globalGraphProvider)
-                  }
-                  KhonshuTest(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
-                      NavHost(
-                        navigator = remember(graph) { graph.hostNavigator },
-                        modifier = modifier,
-                        destinationChangedCallback = destinationChangedCallback,
-                      )
-                    }
+              public fun viewController(): UIViewController = ComposeUIViewController {
+                val graph = retain {
+                  val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(AppScope::class)
+                  val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                  parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
+                }
+                val graphProvider = remember(graph) {
+                  KhonshuTestGraphProvider(graph, globalGraphProvider)
+                }
+                KhonshuTest(graph) { modifier, destinationChangedCallback ->
+                  CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
+                    NavHost(
+                      navigator = remember(graph) { graph.hostNavigator },
+                      modifier = modifier,
+                      destinationChangedCallback = destinationChangedCallback,
+                    )
                   }
                 }
               }
@@ -409,7 +401,7 @@ internal class HostWindowCodegenTest {
     }
 
     @Test
-    fun `generates code for NavHostWindowData with Composable Dependencies`() {
+    fun `generates code for NavHostViewControllerData with Composable Dependencies`() {
         val withInjectedParameters = data.copy(
             baseName = "Test2",
             composableParameter = listOf(
@@ -439,13 +431,13 @@ internal class HostWindowCodegenTest {
 
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.NavHostWindow
+            import com.freeletics.khonshu.codegen.NavHostViewController
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.other.TestClass2
             import com.test.parent.TestParentScope
 
-            @NavHostWindow(
+            @NavHostViewController(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
@@ -475,7 +467,7 @@ internal class HostWindowCodegenTest {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
-            import androidx.compose.ui.window.Window
+            import androidx.compose.ui.window.ComposeUIViewController
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -508,6 +500,7 @@ internal class HostWindowCodegenTest {
             import kotlin.collections.Set
             import kotlin.reflect.KClass
             import kotlinx.coroutines.launch
+            import platform.UIKit.UIViewController
 
             @OptIn(InternalCodegenApi::class)
             @GraphExtension(
@@ -518,8 +511,6 @@ internal class HostWindowCodegenTest {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
-
-              public val launchInfo: LaunchInfo
 
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
@@ -579,29 +570,26 @@ internal class HostWindowCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public class KhonshuTest2Window(
+            public class KhonshuTest2ViewController(
               private val globalGraphProvider: GlobalGraphProvider,
               private val launchInfo: LaunchInfo,
             ) {
-              @Composable
-              public fun Show(onCloseRequest: () -> Unit) {
-                Window(onCloseRequest = onCloseRequest) {
-                  val graph = retain {
-                    val parentGraph = globalGraphProvider.getGraph<KhonshuTest2Graph.Factory>(TestParentScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
-                    parentGraph.createKhonshuTest2Graph(savedStateHandle, launchInfo)
-                  }
-                  val graphProvider = remember(graph) {
-                    KhonshuTest2GraphProvider(graph, globalGraphProvider)
-                  }
-                  KhonshuTest2(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
-                      NavHost(
-                        navigator = remember(graph) { graph.hostNavigator },
-                        modifier = modifier,
-                        destinationChangedCallback = destinationChangedCallback,
-                      )
-                    }
+              public fun viewController(): UIViewController = ComposeUIViewController {
+                val graph = retain {
+                  val parentGraph = globalGraphProvider.getGraph<KhonshuTest2Graph.Factory>(TestParentScope::class)
+                  val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                  parentGraph.createKhonshuTest2Graph(savedStateHandle, launchInfo)
+                }
+                val graphProvider = remember(graph) {
+                  KhonshuTest2GraphProvider(graph, globalGraphProvider)
+                }
+                KhonshuTest2(graph) { modifier, destinationChangedCallback ->
+                  CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
+                    NavHost(
+                      navigator = remember(graph) { graph.hostNavigator },
+                      modifier = modifier,
+                      destinationChangedCallback = destinationChangedCallback,
+                    )
                   }
                 }
               }
@@ -640,7 +628,7 @@ internal class HostWindowCodegenTest {
     }
 
     @Test
-    fun `generates code for NavHostWindowData without sendAction`() {
+    fun `generates code for NavHostViewControllerData without sendAction`() {
         val withoutSendAction = data.copy(
             sendActionParameter = null,
         )
@@ -652,12 +640,12 @@ internal class HostWindowCodegenTest {
 
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.NavHostWindow
+            import com.freeletics.khonshu.codegen.NavHostViewController
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
 
-            @NavHostWindow(
+            @NavHostViewController(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
@@ -681,7 +669,7 @@ internal class HostWindowCodegenTest {
             import androidx.compose.runtime.CompositionLocalProvider
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.retain.retain
-            import androidx.compose.ui.window.Window
+            import androidx.compose.ui.window.ComposeUIViewController
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -706,9 +694,9 @@ internal class HostWindowCodegenTest {
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
-            import kotlin.Unit
             import kotlin.collections.Set
             import kotlin.reflect.KClass
+            import platform.UIKit.UIViewController
 
             @OptIn(InternalCodegenApi::class)
             @GraphExtension(
@@ -719,8 +707,6 @@ internal class HostWindowCodegenTest {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
-
-              public val launchInfo: LaunchInfo
 
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
@@ -772,29 +758,26 @@ internal class HostWindowCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public class KhonshuTestWindow(
+            public class KhonshuTestViewController(
               private val globalGraphProvider: GlobalGraphProvider,
               private val launchInfo: LaunchInfo,
             ) {
-              @Composable
-              public fun Show(onCloseRequest: () -> Unit) {
-                Window(onCloseRequest = onCloseRequest) {
-                  val graph = retain {
-                    val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
-                  }
-                  val graphProvider = remember(graph) {
-                    KhonshuTestGraphProvider(graph, globalGraphProvider)
-                  }
-                  KhonshuTest(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
-                      NavHost(
-                        navigator = remember(graph) { graph.hostNavigator },
-                        modifier = modifier,
-                        destinationChangedCallback = destinationChangedCallback,
-                      )
-                    }
+              public fun viewController(): UIViewController = ComposeUIViewController {
+                val graph = retain {
+                  val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
+                  val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                  parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
+                }
+                val graphProvider = remember(graph) {
+                  KhonshuTestGraphProvider(graph, globalGraphProvider)
+                }
+                KhonshuTest(graph) { modifier, destinationChangedCallback ->
+                  CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
+                    NavHost(
+                      navigator = remember(graph) { graph.hostNavigator },
+                      modifier = modifier,
+                      destinationChangedCallback = destinationChangedCallback,
+                    )
                   }
                 }
               }
@@ -820,7 +803,7 @@ internal class HostWindowCodegenTest {
     }
 
     @Test
-    fun `generates code for NavHostWindowData without state`() {
+    fun `generates code for NavHostViewControllerData without state`() {
         val withoutSendAction = data.copy(
             stateParameter = null,
         )
@@ -832,12 +815,12 @@ internal class HostWindowCodegenTest {
 
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.NavHostWindow
+            import com.freeletics.khonshu.codegen.NavHostViewController
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
 
-            @NavHostWindow(
+            @NavHostViewController(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
@@ -862,7 +845,7 @@ internal class HostWindowCodegenTest {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
-            import androidx.compose.ui.window.Window
+            import androidx.compose.ui.window.ComposeUIViewController
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -891,6 +874,7 @@ internal class HostWindowCodegenTest {
             import kotlin.collections.Set
             import kotlin.reflect.KClass
             import kotlinx.coroutines.launch
+            import platform.UIKit.UIViewController
 
             @OptIn(InternalCodegenApi::class)
             @GraphExtension(
@@ -901,8 +885,6 @@ internal class HostWindowCodegenTest {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
-
-              public val launchInfo: LaunchInfo
 
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
@@ -954,29 +936,26 @@ internal class HostWindowCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public class KhonshuTestWindow(
+            public class KhonshuTestViewController(
               private val globalGraphProvider: GlobalGraphProvider,
               private val launchInfo: LaunchInfo,
             ) {
-              @Composable
-              public fun Show(onCloseRequest: () -> Unit) {
-                Window(onCloseRequest = onCloseRequest) {
-                  val graph = retain {
-                    val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
-                  }
-                  val graphProvider = remember(graph) {
-                    KhonshuTestGraphProvider(graph, globalGraphProvider)
-                  }
-                  KhonshuTest(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
-                      NavHost(
-                        navigator = remember(graph) { graph.hostNavigator },
-                        modifier = modifier,
-                        destinationChangedCallback = destinationChangedCallback,
-                      )
-                    }
+              public fun viewController(): UIViewController = ComposeUIViewController {
+                val graph = retain {
+                  val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
+                  val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                  parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
+                }
+                val graphProvider = remember(graph) {
+                  KhonshuTestGraphProvider(graph, globalGraphProvider)
+                }
+                KhonshuTest(graph) { modifier, destinationChangedCallback ->
+                  CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
+                    NavHost(
+                      navigator = remember(graph) { graph.hostNavigator },
+                      modifier = modifier,
+                      destinationChangedCallback = destinationChangedCallback,
+                    )
                   }
                 }
               }
@@ -1006,7 +985,7 @@ internal class HostWindowCodegenTest {
     }
 
     @Test
-    fun `generates code for NavHostWindowData with lambda parameter`() {
+    fun `generates code for NavHostViewControllerData with lambda parameter`() {
         // nothing changes on the data side
         val withLambdaParameter = data
 
@@ -1017,13 +996,13 @@ internal class HostWindowCodegenTest {
 
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
-            import com.freeletics.khonshu.codegen.NavHostWindow
+            import com.freeletics.khonshu.codegen.NavHostViewController
             import com.freeletics.khonshu.codegen.SimpleNavHost
             import com.freeletics.khonshu.navigation.BaseRoute
             import com.freeletics.khonshu.navigation.NavRoot
             import com.test.parent.TestParentScope
 
-            @NavHostWindow(
+            @NavHostViewController(
               scope = TestScreen::class,
               parentScope = TestParentScope::class,
               stateMachine = TestStateMachine::class,
@@ -1049,7 +1028,7 @@ internal class HostWindowCodegenTest {
             import androidx.compose.runtime.remember
             import androidx.compose.runtime.rememberCoroutineScope
             import androidx.compose.runtime.retain.retain
-            import androidx.compose.ui.window.Window
+            import androidx.compose.ui.window.ComposeUIViewController
             import androidx.lifecycle.SavedStateHandle
             import com.freeletics.khonshu.codegen.ActivityScope
             import com.freeletics.khonshu.codegen.GlobalGraphProvider
@@ -1078,6 +1057,7 @@ internal class HostWindowCodegenTest {
             import kotlin.collections.Set
             import kotlin.reflect.KClass
             import kotlinx.coroutines.launch
+            import platform.UIKit.UIViewController
 
             @OptIn(InternalCodegenApi::class)
             @GraphExtension(
@@ -1088,8 +1068,6 @@ internal class HostWindowCodegenTest {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
-
-              public val launchInfo: LaunchInfo
 
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
@@ -1141,29 +1119,26 @@ internal class HostWindowCodegenTest {
             }
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
-            public class KhonshuTestWindow(
+            public class KhonshuTestViewController(
               private val globalGraphProvider: GlobalGraphProvider,
               private val launchInfo: LaunchInfo,
             ) {
-              @Composable
-              public fun Show(onCloseRequest: () -> Unit) {
-                Window(onCloseRequest = onCloseRequest) {
-                  val graph = retain {
-                    val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
-                    val savedStateHandle = SavedStateHandle.createHandle(null, null)
-                    parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
-                  }
-                  val graphProvider = remember(graph) {
-                    KhonshuTestGraphProvider(graph, globalGraphProvider)
-                  }
-                  KhonshuTest(graph) { modifier, destinationChangedCallback ->
-                    CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
-                      NavHost(
-                        navigator = remember(graph) { graph.hostNavigator },
-                        modifier = modifier,
-                        destinationChangedCallback = destinationChangedCallback,
-                      )
-                    }
+              public fun viewController(): UIViewController = ComposeUIViewController {
+                val graph = retain {
+                  val parentGraph = globalGraphProvider.getGraph<KhonshuTestGraph.Factory>(TestParentScope::class)
+                  val savedStateHandle = SavedStateHandle.createHandle(null, null)
+                  parentGraph.createKhonshuTestGraph(savedStateHandle, launchInfo)
+                }
+                val graphProvider = remember(graph) {
+                  KhonshuTestGraphProvider(graph, globalGraphProvider)
+                }
+                KhonshuTest(graph) { modifier, destinationChangedCallback ->
+                  CompositionLocalProvider(LocalHostGraphProvider provides graphProvider) {
+                    NavHost(
+                      navigator = remember(graph) { graph.hostNavigator },
+                      modifier = modifier,
+                      destinationChangedCallback = destinationChangedCallback,
+                    )
                   }
                 }
               }

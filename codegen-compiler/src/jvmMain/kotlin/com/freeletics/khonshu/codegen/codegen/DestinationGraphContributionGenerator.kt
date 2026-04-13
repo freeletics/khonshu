@@ -9,6 +9,8 @@ import com.freeletics.khonshu.codegen.util.optIn
 import com.freeletics.khonshu.codegen.util.provides
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.SET
 import com.squareup.kotlinpoet.TypeSpec
 
 internal class DestinationGraphContributionGenerator(
@@ -20,6 +22,7 @@ internal class DestinationGraphContributionGenerator(
         return TypeSpec.interfaceBuilder(moduleClassName)
             .addAnnotation(optIn())
             .addAnnotation(contributesTo(data.navigation!!.destinationScope))
+            .addProperty("destinations", SET.parameterizedBy(navigationDestination))
             .addFunction(providesDestination())
             .build()
     }
