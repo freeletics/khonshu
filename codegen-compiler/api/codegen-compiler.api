@@ -92,6 +92,37 @@ public abstract interface class com/freeletics/khonshu/codegen/HostData : com/fr
 	public abstract fun getNavHostParameter ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
 }
 
+public final class com/freeletics/khonshu/codegen/HostViewControllerData : com/freeletics/khonshu/codegen/HostData {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lcom/squareup/kotlinpoet/ClassName;
+	public final fun component4 ()Lcom/squareup/kotlinpoet/ClassName;
+	public final fun component5 ()Lcom/squareup/kotlinpoet/ClassName;
+	public final fun component6 ()Lcom/squareup/kotlinpoet/ClassName;
+	public final fun component7 ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
+	public final fun component8 ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
+	public final fun component9 ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;)Lcom/freeletics/khonshu/codegen/HostViewControllerData;
+	public static synthetic fun copy$default (Lcom/freeletics/khonshu/codegen/HostViewControllerData;Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;ILjava/lang/Object;)Lcom/freeletics/khonshu/codegen/HostViewControllerData;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAdditionalScopes ()Ljava/util/List;
+	public fun getBaseName ()Ljava/lang/String;
+	public fun getComposableParameter ()Ljava/util/List;
+	public fun getNavHostParameter ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
+	public fun getNavigation ()Lcom/freeletics/khonshu/codegen/Navigation;
+	public fun getPackageName ()Ljava/lang/String;
+	public fun getParentScope ()Lcom/squareup/kotlinpoet/ClassName;
+	public fun getScope ()Lcom/squareup/kotlinpoet/ClassName;
+	public fun getSendActionParameter ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
+	public fun getStateMachine ()Lcom/squareup/kotlinpoet/ClassName;
+	public fun getStateMachineClass ()Lcom/squareup/kotlinpoet/ClassName;
+	public fun getStateParameter ()Lcom/freeletics/khonshu/codegen/ComposableParameter;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/freeletics/khonshu/codegen/HostWindowData : com/freeletics/khonshu/codegen/HostData {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/squareup/kotlinpoet/ClassName;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Lcom/freeletics/khonshu/codegen/ComposableParameter;Ljava/util/List;)V
 	public final fun component1 ()Ljava/lang/String;
@@ -154,6 +185,7 @@ public final class com/freeletics/khonshu/codegen/codegen/FileGenerator {
 	public final fun generate (Lcom/freeletics/khonshu/codegen/BaseData;)Lcom/squareup/kotlinpoet/FileSpec;
 	public final fun generate (Lcom/freeletics/khonshu/codegen/DestinationData;)Lcom/squareup/kotlinpoet/FileSpec;
 	public final fun generate (Lcom/freeletics/khonshu/codegen/HostActivityData;)Lcom/squareup/kotlinpoet/FileSpec;
+	public final fun generate (Lcom/freeletics/khonshu/codegen/HostViewControllerData;)Lcom/squareup/kotlinpoet/FileSpec;
 	public final fun generate (Lcom/freeletics/khonshu/codegen/HostWindowData;)Lcom/squareup/kotlinpoet/FileSpec;
 }
 

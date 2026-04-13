@@ -3,6 +3,7 @@ package com.freeletics.khonshu.codegen.codegen
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.DestinationData
 import com.freeletics.khonshu.codegen.HostActivityData
+import com.freeletics.khonshu.codegen.HostViewControllerData
 import com.freeletics.khonshu.codegen.HostWindowData
 import com.squareup.kotlinpoet.FileSpec
 
@@ -12,6 +13,7 @@ public class FileGenerator {
             is DestinationData -> generate(data)
             is HostActivityData -> generate(data)
             is HostWindowData -> generate(data)
+            is HostViewControllerData -> generate(data)
         }
     }
 
@@ -50,15 +52,31 @@ public class FileGenerator {
     public fun generate(data: HostWindowData): FileSpec {
         val graph = GraphGenerator(data)
         val graphProvider = HostGraphProviderGenerator(data)
+        val graphComposable = GraphComposableGenerator(data)
         val activityModule = HostGraphContributionGenerator(data)
         val window = HostWindowGenerator(data)
-        val graphComposable = GraphComposableGenerator(data)
 
         return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
             .addType(graph.generate())
             .addType(graphProvider.generate())
             .addType(activityModule.generate())
             .addType(window.generate())
+            .addFunction(graphComposable.generate())
+            .build()
+    }
+
+    public fun generate(data: HostViewControllerData): FileSpec {
+        val graph = GraphGenerator(data)
+        val graphProvider = HostGraphProviderGenerator(data)
+        val graphComposable = GraphComposableGenerator(data)
+        val activityModule = HostGraphContributionGenerator(data)
+        val viewController = HostViewControllerGenerator(data)
+
+        return FileSpec.builder(data.packageName, "Khonshu${data.baseName}")
+            .addType(graph.generate())
+            .addType(graphProvider.generate())
+            .addType(activityModule.generate())
+            .addType(viewController.generate())
             .addFunction(graphComposable.generate())
             .build()
     }

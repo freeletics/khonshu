@@ -82,6 +82,22 @@ public data class HostWindowData(
     override val navigation: Navigation? = null
 }
 
+public data class HostViewControllerData(
+    override val baseName: String,
+    override val packageName: String,
+    override val scope: ClassName,
+    override val parentScope: ClassName,
+    override val stateMachine: ClassName,
+    override val stateMachineClass: ClassName,
+    override val navHostParameter: ComposableParameter,
+    override val stateParameter: ComposableParameter?,
+    override val sendActionParameter: ComposableParameter?,
+    override val composableParameter: List<ComposableParameter>,
+) : HostData {
+    override val additionalScopes: List<ClassName> = listOf(activityScope)
+    override val navigation: Navigation? = null
+}
+
 public data class Navigation(
     val route: ClassName,
     val parentScopeIsRoute: Boolean,

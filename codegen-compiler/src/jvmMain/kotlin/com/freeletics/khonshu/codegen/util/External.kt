@@ -90,6 +90,8 @@ internal val retain = MemberName("androidx.compose.runtime.retain", "retain")
 internal val compositionLocalProvider = MemberName("androidx.compose.runtime", "CompositionLocalProvider")
 internal val rememberCoroutineScope = MemberName("androidx.compose.runtime", "rememberCoroutineScope")
 internal val window = MemberName("androidx.compose.ui.window", "Window")
+internal val composeUiViewController = MemberName("androidx.compose.ui.window", "ComposeUIViewController")
+internal val uiViewController = ClassName("platform.UIKit", "UIViewController")
 
 // Android
 internal val suppressLint = ClassName("android.annotation", "SuppressLint")
