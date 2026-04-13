@@ -117,6 +117,8 @@ internal class HostWindowCodegenTest {
 
               public val hostNavigator: HostNavigator
 
+              public val launchInfo: LaunchInfo
+
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
 
@@ -301,6 +303,8 @@ internal class HostWindowCodegenTest {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
+
+              public val launchInfo: LaunchInfo
 
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
@@ -515,6 +519,8 @@ internal class HostWindowCodegenTest {
 
               public val hostNavigator: HostNavigator
 
+              public val launchInfo: LaunchInfo
+
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
 
@@ -714,6 +720,8 @@ internal class HostWindowCodegenTest {
 
               public val hostNavigator: HostNavigator
 
+              public val launchInfo: LaunchInfo
+
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
 
@@ -893,6 +901,8 @@ internal class HostWindowCodegenTest {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
+
+              public val launchInfo: LaunchInfo
 
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle
@@ -1078,6 +1088,8 @@ internal class HostWindowCodegenTest {
               public val testStateMachine: TestStateMachine
 
               public val hostNavigator: HostNavigator
+
+              public val launchInfo: LaunchInfo
 
               @ForScope(TestScreen::class)
               public val savedStateHandle: SavedStateHandle

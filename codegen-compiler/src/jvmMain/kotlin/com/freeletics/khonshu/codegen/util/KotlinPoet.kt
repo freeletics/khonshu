@@ -28,20 +28,10 @@ internal val ClassName.propertyName: String get() {
 
 internal fun providesParameter(
     name: String,
-    className: ClassName,
+    className: TypeName,
     annotation: AnnotationSpec? = null,
 ): ParameterSpec {
     return ParameterSpec.builder(name, className)
-        .addAnnotation(provides())
-        .apply { if (annotation != null) addAnnotation(annotation) }
-        .build()
-}
-
-internal fun providesParameter(
-    spec: ParameterSpec,
-    annotation: AnnotationSpec? = null,
-): ParameterSpec {
-    return spec.toBuilder()
         .addAnnotation(provides())
         .apply { if (annotation != null) addAnnotation(annotation) }
         .build()
@@ -70,6 +60,10 @@ internal fun navHostParameter(parameter: ComposableParameter): ParameterSpec {
 
 internal fun simplePropertySpec(className: ClassName): PropertySpec {
     return PropertySpec.builder(className.propertyName, className).build()
+}
+
+internal fun simplePropertySpec(name: String, typeName: TypeName): PropertySpec {
+    return PropertySpec.builder(name, typeName).build()
 }
 
 internal fun contributesGraphExtension(
@@ -152,13 +146,6 @@ internal fun suppressLint(vararg ids: String): AnnotationSpec {
     return AnnotationSpec.builder(suppressLint)
         .addMember(member.build())
         .build()
-}
-
-internal fun Navigation?.asParameter(): ParameterSpec {
-    if (this != null) {
-        return ParameterSpec.builder(route.propertyName, route).build()
-    }
-    return ParameterSpec.builder(launchInfo.propertyName, launchInfo).build()
 }
 
 internal fun Navigation?.asClassName(): ClassName {
