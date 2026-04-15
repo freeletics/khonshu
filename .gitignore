@@ -5,6 +5,7 @@ local.properties
 build/
 kotlin-js-store/
 .kotlin/
+xcuserdata/
 
 docs/index.md
 docs/changelog.md

@@ -20,12 +20,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.freeletics.khonshu.codegen.ActivityScope
 import com.freeletics.khonshu.codegen.NavDestination
 import com.freeletics.sample.screenwithresult.nav.ScreenWithResultRoute
+import dev.zacsweers.metro.AppScope
 
 @NavDestination(
     route = ScreenWithResultRoute::class,
     stateMachine = ScreenWithResultStateMachine::class,
+    // https://github.com/google/ksp/issues/2491
+    parentScope = ActivityScope::class,
+    destinationScope = AppScope::class,
 )
 @Composable
 fun ScreenWithResultScreen(
