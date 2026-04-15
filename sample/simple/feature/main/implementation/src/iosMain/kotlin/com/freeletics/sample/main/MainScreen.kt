@@ -8,11 +8,15 @@ import com.freeletics.khonshu.codegen.NavHostViewController
 import com.freeletics.khonshu.codegen.SimpleNavHost
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.sample.root.nav.RootRoute
+import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 
 @NavHostViewController(
     stateMachine = MainStateMachine::class,
+    // https://github.com/google/ksp/issues/2491
+    scope = ActivityScope::class,
+    parentScope = AppScope::class,
 )
 @Composable
 internal fun MainScreen(
