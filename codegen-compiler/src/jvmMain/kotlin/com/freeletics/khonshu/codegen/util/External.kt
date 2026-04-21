@@ -12,6 +12,7 @@ import com.squareup.kotlinpoet.WildcardTypeName
 internal val overlay = ClassName("com.freeletics.khonshu.codegen", "Overlay")
 internal val globalGraphProvider = ClassName("com.freeletics.khonshu.codegen", "GlobalGraphProvider")
 internal val activityScope = ClassName("com.freeletics.khonshu.codegen", "ActivityScope")
+internal val appScope = ClassName("dev.zacsweers.metro", "AppScope")
 
 // Codegen Internal API
 internal val asComposeState = MemberName("com.freeletics.khonshu.codegen.internal", "asComposeState")
