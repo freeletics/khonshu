@@ -17,9 +17,10 @@ dependencies {
     "jvmMainApi"(libs.ksp.api)
     "jvmMainApi"(libs.kotlinpoet)
     "jvmMainImplementation"(libs.kotlinpoet.ksp)
+    "jvmMainImplementation"(libs.metro)
     "jvmMainImplementation"(projects.codegen)
 
-    "jvmTestImplementation"(libs.junit)
+    "jvmTestCompileOnly"(libs.junit)
     "jvmTestImplementation"(libs.truth)
     "jvmTestImplementation"(libs.kotlin.compile.testing)
     "jvmTestImplementation"(libs.coroutines.core)
@@ -29,6 +30,7 @@ dependencies {
 
     "jvmTestFixturesApi"(libs.kotlin.compile.testing)
     "jvmTestFixturesApi"(libs.kotlin.compiler)
+    "jvmTestFixturesApi"(libs.ksp.api)
     "jvmTestFixturesImplementation"(libs.kotlin.compile.testing.ksp)
     // explicitly depend on ksp to force the version to a newer one than compile testing uses
     "jvmTestFixturesRuntimeOnly"(libs.ksp)

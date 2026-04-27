@@ -25,6 +25,33 @@ dependencyAnalysis {
                     "com.eygraber:uri-kmp-android-debug",
                 )
             }
+            onUnusedDependencies {
+                // auto-added by the Kotlin JS toolchain via the multiplatform plugin
+                exclude("org.jetbrains.kotlin:kotlin-dom-api-compat")
+            }
+        }
+
+        project(":navigation") {
+            onUnusedDependencies {
+                exclude(
+                    "org.jetbrains.compose.ui:ui",
+                    "org.jetbrains.compose.foundation:foundation",
+                    "org.jetbrains.androidx.lifecycle:lifecycle-common",
+                    "org.jetbrains.androidx.navigationevent:navigationevent-compose",
+                )
+            }
+        }
+
+        project(":codegen") {
+            onUnusedDependencies {
+                exclude(
+                    "org.jetbrains.compose.ui:ui",
+                    "org.jetbrains.androidx.lifecycle:lifecycle-runtime",
+                    "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose",
+                    "androidx.lifecycle:lifecycle-viewmodel",
+                    "androidx.lifecycle:lifecycle-viewmodel-savedstate",
+                )
+            }
         }
 
         project(":codegen-compiler-test") {

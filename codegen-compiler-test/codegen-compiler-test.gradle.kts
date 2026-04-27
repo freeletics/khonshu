@@ -12,6 +12,7 @@ dependencies {
         exclude(group = "org.jetbrains.skiko")
     }
     testImplementation(libs.coroutines.core)
+    testImplementation(libs.metro)
 
     testImplementation(libs.kotlinpoet)
     testImplementation(libs.junit)
