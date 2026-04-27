@@ -34,8 +34,14 @@ internal class TestDeeplinksCli : CliktCommand(name = "test") {
                 }
                 throw UsageError("Invalid deeplink index $requested")
             }
-            deeplinkUrlOrNumber.isUri() -> launchDeeplinkIntent(dadb, deeplinkUrlOrNumber)
-            else -> throw UsageError("Can't parse deeplink '$deeplinkUrlOrNumber'")
+
+            deeplinkUrlOrNumber.isUri() -> {
+                launchDeeplinkIntent(dadb, deeplinkUrlOrNumber)
+            }
+
+            else -> {
+                throw UsageError("Can't parse deeplink '$deeplinkUrlOrNumber'")
+            }
         }
     }
 
