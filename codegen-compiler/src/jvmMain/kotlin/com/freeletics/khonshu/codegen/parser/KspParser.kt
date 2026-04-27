@@ -7,6 +7,7 @@ import com.freeletics.khonshu.codegen.HostViewControllerData
 import com.freeletics.khonshu.codegen.HostWindowData
 import com.freeletics.khonshu.codegen.Navigation
 import com.freeletics.khonshu.codegen.util.activityScope
+import com.freeletics.khonshu.codegen.util.appScope
 import com.freeletics.khonshu.codegen.util.asLambdaParameter
 import com.freeletics.khonshu.codegen.util.baseRoute
 import com.freeletics.khonshu.codegen.util.functionToLambda
@@ -140,7 +141,7 @@ internal fun KSFunctionDeclaration.toHostViewControllerData(
 }
 
 private val KSAnnotation.scope: ClassName
-    get() = findTypeArgument("scope").toClassName()
+    get() = findTypeArgumentWithDefault("scope")
 
 private val KSAnnotation.routeType: KSType
     get() = findTypeArgument("route")
@@ -148,11 +149,11 @@ private val KSAnnotation.routeType: KSType
 private val KSAnnotation.route: ClassName
     get() = routeType.toClassName()
 
-private val KSAnnotation.parentScopeType: KSType
-    get() = findTypeArgument("parentScope")
+private val KSAnnotation.parentScopeType: KSType?
+    get() = findTypeArgumentOrNull("parentScope")
 
 private val KSAnnotation.parentScope: ClassName
-    get() = parentScopeType.toClassName()
+    get() = findTypeArgumentWithDefault("parentScope")
 
 private val KSAnnotation.stateMachineType: KSType
     get() = findTypeArgument("stateMachine")
@@ -161,10 +162,35 @@ private val KSAnnotation.stateMachine: ClassName
     get() = stateMachineType.toClassName()
 
 private val KSAnnotation.destinationScope: ClassName
-    get() = findTypeArgument("destinationScope").toClassName()
+    get() = findTypeArgumentWithDefault("destinationScope")
 
 private val KSAnnotation.activityBaseClass: ClassName
     get() = findTypeArgument("activityBaseClass").toClassName()
+
+/**
+ * Workaround for https://github.com/google/ksp/issues/2491
+ * KSP on native targets doesn't populate defaultArguments for annotation parameters.
+ */
+private fun KSAnnotation.findTypeArgumentWithDefault(name: String): ClassName {
+    val type = findTypeArgumentOrNull(name)
+    return when (name) {
+        "scope" -> type?.toClassName() ?: activityScope
+        "destinationScope" -> type?.toClassName() ?: appScope
+        "parentScope" -> type?.toClassName()
+            ?: if (shortName.asString() == "NavDestination") activityScope else appScope
+
+        else -> error("Unknown parameter name $name")
+    }
+}
+
+private fun KSAnnotation.findTypeArgumentOrNull(name: String): KSType? {
+    val argument = arguments.find { it.name?.asString() == name }
+        ?: defaultArguments.find { it.name?.asString() == name }
+        ?: return null
+    val value = argument.value ?: return null
+    return value as? KSType
+        ?: error("Expected argument $name in ${shortName.asString()} to be a type, was $value")
+}
 
 private fun KSAnnotation.findTypeArgument(name: String): KSType {
     val argument = findArgument(name)
@@ -225,7 +251,7 @@ private fun KSAnnotation.stateMachineParameters(logger: KSPLogger): Triple<Class
 }
 
 private fun KSAnnotation.parentScopeExtendsBaseRoute(): Boolean {
-    val declaration = parentScopeType.declaration as KSClassDeclaration
+    val declaration = (parentScopeType ?: return false).declaration as KSClassDeclaration
     return declaration.allSuperTypes(false).any { it == baseRoute }
 }
 
