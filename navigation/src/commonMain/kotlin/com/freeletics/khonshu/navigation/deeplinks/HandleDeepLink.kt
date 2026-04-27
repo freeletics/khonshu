@@ -44,7 +44,9 @@ private fun HostNavigator.handleDeepLink(deepLinkRoutes: List<BaseRoute>): Boole
                     showRoot(route)
                 }
 
-                is NavRoute -> navigateTo(route)
+                is NavRoute -> {
+                    navigateTo(route)
+                }
             }
         }
     }

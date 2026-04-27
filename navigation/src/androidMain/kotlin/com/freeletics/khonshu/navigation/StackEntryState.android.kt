@@ -10,10 +10,14 @@ internal actual fun SavedStateWriter.putPlatformValue(key: String, value: Any): 
             putParcelable(key, value)
             true
         }
+
         is Serializable -> {
             putJavaSerializable(key, value)
             true
         }
-        else -> false
+
+        else -> {
+            false
+        }
     }
 }
