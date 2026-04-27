@@ -91,7 +91,6 @@ private fun navigateTo(
         is ActivityEvent.NavigateTo -> {
             activityStarter(event.route, event.fallbackRoute)
         }
-
         is ActivityEvent.NavigateForResult<*> -> {
             val request = event.request
             val launcher = activityLaunchers[request] ?: throw IllegalStateException(
@@ -119,7 +118,6 @@ internal inline fun <I, O, R> ActivityResultContractRequest<I, O, R>.deliverResu
 ) {
     when (this) {
         is ActivityResultRequest<*, *> -> onResult(result as R)
-
         is PermissionsResultRequest -> onResult(
             (result as Map<String, Boolean>).mapValues { (permission, granted) ->
                 if (granted) {
