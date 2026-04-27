@@ -32,6 +32,7 @@ dependencyAnalysis {
         }
 
         project(":navigation") {
+            // needed for multiplatform
             onUnusedDependencies {
                 exclude(
                     "org.jetbrains.compose.ui:ui",
@@ -43,6 +44,7 @@ dependencyAnalysis {
         }
 
         project(":codegen") {
+            // needed for multiplatform
             onUnusedDependencies {
                 exclude(
                     "org.jetbrains.compose.ui:ui",
@@ -61,6 +63,7 @@ dependencyAnalysis {
                     "androidx.compose.runtime:runtime",
                     "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
                     "org.jetbrains.kotlin:kotlin-compiler-embeddable",
+                    "org.jetbrains.compose.ui:ui-desktop",
                     ":codegen",
                     ":codegen-compiler",
                     ":navigation-compose",
