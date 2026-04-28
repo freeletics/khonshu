@@ -81,7 +81,6 @@ internal class GraphGenerator(
                     .addAnnotation(forScope(data.scope))
                     .build()
             }
-
             is DestinationData -> {
                 properties += simplePropertySpec(destinationNavigator).toBuilder()
                     .addAnnotation(forScope(data.scope))

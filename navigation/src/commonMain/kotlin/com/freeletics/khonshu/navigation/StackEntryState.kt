@@ -93,10 +93,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
     @InternalNavigationApi
     public fun savedStateHandle(): SavedStateHandle {
         return when (val current = values[KEY_SAVED_STATE_HANDLE]) {
-            is SavedStateHandle -> {
-                current
-            }
-
+            is SavedStateHandle -> current
             is SavedState -> {
                 val savedValues = current.read { toMap() }
                 // noinspection VisibleForTests
@@ -104,7 +101,6 @@ public class StackEntryState(initialState: Map<String, Any?>) {
                     values[KEY_SAVED_STATE_HANDLE] = it
                 }
             }
-
             null -> {
                 // noinspection VisibleForTests
                 SavedStateHandle().also {
@@ -112,9 +108,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
                 }
             }
 
-            else -> {
-                error("Unknown value $current for SavedStateHandle")
-            }
+            else -> error("Unknown value $current for SavedStateHandle")
         }
     }
 
@@ -132,39 +126,17 @@ private const val KEY_SAVED_STATE_HANDLE = "khonshu-internal-saved-state-handle"
 
 private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: SerializationStrategy<T>?) {
     when (value) {
-        null -> {
-            putNull(key)
-        }
-
-        is String -> {
-            putString(key, value)
-        }
-
-        is Long -> {
-            putLong(key, value)
-        }
-
-        is Int -> {
-            putInt(key, value)
-        }
-
-        is Double -> {
-            putDouble(key, value)
-        }
-
-        is Float -> {
-            putFloat(key, value)
-        }
-
-        is Boolean -> {
-            putBoolean(key, value)
-        }
-
+        null -> putNull(key)
+        is String -> putString(key, value)
+        is Long -> putLong(key, value)
+        is Int -> putInt(key, value)
+        is Double -> putDouble(key, value)
+        is Float -> putFloat(key, value)
+        is Boolean -> putBoolean(key, value)
         is SavedStateHandle -> {
             // noinspection RestrictedApi
             putSavedState(key, value.savedStateProvider().saveState())
         }
-
         else -> {
             if (!putPlatformValue(key, value)) {
                 val serializer = requireNotNull(serializer) { "Did not find serializer for $value" }

@@ -175,9 +175,7 @@ private fun KSAnnotation.findTypeArgumentWithDefault(name: String): ClassName {
     val type = findTypeArgumentOrNull(name)
     return when (name) {
         "scope" -> type?.toClassName() ?: activityScope
-
         "destinationScope" -> type?.toClassName() ?: appScope
-
         "parentScope" -> type?.toClassName()
             ?: if (shortName.asString() == "NavDestination") activityScope else appScope
 
