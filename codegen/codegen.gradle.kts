@@ -39,7 +39,6 @@ dependencies {
     "commonMainApi"(libs.metro)
     "commonMainApi"(libs.androidx.lifecycle.runtime)
     "commonMainApi"(libs.androidx.lifecycle.compose)
-    "commonMainApi"(libs.androidx.viewmodel)
     "commonMainApi"(libs.androidx.viewmodel.savedstate)
     "commonMainApi"(libs.coroutines.core)
 

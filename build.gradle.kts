@@ -31,31 +31,6 @@ dependencyAnalysis {
             }
         }
 
-        project(":navigation") {
-            // needed for multiplatform
-            onUnusedDependencies {
-                exclude(
-                    "org.jetbrains.compose.ui:ui",
-                    "org.jetbrains.compose.foundation:foundation",
-                    "org.jetbrains.androidx.lifecycle:lifecycle-common",
-                    "org.jetbrains.androidx.navigationevent:navigationevent-compose",
-                )
-            }
-        }
-
-        project(":codegen") {
-            // needed for multiplatform
-            onUnusedDependencies {
-                exclude(
-                    "org.jetbrains.compose.ui:ui",
-                    "org.jetbrains.androidx.lifecycle:lifecycle-runtime",
-                    "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose",
-                    "androidx.lifecycle:lifecycle-viewmodel",
-                    "androidx.lifecycle:lifecycle-viewmodel-savedstate",
-                )
-            }
-        }
-
         project(":codegen-compiler-test") {
             onUnusedDependencies {
                 // needed for compile testing
@@ -70,6 +45,23 @@ dependencyAnalysis {
                     ":navigation-experimental",
                 )
             }
+        }
+    }
+
+    structure {
+        bundle("compose-multiplatform") {
+            includeDependency("androidx.compose.runtime:runtime")
+            includeDependency("org.jetbrains.compose.ui:ui")
+            includeDependency("org.jetbrains.compose.foundation:foundation")
+            includeDependency("org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose")
+            includeDependency("org.jetbrains.androidx.navigationevent:navigationevent-compose")
+        }
+        bundle("androidx-lifecycle-multiplatform") {
+            includeDependency("")
+            includeDependency("androidx.lifecycle:lifecycle-common")
+            includeDependency("androidx.lifecycle:lifecycle-viewmodel-savedstate")
+            includeDependency("org.jetbrains.androidx.lifecycle:lifecycle-common")
+            includeDependency("org.jetbrains.androidx.lifecycle:lifecycle-runtime")
         }
     }
 }
