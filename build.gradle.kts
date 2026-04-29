@@ -57,7 +57,6 @@ dependencyAnalysis {
             includeDependency("org.jetbrains.androidx.navigationevent:navigationevent-compose")
         }
         bundle("androidx-lifecycle-multiplatform") {
-            includeDependency("")
             includeDependency("androidx.lifecycle:lifecycle-common")
             includeDependency("androidx.lifecycle:lifecycle-viewmodel-savedstate")
             includeDependency("org.jetbrains.androidx.lifecycle:lifecycle-common")
