@@ -2,7 +2,14 @@ package com.freeletics.khonshu.text
 
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.AbstractEncoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.EmptySerializersModule
+import kotlinx.serialization.modules.SerializersModule
 
 class TextResourceTest {
     val textResource = TextResource.join(
@@ -40,5 +47,47 @@ class TextResourceTest {
     @Test
     fun deserialize() {
         assertThat(Json.decodeFromString<TextResource>(json)).isEqualTo(textResource)
+    }
+
+    @Test
+    fun `serialize uses the actual element index for each arg`() {
+        val encoder = RecordingEncoder()
+
+        AnyArraySerializer.serialize(
+            encoder,
+            arrayOf<Any>(
+                "string",
+                1,
+                2L,
+                3.0f,
+                4.0,
+                TextResource("nested"),
+            ),
+        )
+
+        assertThat(encoder.indices).containsExactly(0, 1, 2, 3, 4, 5).inOrder()
+    }
+}
+
+@OptIn(ExperimentalSerializationApi::class)
+private class RecordingEncoder : AbstractEncoder() {
+    val indices = mutableListOf<Int>()
+
+    override val serializersModule: SerializersModule = EmptySerializersModule()
+
+    override fun beginCollection(
+        descriptor: SerialDescriptor,
+        collectionSize: Int,
+    ): CompositeEncoder = this
+
+    override fun endStructure(descriptor: SerialDescriptor) = Unit
+
+    override fun <T> encodeSerializableElement(
+        descriptor: SerialDescriptor,
+        index: Int,
+        serializer: SerializationStrategy<T>,
+        value: T,
+    ) {
+        indices += index
     }
 }
