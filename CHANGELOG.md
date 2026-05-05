@@ -3,6 +3,42 @@ Change Log
 
 ## UNRELEASED
 
+## 0.36.0 *(2026-05-05)*
+
+### Navigation
+
+- The library is now fully Kotlin Multiplatform with iOS and Desktop targets. Most navigation
+  internals have been moved to `commonMain` including `NavDestination`, `Navigator`, `HostNavigator`,
+  `StackEntry`, `StackSnapshot`, `MultiStack`, `NavHost` and related types. Deeplinks aren't supported
+  since `obtainLaunchInfo` is not yet implemented on iOS/Desktop.
+- `StackEntryState` is now public. It is intended to replace `SavedStateHandle` in destinations —
+  both are currently provided in the generated graph, but `SavedStateHandle` will be removed in a
+  future release.
+- **Breaking**: Removed the ability to convert a `DeepLink` into an `Intent` directly with `buildIntent`
+  and `buildTaskStack` helpers.
+- **Breaking**: `ActivityScope` is now used as an additional scope instead of the default scope in
+  generated destination graphs.
+- Migrated predictive back gesture handling from the deprecated `PredictiveBackHandler` to
+  `NavigationEventHandler`.
+- Fixed `SavedStateHandle` state not being saved correctly across process death / recreation.
+
+### Codegen
+
+- The library is now fully Kotlin Multiplatform with iOS and Desktop targets.
+- Added `@NavHostWindow` annotation that generates a Compose Desktop window entry point, equivalent
+  to `@NavHostActivity` for Android.
+- Added `@NavHostViewController` annotation that generates an iOS `UIViewController` entry point,
+  equivalent to `@NavHostActivity` for Android.
+
+### State Machine
+
+- Removed the extra opt-in requirement for `FlowReduxStateMachineFactory`.
+
+### TextResource
+
+- Fixed argument serialization indices when encoding `TextResource` with multiple array arguments.
+
+
 ## 0.35.0 *(2026-01-29)*
 
 ### Navigation
