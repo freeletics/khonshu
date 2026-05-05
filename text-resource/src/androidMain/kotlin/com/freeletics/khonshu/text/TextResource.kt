@@ -311,17 +311,17 @@ internal object AnyArraySerializer : KSerializer<Array<out Any>> {
 
     override fun serialize(encoder: Encoder, value: Array<out Any>) {
         encoder.encodeCollection(descriptor, value.size) {
-            value.forEach {
-                val wrapped = when (it) {
-                    is Int -> IntArg(it)
-                    is Long -> LongArg(it)
-                    is Float -> FloatArg(it)
-                    is Double -> DoubleArg(it)
-                    is String -> StringArg(it)
-                    is TextResource -> TextResourceArg(it)
-                    else -> error("Unknown arg $it")
+            value.forEachIndexed { index, arg ->
+                val wrapped = when (arg) {
+                    is Int -> IntArg(arg)
+                    is Long -> LongArg(arg)
+                    is Float -> FloatArg(arg)
+                    is Double -> DoubleArg(arg)
+                    is String -> StringArg(arg)
+                    is TextResource -> TextResourceArg(arg)
+                    else -> error("Unknown arg $arg")
                 }
-                encodeSerializableElement(descriptor, 1, Arg.serializer(), wrapped)
+                encodeSerializableElement(descriptor, index, Arg.serializer(), wrapped)
             }
         }
     }
