@@ -1,7 +1,7 @@
 [versions]
 flowredux = "2.0.0-alpha1"
 kotlin = "2.3.21"
-coroutines = "1.10.2"
+coroutines = "1.11.0"
 serialization = "1.11.0"
 
 java-target= "11"
