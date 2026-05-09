@@ -17,14 +17,6 @@ plugins {
 dependencyAnalysis {
     issues {
         all {
-            onAny {
-                // issue with Kotlin multiplatform artifacts
-                exclude(
-                    "com.eygraber:uri-kmp",
-                    "com.eygraber:uri-kmp-android",
-                    "com.eygraber:uri-kmp-android-debug",
-                )
-            }
             onUnusedDependencies {
                 // auto-added by the Kotlin JS toolchain via the multiplatform plugin
                 exclude("org.jetbrains.kotlin:kotlin-dom-api-compat")
@@ -108,6 +100,13 @@ dependencyAnalysis {
         bundle("savedstate") {
             primary("androidx.savedstate:savedstate")
             includeGroup("androidx.savedstate")
+        }
+        bundle("uri-kmp") {
+            primary("com.eygraber:uri-kmp")
+            includeDependency("com.eygraber:uri-kmp")
+            includeDependency("com.eygraber:uri-kmp-android")
+            includeDependency("com.eygraber:uri-kmp-android-debug")
+            includeDependency("com.eygraber:uri-kmp-jvm")
         }
     }
 }
