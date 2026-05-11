@@ -37,11 +37,13 @@ dependencies {
 
     "commonMainImplementation"(libs.toml)
 
+    "androidMainApi"(libs.androidx.compose.runtime)
     "androidMainApi"(libs.coroutines.core)
     "androidMainApi"(libs.turbine)
 
-    "androidMainImplementation"(libs.androidx.activity)
     "androidMainImplementation"(libs.truth)
+
+    "jvmMainApi"(projects.navigation)
 
     "androidHostTestImplementation"(libs.junit)
     "androidHostTestImplementation"(libs.truth)

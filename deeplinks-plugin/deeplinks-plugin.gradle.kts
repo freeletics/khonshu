@@ -7,6 +7,7 @@ freeletics {
 }
 
 dependencies {
+    implementation(projects.navigation)
     implementation(projects.navigationTesting)
 
     compileOnly(libs.android.gradle.api)

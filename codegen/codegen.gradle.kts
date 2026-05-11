@@ -39,13 +39,19 @@ dependencies {
     "commonMainApi"(libs.metro)
     "commonMainApi"(libs.androidx.lifecycle.runtime)
     "commonMainApi"(libs.androidx.lifecycle.compose)
-    "commonMainApi"(libs.androidx.viewmodel)
-    "commonMainApi"(libs.androidx.viewmodel.savedstate)
     "commonMainApi"(libs.coroutines.core)
+
+    "androidMainImplementation"(libs.androidx.compose.ui)
+    "androidMainImplementation"(libs.androidx.lifecycle.common)
+
+    "jvmMainApi"(projects.navigation)
+    "jvmMainApi"(projects.stateMachine)
+    "jvmMainImplementation"(libs.androidx.lifecycle.common)
 
     "androidHostTestImplementation"(libs.junit)
     "androidHostTestImplementation"(libs.truth)
     "androidHostTestImplementation"(libs.coroutines.test)
     "androidHostTestImplementation"(libs.turbine)
     "androidHostTestImplementation"(libs.androidx.lifecycle.testing)
+    "androidHostTestImplementation"(libs.androidx.lifecycle.common)
 }

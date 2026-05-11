@@ -44,7 +44,7 @@ dependencies {
     "commonMainApi"(libs.androidx.compose.runtime.retain)
     "commonMainApi"(libs.androidx.compose.runtime.saveable)
     "commonMainApi"(libs.androidx.lifecycle.common)
-    "commonMainApi"(libs.androidx.navigationEvent)
+    "commonMainApi"(libs.androidx.navigation.event)
     "commonMainApi"(libs.androidx.viewmodel.savedstate)
     "commonMainApi"(libs.androidx.savedstate)
     "commonMainApi"(libs.jetbrains.compose.ui)
@@ -52,13 +52,15 @@ dependencies {
     "commonMainApi"(libs.uri)
 
     "androidMainApi"(libs.androidx.activity)
-    "androidMainApi"(libs.androidx.activity.compose)
     "androidMainApi"(libs.androidx.core)
-    "androidMainApi"(libs.androidx.viewmodel.compose)
+    "androidMainApi"(libs.androidx.compose.ui)
     "androidMainApi"(libs.coroutines.core)
 
-    "androidMainImplementation"(libs.androidx.lifecycle.runtime)
+    "androidMainImplementation"(libs.androidx.activity.compose)
+    "androidMainImplementation"(libs.androidx.compose.foundation)
+    "androidMainImplementation"(libs.androidx.compose.ui)
     "androidMainImplementation"(libs.kotlin.parcelize)
+    "androidMainImplementation"(libs.androidx.lifecycle.compose)
 
     "androidHostTestImplementation"(libs.junit)
     "androidHostTestImplementation"(libs.truth)
@@ -66,6 +68,7 @@ dependencies {
     "androidHostTestImplementation"(libs.androidx.lifecycle.testing)
     "androidHostTestImplementation"(libs.coroutines.test)
     "androidHostTestImplementation"(projects.navigationTesting)
+    "androidHostTestImplementation"(libs.androidx.lifecycle.compose)
 
     "jvmTestImplementation"(libs.junit)
     "jvmTestImplementation"(libs.truth)

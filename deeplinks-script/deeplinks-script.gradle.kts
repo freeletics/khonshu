@@ -11,7 +11,11 @@ freeletics {
 }
 
 dependencies {
-    "jvmMainApi"("com.github.ajalt.clikt:clikt:5.1.0")
+    "jvmMainApi"(libs.clikt)
+    "jvmMainApi"(libs.clikt.core)
+    "jvmMainImplementation"(libs.mordant.core)
+    "jvmMainImplementation"(projects.navigation)
     "jvmMainImplementation"(projects.navigationTesting)
-    "jvmMainImplementation"("dev.mobile:dadb:1.2.10")
+    "jvmMainImplementation"(libs.dadb)
+    "jvmMainImplementation"(libs.uri)
 }

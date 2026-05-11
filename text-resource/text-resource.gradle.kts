@@ -23,7 +23,7 @@ dependencies {
 
     "androidMainCompileOnly"(libs.androidx.annotations)
 
-    "androidHostTestImplementation"(libs.kotlin.test)
+    "androidHostTestImplementation"(libs.kotlin.test.junit)
     "androidHostTestImplementation"(libs.truth)
     "androidHostTestImplementation"(libs.kotlinx.serialization.json)
 }

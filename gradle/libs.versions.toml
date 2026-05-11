@@ -20,6 +20,11 @@ androidx-activity = "1.13.0"
 androidx-annotations = "1.10.0"
 androidx-core = "1.18.0"
 androidx-lifecycle = "2.10.0"
+androidx-savedstate = "1.4.0"
+androidx-navigation-event = "1.0.1"
+
+clikt = "5.1.0"
+mordant = "3.0.2"
 
 uri = "0.0.21"
 
@@ -46,6 +51,7 @@ android-gradle-api = { module = "com.android.tools.build:gradle-api", version.re
 kotlin-parcelize = { module = "org.jetbrains.kotlin:kotlin-parcelize-runtime", version.ref = "kotlin" }
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
@@ -57,7 +63,6 @@ androidx-compose-runtime-retain = { module = "androidx.compose.runtime:runtime-r
 androidx-compose-runtime-saveable = { module = "androidx.compose.runtime:runtime-saveable", version.ref = "androidx-compose-runtime" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose-ui" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose-ui" }
-androidx-navigationEvent = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version = "1.0.1" }
 jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jetbrains-compose" }
 jetbrains-compose-ui-desktop = { module = "org.jetbrains.compose.ui:ui-desktop", version.ref = "jetbrains-compose" }
 jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrains-compose" }
@@ -70,10 +75,11 @@ androidx-lifecycle-common = { module = "org.jetbrains.androidx.lifecycle:lifecyc
 androidx-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-testing = { module = "androidx.lifecycle:lifecycle-runtime-testing", version.ref = "androidx-lifecycle" }
+androidx-navigation-event = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version.ref = "androidx-navigation-event" }
 androidx-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
-androidx-savedstate = { module = "androidx.savedstate:savedstate", version = "1.4.0" }
+androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
 androidx-lint-gradle = { module = "androidx.lint:lint-gradle", version = "1.0.0-beta01" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
@@ -89,6 +95,11 @@ auto-service-annotations = { module = "com.google.auto.service:auto-service-anno
 auto-service-compiler = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "auto-service-ksp" }
 flowredux = { module = "com.freeletics.flowredux:flowredux", version = "1.2.2" }
 flowredux2 = { module = "com.freeletics.flowredux2:flowredux", version = "2.0.1" }
+
+clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
+clikt-core = { module = "com.github.ajalt.clikt:clikt-core", version.ref = "clikt" }
+mordant-core = { module = "com.github.ajalt.mordant:mordant-core", version.ref = "mordant" }
+dadb = { module = "dev.mobile:dadb", version = "1.2.10" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
