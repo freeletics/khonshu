@@ -17,4 +17,5 @@ dependencies {
     "jvmMainImplementation"(projects.navigation)
     "jvmMainImplementation"(projects.navigationTesting)
     "jvmMainImplementation"(libs.dadb)
+    "jvmMainImplementation"(libs.uri)
 }
