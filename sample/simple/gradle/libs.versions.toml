@@ -20,7 +20,7 @@ fgp = "0.37.0"
 java-target = "11"
 java-toolchain = "21"
 khonshu = "0.36.0"
-ksp = "2.3.8"
+ksp = "2.3.9"
 kotlin = "2.3.21"
 metro = "1.1.1"
 
