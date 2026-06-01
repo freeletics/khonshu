@@ -7,17 +7,13 @@ import androidx.savedstate.putKotlinSerializable
 import androidx.savedstate.read
 import androidx.savedstate.savedState
 import androidx.savedstate.serialization.decodeFromSavedState
-import androidx.savedstate.serialization.encodeToSavedState
 import androidx.savedstate.serialization.serializers.SavedStateSerializer
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import kotlin.collections.getOrPut
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
 
 /**
@@ -62,7 +58,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
         return get(key, serializer())
     }
 
-    public fun <T : Any> get(key: String, serializer: DeserializationStrategy<T>?): T? {
+    public fun <T : Any> get(key: String, serializer: KSerializer<T>?): T? {
         val savedState = values[key]
         return if (savedState != null) {
             if (savedState is SavedState) {
