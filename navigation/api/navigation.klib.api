@@ -153,10 +153,10 @@ final class com.freeletics.khonshu.navigation/StackEntryState { // com.freeletic
     constructor <init>(androidx.savedstate/SavedState) // com.freeletics.khonshu.navigation/StackEntryState.<init>|<init>(androidx.savedstate.SavedState){}[0]
     constructor <init>(kotlin.collections/Map<kotlin/String, kotlin/Any?>) // com.freeletics.khonshu.navigation/StackEntryState.<init>|<init>(kotlin.collections.Map<kotlin.String,kotlin.Any?>){}[0]
 
-    final fun <#A1: kotlin/Any> get(kotlin/String, kotlinx.serialization/DeserializationStrategy<#A1>?): #A1? // com.freeletics.khonshu.navigation/StackEntryState.get|get(kotlin.String;kotlinx.serialization.DeserializationStrategy<0:0>?){0§<kotlin.Any>}[0]
+    final fun <#A1: kotlin/Any> get(kotlin/String, kotlinx.serialization/KSerializer<#A1>?): #A1? // com.freeletics.khonshu.navigation/StackEntryState.get|get(kotlin.String;kotlinx.serialization.KSerializer<0:0>?){0§<kotlin.Any>}[0]
     final fun <#A1: kotlin/Any> getStateFlow(kotlin/String, #A1, kotlinx.serialization/KSerializer<#A1>?): kotlinx.coroutines.flow/StateFlow<#A1> // com.freeletics.khonshu.navigation/StackEntryState.getStateFlow|getStateFlow(kotlin.String;0:0;kotlinx.serialization.KSerializer<0:0>?){0§<kotlin.Any>}[0]
     final fun <#A1: kotlin/Any> remove(kotlin/String): #A1? // com.freeletics.khonshu.navigation/StackEntryState.remove|remove(kotlin.String){0§<kotlin.Any>}[0]
-    final fun <#A1: kotlin/Any> set(kotlin/String, #A1?, kotlinx.serialization/SerializationStrategy<#A1>?) // com.freeletics.khonshu.navigation/StackEntryState.set|set(kotlin.String;0:0?;kotlinx.serialization.SerializationStrategy<0:0>?){0§<kotlin.Any>}[0]
+    final fun <#A1: kotlin/Any> set(kotlin/String, #A1?, kotlinx.serialization/KSerializer<#A1>?) // com.freeletics.khonshu.navigation/StackEntryState.set|set(kotlin.String;0:0?;kotlinx.serialization.KSerializer<0:0>?){0§<kotlin.Any>}[0]
     final fun contains(kotlin/String): kotlin/Boolean // com.freeletics.khonshu.navigation/StackEntryState.contains|contains(kotlin.String){}[0]
     final inline fun <#A1: reified kotlin/Any> getStateFlow(kotlin/String, #A1): kotlinx.coroutines.flow/StateFlow<#A1> // com.freeletics.khonshu.navigation/StackEntryState.getStateFlow|getStateFlow(kotlin.String;0:0){0§<kotlin.Any>}[0]
     final inline fun <#A1: reified kotlin/Any> set(kotlin/String, #A1?) // com.freeletics.khonshu.navigation/StackEntryState.set|set(kotlin.String;0:0?){0§<kotlin.Any>}[0]
