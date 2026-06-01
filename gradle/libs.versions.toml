@@ -80,7 +80,7 @@ androidx-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", versio
 androidx-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
 androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
-androidx-lint-gradle = { module = "androidx.lint:lint-gradle", version = "1.0.0-beta01" }
+androidx-lint-gradle = { module = "androidx.lint:lint-gradle", version = "1.0.0-rc01" }
 
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 toml = { module = "net.peanuuutz.tomlkt:tomlkt", version = "0.5.0" }
