@@ -126,7 +126,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
     }
 }
 
-private const val KEY_SAVED_STATE_HANDLE = "khonshu-internal-saved-state-handle"
+internal const val KEY_SAVED_STATE_HANDLE = "khonshu-internal-saved-state-handle"
 
 private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: KSerializer<T>?) {
     when (value) {
