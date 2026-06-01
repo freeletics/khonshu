@@ -38,6 +38,7 @@ dependencies {
     "commonMainImplementation"(libs.toml)
 
     "androidMainApi"(libs.androidx.compose.runtime)
+    "androidMainApi"(libs.androidx.savedstate)
     "androidMainApi"(libs.coroutines.core)
     "androidMainApi"(libs.turbine)
 
