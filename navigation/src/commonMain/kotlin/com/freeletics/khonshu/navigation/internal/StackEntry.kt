@@ -9,10 +9,10 @@ import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
-import androidx.savedstate.read
-import androidx.savedstate.savedState
 import androidx.savedstate.getKotlinSerializable
 import androidx.savedstate.putKotlinSerializable
+import androidx.savedstate.read
+import androidx.savedstate.savedState
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination

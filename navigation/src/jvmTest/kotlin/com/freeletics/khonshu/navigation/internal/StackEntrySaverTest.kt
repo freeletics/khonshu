@@ -15,7 +15,6 @@ import org.junit.Test
 
 @OptIn(InternalNavigationTestingApi::class, InternalNavigationCodegenApi::class)
 class StackEntrySaverTest {
-
     private val savedStateConfiguration = SavedStateConfiguration {
         serializersModule = SerializersModule {
             polymorphic(BaseRoute::class) {
