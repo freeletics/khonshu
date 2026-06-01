@@ -3,10 +3,12 @@ package com.freeletics.khonshu.navigation
 import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
 import androidx.savedstate.SavedStateWriter
+import androidx.savedstate.putKotlinSerializable
 import androidx.savedstate.read
 import androidx.savedstate.savedState
 import androidx.savedstate.serialization.decodeFromSavedState
 import androidx.savedstate.serialization.encodeToSavedState
+import androidx.savedstate.serialization.serializers.SavedStateSerializer
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import kotlin.collections.getOrPut
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
 
@@ -25,7 +28,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
     public constructor(savedState: SavedState) : this(savedState.read { toMap() })
 
     private val values: MutableMap<String, Any?> = initialState.toMutableMap()
-    private val serializers: MutableMap<String, SerializationStrategy<*>?> = mutableMapOf()
+    private val serializers: MutableMap<String, KSerializer<*>?> = mutableMapOf()
     private val flows: MutableMap<String, MutableStateFlow<Any?>> = mutableMapOf()
 
     public operator fun contains(key: String): Boolean = key in values
@@ -74,10 +77,11 @@ public class StackEntryState(initialState: Map<String, Any?>) {
     }
 
     public inline operator fun <reified T : Any> set(key: String, value: T?) {
-        set(key, value, serializer())
+        @Suppress("UNCHECKED_CAST")
+        set(key, value, if (value is SavedState) SavedStateSerializer as KSerializer<T> else serializer())
     }
 
-    public fun <T : Any> set(key: String, value: T?, serializationStrategy: SerializationStrategy<T>?) {
+    public fun <T : Any> set(key: String, value: T?, serializationStrategy: KSerializer<T>?) {
         values[key] = value
         serializers[key] = serializationStrategy
         flows[key]?.value = value
@@ -116,7 +120,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
         return savedState {
             values.forEach { (key, value) ->
                 @Suppress("UNCHECKED_CAST")
-                put(key, value, serializers[key] as SerializationStrategy<Any>?)
+                put(key, value, serializers[key] as KSerializer<Any>?)
             }
         }
     }
@@ -124,7 +128,7 @@ public class StackEntryState(initialState: Map<String, Any?>) {
 
 private const val KEY_SAVED_STATE_HANDLE = "khonshu-internal-saved-state-handle"
 
-private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: SerializationStrategy<T>?) {
+private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: KSerializer<T>?) {
     when (value) {
         null -> putNull(key)
         is String -> putString(key, value)
@@ -140,8 +144,7 @@ private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: S
         else -> {
             if (!putPlatformValue(key, value)) {
                 val serializer = requireNotNull(serializer) { "Did not find serializer for $value" }
-                val savedState = encodeToSavedState(serializer, value)
-                putSavedState(key, savedState)
+                putKotlinSerializable(serializer, key, value)
             }
         }
     }
