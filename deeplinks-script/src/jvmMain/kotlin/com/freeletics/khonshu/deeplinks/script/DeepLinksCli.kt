@@ -14,9 +14,9 @@ import java.nio.file.Paths
 import kotlin.io.path.absolute
 import kotlin.io.path.readText
 
-public class DeepLinksCli : CliktCommand() {
+public class DeepLinksCli(name: String = "deeplinks-cli") : CliktCommand(name) {
     private val deepLinkDefinitionsFile: Path by option("--deep-link-definitions-file", "--definitions-file", "-f")
-        .help("The root directory of the project, used as starting point to search files and to find editorconfig.")
+        .help("Path to deeplinks definitions file in .toml format.")
         .path(mustExist = true, canBeFile = true, canBeDir = false, mustBeReadable = true)
         .default(Paths.get("src/test/resources/deeplinks.toml").absolute())
 
