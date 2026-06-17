@@ -3,6 +3,15 @@ Change Log
 
 ## UNRELEASED
 
+## 0.36.1 *(2026-06-17)*
+
+### Deep Links CLI
+
+- `DeepLinksCli` now accepts an optional `name` parameter to customize the CLI command
+  name when used as subcommand.
+- Fix parameter name documentation.
+
+
 ## 0.36.0 *(2026-05-05)*
 
 ### Navigation
