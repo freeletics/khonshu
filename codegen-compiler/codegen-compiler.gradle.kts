@@ -16,6 +16,7 @@ freeletics {
 dependencies {
     "jvmMainApi"(libs.ksp.api)
     "jvmMainApi"(libs.kotlinpoet)
+    "jvmMainImplementation"(libs.jetbrains.annotations)
     "jvmMainImplementation"(libs.kotlinpoet.ksp)
     "jvmMainImplementation"(libs.metro)
     "jvmMainImplementation"(projects.codegen)
@@ -23,6 +24,7 @@ dependencies {
     "jvmTestCompileOnly"(libs.junit)
     "jvmTestImplementation"(libs.truth)
     "jvmTestImplementation"(libs.kotlin.compile.testing)
+    "jvmTestImplementation"(libs.kotlin.compiler)
     "jvmTestImplementation"(libs.coroutines.core)
     "jvmTestImplementation"(libs.flowredux)
     // TODO https://github.com/autonomousapps/dependency-analysis-gradle-plugin/issues/972
@@ -31,6 +33,7 @@ dependencies {
     "jvmTestFixturesApi"(libs.kotlin.compile.testing)
     "jvmTestFixturesApi"(libs.kotlin.compiler)
     "jvmTestFixturesApi"(libs.ksp.api)
+    "jvmTestFixturesImplementation"(libs.jetbrains.annotations)
     "jvmTestFixturesImplementation"(libs.kotlin.compile.testing.ksp)
     // explicitly depend on ksp to force the version to a newer one than compile testing uses
     "jvmTestFixturesRuntimeOnly"(libs.ksp)
