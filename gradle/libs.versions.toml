@@ -101,7 +101,7 @@ flowredux2 = { module = "com.freeletics.flowredux2:flowredux", version = "2.0.1"
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
 clikt-core = { module = "com.github.ajalt.clikt:clikt-core", version.ref = "clikt" }
 mordant-core = { module = "com.github.ajalt.mordant:mordant-core", version.ref = "mordant" }
-dadb = { module = "dev.mobile:dadb", version = "1.2.10" }
+dadb = { module = "dev.mobile:dadb", version = "2.0.0" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
