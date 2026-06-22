@@ -59,8 +59,9 @@ dependencies {
     "androidMainImplementation"(libs.androidx.activity.compose)
     "androidMainImplementation"(libs.androidx.compose.foundation)
     "androidMainImplementation"(libs.androidx.compose.ui)
-    "androidMainImplementation"(libs.kotlin.parcelize)
     "androidMainImplementation"(libs.androidx.lifecycle.compose)
+    "androidMainImplementation"(libs.jetbrains.annotations)
+    "androidMainImplementation"(libs.kotlin.parcelize)
 
     "androidHostTestImplementation"(libs.junit)
     "androidHostTestImplementation"(libs.truth)

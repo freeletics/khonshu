@@ -15,6 +15,7 @@ dependencies {
     testImplementation(libs.metro)
 
     testImplementation(libs.kotlinpoet)
+    testImplementation(libs.kotlin.compiler)
     testImplementation(libs.junit)
     testImplementation(libs.truth)
     testImplementation(libs.kotlin.compile.testing)
