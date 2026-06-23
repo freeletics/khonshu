@@ -1,9 +1,8 @@
-package com.freeletics.khonshu.navigation.internal
+package com.freeletics.khonshu.navigation
 
 import androidx.savedstate.SavedState
 import androidx.savedstate.read
 import androidx.savedstate.savedState
-import com.freeletics.khonshu.navigation.StackEntryState
 import com.google.common.truth.Truth.assertThat
 import kotlinx.serialization.Serializable
 import org.junit.Test
@@ -41,7 +40,7 @@ class StackEntryStateTest {
 
     @Test
     fun restoreState() {
-        val original = mutableMapOf<String, Any?>()
+        val original = StackEntryState()
         original["null"] = null as String?
         original["string"] = "test"
         original["long"] = 0L
@@ -49,10 +48,10 @@ class StackEntryStateTest {
         original["double"] = 0.2
         original["float"] = 0.1f
         original["boolean"] = false
-        original["kotlin serialization"] = savedState(mapOf("value" to 2))
-        original["khonshu-internal-saved-state-handle"] = savedState(mapOf("c" to "d"))
+        original["kotlin serialization"] = TestClass(2)
+        original[KEY_SAVED_STATE_HANDLE] = savedState(mapOf("c" to "d"))
 
-        val state = StackEntryState(original)
+        val state = StackEntryState(original.saveState())
         assertThat(state.contains("null")).isTrue()
         assertThat(state.get<String?>("null")).isNull()
         assertThat(state.get<String>("string")).isEqualTo("test")

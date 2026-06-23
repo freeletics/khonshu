@@ -9,11 +9,11 @@ import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.SavedStateHandle
 import androidx.savedstate.SavedState
+import androidx.savedstate.getKotlinSerializable
+import androidx.savedstate.putKotlinSerializable
 import androidx.savedstate.read
 import androidx.savedstate.savedState
 import androidx.savedstate.serialization.SavedStateConfiguration
-import androidx.savedstate.serialization.decodeFromSavedState
-import androidx.savedstate.serialization.encodeToSavedState
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavDestination
 import com.freeletics.khonshu.navigation.NavRoot
@@ -98,19 +98,17 @@ public class StackEntry<T : BaseRoute> internal constructor(
         private val createRestoredEntry: (BaseRoute, Id, StackEntryState) -> StackEntry<*>,
         private val savedStateConfiguration: SavedStateConfiguration,
     ) : ComposeSaver<StackEntry<*>, SavedState> {
-        override fun restore(value: SavedState): StackEntry<*> {
-            return value.read {
-                createRestoredEntry(
-                    decodeFromSavedState(getSavedState(KEY_ROUTE), savedStateConfiguration),
-                    Id(getString(KEY_ID)),
-                    StackEntryState(getSavedState(KEY_STATE)),
-                )
-            }
+        override fun restore(value: SavedState): StackEntry<*> = value.read {
+            createRestoredEntry(
+                getKotlinSerializable<BaseRoute>(KEY_ROUTE, savedStateConfiguration),
+                Id(getString(KEY_ID)),
+                StackEntryState(getSavedState(KEY_STATE)),
+            )
         }
 
         override fun SaverScope.save(value: StackEntry<*>): SavedState = savedState {
             putString(KEY_ID, value.id.value)
-            putSavedState(KEY_ROUTE, encodeToSavedState(value.route, savedStateConfiguration))
+            putKotlinSerializable(KEY_ROUTE, value.route, savedStateConfiguration)
             putSavedState(KEY_STATE, value.state.saveState())
         }
     }
