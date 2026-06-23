@@ -3,6 +3,11 @@ Change Log
 
 ## UNRELEASED
 
+## 0.37.0 *(2026-06-23)*
+- Support Kotlin 2.4.0.
+- **Breaking** Update `StackEntryState` to accept `KSerializer<T>` in `get/set` methods
+  instead of `SerializationStrategy<T>`.
+
 ## 0.36.1 *(2026-06-17)*
 
 ### Deep Links CLI
