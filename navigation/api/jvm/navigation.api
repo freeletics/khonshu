@@ -191,7 +191,7 @@ public final class com/freeletics/khonshu/navigation/deeplinks/LaunchInfo {
 public final class com/freeletics/khonshu/navigation/internal/ComposableSingletons$StackEntryKt {
 	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/internal/ComposableSingletons$StackEntryKt;
 	public fun <init> ()V
-	public final fun getLambda$312382450$navigation ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$312382450$khonshu_navigation ()Lkotlin/jvm/functions/Function3;
 }
 
 public abstract interface annotation class com/freeletics/khonshu/navigation/internal/InternalNavigationApi : java/lang/annotation/Annotation {
