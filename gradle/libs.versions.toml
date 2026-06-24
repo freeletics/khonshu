@@ -41,7 +41,7 @@ truth = "1.4.5"
 turbine = "1.2.1"
 kotlin-compile-testing = "0.13.0"
 
-fgp = "0.38.0"
+fgp = "0.38.2"
 publish = "0.37.0"
 dokka = "2.2.0"
 dependency-analysis = "3.15.0"
@@ -96,7 +96,7 @@ kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlin
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service" }
 auto-service-compiler = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "auto-service-ksp" }
 flowredux = { module = "com.freeletics.flowredux:flowredux", version = "1.2.2" }
-flowredux2 = { module = "com.freeletics.flowredux2:flowredux", version = "2.1.0" }
+flowredux2 = { module = "com.freeletics.flowredux2:flowredux", version = "2.1.1" }
 
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
 clikt-core = { module = "com.github.ajalt.clikt:clikt-core", version.ref = "clikt" }
