@@ -3,7 +3,12 @@ Change Log
 
 ## UNRELEASED
 
+## 0.37.1 *(2026-06-24)*
+
+- Compiled without enabling Kotlin 2.4.0 experimental compiler flags.
+
 ## 0.37.0 *(2026-06-23)*
+
 - Support Kotlin 2.4.0.
 - **Breaking** Update `StackEntryState` to accept `KSerializer<T>` in `get/set` methods
   instead of `SerializationStrategy<T>`.
