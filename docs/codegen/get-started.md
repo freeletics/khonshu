@@ -92,15 +92,12 @@ a screen is shown in the logged in or logged out state.
 
 ## Navigation set up
 
-The integration of Khonshu's Codegen and Navigation libraries also expects a `DestinationNavigator`
-binding to be available. This can be easily achieved by adding `@SingleIn(ExampleScope::class)
-@ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, binding<DestinationNavigator>())`
-to a subclass of it. A `DestinationNavigator` is tied to the current stack entry, so its
-constructor needs both the `HostNavigator` and the generated `StackEntryId`. The generated code will
-automatically provide the `StackEntryId` for the current destination and take care of setting up
-the navigator by calling `ActivityNavigatorEffect` in the compose UI layer with the navigator.
+The integration of Khonshu's Codegen and Navigation libraries automatically provides a
+`DestinationNavigator2` for each generated destination. This navigator is tied to the current stack
+entry and can be injected directly into state machines or delegated to by a screen-specific navigator
+class.
 
-Because a `DestinationNavigator` is tied to a concrete stack entry, back-style navigation is guarded:
+Because a `DestinationNavigator2` is tied to a concrete stack entry, back-style navigation is guarded:
 `navigateBack`, `navigateUp`, `navigateBackTo`, and batched `navigate { ... }` no-op once the entry that
 created the navigator is no longer on the stack. Forward/root-changing operations like `navigateTo`,
 `switchBackStack`, `showRoot`, and `replaceAllBackStacks` are intentionally not guarded so flows can
@@ -140,13 +137,9 @@ internal class ExampleStateMachine(
 // scope the navigator so that everything interacts with the same instance
 @SingleIn(ExampleRoute::class)
 @ForScope(ExampleRoute::class)
-// make ExampleNavigator available as DestinationNavigator so that the generated code can automatically
-// set up the navigation handling
-@ContributesBinding(ExampleRoute::class)
 class ExampleNavigator(
-    hostNavigator: HostNavigator,
-    stackEntryId: StackEntryId,
-) : DestinationNavigator(hostNavigator, stackEntryId) {
+    navigator: DestinationNavigator2,
+) : DestinationNavigator2 by navigator {
     // ...
 }
 

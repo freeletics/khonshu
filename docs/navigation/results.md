@@ -1,10 +1,10 @@
 # Destination results
 
 Khonshu has a built-in way to receive results from another screen inside the app. For that
-it is required to call `DestinationNavigator.registerForNavigationResult<Result>()` or
+it is required to call `DestinationNavigator2.registerForNavigationResult<Result>()` or
 `HostNavigator.registerForNavigationResult<Route, Result>()`.
 
-The `DestinationNavigator` overload uses the current `StackEntryId`, so it doesn't require the route
+The `DestinationNavigator2` overload uses the current stack entry, so it doesn't require the route
 type of the current screen. The `HostNavigator` overload is kept for existing code; `Route` in this
 case should be the `NavRoute` class for the current screen. `Result` is the type of the expected
 result which can be any `Serializable` class. The register method will return a
@@ -24,7 +24,7 @@ like this:
 data class MessageResult(val message: String): Parcelable
 
 class FooScreenViewModel(
-    private val navigator: DestinationNavigator
+    private val navigator: DestinationNavigator2
 ) {
     // use request.results somewhere to handle the results that BarScreen delivers
     val request = navigator.registerForNavigationResult<MessageResult>()

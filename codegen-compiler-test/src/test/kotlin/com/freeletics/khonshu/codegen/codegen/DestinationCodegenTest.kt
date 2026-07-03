@@ -53,16 +53,8 @@ internal class DestinationCodegenTest {
 
             import androidx.compose.runtime.Composable
             import com.freeletics.khonshu.codegen.NavDestination
-            import com.freeletics.khonshu.navigation.DestinationNavigator
-            import com.freeletics.khonshu.navigation.HostNavigator
-            import com.freeletics.khonshu.navigation.StackEntryId
             import com.test.destination.TestDestinationScope
             import com.test.parent.TestParentRoute
-
-            public class TestNavigator(
-              hostNavigator: HostNavigator,
-              stackEntryId: StackEntryId,
-            ) : DestinationNavigator(hostNavigator, stackEntryId)
 
             @NavDestination(
               route = TestRoute::class,
@@ -93,11 +85,12 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.DestinationNavigator
+            import com.freeletics.khonshu.navigation.DefaultDestinationNavigator
+            import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
-            import com.freeletics.khonshu.navigation.StackEntryId
             import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
@@ -124,8 +117,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
-              @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator2
 
               public val stackEntry: StackEntry<TestRoute>
 
@@ -150,7 +142,7 @@ internal class DestinationCodegenTest {
               public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
-              public fun provideStackEntryId(stackEntry: StackEntry<TestRoute>): StackEntryId = stackEntry.stackEntryId
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)
@@ -183,7 +175,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator.platformNavigator)
 
               KhonshuTest(graph)
             }
@@ -272,11 +264,12 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraph
-            import com.freeletics.khonshu.navigation.DestinationNavigator
+            import com.freeletics.khonshu.navigation.DefaultDestinationNavigator
+            import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
-            import com.freeletics.khonshu.navigation.StackEntryId
             import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
@@ -302,8 +295,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
-              @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator2
 
               public val stackEntry: StackEntry<TestRoute>
 
@@ -328,7 +320,7 @@ internal class DestinationCodegenTest {
               public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
-              public fun provideStackEntryId(stackEntry: StackEntry<TestRoute>): StackEntryId = stackEntry.stackEntryId
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)
@@ -361,7 +353,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator.platformNavigator)
 
               KhonshuTest(graph)
             }
@@ -452,11 +444,12 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.DestinationNavigator
+            import com.freeletics.khonshu.navigation.DefaultDestinationNavigator
+            import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.OverlayDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
-            import com.freeletics.khonshu.navigation.StackEntryId
             import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
@@ -483,8 +476,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
-              @ForScope(TestOverlayRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator2
 
               public val stackEntry: StackEntry<TestOverlayRoute>
 
@@ -509,7 +501,7 @@ internal class DestinationCodegenTest {
               public fun provideRoute(stackEntry: StackEntry<TestOverlayRoute>): TestOverlayRoute = stackEntry.route
 
               @Provides
-              public fun provideStackEntryId(stackEntry: StackEntry<TestOverlayRoute>): StackEntryId = stackEntry.stackEntryId
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestOverlayRoute>): DestinationNavigator2 = DefaultDestinationNavigator(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestOverlayRoute::class)
@@ -542,7 +534,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator.platformNavigator)
 
               KhonshuTest(graph)
             }
@@ -651,11 +643,12 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.DestinationNavigator
+            import com.freeletics.khonshu.navigation.DefaultDestinationNavigator
+            import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
-            import com.freeletics.khonshu.navigation.StackEntryId
             import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
@@ -686,8 +679,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTest2Graph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
-              @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator2
 
               public val stackEntry: StackEntry<TestRoute>
 
@@ -720,7 +712,7 @@ internal class DestinationCodegenTest {
               public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
-              public fun provideStackEntryId(stackEntry: StackEntry<TestRoute>): StackEntryId = stackEntry.stackEntryId
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)
@@ -753,7 +745,7 @@ internal class DestinationCodegenTest {
                 KhonshuTest2GraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator.platformNavigator)
 
               KhonshuTest2(graph)
             }
@@ -845,11 +837,12 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.DestinationNavigator
+            import com.freeletics.khonshu.navigation.DefaultDestinationNavigator
+            import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
-            import com.freeletics.khonshu.navigation.StackEntryId
             import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
@@ -874,8 +867,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
-              @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator2
 
               public val stackEntry: StackEntry<TestRoute>
 
@@ -900,7 +892,7 @@ internal class DestinationCodegenTest {
               public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
-              public fun provideStackEntryId(stackEntry: StackEntry<TestRoute>): StackEntryId = stackEntry.stackEntryId
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)
@@ -933,7 +925,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator.platformNavigator)
 
               KhonshuTest(graph)
             }
@@ -1013,11 +1005,12 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.asComposeState
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.DestinationNavigator
+            import com.freeletics.khonshu.navigation.DefaultDestinationNavigator
+            import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
-            import com.freeletics.khonshu.navigation.StackEntryId
             import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
@@ -1044,8 +1037,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
-              @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator2
 
               public val stackEntry: StackEntry<TestRoute>
 
@@ -1070,7 +1062,7 @@ internal class DestinationCodegenTest {
               public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
-              public fun provideStackEntryId(stackEntry: StackEntry<TestRoute>): StackEntryId = stackEntry.stackEntryId
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)
@@ -1103,7 +1095,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator.platformNavigator)
 
               KhonshuTest(graph)
             }
@@ -1188,11 +1180,12 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.codegen.`internal`.InternalCodegenApi
             import com.freeletics.khonshu.codegen.`internal`.LocalHostGraphProvider
             import com.freeletics.khonshu.codegen.`internal`.getGraphFromParentRoute
-            import com.freeletics.khonshu.navigation.DestinationNavigator
+            import com.freeletics.khonshu.navigation.DefaultDestinationNavigator
+            import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
-            import com.freeletics.khonshu.navigation.StackEntryId
             import com.freeletics.khonshu.navigation.StackEntryState
             import com.freeletics.khonshu.navigation.`internal`.InternalNavigationCodegenApi
             import com.freeletics.khonshu.navigation.`internal`.StackEntry
@@ -1217,8 +1210,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachineFactory: TestStateMachineFactory
 
-              @ForScope(TestRoute::class)
-              public val destinationNavigator: DestinationNavigator
+              public val destinationNavigator: DestinationNavigator2
 
               public val stackEntry: StackEntry<TestRoute>
 
@@ -1243,7 +1235,7 @@ internal class DestinationCodegenTest {
               public fun provideRoute(stackEntry: StackEntry<TestRoute>): TestRoute = stackEntry.route
 
               @Provides
-              public fun provideStackEntryId(stackEntry: StackEntry<TestRoute>): StackEntryId = stackEntry.stackEntryId
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)
@@ -1276,7 +1268,7 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.destinationNavigator)
+              PlatformNavigatorEffect(graph.destinationNavigator.platformNavigator)
 
               KhonshuTest(graph)
             }

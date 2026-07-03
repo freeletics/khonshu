@@ -3,6 +3,7 @@ package com.freeletics.khonshu.navigation
 import androidx.compose.runtime.State
 import app.cash.turbine.Turbine
 import app.cash.turbine.plusAssign
+import com.freeletics.khonshu.navigation.activity.ActivityNavigator
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
@@ -21,8 +22,7 @@ public class TestHostNavigator(
     private val fakeEntry = StackEntry.create(StackEntry.Id(""), DummyRoute)
 
     @OptIn(InternalNavigationCodegenApi::class)
-    public val stackEntryId: StackEntryId
-        get() = fakeEntry.stackEntryId
+    public val destinationNavigator: DestinationNavigator2 = TestDestinationNavigator(this, fakeEntry)
 
     private val eventTurbine = Turbine<TestEvent>()
     internal val events: Flow<TestEvent>
@@ -82,10 +82,20 @@ public class TestHostNavigator(
         return fakeEntry
     }
 
-    @InternalNavigationApi
-    @InternalNavigationCodegenApi
-    override fun getEntryForOrNull(id: StackEntryId): StackEntry<*>? {
-        return fakeEntry.takeIf { it.stackEntryId == id }
+    @OptIn(InternalNavigationCodegenApi::class)
+    private class TestDestinationNavigator(
+        private val hostNavigator: TestHostNavigator,
+        @property:InternalNavigationApi
+        override val stackEntry: StackEntry<*>,
+    ) : ActivityNavigator(),
+        DestinationNavigator2,
+        Navigator by hostNavigator {
+        override val platformNavigator: PlatformNavigator
+            get() = this
+
+        override fun navigate(block: Navigator.() -> Unit) {
+            hostNavigator.navigate(block)
+        }
     }
 
     @Serializable
