@@ -27,6 +27,20 @@ public inline fun <reified T : BaseRoute, reified O : Any> Navigator.registerFor
     )
 }
 
+/**
+ * Register for receiving navigation results for this destination entry.
+ *
+ * This overload uses the [StackEntryId] captured by [DestinationNavigator] and therefore doesn't require
+ * the route type parameter.
+ */
+public inline fun <reified O : Any> DestinationNavigator.registerForNavigationResult(): NavigationResultRequest<O> {
+    return registerForNavigationResult(
+        stackEntryId = stackEntryId,
+        resultType = O::class.qualifiedName!!,
+        serializer = serializer(),
+    )
+}
+
 @PublishedApi
 internal fun <T : BaseRoute, O> Navigator.registerForNavigationResult(
     id: DestinationId<T>,
@@ -35,6 +49,18 @@ internal fun <T : BaseRoute, O> Navigator.registerForNavigationResult(
 ): NavigationResultRequest<O> {
     val requestKey = "${id.route.qualifiedName!!}-$resultType"
     val entry = getTopEntryFor(id)
+    val key = NavigationResultRequest.Key<O>(entry.id, requestKey)
+    return NavigationResultRequest(key, entry.state, serializer)
+}
+
+@PublishedApi
+internal fun <O> Navigator.registerForNavigationResult(
+    stackEntryId: StackEntryId,
+    resultType: String,
+    serializer: KSerializer<O>,
+): NavigationResultRequest<O> {
+    val requestKey = "${stackEntryId.value}-$resultType"
+    val entry = getEntryFor(stackEntryId.toInternalStackEntryId())
     val key = NavigationResultRequest.Key<O>(entry.id, requestKey)
     return NavigationResultRequest(key, entry.state, serializer)
 }

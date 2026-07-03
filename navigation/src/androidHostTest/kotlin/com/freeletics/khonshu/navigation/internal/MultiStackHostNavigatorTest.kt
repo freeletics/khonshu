@@ -1,5 +1,6 @@
 package com.freeletics.khonshu.navigation.internal
 
+import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.test.OtherRoot
 import com.freeletics.khonshu.navigation.test.OtherRoute
@@ -561,6 +562,51 @@ internal class MultiStackHostNavigatorTest {
         assertThat(hostNavigator.snapshot.value.canNavigateBack).isTrue()
 
         assertThat(removed).containsExactly(StackEntry.Id("101"))
+    }
+
+    @Test
+    fun `entry aware navigateBack no-ops when entry is gone`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        val destinationNavigator = object : DestinationNavigator(
+            hostNavigator = hostNavigator,
+            stackEntryId = hostNavigator.snapshot.value.current.stackEntryId,
+        ) {}
+
+        destinationNavigator.navigateBack()
+        destinationNavigator.navigateBack()
+
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("100"), SimpleRoot(1)),
+            )
+            .inOrder()
+        assertThat(removed).containsExactly(StackEntry.Id("101"))
+    }
+
+    @Test
+    fun `entry aware back navigation no-ops when entry is gone`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        hostNavigator.navigateTo(SimpleRoute(3))
+        val destinationNavigator = object : DestinationNavigator(
+            hostNavigator = hostNavigator,
+            stackEntryId = hostNavigator.snapshot.value.current.stackEntryId,
+        ) {}
+
+        destinationNavigator.navigateBack()
+        destinationNavigator.navigateUp()
+        destinationNavigator.navigateBackTo(SimpleRoot::class)
+        destinationNavigator.navigate {
+            navigateBack()
+        }
+
+        assertThat(hostNavigator.snapshot.value.visibleEntries)
+            .containsExactly(
+                factory.create(StackEntry.Id("101"), SimpleRoute(2)),
+            )
+            .inOrder()
+        assertThat(removed).containsExactly(StackEntry.Id("102"))
     }
 
     @Test

@@ -33,6 +33,7 @@ public final class com/freeletics/khonshu/navigation/TestHostNavigator : com/fre
 	public fun <init> ()V
 	public fun <init> (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 	public synthetic fun <init> (Lcom/freeletics/khonshu/navigation/NavRoot;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getStackEntryId-gdRYxN8 ()Ljava/lang/String;
 	public fun getStartRoot ()Lcom/freeletics/khonshu/navigation/NavRoot;
 	public fun navigate (Lkotlin/jvm/functions/Function1;)V
 	public fun navigateBack ()V

@@ -2,6 +2,7 @@ package com.freeletics.sample.dialog
 
 import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.HostNavigator
+import com.freeletics.khonshu.navigation.StackEntryId
 import com.freeletics.sample.dialog.nav.DialogRoute
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.ForScope
@@ -13,4 +14,7 @@ import dev.zacsweers.metro.binding
 @ForScope(DialogRoute::class)
 @SingleIn(DialogRoute::class)
 @ContributesBinding(DialogRoute::class, binding<DestinationNavigator>())
-class DialogNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator)
+class DialogNavigator(
+    hostNavigator: HostNavigator,
+    stackEntryId: StackEntryId,
+) : DestinationNavigator(hostNavigator, stackEntryId)

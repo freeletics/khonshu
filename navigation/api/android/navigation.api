@@ -3,7 +3,8 @@ public abstract interface class com/freeletics/khonshu/navigation/BaseRoute {
 
 public abstract class com/freeletics/khonshu/navigation/DestinationNavigator : com/freeletics/khonshu/navigation/activity/ActivityNavigator, com/freeletics/khonshu/navigation/Navigator {
 	public static final field $stable I
-	public fun <init> (Lcom/freeletics/khonshu/navigation/HostNavigator;)V
+	public synthetic fun <init> (Lcom/freeletics/khonshu/navigation/HostNavigator;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getStackEntryId-gdRYxN8 ()Ljava/lang/String;
 	public final fun navigate (Lkotlin/jvm/functions/Function1;)V
 	public fun navigateBack ()V
 	public fun navigateBackTo (Lkotlin/reflect/KClass;Z)V
@@ -87,6 +88,7 @@ public final class com/freeletics/khonshu/navigation/NavigationResultRequest$Key
 
 public final class com/freeletics/khonshu/navigation/NavigationResultsKt {
 	public static final fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/Navigator;Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Ljava/lang/Object;Lkotlinx/serialization/KSerializer;)V
+	public static final fun registerForNavigationResult-SOu5Ysg (Lcom/freeletics/khonshu/navigation/Navigator;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/KSerializer;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest;
 	public static final fun registerForNavigationResult-fWbuzBA (Lcom/freeletics/khonshu/navigation/Navigator;Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlinx/serialization/KSerializer;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest;
 }
 
@@ -113,6 +115,34 @@ public final class com/freeletics/khonshu/navigation/OverlayDestination : com/fr
 public final class com/freeletics/khonshu/navigation/ScreenDestination : com/freeletics/khonshu/navigation/NavDestination {
 	public static final field $stable I
 	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlinx/serialization/KSerializer;Lkotlin/reflect/KClass;Ljava/lang/Object;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class com/freeletics/khonshu/navigation/StackEntryId {
+	public static final field Companion Lcom/freeletics/khonshu/navigation/StackEntryId$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/StackEntryId;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final synthetic class com/freeletics/khonshu/navigation/StackEntryId$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/freeletics/khonshu/navigation/StackEntryId$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize-Zl_3_ts (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/String;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize-FSkquC8 (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/String;)V
+}
+
+public final class com/freeletics/khonshu/navigation/StackEntryId$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public abstract class com/freeletics/khonshu/navigation/activity/ActivityNavigator {

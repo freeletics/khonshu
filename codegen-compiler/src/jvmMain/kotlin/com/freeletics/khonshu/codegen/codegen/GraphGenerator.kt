@@ -22,6 +22,7 @@ import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
 import com.freeletics.khonshu.codegen.util.stackEntry
+import com.freeletics.khonshu.codegen.util.stackEntryId
 import com.freeletics.khonshu.codegen.util.stackEntryState
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.CodeBlock
@@ -152,6 +153,16 @@ internal class GraphGenerator(
                     parameters = listOf(stackEntryParam),
                     codeBlock = CodeBlock.builder()
                         .addStatement("return stackEntry.route")
+                        .build(),
+                ),
+            )
+            add(
+                providesFunction(
+                    "provideStackEntryId",
+                    stackEntryId,
+                    parameters = listOf(stackEntryParam),
+                    codeBlock = CodeBlock.builder()
+                        .addStatement("return stackEntry.stackEntryId")
                         .build(),
                 ),
             )

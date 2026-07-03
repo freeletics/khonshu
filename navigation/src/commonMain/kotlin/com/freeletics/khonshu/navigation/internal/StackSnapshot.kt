@@ -4,6 +4,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Immutable
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
+import com.freeletics.khonshu.navigation.StackEntryId
 import dev.drewhamilton.poko.Poko
 
 @Poko
@@ -69,5 +70,10 @@ public class StackSnapshot internal constructor(
         return entries.lastOrNull { it.id == id }
             ?: startStackRootEntry.takeIf { it.id == id }
             ?: throw IllegalStateException("Entry $id not found on back stack")
+    }
+
+    internal fun entryForOrNull(id: StackEntryId): StackEntry<*>? {
+        return entries.lastOrNull { it.stackEntryId == id }
+            ?: startStackRootEntry.takeIf { it.stackEntryId == id }
     }
 }

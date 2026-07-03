@@ -20,7 +20,9 @@ import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.OverlayDestination
 import com.freeletics.khonshu.navigation.ScreenDestination
+import com.freeletics.khonshu.navigation.StackEntryId
 import com.freeletics.khonshu.navigation.StackEntryState
+import com.freeletics.khonshu.navigation.toStackEntryId
 import dev.drewhamilton.poko.Poko
 import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
@@ -35,6 +37,9 @@ public class StackEntry<T : BaseRoute> internal constructor(
     public val state: StackEntryState,
     public val store: StackEntryStore,
 ) {
+    public val stackEntryId: StackEntryId
+        get() = id.toStackEntryId()
+
     internal val destinationId
         get() = route.destinationId
 

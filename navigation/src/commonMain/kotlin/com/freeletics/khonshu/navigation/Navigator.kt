@@ -59,6 +59,14 @@ public interface Navigator {
     @InternalNavigationApi
     public fun getEntryFor(id: StackEntry.Id): StackEntry<*>
 
+    @InternalNavigationApi
+    public fun getEntryForOrNull(id: StackEntryId): StackEntry<*>?
+
+    @InternalNavigationApi
+    public fun containsEntry(id: StackEntryId): Boolean {
+        return getEntryForOrNull(id) != null
+    }
+
     public companion object {
         /**
          * Removes all entries from the backstack until [T]. If [inclusive] is
