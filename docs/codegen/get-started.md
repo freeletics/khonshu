@@ -95,8 +95,16 @@ a screen is shown in the logged in or logged out state.
 The integration of Khonshu's Codegen and Navigation libraries also expects a `DestinationNavigator`
 binding to be available. This can be easily achieved by adding `@SingleIn(ExampleScope::class)
 @ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, binding<DestinationNavigator>())`
-to a subclass of it. The generated code will automatically take care of setting up
+to a subclass of it. A `DestinationNavigator` is tied to the current stack entry, so its
+constructor needs both the `HostNavigator` and the generated `StackEntryId`. The generated code will
+automatically provide the `StackEntryId` for the current destination and take care of setting up
 the navigator by calling `ActivityNavigatorEffect` in the compose UI layer with the navigator.
+
+Because a `DestinationNavigator` is tied to a concrete stack entry, back-style navigation is guarded:
+`navigateBack`, `navigateUp`, `navigateBackTo`, and batched `navigate { ... }` no-op once the entry that
+created the navigator is no longer on the stack. Forward/root-changing operations like `navigateTo`,
+`switchBackStack`, `showRoot`, and `replaceAllBackStacks` are intentionally not guarded so flows can
+still replace the current entry with another destination.
 
 
 ## Sharing objects between screens
@@ -135,7 +143,10 @@ internal class ExampleStateMachine(
 // make ExampleNavigator available as DestinationNavigator so that the generated code can automatically
 // set up the navigation handling
 @ContributesBinding(ExampleRoute::class)
-class ExampleNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
+class ExampleNavigator(
+    hostNavigator: HostNavigator,
+    stackEntryId: StackEntryId,
+) : DestinationNavigator(hostNavigator, stackEntryId) {
     // ...
 }
 

@@ -20,6 +20,10 @@ public class TestHostNavigator(
     @InternalNavigationCodegenApi
     private val fakeEntry = StackEntry.create(StackEntry.Id(""), DummyRoute)
 
+    @OptIn(InternalNavigationCodegenApi::class)
+    public val stackEntryId: StackEntryId
+        get() = fakeEntry.stackEntryId
+
     private val eventTurbine = Turbine<TestEvent>()
     internal val events: Flow<TestEvent>
         get() = eventTurbine.asChannel().receiveAsFlow()
@@ -76,6 +80,12 @@ public class TestHostNavigator(
     @InternalNavigationCodegenApi
     override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
         return fakeEntry
+    }
+
+    @InternalNavigationApi
+    @InternalNavigationCodegenApi
+    override fun getEntryForOrNull(id: StackEntryId): StackEntry<*>? {
+        return fakeEntry.takeIf { it.stackEntryId == id }
     }
 
     @Serializable

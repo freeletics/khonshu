@@ -23,6 +23,21 @@ internal class NavigationResultsTest {
     }
 
     @Test
+    fun `register navigation results from entry-aware DestinationNavigator without route type`(): Unit = runBlocking {
+        val navigator = TestHostNavigator()
+        val destinationNavigator = object : DestinationNavigator(
+            hostNavigator = navigator,
+            stackEntryId = navigator.stackEntryId,
+        ) {}
+        val request = destinationNavigator.registerForNavigationResult<TestParcelable>()
+
+        request.results.test {
+            request.sendResult(TestParcelable(4))
+            assertThat(awaitItem()).isEqualTo(TestParcelable(4))
+        }
+    }
+
+    @Test
     fun deliverNavigationResult() = runTest {
         val navigator = TestHostNavigator()
         val key = fakeNavigationResultKey<TestParcelable>()

@@ -2,6 +2,7 @@ package com.freeletics.sample.screen
 
 import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.HostNavigator
+import com.freeletics.khonshu.navigation.StackEntryId
 import com.freeletics.khonshu.navigation.registerForNavigationResult
 import com.freeletics.sample.bottomsheet.nav.BottomSheetRoute
 import com.freeletics.sample.dialog.nav.DialogRoute
@@ -21,9 +22,10 @@ import dev.zacsweers.metro.binding
 @ContributesBinding(ScreenRoute::class, binding<DestinationNavigator>())
 class ScreenNavigator(
     hostNavigator: HostNavigator,
+    stackEntryId: StackEntryId,
     private val route: ScreenRoute,
-) : DestinationNavigator(hostNavigator) {
-    val destinationResult = registerForNavigationResult<ScreenRoute, Result>()
+) : DestinationNavigator(hostNavigator, stackEntryId) {
+    val destinationResult = registerForNavigationResult<Result>()
 
     fun navigateToScreen() {
         navigateTo(ScreenRoute(route.number + 1))

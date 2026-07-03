@@ -32,6 +32,7 @@ internal val baseRoute = ClassName("com.freeletics.khonshu.navigation", "BaseRou
 internal val navRoot = ClassName("com.freeletics.khonshu.navigation", "NavRoot")
 internal val destinationNavigator = ClassName("com.freeletics.khonshu.navigation", "DestinationNavigator")
 internal val hostNavigator = ClassName("com.freeletics.khonshu.navigation", "HostNavigator")
+internal val stackEntryId = ClassName("com.freeletics.khonshu.navigation", "StackEntryId")
 internal val createHostNavigator = MemberName("com.freeletics.khonshu.navigation", "createHostNavigator")
 internal val stackEntryState = ClassName("com.freeletics.khonshu.navigation", "StackEntryState")
 internal val stackEntryStore = ClassName("com.freeletics.khonshu.navigation.internal", "StackEntryStore")

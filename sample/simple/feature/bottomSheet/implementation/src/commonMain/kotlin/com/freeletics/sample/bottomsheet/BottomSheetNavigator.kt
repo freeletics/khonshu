@@ -2,6 +2,7 @@ package com.freeletics.sample.bottomsheet
 
 import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.HostNavigator
+import com.freeletics.khonshu.navigation.StackEntryId
 import com.freeletics.sample.bottomsheet.nav.BottomSheetRoute
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.ForScope
@@ -13,4 +14,7 @@ import dev.zacsweers.metro.binding
 @ForScope(BottomSheetRoute::class)
 @SingleIn(BottomSheetRoute::class)
 @ContributesBinding(BottomSheetRoute::class, binding<DestinationNavigator>())
-class BottomSheetNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator)
+class BottomSheetNavigator(
+    hostNavigator: HostNavigator,
+    stackEntryId: StackEntryId,
+) : DestinationNavigator(hostNavigator, stackEntryId)

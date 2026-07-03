@@ -6,6 +6,7 @@ import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.Navigator
+import com.freeletics.khonshu.navigation.StackEntryId
 import kotlin.reflect.KClass
 
 internal class MultiStackHostNavigator(
@@ -63,6 +64,11 @@ internal class MultiStackHostNavigator(
         return snapshot.value.entryFor(id)
     }
 
+    @InternalNavigationApi
+    override fun getEntryForOrNull(id: StackEntryId): StackEntry<*>? {
+        return snapshot.value.entryForOrNull(id)
+    }
+
     private inner class NonNotifyingNavigator : Navigator {
         override fun navigateTo(route: NavRoute) {
             stack.push(route, notify = false)
@@ -100,6 +106,11 @@ internal class MultiStackHostNavigator(
         @InternalNavigationApi
         override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
             return this@MultiStackHostNavigator.getEntryFor(id)
+        }
+
+        @InternalNavigationApi
+        override fun getEntryForOrNull(id: StackEntryId): StackEntry<*>? {
+            return this@MultiStackHostNavigator.getEntryForOrNull(id)
         }
     }
 }
