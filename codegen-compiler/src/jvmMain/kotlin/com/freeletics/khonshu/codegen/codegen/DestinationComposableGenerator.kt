@@ -34,7 +34,7 @@ internal class DestinationComposableGenerator(
             .addStatement("%T.provide(entry, snapshot, provider)", graphProviderClassName)
             .endControlFlow()
             .addStatement("")
-            .addStatement("%M(graph.%L)", platformNavigatorEffect, destinationNavigator.propertyName)
+            .addStatement("%M(graph.%L.platformNavigator)", platformNavigatorEffect, destinationNavigator.propertyName)
             .addStatement("")
             .addStatement("%L(graph)", composableName)
             .build()

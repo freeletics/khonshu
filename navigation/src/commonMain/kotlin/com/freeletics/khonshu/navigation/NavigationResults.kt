@@ -30,12 +30,12 @@ public inline fun <reified T : BaseRoute, reified O : Any> Navigator.registerFor
 /**
  * Register for receiving navigation results for this destination entry.
  *
- * This overload uses the [StackEntryId] captured by [DestinationNavigator] and therefore doesn't require
+ * This overload uses the current entry captured by [DestinationNavigator2] and therefore doesn't require
  * the route type parameter.
  */
-public inline fun <reified O : Any> DestinationNavigator.registerForNavigationResult(): NavigationResultRequest<O> {
+@OptIn(com.freeletics.khonshu.navigation.internal.InternalNavigationApi::class)
+public inline fun <reified O : Any> DestinationNavigator2.registerForNavigationResult(): NavigationResultRequest<O> {
     return registerForNavigationResult(
-        stackEntryId = stackEntryId,
         resultType = O::class.qualifiedName!!,
         serializer = serializer(),
     )
@@ -53,16 +53,15 @@ internal fun <T : BaseRoute, O> Navigator.registerForNavigationResult(
     return NavigationResultRequest(key, entry.state, serializer)
 }
 
+@OptIn(com.freeletics.khonshu.navigation.internal.InternalNavigationApi::class)
 @PublishedApi
-internal fun <O> Navigator.registerForNavigationResult(
-    stackEntryId: StackEntryId,
+internal fun <O> DestinationNavigator2.registerForNavigationResult(
     resultType: String,
     serializer: KSerializer<O>,
 ): NavigationResultRequest<O> {
-    val requestKey = "${stackEntryId.value}-$resultType"
-    val entry = getEntryFor(stackEntryId.toInternalStackEntryId())
-    val key = NavigationResultRequest.Key<O>(entry.id, requestKey)
-    return NavigationResultRequest(key, entry.state, serializer)
+    val requestKey = "${stackEntry.id.value}-$resultType"
+    val key = NavigationResultRequest.Key<O>(stackEntry.id, requestKey)
+    return NavigationResultRequest(key, stackEntry.state, serializer)
 }
 
 /**
