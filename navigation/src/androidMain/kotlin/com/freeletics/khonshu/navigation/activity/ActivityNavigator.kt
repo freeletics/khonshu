@@ -19,17 +19,17 @@ import kotlinx.coroutines.flow.receiveAsFlow
  *
  * For this work [ActivityNavigatorEffect] needs to be called.
  */
-public abstract class ActivityNavigator {
+public abstract class ActivityNavigator : ActivityNavigatorApi {
     private val _activityEvents = Channel<ActivityEvent>(Channel.UNLIMITED)
 
     @InternalNavigationTestingApi
-    public val activityEvents: Flow<ActivityEvent> = _activityEvents.receiveAsFlow()
+    override val activityEvents: Flow<ActivityEvent> = _activityEvents.receiveAsFlow()
 
     private val _activityResultRequests = mutableListOf<ActivityResultContractRequest<*, *, *>>()
     private var allowedToAddRequests = true
 
     @InternalNavigationTestingApi
-    public val activityResultRequests: List<ActivityResultContractRequest<*, *, *>>
+    override val activityResultRequests: List<ActivityResultContractRequest<*, *, *>>
         get() {
             allowedToAddRequests = false
             return _activityResultRequests.toList()
@@ -38,7 +38,7 @@ public abstract class ActivityNavigator {
     /**
      * Triggers navigation to the given [route].
      */
-    public fun navigateTo(route: ActivityRoute, fallbackRoute: NavRoute? = null) {
+    override fun navigateTo(route: ActivityRoute, fallbackRoute: NavRoute?) {
         val event = ActivityEvent.NavigateTo(route, fallbackRoute)
         sendEvent(event)
     }
@@ -54,7 +54,7 @@ public abstract class ActivityNavigator {
      *
      * Note: You must call this before [ActivityNavigatorEffect] is called with this navigator.
      */
-    public fun <I, O> registerForActivityResult(
+    override fun <I, O> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
     ): ActivityResultRequest<I, O> {
         checkAllowedToAddRequests()
@@ -77,7 +77,7 @@ public abstract class ActivityNavigator {
      *
      * Note: You must call this before [ActivityNavigatorEffect] is called with this navigator.
      */
-    public fun registerForPermissionsResult(): PermissionsResultRequest {
+    override fun registerForPermissionsResult(): PermissionsResultRequest {
         checkAllowedToAddRequests()
         val request = PermissionsResultRequest()
         _activityResultRequests.add(request)
@@ -87,14 +87,14 @@ public abstract class ActivityNavigator {
     /**
      * Launches the given [request].
      */
-    public fun navigateForResult(request: ActivityResultRequest<Void?, *>) {
+    override fun navigateForResult(request: ActivityResultRequest<Void?, *>) {
         navigateForResult(request, null)
     }
 
     /**
      * Launches the given [request] with the given [input].
      */
-    public fun <I> navigateForResult(request: ActivityResultRequest<I, *>, input: I) {
+    override fun <I> navigateForResult(request: ActivityResultRequest<I, *>, input: I) {
         val event = ActivityEvent.NavigateForResult(request, input)
         sendEvent(event)
     }
@@ -107,7 +107,7 @@ public abstract class ActivityNavigator {
      * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
      * for more information.
      */
-    public fun requestPermissions(request: PermissionsResultRequest, vararg permissions: String) {
+    override fun requestPermissions(request: PermissionsResultRequest, vararg permissions: String) {
         requestPermissions(request, permissions.toList())
     }
 
@@ -119,7 +119,7 @@ public abstract class ActivityNavigator {
      * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
      * for more information.
      */
-    public fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>) {
+    override fun requestPermissions(request: PermissionsResultRequest, permissions: List<String>) {
         val event = ActivityEvent.NavigateForResult(request, permissions)
         sendEvent(event)
     }

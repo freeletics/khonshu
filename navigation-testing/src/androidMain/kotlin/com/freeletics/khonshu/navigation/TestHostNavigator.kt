@@ -90,9 +90,6 @@ public class TestHostNavigator(
     ) : ActivityNavigator(),
         DestinationNavigator2,
         Navigator by hostNavigator {
-        override val platformNavigator: PlatformNavigator
-            get() = this
-
         override fun navigate(block: Navigator.() -> Unit) {
             hostNavigator.navigate(block)
         }

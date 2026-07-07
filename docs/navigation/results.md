@@ -5,10 +5,12 @@ it is required to call `DestinationNavigator2.registerForNavigationResult<Result
 `HostNavigator.registerForNavigationResult<Route, Result>()`.
 
 The `DestinationNavigator2` overload uses the current stack entry, so it doesn't require the route
-type of the current screen. The `HostNavigator` overload is kept for existing code; `Route` in this
-case should be the `NavRoute` class for the current screen. `Result` is the type of the expected
-result which can be any `Serializable` class. The register method will return a
-`NavigationResultRequest`, which has a `results: Flow<Result>` property to collect the results.
+type of the current screen. `DestinationNavigator2` is generated for codegen destinations and can be
+injected alongside an existing `DestinationNavigator`. The `HostNavigator` overload is kept for
+existing code; `Route` in this case should be the `NavRoute` class for the current screen. `Result`
+is the type of the expected result which can be any `Serializable` class. The register method will
+return a `NavigationResultRequest`, which has a `results: Flow<Result>` property to collect the
+results.
 
 The navigation to the screen from which the result should be returned is a regular call to
 `navigateTo`. However the `NavRoute` class for that target destination should have
