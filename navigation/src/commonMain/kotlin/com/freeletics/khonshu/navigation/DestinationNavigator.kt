@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation
 
 import androidx.compose.runtime.Composable
+import com.freeletics.khonshu.navigation.activity.ActivityNavigatorApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
@@ -14,10 +15,7 @@ public abstract class DestinationNavigator(
     public val hostNavigator: HostNavigator,
 ) : Navigator by hostNavigator,
     PlatformNavigator(),
-    PlatformNavigatorApi {
-    override val platformNavigator: PlatformNavigator
-        get() = this
-
+    ActivityNavigatorApi {
     /**
      * See [HostNavigator.navigate].
      */
@@ -27,18 +25,11 @@ public abstract class DestinationNavigator(
 }
 
 /**
- * Exposes the platform-specific navigator implementation for setup in the UI layer.
- */
-public interface PlatformNavigatorApi {
-    public val platformNavigator: PlatformNavigator
-}
-
-/**
  * Entry-aware navigator for individual destinations.
  */
 public interface DestinationNavigator2 :
     Navigator,
-    PlatformNavigatorApi {
+    ActivityNavigatorApi {
     @InternalNavigationApi
     public val stackEntry: StackEntry<*>
 

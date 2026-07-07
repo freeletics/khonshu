@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation.internal
 
-import com.freeletics.khonshu.navigation.DefaultDestinationNavigator
+import com.freeletics.khonshu.navigation.DefaultDestinationNavigator2
+import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.test.OtherRoot
 import com.freeletics.khonshu.navigation.test.OtherRoute
@@ -568,8 +569,8 @@ internal class MultiStackHostNavigatorTest {
     fun `entry aware navigateBack no-ops when entry is gone`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(2))
-        val destinationNavigator = DefaultDestinationNavigator(
-            hostNavigator = hostNavigator,
+        val destinationNavigator = DefaultDestinationNavigator2(
+            destinationNavigator = object : DestinationNavigator(hostNavigator) {},
             stackEntry = hostNavigator.snapshot.value.current,
         )
 
@@ -589,17 +590,14 @@ internal class MultiStackHostNavigatorTest {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(2))
         hostNavigator.navigateTo(SimpleRoute(3))
-        val destinationNavigator = DefaultDestinationNavigator(
-            hostNavigator = hostNavigator,
+        val destinationNavigator = DefaultDestinationNavigator2(
+            destinationNavigator = object : DestinationNavigator(hostNavigator) {},
             stackEntry = hostNavigator.snapshot.value.current,
         )
 
         destinationNavigator.navigateBack()
         destinationNavigator.navigateUp()
         destinationNavigator.navigateBackTo(SimpleRoot::class)
-        destinationNavigator.navigate {
-            navigateBack()
-        }
 
         assertThat(hostNavigator.snapshot.value.visibleEntries)
             .containsExactly(
