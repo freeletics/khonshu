@@ -31,7 +31,7 @@ uri = "0.0.21"
 
 metro = "1.2.1"
 
-ksp = "2.3.9"
+ksp = "2.3.10"
 kotlinpoet = "2.3.0"
 auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
