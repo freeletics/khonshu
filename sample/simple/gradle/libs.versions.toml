@@ -1,7 +1,7 @@
 [versions]
 
-android-compile = "36"
-android-target = "36"
+android-compile = "37"
+android-target = "37"
 android-desugarjdklibs = "2.1.5"
 android-gradle = "9.2.1"
 android-min = "26"
