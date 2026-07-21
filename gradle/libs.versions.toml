@@ -19,7 +19,7 @@ jetbrains-compose = "1.11.1"
 
 androidx-activity = "1.13.0"
 androidx-annotations = "1.10.0"
-androidx-core = "1.18.0"
+androidx-core = "1.19.0"
 androidx-lifecycle = "2.11.0"
 androidx-savedstate = "1.5.0"
 androidx-navigation-event = "1.1.0"
