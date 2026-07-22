@@ -1,10 +1,16 @@
 # Destination results
 
 Khonshu has a built-in way to receive results from another screen inside the app. For that
-it is required to call `HostNavigator.registerForNavigationResult<Route, Result>`.
-`Route` in this case should be the `NavRoute` class for the current screen, while `Result`is the type of the
-expected result which can be any `Serializable` class. The register method
-will return a `NavigationResultRequest`, which has a `results: Flow<Result>` property to collect the results.
+it is required to call `DestinationNavigator2.registerForNavigationResult<Result>()` or
+`HostNavigator.registerForNavigationResult<Route, Result>()`.
+
+The `DestinationNavigator2` overload uses the current stack entry, so it doesn't require the route
+type of the current screen. `DestinationNavigator2` is generated for codegen destinations and can be
+injected alongside an existing `DestinationNavigator`. The `HostNavigator` overload is kept for
+existing code; `Route` in this case should be the `NavRoute` class for the current screen. `Result`
+is the type of the expected result which can be any `Serializable` class. The register method will
+return a `NavigationResultRequest`, which has a `results: Flow<Result>` property to collect the
+results.
 
 The navigation to the screen from which the result should be returned is a regular call to
 `navigateTo`. However the `NavRoute` class for that target destination should have
@@ -20,14 +26,14 @@ like this:
 data class MessageResult(val message: String): Parcelable
 
 class FooScreenViewModel(
-    private val hostNavigator: HostNavigator
+    private val navigator: DestinationNavigator2
 ) {
     // use request.results somewhere to handle the results that BarScreen delivers
-    val request = hostNavigator.registerForNavigationResult<FooScreenRoute, MessageResult>()
+    val request = navigator.registerForNavigationResult<MessageResult>()
 
     fun navigateToScreenB() {
         // if needed BarScreenRoute could also have additional parameters
-        hostNavigator.navigateTo(BarScreenRoute(request.key))
+        navigator.navigateTo(BarScreenRoute(request.key))
     }
 }
 ```

@@ -92,11 +92,28 @@ a screen is shown in the logged in or logged out state.
 
 ## Navigation set up
 
-The integration of Khonshu's Codegen and Navigation libraries also expects a `DestinationNavigator`
+The integration of Khonshu's Codegen and Navigation libraries expects a `DestinationNavigator`
 binding to be available. This can be easily achieved by adding `@SingleIn(ExampleScope::class)
 @ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, binding<DestinationNavigator>())`
 to a subclass of it. The generated code will automatically take care of setting up
 the navigator by calling `ActivityNavigatorEffect` in the compose UI layer with the navigator.
+
+Generated destination graphs also provide a `DestinationNavigator2` for each generated destination.
+This navigator is additive to `DestinationNavigator`: generated code still uses the existing
+`DestinationNavigator` binding for activity/platform navigation setup, while `DestinationNavigator2`
+can be injected when code needs entry-aware behavior. It forwards activity and permission navigation
+APIs to that `DestinationNavigator`. It is tied to the current stack entry and can be injected
+directly into state machines or helper classes that are not themselves contributed as the
+`DestinationNavigator` binding.
+
+A class that is contributed as `DestinationNavigator` should not inject `DestinationNavigator2`, because
+`DestinationNavigator2` is built from that `DestinationNavigator` binding.
+
+Because a `DestinationNavigator2` is tied to a concrete stack entry, back-style navigation is guarded:
+`navigateBack`, `navigateUp`, and `navigateBackTo` no-op once the entry that
+created the navigator is no longer on the stack. Forward/root-changing operations like `navigateTo`,
+`switchBackStack`, `showRoot`, and `replaceAllBackStacks` are intentionally not guarded so flows can
+still replace the current entry with another destination.
 
 
 ## Sharing objects between screens
@@ -123,7 +140,8 @@ internal class ExampleStateMachine(
     val route: ExampleRoute, // inject the navigator route that was used to get to this screen
     @ForScope(ExampleRoute::class)
     val savedStateHandle: SavedStateHandle, // a saved state handle tied to this screen
-    val repository: ExampleRepository, // a repository that pas provided somewhere in the app
+    val repository: ExampleRepository, // a repository that was provided somewhere in the app
+    val navigator: DestinationNavigator2, // entry-aware navigator for this screen
 ) : StateMachine<ExampleState, ExampleAction> {
     // ...
 }
@@ -133,9 +151,11 @@ internal class ExampleStateMachine(
 @SingleIn(ExampleRoute::class)
 @ForScope(ExampleRoute::class)
 // make ExampleNavigator available as DestinationNavigator so that the generated code can automatically
-// set up the navigation handling
+// set up the activity navigation handling
 @ContributesBinding(ExampleRoute::class)
-class ExampleNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
+class ExampleNavigator(
+    hostNavigator: HostNavigator,
+) : DestinationNavigator(hostNavigator) {
     // ...
 }
 

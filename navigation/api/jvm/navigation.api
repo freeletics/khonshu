@@ -1,7 +1,7 @@
 public abstract interface class com/freeletics/khonshu/navigation/BaseRoute {
 }
 
-public abstract class com/freeletics/khonshu/navigation/DestinationNavigator : com/freeletics/khonshu/navigation/PlatformNavigator, com/freeletics/khonshu/navigation/Navigator {
+public abstract class com/freeletics/khonshu/navigation/DestinationNavigator : com/freeletics/khonshu/navigation/PlatformNavigator, com/freeletics/khonshu/navigation/Navigator, com/freeletics/khonshu/navigation/activity/ActivityNavigatorApi {
 	public static final field $stable I
 	public fun <init> (Lcom/freeletics/khonshu/navigation/HostNavigator;)V
 	public final fun navigate (Lkotlin/jvm/functions/Function1;)V
@@ -12,6 +12,10 @@ public abstract class com/freeletics/khonshu/navigation/DestinationNavigator : c
 	public fun replaceAllBackStacks (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 	public fun showRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 	public fun switchBackStack (Lcom/freeletics/khonshu/navigation/NavRoot;)V
+}
+
+public abstract interface class com/freeletics/khonshu/navigation/DestinationNavigator2 : com/freeletics/khonshu/navigation/Navigator, com/freeletics/khonshu/navigation/activity/ActivityNavigatorApi {
+	public abstract fun navigate (Lkotlin/jvm/functions/Function1;)V
 }
 
 public final class com/freeletics/khonshu/navigation/DestinationNavigator_jvmKt {
@@ -91,6 +95,7 @@ public final class com/freeletics/khonshu/navigation/NavigationResultRequest$Key
 
 public final class com/freeletics/khonshu/navigation/NavigationResultsKt {
 	public static final fun deliverNavigationResult (Lcom/freeletics/khonshu/navigation/Navigator;Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Ljava/lang/Object;Lkotlinx/serialization/KSerializer;)V
+	public static final fun registerForNavigationResult (Lcom/freeletics/khonshu/navigation/DestinationNavigator2;Ljava/lang/String;Lkotlinx/serialization/KSerializer;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest;
 	public static final fun registerForNavigationResult-fWbuzBA (Lcom/freeletics/khonshu/navigation/Navigator;Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlinx/serialization/KSerializer;)Lcom/freeletics/khonshu/navigation/NavigationResultRequest;
 }
 
@@ -134,6 +139,9 @@ public final class com/freeletics/khonshu/navigation/StackEntryState {
 	public final fun getStateFlow (Ljava/lang/String;Ljava/lang/Object;Lkotlinx/serialization/KSerializer;)Lkotlinx/coroutines/flow/StateFlow;
 	public final fun remove (Ljava/lang/String;)Ljava/lang/Object;
 	public final fun set (Ljava/lang/String;Ljava/lang/Object;Lkotlinx/serialization/KSerializer;)V
+}
+
+public abstract interface class com/freeletics/khonshu/navigation/activity/ActivityNavigatorApi {
 }
 
 public final class com/freeletics/khonshu/navigation/deeplinks/DeepLink {

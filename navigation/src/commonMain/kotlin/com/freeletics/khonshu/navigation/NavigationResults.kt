@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation
 
 import com.freeletics.khonshu.navigation.internal.DestinationId
+import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import dev.drewhamilton.poko.Poko
@@ -27,6 +28,21 @@ public inline fun <reified T : BaseRoute, reified O : Any> Navigator.registerFor
     )
 }
 
+/**
+ * Register for receiving navigation results.
+ *
+ * The returned [NavigationResultRequest] has a [NavigationResultRequest.Key]. This `key` should
+ * be passed to different destinations which can then use it to call [deliverNavigationResult]. A
+ * result passed to `deliverNavigationResult` will then be emitted by the `Flow` returned from
+ * [NavigationResultRequest.results].
+ */
+public inline fun <reified O : Any> DestinationNavigator2.registerForNavigationResult(): NavigationResultRequest<O> {
+    return registerForNavigationResult(
+        resultType = O::class.qualifiedName!!,
+        serializer = serializer(),
+    )
+}
+
 @PublishedApi
 internal fun <T : BaseRoute, O> Navigator.registerForNavigationResult(
     id: DestinationId<T>,
@@ -37,6 +53,17 @@ internal fun <T : BaseRoute, O> Navigator.registerForNavigationResult(
     val entry = getTopEntryFor(id)
     val key = NavigationResultRequest.Key<O>(entry.id, requestKey)
     return NavigationResultRequest(key, entry.state, serializer)
+}
+
+@OptIn(InternalNavigationApi::class)
+@PublishedApi
+internal fun <O> DestinationNavigator2.registerForNavigationResult(
+    resultType: String,
+    serializer: KSerializer<O>,
+): NavigationResultRequest<O> {
+    val requestKey = "NavigationResult-$resultType"
+    val key = NavigationResultRequest.Key<O>(stackEntry.id, requestKey)
+    return NavigationResultRequest(key, stackEntry.state, serializer)
 }
 
 /**
