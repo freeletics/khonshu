@@ -102,7 +102,7 @@ private fun KotlinCompilation.configure(
     kotlinLanguageVersion: String? = null,
 ) {
     compilerPluginRegistrars += compilerPlugins
-    jvmTarget = "11"
+    jvmTarget = "17"
     languageVersion = kotlinLanguageVersion
     inheritClassPath = true
     messageOutputStream = System.out // see diagnostics in real time
