@@ -88,6 +88,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.DefaultDestinationNavigator2
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
@@ -145,7 +146,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun provideDestinationNavigator(@ForScope(TestRoute::class) destinationNavigator: DestinationNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(destinationNavigator, stackEntry)
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)
@@ -270,6 +271,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.DefaultDestinationNavigator2
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
@@ -326,7 +328,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun provideDestinationNavigator(@ForScope(TestRoute::class) destinationNavigator: DestinationNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(destinationNavigator, stackEntry)
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)
@@ -453,6 +455,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.DefaultDestinationNavigator2
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.OverlayDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
@@ -510,7 +513,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestOverlayRoute::class)
-              public fun provideDestinationNavigator(@ForScope(TestOverlayRoute::class) destinationNavigator: DestinationNavigator, stackEntry: StackEntry<TestOverlayRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(destinationNavigator, stackEntry)
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestOverlayRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestOverlayRoute::class)
@@ -655,6 +658,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.DefaultDestinationNavigator2
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
@@ -724,7 +728,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun provideDestinationNavigator(@ForScope(TestRoute::class) destinationNavigator: DestinationNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(destinationNavigator, stackEntry)
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)
@@ -852,6 +856,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.DefaultDestinationNavigator2
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
@@ -907,7 +912,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun provideDestinationNavigator(@ForScope(TestRoute::class) destinationNavigator: DestinationNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(destinationNavigator, stackEntry)
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)
@@ -1023,6 +1028,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.DefaultDestinationNavigator2
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
@@ -1080,7 +1086,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun provideDestinationNavigator(@ForScope(TestRoute::class) destinationNavigator: DestinationNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(destinationNavigator, stackEntry)
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)
@@ -1201,6 +1207,7 @@ internal class DestinationCodegenTest {
             import com.freeletics.khonshu.navigation.DefaultDestinationNavigator2
             import com.freeletics.khonshu.navigation.DestinationNavigator
             import com.freeletics.khonshu.navigation.DestinationNavigator2
+            import com.freeletics.khonshu.navigation.HostNavigator
             import com.freeletics.khonshu.navigation.NavDestination
             import com.freeletics.khonshu.navigation.PlatformNavigatorEffect
             import com.freeletics.khonshu.navigation.ScreenDestination
@@ -1256,7 +1263,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun provideDestinationNavigator(@ForScope(TestRoute::class) destinationNavigator: DestinationNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(destinationNavigator, stackEntry)
+              public fun provideDestinationNavigator(hostNavigator: HostNavigator, stackEntry: StackEntry<TestRoute>): DestinationNavigator2 = DefaultDestinationNavigator2(hostNavigator, stackEntry)
 
               @Provides
               @ForScope(TestRoute::class)

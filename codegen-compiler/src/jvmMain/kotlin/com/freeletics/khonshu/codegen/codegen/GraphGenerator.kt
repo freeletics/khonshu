@@ -163,16 +163,14 @@ internal class GraphGenerator(
                     "provideDestinationNavigator",
                     destinationNavigator2,
                     parameters = listOf(
-                        ParameterSpec.builder(destinationNavigator.propertyName, destinationNavigator)
-                            .addAnnotation(forScope(data.scope))
-                            .build(),
+                        ParameterSpec.builder(hostNavigator.propertyName, hostNavigator).build(),
                         stackEntryParam,
                     ),
                     codeBlock = CodeBlock.builder()
                         .addStatement(
                             "return %T(%L, stackEntry)",
                             defaultDestinationNavigator2,
-                            destinationNavigator.propertyName,
+                            hostNavigator.propertyName,
                         )
                         .build(),
                     annotation = singleIn(data.scope),
