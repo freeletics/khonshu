@@ -1,7 +1,6 @@
 package com.freeletics.khonshu.navigation.internal
 
 import com.freeletics.khonshu.navigation.DefaultDestinationNavigator2
-import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.test.OtherRoot
 import com.freeletics.khonshu.navigation.test.OtherRoute
@@ -570,7 +569,7 @@ internal class MultiStackHostNavigatorTest {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(2))
         val destinationNavigator = DefaultDestinationNavigator2(
-            destinationNavigator = object : DestinationNavigator(hostNavigator) {},
+            hostNavigator = hostNavigator,
             stackEntry = hostNavigator.snapshot.value.current,
         )
 
@@ -591,7 +590,7 @@ internal class MultiStackHostNavigatorTest {
         hostNavigator.navigateTo(SimpleRoute(2))
         hostNavigator.navigateTo(SimpleRoute(3))
         val destinationNavigator = DefaultDestinationNavigator2(
-            destinationNavigator = object : DestinationNavigator(hostNavigator) {},
+            hostNavigator = hostNavigator,
             stackEntry = hostNavigator.snapshot.value.current,
         )
 

@@ -24,7 +24,7 @@ import org.jetbrains.annotations.VisibleForTesting
  * composition so that its events are handled while the composition is active.
  */
 @Composable
-public fun ActivityNavigatorEffect(navigator: ActivityNavigatorApi) {
+public fun ActivityNavigatorEffect(navigator: ActivityNavigator) {
     val hostNavigator = LocalHostNavigator.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val activity = requireNotNull(LocalActivity.current) {
@@ -59,7 +59,7 @@ private fun <I, O> rememberResultLaunchers(
 }
 
 @VisibleForTesting
-internal suspend fun ActivityNavigatorApi.collectAndHandleActivityEvents(
+internal suspend fun ActivityNavigator.collectAndHandleActivityEvents(
     lifecycle: Lifecycle,
     activityStarter: (ActivityRoute, NavRoute?) -> Unit,
     activityLaunchers: Map<ActivityResultContractRequest<*, *, *>, ActivityResultLauncher<*>>,

@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation
 
-import com.freeletics.khonshu.navigation.activity.ActivityNavigatorApi
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
@@ -10,11 +9,10 @@ import kotlin.reflect.KClass
 
 @InternalNavigationCodegenApi
 public class DefaultDestinationNavigator2(
-    private val destinationNavigator: DestinationNavigator,
-    override val stackEntry: StackEntry<*>,
+    private val hostNavigator: HostNavigator,
+    private val stackEntry: StackEntry<*>,
 ) : DestinationNavigator2,
-    Navigator by destinationNavigator,
-    ActivityNavigatorApi by destinationNavigator {
+    Navigator by hostNavigator {
     @OptIn(InternalNavigationTestingApi::class)
     override fun navigateUp() {
         ifTopEntry {
@@ -37,7 +35,7 @@ public class DefaultDestinationNavigator2(
     }
 
     override fun navigate(block: Navigator.() -> Unit) {
-        destinationNavigator.navigate(block)
+        hostNavigator.navigate(block)
     }
 
     @InternalNavigationApi
@@ -45,7 +43,7 @@ public class DefaultDestinationNavigator2(
         return if (stackEntry.destinationId == destinationId) {
             stackEntry
         } else {
-            destinationNavigator.getTopEntryFor(destinationId)
+            hostNavigator.getTopEntryFor(destinationId)
         }
     }
 
@@ -54,14 +52,14 @@ public class DefaultDestinationNavigator2(
         return if (stackEntry.id == id) {
             stackEntry
         } else {
-            destinationNavigator.getEntryFor(id)
+            hostNavigator.getEntryFor(id)
         }
     }
 
     @OptIn(InternalNavigationTestingApi::class)
-    private inline fun ifTopEntry(block: DestinationNavigator.() -> Unit) {
-        if (destinationNavigator.hostNavigator.snapshot.value.current.id == stackEntry.id) {
-            destinationNavigator.block()
+    private inline fun ifTopEntry(block: HostNavigator.() -> Unit) {
+        if (hostNavigator.snapshot.value.current.id == stackEntry.id) {
+            hostNavigator.block()
         }
     }
 }
