@@ -104,6 +104,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.OptionalBinding
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
@@ -146,7 +147,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
+              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
               @SingleIn(TestRoute::class)
@@ -290,6 +291,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.OptionalBinding
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
@@ -332,7 +334,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
+              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
               @SingleIn(TestRoute::class)
@@ -479,6 +481,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.OptionalBinding
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
@@ -521,7 +524,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestOverlayRoute::class)
-              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestOverlayRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
+              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestOverlayRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
               @SingleIn(TestOverlayRoute::class)
@@ -687,6 +690,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.OptionalBinding
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
@@ -740,7 +744,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
+              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
               @SingleIn(TestRoute::class)
@@ -888,6 +892,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.OptionalBinding
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
@@ -928,7 +933,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
+              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
               @SingleIn(TestRoute::class)
@@ -1064,6 +1069,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.OptionalBinding
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
@@ -1106,7 +1112,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
+              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
               @SingleIn(TestRoute::class)
@@ -1247,6 +1253,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.GraphExtension
             import dev.zacsweers.metro.IntoSet
             import dev.zacsweers.metro.Multibinds
+            import dev.zacsweers.metro.OptionalBinding
             import dev.zacsweers.metro.Provides
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
@@ -1287,7 +1294,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
-              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
+              public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
               @SingleIn(TestRoute::class)
