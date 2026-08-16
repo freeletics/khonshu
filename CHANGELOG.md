@@ -3,6 +3,28 @@ Change Log
 
 ## UNRELEASED
 
+### Navigation
+
+- Added `DestinationNavigator2`, a `Navigator` for a single destination that is aware of the back
+  stack entry it belongs to. `navigateBack`, `navigateUp`, `navigateBackTo` and `navigate` are only
+  executed while its destination is the current destination, so a delayed or repeated back action
+  can not remove a destination that was put on the back stack in the meantime.
+  `registerForNavigationResult` resolves to its own destination instead of looking up a destination
+  by route type, which is ambiguous when the same route is on the back stack more than once.
+  Its `isCurrentDestination` property exposes whether back navigation is currently possible and can
+  be observed from Compose.
+- Generated destination graphs now provide a scoped `DestinationNavigator2`. The existing
+  `DestinationNavigator` continues to work and is still used for the platform navigation set up when
+  a binding for it exists. Providing one is now optional, so a destination can use only
+  `DestinationNavigator2`.
+
+### Navigation Testing
+
+- Added `TestHostNavigator.destinationNavigator()` to create a `DestinationNavigator2` that reports
+  its events to the `TestHostNavigator` and can be asserted on with `test`/`testIn`. Pass
+  `isCurrentDestination = false` to test the behavior of a navigator whose destination is no longer
+  the current one.
+
 ## 0.37.1 *(2026-06-24)*
 
 - Compiled without enabling Kotlin 2.4.0 experimental compiler flags.

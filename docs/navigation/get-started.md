@@ -124,6 +124,40 @@ navigator.navigateBack()
 navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 ```
 
+### DestinationNavigator2
+
+`HostNavigator` always operates on the back stack as a whole. That is a problem for navigators that
+belong to a single destination: a back navigation that is triggered from a delayed callback or from
+repeated user input can remove a destination that another screen has put on the back stack in the
+meantime.
+
+`DestinationNavigator2` solves this by knowing the exact back stack entry it belongs to:
+
+- `navigateBack`, `navigateUp`, `navigateBackTo` and `navigate` are only executed while its
+  destination is the current destination and are ignored otherwise.
+- `registerForNavigationResult` resolves to its own destination instead of looking up a destination
+  by route type, which is ambiguous when the same route is on the back stack more than once.
+- `navigateTo`, `switchBackStack`, `showRoot` and `replaceAllBackStacks` are not guarded and behave
+  like on `HostNavigator`.
+- `isCurrentDestination` exposes whether the destination is currently the current one. Reading it
+  from a `@Composable` function is observable, so it can be used to enable or disable UI.
+
+When using [Khonshu's codegen](../codegen/get-started.md) an instance is automatically part of the
+dependency graph of each destination. A navigator class for a specific screen can delegate to it:
+
+```kotlin
+@Inject
+@SingleIn(DetailScreenRoute::class)
+class DetailScreenNavigator(
+    navigator: DestinationNavigator2,
+) : DestinationNavigator2 by navigator {
+    val result = registerForNavigationResult<DetailScreenRoute, Boolean>()
+}
+```
+
+`DestinationNavigator2` is platform neutral. For activity and permission navigation see
+[Navigating to an Activity](activities.md).
+
 ### NavHost
 
 The last remaining part is showing the UI which is handled by `NavHost`.

@@ -8,12 +8,10 @@ import com.freeletics.sample.newroot.nav.NewRootRoute
 import com.freeletics.sample.screen.nav.ScreenRoute
 import com.freeletics.sample.screenwithresult.nav.Result
 import com.freeletics.sample.screenwithresult.nav.ScreenWithResultRoute
-import dev.zacsweers.metro.ForScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 
 @Inject
-@ForScope(ScreenRoute::class)
 @SingleIn(ScreenRoute::class)
 class ScreenNavigator(
     private val route: ScreenRoute,
