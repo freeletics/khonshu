@@ -92,10 +92,16 @@ a screen is shown in the logged in or logged out state.
 
 ## Navigation set up
 
-Generated destination graphs provide a scoped `DestinationNavigator2`. It can be injected directly or
-delegated to by a screen-specific navigator. The existing `DestinationNavigator` remains supported for
-activity navigation. When a scoped `DestinationNavigator` binding is available, generated code uses it
-for the platform navigation effect; otherwise it uses a default implementation.
+Generated destination graphs provide a `DestinationNavigator2` that is scoped to the destination and
+aware of its back stack entry. It can either be injected directly or be delegated to by a screen
+specific navigator class. See [Navigation](../navigation/get-started.md) for what it does.
+
+Providing a `DestinationNavigator` binding is optional. It is only needed for activity and
+permission navigation. When a `@SingleIn(ExampleRoute::class) @ForScope(ExampleRoute::class)`
+binding of `DestinationNavigator` exists, the generated code will use it to set up activity
+navigation by calling `PlatformNavigatorEffect` in the compose UI layer. Note that
+`registerForActivityResult`/`registerForPermissionsResult` still have to be called at construction
+time of that `DestinationNavigator` subclass.
 
 
 ## Sharing objects between screens
@@ -129,8 +135,8 @@ internal class ExampleStateMachine(
 }
 
 @Inject
+// scope the navigator so that everything interacts with the same instance
 @SingleIn(ExampleRoute::class)
-@ForScope(ExampleRoute::class)
 class ExampleNavigator(
     navigator: DestinationNavigator2,
 ) : DestinationNavigator2 by navigator {

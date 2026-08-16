@@ -49,7 +49,10 @@ abstract interface com.freeletics.khonshu.navigation/DestinationNavigator2 : com
     abstract val isCurrentDestination // com.freeletics.khonshu.navigation/DestinationNavigator2.isCurrentDestination|{}isCurrentDestination[0]
         abstract fun <get-isCurrentDestination>(): kotlin/Boolean // com.freeletics.khonshu.navigation/DestinationNavigator2.isCurrentDestination.<get-isCurrentDestination>|<get-isCurrentDestination>(){}[0]
 
+    abstract fun <#A1: com.freeletics.khonshu.navigation/BaseRoute> navigateBackTo(kotlin.reflect/KClass<#A1>, kotlin/Boolean) // com.freeletics.khonshu.navigation/DestinationNavigator2.navigateBackTo|navigateBackTo(kotlin.reflect.KClass<0:0>;kotlin.Boolean){0§<com.freeletics.khonshu.navigation.BaseRoute>}[0]
     abstract fun navigate(kotlin/Function1<com.freeletics.khonshu.navigation/Navigator, kotlin/Unit>) // com.freeletics.khonshu.navigation/DestinationNavigator2.navigate|navigate(kotlin.Function1<com.freeletics.khonshu.navigation.Navigator,kotlin.Unit>){}[0]
+    abstract fun navigateBack() // com.freeletics.khonshu.navigation/DestinationNavigator2.navigateBack|navigateBack(){}[0]
+    abstract fun navigateUp() // com.freeletics.khonshu.navigation/DestinationNavigator2.navigateUp|navigateUp(){}[0]
 }
 
 abstract interface com.freeletics.khonshu.navigation/NavRoot : com.freeletics.khonshu.navigation/BaseRoute // com.freeletics.khonshu.navigation/NavRoot|null[0]
