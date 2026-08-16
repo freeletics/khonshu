@@ -1,6 +1,8 @@
 package com.freeletics.khonshu.navigation.internal
 
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
+import com.freeletics.khonshu.navigation.deliverNavigationResult
+import com.freeletics.khonshu.navigation.registerForNavigationResult
 import com.freeletics.khonshu.navigation.test.OtherRoot
 import com.freeletics.khonshu.navigation.test.OtherRoute
 import com.freeletics.khonshu.navigation.test.SimpleRoot
@@ -12,6 +14,8 @@ import com.freeletics.khonshu.navigation.test.simpleRootDestination
 import com.freeletics.khonshu.navigation.test.simpleRouteDestination
 import com.freeletics.khonshu.navigation.test.visibleEntries
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
@@ -652,6 +656,40 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
+    fun `entry aware back navigation no-ops when another back stack is active`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        val destinationNavigator = hostNavigator.destinationNavigator(hostNavigator.snapshot.value.current)
+        hostNavigator.switchBackStack(OtherRoot(3))
+
+        destinationNavigator.navigateBack()
+        destinationNavigator.navigateUp()
+        destinationNavigator.navigateBackTo(SimpleRoot::class)
+        destinationNavigator.navigate {
+            navigateBack()
+        }
+
+        assertThat(hostNavigator.snapshot.value.current)
+            .isEqualTo(factory.create(StackEntry.Id("102"), OtherRoot(3)))
+        assertThat(removed).isEmpty()
+    }
+
+    @Test
+    fun `entry aware forward navigation is not guarded`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        val destinationNavigator = hostNavigator.destinationNavigator(hostNavigator.snapshot.value.current)
+        hostNavigator.navigateTo(SimpleRoute(3))
+
+        destinationNavigator.navigateTo(OtherRoute(4))
+
+        assertThat(hostNavigator.snapshot.value.entries).hasSize(4)
+        assertThat(hostNavigator.snapshot.value.current)
+            .isEqualTo(factory.create(StackEntry.Id("103"), OtherRoute(4)))
+        assertThat(removed).isEmpty()
+    }
+
+    @Test
     fun `isCurrentDestination reflects the position of the entry`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(2))
@@ -667,6 +705,34 @@ internal class MultiStackHostNavigatorTest {
 
         hostNavigator.navigateBack()
         assertThat(destinationNavigator.isCurrentDestination).isFalse()
+    }
+
+    @Test
+    fun `entry aware navigation results are registered on the own entry`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        val destinationNavigator = hostNavigator.destinationNavigator(hostNavigator.snapshot.value.current)
+        // a second entry with the same route type makes a lookup by route type ambiguous
+        hostNavigator.navigateTo(SimpleRoute(3))
+
+        val scopedRequest = destinationNavigator.registerForNavigationResult<SimpleRoute, Int>()
+        val topMostRequest = hostNavigator.registerForNavigationResult<SimpleRoute, Int>()
+
+        assertThat(scopedRequest.key.stackEntryId).isEqualTo(StackEntry.Id("101"))
+        assertThat(topMostRequest.key.stackEntryId).isEqualTo(StackEntry.Id("102"))
+    }
+
+    @Test
+    fun `entry aware navigation results are delivered to the own entry`() = runTest {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        val destinationNavigator = hostNavigator.destinationNavigator(hostNavigator.snapshot.value.current)
+        hostNavigator.navigateTo(SimpleRoute(3))
+
+        val scopedRequest = destinationNavigator.registerForNavigationResult<SimpleRoute, Int>()
+        hostNavigator.deliverNavigationResult(scopedRequest.key, 42)
+
+        assertThat(scopedRequest.results.first()).isEqualTo(42)
     }
 
     @Test
