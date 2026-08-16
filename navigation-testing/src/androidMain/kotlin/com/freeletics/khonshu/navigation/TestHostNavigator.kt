@@ -34,8 +34,34 @@ public class TestHostNavigator(
         get() = throw UnsupportedOperationException()
 
     /**
+     * Returns a [DestinationNavigator2] that forwards all navigation events to this navigator, so
+     * that they can be asserted on with [test] and [testIn].
+     *
+     * Use this to test a screen specific navigator that delegates to an injected
+     * [DestinationNavigator2]:
+     *
+     * ```kotlin
+     * val hostNavigator = TestHostNavigator()
+     * val navigator = ExampleNavigator(hostNavigator.destinationNavigator())
+     *
+     * hostNavigator.test {
+     *     navigator.doSomething()
+     *     awaitNavigateTo(OtherRoute)
+     * }
+     * ```
+     *
+     * @param isCurrentDestination when `false` the returned navigator behaves as if its destination
+     * is no longer the current destination. Back navigation is then ignored, which can be used to
+     * test that behavior.
+     */
+    public fun destinationNavigator(isCurrentDestination: Boolean = true): DestinationNavigator2 {
+        return TestDestinationNavigator(isCurrentDestination)
+    }
+
+    /**
      * Since this navigator does not have a back stack, the returned [DestinationNavigator2] always
-     * treats its destination as the current one.
+     * treats its destination as the current one. Use [destinationNavigator] to get one that
+     * behaves differently.
      */
     @InternalNavigationCodegenApi
     override fun destinationNavigator(entry: StackEntry<*>): DestinationNavigator2 {
