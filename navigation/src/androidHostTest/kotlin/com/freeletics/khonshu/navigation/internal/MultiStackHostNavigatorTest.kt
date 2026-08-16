@@ -607,6 +607,67 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
+    fun `entry aware back navigation no-ops when entry is not current`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        val destinationNavigator = DefaultDestinationNavigator2(
+            hostNavigator = hostNavigator,
+            stackEntry = hostNavigator.snapshot.value.current,
+        )
+        hostNavigator.navigateTo(SimpleRoute(3))
+
+        destinationNavigator.navigateBack()
+        destinationNavigator.navigateUp()
+        destinationNavigator.navigateBackTo(SimpleRoot::class)
+
+        assertThat(hostNavigator.snapshot.value.entries).hasSize(3)
+        assertThat(hostNavigator.snapshot.value.current)
+            .isEqualTo(factory.create(StackEntry.Id("102"), SimpleRoute(3)))
+        assertThat(removed).isEmpty()
+    }
+
+    @Test
+    fun `entry aware navigate block no-ops when entry is not current`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        val destinationNavigator = DefaultDestinationNavigator2(
+            hostNavigator = hostNavigator,
+            stackEntry = hostNavigator.snapshot.value.current,
+        )
+        hostNavigator.navigateTo(SimpleRoute(3))
+
+        destinationNavigator.navigate {
+            navigateBack()
+            navigateTo(OtherRoute(4))
+        }
+
+        assertThat(hostNavigator.snapshot.value.entries).hasSize(3)
+        assertThat(hostNavigator.snapshot.value.current)
+            .isEqualTo(factory.create(StackEntry.Id("102"), SimpleRoute(3)))
+        assertThat(removed).isEmpty()
+    }
+
+    @Test
+    fun `entry aware navigate block runs atomically when entry is current`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        val destinationNavigator = DefaultDestinationNavigator2(
+            hostNavigator = hostNavigator,
+            stackEntry = hostNavigator.snapshot.value.current,
+        )
+
+        destinationNavigator.navigate {
+            navigateBack()
+            navigateTo(OtherRoute(3))
+        }
+
+        assertThat(hostNavigator.snapshot.value.entries).hasSize(2)
+        assertThat(hostNavigator.snapshot.value.current)
+            .isEqualTo(factory.create(StackEntry.Id("102"), OtherRoute(3)))
+        assertThat(removed).containsExactly(StackEntry.Id("101"))
+    }
+
+    @Test
     fun `navigateBack from a second root`() {
         val hostNavigator = underTest()
         hostNavigator.showRoot(OtherRoot(2))

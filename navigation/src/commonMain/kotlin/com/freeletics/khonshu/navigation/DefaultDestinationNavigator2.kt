@@ -35,7 +35,9 @@ public class DefaultDestinationNavigator2(
     }
 
     override fun navigate(block: Navigator.() -> Unit) {
-        hostNavigator.navigate(block)
+        ifTopEntry {
+            navigate(block)
+        }
     }
 
     @InternalNavigationApi
