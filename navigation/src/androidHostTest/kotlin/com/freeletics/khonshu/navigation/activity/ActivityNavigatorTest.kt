@@ -9,7 +9,6 @@ import com.freeletics.khonshu.navigation.test.SimpleRoute
 import com.freeletics.khonshu.navigation.test.TestActivityNavigator
 import com.google.common.truth.Truth
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert
 import org.junit.Test
 
 internal class ActivityNavigatorTest {
@@ -60,30 +59,39 @@ internal class ActivityNavigatorTest {
     }
 
     @Test
-    fun `registerForActivityResult after read is disallowed`(): Unit = runBlocking {
+    fun `registerForActivityResult after read is allowed`(): Unit = runBlocking {
         val navigator = TestActivityNavigator()
 
         navigator.activityResultRequests
 
-        val exception = Assert.assertThrows(IllegalStateException::class.java) {
-            navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
-        }
-        Truth.assertThat(exception).hasMessageThat().isEqualTo(
-            "Failed to register for result! You must call this before NavigationSetup is called with this navigator.",
-        )
+        val request = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
+
+        Truth.assertThat(navigator.activityResultRequests).containsExactly(request)
     }
 
     @Test
-    fun `registerForPermissionsResult after read is disallowed`(): Unit = runBlocking {
+    fun `registerForPermissionsResult after read is allowed`(): Unit = runBlocking {
         val navigator = TestActivityNavigator()
 
         navigator.activityResultRequests
 
-        val exception = Assert.assertThrows(IllegalStateException::class.java) {
-            navigator.testRegisterForPermissionResult()
-        }
-        Truth.assertThat(exception).hasMessageThat().isEqualTo(
-            "Failed to register for result! You must call this before NavigationSetup is called with this navigator.",
-        )
+        val request = navigator.testRegisterForPermissionResult()
+
+        Truth.assertThat(navigator.activityResultRequests).containsExactly(request)
+    }
+
+    @Test
+    fun `activityResultRequests reflects requests that are registered later`(): Unit = runBlocking {
+        val navigator = TestActivityNavigator()
+
+        val requests = navigator.activityResultRequests
+        Truth.assertThat(requests).isEmpty()
+
+        val first = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
+        val second = navigator.testRegisterForPermissionResult()
+
+        // the previously obtained list is a live view, so that a composition observing it is
+        // recomposed and can create a launcher for the new requests
+        Truth.assertThat(requests).containsExactly(first, second).inOrder()
     }
 }
