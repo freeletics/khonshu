@@ -43,14 +43,14 @@ internal fun providesFunction(
     className: ClassName,
     codeBlock: CodeBlock,
     parameters: Iterable<ParameterSpec> = emptyList(),
-    annotation: AnnotationSpec? = null,
+    annotations: Iterable<AnnotationSpec> = emptyList(),
 ): FunSpec {
     return FunSpec.builder(name)
         .returns(className)
         .addAnnotation(provides())
         .addParameters(parameters)
         .addCode(codeBlock)
-        .apply { if (annotation != null) addAnnotation(annotation) }
+        .addAnnotations(annotations)
         .build()
 }
 

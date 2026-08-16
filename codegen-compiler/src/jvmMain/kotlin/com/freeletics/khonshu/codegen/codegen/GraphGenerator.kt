@@ -87,7 +87,9 @@ internal class GraphGenerator(
                     .build()
             }
             is DestinationData -> {
-                properties += simplePropertySpec(platformNavigator)
+                properties += simplePropertySpec(platformNavigator).toBuilder()
+                    .addAnnotation(forScope(data.scope))
+                    .build()
                 properties += simplePropertySpec(
                     "stackEntry",
                     stackEntry.parameterizedBy(data.navigation.route),
@@ -145,7 +147,7 @@ internal class GraphGenerator(
                     codeBlock = CodeBlock.builder()
                         .addStatement("return stackEntry.savedStateHandle")
                         .build(),
-                    annotation = forScope(data.scope),
+                    annotations = listOf(forScope(data.scope)),
                 ),
             )
             add(
@@ -177,7 +179,7 @@ internal class GraphGenerator(
                     codeBlock = CodeBlock.builder()
                         .addStatement("return %L", destinationNavigator.propertyName)
                         .build(),
-                    annotation = singleIn(data.scope),
+                    annotations = listOf(singleIn(data.scope), forScope(data.scope)),
                 ),
             )
             add(
@@ -194,7 +196,7 @@ internal class GraphGenerator(
                             hostNavigator.propertyName,
                         )
                         .build(),
-                    annotation = singleIn(data.scope),
+                    annotations = listOf(singleIn(data.scope)),
                 ),
             )
             add(
@@ -205,7 +207,7 @@ internal class GraphGenerator(
                     codeBlock = CodeBlock.builder()
                         .addStatement("return stackEntry.state")
                         .build(),
-                    annotation = forScope(data.scope),
+                    annotations = listOf(forScope(data.scope)),
                 ),
             )
         }
