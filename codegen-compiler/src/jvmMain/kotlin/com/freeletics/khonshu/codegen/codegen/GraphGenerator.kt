@@ -9,18 +9,23 @@ import com.freeletics.khonshu.codegen.util.autoCloseable
 import com.freeletics.khonshu.codegen.util.contributesGraphExtension
 import com.freeletics.khonshu.codegen.util.contributesGraphExtensionFactory
 import com.freeletics.khonshu.codegen.util.contributesTo
+import com.freeletics.khonshu.codegen.util.defaultDestinationNavigator
+import com.freeletics.khonshu.codegen.util.defaultDestinationNavigator2
 import com.freeletics.khonshu.codegen.util.destinationNavigator
+import com.freeletics.khonshu.codegen.util.destinationNavigator2
 import com.freeletics.khonshu.codegen.util.forScope
 import com.freeletics.khonshu.codegen.util.hostNavigator
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.launchInfo
 import com.freeletics.khonshu.codegen.util.multibinds
 import com.freeletics.khonshu.codegen.util.optIn
+import com.freeletics.khonshu.codegen.util.platformNavigator
 import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.providesFunction
 import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
+import com.freeletics.khonshu.codegen.util.singleIn
 import com.freeletics.khonshu.codegen.util.stackEntry
 import com.freeletics.khonshu.codegen.util.stackEntryState
 import com.squareup.kotlinpoet.AnnotationSpec
@@ -82,9 +87,7 @@ internal class GraphGenerator(
                     .build()
             }
             is DestinationData -> {
-                properties += simplePropertySpec(destinationNavigator).toBuilder()
-                    .addAnnotation(forScope(data.scope))
-                    .build()
+                properties += simplePropertySpec(platformNavigator)
                 properties += simplePropertySpec(
                     "stackEntry",
                     stackEntry.parameterizedBy(data.navigation.route),
@@ -153,6 +156,45 @@ internal class GraphGenerator(
                     codeBlock = CodeBlock.builder()
                         .addStatement("return stackEntry.route")
                         .build(),
+                ),
+            )
+            add(
+                providesFunction(
+                    "providePlatformNavigator",
+                    platformNavigator,
+                    parameters = listOf(
+                        ParameterSpec.builder(hostNavigator.propertyName, hostNavigator).build(),
+                        ParameterSpec.builder(destinationNavigator.propertyName, destinationNavigator)
+                            .addAnnotation(forScope(data.scope))
+                            .defaultValue(
+                                "%T(%L)",
+                                defaultDestinationNavigator,
+                                hostNavigator.propertyName,
+                            )
+                            .build(),
+                    ),
+                    codeBlock = CodeBlock.builder()
+                        .addStatement("return %L", destinationNavigator.propertyName)
+                        .build(),
+                    annotation = singleIn(data.scope),
+                ),
+            )
+            add(
+                providesFunction(
+                    "provideDestinationNavigator2",
+                    destinationNavigator2,
+                    parameters = listOf(
+                        ParameterSpec.builder(hostNavigator.propertyName, hostNavigator).build(),
+                        stackEntryParam,
+                    ),
+                    codeBlock = CodeBlock.builder()
+                        .addStatement(
+                            "return %T(%L, stackEntry)",
+                            defaultDestinationNavigator2,
+                            hostNavigator.propertyName,
+                        )
+                        .build(),
+                    annotation = singleIn(data.scope),
                 ),
             )
             add(

@@ -20,6 +20,16 @@ public abstract class DestinationNavigator(
     }
 }
 
+/**
+ * Entry-aware navigator for individual destinations.
+ */
+public interface DestinationNavigator2 : Navigator {
+    /**
+     * See [HostNavigator.navigate]. The block only executes while this navigator's destination is current.
+     */
+    public fun navigate(block: Navigator.() -> Unit)
+}
+
 public expect abstract class PlatformNavigator()
 
 @Composable
