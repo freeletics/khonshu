@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation.internal
 
-import com.freeletics.khonshu.navigation.DefaultDestinationNavigator2
 import com.freeletics.khonshu.navigation.Navigator.Companion.navigateBackTo
 import com.freeletics.khonshu.navigation.test.OtherRoot
 import com.freeletics.khonshu.navigation.test.OtherRoute
@@ -568,10 +567,7 @@ internal class MultiStackHostNavigatorTest {
     fun `entry aware navigateBack no-ops when entry is gone`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(2))
-        val destinationNavigator = DefaultDestinationNavigator2(
-            hostNavigator = hostNavigator,
-            stackEntry = hostNavigator.snapshot.value.current,
-        )
+        val destinationNavigator = hostNavigator.destinationNavigator(hostNavigator.snapshot.value.current)
 
         destinationNavigator.navigateBack()
         destinationNavigator.navigateBack()
@@ -589,10 +585,7 @@ internal class MultiStackHostNavigatorTest {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(2))
         hostNavigator.navigateTo(SimpleRoute(3))
-        val destinationNavigator = DefaultDestinationNavigator2(
-            hostNavigator = hostNavigator,
-            stackEntry = hostNavigator.snapshot.value.current,
-        )
+        val destinationNavigator = hostNavigator.destinationNavigator(hostNavigator.snapshot.value.current)
 
         destinationNavigator.navigateBack()
         destinationNavigator.navigateUp()
@@ -610,10 +603,7 @@ internal class MultiStackHostNavigatorTest {
     fun `entry aware back navigation no-ops when entry is not current`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(2))
-        val destinationNavigator = DefaultDestinationNavigator2(
-            hostNavigator = hostNavigator,
-            stackEntry = hostNavigator.snapshot.value.current,
-        )
+        val destinationNavigator = hostNavigator.destinationNavigator(hostNavigator.snapshot.value.current)
         hostNavigator.navigateTo(SimpleRoute(3))
 
         destinationNavigator.navigateBack()
@@ -630,10 +620,7 @@ internal class MultiStackHostNavigatorTest {
     fun `entry aware navigate block no-ops when entry is not current`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(2))
-        val destinationNavigator = DefaultDestinationNavigator2(
-            hostNavigator = hostNavigator,
-            stackEntry = hostNavigator.snapshot.value.current,
-        )
+        val destinationNavigator = hostNavigator.destinationNavigator(hostNavigator.snapshot.value.current)
         hostNavigator.navigateTo(SimpleRoute(3))
 
         destinationNavigator.navigate {
@@ -651,10 +638,7 @@ internal class MultiStackHostNavigatorTest {
     fun `entry aware navigate block runs atomically when entry is current`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(2))
-        val destinationNavigator = DefaultDestinationNavigator2(
-            hostNavigator = hostNavigator,
-            stackEntry = hostNavigator.snapshot.value.current,
-        )
+        val destinationNavigator = hostNavigator.destinationNavigator(hostNavigator.snapshot.value.current)
 
         destinationNavigator.navigate {
             navigateBack()

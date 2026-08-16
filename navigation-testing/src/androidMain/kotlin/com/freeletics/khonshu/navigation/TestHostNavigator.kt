@@ -33,6 +33,44 @@ public class TestHostNavigator(
     override val snapshot: State<StackSnapshot>
         get() = throw UnsupportedOperationException()
 
+    /**
+     * Since this navigator does not have a back stack, the returned [DestinationNavigator2] always
+     * treats its destination as the current one.
+     */
+    @InternalNavigationCodegenApi
+    override fun destinationNavigator(entry: StackEntry<*>): DestinationNavigator2 {
+        return TestDestinationNavigator(isCurrent = true)
+    }
+
+    private inner class TestDestinationNavigator(
+        private val isCurrent: Boolean,
+    ) : DestinationNavigator2,
+        Navigator by this@TestHostNavigator {
+        override fun navigateUp() {
+            if (isCurrent) {
+                this@TestHostNavigator.navigateUp()
+            }
+        }
+
+        override fun navigateBack() {
+            if (isCurrent) {
+                this@TestHostNavigator.navigateBack()
+            }
+        }
+
+        override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean) {
+            if (isCurrent) {
+                this@TestHostNavigator.navigateBackTo(popUpTo, inclusive)
+            }
+        }
+
+        override fun navigate(block: Navigator.() -> Unit) {
+            if (isCurrent) {
+                this@TestHostNavigator.navigate(block)
+            }
+        }
+    }
+
     override fun navigate(block: Navigator.() -> Unit) {
         eventTurbine += TestHostNavigator().apply(block).eventTurbine.asChannel().toTestEvent()
     }
