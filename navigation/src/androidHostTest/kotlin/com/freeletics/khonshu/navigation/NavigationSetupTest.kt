@@ -120,6 +120,24 @@ internal class NavigationSetupTest {
     }
 
     @Test
+    fun `ActivityResultEvent is forwarded to a launcher that was registered later`() = runBlocking {
+        val lateRequest = navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
+        val lateLauncher = TestActivityResultLauncher()
+        var currentLaunchers = launchers
+
+        CoroutineScope(dispatcher).launch {
+            navigator.collectAndHandleActivityEvents(lifecyle, activityStarter) { currentLaunchers }
+        }
+
+        // the composition creates the launcher for the new request and the already running
+        // collection has to pick it up without being restarted
+        currentLaunchers = launchers + (lateRequest to lateLauncher)
+
+        navigator.navigateForResult(lateRequest, "abc")
+        assertThat(lateLauncher.launched.awaitItem()).isEqualTo("abc")
+    }
+
+    @Test
     fun `ActivityResultEvent for permissions is forwarded to launcher`() = runBlocking {
         setup()
 
