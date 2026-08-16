@@ -652,6 +652,24 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
+    fun `isCurrentDestination reflects the position of the entry`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        val destinationNavigator = hostNavigator.destinationNavigator(hostNavigator.snapshot.value.current)
+
+        assertThat(destinationNavigator.isCurrentDestination).isTrue()
+
+        hostNavigator.navigateTo(SimpleRoute(3))
+        assertThat(destinationNavigator.isCurrentDestination).isFalse()
+
+        hostNavigator.navigateBack()
+        assertThat(destinationNavigator.isCurrentDestination).isTrue()
+
+        hostNavigator.navigateBack()
+        assertThat(destinationNavigator.isCurrentDestination).isFalse()
+    }
+
+    @Test
     fun `navigateBack from a second root`() {
         val hostNavigator = underTest()
         hostNavigator.showRoot(OtherRoot(2))

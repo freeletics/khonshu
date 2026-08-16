@@ -15,6 +15,7 @@ public abstract class com/freeletics/khonshu/navigation/DestinationNavigator : c
 }
 
 public abstract interface class com/freeletics/khonshu/navigation/DestinationNavigator2 : com/freeletics/khonshu/navigation/Navigator {
+	public abstract fun isCurrentDestination ()Z
 	public abstract fun navigate (Lkotlin/jvm/functions/Function1;)V
 }
 
