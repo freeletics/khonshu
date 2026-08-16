@@ -2,6 +2,7 @@ package com.freeletics.khonshu.navigation.internal
 
 import androidx.compose.runtime.State
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.DestinationNavigator2
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
@@ -61,6 +62,65 @@ internal class MultiStackHostNavigator(
     @InternalNavigationApi
     override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
         return snapshot.value.entryFor(id)
+    }
+
+    @InternalNavigationCodegenApi
+    override fun destinationNavigator(entry: StackEntry<*>): DestinationNavigator2 {
+        return EntryNavigator(entry)
+    }
+
+    /**
+     * A [DestinationNavigator2] for a single [entry]. Operations that remove destinations from the
+     * back stack are only executed while [entry] is the current entry.
+     */
+    private inner class EntryNavigator(
+        private val entry: StackEntry<*>,
+    ) : DestinationNavigator2,
+        Navigator by this@MultiStackHostNavigator {
+        private val isCurrent: Boolean
+            get() = snapshot.value.current.id == entry.id
+
+        override fun navigateUp() {
+            if (isCurrent) {
+                stack.popCurrentStack()
+            }
+        }
+
+        override fun navigateBack() {
+            if (isCurrent) {
+                stack.pop()
+            }
+        }
+
+        override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean) {
+            if (isCurrent) {
+                stack.popUpTo(DestinationId(popUpTo), inclusive)
+            }
+        }
+
+        override fun navigate(block: Navigator.() -> Unit) {
+            if (isCurrent) {
+                this@MultiStackHostNavigator.navigate(block)
+            }
+        }
+
+        @InternalNavigationApi
+        override fun getTopEntryFor(destinationId: DestinationId<*>): StackEntry<*> {
+            return if (entry.destinationId == destinationId) {
+                entry
+            } else {
+                this@MultiStackHostNavigator.getTopEntryFor(destinationId)
+            }
+        }
+
+        @InternalNavigationApi
+        override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
+            return if (entry.id == id) {
+                entry
+            } else {
+                this@MultiStackHostNavigator.getEntryFor(id)
+            }
+        }
     }
 
     private inner class NonNotifyingNavigator : Navigator {

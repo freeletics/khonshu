@@ -34,8 +34,6 @@ internal val destinationNavigator = ClassName("com.freeletics.khonshu.navigation
 internal val destinationNavigator2 = ClassName("com.freeletics.khonshu.navigation", "DestinationNavigator2")
 internal val defaultDestinationNavigator =
     ClassName("com.freeletics.khonshu.navigation", "DefaultDestinationNavigator")
-internal val defaultDestinationNavigator2 =
-    ClassName("com.freeletics.khonshu.navigation", "DefaultDestinationNavigator2")
 internal val platformNavigator = ClassName("com.freeletics.khonshu.navigation", "PlatformNavigator")
 internal val hostNavigator = ClassName("com.freeletics.khonshu.navigation", "HostNavigator")
 internal val createHostNavigator = MemberName("com.freeletics.khonshu.navigation", "createHostNavigator")

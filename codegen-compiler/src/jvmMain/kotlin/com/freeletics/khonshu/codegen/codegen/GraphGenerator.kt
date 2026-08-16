@@ -10,7 +10,6 @@ import com.freeletics.khonshu.codegen.util.contributesGraphExtension
 import com.freeletics.khonshu.codegen.util.contributesGraphExtensionFactory
 import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.defaultDestinationNavigator
-import com.freeletics.khonshu.codegen.util.defaultDestinationNavigator2
 import com.freeletics.khonshu.codegen.util.destinationNavigator
 import com.freeletics.khonshu.codegen.util.destinationNavigator2
 import com.freeletics.khonshu.codegen.util.forScope
@@ -189,8 +188,7 @@ internal class GraphGenerator(
                     ),
                     codeBlock = CodeBlock.builder()
                         .addStatement(
-                            "return %T(%L, stackEntry)",
-                            defaultDestinationNavigator2,
+                            "return %L.destinationNavigator(stackEntry)",
                             hostNavigator.propertyName,
                         )
                         .build(),
