@@ -77,29 +77,29 @@ internal class MultiStackHostNavigator(
         private val entry: StackEntry<*>,
     ) : DestinationNavigator2,
         Navigator by this@MultiStackHostNavigator {
-        private val isCurrent: Boolean
+        override val isCurrentDestination: Boolean
             get() = snapshot.value.current.id == entry.id
 
         override fun navigateUp() {
-            if (isCurrent) {
+            if (isCurrentDestination) {
                 stack.popCurrentStack()
             }
         }
 
         override fun navigateBack() {
-            if (isCurrent) {
+            if (isCurrentDestination) {
                 stack.pop()
             }
         }
 
         override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean) {
-            if (isCurrent) {
+            if (isCurrentDestination) {
                 stack.popUpTo(DestinationId(popUpTo), inclusive)
             }
         }
 
         override fun navigate(block: Navigator.() -> Unit) {
-            if (isCurrent) {
+            if (isCurrentDestination) {
                 this@MultiStackHostNavigator.navigate(block)
             }
         }

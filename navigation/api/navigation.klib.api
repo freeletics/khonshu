@@ -46,6 +46,9 @@ abstract interface com.freeletics.khonshu.navigation.deeplinks/DeepLinkHandler {
 }
 
 abstract interface com.freeletics.khonshu.navigation/DestinationNavigator2 : com.freeletics.khonshu.navigation/Navigator { // com.freeletics.khonshu.navigation/DestinationNavigator2|null[0]
+    abstract val isCurrentDestination // com.freeletics.khonshu.navigation/DestinationNavigator2.isCurrentDestination|{}isCurrentDestination[0]
+        abstract fun <get-isCurrentDestination>(): kotlin/Boolean // com.freeletics.khonshu.navigation/DestinationNavigator2.isCurrentDestination.<get-isCurrentDestination>|<get-isCurrentDestination>(){}[0]
+
     abstract fun navigate(kotlin/Function1<com.freeletics.khonshu.navigation/Navigator, kotlin/Unit>) // com.freeletics.khonshu.navigation/DestinationNavigator2.navigate|navigate(kotlin.Function1<com.freeletics.khonshu.navigation.Navigator,kotlin.Unit>){}[0]
 }
 

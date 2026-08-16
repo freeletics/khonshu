@@ -39,33 +39,33 @@ public class TestHostNavigator(
      */
     @InternalNavigationCodegenApi
     override fun destinationNavigator(entry: StackEntry<*>): DestinationNavigator2 {
-        return TestDestinationNavigator(isCurrent = true)
+        return TestDestinationNavigator(isCurrentDestination = true)
     }
 
     private inner class TestDestinationNavigator(
-        private val isCurrent: Boolean,
+        override val isCurrentDestination: Boolean,
     ) : DestinationNavigator2,
         Navigator by this@TestHostNavigator {
         override fun navigateUp() {
-            if (isCurrent) {
+            if (isCurrentDestination) {
                 this@TestHostNavigator.navigateUp()
             }
         }
 
         override fun navigateBack() {
-            if (isCurrent) {
+            if (isCurrentDestination) {
                 this@TestHostNavigator.navigateBack()
             }
         }
 
         override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean) {
-            if (isCurrent) {
+            if (isCurrentDestination) {
                 this@TestHostNavigator.navigateBackTo(popUpTo, inclusive)
             }
         }
 
         override fun navigate(block: Navigator.() -> Unit) {
-            if (isCurrent) {
+            if (isCurrentDestination) {
                 this@TestHostNavigator.navigate(block)
             }
         }

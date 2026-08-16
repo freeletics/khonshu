@@ -25,6 +25,18 @@ public abstract class DestinationNavigator(
  */
 public interface DestinationNavigator2 : Navigator {
     /**
+     * Whether this navigator's destination is currently the current destination.
+     *
+     * While this is `false` all back navigation ([navigateBack], [navigateUp], [navigateBackTo] and
+     * [navigate]) is ignored.
+     *
+     * When this is read from a `@Composable` function it is observed and the composable will be
+     * recomposed whenever the value changes. It is meant to be used for enabling or disabling UI
+     * and in tests. Navigation logic should generally not branch on it.
+     */
+    public val isCurrentDestination: Boolean
+
+    /**
      * See [HostNavigator.navigate]. The block only executes while this navigator's destination is current.
      */
     public fun navigate(block: Navigator.() -> Unit)
