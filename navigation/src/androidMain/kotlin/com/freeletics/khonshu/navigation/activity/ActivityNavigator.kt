@@ -1,6 +1,7 @@
 package com.freeletics.khonshu.navigation.activity
 
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.compose.runtime.mutableStateListOf
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.activity.internal.ActivityEvent
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
@@ -25,15 +26,11 @@ public abstract class ActivityNavigator {
     @InternalNavigationTestingApi
     public val activityEvents: Flow<ActivityEvent> = _activityEvents.receiveAsFlow()
 
-    private val _activityResultRequests = mutableListOf<ActivityResultContractRequest<*, *, *>>()
-    private var allowedToAddRequests = true
+    private val _activityResultRequests = mutableStateListOf<ActivityResultContractRequest<*, *, *>>()
 
     @InternalNavigationTestingApi
     public val activityResultRequests: List<ActivityResultContractRequest<*, *, *>>
-        get() {
-            allowedToAddRequests = false
-            return _activityResultRequests.toList()
-        }
+        get() = _activityResultRequests
 
     /**
      * Triggers navigation to the given [route].
@@ -51,13 +48,10 @@ public abstract class ActivityNavigator {
      * [navigateForResult].
      *
      * For permission requests prefer using [registerForPermissionsResult] instead.
-     *
-     * Note: You must call this before [ActivityNavigatorEffect] is called with this navigator.
      */
     public fun <I, O> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
     ): ActivityResultRequest<I, O> {
-        checkAllowedToAddRequests()
         val request = ActivityResultRequest(contract)
         _activityResultRequests.add(request)
         return request
@@ -74,11 +68,8 @@ public abstract class ActivityNavigator {
      * [androidx.activity.result.contract.ActivityResultContracts.RequestPermission] this provides
      * a `PermissionResult` instead of a `boolean. See `[PermissionsResultRequest.PermissionResult]`
      * for more information.
-     *
-     * Note: You must call this before [ActivityNavigatorEffect] is called with this navigator.
      */
     public fun registerForPermissionsResult(): PermissionsResultRequest {
-        checkAllowedToAddRequests()
         val request = PermissionsResultRequest()
         _activityResultRequests.add(request)
         return request
@@ -127,11 +118,5 @@ public abstract class ActivityNavigator {
     private fun sendEvent(event: ActivityEvent) {
         val result = _activityEvents.trySendBlocking(event)
         check(result.isSuccess)
-    }
-
-    internal fun checkAllowedToAddRequests() {
-        check(allowedToAddRequests) {
-            "Failed to register for result! You must call this before NavigationSetup is called with this navigator."
-        }
     }
 }

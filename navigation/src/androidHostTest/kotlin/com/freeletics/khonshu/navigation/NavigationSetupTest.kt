@@ -61,7 +61,7 @@ internal class NavigationSetupTest {
 
     private fun setup() {
         CoroutineScope(dispatcher).launch {
-            navigator.collectAndHandleActivityEvents(lifecyle, activityStarter, launchers)
+            navigator.collectAndHandleActivityEvents(lifecyle, activityStarter) { launchers }
         }
     }
 
@@ -135,7 +135,7 @@ internal class NavigationSetupTest {
                 val launchers = mapOf<ActivityResultContractRequest<*, *, *>, ActivityResultLauncher<*>>(
                     permissionRequest to permissionLauncher,
                 )
-                navigator.collectAndHandleActivityEvents(lifecyle, activityStarter, launchers)
+                navigator.collectAndHandleActivityEvents(lifecyle, activityStarter) { launchers }
             }
         }
         assertThat(exception).hasMessageThat().isEqualTo(
