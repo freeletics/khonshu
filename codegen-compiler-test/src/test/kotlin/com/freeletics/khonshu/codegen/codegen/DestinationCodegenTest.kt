@@ -121,6 +121,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
+              @ForScope(TestRoute::class)
               public val platformNavigator: PlatformNavigator
 
               public val stackEntry: StackEntry<TestRoute>
@@ -147,6 +148,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
+              @ForScope(TestRoute::class)
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -308,6 +310,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
+              @ForScope(TestRoute::class)
               public val platformNavigator: PlatformNavigator
 
               public val stackEntry: StackEntry<TestRoute>
@@ -334,6 +337,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
+              @ForScope(TestRoute::class)
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -498,6 +502,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
+              @ForScope(TestOverlayRoute::class)
               public val platformNavigator: PlatformNavigator
 
               public val stackEntry: StackEntry<TestOverlayRoute>
@@ -524,6 +529,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestOverlayRoute::class)
+              @ForScope(TestOverlayRoute::class)
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestOverlayRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -710,6 +716,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTest2Graph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
+              @ForScope(TestRoute::class)
               public val platformNavigator: PlatformNavigator
 
               public val stackEntry: StackEntry<TestRoute>
@@ -744,6 +751,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
+              @ForScope(TestRoute::class)
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -907,6 +915,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
+              @ForScope(TestRoute::class)
               public val platformNavigator: PlatformNavigator
 
               public val stackEntry: StackEntry<TestRoute>
@@ -933,6 +942,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
+              @ForScope(TestRoute::class)
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -1086,6 +1096,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachine: TestStateMachine
 
+              @ForScope(TestRoute::class)
               public val platformNavigator: PlatformNavigator
 
               public val stackEntry: StackEntry<TestRoute>
@@ -1112,6 +1123,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
+              @ForScope(TestRoute::class)
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -1268,6 +1280,7 @@ internal class DestinationCodegenTest {
             public interface KhonshuTestGraph : AutoCloseable {
               public val testStateMachineFactory: TestStateMachineFactory
 
+              @ForScope(TestRoute::class)
               public val platformNavigator: PlatformNavigator
 
               public val stackEntry: StackEntry<TestRoute>
@@ -1294,6 +1307,7 @@ internal class DestinationCodegenTest {
 
               @Provides
               @SingleIn(TestRoute::class)
+              @ForScope(TestRoute::class)
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) @OptionalBinding destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
