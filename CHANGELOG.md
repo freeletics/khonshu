@@ -8,8 +8,7 @@ Change Log
 
 ### Navigation
 
-- Fixed `StackEntryState` ignoring the `KSerializer` when saving a value that is also `Parcelable`
-  or `Serializable`. This fixes crash on Android when storing a `List` of `@Serializable` classes.
+- Fixed crash on Android when saving a `List` of `@Serializable` classes in `StackEntryState`.
 
 ## 0.37.1 *(2026-06-24)*
 

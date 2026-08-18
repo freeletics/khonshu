@@ -137,10 +137,11 @@ private fun <T : Any> SavedStateWriter.put(key: String, value: T?, serializer: K
             // noinspection RestrictedApi
             putSavedState(key, value.savedStateProvider().saveState())
         }
-        else -> if (serializer != null) {
-            putKotlinSerializable(serializer, key, value)
-        } else {
-            require(putPlatformValue(key, value)) { "Did not find serializer for $value" }
+        else -> {
+            if (!putPlatformValue(key, value)) {
+                val serializer = requireNotNull(serializer) { "Did not find serializer for $value" }
+                putKotlinSerializable(serializer, key, value)
+            }
         }
     }
 }
