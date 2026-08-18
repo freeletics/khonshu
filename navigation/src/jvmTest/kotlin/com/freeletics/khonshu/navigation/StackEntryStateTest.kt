@@ -19,6 +19,7 @@ class StackEntryStateTest {
         state["float"] = 0.1f
         state["boolean"] = false
         state["kotlin serialization"] = TestClass(2)
+        state["kotlin serialization list"] = listOf(TestClass(3), TestClass(4))
         state.savedStateHandle()["c"] = "d"
 
         val savedState = state.saveState().read { toMap() }
@@ -31,6 +32,9 @@ class StackEntryStateTest {
         assertThat(savedState["float"]).isEqualTo(0.1f)
         assertThat(savedState["boolean"]).isEqualTo(false)
         assertThat((savedState["kotlin serialization"] as SavedState).read { toMap() }).isEqualTo(mapOf("value" to 2))
+        val list = (savedState["kotlin serialization list"] as SavedState).read { toMap() }
+        assertThat((list["0"] as SavedState).read { toMap() }).isEqualTo(mapOf("value" to 3))
+        assertThat((list["1"] as SavedState).read { toMap() }).isEqualTo(mapOf("value" to 4))
         assertThat(
             (savedState["khonshu-internal-saved-state-handle"] as SavedState).read {
                 toMap()
@@ -49,6 +53,7 @@ class StackEntryStateTest {
         original["float"] = 0.1f
         original["boolean"] = false
         original["kotlin serialization"] = TestClass(2)
+        original["kotlin serialization list"] = listOf(TestClass(3), TestClass(4))
         original[KEY_SAVED_STATE_HANDLE] = savedState(mapOf("c" to "d"))
 
         val state = StackEntryState(original.saveState())
@@ -61,6 +66,8 @@ class StackEntryStateTest {
         assertThat(state.get<Float>("float")).isEqualTo(0.1f)
         assertThat(state.get<Boolean>("boolean")).isEqualTo(false)
         assertThat(state.get<TestClass>("kotlin serialization")).isEqualTo(TestClass(2))
+        assertThat(state.get<List<TestClass>>("kotlin serialization list"))
+            .isEqualTo(listOf(TestClass(3), TestClass(4)))
         assertThat(state.savedStateHandle().get<String>("c")).isEqualTo("d")
     }
 }
