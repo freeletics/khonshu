@@ -9,10 +9,7 @@ Change Log
   stack entry it belongs to. `navigateBack`, `navigateUp`, `navigateBackTo` and `navigate` are only
   executed while its destination is the current destination, so a delayed or repeated back action
   can not affect another destination. `registerForNavigationResult` resolves to its own destination
-  instead of looking up a destination by route type. Its `isCurrentDestination` property tells
-  whether the destination is currently on top. It is observable from Compose and meant for UI
-  concerns such as disabling controls while a dialog or bottom sheet is on top, gating a back
-  handler or pausing work that should only run while the destination is in front.
+  instead of looking up a destination by route type.
 - Generated destination graphs now provide a scoped `DestinationNavigator2`. The existing
   `DestinationNavigator` continues to work and is still used for the platform navigation set up when
   a binding for it exists. Providing one is now optional, so a destination can use only

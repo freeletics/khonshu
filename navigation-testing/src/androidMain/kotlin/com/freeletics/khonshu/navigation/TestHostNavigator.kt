@@ -69,7 +69,7 @@ public class TestHostNavigator(
     }
 
     private inner class TestDestinationNavigator(
-        override val isCurrentDestination: Boolean,
+        private val isCurrentDestination: Boolean,
     ) : DestinationNavigator2,
         Navigator by this@TestHostNavigator {
         override fun navigateUp() {

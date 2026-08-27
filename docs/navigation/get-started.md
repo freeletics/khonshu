@@ -136,10 +136,6 @@ entry it belongs to:
   by route type.
 - `navigateTo`, `switchBackStack`, `showRoot` and `replaceAllBackStacks` are not guarded and behave
   like on `HostNavigator`.
-- `isCurrentDestination` tells whether the destination is currently the current one. Reading it from
-  a `@Composable` function is observable, so it can be used to disable controls while a dialog or
-  bottom sheet is on top, to gate a `BackHandler` or to pause work that should only run while the
-  destination is in front.
 
 When using [Khonshu's codegen](../codegen/get-started.md) an instance is automatically part of the
 dependency graph of each destination. A navigator class for a specific screen can delegate to it:

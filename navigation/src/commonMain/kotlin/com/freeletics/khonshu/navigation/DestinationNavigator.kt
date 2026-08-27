@@ -52,22 +52,6 @@ public abstract class DestinationNavigator(
  */
 public interface DestinationNavigator2 : Navigator {
     /**
-     * Whether this navigator's destination is currently the current destination.
-     *
-     * This is `false` while another destination is on top of it, which includes dialogs and bottom
-     * sheets that are shown above a still visible destination, while another back stack is being
-     * shown and after the destination was removed from the back stack. While it is `false` all back
-     * navigation ([navigateBack], [navigateUp], [navigateBackTo] and [navigate]) is ignored.
-     *
-     * When this is read from a `@Composable` function it is observed and the composable will be
-     * recomposed whenever the value changes. It is meant for UI concerns such as disabling controls
-     * while a dialog or bottom sheet is on top, gating a back handler so that only the topmost
-     * destination consumes the system back gesture, or pausing work that should only run while the
-     * destination is in front. Navigation logic should generally not branch on it.
-     */
-    public val isCurrentDestination: Boolean
-
-    /**
      * Triggers up navigation.
      *
      * This is a no-op while this navigator's destination is not the current destination, for
