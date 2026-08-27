@@ -22,19 +22,15 @@ public abstract class DestinationNavigator(
 }
 
 /**
- * A [Navigator] that is scoped to a single destination.
- *
- * Unlike [HostNavigator], which always operates on the back stack as a whole, this navigator knows
- * the exact back stack entry it was created for. That has two effects:
+ * A [Navigator] that is scoped to a single destination and knows the exact back stack entry it was
+ * created for:
  *
  * - Operations that remove destinations from the back stack ([navigateBack], [navigateUp],
  *   [navigateBackTo] and [navigate]) are only executed while this navigator's destination is the
- *   current destination and are ignored otherwise. This makes it safe to trigger back navigation
- *   from a delayed callback or from repeated user input without accidentally removing a
- *   destination that was put on the back stack in the meantime.
+ *   current destination and are ignored otherwise, so a delayed or repeated back action can not
+ *   affect another destination.
  * - [registerForNavigationResult] resolves to this navigator's own destination instead of looking
- *   up a destination by route type, which is ambiguous when the same route is on the back stack
- *   more than once.
+ *   up a destination by route type.
  *
  * Operations that add to the back stack or change which back stack is shown ([navigateTo],
  * [switchBackStack], [showRoot] and [replaceAllBackStacks]) are always executed.
@@ -58,12 +54,16 @@ public interface DestinationNavigator2 : Navigator {
     /**
      * Whether this navigator's destination is currently the current destination.
      *
-     * While this is `false` all back navigation ([navigateBack], [navigateUp], [navigateBackTo] and
-     * [navigate]) is ignored.
+     * This is `false` while another destination is on top of it, which includes dialogs and bottom
+     * sheets that are shown above a still visible destination, while another back stack is being
+     * shown and after the destination was removed from the back stack. While it is `false` all back
+     * navigation ([navigateBack], [navigateUp], [navigateBackTo] and [navigate]) is ignored.
      *
      * When this is read from a `@Composable` function it is observed and the composable will be
-     * recomposed whenever the value changes. It is meant to be used for enabling or disabling UI
-     * and in tests. Navigation logic should generally not branch on it.
+     * recomposed whenever the value changes. It is meant for UI concerns such as disabling controls
+     * while a dialog or bottom sheet is on top, gating a back handler so that only the topmost
+     * destination consumes the system back gesture, or pausing work that should only run while the
+     * destination is in front. Navigation logic should generally not branch on it.
      */
     public val isCurrentDestination: Boolean
 

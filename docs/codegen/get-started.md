@@ -92,9 +92,9 @@ a screen is shown in the logged in or logged out state.
 
 ## Navigation set up
 
-Generated destination graphs provide a `DestinationNavigator2` that is scoped to the destination and
-aware of its back stack entry. It can either be injected directly or be delegated to by a screen
-specific navigator class. See [Navigation](../navigation/get-started.md) for what it does.
+Generated destination graphs provide a `DestinationNavigator2` that is scoped to the destination. It
+can either be injected directly or be delegated to by a screen specific navigator class. See
+[Navigation](../navigation/get-started.md) for what it does.
 
 Providing a `DestinationNavigator` binding is optional. It is only needed for activity and
 permission navigation. When a `@SingleIn(ExampleRoute::class) @ForScope(ExampleRoute::class)`
