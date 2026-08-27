@@ -19,6 +19,10 @@ will do the required setup to make the `Activity` related navigation actions wor
 It's recommended to make `ActivityNavigator`/`DestinationNavigator` classes specific to
 one screen where they are needed instead of having a global instance.
 
+Since `Activity` navigation is Android only, these classes live in an Android source set. A
+destination that also needs back stack navigation combines them with a `DestinationNavigator2`, see
+[Getting started](get-started.md).
+
 ## Internal Activities
 
 This example shows the route for a `SettingsActivity`:

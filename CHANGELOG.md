@@ -8,15 +8,16 @@ Change Log
 - Added `DestinationNavigator2`, a `Navigator` for a single destination that is aware of the back
   stack entry it belongs to. `navigateBack`, `navigateUp`, `navigateBackTo` and `navigate` are only
   executed while its destination is the current destination, so a delayed or repeated back action
-  can not remove a destination that was put on the back stack in the meantime.
-  `registerForNavigationResult` resolves to its own destination instead of looking up a destination
-  by route type, which is ambiguous when the same route is on the back stack more than once.
-  Its `isCurrentDestination` property exposes whether back navigation is currently possible and can
-  be observed from Compose.
+  can not affect another destination. `registerForNavigationResult` resolves to its own destination
+  instead of looking up a destination by route type. Its `isCurrentDestination` property tells
+  whether the destination is currently on top. It is observable from Compose and meant for UI
+  concerns such as disabling controls while a dialog or bottom sheet is on top, gating a back
+  handler or pausing work that should only run while the destination is in front.
 - Generated destination graphs now provide a scoped `DestinationNavigator2`. The existing
   `DestinationNavigator` continues to work and is still used for the platform navigation set up when
   a binding for it exists. Providing one is now optional, so a destination can use only
-  `DestinationNavigator2`.
+  `DestinationNavigator2`. `DestinationNavigator` will be deprecated and removed in a future
+  release, where `DestinationNavigator2` takes its place.
 
 ### Navigation Testing
 

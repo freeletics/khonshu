@@ -126,21 +126,20 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 
 ### DestinationNavigator2
 
-`HostNavigator` always operates on the back stack as a whole. That is a problem for navigators that
-belong to a single destination: a back navigation that is triggered from a delayed callback or from
-repeated user input can remove a destination that another screen has put on the back stack in the
-meantime.
-
-`DestinationNavigator2` solves this by knowing the exact back stack entry it belongs to:
+`DestinationNavigator2` is a `Navigator` for a single destination. It knows the exact back stack
+entry it belongs to:
 
 - `navigateBack`, `navigateUp`, `navigateBackTo` and `navigate` are only executed while its
-  destination is the current destination and are ignored otherwise.
+  destination is the current destination and are ignored otherwise, so a delayed or repeated back
+  action can not affect another destination.
 - `registerForNavigationResult` resolves to its own destination instead of looking up a destination
-  by route type, which is ambiguous when the same route is on the back stack more than once.
+  by route type.
 - `navigateTo`, `switchBackStack`, `showRoot` and `replaceAllBackStacks` are not guarded and behave
   like on `HostNavigator`.
-- `isCurrentDestination` exposes whether the destination is currently the current one. Reading it
-  from a `@Composable` function is observable, so it can be used to enable or disable UI.
+- `isCurrentDestination` tells whether the destination is currently the current one. Reading it from
+  a `@Composable` function is observable, so it can be used to disable controls while a dialog or
+  bottom sheet is on top, to gate a `BackHandler` or to pause work that should only run while the
+  destination is in front.
 
 When using [Khonshu's codegen](../codegen/get-started.md) an instance is automatically part of the
 dependency graph of each destination. A navigator class for a specific screen can delegate to it:
@@ -155,8 +154,40 @@ class DetailScreenNavigator(
 }
 ```
 
-`DestinationNavigator2` is platform neutral. For activity and permission navigation see
-[Navigating to an Activity](activities.md).
+`DestinationNavigator2` is platform neutral and does not offer activity or permission navigation.
+Those are provided by `DestinationNavigator`, which the generated code sets up by calling
+`PlatformNavigatorEffect`. A destination that needs both keeps them in two classes, where the
+`DestinationNavigator` subclass lives in an Android source set:
+
+```kotlin
+// androidMain
+@Inject
+@SingleIn(DetailScreenRoute::class)
+@ForScope(DetailScreenRoute::class)
+@ContributesBinding(DetailScreenRoute::class, binding<DestinationNavigator>())
+class DetailScreenActivityNavigator(
+    hostNavigator: HostNavigator,
+) : DestinationNavigator(hostNavigator) {
+    val picture = registerForActivityResult(ActivityResultContracts.TakePicture())
+
+    fun takePicture(uri: Uri) {
+        navigateForResult(picture, uri)
+    }
+}
+
+// androidMain
+@Inject
+@SingleIn(DetailScreenRoute::class)
+class DetailScreenNavigator(
+    navigator: DestinationNavigator2,
+    private val activityNavigator: DetailScreenActivityNavigator,
+) : DestinationNavigator2 by navigator
+```
+
+`registerForActivityResult` and `registerForPermissionsResult` have to be called during the
+construction of the `DestinationNavigator` subclass, because the generated code calls
+`PlatformNavigatorEffect` before anything else is injected. See
+[Navigating to an Activity](activities.md) for the details.
 
 ### NavHost
 
