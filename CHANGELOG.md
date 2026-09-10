@@ -3,7 +3,8 @@ Change Log
 
 ## UNRELEASED
 
-- Update AGP to 9.3.1.
+- Update AGP to 9.4.0.
+- Update Kotlin to 2.4.20.
 - Update Java/Kotlin compilers Java compatibility target to 17 - required with AGP 9.3.0.
 
 ### Navigation
