@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-## UNRELEASED
+## 0.38.0 (2026-09-10)
 
 - Update AGP to 9.4.0.
 - Update Kotlin to 2.4.20.
