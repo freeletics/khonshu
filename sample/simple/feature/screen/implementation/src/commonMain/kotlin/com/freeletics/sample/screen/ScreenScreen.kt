@@ -60,6 +60,19 @@ fun ScreenScreen(
         Spacer(Modifier.height(12.dp))
 
         BasicText(
+            modifier = Modifier.clickable { sendAction(ScreenAction.LocationPermissionButtonClicked) },
+            text = "Request location permission",
+        )
+
+        if (state.locationPermissionGranted != null) {
+            BasicText(
+                text = "Location permission granted: ${state.locationPermissionGranted}",
+            )
+        }
+
+        Spacer(Modifier.height(12.dp))
+
+        BasicText(
             modifier = Modifier.clickable { sendAction(ScreenAction.DialogButtonClicked) },
             text = "Open Dialog",
         )
