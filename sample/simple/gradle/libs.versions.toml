@@ -63,3 +63,4 @@ compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose" }
+khonshu-deeplinks = { id = "com.freeletics.khonshu.deeplinks", version.ref = "khonshu" }
