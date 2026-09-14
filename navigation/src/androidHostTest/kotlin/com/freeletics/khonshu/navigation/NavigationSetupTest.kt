@@ -157,8 +157,11 @@ internal class NavigationSetupTest {
             }
         }
         assertThat(exception).hasMessageThat().isEqualTo(
-            "No launcher registered for request with contract ${activityRequest.contract}!\n" +
-                "Make sure you called the appropriate ActivityNavigator.registerFor... method",
+            "No launcher for request with contract ${activityRequest.contract}!\n" +
+                "Requests are turned into launchers while the destination is in composition, so\n" +
+                "make sure requests are registered by a navigator whose destination is currently\n" +
+                "shown. Registering during the construction of the navigator is the simplest way\n" +
+                "to do that.",
         )
     }
 

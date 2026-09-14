@@ -91,9 +91,10 @@ this and `ActivityNavigator` uses it to also enable starting Activities from out
 and receiving results there.
 
 To use the API `registerForActivityResult` needs to be called with an instance of the wanted
-`ActivityResultContract`. This needs to happen before `ActivityNavigatorEffect` is called for the navigator,
-so it needs to be called during the construction of the navigator. The method returns an
-`ActivityResultRequest` object that can be then used for two things. It can be passed to
+`ActivityResultContract`. Requests are turned into launchers while the destination is in
+composition, so registering during the construction of the navigator is the simplest way to do
+that. Registering later is possible while the navigator's destination is shown. The method returns
+an `ActivityResultRequest` object that can be then used for two things. It can be passed to
 `navigateForResult(request)` to launch the contract. It also has a `results` property that returns
 a `Flow<O>`, where `O` is the contract's output type, to make it
 possible to receive the returned results.
@@ -126,8 +127,10 @@ The Activity result APIs can already be used with `ActivityResultContracts.Reque
 `ActivityResultContracts.RequestMultiplePermissions` to also handle requesting Android runtime
 permission requests. `ActivityNavigator` provides a slightly higher level API for this.
 
-To use this call `registerForPermissionsResult`, which should be done during the construction
-of the navigator or shortly after. This can then be passed to `requestPermissions` with one or
+To use this call `registerForPermissionsResult`. Requests are turned into launchers while the
+destination is in composition, so registering during the construction of the navigator is the
+simplest way to do that. Registering later is possible while the navigator's destination is shown.
+The request can then be passed to `requestPermissions` with one or
 more permission to request to launch the request. Results can be collected through the
 `Flow<Map<String, PermissionResult>>` that is returned by the `results` property of request.
 
