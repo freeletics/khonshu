@@ -18,7 +18,6 @@ import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.launchInfo
 import com.freeletics.khonshu.codegen.util.multibinds
 import com.freeletics.khonshu.codegen.util.optIn
-import com.freeletics.khonshu.codegen.util.optionalBinding
 import com.freeletics.khonshu.codegen.util.platformNavigator
 import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.providesFunction
@@ -168,7 +167,6 @@ internal class GraphGenerator(
                         ParameterSpec.builder(hostNavigator.propertyName, hostNavigator).build(),
                         ParameterSpec.builder(destinationNavigator.propertyName, destinationNavigator)
                             .addAnnotation(forScope(data.scope))
-                            .addAnnotation(optionalBinding())
                             .defaultValue(
                                 "%T(%L)",
                                 defaultDestinationNavigator,
