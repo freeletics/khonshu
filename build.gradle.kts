@@ -1,10 +1,3 @@
-buildscript {
-    dependencies {
-        // Remove when this is resolved: https://github.com/autonomousapps/dependency-analysis-gradle-plugin/issues/1661
-        classpath("org.jetbrains.kotlin:kotlin-metadata-jvm:2.4.20")
-    }
-}
-
 plugins {
     alias(libs.plugins.fgp.multiplatform).apply(false)
     alias(libs.plugins.fgp.gradle).apply(false)
