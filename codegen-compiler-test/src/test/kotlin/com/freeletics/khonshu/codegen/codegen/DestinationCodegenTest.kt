@@ -186,9 +186,9 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.platformNavigator)
-
               KhonshuTest(graph)
+
+              PlatformNavigatorEffect(graph.platformNavigator)
             }
 
             @Composable
@@ -375,9 +375,9 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.platformNavigator)
-
               KhonshuTest(graph)
+
+              PlatformNavigatorEffect(graph.platformNavigator)
             }
 
             @Composable
@@ -567,9 +567,9 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.platformNavigator)
-
               KhonshuTest(graph)
+
+              PlatformNavigatorEffect(graph.platformNavigator)
             }
 
             @Composable
@@ -789,9 +789,9 @@ internal class DestinationCodegenTest {
                 KhonshuTest2GraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.platformNavigator)
-
               KhonshuTest2(graph)
+
+              PlatformNavigatorEffect(graph.platformNavigator)
             }
 
             @Composable
@@ -980,9 +980,9 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.platformNavigator)
-
               KhonshuTest(graph)
+
+              PlatformNavigatorEffect(graph.platformNavigator)
             }
 
             @Composable
@@ -1161,9 +1161,9 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.platformNavigator)
-
               KhonshuTest(graph)
+
+              PlatformNavigatorEffect(graph.platformNavigator)
             }
 
             @Composable
@@ -1345,9 +1345,9 @@ internal class DestinationCodegenTest {
                 KhonshuTestGraphProvider.provide(entry, snapshot, provider)
               }
 
-              PlatformNavigatorEffect(graph.platformNavigator)
-
               KhonshuTest(graph)
+
+              PlatformNavigatorEffect(graph.platformNavigator)
             }
 
             @Composable
