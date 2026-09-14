@@ -94,6 +94,7 @@ internal class HostViewControllerCodegenTest {
             import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import com.test.parent.TestParentScope
+            import dev.zacsweers.metro.BindingContainer
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
             import dev.zacsweers.metro.GraphExtension
@@ -158,7 +159,8 @@ internal class HostViewControllerCodegenTest {
             }
 
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestHostGraph {
+            @BindingContainer
+            public object KhonshuTestHostGraph {
               @Provides
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
@@ -279,6 +281,7 @@ internal class HostViewControllerCodegenTest {
             import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import dev.zacsweers.metro.AppScope
+            import dev.zacsweers.metro.BindingContainer
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
             import dev.zacsweers.metro.GraphExtension
@@ -343,7 +346,8 @@ internal class HostViewControllerCodegenTest {
             }
 
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestHostGraph {
+            @BindingContainer
+            public object KhonshuTestHostGraph {
               @Provides
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
@@ -489,6 +493,7 @@ internal class HostViewControllerCodegenTest {
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import com.test.other.TestClass2
             import com.test.parent.TestParentScope
+            import dev.zacsweers.metro.BindingContainer
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
             import dev.zacsweers.metro.GraphExtension
@@ -564,7 +569,8 @@ internal class HostViewControllerCodegenTest {
             }
 
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTest2HostGraph {
+            @BindingContainer
+            public object KhonshuTest2HostGraph {
               @Provides
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
@@ -692,6 +698,7 @@ internal class HostViewControllerCodegenTest {
             import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import com.test.parent.TestParentScope
+            import dev.zacsweers.metro.BindingContainer
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
             import dev.zacsweers.metro.GraphExtension
@@ -754,7 +761,8 @@ internal class HostViewControllerCodegenTest {
             }
 
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestHostGraph {
+            @BindingContainer
+            public object KhonshuTestHostGraph {
               @Provides
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
@@ -870,6 +878,7 @@ internal class HostViewControllerCodegenTest {
             import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import com.test.parent.TestParentScope
+            import dev.zacsweers.metro.BindingContainer
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
             import dev.zacsweers.metro.GraphExtension
@@ -934,7 +943,8 @@ internal class HostViewControllerCodegenTest {
             }
 
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestHostGraph {
+            @BindingContainer
+            public object KhonshuTestHostGraph {
               @Provides
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)
@@ -1055,6 +1065,7 @@ internal class HostViewControllerCodegenTest {
             import com.freeletics.khonshu.navigation.createHostNavigator
             import com.freeletics.khonshu.navigation.deeplinks.LaunchInfo
             import com.test.parent.TestParentScope
+            import dev.zacsweers.metro.BindingContainer
             import dev.zacsweers.metro.ContributesTo
             import dev.zacsweers.metro.ForScope
             import dev.zacsweers.metro.GraphExtension
@@ -1119,7 +1130,8 @@ internal class HostViewControllerCodegenTest {
             }
 
             @ContributesTo(TestScreen::class)
-            public interface KhonshuTestHostGraph {
+            @BindingContainer
+            public object KhonshuTestHostGraph {
               @Provides
               @SingleIn(TestScreen::class)
               @OptIn(InternalNavigationCodegenApi::class)

@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## UNRELEASED
+
+### Codegen
+
+- The generated `Khonshu<Name>HostGraph` is now a `@BindingContainer` object instead of an interface.
+
 ## 0.38.0 (2026-09-10)
 
 - Update AGP to 9.4.0.

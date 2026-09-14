@@ -2,6 +2,7 @@ package com.freeletics.khonshu.codegen.codegen
 
 import com.freeletics.khonshu.codegen.BaseData
 import com.freeletics.khonshu.codegen.HostData
+import com.freeletics.khonshu.codegen.util.bindingContainer
 import com.freeletics.khonshu.codegen.util.contributesTo
 import com.freeletics.khonshu.codegen.util.createHostNavigator
 import com.freeletics.khonshu.codegen.util.forScope
@@ -25,8 +26,9 @@ internal class HostGraphContributionGenerator(
     private val moduleClassName = ClassName("Khonshu${data.baseName}HostGraph")
 
     internal fun generate(): TypeSpec {
-        return TypeSpec.interfaceBuilder(moduleClassName)
+        return TypeSpec.objectBuilder(moduleClassName)
             .addAnnotation(contributesTo(data.scope))
+            .addAnnotation(bindingContainer())
             .addFunction(provideHostNavigator())
             .build()
     }

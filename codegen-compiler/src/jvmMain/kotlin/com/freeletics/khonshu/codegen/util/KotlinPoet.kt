@@ -13,6 +13,7 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.UNIT
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.ForScope
 import dev.zacsweers.metro.GraphExtension
@@ -96,6 +97,10 @@ internal fun contributesTo(scope: ClassName): AnnotationSpec {
     return AnnotationSpec.builder(ContributesTo::class)
         .addMember("%T::class", scope)
         .build()
+}
+
+internal fun bindingContainer(): AnnotationSpec {
+    return AnnotationSpec.builder(BindingContainer::class).build()
 }
 
 internal fun multibinds(allowEmpty: Boolean): AnnotationSpec {
