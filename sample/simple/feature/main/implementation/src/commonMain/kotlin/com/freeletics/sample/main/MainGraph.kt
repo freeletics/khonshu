@@ -1,13 +1,13 @@
 package com.freeletics.sample.main
 
+import com.freeletics.khonshu.codegen.ActivityScope
 import com.freeletics.khonshu.navigation.deeplinks.DeepLinkHandler
-import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.ElementsIntoSet
 import dev.zacsweers.metro.Provides
 
-@ContributesTo(AppScope::class)
+@ContributesTo(ActivityScope::class)
 @BindingContainer
 object MainGraph {
     /**
