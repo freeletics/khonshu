@@ -14,7 +14,11 @@ import kotlinx.coroutines.flow.map
 
 @Inject
 @SingleIn(ScreenRoute::class)
-@ContributesBinding(ScreenRoute::class, binding<LocationPermissionNavigator>(), replaces = [NoOpLocationPermissionNavigator::class])
+@ContributesBinding(
+    ScreenRoute::class,
+    binding<LocationPermissionNavigator>(),
+    replaces = [NoOpLocationPermissionNavigator::class],
+)
 class ScreenActivityNavigator(
     @ForScope(ScreenRoute::class) private val activityNavigator: ActivityNavigator,
 ) : LocationPermissionNavigator {
