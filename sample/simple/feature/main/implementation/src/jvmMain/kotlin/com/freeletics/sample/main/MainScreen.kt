@@ -8,6 +8,7 @@ import com.freeletics.khonshu.codegen.NavHostWindow
 import com.freeletics.khonshu.codegen.SimpleNavHost
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.sample.root.nav.RootRoute
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 
@@ -22,7 +23,8 @@ internal fun MainScreen(
 }
 
 @ContributesTo(ActivityScope::class)
-interface MainModule {
+@BindingContainer
+object MainModule {
     @Provides
     fun provideRoot(): NavRoot = RootRoute
 }
