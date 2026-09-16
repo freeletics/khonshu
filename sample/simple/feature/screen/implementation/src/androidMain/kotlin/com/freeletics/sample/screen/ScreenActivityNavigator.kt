@@ -2,15 +2,19 @@ package com.freeletics.sample.screen
 
 import android.Manifest
 import com.freeletics.khonshu.navigation.activity.ActivityNavigator
-import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest.PermissionResult
+import com.freeletics.khonshu.navigation.activity.PermissionsResultRequest
 import com.freeletics.sample.screen.nav.ScreenRoute
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.ForScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metro.binding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @Inject
 @SingleIn(ScreenRoute::class)
@@ -22,15 +26,20 @@ import kotlinx.coroutines.flow.map
 class ScreenActivityNavigator(
     @ForScope(ScreenRoute::class) private val activityNavigator: ActivityNavigator,
 ) : LocationPermissionNavigator {
-    // registering can happen at any time, so doing it at construction of a navigator that is
-    // injected into the state machine works as well
-    private val permissionRequest = activityNavigator.registerForPermissionsResult()
+    private val granted = MutableStateFlow<Boolean?>(null)
 
-    override val locationPermissionGranted: Flow<Boolean> = permissionRequest.results.map {
-        it[Manifest.permission.ACCESS_COARSE_LOCATION] is PermissionResult.Granted
-    }
+    override val locationPermissionGranted: Flow<Boolean> = granted.filterNotNull()
+
+    private var request: PermissionsResultRequest? = null
 
     override fun requestLocationPermission() {
-        activityNavigator.requestPermissions(permissionRequest, Manifest.permission.ACCESS_COARSE_LOCATION)
+        val r = request ?: activityNavigator.registerForPermissionsResult().also { request = it }
+        activityNavigator.requestPermissions(r, Manifest.permission.ACCESS_COARSE_LOCATION)
+        CoroutineScope(Dispatchers.Main.immediate).launch {
+            r.results.collect {
+                granted.value =
+                    it[Manifest.permission.ACCESS_COARSE_LOCATION] is PermissionsResultRequest.PermissionResult.Granted
+            }
+        }
     }
 }
