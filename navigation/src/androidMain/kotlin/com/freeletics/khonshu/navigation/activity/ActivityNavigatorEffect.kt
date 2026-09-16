@@ -6,9 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -37,20 +35,15 @@ public fun ActivityNavigatorEffect(navigator: ActivityNavigator) {
         ActivityStarter(activity, hostNavigator)
     }
 
-    val activityLaunchers = navigator.activityResultRequests.associateWith { request ->
-        key(request) {
-            rememberResultLaunchers(request, activity)
-        }
+    val activityLaunchers = navigator.activityResultRequests.associateWith {
+        rememberResultLaunchers(it, activity)
     }
-    // registering for a result can happen at any time, so the launchers are read through a state
-    // to avoid restarting the event collection below, which could drop an event
-    val currentActivityLaunchers = rememberUpdatedState(activityLaunchers)
 
     LaunchedEffect(lifecycleOwner, hostNavigator, activityStarter, navigator) {
         navigator.collectAndHandleActivityEvents(
             lifecycleOwner.lifecycle,
             activityStarter::start,
-            currentActivityLaunchers::value,
+            activityLaunchers,
         )
     }
 }
@@ -69,7 +62,7 @@ private fun <I, O> rememberResultLaunchers(
 internal suspend fun ActivityNavigator.collectAndHandleActivityEvents(
     lifecycle: Lifecycle,
     activityStarter: (ActivityRoute, NavRoute?) -> Unit,
-    activityLaunchers: () -> Map<ActivityResultContractRequest<*, *, *>, ActivityResultLauncher<*>>,
+    activityLaunchers: Map<ActivityResultContractRequest<*, *, *>, ActivityResultLauncher<*>>,
 ) {
     // Following comment https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295,
     // the events could be lost due to the prompt cancellation guarantee of Channel,
@@ -84,7 +77,7 @@ internal suspend fun ActivityNavigator.collectAndHandleActivityEvents(
     withContext(Dispatchers.Main.immediate) {
         activityEvents.flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
             .collect { event ->
-                navigateTo(event, activityStarter, activityLaunchers())
+                navigateTo(event, activityStarter, activityLaunchers)
             }
     }
 }
