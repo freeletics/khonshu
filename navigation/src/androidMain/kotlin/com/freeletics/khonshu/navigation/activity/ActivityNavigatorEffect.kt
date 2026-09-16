@@ -101,11 +101,8 @@ private fun navigateTo(
         is ActivityEvent.NavigateForResult<*> -> {
             val request = event.request
             val launcher = activityLaunchers[request] ?: throw IllegalStateException(
-                "No launcher for request with contract ${request.contract}!" +
-                    "\nRequests are turned into launchers while the destination is in composition, so" +
-                    "\nmake sure requests are registered by a navigator whose destination is currently" +
-                    "\nshown. Registering during the construction of the navigator is the simplest way" +
-                    "\nto do that.",
+                "No launcher registered for request with contract ${request.contract}!" +
+                    "\nMake sure you called the appropriate ActivityNavigator.registerFor... method",
             )
             @Suppress("UNCHECKED_CAST")
             (launcher as ActivityResultLauncher<Any?>).launch(event.input)
