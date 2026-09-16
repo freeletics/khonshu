@@ -181,8 +181,9 @@ class DetailScreenNavigator(
 ```
 
 `registerForActivityResult` and `registerForPermissionsResult` have to be called during the
-construction of the `DestinationNavigator` subclass, because the generated code calls
-`PlatformNavigatorEffect` before anything else is injected. See
+construction of the navigator. Generated destination composables construct their state machine and
+its dependencies before calling `PlatformNavigatorEffect`, so requests registered this way are
+available when the effect is set up. See
 [Navigating to an Activity](activities.md) for the details.
 
 ### NavHost
