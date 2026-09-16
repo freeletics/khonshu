@@ -289,3 +289,4 @@ public final synthetic class com/freeletics/khonshu/navigation/internal/StackEnt
 public final class com/freeletics/khonshu/navigation/internal/StackEntry$Id$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
+
