@@ -10,11 +10,6 @@ Change Log
   executed while its destination is the current destination, so a delayed or repeated back action
   can not affect another destination. `registerForNavigationResult` resolves to its own destination
   instead of looking up a destination by route type.
-- Generated destination graphs now provide a scoped `DestinationNavigator2`. The existing
-  `DestinationNavigator` continues to work and is still used for the platform navigation set up when
-  a binding for it exists. Providing one is now optional, so a destination can use only
-  `DestinationNavigator2`. `DestinationNavigator` will be deprecated and removed in a future
-  release, where `DestinationNavigator2` takes its place.
 
 ### Navigation Testing
 
@@ -26,6 +21,11 @@ Change Log
 ### Codegen
 
 - The generated `Khonshu<Name>HostGraph` is now a `@BindingContainer` object instead of an interface.
+- Generated destination graphs now provide a `DestinationNavigator2`. The existing
+  `DestinationNavigator` continues to work and is still used for the platform navigation set up when
+  a binding for it exists. Providing one is now optional, so a destination can use only
+  `DestinationNavigator2`. `DestinationNavigator` will be deprecated and removed in a future
+  release, where `DestinationNavigator2` takes its place.
 
 ## 0.38.0 (2026-09-10)
 

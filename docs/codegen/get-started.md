@@ -96,12 +96,11 @@ Generated destination graphs provide a `DestinationNavigator2` that is scoped to
 can either be injected directly or be delegated to by a screen specific navigator class. See
 [Navigation](../navigation/get-started.md) for what it does.
 
-Providing a `DestinationNavigator` binding is optional. It is only needed for activity and
-permission navigation. When a `@SingleIn(ExampleRoute::class) @ForScope(ExampleRoute::class)`
-binding of `DestinationNavigator` exists, the generated code will use it to set up activity
-navigation by calling `PlatformNavigatorEffect` in the compose UI layer. Note that
-`registerForActivityResult`/`registerForPermissionsResult` still have to be called at construction
-time of that `DestinationNavigator` subclass.
+On Android, generated destination graphs also provide a `@ForScope(ExampleRoute::class)`
+`PlatformNavigator` that can be injected for activity and permission navigation. Calls to
+`registerForActivityResult` and `registerForPermissionsResult` must happen during construction of
+the class that injects it. The generated code constructs the state machine and its dependencies
+before setting up the navigator with `PlatformNavigatorEffect`.
 
 
 ## Sharing objects between screens
@@ -135,8 +134,6 @@ internal class ExampleStateMachine(
 }
 
 @Inject
-// scope the navigator so that everything interacts with the same instance
-@SingleIn(ExampleRoute::class)
 class ExampleNavigator(
     navigator: DestinationNavigator2,
 ) : DestinationNavigator2 by navigator {

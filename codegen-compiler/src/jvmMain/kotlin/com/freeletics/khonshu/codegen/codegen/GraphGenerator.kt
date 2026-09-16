@@ -194,7 +194,6 @@ internal class GraphGenerator(
                             hostNavigator.propertyName,
                         )
                         .build(),
-                    annotations = listOf(singleIn(data.scope)),
                 ),
             )
             add(

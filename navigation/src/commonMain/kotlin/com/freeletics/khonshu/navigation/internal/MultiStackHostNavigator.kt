@@ -66,41 +66,38 @@ internal class MultiStackHostNavigator(
 
     @InternalNavigationCodegenApi
     override fun destinationNavigator(entry: StackEntry<*>): DestinationNavigator2 {
-        return EntryNavigator(entry)
+        return EntryNavigator(entry, this)
     }
 
-    /**
-     * A [DestinationNavigator2] for a single [entry]. Operations that remove destinations from the
-     * back stack are only executed while [entry] is the current entry.
-     */
-    private inner class EntryNavigator(
+    private class EntryNavigator(
         private val entry: StackEntry<*>,
+        private val hostNavigator: MultiStackHostNavigator,
     ) : DestinationNavigator2,
-        Navigator by this@MultiStackHostNavigator {
+        Navigator by hostNavigator {
         private val isCurrentDestination: Boolean
-            get() = snapshot.value.current.id == entry.id
+            get() = hostNavigator.snapshot.value.current.id == entry.id
 
         override fun navigateUp() {
             if (isCurrentDestination) {
-                stack.popCurrentStack()
+                hostNavigator.navigateUp()
             }
         }
 
         override fun navigateBack() {
             if (isCurrentDestination) {
-                stack.pop()
+                hostNavigator.navigateBack()
             }
         }
 
         override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean) {
             if (isCurrentDestination) {
-                stack.popUpTo(DestinationId(popUpTo), inclusive)
+                hostNavigator.navigateBackTo(popUpTo, inclusive)
             }
         }
 
         override fun navigate(block: Navigator.() -> Unit) {
             if (isCurrentDestination) {
-                this@MultiStackHostNavigator.navigate(block)
+                hostNavigator.navigate(block)
             }
         }
 
@@ -109,7 +106,7 @@ internal class MultiStackHostNavigator(
             return if (entry.destinationId == destinationId) {
                 entry
             } else {
-                this@MultiStackHostNavigator.getTopEntryFor(destinationId)
+                hostNavigator.getTopEntryFor(destinationId)
             }
         }
 
@@ -118,7 +115,7 @@ internal class MultiStackHostNavigator(
             return if (entry.id == id) {
                 entry
             } else {
-                this@MultiStackHostNavigator.getEntryFor(id)
+                hostNavigator.getEntryFor(id)
             }
         }
     }

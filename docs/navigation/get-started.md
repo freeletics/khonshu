@@ -151,39 +151,29 @@ class DetailScreenNavigator(
 ```
 
 `DestinationNavigator2` is platform neutral and does not offer activity or permission navigation.
-Those are provided by `DestinationNavigator`, which the generated code sets up by calling
-`PlatformNavigatorEffect`. A destination that needs both keeps them in two classes, where the
-`DestinationNavigator` subclass lives in an Android source set:
+On Android, generated destination graphs provide a `PlatformNavigator` for those APIs. An
+Android-specific navigator can inject it with the destination's scope:
 
 ```kotlin
 // androidMain
 @Inject
 @SingleIn(DetailScreenRoute::class)
-@ForScope(DetailScreenRoute::class)
-@ContributesBinding(DetailScreenRoute::class, binding<DestinationNavigator>())
 class DetailScreenActivityNavigator(
-    hostNavigator: HostNavigator,
-) : DestinationNavigator(hostNavigator) {
-    val picture = registerForActivityResult(ActivityResultContracts.TakePicture())
+    @ForScope(DetailScreenRoute::class)
+    private val platformNavigator: PlatformNavigator,
+) {
+    val picture = platformNavigator.registerForActivityResult(ActivityResultContracts.TakePicture())
 
     fun takePicture(uri: Uri) {
-        navigateForResult(picture, uri)
+        platformNavigator.navigateForResult(picture, uri)
     }
 }
-
-// androidMain
-@Inject
-@SingleIn(DetailScreenRoute::class)
-class DetailScreenNavigator(
-    navigator: DestinationNavigator2,
-    private val activityNavigator: DetailScreenActivityNavigator,
-) : DestinationNavigator2 by navigator
 ```
 
 `registerForActivityResult` and `registerForPermissionsResult` have to be called during the
-construction of the navigator. Generated destination composables construct their state machine and
-its dependencies before calling `PlatformNavigatorEffect`, so requests registered this way are
-available when the effect is set up. See
+construction of the class that injects `PlatformNavigator`. Generated destination composables
+construct their state machine and its dependencies before calling `PlatformNavigatorEffect`, so
+requests registered this way are available when the effect is set up. See
 [Navigating to an Activity](activities.md) for the details.
 
 ### NavHost
