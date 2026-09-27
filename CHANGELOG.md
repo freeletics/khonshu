@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-## 0.39.0 (2026-09-21)
+## UNRELEASED
 
 ### Navigation
 
@@ -20,12 +20,17 @@ Change Log
 
 ### Codegen
 
+- Generated destination graphs now provide a `DestinationNavigator2`. On Android they also provide a
+  `@ForScope(<Route>::class)` `PlatformNavigator` that can be injected for activity and permission
+  navigation. Providing a `DestinationNavigator` binding is now optional; when one exists it is used
+  as that `PlatformNavigator`. `DestinationNavigator` will be deprecated and removed in a future
+  release, where `DestinationNavigator2` and `PlatformNavigator` take its place.
+
+## 0.39.0 (2026-09-21)
+
+### Codegen
+
 - The generated `Khonshu<Name>HostGraph` is now a `@BindingContainer` object instead of an interface.
-- Generated destination graphs now provide a `DestinationNavigator2`. The existing
-  `DestinationNavigator` continues to work and is still used for the platform navigation set up when
-  a binding for it exists. Providing one is now optional, so a destination can use only
-  `DestinationNavigator2`. `DestinationNavigator` will be deprecated and removed in a future
-  release, where `DestinationNavigator2` takes its place.
 
 ## 0.38.0 (2026-09-10)
 
