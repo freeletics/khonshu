@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.updateAndGet
 
 data class ScreenState(val number: Int, val result: String? = null, val locationPermissionGranted: Boolean? = null)
 
@@ -46,14 +47,12 @@ class ScreenStateMachine(
     }
 
     private fun observeScreenResults() = navigator.destinationResult.results
-        .map {
-            val currentState = _state.value
-            currentState.copy(result = it.data)
+        .map { result ->
+            _state.updateAndGet { it.copy(result = result.data) }
         }
 
     private fun observeLocationPermissionResults() = locationPermissionNavigator.locationPermissionGranted
         .map { granted ->
-            val currentState = _state.value
-            currentState.copy(locationPermissionGranted = granted)
+            _state.updateAndGet { it.copy(locationPermissionGranted = granted) }
         }
 }
