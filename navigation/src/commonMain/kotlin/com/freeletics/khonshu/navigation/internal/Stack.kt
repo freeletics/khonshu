@@ -26,6 +26,8 @@ internal class Stack private constructor(
 
     val isAtRoot: Boolean get() = !stack.last().removable
 
+    val currentEntry: StackEntry<*> get() = stack.last()
+
     fun snapshot(startStackRootEntry: StackEntry<out NavRoot>): StackSnapshot {
         return StackSnapshot(stack.toList(), startStackRootEntry)
     }

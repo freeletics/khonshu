@@ -75,7 +75,7 @@ internal class MultiStackHostNavigator(
     ) : DestinationNavigator2,
         Navigator by hostNavigator {
         private val isCurrentDestination: Boolean
-            get() = hostNavigator.snapshot.value.current.id == entry.id
+            get() = hostNavigator.stack.currentEntry.id == entry.id
 
         override fun navigateUp() {
             if (isCurrentDestination) {

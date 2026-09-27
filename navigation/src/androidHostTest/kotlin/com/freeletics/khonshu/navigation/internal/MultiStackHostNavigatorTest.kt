@@ -656,6 +656,24 @@ internal class MultiStackHostNavigatorTest {
     }
 
     @Test
+    fun `entry aware back navigation no-ops when called inside a navigate block after its entry was covered`() {
+        val hostNavigator = underTest()
+        hostNavigator.navigateTo(SimpleRoute(2))
+        val destinationNavigator = hostNavigator.destinationNavigator(hostNavigator.snapshot.value.current)
+
+        hostNavigator.navigate {
+            navigateTo(OtherRoute(3))
+            destinationNavigator.navigateBack()
+            destinationNavigator.navigateUp()
+            destinationNavigator.navigateBackTo(SimpleRoot::class)
+        }
+
+        assertThat(hostNavigator.snapshot.value.current)
+            .isEqualTo(factory.create(StackEntry.Id("102"), OtherRoute(3)))
+        assertThat(removed).isEmpty()
+    }
+
+    @Test
     fun `entry aware back navigation no-ops when another back stack is active`() {
         val hostNavigator = underTest()
         hostNavigator.navigateTo(SimpleRoute(2))
