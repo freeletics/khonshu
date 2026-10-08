@@ -21,7 +21,7 @@ java-target = "17"
 java-toolchain = "21"
 khonshu = "0.39.0"
 ksp = "2.3.12"
-kotlin = "2.4.20"
+kotlin = "2.4.21"
 metro = "1.4.4"
 
 [libraries]
