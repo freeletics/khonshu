@@ -8,8 +8,9 @@ Change Log
 - Added `DestinationNavigator2`, a `Navigator` for a single destination that is aware of the back
   stack entry it belongs to. `navigateBack`, `navigateUp`, `navigateBackTo` and `navigate` are only
   executed while its destination is the current destination, so a delayed or repeated back action
-  can not affect another destination. `registerForNavigationResult` resolves to its own destination
-  instead of looking up a destination by route type.
+  can not affect another destination. When registering for its own route type,
+  `registerForNavigationResult` resolves to its exact entry instead of looking up an entry by route
+  type.
 
 ### Navigation Testing
 

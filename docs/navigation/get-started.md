@@ -132,8 +132,8 @@ entry it belongs to:
 - `navigateBack`, `navigateUp`, `navigateBackTo` and `navigate` are only executed while its
   destination is the current destination and are ignored otherwise, so a delayed or repeated back
   action can not affect another destination.
-- `registerForNavigationResult` resolves to its own destination instead of looking up a destination
-  by route type.
+- `registerForNavigationResult` resolves to its own entry when registering for its route type,
+  instead of looking up an entry by route type.
 - `navigateTo`, `switchBackStack`, `showRoot` and `replaceAllBackStacks` are not guarded and behave
   like on `HostNavigator`.
 
@@ -173,9 +173,15 @@ class DetailScreenActivityNavigator(
 `registerForActivityResult` and `registerForPermissionsResult` have to be called during the
 construction of the class that injects `PlatformNavigator`. Generated destination composables
 construct their state machine and its dependencies before calling `PlatformNavigatorEffect`, so
-requests registered this way are available when the effect is set up. This only works if the
-class is injected directly: when it is injected as `Lazy` or `Provider`, it is only constructed
-after `PlatformNavigatorEffect` ran and registering fails with an exception. See
+requests registered this way are available when the effect is set up. Keep the class holding these
+requests in the destination scope with `@SingleIn(DetailScreenRoute::class)`, as shown above. This
+reuses its requests when returning to the destination or recreating the UI, instead of trying to
+register again after the navigator has already been set up.
+
+Inject the class as a dependency of the state machine so that it is constructed before the effect.
+If it is injected as `Lazy` or `Provider`, it must still be resolved before
+`PlatformNavigatorEffect` first runs; resolving it for the first time afterwards fails with an
+exception when its constructor tries to register. See
 [Navigating to an Activity](activities.md) for the details.
 
 ### NavHost

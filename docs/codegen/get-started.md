@@ -101,6 +101,10 @@ On Android, generated destination graphs also provide a `@ForScope(ExampleRoute:
 `registerForActivityResult` and `registerForPermissionsResult` must happen during construction of
 the class that injects it. The generated code constructs the state machine and its dependencies
 before setting up the navigator with `PlatformNavigatorEffect`.
+Keep the class holding activity or permission result requests in the destination scope with
+`@SingleIn(ExampleRoute::class)` so that UI recreation does not register the requests again. See
+[Navigation](../navigation/get-started.md#destinationnavigator2) for an example and the registration
+timing requirements when using `Lazy` or `Provider`.
 
 
 ## Sharing objects between screens
