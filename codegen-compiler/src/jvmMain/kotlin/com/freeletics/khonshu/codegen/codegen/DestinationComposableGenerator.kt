@@ -3,10 +3,10 @@ package com.freeletics.khonshu.codegen.codegen
 import com.freeletics.khonshu.codegen.DestinationData
 import com.freeletics.khonshu.codegen.util.InternalCodegenApi
 import com.freeletics.khonshu.codegen.util.composable
-import com.freeletics.khonshu.codegen.util.destinationNavigator
 import com.freeletics.khonshu.codegen.util.internalNavigatorApi
 import com.freeletics.khonshu.codegen.util.localHostGraphProvider
 import com.freeletics.khonshu.codegen.util.optIn
+import com.freeletics.khonshu.codegen.util.platformNavigator
 import com.freeletics.khonshu.codegen.util.platformNavigatorEffect
 import com.freeletics.khonshu.codegen.util.propertyName
 import com.freeletics.khonshu.codegen.util.remember
@@ -34,9 +34,12 @@ internal class DestinationComposableGenerator(
             .addStatement("%T.provide(entry, snapshot, provider)", graphProviderClassName)
             .endControlFlow()
             .addStatement("")
-            .addStatement("%M(graph.%L)", platformNavigatorEffect, destinationNavigator.propertyName)
-            .addStatement("")
+            // the content composable is called before the platform navigator effect so that
+            // navigators that are created while it composes (e.g. because they are injected into a
+            // state machine) can register for activity results before the first read
             .addStatement("%L(graph)", composableName)
+            .addStatement("")
+            .addStatement("%M(graph.%L)", platformNavigatorEffect, platformNavigator.propertyName)
             .build()
     }
 }

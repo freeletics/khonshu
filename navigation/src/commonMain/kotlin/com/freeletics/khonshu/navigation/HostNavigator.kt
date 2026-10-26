@@ -15,6 +15,7 @@ import com.freeletics.khonshu.navigation.deeplinks.obtainLaunchInfo
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
 import com.freeletics.khonshu.navigation.internal.MultiStackHostNavigator
+import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.StackSnapshot
 import com.freeletics.khonshu.navigation.internal.createMultiStack
 import com.freeletics.khonshu.navigation.internal.rememberMultiStack
@@ -32,6 +33,12 @@ public abstract class HostNavigator @InternalNavigationTestingApi constructor() 
      * calling `navigateBackTo` followed by `navigateTo`.
      */
     public abstract fun navigate(block: Navigator.() -> Unit)
+
+    /**
+     * Returns a [DestinationNavigator2] for the destination represented by [entry].
+     */
+    @InternalNavigationCodegenApi
+    public abstract fun destinationNavigator(entry: StackEntry<*>): DestinationNavigator2
 }
 
 /**

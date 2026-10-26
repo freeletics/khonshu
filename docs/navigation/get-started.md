@@ -124,6 +124,66 @@ navigator.navigateBack()
 navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 ```
 
+### DestinationNavigator2
+
+`DestinationNavigator2` is a `Navigator` for a single destination. It knows the exact back stack
+entry it belongs to:
+
+- `navigateBack`, `navigateUp`, `navigateBackTo` and `navigate` are only executed while its
+  destination is the current destination and are ignored otherwise, so a delayed or repeated back
+  action can not affect another destination.
+- `registerForNavigationResult` resolves to its own entry when registering for its route type,
+  instead of looking up an entry by route type.
+- `navigateTo`, `switchBackStack`, `showRoot` and `replaceAllBackStacks` are not guarded and behave
+  like on `HostNavigator`.
+
+When using [Khonshu's codegen](../codegen/get-started.md) an instance is automatically part of the
+dependency graph of each destination. A navigator class for a specific screen can delegate to it:
+
+```kotlin
+@Inject
+@SingleIn(DetailScreenRoute::class)
+class DetailScreenNavigator(
+    navigator: DestinationNavigator2,
+) : DestinationNavigator2 by navigator {
+    val result = registerForNavigationResult<DetailScreenRoute, Boolean>()
+}
+```
+
+`DestinationNavigator2` is platform neutral and does not offer activity or permission navigation.
+On Android, generated destination graphs provide a `PlatformNavigator` for those APIs. An
+Android-specific navigator can inject it with the destination's scope:
+
+```kotlin
+// androidMain
+@Inject
+@SingleIn(DetailScreenRoute::class)
+class DetailScreenActivityNavigator(
+    @ForScope(DetailScreenRoute::class)
+    private val platformNavigator: PlatformNavigator,
+) {
+    val picture = platformNavigator.registerForActivityResult(ActivityResultContracts.TakePicture())
+
+    fun takePicture(uri: Uri) {
+        platformNavigator.navigateForResult(picture, uri)
+    }
+}
+```
+
+`registerForActivityResult` and `registerForPermissionsResult` have to be called during the
+construction of the class that injects `PlatformNavigator`. Generated destination composables
+construct their state machine and its dependencies before calling `PlatformNavigatorEffect`, so
+requests registered this way are available when the effect is set up. Keep the class holding these
+requests in the destination scope with `@SingleIn(DetailScreenRoute::class)`, as shown above. This
+reuses its requests when returning to the destination or recreating the UI, instead of trying to
+register again after the navigator has already been set up.
+
+Inject the class as a dependency of the state machine so that it is constructed before the effect.
+If it is injected as `Lazy` or `Provider`, it must still be resolved before
+`PlatformNavigatorEffect` first runs; resolving it for the first time afterwards fails with an
+exception when its constructor tries to register. See
+[Navigating to an Activity](activities.md) for the details.
+
 ### NavHost
 
 The last remaining part is showing the UI which is handled by `NavHost`.

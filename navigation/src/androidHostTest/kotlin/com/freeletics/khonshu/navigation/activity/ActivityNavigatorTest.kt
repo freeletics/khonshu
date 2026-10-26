@@ -69,7 +69,7 @@ internal class ActivityNavigatorTest {
             navigator.testRegisterForActivityResult(ActivityResultContracts.GetContent())
         }
         Truth.assertThat(exception).hasMessageThat().isEqualTo(
-            "Failed to register for result! You must call this before NavigationSetup is called with this navigator.",
+            "Failed to register for result! You must call this before ActivityNavigatorEffect is called with this navigator.",
         )
     }
 
@@ -83,7 +83,7 @@ internal class ActivityNavigatorTest {
             navigator.testRegisterForPermissionResult()
         }
         Truth.assertThat(exception).hasMessageThat().isEqualTo(
-            "Failed to register for result! You must call this before NavigationSetup is called with this navigator.",
+            "Failed to register for result! You must call this before ActivityNavigatorEffect is called with this navigator.",
         )
     }
 }

@@ -1,6 +1,32 @@
 Change Log
 ==========
 
+## UNRELEASED
+
+### Navigation
+
+- Added `DestinationNavigator2`, a `Navigator` for a single destination that is aware of the back
+  stack entry it belongs to. `navigateBack`, `navigateUp`, `navigateBackTo` and `navigate` are only
+  executed while its destination is the current destination, so a delayed or repeated back action
+  can not affect another destination. When registering for its own route type,
+  `registerForNavigationResult` resolves to its exact entry instead of looking up an entry by route
+  type.
+
+### Navigation Testing
+
+- Added `TestHostNavigator.destinationNavigator()` to create a `DestinationNavigator2` that reports
+  its events to the `TestHostNavigator` and can be asserted on with `test`/`testIn`. Pass
+  `isCurrentDestination = false` to test the behavior of a navigator whose destination is no longer
+  the current one.
+
+### Codegen
+
+- Generated destination graphs now provide a `DestinationNavigator2`. On Android they also provide a
+  `@ForScope(<Route>::class)` `PlatformNavigator` that can be injected for activity and permission
+  navigation. Providing a `DestinationNavigator` binding is now optional; when one exists it is used
+  as that `PlatformNavigator`. `DestinationNavigator` will be deprecated and removed in a future
+  release, where `DestinationNavigator2` and `PlatformNavigator` take its place.
+
 ## 0.39.0 (2026-09-21)
 
 ### Codegen

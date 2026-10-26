@@ -2,6 +2,7 @@ package com.freeletics.khonshu.navigation.internal
 
 import androidx.compose.runtime.State
 import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.DestinationNavigator2
 import com.freeletics.khonshu.navigation.HostNavigator
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
@@ -61,6 +62,62 @@ internal class MultiStackHostNavigator(
     @InternalNavigationApi
     override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
         return snapshot.value.entryFor(id)
+    }
+
+    @InternalNavigationCodegenApi
+    override fun destinationNavigator(entry: StackEntry<*>): DestinationNavigator2 {
+        return EntryNavigator(entry, this)
+    }
+
+    private class EntryNavigator(
+        private val entry: StackEntry<*>,
+        private val hostNavigator: MultiStackHostNavigator,
+    ) : DestinationNavigator2,
+        Navigator by hostNavigator {
+        private val isCurrentDestination: Boolean
+            get() = hostNavigator.stack.currentEntry.id == entry.id
+
+        override fun navigateUp() {
+            if (isCurrentDestination) {
+                hostNavigator.navigateUp()
+            }
+        }
+
+        override fun navigateBack() {
+            if (isCurrentDestination) {
+                hostNavigator.navigateBack()
+            }
+        }
+
+        override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean) {
+            if (isCurrentDestination) {
+                hostNavigator.navigateBackTo(popUpTo, inclusive)
+            }
+        }
+
+        override fun navigate(block: Navigator.() -> Unit) {
+            if (isCurrentDestination) {
+                hostNavigator.navigate(block)
+            }
+        }
+
+        @InternalNavigationApi
+        override fun getTopEntryFor(destinationId: DestinationId<*>): StackEntry<*> {
+            return if (entry.destinationId == destinationId) {
+                entry
+            } else {
+                hostNavigator.getTopEntryFor(destinationId)
+            }
+        }
+
+        @InternalNavigationApi
+        override fun getEntryFor(id: StackEntry.Id): StackEntry<*> {
+            return if (entry.id == id) {
+                entry
+            } else {
+                hostNavigator.getEntryFor(id)
+            }
+        }
     }
 
     private inner class NonNotifyingNavigator : Navigator {

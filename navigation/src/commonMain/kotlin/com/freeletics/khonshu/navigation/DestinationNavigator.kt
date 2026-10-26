@@ -2,6 +2,7 @@ package com.freeletics.khonshu.navigation
 
 import androidx.compose.runtime.Composable
 import com.freeletics.khonshu.navigation.internal.InternalNavigationTestingApi
+import kotlin.reflect.KClass
 
 /**
  * A combination of [Navigator] and [com.freeletics.khonshu.navigation.activity.ActivityNavigator] that can
@@ -18,6 +19,55 @@ public abstract class DestinationNavigator(
     public fun navigate(block: Navigator.() -> Unit) {
         hostNavigator.navigate(block)
     }
+}
+
+/**
+ * A [Navigator] that is scoped to a single destination and knows the exact back stack entry it was
+ * created for:
+ *
+ * - Operations that remove destinations from the back stack ([navigateBack], [navigateUp],
+ *   [navigateBackTo] and [navigate]) are only executed while this navigator's destination is the
+ *   current destination and are ignored otherwise, so a delayed or repeated back action can not
+ *   affect another destination.
+ * - [registerForNavigationResult] resolves to this navigator's own entry when registering for its
+ *   route type, instead of looking up an entry by route type.
+ *
+ * Operations that add to the back stack or change which back stack is shown ([navigateTo],
+ * [switchBackStack], [showRoot] and [replaceAllBackStacks]) are always executed.
+ */
+public interface DestinationNavigator2 : Navigator {
+    /**
+     * Triggers up navigation.
+     *
+     * This is a no-op while this navigator's destination is not the current destination.
+     */
+    override fun navigateUp()
+
+    /**
+     * Removes the top entry from the back stack to show the previous destination.
+     *
+     * This is a no-op while this navigator's destination is not the current destination.
+     */
+    override fun navigateBack()
+
+    /**
+     * Removes all entries from the back stack until [popUpTo]. If [inclusive] is `true` [popUpTo]
+     * itself will also be removed.
+     *
+     * This is a no-op while this navigator's destination is not the current destination.
+     */
+    override fun <T : BaseRoute> navigateBackTo(popUpTo: KClass<T>, inclusive: Boolean)
+
+    /**
+     * See [HostNavigator.navigate].
+     *
+     * This is a no-op while this navigator's destination is not the current destination.
+     *
+     * Once the block runs, the operations inside of it are not guarded individually and behave
+     * exactly like the equivalent [HostNavigator] operations, so that transitions like
+     * [navigateBack] followed by [navigateTo] can be performed atomically.
+     */
+    public fun navigate(block: Navigator.() -> Unit)
 }
 
 public expect abstract class PlatformNavigator()
