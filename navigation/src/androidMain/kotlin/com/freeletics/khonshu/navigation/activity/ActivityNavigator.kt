@@ -131,7 +131,7 @@ public abstract class ActivityNavigator {
 
     internal fun checkAllowedToAddRequests() {
         check(allowedToAddRequests) {
-            "Failed to register for result! You must call this before NavigationSetup is called with this navigator."
+            "Failed to register for result! You must call this before ActivityNavigatorEffect is called with this navigator."
         }
     }
 }

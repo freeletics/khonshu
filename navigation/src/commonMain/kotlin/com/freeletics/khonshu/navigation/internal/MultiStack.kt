@@ -30,6 +30,10 @@ internal class MultiStack @VisibleForTesting internal constructor(
     val startRoot
         get() = startStack.rootEntry.route
 
+    // unlike snapshot this is also up to date while a navigate block is running
+    val currentEntry: StackEntry<*>
+        get() = currentStack.currentEntry
+
     private fun getBackStack(root: NavRoot): Stack? {
         return allStacks.find { it.id == root.destinationId }
     }

@@ -1,10 +1,16 @@
 # Destination results
 
-Khonshu has a built-in way to receive results from another screen inside the app. For that
-it is required to call `HostNavigator.registerForNavigationResult<Route, Result>`.
-`Route` in this case should be the `NavRoute` class for the current screen, while `Result`is the type of the
+Khonshu has a built-in way to receive results from another screen inside the app. Call
+`registerForNavigationResult<Route, Result>()` on the screen's `DestinationNavigator2` to register.
+`Route` should be the route class for that navigator's own destination, while `Result` is the type of the
 expected result which can be any `Serializable` class. The register method
 will return a `NavigationResultRequest`, which has a `results: Flow<Result>` property to collect the results.
+
+When the route type matches its own destination, `DestinationNavigator2` registers the request on
+the exact back stack entry it belongs to, even if another entry has the same route type. The API
+can also be called on `HostNavigator`; in that case it registers on the topmost entry matching the
+route type. See [Getting started](get-started.md#destinationnavigator2) for injecting a
+`DestinationNavigator2` with Khonshu's codegen.
 
 The navigation to the screen from which the result should be returned is a regular call to
 `navigateTo`. However the `NavRoute` class for that target destination should have
@@ -17,33 +23,35 @@ navigator to send the result and afterwards remove itself from the back stack wi
 The logic for a hypothetical `FooScreen` that wants to receive a result from `BarScreen` would look
 like this:
 ```kotlin
-data class MessageResult(val message: String): Parcelable
+@Serializable
+data class MessageResult(val message: String)
 
 class FooScreenViewModel(
-    private val hostNavigator: HostNavigator
+    private val navigator: DestinationNavigator2,
 ) {
     // use request.results somewhere to handle the results that BarScreen delivers
-    val request = hostNavigator.registerForNavigationResult<FooScreenRoute, MessageResult>()
+    val request = navigator.registerForNavigationResult<FooScreenRoute, MessageResult>()
 
     fun navigateToScreenB() {
         // if needed BarScreenRoute could also have additional parameters
-        hostNavigator.navigateTo(BarScreenRoute(request.key))
+        navigator.navigateTo(BarScreenRoute(request.key))
     }
 }
 ```
 
 `BarScreen` would then have the following route and logic:
 ```kotlin
+@Serializable
 data class BarScreenRoute(
     val key: NavigationResultRequest.Key<MessageResult>,
 ) : NavRoute
 
 class BarScreenViewModel(
-    private val hostNavigator: HostNavigator,
+    private val navigator: DestinationNavigator2,
     val route: BarScreenRoute,
 ) {
     fun deliverMessage(message: String) {
-        hostNavigator.deliverNavigationResult(route.key, MessageResult(message))
+        navigator.deliverNavigationResult(route.key, MessageResult(message))
     }
 }
 ```

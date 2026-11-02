@@ -66,6 +66,34 @@ that were not handled through one of the `await...` functions an `AssertionError
 during the cancellation.
 
 
+## Destination navigators
+
+A navigator class for a single screen usually delegates to an injected `DestinationNavigator2`.
+`TestHostNavigator` can create one that reports all events back to itself, so the same `test`/`testIn`
+extensions can be used:
+
+```kotlin
+val hostNavigator = TestHostNavigator()
+val navigator = ExampleNavigator(hostNavigator.destinationNavigator())
+
+hostNavigator.test {
+    navigator.showDetails("some-id")
+    awaitNavigateTo(DetailScreenRoute("some-id"))
+}
+```
+
+Because `DestinationNavigator2` ignores back navigation while its destination is not the current
+destination, that behavior can be tested by passing `isCurrentDestination = false`:
+
+```kotlin
+val navigator = ExampleNavigator(hostNavigator.destinationNavigator(isCurrentDestination = false))
+
+hostNavigator.test {
+    navigator.close()
+    // no event is emitted because the destination is not the current one anymore
+}
+```
+
 ## Result receivers
 
 When testing code that deals with `Activity`, permission or navigation results it is often needed

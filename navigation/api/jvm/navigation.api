@@ -14,6 +14,13 @@ public abstract class com/freeletics/khonshu/navigation/DestinationNavigator : c
 	public fun switchBackStack (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 }
 
+public abstract interface class com/freeletics/khonshu/navigation/DestinationNavigator2 : com/freeletics/khonshu/navigation/Navigator {
+	public abstract fun navigate (Lkotlin/jvm/functions/Function1;)V
+	public abstract fun navigateBack ()V
+	public abstract fun navigateBackTo (Lkotlin/reflect/KClass;Z)V
+	public abstract fun navigateUp ()V
+}
+
 public final class com/freeletics/khonshu/navigation/DestinationNavigator_jvmKt {
 	public static final fun PlatformNavigatorEffect (Lcom/freeletics/khonshu/navigation/PlatformNavigator;Landroidx/compose/runtime/Composer;I)V
 }
