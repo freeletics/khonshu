@@ -7,7 +7,7 @@ serialization = "1.12.0"
 java-target= "17"
 java-toolchain = "24"
 
-android-gradle = "9.4.1"
+android-gradle = "9.5.1"
 android-min = "23"
 android-target = "37"
 android-compile = "37"
@@ -25,11 +25,11 @@ androidx-savedstate = "1.5.0"
 androidx-navigation-event = "1.1.0"
 
 clikt = "5.1.0"
-mordant = "3.1.0"
+mordant = "3.1.1"
 
 uri = "0.0.21"
 
-metro = "1.5.0"
+metro = "1.5.2"
 
 ksp = "2.3.12"
 kotlinpoet = "2.4.0"
@@ -43,7 +43,7 @@ kotlin-compile-testing = "0.14.0"
 
 fgp = "0.41.0"
 publish = "0.37.0"
-dokka = "2.2.0"
+dokka = "2.3.0"
 dependency-analysis = "3.20.2"
 
 [libraries]
