@@ -50,6 +50,7 @@ dependencies {
     "commonMainApi"(libs.jetbrains.compose.ui)
     "commonMainApi"(libs.jetbrains.compose.foundation)
     "commonMainApi"(libs.uri)
+    "commonMainImplementation"(libs.jetbrains.annotations)
 
     "androidMainApi"(libs.androidx.activity)
     "androidMainApi"(libs.androidx.core)
