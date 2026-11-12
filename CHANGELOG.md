@@ -15,7 +15,7 @@ Change Log
 ### Navigation Testing
 
 - Added `TestHostNavigator.platformNavigator()` to create a `PlatformNavigator` for testing activity
-  and permission navigation with the existing `DestinationNavigator.test`/`testIn` extensions.
+  and permission navigation with `PlatformNavigator.test`/`testIn` extensions.
 - Added `TestHostNavigator.destinationNavigator()` to create a `DestinationNavigator2` that reports
   its events to the `TestHostNavigator` and can be asserted on with `test`/`testIn`. Pass
   `isCurrentDestination = false` to test the behavior of a navigator whose destination is no longer

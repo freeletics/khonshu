@@ -104,15 +104,14 @@ val hostNavigator = TestHostNavigator()
 val platformNavigator = hostNavigator.platformNavigator()
 val navigator = ExampleActivityNavigator(platformNavigator)
 
-(platformNavigator as DestinationNavigator).test {
+platformNavigator.test {
     navigator.requestPermission()
     awaitRequestPermissions(navigator.permissionRequest, "permission")
 }
 ```
 
 Create one instance per navigator under test and inject that same instance into its dependencies.
-The returned instance is a `DestinationNavigator`, so the cast allows using the existing
-`test`/`testIn` extensions to assert platform events as well as back stack events.
+Use its `test`/`testIn` extensions to assert platform events as well as back stack events.
 `hostNavigator.test` on its own only observes back stack events, not activity or permission events.
 The factory does not require opting in to internal APIs.
 

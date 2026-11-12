@@ -10,7 +10,9 @@ import com.freeletics.khonshu.navigation.activity.sendResult
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertThrows
 import org.junit.Test
 
 internal class TestHostNavigatorPlatformNavigatorTest {
@@ -19,7 +21,7 @@ internal class TestHostNavigatorPlatformNavigatorTest {
         val platformNavigator = TestHostNavigator().platformNavigator()
         val navigator = PermissionNavigator(platformNavigator)
 
-        (platformNavigator as DestinationNavigator).test {
+        platformNavigator.test {
             navigator.requestPermission()
 
             awaitRequestPermissions(navigator.request, "permission")
@@ -32,7 +34,7 @@ internal class TestHostNavigatorPlatformNavigatorTest {
         val navigator = ResultNavigator(platformNavigator)
 
         turbineScope {
-            val events = (platformNavigator as DestinationNavigator).testIn(CoroutineScope(currentCoroutineContext()))
+            val events = platformNavigator.testIn(CoroutineScope(currentCoroutineContext()))
             navigator.open()
 
             events.awaitNavigateForResult(navigator.request, "input")
@@ -67,11 +69,37 @@ internal class TestHostNavigatorPlatformNavigatorTest {
         val hostNavigator = TestHostNavigator()
         val platformNavigator = hostNavigator.platformNavigator()
 
-        (platformNavigator as DestinationNavigator).test {
+        platformNavigator.test {
             hostNavigator.navigateBack()
 
             awaitNavigateBack()
         }
+    }
+
+    @Test
+    fun `test rejects platform navigators not backed by a test host`() {
+        val platformNavigator = object : PlatformNavigator() {}
+
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            runBlocking { platformNavigator.test {} }
+        }
+
+        assertThat(exception).hasMessageThat().isEqualTo(
+            "PlatformNavigator.test/testIn requires a navigator created by TestHostNavigator.platformNavigator().",
+        )
+    }
+
+    @Test
+    fun `testIn rejects platform navigators not backed by a test host`() = runTest {
+        val platformNavigator = object : PlatformNavigator() {}
+
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            platformNavigator.testIn(this)
+        }
+
+        assertThat(exception).hasMessageThat().isEqualTo(
+            "PlatformNavigator.test/testIn requires a navigator created by TestHostNavigator.platformNavigator().",
+        )
     }
 
     private class PermissionNavigator(private val navigator: PlatformNavigator) {
