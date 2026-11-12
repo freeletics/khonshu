@@ -41,6 +41,7 @@ public final class com/freeletics/khonshu/navigation/TestHostNavigator : com/fre
 	public fun navigateBackTo (Lkotlin/reflect/KClass;Z)V
 	public fun navigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;)V
 	public fun navigateUp ()V
+	public final fun platformNavigator ()Lcom/freeletics/khonshu/navigation/activity/ActivityNavigator;
 	public fun replaceAllBackStacks (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 	public fun setStartRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V
 	public fun showRoot (Lcom/freeletics/khonshu/navigation/NavRoot;)V

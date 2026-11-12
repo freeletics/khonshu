@@ -3,6 +3,7 @@ package com.freeletics.khonshu.navigation
 import androidx.compose.runtime.State
 import app.cash.turbine.Turbine
 import app.cash.turbine.plusAssign
+import com.freeletics.khonshu.navigation.internal.DefaultDestinationNavigator
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
@@ -56,6 +57,28 @@ public class TestHostNavigator(
      */
     public fun destinationNavigator(isCurrentDestination: Boolean = true): DestinationNavigator2 {
         return TestDestinationNavigator(isCurrentDestination)
+    }
+
+    /**
+     * Returns a [PlatformNavigator] for injection into a screen's activity or permission navigator.
+     * Create one instance per navigator under test and inject that same instance wherever needed.
+     *
+     * Cast the returned instance to [DestinationNavigator] to assert platform events with [test]
+     * and [testIn]. Calling [TestHostNavigator.test] only observes back stack navigation events.
+     *
+     * ```kotlin
+     * val platformNavigator = hostNavigator.platformNavigator()
+     * val navigator = ExampleActivityNavigator(platformNavigator)
+     *
+     * (platformNavigator as DestinationNavigator).test {
+     *     navigator.requestPermission()
+     *     awaitRequestPermissions(navigator.permissionRequest, "permission")
+     * }
+     * ```
+     */
+    @OptIn(InternalNavigationCodegenApi::class)
+    public fun platformNavigator(): PlatformNavigator {
+        return DefaultDestinationNavigator(this)
     }
 
     /**

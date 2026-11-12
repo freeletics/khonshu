@@ -49,4 +49,5 @@ dependencies {
     "androidHostTestImplementation"(libs.junit)
     "androidHostTestImplementation"(libs.truth)
     "androidHostTestImplementation"(libs.coroutines.test)
+    "androidHostTestImplementation"(libs.androidx.activity)
 }
