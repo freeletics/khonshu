@@ -141,10 +141,11 @@ class DetailScreenNavigator(
 }
 ```
 
-The navigator belongs to the destination's exact back stack entry:
+The navigator belongs to the destination's exact back stack entry. The current entry is the
+topmost entry in the active back stack:
 
 - `navigateBack`, `navigateUp` and `navigateBackTo` only execute while that entry is the current
-  destination. Otherwise they are no-ops.
+  entry. Otherwise they are no-ops.
 - `navigateTo`, `switchBackStack`, `showRoot` and `replaceAllBackStacks` can be called regardless of
   whether the entry is current.
 - `navigate { ... }` starts an atomic block only while the entry is current. Inside the block,

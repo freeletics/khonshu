@@ -31,20 +31,11 @@ class ScreenStateMachine(
     private val navigator: ScreenNavigator,
     private val locationPermissionNavigator: LocationPermissionNavigator,
 ) : StateMachine<ScreenState, ScreenAction> {
-    override val state: Flow<ScreenState> = MutableStateFlow(ScreenState(route.number)).let { state ->
-        channelFlow {
-            launch {
-                navigator.destinationResult.results.collect { result ->
-                    state.update { it.copy(result = result.data) }
-                }
-            }
-            launch {
-                locationPermissionNavigator.locationPermissionGranted.collect { granted ->
-                    state.update { it.copy(locationPermissionGranted = granted) }
-                }
-            }
-            state.collect { send(it) }
-        }
+    private val _state = MutableStateFlow(ScreenState(route.number))
+    override val state: Flow<ScreenState> = channelFlow {
+        launch { observeScreenResults() }
+        launch { observeLocationPermissionResults() }
+        _state.collect { send(it) }
     }
 
     override suspend fun dispatch(action: ScreenAction) {
@@ -55,6 +46,18 @@ class ScreenStateMachine(
             ScreenAction.ReplaceAllButtonClicked -> navigator.replaceAllWithNewRoot()
             ScreenAction.ScreenForResultButtonClicked -> navigator.navigateToScreenForResult()
             ScreenAction.LocationPermissionButtonClicked -> locationPermissionNavigator.requestLocationPermission()
+        }
+    }
+
+    private suspend fun observeScreenResults() {
+        navigator.destinationResult.results.collect { result ->
+            _state.update { it.copy(result = result.data) }
+        }
+    }
+
+    private suspend fun observeLocationPermissionResults() {
+        locationPermissionNavigator.locationPermissionGranted.collect { granted ->
+            _state.update { it.copy(locationPermissionGranted = granted) }
         }
     }
 }
