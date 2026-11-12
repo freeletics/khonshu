@@ -92,19 +92,25 @@ a screen is shown in the logged in or logged out state.
 
 ## Navigation set up
 
-Generated destination graphs provide a `DestinationNavigator2` that is scoped to the destination. It
-can either be injected directly or be delegated to by a screen specific navigator class. See
-[Navigation](../navigation/get-started.md) for what it does.
+Inject `DestinationNavigator2` to navigate from a screen:
 
-On Android, generated destination graphs also provide a `@ForScope(ExampleRoute::class)`
-`PlatformNavigator` that can be injected for activity and permission navigation. Calls to
-`registerForActivityResult` and `registerForPermissionsResult` must happen during construction of
-the class that injects it. The generated code constructs the state machine and its dependencies
-before setting up the navigator with `PlatformNavigatorEffect`.
-Keep the class holding activity or permission result requests in the destination scope with
-`@SingleIn(ExampleRoute::class)` so that UI recreation does not register the requests again. See
-[Navigation](../navigation/get-started.md#destinationnavigator2) for an example and the registration
-timing requirements when using `Lazy` or `Provider`.
+```kotlin
+@Inject
+class ExampleNavigator(
+    navigator: DestinationNavigator2,
+) : DestinationNavigator2 by navigator {
+    fun close() {
+        navigateBack()
+    }
+}
+```
+
+Generated destination graphs provide this navigator for the screen's back stack entry. Inject
+`ExampleNavigator` into the state machine to use its navigation actions.
+
+On Android, graphs also provide a `@ForScope(ExampleRoute::class)` `PlatformNavigator` for activity
+and permission navigation. See [Navigation](../navigation/get-started.md#destinationnavigator2)
+for an example.
 
 
 ## Sharing objects between screens

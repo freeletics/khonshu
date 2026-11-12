@@ -126,33 +126,41 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 
 ### DestinationNavigator2
 
-`DestinationNavigator2` is a `Navigator` for a single destination. It knows the exact back stack
-entry it belongs to:
-
-- `navigateBack`, `navigateUp`, `navigateBackTo` and `navigate` are only executed while its
-  destination is the current destination and are ignored otherwise, so a delayed or repeated back
-  action can not affect another destination.
-- `registerForNavigationResult` resolves to its own entry when registering for its route type,
-  instead of looking up an entry by route type.
-- `navigateTo`, `switchBackStack`, `showRoot` and `replaceAllBackStacks` are not guarded and behave
-  like on `HostNavigator`.
-
-When using [Khonshu's codegen](../codegen/get-started.md) an instance is automatically part of the
-dependency graph of each destination. A navigator class for a specific screen can delegate to it:
+Use `DestinationNavigator2` to navigate from a single destination. With
+[Khonshu's codegen](../codegen/get-started.md), inject it into a screen-specific navigator and
+delegate its navigation operations:
 
 ```kotlin
 @Inject
-@SingleIn(DetailScreenRoute::class)
 class DetailScreenNavigator(
     navigator: DestinationNavigator2,
 ) : DestinationNavigator2 by navigator {
-    val result = registerForNavigationResult<DetailScreenRoute, Boolean>()
+    fun close() {
+        navigateBack()
+    }
 }
 ```
 
-`DestinationNavigator2` is platform neutral and does not offer activity or permission navigation.
-On Android, generated destination graphs provide a `PlatformNavigator` for those APIs. An
-Android-specific navigator can inject it with the destination's scope:
+The navigator belongs to the destination's exact back stack entry:
+
+- `navigateBack`, `navigateUp` and `navigateBackTo` only execute while that entry is the current
+  destination. Otherwise they are no-ops.
+- `navigateTo`, `switchBackStack`, `showRoot` and `replaceAllBackStacks` can be called regardless of
+  whether the entry is current.
+- `navigate { ... }` starts an atomic block only while the entry is current. Inside the block,
+  operations follow `HostNavigator` semantics without individual entry checks, so a block can
+  navigate back and then navigate to another destination atomically.
+
+To receive a result on this entry, call `registerForNavigationResult` with the destination's own
+route type. See [Destination results](results.md) for an example.
+
+#### Platform navigation
+
+On Android, generated destination graphs provide a `PlatformNavigator` for activity and permission
+navigation and call `PlatformNavigatorEffect` automatically. On iOS and Desktop, the effect is a
+no-op; use `DestinationNavigator2` for back stack navigation on all platforms.
+
+An Android-specific navigator can inject `PlatformNavigator` with the destination's scope:
 
 ```kotlin
 // androidMain

@@ -27,10 +27,9 @@ public abstract class DestinationNavigator(
  *
  * - Operations that remove destinations from the back stack ([navigateBack], [navigateUp],
  *   [navigateBackTo] and [navigate]) are only executed while this navigator's destination is the
- *   current destination and are ignored otherwise, so a delayed or repeated back action can not
- *   affect another destination.
- * - [registerForNavigationResult] resolves to this navigator's own entry when registering for its
- *   route type, instead of looking up an entry by route type.
+ *   current destination and are ignored otherwise.
+ * - [registerForNavigationResult] registers on this navigator's own entry when called with its
+ *   destination's route type.
  *
  * Operations that add to the back stack or change which back stack is shown ([navigateTo],
  * [switchBackStack], [showRoot] and [replaceAllBackStacks]) are always executed.

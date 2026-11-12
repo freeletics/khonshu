@@ -6,10 +6,8 @@ Khonshu has a built-in way to receive results from another screen inside the app
 expected result which can be any `Serializable` class. The register method
 will return a `NavigationResultRequest`, which has a `results: Flow<Result>` property to collect the results.
 
-When the route type matches its own destination, `DestinationNavigator2` registers the request on
-the exact back stack entry it belongs to, even if another entry has the same route type. The API
-can also be called on `HostNavigator`; in that case it registers on the topmost entry matching the
-route type. See [Getting started](get-started.md#destinationnavigator2) for injecting a
+The request receives results on this destination's exact back stack entry. See
+[Getting started](get-started.md#destinationnavigator2) for injecting a
 `DestinationNavigator2` with Khonshu's codegen.
 
 The navigation to the screen from which the result should be returned is a regular call to
