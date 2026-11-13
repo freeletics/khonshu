@@ -63,6 +63,20 @@ public suspend fun DestinationNavigator.test(
 }
 
 /**
+ * Collects platform and back stack events from a navigator created by
+ * [TestHostNavigator.platformNavigator]. The [validate] lambda consumes and asserts events in order.
+ *
+ * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
+ */
+public suspend fun PlatformNavigator.test(
+    timeout: Duration? = null,
+    name: String? = null,
+    validate: suspend NavigatorTurbine.() -> Unit,
+) {
+    testDestinationNavigator().test(timeout, name, validate)
+}
+
+/**
  * Collects events from [TestHostNavigator] and returns a [NavigatorTurbine] for consuming
  * and asserting properties on them in order. If any exception occurs during validation the
  * exception is rethrown from this method.
@@ -105,6 +119,28 @@ public fun DestinationNavigator.testIn(
     val activityEvents = activityEvents.map(::toTestEvent)
     val turbine = merge(hostEvents, activityEvents).testIn(scope, timeout, name)
     return DefaultNavigatorTurbine(turbine, testHostNavigator.state, scope)
+}
+
+/**
+ * Collects platform and back stack events from a navigator created by
+ * [TestHostNavigator.platformNavigator] and returns a [NavigatorTurbine] for asserting them.
+ * The returned turbine must be explicitly canceled.
+ *
+ * [timeout] - If non-null, overrides the current Turbine timeout.
+ */
+public fun PlatformNavigator.testIn(
+    scope: CoroutineScope,
+    timeout: Duration? = null,
+    name: String? = null,
+): NavigatorTurbine {
+    return testDestinationNavigator().testIn(scope, timeout, name)
+}
+
+private fun PlatformNavigator.testDestinationNavigator(): DestinationNavigator {
+    require(this is DestinationNavigator && hostNavigator is TestHostNavigator) {
+        "PlatformNavigator.test/testIn requires a navigator created by TestHostNavigator.platformNavigator()."
+    }
+    return this
 }
 
 public interface NavigatorTurbine {

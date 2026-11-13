@@ -66,6 +66,55 @@ that were not handled through one of the `await...` functions an `AssertionError
 during the cancellation.
 
 
+## Destination navigators
+
+A navigator class for a single screen usually delegates to an injected `DestinationNavigator2`.
+`TestHostNavigator` can create one that reports all events back to itself, so the same `test`/`testIn`
+extensions can be used:
+
+```kotlin
+val hostNavigator = TestHostNavigator()
+val navigator = ExampleNavigator(hostNavigator.destinationNavigator())
+
+hostNavigator.test {
+    navigator.showDetails("some-id")
+    awaitNavigateTo(DetailScreenRoute("some-id"))
+}
+```
+
+Because `DestinationNavigator2` ignores back navigation while its destination is not the current
+destination, that behavior can be tested by passing `isCurrentDestination = false`:
+
+```kotlin
+val navigator = ExampleNavigator(hostNavigator.destinationNavigator(isCurrentDestination = false))
+
+hostNavigator.test {
+    navigator.close()
+    // no event is emitted because the destination is not the current one anymore
+}
+```
+
+## Platform navigators
+
+For a screen that injects `PlatformNavigator` for activity or permission navigation, create an
+instance with `TestHostNavigator.platformNavigator()`:
+
+```kotlin
+val hostNavigator = TestHostNavigator()
+val platformNavigator = hostNavigator.platformNavigator()
+val navigator = ExampleActivityNavigator(platformNavigator)
+
+platformNavigator.test {
+    navigator.requestPermission()
+    awaitRequestPermissions(navigator.permissionRequest, "permission")
+}
+```
+
+Create one instance per navigator under test and inject that same instance into its dependencies.
+Use its `test`/`testIn` extensions to assert platform events as well as back stack events.
+`hostNavigator.test` on its own only observes back stack events, not activity or permission events.
+The factory does not require opting in to internal APIs.
+
 ## Result receivers
 
 When testing code that deals with `Activity`, permission or navigation results it is often needed

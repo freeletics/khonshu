@@ -92,11 +92,25 @@ a screen is shown in the logged in or logged out state.
 
 ## Navigation set up
 
-The integration of Khonshu's Codegen and Navigation libraries also expects a `DestinationNavigator`
-binding to be available. This can be easily achieved by adding `@SingleIn(ExampleScope::class)
-@ForScope(ExampleScope::class) @ContributesBinding(ExampleScope::class, binding<DestinationNavigator>())`
-to a subclass of it. The generated code will automatically take care of setting up
-the navigator by calling `ActivityNavigatorEffect` in the compose UI layer with the navigator.
+Inject `DestinationNavigator2` to navigate from a screen:
+
+```kotlin
+@Inject
+class ExampleNavigator(
+    navigator: DestinationNavigator2,
+) : DestinationNavigator2 by navigator {
+    fun close() {
+        navigateBack()
+    }
+}
+```
+
+Generated destination graphs provide this navigator for the screen's back stack entry. Inject
+`ExampleNavigator` into the state machine to use its navigation actions.
+
+On Android, graphs also provide a `@ForScope(ExampleRoute::class)` `PlatformNavigator` for activity
+and permission navigation. See [Navigation](../navigation/get-started.md#destinationnavigator2)
+for an example.
 
 
 ## Sharing objects between screens
@@ -123,19 +137,16 @@ internal class ExampleStateMachine(
     val route: ExampleRoute, // inject the navigator route that was used to get to this screen
     @ForScope(ExampleRoute::class)
     val savedStateHandle: SavedStateHandle, // a saved state handle tied to this screen
-    val repository: ExampleRepository, // a repository that pas provided somewhere in the app
+    val repository: ExampleRepository, // a repository that was provided somewhere in the app
+    val navigator: ExampleNavigator,
 ) : StateMachine<ExampleState, ExampleAction> {
     // ...
 }
 
 @Inject
-// scope the navigator so that everything interacts with the same instance
-@SingleIn(ExampleRoute::class)
-@ForScope(ExampleRoute::class)
-// make ExampleNavigator available as DestinationNavigator so that the generated code can automatically
-// set up the navigation handling
-@ContributesBinding(ExampleRoute::class)
-class ExampleNavigator(hostNavigator: HostNavigator) : DestinationNavigator(hostNavigator) {
+class ExampleNavigator(
+    navigator: DestinationNavigator2,
+) : DestinationNavigator2 by navigator {
     // ...
 }
 
