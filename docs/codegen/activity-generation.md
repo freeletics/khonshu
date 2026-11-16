@@ -39,8 +39,8 @@ the composable:
   changes. This is optional and null can be passed instead.
 
 The code generation will automatically take care of creating a `HostNavigator` and
-makes it available in the `scope`. This means any screen can simply inject `HostNavigator` to
-use it.
+makes it available in the `scope`. Screens navigate by injecting `DestinationNavigator2`, see
+[Navigation set up](get-started.md#navigation-set-up).
 
 One requirement is that the `destinationScope` used by other screens is either the `scope` or
 `parentScope` (or a parent of the parent if there are deeper scope hierarchies) used for
