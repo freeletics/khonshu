@@ -27,9 +27,9 @@ nav:
       - navigation/back-stacks.md
       - navigation/deeplinks.md
       - navigation/testing.md
+      - navigation/migration-destination-navigator2.md
       - 'API':
           - 'Runtime': navigation/API/runtime/index.html
-          - 'Compose': navigation/API/compose/index.html
           - 'Testing': navigation/API/testing/index.html
   - 'Codegen':
       - codegen/get-started.md

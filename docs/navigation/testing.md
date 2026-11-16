@@ -113,7 +113,6 @@ platformNavigator.test {
 Create one instance per navigator under test and inject that same instance into its dependencies.
 Use its `test`/`testIn` extensions to assert platform events as well as back stack events.
 `hostNavigator.test` on its own only observes back stack events, not activity or permission events.
-The factory does not require opting in to internal APIs.
 
 ## Result receivers
 
@@ -124,8 +123,13 @@ each request type to do that.
 For example if there would be the following navigator:
 
 ```kotlin
-class MyNavigator : ActivityNavigator() {
-    val permissionRequest = registerForPermissionsResult()
+@Inject
+@SingleIn(MyRoute::class)
+class MyActivityNavigator(
+    @ForScope(MyRoute::class)
+    platformNavigator: PlatformNavigator,
+) {
+    val permissionRequest = platformNavigator.registerForPermissionsResult()
 }
 ```
 
