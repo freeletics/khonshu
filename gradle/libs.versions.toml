@@ -29,7 +29,7 @@ mordant = "3.1.1"
 
 uri = "0.0.21"
 
-metro = "1.5.2"
+metro = "1.6.0"
 
 ksp = "2.3.14"
 kotlinpoet = "2.4.0"
