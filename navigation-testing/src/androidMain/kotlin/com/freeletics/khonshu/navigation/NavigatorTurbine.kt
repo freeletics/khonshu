@@ -73,7 +73,13 @@ public suspend fun PlatformNavigator.test(
     name: String? = null,
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
-    testDestinationNavigator().test(timeout, name, validate)
+    val testHostNavigator = testHostNavigator()
+    val hostEvents = testHostNavigator.events
+    val activityEvents = activityEvents.map(::toTestEvent)
+    merge(hostEvents, activityEvents).test(timeout, name) {
+        val turbine = DefaultNavigatorTurbine(this, testHostNavigator.state, this)
+        validate(turbine)
+    }
 }
 
 /**
@@ -133,14 +139,18 @@ public fun PlatformNavigator.testIn(
     timeout: Duration? = null,
     name: String? = null,
 ): NavigatorTurbine {
-    return testDestinationNavigator().testIn(scope, timeout, name)
+    val testHostNavigator = testHostNavigator()
+    val hostEvents = testHostNavigator.events
+    val activityEvents = activityEvents.map(::toTestEvent)
+    val turbine = merge(hostEvents, activityEvents).testIn(scope, timeout, name)
+    return DefaultNavigatorTurbine(turbine, testHostNavigator.state, scope)
 }
 
-private fun PlatformNavigator.testDestinationNavigator(): DestinationNavigator {
-    require(this is DestinationNavigator && hostNavigator is TestHostNavigator) {
+private fun PlatformNavigator.testHostNavigator(): TestHostNavigator {
+    require(this is TestPlatformNavigator) {
         "PlatformNavigator.test/testIn requires a navigator created by TestHostNavigator.platformNavigator()."
     }
-    return this
+    return testHostNavigator
 }
 
 public interface NavigatorTurbine {

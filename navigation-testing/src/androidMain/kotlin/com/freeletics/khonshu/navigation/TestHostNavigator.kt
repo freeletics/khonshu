@@ -3,7 +3,6 @@ package com.freeletics.khonshu.navigation
 import androidx.compose.runtime.State
 import app.cash.turbine.Turbine
 import app.cash.turbine.plusAssign
-import com.freeletics.khonshu.navigation.internal.DefaultDestinationNavigator
 import com.freeletics.khonshu.navigation.internal.DestinationId
 import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 import com.freeletics.khonshu.navigation.internal.InternalNavigationCodegenApi
@@ -76,9 +75,8 @@ public class TestHostNavigator(
      * }
      * ```
      */
-    @OptIn(InternalNavigationCodegenApi::class)
     public fun platformNavigator(): PlatformNavigator {
-        return DefaultDestinationNavigator(this)
+        return TestPlatformNavigator(this)
     }
 
     /**
