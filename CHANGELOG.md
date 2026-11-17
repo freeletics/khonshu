@@ -3,6 +3,13 @@ Change Log
 
 ## UNRELEASED
 
+## 0.40.0 (2026-11-17)
+
+- Update AGP to 9.5.1.
+- Update Kotlin to 2.4.21.
+- Update Compose Multiplatform to 1.12.2.
+- Update Metro to 1.5.2.
+
 ### Navigation
 
 - Added `DestinationNavigator2`, a `Navigator` for a single destination that is aware of the back
@@ -10,7 +17,12 @@ Change Log
   executed while its destination is the current destination, so a delayed or repeated back action
   can not affect another destination. When registering for its own route type,
   `registerForNavigationResult` resolves to its exact entry instead of looking up an entry by route
-  type.
+  type, and no longer throws when that entry has already left the back stack.
+- `DestinationNavigator` will be deprecated in a future release and removed after that.
+  `DestinationNavigator2` replaces it for back stack navigation and navigation results, and an
+  injected `PlatformNavigator` replaces it for activity and permission navigation. See the
+  [migration guide](https://freeletics.github.io/khonshu/navigation/migration-destination-navigator2/)
+  for the steps and the behavior changes to check before migrating.
 
 ### Navigation Testing
 
@@ -26,8 +38,7 @@ Change Log
 - Generated destination graphs now provide a `DestinationNavigator2`. On Android they also provide a
   `@ForScope(<Route>::class)` `PlatformNavigator` that can be injected for activity and permission
   navigation. Providing a `DestinationNavigator` binding is now optional; when one exists it is used
-  as that `PlatformNavigator`. `DestinationNavigator` will be deprecated and removed in a future
-  release, where `DestinationNavigator2` and `PlatformNavigator` take its place.
+  as that `PlatformNavigator`.
 
 ## 0.39.0 (2026-09-21)
 
