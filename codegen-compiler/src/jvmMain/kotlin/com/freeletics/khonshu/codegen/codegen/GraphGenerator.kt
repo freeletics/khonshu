@@ -25,9 +25,9 @@ import com.freeletics.khonshu.codegen.util.providesParameter
 import com.freeletics.khonshu.codegen.util.savedStateHandle
 import com.freeletics.khonshu.codegen.util.simplePropertySpec
 import com.freeletics.khonshu.codegen.util.singleIn
-import com.freeletics.khonshu.codegen.util.suppress
 import com.freeletics.khonshu.codegen.util.stackEntry
 import com.freeletics.khonshu.codegen.util.stackEntryState
+import com.freeletics.khonshu.codegen.util.suppress
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec

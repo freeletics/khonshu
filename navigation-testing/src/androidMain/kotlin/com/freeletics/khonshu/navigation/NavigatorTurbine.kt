@@ -110,8 +110,9 @@ public fun TestHostNavigator.testIn(
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
  */
 @Deprecated(
-    "Use TestHostNavigator.testIn for back stack events and PlatformNavigator.testIn for activity and permission events. " +
-        "See the tests in https://freeletics.github.io/khonshu/navigation/migration-destination-navigator2/",
+    "Use TestHostNavigator.testIn for back stack events and PlatformNavigator.testIn " +
+        "for activity and permission events. See the tests in " +
+        "https://freeletics.github.io/khonshu/navigation/migration-destination-navigator2/",
 )
 @Suppress("DEPRECATION")
 @OptIn(InternalNavigationApi::class)
