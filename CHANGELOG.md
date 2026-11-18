@@ -3,12 +3,22 @@ Change Log
 
 ## UNRELEASED
 
+### Navigation
+
+- `DestinationNavigator` is deprecated and will be removed in a future release. Use
+  `DestinationNavigator2` for back stack navigation and navigation results, and an injected
+  `PlatformNavigator` for activity and permission navigation. See the
+  [migration guide](https://freeletics.github.io/khonshu/navigation/migration-destination-navigator2/).
+
 ### Navigation Testing
 
 - **Breaking**: `PlatformNavigator.test`/`testIn` now only observe activity and permission events and return a
   `PlatformNavigatorTurbine`. Assert back stack events with `TestHostNavigator.test`/`testIn`, which
   now return a `HostNavigatorTurbine`. `NavigatorTurbine` extends both and is still returned by
   `DestinationNavigator.test`/`testIn`.
+- `DestinationNavigator.test`/`testIn` and `NavigatorTurbine` are deprecated. Use
+  `TestHostNavigator.test`/`testIn` for back stack events and `PlatformNavigator.test`/`testIn`
+  for activity and permission events.
 
 ## 0.40.0 (2026-11-17)
 

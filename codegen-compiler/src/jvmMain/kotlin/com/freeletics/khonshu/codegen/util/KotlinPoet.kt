@@ -140,6 +140,19 @@ internal fun optIn(vararg classNames: ClassName): AnnotationSpec {
         .build()
 }
 
+internal fun suppress(vararg ids: String): AnnotationSpec {
+    val member = CodeBlock.builder()
+    ids.forEachIndexed { index, id ->
+        if (index > 0) {
+            member.add(", ")
+        }
+        member.add("%S", id)
+    }
+    return AnnotationSpec.builder(Suppress::class)
+        .addMember(member.build())
+        .build()
+}
+
 internal fun suppressLint(vararg ids: String): AnnotationSpec {
     val member = CodeBlock.builder()
     ids.forEachIndexed { index, id ->

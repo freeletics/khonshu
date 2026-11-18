@@ -8,6 +8,10 @@ import kotlin.reflect.KClass
  * A combination of [Navigator] and [com.freeletics.khonshu.navigation.activity.ActivityNavigator] that can
  * be used as base class for navigators of individual screens.
  */
+@Deprecated(
+    "Use DestinationNavigator2 for back stack navigation and PlatformNavigator for activities and permissions. " +
+        "See https://freeletics.github.io/khonshu/navigation/migration-destination-navigator2/",
+)
 public abstract class DestinationNavigator(
     @property:InternalNavigationTestingApi
     public val hostNavigator: HostNavigator,

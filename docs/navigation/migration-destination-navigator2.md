@@ -1,7 +1,7 @@
 # Migrating to DestinationNavigator2
 
-`DestinationNavigator` will be deprecated and removed in a future release. Its
-two jobs are split into two types:
+`DestinationNavigator` is deprecated and will be removed in a future release.
+Its two jobs are split into two types:
 
 - `DestinationNavigator2` for back stack navigation and navigation results. It
   is available on all platforms.

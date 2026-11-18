@@ -48,6 +48,11 @@ public suspend fun TestHostNavigator.test(
  *
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
  */
+@Deprecated(
+    "Use TestHostNavigator.test for back stack events and PlatformNavigator.test for activity and permission events. " +
+        "See the tests in https://freeletics.github.io/khonshu/navigation/migration-destination-navigator2/",
+)
+@Suppress("DEPRECATION")
 @OptIn(InternalNavigationApi::class)
 public suspend fun DestinationNavigator.test(
     timeout: Duration? = null,
@@ -104,6 +109,12 @@ public fun TestHostNavigator.testIn(
  *
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
  */
+@Deprecated(
+    "Use TestHostNavigator.testIn for back stack events and PlatformNavigator.testIn " +
+        "for activity and permission events. See the tests in " +
+        "https://freeletics.github.io/khonshu/navigation/migration-destination-navigator2/",
+)
+@Suppress("DEPRECATION")
 @OptIn(InternalNavigationApi::class)
 public fun DestinationNavigator.testIn(
     scope: CoroutineScope,
@@ -129,6 +140,7 @@ public fun PlatformNavigator.testIn(
     return activityTestEvents().testEventsIn(testHostNavigator(), scope, timeout, name)
 }
 
+@Suppress("DEPRECATION")
 private suspend fun Flow<TestEvent>.testEvents(
     testHostNavigator: TestHostNavigator,
     timeout: Duration?,
@@ -141,6 +153,7 @@ private suspend fun Flow<TestEvent>.testEvents(
     }
 }
 
+@Suppress("DEPRECATION")
 private fun Flow<TestEvent>.testEventsIn(
     testHostNavigator: TestHostNavigator,
     scope: CoroutineScope,
@@ -329,6 +342,7 @@ public interface PlatformNavigatorTurbine {
  * Asserts back stack and platform events together. Returned by [DestinationNavigator.test] and
  * [DestinationNavigator.testIn].
  */
+@Deprecated("Use HostNavigatorTurbine and PlatformNavigatorTurbine instead.")
 public interface NavigatorTurbine : HostNavigatorTurbine, PlatformNavigatorTurbine
 
 public suspend inline fun <reified O : Any> HostNavigatorTurbine.awaitNavigationResult(
@@ -338,6 +352,7 @@ public suspend inline fun <reified O : Any> HostNavigatorTurbine.awaitNavigation
     awaitNavigationResult(key, result, serializer())
 }
 
+@Suppress("DEPRECATION")
 internal class DefaultNavigatorTurbine @OptIn(InternalNavigationApi::class) constructor(
     private val turbine: ReceiveTurbine<TestEvent>,
     private val savedStateHandle: StackEntryState,

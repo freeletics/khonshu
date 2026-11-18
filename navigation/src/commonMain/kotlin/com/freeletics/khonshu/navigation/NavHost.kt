@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 
 /**
  * Create a new `NavHost` containing all given [destinations]. [startRoute] will be used as the
- * start destination of the graph. Use [HostNavigator] and [DestinationNavigator] to change what is shown
+ * start destination of the graph. Use [HostNavigator] and [DestinationNavigator2] to change what is shown
  * in [NavHost].
  *
  * To support deep links a set of [DeepLinkHandlers][DeepLinkHandler] can be passed in optionally.

@@ -27,6 +27,7 @@ import com.freeletics.khonshu.codegen.util.simplePropertySpec
 import com.freeletics.khonshu.codegen.util.singleIn
 import com.freeletics.khonshu.codegen.util.stackEntry
 import com.freeletics.khonshu.codegen.util.stackEntryState
+import com.freeletics.khonshu.codegen.util.suppress
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
@@ -177,7 +178,7 @@ internal class GraphGenerator(
                     codeBlock = CodeBlock.builder()
                         .addStatement("return %L", destinationNavigator.propertyName)
                         .build(),
-                    annotations = listOf(singleIn(data.scope), forScope(data.scope)),
+                    annotations = listOf(singleIn(data.scope), forScope(data.scope), suppress("DEPRECATION")),
                 ),
             )
             add(
