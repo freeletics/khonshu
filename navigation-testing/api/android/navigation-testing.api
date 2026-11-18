@@ -1,21 +1,18 @@
-public abstract interface class com/freeletics/khonshu/navigation/NavigatorTurbine {
+public abstract interface class com/freeletics/khonshu/navigation/HostNavigatorTurbine {
 	public abstract fun awaitNavigate (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateBack (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateBackTo (Lkotlin/reflect/KClass;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitNavigateForResult (Lcom/freeletics/khonshu/navigation/activity/ActivityResultRequest;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitNavigateForResult (Lcom/freeletics/khonshu/navigation/activity/ActivityResultRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigateTo (Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitNavigateTo (Lcom/freeletics/khonshu/navigation/activity/ActivityRoute;Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun awaitNavigateTo$default (Lcom/freeletics/khonshu/navigation/NavigatorTurbine;Lcom/freeletics/khonshu/navigation/activity/ActivityRoute;Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public abstract fun awaitNavigateUp (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitNavigationResult (Lcom/freeletics/khonshu/navigation/NavigationResultRequest$Key;Ljava/lang/Object;Lkotlinx/serialization/KSerializer;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitReplaceAllBackStacks (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;[Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitShowRoot (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun awaitSwitchBackStack (Lcom/freeletics/khonshu/navigation/NavRoot;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun cancel (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun cancelAndIgnoreRemainingNavEvents (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/freeletics/khonshu/navigation/NavigatorTurbine : com/freeletics/khonshu/navigation/HostNavigatorTurbine, com/freeletics/khonshu/navigation/PlatformNavigatorTurbine {
 }
 
 public final class com/freeletics/khonshu/navigation/NavigatorTurbineKt {
@@ -26,11 +23,22 @@ public final class com/freeletics/khonshu/navigation/NavigatorTurbineKt {
 	public static synthetic fun test-C2H2yOE$default (Lcom/freeletics/khonshu/navigation/TestHostNavigator;Lkotlin/time/Duration;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static synthetic fun test-C2H2yOE$default (Lcom/freeletics/khonshu/navigation/activity/ActivityNavigator;Lkotlin/time/Duration;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun testIn-5_5nbZA (Lcom/freeletics/khonshu/navigation/DestinationNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/NavigatorTurbine;
-	public static final fun testIn-5_5nbZA (Lcom/freeletics/khonshu/navigation/TestHostNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/NavigatorTurbine;
-	public static final fun testIn-5_5nbZA (Lcom/freeletics/khonshu/navigation/activity/ActivityNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/NavigatorTurbine;
+	public static final fun testIn-5_5nbZA (Lcom/freeletics/khonshu/navigation/TestHostNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/HostNavigatorTurbine;
+	public static final fun testIn-5_5nbZA (Lcom/freeletics/khonshu/navigation/activity/ActivityNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;)Lcom/freeletics/khonshu/navigation/PlatformNavigatorTurbine;
 	public static synthetic fun testIn-5_5nbZA$default (Lcom/freeletics/khonshu/navigation/DestinationNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/NavigatorTurbine;
-	public static synthetic fun testIn-5_5nbZA$default (Lcom/freeletics/khonshu/navigation/TestHostNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/NavigatorTurbine;
-	public static synthetic fun testIn-5_5nbZA$default (Lcom/freeletics/khonshu/navigation/activity/ActivityNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/NavigatorTurbine;
+	public static synthetic fun testIn-5_5nbZA$default (Lcom/freeletics/khonshu/navigation/TestHostNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/HostNavigatorTurbine;
+	public static synthetic fun testIn-5_5nbZA$default (Lcom/freeletics/khonshu/navigation/activity/ActivityNavigator;Lkotlinx/coroutines/CoroutineScope;Lkotlin/time/Duration;Ljava/lang/String;ILjava/lang/Object;)Lcom/freeletics/khonshu/navigation/PlatformNavigatorTurbine;
+}
+
+public abstract interface class com/freeletics/khonshu/navigation/PlatformNavigatorTurbine {
+	public abstract fun awaitNavigateForResult (Lcom/freeletics/khonshu/navigation/activity/ActivityResultRequest;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitNavigateForResult (Lcom/freeletics/khonshu/navigation/activity/ActivityResultRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitNavigateTo (Lcom/freeletics/khonshu/navigation/activity/ActivityRoute;Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitNavigateTo$default (Lcom/freeletics/khonshu/navigation/PlatformNavigatorTurbine;Lcom/freeletics/khonshu/navigation/activity/ActivityRoute;Lcom/freeletics/khonshu/navigation/NavRoute;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitRequestPermissions (Lcom/freeletics/khonshu/navigation/activity/PermissionsResultRequest;[Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun cancel (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun cancelAndIgnoreRemainingNavEvents (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/freeletics/khonshu/navigation/TestHostNavigator : com/freeletics/khonshu/navigation/HostNavigator {
