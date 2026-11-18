@@ -65,14 +65,40 @@ internal class TestHostNavigatorPlatformNavigatorTest {
     }
 
     @Test
-    fun `platform navigator observes events from its host`() = runTest {
+    fun `platform navigator does not observe back stack events`() = runTest {
         val hostNavigator = TestHostNavigator()
         val platformNavigator = hostNavigator.platformNavigator()
+        val navigator = PermissionNavigator(platformNavigator)
 
         platformNavigator.test {
             hostNavigator.navigateBack()
+            navigator.requestPermission()
 
-            awaitNavigateBack()
+            awaitRequestPermissions(navigator.request, "permission")
+        }
+    }
+
+    @Test
+    fun `host and platform navigators can be tested together`() = runTest {
+        val hostNavigator = TestHostNavigator()
+        val platformNavigator = hostNavigator.platformNavigator()
+        val navigator = PermissionNavigator(platformNavigator)
+
+        turbineScope {
+            val scope = CoroutineScope(currentCoroutineContext())
+            val hostEvents = hostNavigator.testIn(scope)
+            val platformEvents = platformNavigator.testIn(scope)
+
+            navigator.requestPermission()
+            platformEvents.awaitRequestPermissions(navigator.request, "permission")
+
+            hostNavigator.navigateBack()
+            hostNavigator.navigateUp()
+            hostEvents.awaitNavigateBack()
+            hostEvents.awaitNavigateUp()
+
+            hostEvents.cancel()
+            platformEvents.cancel()
         }
     }
 

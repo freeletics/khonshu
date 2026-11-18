@@ -3,6 +3,13 @@ Change Log
 
 ## UNRELEASED
 
+### Navigation Testing
+
+- **Breaking**: `PlatformNavigator.test`/`testIn` now only observe activity and permission events and return a
+  `PlatformNavigatorTurbine`. Assert back stack events with `TestHostNavigator.test`/`testIn`, which
+  now return a `HostNavigatorTurbine`. `NavigatorTurbine` extends both and is still returned by
+  `DestinationNavigator.test`/`testIn`.
+
 ## 0.40.0 (2026-11-17)
 
 - Update AGP to 9.5.1.

@@ -25,7 +25,7 @@ navigator.test {
 ```
 
 This will start collecting events from the navigator and then calls the given block with
-`NavigatorTurbine` as a receiver:
+`HostNavigatorTurbine` as a receiver:
 
 ```kotlin
 
@@ -41,7 +41,7 @@ The collection is automatically cancelled at the end of the `test` block.
 ## Navigation and other state
 
 If the test does not just validate the navigation logic but also other things like for example
-state changes a `NavigatorTurbine` can be obtained by calling `testIn`
+state changes a `HostNavigatorTurbine` can be obtained by calling `testIn`
 
 ```kotlin
 runTest {

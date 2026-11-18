@@ -62,8 +62,8 @@ public class TestHostNavigator(
      * Returns a [PlatformNavigator] for injection into a screen's activity or permission navigator.
      * Create one instance per navigator under test and inject that same instance wherever needed.
      *
-     * Assert platform and back stack events with [test] and [testIn]. Calling
-     * [TestHostNavigator.test] only observes back stack navigation events.
+     * Assert activity and permission events with [test] and [testIn]. Assert back stack events with
+     * [TestHostNavigator.test] and [TestHostNavigator.testIn].
      *
      * ```kotlin
      * val platformNavigator = hostNavigator.platformNavigator()
