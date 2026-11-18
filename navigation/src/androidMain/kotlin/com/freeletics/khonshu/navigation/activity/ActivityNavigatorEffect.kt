@@ -20,8 +20,8 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.annotations.VisibleForTesting
 
 /**
- * Sets up the [ActivityNavigator] and [com.freeletics.khonshu.navigation.DestinationNavigator] inside the current
- * composition so that its events are handled while the composition is active.
+ * Sets up the [ActivityNavigator] inside the current composition so that its events are handled while the
+ * composition is active.
  */
 @Composable
 public fun ActivityNavigatorEffect(navigator: ActivityNavigator) {
