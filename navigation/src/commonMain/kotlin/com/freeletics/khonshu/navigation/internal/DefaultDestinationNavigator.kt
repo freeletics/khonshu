@@ -4,6 +4,7 @@ import com.freeletics.khonshu.navigation.DestinationNavigator
 import com.freeletics.khonshu.navigation.HostNavigator
 
 @InternalNavigationCodegenApi
+@Suppress("DEPRECATION")
 public class DefaultDestinationNavigator(
     hostNavigator: HostNavigator,
 ) : DestinationNavigator(hostNavigator)

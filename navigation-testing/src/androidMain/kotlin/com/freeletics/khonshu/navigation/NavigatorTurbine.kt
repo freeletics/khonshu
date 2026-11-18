@@ -48,6 +48,10 @@ public suspend fun TestHostNavigator.test(
  *
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
  */
+@Deprecated(
+    "Use TestHostNavigator.test for back stack events and PlatformNavigator.test for activity and permission events. " +
+        "See the tests in https://freeletics.github.io/khonshu/navigation/migration-destination-navigator2/",
+)
 @OptIn(InternalNavigationApi::class)
 public suspend fun DestinationNavigator.test(
     timeout: Duration? = null,
@@ -104,6 +108,10 @@ public fun TestHostNavigator.testIn(
  *
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
  */
+@Deprecated(
+    "Use TestHostNavigator.testIn for back stack events and PlatformNavigator.testIn for activity and permission events. " +
+        "See the tests in https://freeletics.github.io/khonshu/navigation/migration-destination-navigator2/",
+)
 @OptIn(InternalNavigationApi::class)
 public fun DestinationNavigator.testIn(
     scope: CoroutineScope,
@@ -329,6 +337,7 @@ public interface PlatformNavigatorTurbine {
  * Asserts back stack and platform events together. Returned by [DestinationNavigator.test] and
  * [DestinationNavigator.testIn].
  */
+@Deprecated("Use HostNavigatorTurbine and PlatformNavigatorTurbine instead.")
 public interface NavigatorTurbine : HostNavigatorTurbine, PlatformNavigatorTurbine
 
 public suspend inline fun <reified O : Any> HostNavigatorTurbine.awaitNavigationResult(
