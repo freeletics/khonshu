@@ -108,6 +108,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
+            import kotlin.Suppress
             import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
@@ -148,6 +149,7 @@ internal class DestinationCodegenTest {
               @Provides
               @SingleIn(TestRoute::class)
               @ForScope(TestRoute::class)
+              @Suppress("DEPRECATION")
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -295,6 +297,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
+            import kotlin.Suppress
             import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
@@ -335,6 +338,7 @@ internal class DestinationCodegenTest {
               @Provides
               @SingleIn(TestRoute::class)
               @ForScope(TestRoute::class)
+              @Suppress("DEPRECATION")
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -485,6 +489,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
+            import kotlin.Suppress
             import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
@@ -525,6 +530,7 @@ internal class DestinationCodegenTest {
               @Provides
               @SingleIn(TestOverlayRoute::class)
               @ForScope(TestOverlayRoute::class)
+              @Suppress("DEPRECATION")
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestOverlayRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -696,6 +702,7 @@ internal class DestinationCodegenTest {
             import kotlin.Int
             import kotlin.OptIn
             import kotlin.String
+            import kotlin.Suppress
             import kotlin.Unit
             import kotlin.collections.Map
             import kotlin.collections.Set
@@ -745,6 +752,7 @@ internal class DestinationCodegenTest {
               @Provides
               @SingleIn(TestRoute::class)
               @ForScope(TestRoute::class)
+              @Suppress("DEPRECATION")
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -896,6 +904,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
+            import kotlin.Suppress
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
@@ -934,6 +943,7 @@ internal class DestinationCodegenTest {
               @Provides
               @SingleIn(TestRoute::class)
               @ForScope(TestRoute::class)
+              @Suppress("DEPRECATION")
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -1073,6 +1083,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
+            import kotlin.Suppress
             import kotlin.Unit
             import kotlin.collections.Set
             import kotlinx.coroutines.launch
@@ -1113,6 +1124,7 @@ internal class DestinationCodegenTest {
               @Provides
               @SingleIn(TestRoute::class)
               @ForScope(TestRoute::class)
+              @Suppress("DEPRECATION")
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
@@ -1257,6 +1269,7 @@ internal class DestinationCodegenTest {
             import dev.zacsweers.metro.SingleIn
             import kotlin.AutoCloseable
             import kotlin.OptIn
+            import kotlin.Suppress
             import kotlin.collections.Set
 
             @OptIn(InternalCodegenApi::class, InternalNavigationCodegenApi::class)
@@ -1295,6 +1308,7 @@ internal class DestinationCodegenTest {
               @Provides
               @SingleIn(TestRoute::class)
               @ForScope(TestRoute::class)
+              @Suppress("DEPRECATION")
               public fun providePlatformNavigator(hostNavigator: HostNavigator, @ForScope(TestRoute::class) destinationNavigator: DestinationNavigator = DefaultDestinationNavigator(hostNavigator)): PlatformNavigator = destinationNavigator
 
               @Provides
