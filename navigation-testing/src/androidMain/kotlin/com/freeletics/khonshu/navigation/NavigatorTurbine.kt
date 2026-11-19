@@ -12,6 +12,7 @@ import com.google.common.truth.Truth
 import kotlin.reflect.KClass
 import kotlin.time.Duration
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -53,13 +54,7 @@ public suspend fun DestinationNavigator.test(
     name: String? = null,
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
-    val testHostNavigator = hostNavigator as TestHostNavigator
-    val hostEvents = testHostNavigator.events
-    val activityEvents = activityEvents.map(::toTestEvent)
-    merge(hostEvents, activityEvents).test(timeout, name) {
-        val turbine = DefaultNavigatorTurbine(this, testHostNavigator.state, this)
-        validate(turbine)
-    }
+    testPlatformEvents(hostNavigator as TestHostNavigator, timeout, name, validate)
 }
 
 /**
@@ -73,7 +68,7 @@ public suspend fun PlatformNavigator.test(
     name: String? = null,
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
-    testDestinationNavigator().test(timeout, name, validate)
+    testPlatformEvents(testHostNavigator(), timeout, name, validate)
 }
 
 /**
@@ -114,11 +109,7 @@ public fun DestinationNavigator.testIn(
     timeout: Duration? = null,
     name: String? = null,
 ): NavigatorTurbine {
-    val testHostNavigator = hostNavigator as TestHostNavigator
-    val hostEvents = testHostNavigator.events
-    val activityEvents = activityEvents.map(::toTestEvent)
-    val turbine = merge(hostEvents, activityEvents).testIn(scope, timeout, name)
-    return DefaultNavigatorTurbine(turbine, testHostNavigator.state, scope)
+    return testPlatformEventsIn(hostNavigator as TestHostNavigator, scope, timeout, name)
 }
 
 /**
@@ -133,14 +124,40 @@ public fun PlatformNavigator.testIn(
     timeout: Duration? = null,
     name: String? = null,
 ): NavigatorTurbine {
-    return testDestinationNavigator().testIn(scope, timeout, name)
+    return testPlatformEventsIn(testHostNavigator(), scope, timeout, name)
 }
 
-private fun PlatformNavigator.testDestinationNavigator(): DestinationNavigator {
-    require(this is DestinationNavigator && hostNavigator is TestHostNavigator) {
+private suspend fun PlatformNavigator.testPlatformEvents(
+    testHostNavigator: TestHostNavigator,
+    timeout: Duration?,
+    name: String?,
+    validate: suspend NavigatorTurbine.() -> Unit,
+) {
+    platformEvents(testHostNavigator).test(timeout, name) {
+        val turbine = DefaultNavigatorTurbine(this, testHostNavigator.state, this)
+        validate(turbine)
+    }
+}
+
+private fun PlatformNavigator.testPlatformEventsIn(
+    testHostNavigator: TestHostNavigator,
+    scope: CoroutineScope,
+    timeout: Duration?,
+    name: String?,
+): NavigatorTurbine {
+    val turbine = platformEvents(testHostNavigator).testIn(scope, timeout, name)
+    return DefaultNavigatorTurbine(turbine, testHostNavigator.state, scope)
+}
+
+private fun PlatformNavigator.platformEvents(testHostNavigator: TestHostNavigator): Flow<TestEvent> {
+    return merge(testHostNavigator.events, activityEvents.map(::toTestEvent))
+}
+
+private fun PlatformNavigator.testHostNavigator(): TestHostNavigator {
+    require(this is TestPlatformNavigator) {
         "PlatformNavigator.test/testIn requires a navigator created by TestHostNavigator.platformNavigator()."
     }
-    return this
+    return testHostNavigator
 }
 
 public interface NavigatorTurbine {
