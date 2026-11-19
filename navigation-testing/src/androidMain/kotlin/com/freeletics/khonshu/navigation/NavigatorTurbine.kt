@@ -31,7 +31,7 @@ import kotlinx.serialization.serializer
 public suspend fun TestHostNavigator.test(
     timeout: Duration? = null,
     name: String? = null,
-    validate: suspend NavigatorTurbine.() -> Unit,
+    validate: suspend HostNavigatorTurbine.() -> Unit,
 ) {
     events.test(timeout, name) {
         val turbine = DefaultNavigatorTurbine(this, state, this)
@@ -54,11 +54,12 @@ public suspend fun DestinationNavigator.test(
     name: String? = null,
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
-    testPlatformEvents(hostNavigator as TestHostNavigator, timeout, name, validate)
+    val testHostNavigator = hostNavigator as TestHostNavigator
+    merge(testHostNavigator.events, activityTestEvents()).testEvents(testHostNavigator, timeout, name, validate)
 }
 
 /**
- * Collects platform and back stack events from a navigator created by
+ * Collects activity and permission events from a navigator created by
  * [TestHostNavigator.platformNavigator]. The [validate] lambda consumes and asserts events in order.
  *
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
@@ -66,18 +67,18 @@ public suspend fun DestinationNavigator.test(
 public suspend fun PlatformNavigator.test(
     timeout: Duration? = null,
     name: String? = null,
-    validate: suspend NavigatorTurbine.() -> Unit,
+    validate: suspend PlatformNavigatorTurbine.() -> Unit,
 ) {
-    testPlatformEvents(testHostNavigator(), timeout, name, validate)
+    activityTestEvents().testEvents(testHostNavigator(), timeout, name, validate)
 }
 
 /**
- * Collects events from [TestHostNavigator] and returns a [NavigatorTurbine] for consuming
+ * Collects events from [TestHostNavigator] and returns a [HostNavigatorTurbine] for consuming
  * and asserting properties on them in order. If any exception occurs during validation the
  * exception is rethrown from this method.
  *
  * Unlike [test] which automatically cancels the flow at the end of the lambda, the returned
- * NavigatorTurbine be explicitly canceled.
+ * HostNavigatorTurbine must be explicitly canceled.
  *
  * [timeout] - If non-null, overrides the current Turbine timeout inside validate.
  */
@@ -86,7 +87,7 @@ public fun TestHostNavigator.testIn(
     scope: CoroutineScope,
     timeout: Duration? = null,
     name: String? = null,
-): NavigatorTurbine {
+): HostNavigatorTurbine {
     val turbine = events.testIn(scope, timeout, name)
     return DefaultNavigatorTurbine(turbine, state, scope)
 }
@@ -109,12 +110,13 @@ public fun DestinationNavigator.testIn(
     timeout: Duration? = null,
     name: String? = null,
 ): NavigatorTurbine {
-    return testPlatformEventsIn(hostNavigator as TestHostNavigator, scope, timeout, name)
+    val testHostNavigator = hostNavigator as TestHostNavigator
+    return merge(testHostNavigator.events, activityTestEvents()).testEventsIn(testHostNavigator, scope, timeout, name)
 }
 
 /**
- * Collects platform and back stack events from a navigator created by
- * [TestHostNavigator.platformNavigator] and returns a [NavigatorTurbine] for asserting them.
+ * Collects activity and permission events from a navigator created by
+ * [TestHostNavigator.platformNavigator] and returns a [PlatformNavigatorTurbine] for asserting them.
  * The returned turbine must be explicitly canceled.
  *
  * [timeout] - If non-null, overrides the current Turbine timeout.
@@ -123,34 +125,34 @@ public fun PlatformNavigator.testIn(
     scope: CoroutineScope,
     timeout: Duration? = null,
     name: String? = null,
-): NavigatorTurbine {
-    return testPlatformEventsIn(testHostNavigator(), scope, timeout, name)
+): PlatformNavigatorTurbine {
+    return activityTestEvents().testEventsIn(testHostNavigator(), scope, timeout, name)
 }
 
-private suspend fun PlatformNavigator.testPlatformEvents(
+private suspend fun Flow<TestEvent>.testEvents(
     testHostNavigator: TestHostNavigator,
     timeout: Duration?,
     name: String?,
     validate: suspend NavigatorTurbine.() -> Unit,
 ) {
-    platformEvents(testHostNavigator).test(timeout, name) {
+    test(timeout, name) {
         val turbine = DefaultNavigatorTurbine(this, testHostNavigator.state, this)
         validate(turbine)
     }
 }
 
-private fun PlatformNavigator.testPlatformEventsIn(
+private fun Flow<TestEvent>.testEventsIn(
     testHostNavigator: TestHostNavigator,
     scope: CoroutineScope,
     timeout: Duration?,
     name: String?,
 ): NavigatorTurbine {
-    val turbine = platformEvents(testHostNavigator).testIn(scope, timeout, name)
+    val turbine = testIn(scope, timeout, name)
     return DefaultNavigatorTurbine(turbine, testHostNavigator.state, scope)
 }
 
-private fun PlatformNavigator.platformEvents(testHostNavigator: TestHostNavigator): Flow<TestEvent> {
-    return merge(testHostNavigator.events, activityEvents.map(::toTestEvent))
+private fun PlatformNavigator.activityTestEvents(): Flow<TestEvent> {
+    return activityEvents.map(::toTestEvent)
 }
 
 private fun PlatformNavigator.testHostNavigator(): TestHostNavigator {
@@ -160,7 +162,11 @@ private fun PlatformNavigator.testHostNavigator(): TestHostNavigator {
     return testHostNavigator
 }
 
-public interface NavigatorTurbine {
+/**
+ * Asserts back stack navigation events and navigation results. Returned by [TestHostNavigator.test]
+ * and [TestHostNavigator.testIn].
+ */
+public interface HostNavigatorTurbine {
     /**
      * Assert that the next event received was a navigation event to the given [route]. This function
      * will suspend if no events have been received.
@@ -168,14 +174,6 @@ public interface NavigatorTurbine {
      * @throws AssertionError - if the next event was not a matching event.
      */
     public suspend fun awaitNavigateTo(route: NavRoute)
-
-    /**
-     * Assert that the next event received was a navigation event to the given [route]. This function
-     * will suspend if no events have been received.
-     *
-     * @throws AssertionError - if the next event was not a matching event.
-     */
-    public suspend fun awaitNavigateTo(route: ActivityRoute, fallbackRoute: NavRoute? = null)
 
     /**
      * Assert that all the events in the [block] are received. This function
@@ -237,6 +235,45 @@ public interface NavigatorTurbine {
     public suspend fun awaitReplaceAllBackStacks(root: NavRoot)
 
     /**
+     * Assert that the next event received was a navigation result. This function will suspend
+     * if no events have been received.
+     *
+     * @throws AssertionError - if the next event was not a matching event.
+     */
+    public suspend fun <O : Any> awaitNavigationResult(
+        key: NavigationResultRequest.Key<O>,
+        result: O,
+        serializer: KSerializer<O>,
+    )
+
+    /**
+     * Cancel this turbine.
+     *
+     * @throws AssertionError - if there are any unconsumed events.
+     */
+    public suspend fun cancel()
+
+    /**
+     * Cancel this turbine. The difference to [cancel] is any unconsumed event will be
+     * ignored and no error will be thrown.
+     */
+    public suspend fun cancelAndIgnoreRemainingNavEvents()
+}
+
+/**
+ * Asserts activity and permission events. Returned by [PlatformNavigator.test] and
+ * [PlatformNavigator.testIn].
+ */
+public interface PlatformNavigatorTurbine {
+    /**
+     * Assert that the next event received was a navigation event to the given [route]. This function
+     * will suspend if no events have been received.
+     *
+     * @throws AssertionError - if the next event was not a matching event.
+     */
+    public suspend fun awaitNavigateTo(route: ActivityRoute, fallbackRoute: NavRoute? = null)
+
+    /**
      * Assert that the next event received was a navigate for result event to [request].
      * This function will suspend if no events have been received.
      *
@@ -275,32 +312,26 @@ public interface NavigatorTurbine {
     )
 
     /**
-     * Assert that the next event received was a navigation result. This function will suspend
-     * if no events have been received.
-     *
-     * @throws AssertionError - if the next event was not a matching event.
-     */
-    public suspend fun <O : Any> awaitNavigationResult(
-        key: NavigationResultRequest.Key<O>,
-        result: O,
-        serializer: KSerializer<O>,
-    )
-
-    /**
-     * Cancel this [NavigatorTurbine].
+     * Cancel this turbine.
      *
      * @throws AssertionError - if there are any unconsumed events.
      */
     public suspend fun cancel()
 
     /**
-     * Cancel this [NavigatorTurbine]. The difference to [cancel] is any unconsumed event will be
+     * Cancel this turbine. The difference to [cancel] is any unconsumed event will be
      * ignored and no error will be thrown.
      */
     public suspend fun cancelAndIgnoreRemainingNavEvents()
 }
 
-public suspend inline fun <reified O : Any> NavigatorTurbine.awaitNavigationResult(
+/**
+ * Asserts back stack and platform events together. Returned by [DestinationNavigator.test] and
+ * [DestinationNavigator.testIn].
+ */
+public interface NavigatorTurbine : HostNavigatorTurbine, PlatformNavigatorTurbine
+
+public suspend inline fun <reified O : Any> HostNavigatorTurbine.awaitNavigationResult(
     key: NavigationResultRequest.Key<O>,
     result: O,
 ) {
